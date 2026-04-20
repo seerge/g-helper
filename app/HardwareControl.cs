@@ -312,40 +312,43 @@ public static class HardwareControl
 
         try
         {
-            // ACPI discharge exists only on ROG Ally
-            decimal? discharge = Program.acpi.GetBatteryDischarge();
-            if (discharge is not null)
+            if (AppConfig.IsAlly())
             {
-                batteryRate = discharge;
-
-                // Capacity from cached power manager state is sufficient
-                var batteryState = GetNativeBatteryState();
-                if (batteryState.HasValue)
+                decimal? discharge = Program.acpi.GetBatteryDischarge();
+                if (discharge is not null)
                 {
-                    chargeCapacity = batteryState.Value.RemainingCapacity;
+                    batteryRate = discharge;
 
-                    if (fullCapacity is null or 0 && batteryState.Value.MaxCapacity > 0)
-                        fullCapacity = batteryState.Value.MaxCapacity;
+                    // Capacity from cached power manager state is sufficient
+                    var batteryState = GetNativeBatteryState();
+                    if (batteryState.HasValue)
+                    {
+                        chargeCapacity = batteryState.Value.RemainingCapacity;
+
+                        if (fullCapacity is null or 0 && batteryState.Value.MaxCapacity > 0)
+                            fullCapacity = batteryState.Value.MaxCapacity;
+                    }
+                    FormatBatteryCharge();
+                    return;
                 }
             }
-            else
-            {
-                // Direct IOCTL for real-time rate and capacity on all other devices
-                var directStatus = QueryBatteryStatus();
-                if (directStatus.HasValue)
-                {
-                    chargeCapacity = directStatus.Value.Capacity;
-                    if (directStatus.Value.Rate != 0)
-                        batteryRate = (decimal)directStatus.Value.Rate / 1000;
-                }
 
-                // MaxCapacity doesn't change at runtime, only need it once
-                if (fullCapacity is null or 0)
-                {
-                    var batteryState = GetNativeBatteryState();
-                    if (batteryState.HasValue && batteryState.Value.MaxCapacity > 0)
-                        fullCapacity = batteryState.Value.MaxCapacity;
-                }
+            var statusTask = Task.Run(QueryBatteryStatus);
+            var directStatus = statusTask.Wait(1000) ? statusTask.Result : null;
+
+            if (directStatus.HasValue)
+            {
+                chargeCapacity = directStatus.Value.Capacity;
+                if (directStatus.Value.Rate != 0)
+                    batteryRate = (decimal)directStatus.Value.Rate / 1000;
+            }
+
+            // MaxCapacity doesn't change at runtime, only need it once
+            if (fullCapacity is null or 0)
+            {
+                var batteryState = GetNativeBatteryState();
+                if (batteryState.HasValue && batteryState.Value.MaxCapacity > 0)
+                    fullCapacity = batteryState.Value.MaxCapacity;
             }
         }
         catch (Exception ex)
