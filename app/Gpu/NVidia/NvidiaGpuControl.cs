@@ -64,11 +64,24 @@ public class NvidiaGpuControl : IGpuControl
     {
     }
 
+    private static readonly HashSet<string> _systemProcessNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+    {
+        "dwm", "csrss", "winlogon", "services", "lsass", "smss", "wininit",
+        "svchost", "fontdrvhost", "igfxem", "igfxhk", "igfxext",
+        "nvcontainer", "nvdisplay.container", "nvsettings", "nvspcaps64",
+        "nvsphelper64", "nvwmi64", "nvcplui", "atieclxx", "atiesrxx",
+        "explorer", "taskhostw", "sihost", "runtimebroker", "shellexperiencehost",
+        "searchhost", "startmenuexperiencehost", "textinputhost",
+        "applicationframehost", "systemsettings", "dllhost", "conhost",
+        "audiodg", "ctfloader", "spoolsv", "wlanext", "msdtc",
+    };
+
     public void KillGPUApps()
     {
-
         if (!IsValid) return;
         PhysicalGPU internalGpu = _internalGpu!;
+
+        int currentPid = Process.GetCurrentProcess().Id;
 
         try
         {
@@ -76,6 +89,10 @@ public class NvidiaGpuControl : IGpuControl
             foreach (Process process in processes)
                 try
                 {
+                    if (process.Id == currentPid) continue;
+                    if (process.SessionId == 0) continue;
+                    if (_systemProcessNames.Contains(process.ProcessName)) continue;
+
                     Logger.WriteLine("Kill:" + process.ProcessName);
                     ProcessHelper.KillByProcess(process);
                 }
