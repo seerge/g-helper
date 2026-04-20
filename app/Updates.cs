@@ -114,6 +114,7 @@ namespace GHelper
             //buttonRefresh.Visible = false;
             buttonRefresh.Click += ButtonRefresh_Click;
             Shown += Updates_Shown;
+            Resize += (s, e) => AlignLabelUpdates();
 
             FormClosed += (s, e) =>
             {
@@ -131,11 +132,18 @@ namespace GHelper
             LoadUpdates();
         }
 
+        private void AlignLabelUpdates()
+        {
+            int dateColumnLeft = panelBios.Padding.Left + (int)(0.63 * tableBios.Width) + 10;
+            labelUpdates.Left = dateColumnLeft;
+        }
+
         private void Updates_Shown(object? sender, EventArgs e)
         {
             Height = Program.settingsForm.Height;
             Top = Program.settingsForm.Top;
             Left = Program.settingsForm.Left - Width - 5;
+            AlignLabelUpdates();
             LoadUpdates(true);
         }
 
