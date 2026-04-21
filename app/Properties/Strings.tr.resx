@@ -800,6 +800,9 @@ Yine de devam etmek istiyor musunuz?</value>
   <data name="Zoom" xml:space="preserve">
     <value>Yakınlaştır</value>
   </data>
+  <data name="ThankYou" xml:space="preserve">
+    <value>Teşekkürler</value>
+  </data>
   <data name="Donate" xml:space="preserve">
     <value>Bağış</value>
   </data>

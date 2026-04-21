@@ -797,7 +797,16 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("Donate", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Thank You.
+        /// </summary>
+        internal static string ThankYou {
+            get {
+                return ResourceManager.GetString("ThankYou", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Download Color Profiles.
         /// </summary>

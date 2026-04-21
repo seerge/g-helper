@@ -803,6 +803,9 @@ Do you still want to continue?</value>
   <data name="Donate" xml:space="preserve">
     <value>Donate</value>
   </data>
+  <data name="ThankYou" xml:space="preserve">
+    <value>Thank You</value>
+  </data>
   <data name="Legend" xml:space="preserve">
     <value>Legend</value>
   </data>

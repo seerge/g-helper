@@ -800,6 +800,9 @@ Voulez-vous continuer ?</value>
   <data name="Zoom" xml:space="preserve">
     <value>Zoom</value>
   </data>
+  <data name="ThankYou" xml:space="preserve">
+    <value>Merci</value>
+  </data>
   <data name="Donate" xml:space="preserve">
     <value>Faire un don</value>
   </data>
