@@ -7,7 +7,7 @@ namespace GHelper.Helpers
     {
         private readonly SettingsForm _settings;
         private readonly RBadgeButton _button;
-        private readonly CustomContextMenu _contextMenu = new CustomContextMenu();
+        private CustomContextMenu? _contextMenu;
 
         public DonateControl(SettingsForm settings, RBadgeButton button)
         {
@@ -18,6 +18,7 @@ namespace GHelper.Helpers
         public void Init()
         {
             _button.Click += Button_Click;
+            _button.MouseUp += Button_MouseUp;
 
             if (!AppConfig.Is("donate_dismissed"))
             {
@@ -29,39 +30,52 @@ namespace GHelper.Helpers
                     _button.Badge = Math.Clamp((startCount - click) / 50, 1, 5);
                 }
             }
-
-            var padding = new Padding(5, 5, 5, 5);
-
-            var menuAlreadyDonated = new ToolStripMenuItem("❤ Already donated") { Margin = padding };
-            menuAlreadyDonated.Click += (s, e) =>
-            {
-                AppConfig.Set("donate_dismissed", 1);
-                SetThankYou();
-            };
-
-            var menuNotInterested = new ToolStripMenuItem("Not interested") { Margin = padding };
-            menuNotInterested.Click += (s, e) =>
-            {
-                AppConfig.Set("donate_dismissed", 1);
-                _button.Badge = 0;
-            };
-
-            var menuCancel = new ToolStripMenuItem("Cancel") { Margin = padding };
-
-            _contextMenu.ShowImageMargin = false;
-            _contextMenu.Items.Add(menuAlreadyDonated);
-            _contextMenu.Items.Add(menuNotInterested);
-            _contextMenu.Items.Add(new ToolStripSeparator());
-            _contextMenu.Items.Add(menuCancel);
-            _contextMenu.Renderer = new CustomMenuRenderer();
-
-            _button.ContextMenuStrip = _contextMenu;
         }
 
         public void ApplyTheme()
         {
-            _contextMenu.BackColor = _settings.BackColor;
-            _contextMenu.ForeColor = _settings.ForeColor;
+            if (_contextMenu is not null)
+            {
+                _contextMenu.BackColor = _settings.BackColor;
+                _contextMenu.ForeColor = _settings.ForeColor;
+            }
+        }
+
+        private void Button_MouseUp(object? sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Right) return;
+
+            if (_contextMenu is null)
+            {
+                var padding = new Padding(5, 5, 5, 5);
+
+                var menuAlreadyDonated = new ToolStripMenuItem("❤ Already donated") { Margin = padding };
+                menuAlreadyDonated.Click += (s, ev) =>
+                {
+                    AppConfig.Set("donate_dismissed", 1);
+                    SetThankYou();
+                };
+
+                var menuNotInterested = new ToolStripMenuItem("Not interested") { Margin = padding };
+                menuNotInterested.Click += (s, ev) =>
+                {
+                    AppConfig.Set("donate_dismissed", 1);
+                    _button.Badge = 0;
+                };
+
+                var menuCancel = new ToolStripMenuItem("Cancel") { Margin = padding };
+
+                _contextMenu = new CustomContextMenu();
+                _contextMenu.ShowImageMargin = false;
+                _contextMenu.Items.Add(menuAlreadyDonated);
+                _contextMenu.Items.Add(menuNotInterested);
+                _contextMenu.Items.Add(new ToolStripSeparator());
+                _contextMenu.Items.Add(menuCancel);
+                _contextMenu.Renderer = new CustomMenuRenderer();
+            }
+
+            ApplyTheme();
+            _contextMenu.Show(_button, new Point(e.X, e.Y));
         }
 
         private void Button_Click(object? sender, EventArgs e)
