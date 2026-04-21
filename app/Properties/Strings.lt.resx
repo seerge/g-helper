@@ -800,11 +800,11 @@ Vis tiek norite tęsti?</value>
   <data name="Zoom" xml:space="preserve">
     <value>Mastelis</value>
   </data>
-  <data name="ThankYou" xml:space="preserve">
-    <value>Ačiū</value>
-  </data>
   <data name="Donate" xml:space="preserve">
     <value>Paremti</value>
+  </data>
+  <data name="ThankYou" xml:space="preserve">
+    <value>Thank You</value>
   </data>
   <data name="Legend" xml:space="preserve">
     <value>Legenda</value>
