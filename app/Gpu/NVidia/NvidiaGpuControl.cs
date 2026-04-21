@@ -214,6 +214,11 @@ public class NvidiaGpuControl : IGpuControl
         RunPowershellCommand(@"Stop-Service -Name 'NVDisplay.ContainerLocalSystem' -Force");
     }
 
+    [DllImport(@"C:\Program Files\NVIDIA Corporation\NVIDIA App\NvCpl\NvUI.dll",
+        EntryPoint = "?StartOptimusUI@OptimusIcon@UI@UXDriver@Nvidia@@SAXXZ",
+        CallingConvention = CallingConvention.Cdecl)]
+    private static extern void NvUI_StartOptimusUI();
+
     [DllImport("kernel32.dll", SetLastError = true)]
     private static extern IntPtr OpenEvent(uint dwDesiredAccess, bool bInheritHandle, string lpName);
 
@@ -247,18 +252,30 @@ public class NvidiaGpuControl : IGpuControl
 
     public static void OpenNvidiaDisplayModeSwitcher()
     {
-        // nvcpl.dll!NvCplApiShowOptimusTrayUI signals this named event (name is hardcoded in nvcpl.dll)
-        const string eventName = @"Local\NvOptimusUI-8A710BBE-8413-4096-A7EC-D02C95917EBD";
+        // NvUI.dll!OptimusIcon::StartOptimusUI shows the native "Laptop display mode" popup
+        try
+        {
+            NvUI_StartOptimusUI();
+            Logger.WriteLine("NvUI StartOptimusUI called");
+            return;
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine("NvUI_StartOptimusUI failed: " + ex.Message);
+        }
+
+        // Fallback: signal the named event directly
+        const string eventName = @"Local\NvAppNvShowACEMuxTrayIcon-C9FE5AEB-E300-4C63-9880-42002D0BCECA";
         IntPtr hEvent = OpenEvent(EVENT_MODIFY_STATE, false, eventName);
         if (hEvent == IntPtr.Zero)
         {
-            Logger.WriteLine($"OpenEvent({eventName}) failed: {Marshal.GetLastWin32Error()}");
+            Logger.WriteLine($"OpenEvent(NvShowACEMuxTrayIcon) failed: {Marshal.GetLastWin32Error()}");
             return;
         }
         try
         {
             bool ok = SetEvent(hEvent);
-            Logger.WriteLine($"SetEvent(NvOptimusUI) = {ok}");
+            Logger.WriteLine($"SetEvent(NvShowACEMuxTrayIcon) = {ok}");
         }
         finally
         {
