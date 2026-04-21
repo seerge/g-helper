@@ -800,11 +800,11 @@ Folytatni szeretnéd?</value>
   <data name="Zoom" xml:space="preserve">
     <value>Nagyítás</value>
   </data>
-  <data name="ThankYou" xml:space="preserve">
-    <value>Köszönöm</value>
-  </data>
   <data name="Donate" xml:space="preserve">
     <value>Támogatás</value>
+  </data>
+  <data name="ThankYou" xml:space="preserve">
+    <value>Thank You</value>
   </data>
   <data name="Legend" xml:space="preserve">
     <value>Jelmagyarázat</value>
