@@ -89,6 +89,17 @@ namespace GHelper.USB
             Write([XGM_REPORT_ID, 0xbd, 0x00, status ? (byte)0x01 : (byte)0x00]);
         }
 
+        public static void LightBrightness(int brightness)
+        {
+            Task.Run(() =>
+            {
+                if (IsConnected())
+                {
+                    Write([XGM_REPORT_ID, 0xba, 0xc5, 0xc4, (byte)brightness]);
+                }
+            });
+        }
+
         public static void LightMode(AuraMode mode, Color color, Color color2, int speed)
         {
             Task.Run(() =>
