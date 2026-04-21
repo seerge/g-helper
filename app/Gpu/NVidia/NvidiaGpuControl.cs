@@ -5,6 +5,7 @@ using NvAPIWrapper.Native.GPU;
 using NvAPIWrapper.Native.GPU.Structures;
 using NvAPIWrapper.Native.Interfaces.GPU;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using static NvAPIWrapper.Native.GPU.Structures.PerformanceStates20InfoV1;
 
 namespace GHelper.Gpu.NVidia;
@@ -211,6 +212,58 @@ public class NvidiaGpuControl : IGpuControl
         if (!ProcessHelper.IsUserAdministrator()) return;
         RunPowershellCommand(@"Stop-Service -Name 'NvContainerLocalSystem' -Force");
         RunPowershellCommand(@"Stop-Service -Name 'NVDisplay.ContainerLocalSystem' -Force");
+    }
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern IntPtr OpenEvent(uint dwDesiredAccess, bool bInheritHandle, string lpName);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern bool SetEvent(IntPtr hEvent);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern bool CloseHandle(IntPtr hObject);
+
+    private const uint EVENT_MODIFY_STATE = 0x0002;
+
+    // Returns: 1 = Optimus, 2 = NVIDIA GPU only, 0 = Auto Select, -1 = unknown
+    public static int GetNvidiaDisplayMode()
+    {
+        try
+        {
+            using var key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(
+                @"SYSTEM\CurrentControlSet\Services\nvlddmkm\Parameters\Global\NvHybrid\Persistence\ACE");
+            if (key?.GetValue("InternalMuxState") is int mode)
+            {
+                Logger.WriteLine($"NVIDIA InternalMuxState = {mode}");
+                return mode;
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine("GetNvidiaDisplayMode failed: " + ex.Message);
+        }
+        return -1;
+    }
+
+    public static void OpenNvidiaDisplayModeSwitcher()
+    {
+        // nvcpl.dll!NvCplApiShowOptimusTrayUI signals the named event "Local\NvOptimusUI"
+        // which is handled by the NVIDIA display container service
+        IntPtr hEvent = OpenEvent(EVENT_MODIFY_STATE, false, @"Local\NvOptimusUI");
+        if (hEvent == IntPtr.Zero)
+        {
+            Logger.WriteLine($"OpenEvent(Local\\NvOptimusUI) failed: {Marshal.GetLastWin32Error()}");
+            return;
+        }
+        try
+        {
+            bool ok = SetEvent(hEvent);
+            Logger.WriteLine($"SetEvent(Local\\NvOptimusUI) = {ok}, err={Marshal.GetLastWin32Error()}");
+        }
+        finally
+        {
+            CloseHandle(hEvent);
+        }
     }
 
     public int SetClocks(int core, int memory)

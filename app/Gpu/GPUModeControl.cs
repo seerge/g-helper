@@ -153,6 +153,32 @@ namespace GHelper.Gpu
 
                 if (eco == 1)
                 {
+                    int nvDisplayMode = NvidiaGpuControl.GetNvidiaDisplayMode();
+                    string modeLabel = nvDisplayMode switch { 1 => "Optimus", 2 => "NVIDIA GPU only", 0 => "Auto Select", _ => "unknown" };
+                    Logger.WriteLine($"NVIDIA display mode: {nvDisplayMode} ({modeLabel})");
+
+                    if (nvDisplayMode == 2)
+                    {
+                        DialogResult dialogResult = DialogResult.No;
+                        settings.Invoke((MethodInvoker)delegate
+                        {
+                            dialogResult = MessageBox.Show(settings,
+                                "NVIDIA display mode is set to 'NVIDIA GPU only'.\nEco mode requires Optimus mode.\nWould you like to open the NVIDIA display mode switcher?",
+                                "NVIDIA Display Mode",
+                                MessageBoxButtons.YesNo,
+                                MessageBoxIcon.Warning);
+                        });
+
+                        if (dialogResult == DialogResult.Yes)
+                            NvidiaGpuControl.OpenNvidiaDisplayModeSwitcher();
+
+                        settings.Invoke(delegate
+                        {
+                            InitGPUMode();
+                        });
+                        return;
+                    }
+
                     HardwareControl.KillGPUApps();
                     if (AppConfig.IsNVPlatform()) NvidiaGpuControl.StopNVService();
                 }
