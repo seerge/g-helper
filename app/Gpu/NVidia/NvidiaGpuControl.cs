@@ -247,18 +247,18 @@ public class NvidiaGpuControl : IGpuControl
 
     public static void OpenNvidiaDisplayModeSwitcher()
     {
-        // nvcpl.dll!NvCplApiShowOptimusTrayUI signals the named event "Local\NvOptimusUI"
-        // which is handled by the NVIDIA display container service
-        IntPtr hEvent = OpenEvent(EVENT_MODIFY_STATE, false, @"Local\NvOptimusUI");
+        // nvcpl.dll!NvCplApiShowOptimusTrayUI signals this named event (name is hardcoded in nvcpl.dll)
+        const string eventName = @"Local\NvOptimusUI-8A710BBE-8413-4096-A7EC-D02C95917EBD";
+        IntPtr hEvent = OpenEvent(EVENT_MODIFY_STATE, false, eventName);
         if (hEvent == IntPtr.Zero)
         {
-            Logger.WriteLine($"OpenEvent(Local\\NvOptimusUI) failed: {Marshal.GetLastWin32Error()}");
+            Logger.WriteLine($"OpenEvent({eventName}) failed: {Marshal.GetLastWin32Error()}");
             return;
         }
         try
         {
             bool ok = SetEvent(hEvent);
-            Logger.WriteLine($"SetEvent(Local\\NvOptimusUI) = {ok}, err={Marshal.GetLastWin32Error()}");
+            Logger.WriteLine($"SetEvent(NvOptimusUI) = {ok}");
         }
         finally
         {
