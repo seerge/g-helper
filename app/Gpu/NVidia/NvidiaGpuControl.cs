@@ -214,10 +214,16 @@ public class NvidiaGpuControl : IGpuControl
         RunPowershellCommand(@"Stop-Service -Name 'NVDisplay.ContainerLocalSystem' -Force");
     }
 
-    [DllImport(@"C:\Program Files\NVIDIA Corporation\NVIDIA App\NvCpl\NvUI.dll",
-        EntryPoint = "?StartOptimusUI@OptimusIcon@UI@UXDriver@Nvidia@@SAXXZ",
-        CallingConvention = CallingConvention.Cdecl)]
-    private static extern void NvUI_StartOptimusUI();
+    private const string NvCplDll = @"C:\Program Files\NVIDIA Corporation\NVIDIA App\NvCpl\nvcpl.dll";
+
+    [DllImport(NvCplDll, EntryPoint = "NvCplApiMuxdInitialize", CallingConvention = CallingConvention.StdCall)]
+    private static extern int NvCplApiMuxdInitialize();
+
+    [DllImport(NvCplDll, EntryPoint = "NvCplApiMuxdClose", CallingConvention = CallingConvention.StdCall)]
+    private static extern int NvCplApiMuxdClose();
+
+    [DllImport(NvCplDll, EntryPoint = "NvCplApiShowOptimusTrayUI", CallingConvention = CallingConvention.StdCall)]
+    private static extern int NvCplApiShowOptimusTrayUI();
 
     [DllImport("kernel32.dll", SetLastError = true)]
     private static extern IntPtr OpenEvent(uint dwDesiredAccess, bool bInheritHandle, string lpName);
@@ -230,7 +236,6 @@ public class NvidiaGpuControl : IGpuControl
 
     private const uint EVENT_MODIFY_STATE = 0x0002;
 
-    // Returns: 1 = Optimus, 2 = NVIDIA GPU only, 0 = Auto Select, -1 = unknown
     public static int GetNvidiaDisplayMode()
     {
         try
@@ -252,34 +257,20 @@ public class NvidiaGpuControl : IGpuControl
 
     public static void OpenNvidiaDisplayModeSwitcher()
     {
-        // NvUI.dll!OptimusIcon::StartOptimusUI shows the native "Laptop display mode" popup
+        // NvCplApiMuxdInitialize reads the current MUX mode from NVAPI/registry and sets up
+        // the correct named event, then NvCplApiShowOptimusTrayUI signals it to show the popup.
+        // This works without Armoury Crate — only nvcpl.dll (always installed with the driver) is needed.
         try
         {
-            NvUI_StartOptimusUI();
-            Logger.WriteLine("NvUI StartOptimusUI called");
-            return;
+            int init = NvCplApiMuxdInitialize();
+            Logger.WriteLine($"NvCplApiMuxdInitialize = {init}");
+            int show = NvCplApiShowOptimusTrayUI();
+            Logger.WriteLine($"NvCplApiShowOptimusTrayUI = {show}");
+            NvCplApiMuxdClose();
         }
         catch (Exception ex)
         {
-            Logger.WriteLine("NvUI_StartOptimusUI failed: " + ex.Message);
-        }
-
-        // Fallback: signal the named event directly
-        const string eventName = @"Local\NvAppNvShowACEMuxTrayIcon-C9FE5AEB-E300-4C63-9880-42002D0BCECA";
-        IntPtr hEvent = OpenEvent(EVENT_MODIFY_STATE, false, eventName);
-        if (hEvent == IntPtr.Zero)
-        {
-            Logger.WriteLine($"OpenEvent(NvShowACEMuxTrayIcon) failed: {Marshal.GetLastWin32Error()}");
-            return;
-        }
-        try
-        {
-            bool ok = SetEvent(hEvent);
-            Logger.WriteLine($"SetEvent(NvShowACEMuxTrayIcon) = {ok}");
-        }
-        finally
-        {
-            CloseHandle(hEvent);
+            Logger.WriteLine("OpenNvidiaDisplayModeSwitcher failed: " + ex.Message);
         }
     }
 
