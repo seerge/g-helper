@@ -800,6 +800,9 @@ Chcete přesto pokračovat?</value>
   <data name="Zoom" xml:space="preserve">
     <value>Zoom</value>
   </data>
+  <data name="ThankYou" xml:space="preserve">
+    <value>Děkujeme</value>
+  </data>
   <data name="Donate" xml:space="preserve">
     <value>Podpořit</value>
   </data>

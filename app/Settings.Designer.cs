@@ -516,7 +516,7 @@ namespace GHelper
             buttonDonate.BorderRadius = 2;
             buttonDonate.Dock = DockStyle.Top;
             buttonDonate.FlatStyle = FlatStyle.Flat;
-            buttonDonate.Image = Properties.Resources.icons8_dollar_32;
+            buttonDonate.Image = Properties.Resources.icons8_heart_32;
             buttonDonate.ImageAlign = ContentAlignment.MiddleRight;
             buttonDonate.Location = new Point(4, 5);
             buttonDonate.Margin = new Padding(4, 5, 4, 5);

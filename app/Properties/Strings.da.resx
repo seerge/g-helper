@@ -800,6 +800,9 @@ Vil du stadig fortsætte?</value>
   <data name="Zoom" xml:space="preserve">
     <value>Zoom</value>
   </data>
+  <data name="ThankYou" xml:space="preserve">
+    <value>Tak</value>
+  </data>
   <data name="Donate" xml:space="preserve">
     <value>Donate</value>
   </data>

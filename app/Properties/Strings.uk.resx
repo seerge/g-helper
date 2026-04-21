@@ -800,6 +800,9 @@
   <data name="Zoom" xml:space="preserve">
     <value>Зум</value>
   </data>
+  <data name="ThankYou" xml:space="preserve">
+    <value>Дякуємо</value>
+  </data>
   <data name="Donate" xml:space="preserve">
     <value>Донат</value>
   </data>
