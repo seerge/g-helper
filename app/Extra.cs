@@ -579,7 +579,7 @@ namespace GHelper
             if (AppConfig.Is8Ecores()) eCoresMax = Math.Max(8, eCoresMax);
 
             eCoresMax = Math.Max(4, eCoresMax);
-            pCoresMax = Math.Max(6, pCoresMax);
+            pCoresMax = Math.Max(4, pCoresMax);
 
             panelCores.Visible = true;
 
