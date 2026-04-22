@@ -164,10 +164,11 @@ namespace GHelper.Gpu
                 {
 
                     status = Program.acpi.SetGPUEco(eco);
-                    await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("refresh_delay", 500)));
+                    await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("refresh_delay", 200)));
                     
                     Program.acpi.DeviceSet(AsusACPI.StatusMode, [0x00, Modes.GetCurrentBase() == AsusACPI.PerformanceSilent ? (byte)0x02 : (byte)0x03], "StatusMode");
                     Program.acpi.DeviceSet(AsusACPI.PowerSavingMode, 0, "PowerSavingMode");
+                    await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("refresh_delay", 300)));
 
                     settings.Invoke(delegate
                     {
