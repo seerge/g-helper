@@ -87,6 +87,9 @@ namespace GHelper
                 Logger.WriteLine("Unknown Language: " + language);
             }
 
+            Logger.WriteLine("----------------------");
+            Logger.WriteLine("App launched: " + AppConfig.GetModel() + " :" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + CultureInfo.CurrentUICulture + (ProcessHelper.IsUserAdministrator() ? "." : ""));
+
             settingsForm = new SettingsForm();
             modeControl = new ModeControl();
             gpuControl = new GPUModeControl(settingsForm);
@@ -96,9 +99,6 @@ namespace GHelper
 
             ProcessHelper.CheckAlreadyRunning();
             ProcessHelper.SetPriority();
-
-            Logger.WriteLine("------------");
-            Logger.WriteLine("App launched: " + AppConfig.GetModel() + " :" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + CultureInfo.CurrentUICulture + (ProcessHelper.IsUserAdministrator() ? "." : ""));
 
             CleanupLegacyFiles();
 
