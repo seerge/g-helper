@@ -1776,7 +1776,7 @@ namespace GHelper
 
         public void LockGPUModes(string text = null)
         {
-            Invoke(delegate
+            BeginInvoke(delegate
             {
                 if (text is null) text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUChanging + " ...";
 
