@@ -407,46 +407,59 @@ namespace PawnIO
 
         private static uint EncodeCurve(int steps) => (uint)(0x100000 - (uint)(-steps));
 
-        // RyzenAdj set_stapm_limit: MP1 only
         private SmuStatus SetStapm(int watts)
         {
             uint mw = (uint)watts * 1000;
-            return Family switch
+            switch (Family)
             {
-                CpuFamily.Raven                          => SendMp1(0x1A, mw),
-                CpuFamily.Renoir or CpuFamily.Mobile
-                or CpuFamily.StrixPoint or CpuFamily.StrixHalo => SendMp1(0x14, mw),
-                CpuFamily.Raphael                        => SendMp1(0x4F, mw),
-                _                                        => SmuStatus.Failed,
-            };
+                case CpuFamily.Raven:    return SendMp1(0x1A, mw);
+                case CpuFamily.Renoir:
+                    var s = SendMp1(0x14, mw);
+                    SendPsmu(0x31, mw);
+                    return s;
+                case CpuFamily.Mobile:
+                case CpuFamily.StrixPoint:
+                case CpuFamily.StrixHalo: return SendMp1(0x14, mw);
+                case CpuFamily.Raphael:  return SendMp1(0x4F, mw);
+                default:                 return SmuStatus.Failed;
+            }
         }
 
-        // RyzenAdj set_fast_limit: MP1 only
         private SmuStatus SetFast(int watts)
         {
             uint mw = (uint)watts * 1000;
-            return Family switch
+            switch (Family)
             {
-                CpuFamily.Raven                          => SendMp1(0x1B, mw),
-                CpuFamily.Renoir or CpuFamily.Mobile
-                or CpuFamily.StrixPoint or CpuFamily.StrixHalo => SendMp1(0x15, mw),
-                CpuFamily.Raphael                        => SendMp1(0x3E, mw),
-                _                                        => SmuStatus.Failed,
-            };
+                case CpuFamily.Raven:    return SendMp1(0x1B, mw);
+                case CpuFamily.Renoir:
+                    var s = SendMp1(0x15, mw);
+                    SendPsmu(0x32, mw);
+                    return s;
+                case CpuFamily.Mobile:
+                case CpuFamily.StrixPoint:
+                case CpuFamily.StrixHalo: return SendMp1(0x15, mw);
+                case CpuFamily.Raphael:  return SendMp1(0x3E, mw);
+                default:                 return SmuStatus.Failed;
+            }
         }
 
-        // RyzenAdj set_slow_limit: MP1 only
         private SmuStatus SetSlow(int watts)
         {
             uint mw = (uint)watts * 1000;
-            return Family switch
+            switch (Family)
             {
-                CpuFamily.Raven                          => SendMp1(0x1C, mw),
-                CpuFamily.Renoir or CpuFamily.Mobile
-                or CpuFamily.StrixPoint or CpuFamily.StrixHalo => SendMp1(0x16, mw),
-                CpuFamily.Raphael                        => SendMp1(0x5F, mw),
-                _                                        => SmuStatus.Failed,
-            };
+                case CpuFamily.Raven:    return SendMp1(0x1C, mw);
+                case CpuFamily.Renoir:
+                    var s = SendMp1(0x16, mw);
+                    SendPsmu(0x33, mw);
+                    SendPsmu(0x34, mw);
+                    return s;
+                case CpuFamily.Mobile:
+                case CpuFamily.StrixPoint:
+                case CpuFamily.StrixHalo: return SendMp1(0x16, mw);
+                case CpuFamily.Raphael:  return SendMp1(0x5F, mw);
+                default:                 return SmuStatus.Failed;
+            }
         }
 
         private bool ReadReg(uint addr, out uint value)

@@ -10,7 +10,7 @@ namespace GHelper.USB
     {
         const byte XGM_REPORT_ID = 0x5e;
         const int ASUS_ID = 0x0b05;
-        static readonly int[] deviceIds = { 0x1970, 0x1a9a, 0x1C29 };
+        static readonly int[] deviceIds = { 0x1970, 0x1a9a, 0x1C29, 0x1BC1 };
 
         public static HidDevice? GetDevice()
         {
@@ -87,6 +87,17 @@ namespace GHelper.USB
         {
             Write([XGM_REPORT_ID, 0xc5, status ? (byte)0x50 : (byte)0]);
             Write([XGM_REPORT_ID, 0xbd, 0x00, status ? (byte)0x01 : (byte)0x00]);
+        }
+
+        public static void LightBrightness(int brightness)
+        {
+            Task.Run(() =>
+            {
+                if (IsConnected())
+                {
+                    Write([XGM_REPORT_ID, 0xba, 0xc5, 0xc4, (byte)brightness]);
+                }
+            });
         }
 
         public static void LightMode(AuraMode mode, Color color, Color color2, int speed)

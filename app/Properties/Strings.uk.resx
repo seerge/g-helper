@@ -420,7 +420,7 @@
     <value>Кулери та Потужність</value>
   </data>
   <data name="FlickerFreeDimming" xml:space="preserve">
-    <value>Безмерехтливе Затемнення</value>
+    <value>Затемнення</value>
   </data>
   <data name="FnLock" xml:space="preserve">
     <value>Гарячі клавіші Fn+F працюють без натискання Fn</value>
@@ -800,11 +800,11 @@
   <data name="Zoom" xml:space="preserve">
     <value>Зум</value>
   </data>
-  <data name="ThankYou" xml:space="preserve">
-    <value>Дякуємо</value>
-  </data>
   <data name="Donate" xml:space="preserve">
     <value>Донат</value>
+  </data>
+  <data name="ThankYou" xml:space="preserve">
+    <value>Дякуємо</value>
   </data>
   <data name="Legend" xml:space="preserve">
     <value>Легенда</value>
@@ -861,7 +861,7 @@
     <value>Game Over</value>
   </data>
   <data name="SlashStart" xml:space="preserve">
-    <value>Почати</value>
+    <value>Запустити</value>
   </data>
   <data name="SlashBuzzer" xml:space="preserve">
     <value>Buzzer</value>
@@ -870,7 +870,7 @@
     <value>Static</value>
   </data>
   <data name="SlashBatteryLevel" xml:space="preserve">
-    <value>Рівень заряду батареї</value>
+    <value>Заряд батареї</value>
   </data>
   <data name="IntervalOff" xml:space="preserve">
     <value>Interval Off</value>

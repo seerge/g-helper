@@ -18,6 +18,7 @@ namespace GHelper.Helpers
                 "ASUSSwitch",
                 "ASUSSystemAnalysis",
                 "ASUSSystemDiagnosis",
+                "ASUSXGMobileService",
                 "AsusCertService"
         };
 
