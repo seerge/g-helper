@@ -800,11 +800,11 @@
   <data name="Zoom" xml:space="preserve">
     <value>ズーム</value>
   </data>
-  <data name="ThankYou" xml:space="preserve">
-    <value>ありがとう</value>
-  </data>
   <data name="Donate" xml:space="preserve">
     <value>寄付</value>
+  </data>
+  <data name="ThankYou" xml:space="preserve">
+    <value>ありがとう</value>
   </data>
   <data name="Legend" xml:space="preserve">
     <value>凡例</value>

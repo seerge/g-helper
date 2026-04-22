@@ -800,11 +800,11 @@ Ainda quer continuar?</value>
   <data name="Zoom" xml:space="preserve">
     <value>Zoom</value>
   </data>
-  <data name="ThankYou" xml:space="preserve">
-    <value>Obrigado</value>
-  </data>
   <data name="Donate" xml:space="preserve">
     <value>Doar</value>
+  </data>
+  <data name="ThankYou" xml:space="preserve">
+    <value>Obrigado</value>
   </data>
   <data name="Legend" xml:space="preserve">
     <value>Legenda</value>

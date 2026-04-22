@@ -978,7 +978,7 @@ namespace GHelper
 
         private void ButtonScreenAuto_Click(object? sender, EventArgs e)
         {
-            AppConfig.Set("screen_auto", 1);
+            ScreenControl.SetAutoRefresh(1);
             ScreenControl.AutoScreen();
         }
 
@@ -1342,13 +1342,13 @@ namespace GHelper
 
         private void Button120Hz_Click(object? sender, EventArgs e)
         {
-            AppConfig.Set("screen_auto", 0);
+            ScreenControl.SetAutoRefresh(0);
             ScreenControl.SetScreen(ScreenControl.MAX_REFRESH, 1);
         }
 
         private void Button60Hz_Click(object? sender, EventArgs e)
         {
-            AppConfig.Set("screen_auto", 0);
+            ScreenControl.SetAutoRefresh(0);
             ScreenControl.SetScreen(ScreenControl.MIN_RATE, 0);
         }
 

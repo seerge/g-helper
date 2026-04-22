@@ -856,15 +856,13 @@ namespace GHelper.USB
 
                 Color[] colors = new Color[AURA_ZONES];
 
-                // keyboard zones 0-3: left (Color2) to right (Color1)
                 for (int z = 0; z < 4; z++)
                 {
                     float t = z / 3f;
                     colors[z] = ColorUtils.GetWeightedAverage(Aura.Color2, Aura.Color1, t);
                 }
 
-                // lightbar physical left-to-right order is zone 5, 4, 6, 7
-                int[] lightbarOrder = new int[] { 5, 4, 6, 7 };
+                int[] lightbarOrder = new int[] { 7, 6, 4, 5 };
                 for (int i = 0; i < lightbarOrder.Length; i++)
                 {
                     float t = i / 3f;
