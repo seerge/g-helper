@@ -100,6 +100,8 @@ namespace GHelper
             clamshellControl = new ClamshellModeControl();
             toast = new ToastForm();
 
+            hardwareOverlay = new HardwareOverlay();
+
             ProcessHelper.CheckAlreadyRunning();
             ProcessHelper.SetPriority();
 
