@@ -178,6 +178,11 @@ namespace GHelper.Gpu
                             await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("nv_delay", 5000)));
                             NvidiaGpuControl.RestartNVService();
                             await Task.Delay(TimeSpan.FromMilliseconds(1000));
+                        } else if (NvidiaGpuControl.IsContainerRestartNeeded())
+                        {
+                            await Task.Delay(TimeSpan.FromMilliseconds(2000));
+                            NvidiaGpuControl.RestartNVService(light: true);
+                            await Task.Delay(TimeSpan.FromMilliseconds(1000));
                         } else
                         {
                             await Task.Delay(TimeSpan.FromMilliseconds(3000));

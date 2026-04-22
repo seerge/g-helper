@@ -5,6 +5,7 @@ using NvAPIWrapper.Native.GPU;
 using NvAPIWrapper.Native.GPU.Structures;
 using NvAPIWrapper.Native.Interfaces.GPU;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 using static NvAPIWrapper.Native.GPU.Structures.PerformanceStates20InfoV1;
 
 namespace GHelper.Gpu.NVidia;
@@ -199,10 +200,28 @@ public class NvidiaGpuControl : IGpuControl
 
     }
 
-    public static void RestartNVService()
+    public static bool IsContainerRestartNeeded(string logPath = null)
+    {
+        logPath ??= Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+            @"NVIDIA Corporation\NvContainer\LocalSystem.log"
+        );
+
+        using var fs = new FileStream(logPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+        fs.Seek(-Math.Min(8192, fs.Length), SeekOrigin.End);
+        var tail = new StreamReader(fs).ReadToEnd();
+
+        var match = Regex.Match(tail,
+            @"NvcPluginLoadStats for 'NvXDCore'.*?InitializeProcTime = (\d+) us",
+            RegexOptions.Singleline);
+
+        return match.Success && match.Groups[1].Value == "0";
+    }
+
+    public static void RestartNVService(bool light = false)
     {
         if (!ProcessHelper.IsUserAdministrator()) return;
-        RunPowershellCommand(@"Restart-Service -Name 'NVDisplay.ContainerLocalSystem' -Force");
+        if (!light) RunPowershellCommand(@"Restart-Service -Name 'NVDisplay.ContainerLocalSystem' -Force");
         RunPowershellCommand(@"Restart-Service -Name 'NvContainerLocalSystem' -Force");
     }
 
