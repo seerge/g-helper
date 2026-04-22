@@ -200,11 +200,11 @@ public class NvidiaGpuControl : IGpuControl
 
     }
 
-    public static bool IsContainerRestartNeeded(string logPath = null)
+    public static bool IsContainerRestartNeeded()
     {
-        logPath ??= Path.Combine(
+        var logPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
-            @"NVIDIA Corporation\NvContainer\LocalSystem.log"
+            @"NVIDIA Corporation\NVIDIA App\NvContainer\NvContainerLocalSystem.log"
         );
 
         using var fs = new FileStream(logPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
@@ -212,7 +212,7 @@ public class NvidiaGpuControl : IGpuControl
         var tail = new StreamReader(fs).ReadToEnd();
 
         var match = Regex.Match(tail,
-            @"NvcPluginLoadStats for 'NvXDCore'.*?InitializeProcTime = (\d+) us",
+            @"NvcPluginLoadStats for 'NvPluginWatchdog'.*?InitializeProcTime = (\d+) us",
             RegexOptions.Singleline);
 
         return match.Success && match.Groups[1].Value == "0";
