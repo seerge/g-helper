@@ -215,6 +215,10 @@ public class NvidiaGpuControl : IGpuControl
     }
 
     private const string NvCplDll = @"C:\Program Files\NVIDIA Corporation\NVIDIA App\NvCpl\nvcpl.dll";
+    private const string NvUIDll  = @"C:\Program Files\NVIDIA Corporation\NVIDIA App\NvCpl\NvUI.dll";
+
+    [DllImport(NvUIDll, EntryPoint = "ShowAceDialogAsync", CallingConvention = CallingConvention.Cdecl)]
+    private static extern bool NvUI_ShowAceDialogAsync();
 
     [DllImport(NvCplDll, EntryPoint = "NvCplApiMuxdInitialize", CallingConvention = CallingConvention.StdCall)]
     private static extern int NvCplApiMuxdInitialize();
@@ -257,20 +261,30 @@ public class NvidiaGpuControl : IGpuControl
 
     public static void OpenNvidiaDisplayModeSwitcher()
     {
-        // NvCplApiMuxdInitialize reads the current MUX mode from NVAPI/registry and sets up
-        // the correct named event, then NvCplApiShowOptimusTrayUI signals it to show the popup.
-        // This works without Armoury Crate — only nvcpl.dll (always installed with the driver) is needed.
+        // NvUI.dll!ShowAceDialogAsync shows the native NVIDIA "Laptop display mode" (ACE MUX) popup.
+        // NvUI.dll is loaded by explorer.exe (shell tray host) so it runs in the correct session context.
+        try
+        {
+            bool ok = NvUI_ShowAceDialogAsync();
+            Logger.WriteLine($"NvUI ShowAceDialogAsync = {ok}");
+            if (ok) return;
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine("NvUI_ShowAceDialogAsync failed: " + ex.Message);
+        }
+
+        // Fallback: MuxdInitialize + ShowOptimusTrayUI via nvcpl.dll
         try
         {
             int init = NvCplApiMuxdInitialize();
-            Logger.WriteLine($"NvCplApiMuxdInitialize = {init}");
             int show = NvCplApiShowOptimusTrayUI();
-            Logger.WriteLine($"NvCplApiShowOptimusTrayUI = {show}");
+            Logger.WriteLine($"NvCplApi MuxdInit={init} ShowOptimusTrayUI={show}");
             NvCplApiMuxdClose();
         }
         catch (Exception ex)
         {
-            Logger.WriteLine("OpenNvidiaDisplayModeSwitcher failed: " + ex.Message);
+            Logger.WriteLine("NvCplApiShowOptimusTrayUI failed: " + ex.Message);
         }
     }
 
