@@ -1,6 +1,7 @@
 ﻿using GHelper.Display;
 using GHelper.Gpu.NVidia;
 using GHelper.Helpers;
+using GHelper.Mode;
 using GHelper.USB;
 using Microsoft.Win32;
 using System.Diagnostics;
@@ -164,6 +165,9 @@ namespace GHelper.Gpu
 
                     status = Program.acpi.SetGPUEco(eco);
                     await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("refresh_delay", 500)));
+                    
+                    Program.acpi.DeviceSet(AsusACPI.StatusMode, [0x00, Modes.GetCurrentBase() == AsusACPI.PerformanceSilent ? (byte)0x02 : (byte)0x03], "StatusMode");
+                    Program.acpi.DeviceSet(AsusACPI.PowerSavingMode, 0, "PowerSavingMode");
 
                     settings.Invoke(delegate
                     {
