@@ -549,6 +549,7 @@ public static class HardwareControl
         try
         {
             GpuControl?.Dispose();
+            D3DKMTHelper.Reset();
 
             IGpuControl _gpuControl = new NvidiaGpuControl();
 
