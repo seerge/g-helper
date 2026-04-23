@@ -50,16 +50,36 @@ public class NvidiaGpuControl : IGpuControl
 
     public string FullName => _internalGpu!.FullName;
 
+    public bool IsAlive(bool log = false)
+    {
+        if (!IsValid) return false;
+        try
+        {
+            var perfState = GPUApi.GetCurrentPerformanceState(_internalGpu!.Handle);
+            if (log) Logger.WriteLine($"GPU: {perfState}");
+            return true;
+        }
+        catch (Exception ex)
+        {
+            if (log) Logger.WriteLine($"GPU: {ex.Message}");
+            return (ex.Message == "NVAPI_GPU_NOT_POWERED");
+        }
+    }
+
     public int? GetCurrentTemperature()
     {
         if (!IsValid) return null;
-
-        PhysicalGPU internalGpu = _internalGpu!;
-        IThermalSensor? gpuSensor =
-            GPUApi.GetThermalSettings(internalGpu.Handle).Sensors
-            .FirstOrDefault(s => s.Target == ThermalSettingsTarget.GPU);
-
-        return gpuSensor?.CurrentTemperature;
+        if (!IsAlive())
+        {
+            NvmlHelper.Shutdown();
+            return null;
+        }
+        else
+        {
+            var temp = NvmlHelper.GetTemperature();
+            //Logger.WriteLine($"GPU Temp: {temp}C");
+            return temp;
+        }
     }
 
     public void Dispose()
@@ -299,46 +319,18 @@ public class NvidiaGpuControl : IGpuControl
 
     }
 
-    [DllImport("nvml.dll", EntryPoint = "nvmlInit_v2")]
-    private static extern int NvmlInit();
-
-    [DllImport("nvml.dll", EntryPoint = "nvmlDeviceGetHandleByIndex_v2")]
-    private static extern int NvmlDeviceGetHandleByIndex(uint index, out nint device);
-
-    [DllImport("nvml.dll", EntryPoint = "nvmlDeviceGetPowerUsage")]
-    private static extern int NvmlDeviceGetPowerUsage(nint device, out uint powerMilliWatts);
-
-    [DllImport("nvml.dll", EntryPoint = "nvmlShutdown")]
-    private static extern int NvmlShutdown();
-
-    private static bool _nvmlInitDone;
-    private static bool _nvmlFailed;
-    private static nint _nvmlDevice;
 
     public float? GetGpuPower()
     {
         if (!IsValid) return null;
-        if (GetCurrentTemperature() is null) return null;
-
-        try
+        if (!IsAlive())
         {
-            if (NvmlInit() != 0) return null;
-
-            try
-            {
-                if (NvmlDeviceGetHandleByIndex(0, out nint device) != 0) return null;
-                if (NvmlDeviceGetPowerUsage(device, out uint mW) != 0) return null;
-                return mW / 1000f;
-            }
-            finally
-            {
-                NvmlShutdown();
-            }
-        }
-        catch
-        {
-            Logger.WriteLine("NVML power read failed");
+            NvmlHelper.Shutdown();
             return null;
+        }
+        else
+        {
+            return NvmlHelper.GetGpuPower();
         }
     }
 
