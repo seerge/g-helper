@@ -49,11 +49,27 @@ public class NvidiaGpuControl : IGpuControl
 
     public string FullName => _internalGpu!.FullName;
 
-    public int? GetCurrentTemperature()
+    public int? GetCurrentTemperature(bool force = false)
     {
         if (!IsValid) return null;
 
         PhysicalGPU internalGpu = _internalGpu!;
+
+        if (!force)
+        {
+            try
+            {
+                var perfState = GPUApi.GetCurrentPerformanceState(internalGpu.Handle);
+                if (force) Logger.WriteLine($"GPU Power state {perfState}");
+                if (perfState == PerformanceStateId.P12_Idle || perfState == PerformanceStateId.Undefined) return null;
+            }
+            catch (Exception ex)
+            {
+                if (force) Logger.WriteLine($"GPU Power state: {ex.Message}");
+                return null;
+            }
+        }
+
         IThermalSensor? gpuSensor =
             GPUApi.GetThermalSettings(internalGpu.Handle).Sensors
             .FirstOrDefault(s => s.Target == ThermalSettingsTarget.GPU);
@@ -120,6 +136,9 @@ public class NvidiaGpuControl : IGpuControl
 
         try
         {
+            var temp = GetCurrentTemperature(force: true);
+            Logger.WriteLine($"GET GPU TEMP: {temp}");
+
             IPerformanceStates20Info states = GPUApi.GetPerformanceStates20(internalGpu.Handle);
             core = states.Clocks[PerformanceStateId.P0_3DPerformance][0].FrequencyDeltaInkHz.DeltaValue / 1000;
             memory = states.Clocks[PerformanceStateId.P0_3DPerformance][1].FrequencyDeltaInkHz.DeltaValue / 1000;
