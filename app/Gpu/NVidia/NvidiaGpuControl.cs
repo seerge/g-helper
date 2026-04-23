@@ -78,7 +78,7 @@ public class NvidiaGpuControl : IGpuControl
     public int? GetCurrentTemperature()
     {
         if (!IsValid) return null;
-        if (!IsAlive(true))
+        if (!IsAlive())
         {
             NvmlHelper.Shutdown();
             return null;
@@ -86,7 +86,7 @@ public class NvidiaGpuControl : IGpuControl
         else
         {
             var temp = NvmlHelper.GetTemperature();
-            Logger.WriteLine($"GPU Temp: {temp}C");
+            //Logger.WriteLine($"GPU Temp: {temp}C");
             return temp;
         }
 
@@ -303,7 +303,7 @@ public class NvidiaGpuControl : IGpuControl
         return 1;
     }
 
-    public static PhysicalGPU? GetInternalDiscreteGpu()
+    private static PhysicalGPU? GetInternalDiscreteGpu()
     {
         try
         {
