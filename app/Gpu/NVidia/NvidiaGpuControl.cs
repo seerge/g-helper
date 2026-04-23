@@ -97,7 +97,7 @@ public class NvidiaGpuControl : IGpuControl
         if (!IsValid) return null;
         var refresh = Environment.TickCount > _lastTempTime + 30_000;
 
-        if (IsActive(true) || true || refresh)
+        if (IsActive(true) || refresh)
         {
             var temp = ReadCurrentTemperature();
             Logger.WriteLine($"GPU Temp: {_lastTemp} {refresh}");
