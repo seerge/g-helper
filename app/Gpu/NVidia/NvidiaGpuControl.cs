@@ -76,17 +76,18 @@ public class NvidiaGpuControl : IGpuControl
     public int? GetCurrentTemperature()
     {
         if (!IsValid) return null;
-        PhysicalGPU internalGpu = _internalGpu!;
 
+        /*
         try
         {
-            var perfState = GPUApi.GetCurrentPerformanceState(internalGpu.Handle);
+            var perfState = GPUApi.GetCurrentPerformanceState(_internalGpu!.Handle);
             Logger.WriteLine($"GPU Power state {perfState}");
         }
         catch (Exception ex)
         {
             Logger.WriteLine($"GPU Power state: {ex.Message}");
         }
+        */
 
         return NvmlHelper.GetTemperature();
     }
