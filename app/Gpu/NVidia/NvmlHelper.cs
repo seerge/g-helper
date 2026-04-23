@@ -36,14 +36,21 @@ public static class NvmlHelper
         Init();
         try
         {
-            if (nvmlDeviceGetHandleByIndex_v2(gpuIndex, out IntPtr device) != NVML_SUCCESS) return null;
-            if (nvmlDeviceGetTemperature(device, NVML_TEMPERATURE_GPU, out uint temp) != NVML_SUCCESS) return null;
+            if (nvmlDeviceGetHandleByIndex_v2(gpuIndex, out IntPtr device) != NVML_SUCCESS)
+            {
+                Shutdown();
+                return null;
+            }
+            if (nvmlDeviceGetTemperature(device, NVML_TEMPERATURE_GPU, out uint temp) != NVML_SUCCESS)
+            {
+                Shutdown();
+                return null;
+            }
             return (int)temp;
         }
         catch
         {
-            nvmlShutdown();
-            init = false;
+            Shutdown();
             return null;
         }
     }

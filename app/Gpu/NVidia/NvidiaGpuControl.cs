@@ -47,9 +47,6 @@ public class NvidiaGpuControl : IGpuControl
     public bool IsNvidia => IsValid;
 
     public string FullName => _internalGpu!.FullName;
-    private int? _lastTemp;
-    private int _lastTempTime = 0;
-
 
     public bool IsAlive(bool log = false)
     {
@@ -57,17 +54,17 @@ public class NvidiaGpuControl : IGpuControl
         try
         {
             var perfState = GPUApi.GetCurrentPerformanceState(_internalGpu!.Handle);
-            Logger.WriteLine($"GPU: {perfState}");
+            if (log) Logger.WriteLine($"GPU: {perfState}");
             return true;
         }
         catch (Exception ex)
         {
-            Logger.WriteLine($"GPU: {ex.Message}");
+            if (log) Logger.WriteLine($"GPU: {ex.Message}");
             return (ex.Message == "NVAPI_GPU_NOT_POWERED");
         }
     }
 
-    public int? ReadCurrentTemperature(bool log = false)
+    public int? ReadCurrentTemperature()
     {
         if (!IsValid) return null;
 
@@ -89,7 +86,7 @@ public class NvidiaGpuControl : IGpuControl
         else
         {
             var temp = NvmlHelper.GetTemperature();
-            Logger.WriteLine($"GPU Temp: {temp}");
+            Logger.WriteLine($"GPU Temp: {temp}C");
             return temp;
         }
 
@@ -154,7 +151,7 @@ public class NvidiaGpuControl : IGpuControl
 
         try
         {
-            var temp = ReadCurrentTemperature(true); // Force wake up GPU for clock reading
+            var temp = ReadCurrentTemperature(); // Force wake up GPU for clock reading
 
             IPerformanceStates20Info states = GPUApi.GetPerformanceStates20(internalGpu.Handle);
             core = states.Clocks[PerformanceStateId.P0_3DPerformance][0].FrequencyDeltaInkHz.DeltaValue / 1000;
