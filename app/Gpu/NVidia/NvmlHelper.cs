@@ -22,7 +22,7 @@ public static class NvmlHelper
             {
                 var result = nvmlInit_v2();
                 init = result == NVML_SUCCESS;
-                Logger.WriteLine($"NVML Init result: {result}");
+                Logger.WriteLine($"NVML Init: {result}");
             }
             catch (Exception e)
             {
@@ -54,7 +54,8 @@ public static class NvmlHelper
         {
             try
             {
-                nvmlShutdown();
+                var result = nvmlShutdown();
+                Logger.WriteLine($"NVML Shutdown: {result}");
                 init = false;
             } catch
             {

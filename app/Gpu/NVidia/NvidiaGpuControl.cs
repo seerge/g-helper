@@ -50,61 +50,49 @@ public class NvidiaGpuControl : IGpuControl
     private int? _lastTemp;
     private int _lastTempTime = 0;
 
-    public bool IsActive(bool log = false)
+
+    public bool IsAlive(bool log = false)
     {
         if (!IsValid) return false;
-        PhysicalGPU internalGpu = _internalGpu!;
         try
         {
-            var perfState = GPUApi.GetCurrentPerformanceState(internalGpu.Handle);
-            if (log) Logger.WriteLine($"GPU awake: {perfState}");
+            var perfState = GPUApi.GetCurrentPerformanceState(_internalGpu!.Handle);
+            Logger.WriteLine($"GPU: {perfState}");
             return true;
         }
         catch (Exception ex)
         {
-            if (log) Logger.WriteLine($"GPU sleeping: {ex.Message}");
-            return false;
+            Logger.WriteLine($"GPU: {ex.Message}");
+            return (ex.Message == "NVAPI_GPU_NOT_POWERED");
         }
     }
 
     public int? ReadCurrentTemperature(bool log = false)
     {
         if (!IsValid) return null;
-        if (log) IsActive(true);
 
-        /*
         IThermalSensor? gpuSensor =
             GPUApi.GetThermalSettings(_internalGpu!.Handle).Sensors
             .FirstOrDefault(s => s.Target == ThermalSettingsTarget.GPU);
-        */
 
-        if (GetInternalDiscreteGpu() == null)
-        {
-            NvmlHelper.Shutdown();
-            return null;
-        }
-
-        _lastTemp = NvmlHelper.GetTemperature();
-        _lastTempTime = Environment.TickCount;
-
-        if (log) Logger.WriteLine($"GPU Temp: {_lastTemp}");
-
-        return _lastTemp;
+        return gpuSensor?.CurrentTemperature;
     }
 
     public int? GetCurrentTemperature()
     {
         if (!IsValid) return null;
-        var refresh = Environment.TickCount > _lastTempTime + 30_000;
-
-        if (IsActive(true) || refresh)
+        if (!IsAlive(true))
         {
-            var temp = ReadCurrentTemperature();
-            Logger.WriteLine($"GPU Temp: {_lastTemp} {refresh}");
-            return temp;
+            NvmlHelper.Shutdown();
+            return null;
         }
         else
-            return _lastTemp;
+        {
+            var temp = NvmlHelper.GetTemperature();
+            Logger.WriteLine($"GPU Temp: {temp}");
+            return temp;
+        }
+
     }
 
     public void Dispose()
