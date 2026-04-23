@@ -14,6 +14,12 @@ public static class NvmlHelper
 
     static bool init = false;
 
+    public static void ReInit()
+    {
+        Shutdown();
+        Init();
+    }
+
     public static void Init()
     {
         if (!init)
@@ -22,7 +28,7 @@ public static class NvmlHelper
             {
                 var result = nvmlInit_v2();
                 init = result == NVML_SUCCESS;
-                Logger.WriteLine($"NVML Init: {result}");
+                //Logger.WriteLine($"NVML Init: {result}");
             }
             catch (Exception e)
             {
@@ -62,7 +68,7 @@ public static class NvmlHelper
             try
             {
                 var result = nvmlShutdown();
-                Logger.WriteLine($"NVML Shutdown: {result}");
+                //Logger.WriteLine($"NVML Shutdown: {result}");
                 init = false;
             } catch
             {

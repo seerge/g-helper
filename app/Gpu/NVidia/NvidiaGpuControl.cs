@@ -48,6 +48,9 @@ public class NvidiaGpuControl : IGpuControl
 
     public string FullName => _internalGpu!.FullName;
 
+    public int? _lastTemp;
+    public int _lastTempTime = 0;
+
     public bool IsAlive(bool log = false)
     {
         if (!IsValid) return false;
@@ -60,7 +63,7 @@ public class NvidiaGpuControl : IGpuControl
         catch (Exception ex)
         {
             if (log) Logger.WriteLine($"GPU: {ex.Message}");
-            return (ex.Message == "NVAPI_GPU_NOT_POWERED");
+            return false; // (ex.Message == "NVAPI_GPU_NOT_POWERED");
         }
     }
 
@@ -72,25 +75,42 @@ public class NvidiaGpuControl : IGpuControl
             GPUApi.GetThermalSettings(_internalGpu!.Handle).Sensors
             .FirstOrDefault(s => s.Target == ThermalSettingsTarget.GPU);
 
+        Logger.WriteLine($"GPU Temp: {gpuSensor?.CurrentTemperature}C");
         return gpuSensor?.CurrentTemperature;
     }
 
     public int? GetCurrentTemperature()
     {
         if (!IsValid) return null;
-        if (!IsAlive())
+        var refresh = Environment.TickCount > _lastTempTime + 10_000;
+
+        if (_lastTemp is null || IsAlive(true) || (refresh && HardwareControl.GetCPUTemp() < _lastTemp - 10))
+        {
+            _lastTemp = ReadCurrentTemperature();
+            _lastTempTime = Environment.TickCount;
+        }
+
+        return _lastTemp;
+    }
+
+    /*
+    public int? GetCurrentTemperature()
+    {
+        if (!IsValid) return null;
+        if (!IsAlive(true))
         {
             NvmlHelper.Shutdown();
             return null;
         }
         else
         {
+
             var temp = NvmlHelper.GetTemperature();
-            //Logger.WriteLine($"GPU Temp: {temp}C");
+            Logger.WriteLine($"GPU Temp: {temp}C");
             return temp;
         }
-
     }
+    */
 
     public void Dispose()
     {
