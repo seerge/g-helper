@@ -12,25 +12,54 @@ public static class NvmlHelper
     const uint NVML_TEMPERATURE_GPU = 0;
     const int NVML_SUCCESS = 0;
 
-    public static int? GetTemperature(uint gpuIndex = 0)
+    static bool init = false;
+
+    public static void Init()
     {
-        try
+        if (!init)
         {
-            if (nvmlInit_v2() != NVML_SUCCESS) return null;
             try
             {
-                if (nvmlDeviceGetHandleByIndex_v2(gpuIndex, out IntPtr device) != NVML_SUCCESS) return null;
-                if (nvmlDeviceGetTemperature(device, NVML_TEMPERATURE_GPU, out uint temp) != NVML_SUCCESS) return null;
-                return (int)temp;
+                var result = nvmlInit_v2();
+                init = result == NVML_SUCCESS;
+                Logger.WriteLine($"NVML Init result: {result}");
             }
-            finally
+            catch (Exception e)
             {
-                nvmlShutdown();
+                Logger.WriteLine($"NVML Init exception: {e.Message}");
             }
+        }
+    }
+
+    public static int? GetTemperature(uint gpuIndex = 0)
+    {
+        Init();
+        try
+        {
+            if (nvmlDeviceGetHandleByIndex_v2(gpuIndex, out IntPtr device) != NVML_SUCCESS) return null;
+            if (nvmlDeviceGetTemperature(device, NVML_TEMPERATURE_GPU, out uint temp) != NVML_SUCCESS) return null;
+            return (int)temp;
         }
         catch
         {
+            nvmlShutdown();
+            init = false;
             return null;
         }
     }
+
+    public static void Shutdown()
+    {
+        if (init)
+        {
+            try
+            {
+                nvmlShutdown();
+                init = false;
+            } catch
+            {
+            }
+        }
+    }
+
 }

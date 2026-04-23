@@ -71,12 +71,18 @@ public class NvidiaGpuControl : IGpuControl
     {
         if (!IsValid) return null;
         if (log) IsActive(true);
-        
+
         /*
         IThermalSensor? gpuSensor =
             GPUApi.GetThermalSettings(_internalGpu!.Handle).Sensors
             .FirstOrDefault(s => s.Target == ThermalSettingsTarget.GPU);
         */
+
+        if (GetInternalDiscreteGpu() == null)
+        {
+            NvmlHelper.Shutdown();
+            return null;
+        }
 
         _lastTemp = NvmlHelper.GetTemperature();
         _lastTempTime = Environment.TickCount;
@@ -91,7 +97,7 @@ public class NvidiaGpuControl : IGpuControl
         if (!IsValid) return null;
         var refresh = Environment.TickCount > _lastTempTime + 30_000;
 
-        if (IsActive(true) || refresh)
+        if (IsActive(true) || true || refresh)
         {
             var temp = ReadCurrentTemperature();
             Logger.WriteLine($"GPU Temp: {_lastTemp} {refresh}");
@@ -312,7 +318,7 @@ public class NvidiaGpuControl : IGpuControl
         return 1;
     }
 
-    private static PhysicalGPU? GetInternalDiscreteGpu()
+    public static PhysicalGPU? GetInternalDiscreteGpu()
     {
         try
         {
