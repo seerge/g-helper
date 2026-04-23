@@ -5,6 +5,7 @@ using NvAPIWrapper.Native.GPU;
 using NvAPIWrapper.Native.GPU.Structures;
 using NvAPIWrapper.Native.Interfaces.GPU;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using static NvAPIWrapper.Native.GPU.Structures.PerformanceStates20InfoV1;
 
@@ -49,32 +50,45 @@ public class NvidiaGpuControl : IGpuControl
 
     public string FullName => _internalGpu!.FullName;
 
-    public int? GetCurrentTemperature(bool force = false)
+    public int? GetCurrentTemperatureForced()
     {
         if (!IsValid) return null;
-
         PhysicalGPU internalGpu = _internalGpu!;
 
-        if (!force)
+        try
         {
-            try
-            {
-                var perfState = GPUApi.GetCurrentPerformanceState(internalGpu.Handle);
-                if (force) Logger.WriteLine($"GPU Power state {perfState}");
-                if (perfState == PerformanceStateId.P12_Idle || perfState == PerformanceStateId.Undefined) return null;
-            }
-            catch (Exception ex)
-            {
-                if (force) Logger.WriteLine($"GPU Power state: {ex.Message}");
-                return null;
-            }
+            var perfState = GPUApi.GetCurrentPerformanceState(internalGpu.Handle);
+            Logger.WriteLine($"GPU Power state {perfState}");
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine($"GPU Power state: {ex.Message}");
         }
 
         IThermalSensor? gpuSensor =
             GPUApi.GetThermalSettings(internalGpu.Handle).Sensors
             .FirstOrDefault(s => s.Target == ThermalSettingsTarget.GPU);
 
+        Logger.WriteLine($"GPU Temp: {gpuSensor?.CurrentTemperature}");
         return gpuSensor?.CurrentTemperature;
+    }
+
+    public int? GetCurrentTemperature()
+    {
+        if (!IsValid) return null;
+        PhysicalGPU internalGpu = _internalGpu!;
+
+        try
+        {
+            var perfState = GPUApi.GetCurrentPerformanceState(internalGpu.Handle);
+            Logger.WriteLine($"GPU Power state {perfState}");
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine($"GPU Power state: {ex.Message}");
+        }
+
+        return NvmlHelper.GetTemperature();
     }
 
     public void Dispose()
@@ -136,8 +150,7 @@ public class NvidiaGpuControl : IGpuControl
 
         try
         {
-            var temp = GetCurrentTemperature(force: true);
-            Logger.WriteLine($"GET GPU TEMP: {temp}");
+            var temp = GetCurrentTemperatureForced();
 
             IPerformanceStates20Info states = GPUApi.GetPerformanceStates20(internalGpu.Handle);
             core = states.Clocks[PerformanceStateId.P0_3DPerformance][0].FrequencyDeltaInkHz.DeltaValue / 1000;
@@ -317,4 +330,39 @@ public class NvidiaGpuControl : IGpuControl
 
     }
 
+}
+
+internal static class NvmlHelper
+{
+    const string NvmlDll = "nvml.dll";
+
+    [DllImport(NvmlDll)] static extern int nvmlInit_v2();
+    [DllImport(NvmlDll)] static extern int nvmlShutdown();
+    [DllImport(NvmlDll)] static extern int nvmlDeviceGetHandleByIndex_v2(uint index, out IntPtr device);
+    [DllImport(NvmlDll)] static extern int nvmlDeviceGetTemperature(IntPtr device, uint sensorType, out uint temp);
+
+    const uint NVML_TEMPERATURE_GPU = 0;
+    const int NVML_SUCCESS = 0;
+
+    public static int? GetTemperature(uint gpuIndex = 0)
+    {
+        try
+        {
+            if (nvmlInit_v2() != NVML_SUCCESS) return null;
+            try
+            {
+                if (nvmlDeviceGetHandleByIndex_v2(gpuIndex, out IntPtr device) != NVML_SUCCESS) return null;
+                if (nvmlDeviceGetTemperature(device, NVML_TEMPERATURE_GPU, out uint temp) != NVML_SUCCESS) return null;
+                return (int)temp;
+            }
+            finally
+            {
+                nvmlShutdown();
+            }
+        }
+        catch
+        {
+            return null;
+        }
+    }
 }

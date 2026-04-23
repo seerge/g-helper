@@ -532,14 +532,6 @@ public static class HardwareControl
     }
 
 
-    public static NvidiaGpuControl? GetNvidiaGpuControl()
-    {
-        if ((bool)GpuControl?.IsNvidia)
-            return (NvidiaGpuControl)GpuControl;
-        else
-            return null;
-    }
-
     public static void RecreateGpuControlWithDelay(int delay = 5)
     {
         // Re-enabling the discrete GPU takes a bit of time,

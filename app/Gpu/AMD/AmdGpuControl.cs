@@ -87,7 +87,7 @@ public class AmdGpuControl : IGpuControl
 
     public bool IsValid => _isReady && _adlContextHandle != nint.Zero;
 
-    public int? GetCurrentTemperature(bool force = false)
+    public int? GetCurrentTemperature()
     {
         if (!IsValid)
             return null;
