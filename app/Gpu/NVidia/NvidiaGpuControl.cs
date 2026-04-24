@@ -52,18 +52,20 @@ public class NvidiaGpuControl : IGpuControl
     public int? _lastTemp;
     public int _lastTempTime = 0;
 
-    public bool IsAlive(bool log = false)
+    private static bool verboseLog = false;
+
+    public bool IsAlive()
     {
         if (!IsValid) return false;
         try
         {
             var perfState = GPUApi.GetCurrentPerformanceState(_internalGpu!.Handle);
-            if (log) Logger.WriteLine($"GPU: {perfState}");
+            if (verboseLog) Logger.WriteLine($"GPU: {perfState}");
             return true;
         }
         catch (Exception ex)
         {
-            if (log) Logger.WriteLine($"GPU: {ex.Message}");
+            if (verboseLog) Logger.WriteLine($"GPU: {ex.Message}");
             return false; // (ex.Message == "NVAPI_GPU_NOT_POWERED");
         }
     }
@@ -76,18 +78,31 @@ public class NvidiaGpuControl : IGpuControl
             GPUApi.GetThermalSettings(_internalGpu!.Handle).Sensors
             .FirstOrDefault(s => s.Target == ThermalSettingsTarget.GPU);
 
-        if (log) Logger.WriteLine($"GPU Temp: {gpuSensor?.CurrentTemperature}C");
+        if (log || verboseLog) Logger.WriteLine($"GPU Temp: {gpuSensor?.CurrentTemperature}C");
         return gpuSensor?.CurrentTemperature;
     }
+
+    private Task<int?>? _readTask;
 
     public int? GetCurrentTemperature()
     {
         if (!IsValid) return null;
-        if (IsAlive() || ShouldRefresh())
+
+        if ((_readTask?.IsCompleted ?? true) && (IsAlive() || ShouldRefresh()))
         {
-            _lastTemp = ReadCurrentTemperature();
-            _lastTempTime = Environment.TickCount;
+            _readTask = Task.Run(() =>
+            {
+                var temp = ReadCurrentTemperature(true);
+                if (temp is not null)
+                {
+                    _lastTemp = temp;
+                    _lastTempTime = Environment.TickCount;
+                }
+                return temp;
+            });
         }
+
+        _readTask?.Wait(500);
 
         return _lastTemp;
     }
@@ -109,7 +124,10 @@ public class NvidiaGpuControl : IGpuControl
         var t = Math.Clamp((delta - deltaMin) / (deltaMax - deltaMin), 0f, 1f);
         var interval = (int)(maxInterval - t * (maxInterval - minInterval));
 
-        return Environment.TickCount > _lastTempTime + interval;
+        var refresh = Environment.TickCount > _lastTempTime + interval;
+        if (verboseLog) Logger.WriteLine($"GPU Temp Refresh Interval: {interval}ms {refresh}");
+
+        return refresh;
     }
 
     public void Dispose()
