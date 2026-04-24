@@ -82,15 +82,33 @@ public class NvidiaGpuControl : IGpuControl
     public int? GetCurrentTemperature()
     {
         if (!IsValid) return null;
-        var refresh = Environment.TickCount > _lastTempTime + 10_000;
-
-        if (_lastTemp is null || IsAlive(true) || (refresh && HardwareControl.GetCPUTemp() < _lastTemp - 10))
+        if (IsAlive(true) || ShouldRefresh())
         {
             _lastTemp = ReadCurrentTemperature();
             _lastTempTime = Environment.TickCount;
         }
 
         return _lastTemp;
+    }
+
+    private bool ShouldRefresh()
+    {
+        const int minInterval = 5_000;
+        const int maxInterval = 120_000;
+        const float deltaMin = 5f;
+        const float deltaMax = 20f;
+
+        if (_lastTemp is null) return true;
+
+        var cpuTemp = (float)HardwareControl.GetCPUTemp(); 
+        var delta = Math.Abs(cpuTemp - _lastTemp.Value);
+
+        if (delta < deltaMin) return false;
+
+        var t = Math.Clamp((delta - deltaMin) / (deltaMax - deltaMin), 0f, 1f);
+        var interval = (int)(maxInterval - t * (maxInterval - minInterval));
+
+        return Environment.TickCount > _lastTempTime + interval;
     }
 
     /*
