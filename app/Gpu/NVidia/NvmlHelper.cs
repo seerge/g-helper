@@ -60,27 +60,25 @@ public static class NvmlHelper
 
     public static float? GetGpuPower(uint gpuIndex = 0)
     {
-        Init();
         try
         {
-            if (nvmlDeviceGetHandleByIndex_v2(gpuIndex, out IntPtr device) != NVML_SUCCESS)
+            if (nvmlInit_v2() != NVML_SUCCESS) return null;
+            try
             {
-                Shutdown();
-                return null;
-            }
-            if (nvmlDeviceGetPowerUsage(device, out uint mW) != NVML_SUCCESS)
-            {
-                Shutdown();
-                return null;
-            }
+                if (nvmlDeviceGetHandleByIndex_v2(gpuIndex, out IntPtr device) != NVML_SUCCESS) return null;
+                if (nvmlDeviceGetPowerUsage(device, out uint mW) != NVML_SUCCESS) return null;
 
-            if (mW > 200_000f) return null;
-            return mW / 1000f;
+                if (mW > 200_000f) return null;
+                return mW / 1000f;
+            }
+            finally
+            {
+                nvmlShutdown();
+            }
         }
         catch
         {
             Logger.WriteLine("NVML power read failed");
-            Shutdown();
             return null;
         }
     }
