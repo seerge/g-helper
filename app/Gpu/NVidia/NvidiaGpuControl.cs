@@ -49,16 +49,67 @@ public class NvidiaGpuControl : IGpuControl
 
     public string FullName => _internalGpu!.FullName;
 
-    public int? GetCurrentTemperature()
+    public int? _lastTemp;
+    public int _lastTempTime = 0;
+
+    public bool IsAlive(bool log = false)
+    {
+        if (!IsValid) return false;
+        try
+        {
+            var perfState = GPUApi.GetCurrentPerformanceState(_internalGpu!.Handle);
+            if (log) Logger.WriteLine($"GPU: {perfState}");
+            return true;
+        }
+        catch (Exception ex)
+        {
+            if (log) Logger.WriteLine($"GPU: {ex.Message}");
+            return false; // (ex.Message == "NVAPI_GPU_NOT_POWERED");
+        }
+    }
+
+    public int? ReadCurrentTemperature(bool log = false)
     {
         if (!IsValid) return null;
 
-        PhysicalGPU internalGpu = _internalGpu!;
         IThermalSensor? gpuSensor =
-            GPUApi.GetThermalSettings(internalGpu.Handle).Sensors
+            GPUApi.GetThermalSettings(_internalGpu!.Handle).Sensors
             .FirstOrDefault(s => s.Target == ThermalSettingsTarget.GPU);
 
+        if (log) Logger.WriteLine($"GPU Temp: {gpuSensor?.CurrentTemperature}C");
         return gpuSensor?.CurrentTemperature;
+    }
+
+    public int? GetCurrentTemperature()
+    {
+        if (!IsValid) return null;
+        if (IsAlive() || ShouldRefresh())
+        {
+            _lastTemp = ReadCurrentTemperature();
+            _lastTempTime = Environment.TickCount;
+        }
+
+        return _lastTemp;
+    }
+
+    private bool ShouldRefresh()
+    {
+        const int minInterval = 5_000;
+        const int maxInterval = 120_000;
+        const float deltaMin = 5f;
+        const float deltaMax = 20f;
+
+        if (_lastTemp is null) return true;
+
+        var cpuTemp = (float)HardwareControl.GetCPUTemp();
+        var delta = _lastTemp.Value - cpuTemp;
+
+        if (delta < deltaMin) return false;
+
+        var t = Math.Clamp((delta - deltaMin) / (deltaMax - deltaMin), 0f, 1f);
+        var interval = (int)(maxInterval - t * (maxInterval - minInterval));
+
+        return Environment.TickCount > _lastTempTime + interval;
     }
 
     public void Dispose()
@@ -120,6 +171,8 @@ public class NvidiaGpuControl : IGpuControl
 
         try
         {
+            var temp = ReadCurrentTemperature(true); // Force wake up GPU for clock reading
+
             IPerformanceStates20Info states = GPUApi.GetPerformanceStates20(internalGpu.Handle);
             core = states.Clocks[PerformanceStateId.P0_3DPerformance][0].FrequencyDeltaInkHz.DeltaValue / 1000;
             memory = states.Clocks[PerformanceStateId.P0_3DPerformance][1].FrequencyDeltaInkHz.DeltaValue / 1000;
