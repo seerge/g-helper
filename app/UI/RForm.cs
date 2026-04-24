@@ -22,13 +22,10 @@ namespace GHelper.UI
         public static Color chartMain;
         public static Color chartGrid;
 
-        [DllImport("UXTheme.dll", SetLastError = true, EntryPoint = "#138")]
-        public static extern bool CheckSystemDarkModeStatus();
-
-        [DllImport("DwmApi")] //System.Runtime.InteropServices
-        private static extern int DwmSetWindowAttribute(nint hwnd, int attr, int[] attrValue, int attrSize);
-
         public bool darkTheme = false;
+
+        public bool mica = true;
+
         protected override CreateParams CreateParams
         {
             get
@@ -83,7 +80,7 @@ namespace GHelper.UI
 
             if (uiMode is not null && uiMode.ToLower() == "windows")
             {
-                return CheckSystemDarkModeStatus();
+                return NativeMethods.CheckSystemDarkModeStatus();
             }
 
             using var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
@@ -99,6 +96,8 @@ namespace GHelper.UI
             bool changed = darkTheme != newDarkTheme;
             darkTheme = newDarkTheme;
 
+            SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+
             InitColors(darkTheme);
 
             if (setDPI)
@@ -106,9 +105,15 @@ namespace GHelper.UI
 
             if (changed)
             {
-                DwmSetWindowAttribute(Handle, 20, new[] { darkTheme ? 1 : 0 }, 4);
+                NativeMethods.DwmSetWindowAttribute(Handle, 20, [darkTheme ? 1 : 0], 4);
                 ControlHelper.Adjust(this, changed);
-                this.Invalidate();
+                Invalidate();
+            }
+
+            if (mica)
+            {
+                NativeMethods.DwmSetWindowAttribute(Handle, 38, [2], 4);
+                BackColor = TransparencyKey = Color.Black;
             }
 
 

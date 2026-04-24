@@ -62,6 +62,12 @@ namespace GHelper.UI
         }
 
 
+        public RComboBox()
+        {
+            SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+        }
+
+
         public static GraphicsPath RoundedRect(Rectangle bounds, int radiusL, int radiusR)
         {
             int diameterL = radiusL * 2;

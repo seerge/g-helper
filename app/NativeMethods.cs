@@ -121,6 +121,11 @@ public static class NativeMethods
         public static Guid LIDSWITCH_STATE_CHANGE = new Guid("ba3e0f4d-b817-4094-a2d1-d56379e6a0f3");
     }
 
+    [DllImport("UXTheme.dll", SetLastError = true, EntryPoint = "#138")]
+    public static extern bool CheckSystemDarkModeStatus();
+
+    [DllImport("DwmApi")]
+    public static extern int DwmSetWindowAttribute(nint hwnd, int attr, int[] attrValue, int attrSize);
 
 
 }
