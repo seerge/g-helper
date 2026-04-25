@@ -151,7 +151,6 @@ namespace GHelper
             labelBacklightLogo.Text = Properties.Strings.Logo;
 
             checkGpuApps.Text = Properties.Strings.KillGpuApps;
-            checkBWIcon.Text = Properties.Strings.BWTrayIcon;
             labelHibernateAfter.Text = Properties.Strings.HibernateAfter;
 
             labelAPUMem.Text = Properties.Strings.APUMemory;
@@ -456,9 +455,6 @@ namespace GHelper
                 comboOptimalBrightness.SelectedIndexChanged += OptimalBrightness_Changed;
             }
 
-            checkBWIcon.Checked = AppConfig.IsBWIcon();
-            checkBWIcon.CheckedChanged += CheckBWIcon_CheckedChanged;
-
             pictureHelp.Click += PictureHelp_Click;
             buttonServices.Click += ButtonServices_Click;
 
@@ -525,12 +521,6 @@ namespace GHelper
         private void CheckLEDStatus_CheckedChanged(object? sender, EventArgs e)
         {
             InputDispatcher.SetStatusLED(checkStatusLed.Checked);
-        }
-
-        private void CheckBWIcon_CheckedChanged(object? sender, EventArgs e)
-        {
-            AppConfig.Set("bw_icon", (checkBWIcon.Checked ? 1 : 0));
-            Program.settingsForm.VisualiseIcon();
         }
 
         private void InitACPITesting()
