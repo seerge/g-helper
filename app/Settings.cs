@@ -1212,6 +1212,12 @@ namespace GHelper
             Aura.SetColor2(AppConfig.Get("aura_color2"));
 
             comboKeyboard.DropDownStyle = ComboBoxStyle.DropDownList;
+            // Form is created before AutoKeyboard fires, so the probe hasn't run yet and
+            // BacklightType / isStrix4Zone / isWhite are at their static defaults. Run the
+            // probe here so the mode list reflects detected hardware on first paint.
+            if (Aura.BacklightType == AuraBacklightType.Unknown && !AppConfig.Is("skip_aura"))
+                Aura.Init();
+
             comboKeyboard.DataSource = new BindingSource(Aura.GetModes(), null);
             comboKeyboard.DisplayMember = "Value";
             comboKeyboard.ValueMember = "Key";
@@ -1219,7 +1225,7 @@ namespace GHelper
             comboKeyboard.SelectedValueChanged += ComboKeyboard_SelectedValueChanged;
 
 
-            if (AppConfig.IsSingleColor())
+            if (Aura.isWhite)
             {
                 panelColor.Visible = false;
             }

@@ -358,10 +358,14 @@ namespace GHelper
             checkSleepLogo.CheckedChanged += CheckPower_CheckedChanged;
             checkShutdownLogo.CheckedChanged += CheckPower_CheckedChanged;
 
-            if (!AppConfig.IsBacklightZones() || AppConfig.IsStrixLimitedRGB() || AppConfig.IsARCNM())
+            // 4-zone RGB laptops have a lightbar but no logo / lid LEDs; per-key has all of them.
+            // SingleZone / non-zone laptops show no zone toggles. ARCNM is its own special case.
+            bool is4Zone = Aura.BacklightType == AuraBacklightType.MultiZone;
+
+            if (!AppConfig.IsBacklightZones() || is4Zone || AppConfig.IsARCNM())
             {
 
-                if (!AppConfig.IsStrixLimitedRGB())
+                if (!is4Zone)
                 {
                     labelBacklightBar.Visible = false;
                     checkAwakeBar.Visible = false;
@@ -468,11 +472,6 @@ namespace GHelper
             checkNVPlatform.Checked = AppConfig.IsNVPlatform();
             checkNVPlatform.CheckedChanged += CheckNVPlatform_CheckedChanged;
 
-
-            checkPerKeyRGB.Visible = AppConfig.IsPossible4ZoneRGB();
-            checkPerKeyRGB.Checked = AppConfig.Is("per_key_rgb");
-            checkPerKeyRGB.CheckedChanged += CheckPerKeyRGB_CheckedChanged;
-
             checkAspm.Checked = AppConfig.IsAutoASPM();
             checkAspm.CheckedChanged += CheckAspm_CheckedChanged;
 
@@ -511,11 +510,6 @@ namespace GHelper
         private void OptimalBrightness_Changed(object? sender, EventArgs e)
         {
             ScreenControl.SetOptimalBrightness(comboOptimalBrightness.SelectedIndex);
-        }
-
-        private void CheckPerKeyRGB_CheckedChanged(object? sender, EventArgs e)
-        {
-            AppConfig.Set("per_key_rgb", (checkPerKeyRGB.Checked ? 1 : 0));
         }
 
         private void CheckLEDStatus_CheckedChanged(object? sender, EventArgs e)

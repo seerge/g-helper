@@ -64,6 +64,14 @@ namespace GHelper.USB
         Fast = 2,
     }
 
+    public enum AuraBacklightType : byte
+    {
+        Unknown = 0x00,
+        MultiZone = 0x02,
+        PerKey = 0x03,
+        SingleZone = 0x04,
+    }
+
 
     public static class Aura
     {
@@ -92,12 +100,21 @@ namespace GHelper.USB
         }
 
         static bool isACPI = AppConfig.IsTUF() || AppConfig.IsVivoZenPro();
-        static bool isStrix = AppConfig.IsAdvancedRGB() && !AppConfig.IsNoDirectRGB();
 
-        static bool isStrix4Zone = AppConfig.Is4ZoneRGB();
+        // 4-zone and per-key RGB laptops always have a lightbar and use the multi-zone packet
+        // format; SingleZone (Zephyrus) and ACPI (TUF) don't. So one property captures both
+        // "uses multi-zone packets" and "has lightbar".
+        static bool isStrix => (BacklightType == AuraBacklightType.MultiZone || BacklightType == AuraBacklightType.PerKey)
+                               && !AppConfig.IsNoDirectRGB();
+
+        // Set by DetectBacklightType() at Init() time. ACPI keyboards (TUF) skip the probe and
+        // are forced to single-zone single-color in the static ctor below.
+        static bool isStrix4Zone = false;
         static bool isStrixNumpad = AppConfig.IsStrixNumpad();
 
-        static public bool isSingleColor = false;
+        static public bool isWhite = false;
+
+        public static AuraBacklightType BacklightType { get; private set; } = AuraBacklightType.Unknown;
 
         static System.Timers.Timer timer = new System.Timers.Timer(1000);
 
@@ -162,16 +179,10 @@ namespace GHelper.USB
         static Aura()
         {
             timer.Elapsed += Timer_Elapsed;
-            isSingleColor = AppConfig.IsSingleColor(); // Mono Color
-
-            if (AppConfig.ContainsModel("GA402X") || AppConfig.ContainsModel("GA402N"))
-            {
-                var device = AsusHid.FindDevices(AsusHid.AURA_ID).FirstOrDefault();
-                if (device is null) return;
-                Logger.WriteLine($"USB Version: {device.ReleaseNumberBcd} {device.ReleaseNumber}");
-
-                if (device.ReleaseNumberBcd >= 22 && device.ReleaseNumberBcd <= 25) isSingleColor = true;
-            }
+            // White-only keyboards (older TUF, certain X13/GA401 variants, no_rgb override) come
+            // from a small explicit model list. Everything else defaults to color-capable; the
+            // probe in DetectBacklightType() may upgrade isWhite=true if it finds SingleZone.
+            isWhite = AppConfig.IsWhite();
         }
 
         public static Dictionary<AuraSpeed, string> GetSpeeds()
@@ -192,7 +203,7 @@ namespace GHelper.USB
                 _modes.Remove(AuraMode.AuraRainbow);
             }
 
-            if (isSingleColor)
+            if (isWhite)
             {
                 return _modesSingleColor;
             }
@@ -212,7 +223,7 @@ namespace GHelper.USB
                 return _modes;
             }
 
-            if (AppConfig.IsAdvancedRGB() && !AppConfig.Is4ZoneRGB())
+            if (BacklightType == AuraBacklightType.PerKey)
             {
                 return _modesStrix;
             }
@@ -312,13 +323,66 @@ namespace GHelper.USB
             return msg;
         }
 
+        private static void DetectBacklightType()
+        {
+            if (isACPI) return;
+            if (BacklightType != AuraBacklightType.Unknown) return; // already probed this session
+
+            var response = AsusHid.AuraQuery(
+                primers: new List<byte[]> {
+                    new byte[] { AsusHid.AURA_ID, 0xB9 },
+                    Encoding.ASCII.GetBytes("]ASUS Tech.Inc."),
+                },
+                query: new byte[] { AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0x00, 0x20 },
+                expectedPrefix: new byte[] { AsusHid.AURA_ID, 0x05, 0x20, 0x31 },
+                log: "Aura Probe");
+
+            if (response is null || response.Length < 18) return;
+
+            byte typeByte = response[9];
+            byte year = response[10];
+            byte layout = response[12];
+            byte feat1 = response[13];
+            byte feat2 = response[14];
+            byte family = year >= 0x23 ? response[17] : (byte)0;
+
+            Logger.WriteLine($"Aura Probe: Type=0x{typeByte:X2} Year=0x{year:X2} Layout=0x{layout:X2} Feat1=0x{feat1:X2} Feat2=0x{feat2:X2} Family=0x{family:X2}");
+
+            BacklightType = typeByte switch
+            {
+                (byte)AuraBacklightType.MultiZone => AuraBacklightType.MultiZone,
+                (byte)AuraBacklightType.PerKey => AuraBacklightType.PerKey,
+                (byte)AuraBacklightType.SingleZone => AuraBacklightType.SingleZone,
+                _ => AuraBacklightType.Unknown
+            };
+
+            if (BacklightType == AuraBacklightType.Unknown) return;
+
+            AppConfig.Set("backlight_type", typeByte);
+
+            isStrix4Zone = BacklightType == AuraBacklightType.MultiZone;
+
+            // Note: bytes 13/14 (Feat1/Feat2) carry feature bitmaps but none of the documented
+            // bits (SupportsRGBWheel, SupportsDefaultColor, etc.) reliably distinguish a
+            // white-only keyboard from a colored one — same SKU family ships in both flavors and
+            // returns identical feature bytes. isWhite stays sourced from AppConfig.IsWhite()
+            // until we can compare probe dumps from a confirmed white-only ROG keyboard.
+        }
+
         public static void Init()
         {
+            DetectBacklightType();
+
+            // The handshake + status query below is now performed as feature reports inside
+            // DetectBacklightType (matches Armoury Crate / Starlight). Keeping the original
+            // output-report writes commented out as a recovery option.
+            /*
             AsusHid.Write(new List<byte[]> {
                 new byte[] { AsusHid.AURA_ID, 0xB9 },
                 Encoding.ASCII.GetBytes("]ASUS Tech.Inc."),
                 new byte[] { AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0, 0x1A },
             }, "Init");
+            */
 
             if (AppConfig.IsZ13())
                 AsusHid.Write([AsusHid.AURA_ID, 0xC0, 0x03, 0x01], "Dynamic Lighting Init");
@@ -363,10 +427,7 @@ namespace GHelper.USB
         public static void DirectBrightness(int brightness, string log)
         {
             if (isACPI) Program.acpi.TUFKeyboardBrightness(brightness, log);
-            if (AppConfig.IsInputBacklight())
-                AsusHid.WriteInput([AsusHid.INPUT_ID, 0xBA, 0xC5, 0xC4, (byte)brightness], log);
-            else
-                AsusHid.Write([AsusHid.AURA_ID, 0xBA, 0xC5, 0xC4, (byte)brightness], log);
+            AsusHid.WriteInput([AsusHid.INPUT_ID, 0xBA, 0xC5, 0xC4, (byte)brightness], log);
         }
 
         static byte[] AuraPowerMessage(AuraPower flags)
@@ -665,7 +726,7 @@ namespace GHelper.USB
 
             if (AppConfig.IsNoDirectRGB())
             {
-                AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb, isSingleColor), MESSAGE_SET }, null);
+                AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb, isWhite), MESSAGE_SET }, null);
                 return;
             }
 
@@ -810,7 +871,7 @@ namespace GHelper.USB
             }
 
             int _speed = (Speed == AuraSpeed.Normal) ? 0xeb : (Speed == AuraSpeed.Fast) ? 0xf5 : 0xe1;
-            AsusHid.Write(new List<byte[]> { AuraMessage(Mode, _Color1, _Color2, _speed, isSingleColor), MESSAGE_SET, MESSAGE_APPLY }, "Aura", AsusHid.MAIN_AURA_PIDS);
+            AsusHid.Write(new List<byte[]> { AuraMessage(Mode, _Color1, _Color2, _speed, isWhite), MESSAGE_SET, MESSAGE_APPLY }, "Aura", AsusHid.MAIN_AURA_PIDS);
             XGM.LightMode(Mode, _Color1, _Color2, _speed);
 
             if (isACPI)
@@ -893,7 +954,7 @@ namespace GHelper.USB
                 }
 
                 if (isACPI) Program.acpi.TUFKeyboardRGB(AuraMode.AuraStatic, color, 0xeb, $"TUF RGB GPU {gpuMode}");
-                AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb, isSingleColor), MESSAGE_APPLY, MESSAGE_SET });
+                AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb, isWhite), MESSAGE_APPLY, MESSAGE_SET });
 
             }
 
@@ -937,7 +998,7 @@ namespace GHelper.USB
                 }
 
                 if (AppConfig.IsAlly()) color = ColorDim(color);
-                AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb, isSingleColor), MESSAGE_APPLY, MESSAGE_SET });
+                AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb, isWhite), MESSAGE_APPLY, MESSAGE_SET });
                 if (isACPI) Program.acpi.TUFKeyboardRGB(AuraMode.AuraStatic, color, 0xeb);
             }
 

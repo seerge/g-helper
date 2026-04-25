@@ -172,5 +172,81 @@ public static class AsusHid
         }
     }
 
+    public static byte[]? AuraQuery(List<byte[]> primers, byte[] query, byte[] expectedPrefix, int timeoutMs = 300, int pollIntervalMs = 20, string log = "AuraQuery")
+    {
+        var candidates = FindDevices(AURA_ID).ToList();
+        if (candidates.Count == 0)
+        {
+            Logger.WriteLine($"{log}: no device");
+            return null;
+        }
+
+        foreach (var device in candidates)
+        {
+            int featLen = device.GetMaxFeatureReportLength();
+            int inLen = device.GetMaxInputReportLength();
+            int outLen = device.GetMaxOutputReportLength();
+            Logger.WriteLine($"{log} candidate {device.ProductID:X} feat={featLen} in={inLen} out={outLen} path={device.DevicePath}");
+
+            try
+            {
+                var config = new OpenConfiguration();
+                config.SetOption(OpenOption.Interruptible, true);
+                config.SetOption(OpenOption.Exclusive, false);
+                config.SetOption(OpenOption.Priority, 10);
+                using var stream = device.Open(config);
+
+                foreach (var primer in primers)
+                {
+                    var payload = new byte[featLen];
+                    Array.Copy(primer, payload, Math.Min(primer.Length, featLen));
+                    stream.SetFeature(payload);
+                    Logger.WriteLine($"{log} {device.ProductID:X} SET primer {BitConverter.ToString(payload, 0, Math.Min(8, payload.Length))}");
+                }
+
+                var queryPayload = new byte[featLen];
+                Array.Copy(query, queryPayload, Math.Min(query.Length, featLen));
+                stream.SetFeature(queryPayload);
+                Logger.WriteLine($"{log} {device.ProductID:X} SET query {BitConverter.ToString(queryPayload, 0, Math.Min(8, queryPayload.Length))}");
+
+                var response = new byte[featLen];
+                int deadline = Environment.TickCount + timeoutMs;
+                int attempt = 0;
+                while (Environment.TickCount <= deadline)
+                {
+                    attempt++;
+                    Array.Clear(response, 0, response.Length);
+                    response[0] = AURA_ID;
+                    stream.GetFeature(response);
+
+                    if (MatchesPrefix(response, expectedPrefix))
+                    {
+                        Logger.WriteLine($"{log} {device.ProductID:X} GET match (attempt {attempt}): {BitConverter.ToString(response)}");
+                        return response;
+                    }
+
+                    Logger.WriteLine($"{log} {device.ProductID:X} GET stale (attempt {attempt}): {BitConverter.ToString(response, 0, Math.Min(16, response.Length))}");
+                    Thread.Sleep(pollIntervalMs);
+                }
+
+                Logger.WriteLine($"{log} {device.ProductID:X}: no matching response within {timeoutMs}ms ({attempt} polls)");
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine($"{log} {device.ProductID:X} error: {ex.Message}");
+            }
+        }
+
+        return null;
+    }
+
+    private static bool MatchesPrefix(byte[] data, byte[] prefix)
+    {
+        if (data.Length < prefix.Length) return false;
+        for (int i = 0; i < prefix.Length; i++)
+            if (data[i] != prefix[i]) return false;
+        return true;
+    }
+
 }
 
