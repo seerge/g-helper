@@ -653,7 +653,7 @@ namespace GHelper
             labelGPUMemory.Text = $"{trackGPUMemory.Value} MHz";
 
             labelGPUBoost.Text = $"{trackGPUBoost.Value}W";
-            labelGPUTemp.Text = $"{trackGPUTemp.Value}�C";
+            labelGPUTemp.Text = $"{trackGPUTemp.Value}°C";
 
             if (trackGPUClockLimit.Value >= NvidiaGpuControl.MaxClockLimit)
                 labelGPUClockLimit.Text = "Default";
@@ -772,7 +772,7 @@ namespace GHelper
         {
 
             string title = "";
-            string scale = ", RPM/�C";
+            string scale = ", RPM/°C";
 
             switch (device)
             {
