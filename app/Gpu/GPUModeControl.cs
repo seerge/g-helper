@@ -154,6 +154,7 @@ namespace GHelper.Gpu
                 if (eco == 1)
                 {
                     HardwareControl.KillGPUApps();
+                    HardwareControl.DisposeGpuControl();
                     if (AppConfig.IsNVPlatform()) NvidiaGpuControl.StopNVService();
                 }
 
