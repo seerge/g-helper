@@ -55,6 +55,7 @@ namespace GHelper.USB
         AMBIENT = 22,
         BATTERY = 23,
         GRADIENT = 24,
+        ZONETEST = 25,
     }
 
     public enum AuraSpeed : int
@@ -174,6 +175,7 @@ namespace GHelper.USB
             { AuraMode.AMBIENT, "Ambient"},
             { AuraMode.BATTERY, "Battery"},
             { AuraMode.GRADIENT, "Gradient"},
+            { AuraMode.ZONETEST, "Zone Test"},
         };
 
         static Aura()
@@ -828,6 +830,12 @@ namespace GHelper.USB
                 return;
             }
 
+            if (Mode == AuraMode.ZONETEST)
+            {
+                CustomRGB.ApplyZoneTest();
+                return;
+            }
+
             if (Mode == AuraMode.GPUMODE)
             {
                 CustomRGB.ApplyGPUColor();
@@ -929,6 +937,32 @@ namespace GHelper.USB
                     float t = i / 3f;
                     colors[lightbarOrder[i]] = ColorUtils.GetWeightedAverage(Aura.Color2, Aura.Color1, t);
                 }
+
+                ApplyDirect(colors, true);
+            }
+
+            // Diagnostic: paints each of the 8 zones with a distinct color so the user can
+            // photograph the result and we can map zone index -> physical position.
+            // Zone 0 red, 1 orange, 2 yellow, 3 green, 4 cyan, 5 blue, 6 magenta, 7 white.
+            public static void ApplyZoneTest()
+            {
+                if (!isStrix && !isStrix4Zone)
+                {
+                    ApplyDirect(Aura.Color1, true);
+                    return;
+                }
+
+                Color[] colors = new Color[]
+                {
+                    Color.FromArgb(0xFF, 0x00, 0x00),
+                    Color.FromArgb(0xFF, 0x80, 0x00),
+                    Color.FromArgb(0xFF, 0xFF, 0x00),
+                    Color.FromArgb(0x00, 0xFF, 0x00),
+                    Color.FromArgb(0x00, 0xFF, 0xFF),
+                    Color.FromArgb(0x00, 0x00, 0xFF),
+                    Color.FromArgb(0xFF, 0x00, 0xFF),
+                    Color.FromArgb(0xFF, 0xFF, 0xFF),
+                };
 
                 ApplyDirect(colors, true);
             }
