@@ -155,11 +155,8 @@ namespace GHelper.Gpu
                 {
                     HardwareControl.KillGPUApps();
                     HardwareControl.DisposeGpuControl();
-                    if (AppConfig.IsNVPlatform())
-                    {
-                        NvpcfPnp.Disable();
-                        NvidiaGpuControl.StopNVService();
-                    }
+                    //NvpcfPnp.Disable();
+                    if (AppConfig.IsNVPlatform()) NvidiaGpuControl.StopNVService();
                 }
 
                 Logger.WriteLine($"Running eco command {eco}");
@@ -169,8 +166,11 @@ namespace GHelper.Gpu
 
                     status = Program.acpi.SetGPUEco(eco);
 
-                    // PnP-refresh NVPCF before the dGPU driver rebinds to stale state — fixes Device Manager yellow triangle
-                    if (eco == 0 && AppConfig.IsNVPlatform()) NvpcfPnp.Refresh();
+                   if (eco == 0)
+                    {
+                        NvpcfPnp.Refresh();
+                        if (AppConfig.IsNVPlatform()) NvidiaGpuControl.RestartNVService();
+                    }
 
                     await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("refresh_delay", 500)));
 
@@ -182,16 +182,7 @@ namespace GHelper.Gpu
 
                     if (eco == 0)
                     {
-                        if (AppConfig.IsNVPlatform())
-                        {
-                            await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("nv_delay", 5000)));
-                            NvidiaGpuControl.RestartNVService();
-                            await Task.Delay(TimeSpan.FromMilliseconds(1000));
-                        }
-                        else
-                        {
-                            await Task.Delay(TimeSpan.FromMilliseconds(3000));
-                        }
+                        if (!AppConfig.IsNVPlatform()) await Task.Delay(TimeSpan.FromMilliseconds(3000));
                         HardwareControl.RecreateGpuControl();
                         Program.modeControl.SetGPUClocks(false);
                     }
