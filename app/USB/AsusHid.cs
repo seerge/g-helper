@@ -14,6 +14,25 @@ public static class AsusHid
     public static int[] ALL_PIDS = MAIN_AURA_PIDS.Concat(REAR_LIGHT_PIDS).ToArray();
 
     static HidStream? auraStream;
+    static int auraFeatLen;
+    static byte[]? auraScratch;
+
+    static void EnsureAuraStream()
+    {
+        if (auraStream != null) return;
+        auraStream = FindHidStream(AURA_ID);
+        if (auraStream == null) return;
+        auraFeatLen = auraStream.Device.GetMaxFeatureReportLength();
+        auraScratch = auraFeatLen > 0 ? new byte[auraFeatLen] : null;
+    }
+
+    static void DisposeAuraStream()
+    {
+        auraStream?.Dispose();
+        auraStream = null;
+        auraFeatLen = 0;
+        auraScratch = null;
+    }
 
     public static IEnumerable<HidDevice>? FindDevices(byte reportId, int[]? pids = null)
     {
@@ -149,32 +168,9 @@ public static class AsusHid
             }
     }
 
-    public static void WriteAura(byte[] data, bool retry = true)
-    {
-
-        if (auraStream == null) auraStream = FindHidStream(AURA_ID);
-        if (auraStream == null)
-        {
-            Logger.WriteLine("Aura stream not found");
-            return;
-        }
-
-        try
-        {
-            auraStream.Write(data);
-        }
-        catch (Exception ex)
-        {
-            Logger.WriteLine($"Error writing data to HID device: {ex.Message} {BitConverter.ToString(data)}");
-            auraStream.Dispose();
-            auraStream = null;
-            if (retry) WriteAura(data, false);
-        }
-    }
-
     public static void SetFeatureAura(byte[] data, bool retry = true)
     {
-        if (auraStream == null) auraStream = FindHidStream(AURA_ID);
+        EnsureAuraStream();
         if (auraStream == null)
         {
             Logger.WriteLine("Aura stream not found");
@@ -183,39 +179,31 @@ public static class AsusHid
 
         try
         {
-            int featLen = auraStream.Device.GetMaxFeatureReportLength();
-            if (featLen > 0 && data.Length < featLen)
+            byte[] payload = data;
+            if (auraScratch != null && data.Length < auraFeatLen)
             {
-                var padded = new byte[featLen];
-                Array.Copy(data, padded, data.Length);
-                data = padded;
+                Array.Clear(auraScratch, 0, auraFeatLen);
+                Array.Copy(data, auraScratch, data.Length);
+                payload = auraScratch;
             }
-            auraStream.SetFeature(data);
+            auraStream.SetFeature(payload);
         }
         catch (Exception ex)
         {
             Logger.WriteLine($"Error setting feature on HID device: {ex.Message} {BitConverter.ToString(data, 0, Math.Min(16, data.Length))}");
-            auraStream.Dispose();
-            auraStream = null;
+            DisposeAuraStream();
             if (retry) SetFeatureAura(data, false);
         }
     }
 
-    public static byte[]? AuraQuery(List<byte[]> primers, byte[] query, byte[] expectedPrefix, int timeoutMs = 300, int pollIntervalMs = 20, string log = "AuraQuery")
+    public static byte[]? AuraQuery(List<byte[]> primers, byte[] query, byte[] expectedPrefix, int timeoutMs = 300, int pollIntervalMs = 30, string log = "AuraQuery")
     {
         var candidates = FindDevices(AURA_ID).ToList();
-        if (candidates.Count == 0)
-        {
-            Logger.WriteLine($"{log}: no device");
-            return null;
-        }
+        if (candidates.Count == 0) return null;
 
         foreach (var device in candidates)
         {
             int featLen = device.GetMaxFeatureReportLength();
-            int inLen = device.GetMaxInputReportLength();
-            int outLen = device.GetMaxOutputReportLength();
-            Logger.WriteLine($"{log} candidate {device.ProductID:X} feat={featLen} in={inLen} out={outLen} path={device.DevicePath}");
 
             try
             {
@@ -225,40 +213,33 @@ public static class AsusHid
                 config.SetOption(OpenOption.Priority, 10);
                 using var stream = device.Open(config);
 
+                var payload = new byte[featLen];
                 foreach (var primer in primers)
                 {
-                    var payload = new byte[featLen];
+                    Array.Clear(payload, 0, featLen);
                     Array.Copy(primer, payload, Math.Min(primer.Length, featLen));
                     stream.SetFeature(payload);
-                    Logger.WriteLine($"{log} {device.ProductID:X} SET primer {BitConverter.ToString(payload, 0, Math.Min(8, payload.Length))}");
                 }
 
-                var queryPayload = new byte[featLen];
-                Array.Copy(query, queryPayload, Math.Min(query.Length, featLen));
-                stream.SetFeature(queryPayload);
-                Logger.WriteLine($"{log} {device.ProductID:X} SET query {BitConverter.ToString(queryPayload, 0, Math.Min(8, queryPayload.Length))}");
+                Array.Clear(payload, 0, featLen);
+                Array.Copy(query, payload, Math.Min(query.Length, featLen));
+                stream.SetFeature(payload);
 
                 var response = new byte[featLen];
                 int deadline = Environment.TickCount + timeoutMs;
-                int attempt = 0;
                 while (Environment.TickCount <= deadline)
                 {
-                    attempt++;
-                    Array.Clear(response, 0, response.Length);
                     response[0] = AURA_ID;
                     stream.GetFeature(response);
 
                     if (MatchesPrefix(response, expectedPrefix))
                     {
-                        Logger.WriteLine($"{log} {device.ProductID:X} GET match (attempt {attempt}): {BitConverter.ToString(response)}");
+                        Logger.WriteLine($"{log} {device.ProductID:X}: {BitConverter.ToString(response)}");
                         return response;
                     }
 
-                    Logger.WriteLine($"{log} {device.ProductID:X} GET stale (attempt {attempt}): {BitConverter.ToString(response, 0, Math.Min(16, response.Length))}");
                     Thread.Sleep(pollIntervalMs);
                 }
-
-                Logger.WriteLine($"{log} {device.ProductID:X}: no matching response within {timeoutMs}ms ({attempt} polls)");
             }
             catch (Exception ex)
             {
