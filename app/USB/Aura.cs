@@ -709,6 +709,28 @@ namespace GHelper.USB
             AsusHid.SetFeatureAura(buffer);
         }
 
+        public static void ApplyDirectLightbar(Color[] color)
+        {
+            var map = isStrix4ZoneFlipped ? packet4ZoneFlipped : packet4Zone;
+            byte[] buffer = new byte[64];
+            buffer[0] = AsusHid.AURA_ID;
+            buffer[1] = 0xBC;
+            buffer[2] = 0;
+            buffer[3] = 1;
+            buffer[4] = 0x04;
+
+            for (int i = 0; i < map.Length; i++)
+            {
+                byte zone = map[i];
+                int o = 9 + i * 3;
+                buffer[o] = color[zone].R;
+                buffer[o + 1] = color[zone].G;
+                buffer[o + 2] = color[zone].B;
+            }
+
+            AsusHid.SetFeatureAura(buffer);
+        }
+
 
         public static void ApplyDirect(Color color, bool init = false)
         {
@@ -937,17 +959,9 @@ namespace GHelper.USB
                 ApplyDirect(colors, true);
             }
 
-            // Diagnostic: paints each of the 8 zones with a distinct color so the user can
-            // photograph the result and we can map zone index -> physical position.
             // Zone 0 red, 1 orange, 2 yellow, 3 green, 4 cyan, 5 blue, 6 magenta, 7 white.
             public static void ApplyZoneTest()
             {
-                if (!isStrix && !isStrix4Zone)
-                {
-                    ApplyDirect(Aura.Color1, true);
-                    return;
-                }
-
                 Color[] colors = new Color[]
                 {
                     Color.FromArgb(0xFF, 0x00, 0x00),
@@ -961,6 +975,7 @@ namespace GHelper.USB
                 };
 
                 ApplyDirect(colors, true);
+                ApplyDirectLightbar(colors);
             }
 
             public static void ApplyGPUColor(int gpuMode = -1)
