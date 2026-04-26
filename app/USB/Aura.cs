@@ -674,7 +674,7 @@ namespace GHelper.USB
             {
                 initDirect = false;
                 AsusHid.SetFeatureAura(new byte[] { AsusHid.AURA_ID, 0xBC });
-                Task.Delay(50).Wait();
+                Thread.Sleep(50);
             }
 
             Array.Clear(keyBuf, 0, keyBuf.Length);
@@ -758,8 +758,9 @@ namespace GHelper.USB
             if (init || initDirect)
             {
                 initDirect = false;
-                Init();
+                //Init();
                 AsusHid.SetFeatureAura(new byte[] { AsusHid.AURA_ID, 0xBC });
+                Thread.Sleep(50);
             }
 
             byte[] buffer = new byte[12];
