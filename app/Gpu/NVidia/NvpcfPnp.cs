@@ -6,7 +6,6 @@ namespace GHelper.Gpu.NVidia;
 public static class NvpcfPnp
 {
     private const string NvpcfHardwareId = @"ACPI\VEN_NVDA&DEV_0820";
-    private const string NvDisplayService = "NVDisplay.ContainerLocalSystem";
     private static readonly Guid SoftwareDeviceClass = new("62F9C741-B25A-46CE-B54C-9BCCCE08B6F2");
 
     private const int DIF_PROPERTYCHANGE = 0x12;
@@ -78,31 +77,30 @@ public static class NvpcfPnp
         return nul >= 0 ? first[..nul] : first;
     }
 
-    // ---- Direct service control on NVDisplay.ContainerLocalSystem ----
-    // Replaces RunPowershellCommand("Restart-Service ...") which spawned powershell.exe.
+    // ---- Direct service control via WinAPI (replaces RunPowershellCommand("Restart-Service ...")) ----
 
-    public static void RestartNVDisplayContainer()
+    public static void RestartService(string serviceName)
     {
-        StopNVDisplayContainer();
-        StartNVDisplayContainer();
+        StopService(serviceName);
+        StartService(serviceName);
     }
 
-    public static bool StartNVDisplayContainer()
+    public static bool StartService(string serviceName)
     {
         IntPtr scm = OpenSCManager(null, null, SC_MANAGER_CONNECT);
         if (scm == IntPtr.Zero) return false;
         try
         {
-            IntPtr svc = OpenService(scm, NvDisplayService, SERVICE_START | SERVICE_QUERY_STATUS);
+            IntPtr svc = OpenService(scm, serviceName, SERVICE_START | SERVICE_QUERY_STATUS);
             if (svc == IntPtr.Zero) return false;
             try
             {
-                bool ok = StartService(svc, 0, null);
+                bool ok = StartServiceW(svc, 0, null);
                 if (!ok)
                 {
                     int err = Marshal.GetLastWin32Error();
                     if (err != ERROR_SERVICE_ALREADY_RUNNING)
-                        Logger.WriteLine($"StartService({NvDisplayService}) failed: {err}");
+                        Logger.WriteLine($"StartService({serviceName}) failed: {err}");
                     return err == ERROR_SERVICE_ALREADY_RUNNING;
                 }
                 return WaitForState(svc, SERVICE_RUNNING, TimeSpan.FromSeconds(10));
@@ -112,13 +110,13 @@ public static class NvpcfPnp
         finally { CloseServiceHandle(scm); }
     }
 
-    public static bool StopNVDisplayContainer()
+    public static bool StopService(string serviceName)
     {
         IntPtr scm = OpenSCManager(null, null, SC_MANAGER_CONNECT);
         if (scm == IntPtr.Zero) return false;
         try
         {
-            IntPtr svc = OpenService(scm, NvDisplayService, SERVICE_STOP | SERVICE_QUERY_STATUS);
+            IntPtr svc = OpenService(scm, serviceName, SERVICE_STOP | SERVICE_QUERY_STATUS);
             if (svc == IntPtr.Zero) return false;
             try
             {
@@ -127,7 +125,7 @@ public static class NvpcfPnp
                 {
                     int err = Marshal.GetLastWin32Error();
                     if (err == ERROR_SERVICE_NOT_ACTIVE) return true;
-                    Logger.WriteLine($"StopService({NvDisplayService}) failed: {err}");
+                    Logger.WriteLine($"StopService({serviceName}) failed: {err}");
                     return false;
                 }
                 return WaitForState(svc, SERVICE_STOPPED, TimeSpan.FromSeconds(5));
@@ -227,8 +225,8 @@ public static class NvpcfPnp
     [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
     private static extern IntPtr OpenService(IntPtr hSCManager, string lpServiceName, uint dwDesiredAccess);
 
-    [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-    private static extern bool StartService(IntPtr hService, uint dwNumServiceArgs, string[]? lpServiceArgVectors);
+    [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode, EntryPoint = "StartServiceW")]
+    private static extern bool StartServiceW(IntPtr hService, uint dwNumServiceArgs, string[]? lpServiceArgVectors);
 
     [DllImport("advapi32.dll", SetLastError = true)]
     private static extern bool ControlService(IntPtr hService, uint dwControl, ref SERVICE_STATUS lpServiceStatus);

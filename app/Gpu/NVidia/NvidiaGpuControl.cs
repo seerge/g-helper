@@ -280,13 +280,15 @@ public class NvidiaGpuControl : IGpuControl
     public static void RestartNVService()
     {
         if (!ProcessHelper.IsUserAdministrator()) return;
-        NvpcfPnp.RestartNVDisplayContainer();
+        NvpcfPnp.RestartService("NVDisplay.ContainerLocalSystem");
+        NvpcfPnp.RestartService("NvContainerLocalSystem");
     }
 
     public static void StopNVService()
     {
         if (!ProcessHelper.IsUserAdministrator()) return;
-        NvpcfPnp.StopNVDisplayContainer();
+        NvpcfPnp.StopService("NvContainerLocalSystem");
+        NvpcfPnp.StopService("NVDisplay.ContainerLocalSystem");
     }
 
     public int SetClocks(int core, int memory)
