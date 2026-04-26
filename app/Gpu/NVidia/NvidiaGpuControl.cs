@@ -380,7 +380,7 @@ public class NvidiaGpuControl : IGpuControl
     public float? GetGpuPower()
     {
         if (!IsValid) return null;
-        if (!IsAlive()) return null;
+        if (GetGpuState() == GpuState.Off) return null;
         return NvmlHelper.GetGpuPower();
     }
 
