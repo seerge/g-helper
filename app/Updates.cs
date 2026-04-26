@@ -12,6 +12,9 @@ namespace GHelper
         const int DRIVER_NOT_FOUND = 2;
         const int DRIVER_NEWER = 1;
 
+        const string SYMBOL_UPDATED = "•";
+        const string SYMBOL_NEW = "⬤";
+
         //static int rowCount = 0;
         static string bios;
         static string model;
@@ -69,8 +72,8 @@ namespace GHelper
 
             labelLegend.Text = Properties.Strings.Legend;
             labelLegendGray.Text = Properties.Strings.LegendGray;
-            labelLegendRed.Text = Properties.Strings.LegendRed;
-            labelLegendGreen.Text = Properties.Strings.LegendGreen;
+            labelLegendRed.Text = SYMBOL_NEW + " " + Properties.Strings.LegendRed;
+            labelLegendGreen.Text = SYMBOL_UPDATED + " " + Properties.Strings.LegendGreen;
 
             SuspendLayout();
 
@@ -139,7 +142,7 @@ namespace GHelper
 
         private void AlignLabelUpdates()
         {
-            int dateColumnLeft = panelBios.Padding.Left + (int)(0.63 * tableBios.Width) + 10;
+            int dateColumnLeft = panelBios.Padding.Left + (int)(0.63 * (tableBios.Width - 28)) + 10;
             labelUpdates.Left = dateColumnLeft;
         }
 
@@ -214,17 +217,26 @@ namespace GHelper
             versionLabel.Cursor = Cursors.Hand;
             versionLabel.Font = _font;
             versionLabel.LinkColor = colorEco;
-            versionLabel.Padding = new Padding(5, 5, 5, 5);
+            versionLabel.Padding = new Padding(0, 5, 5, 5);
             versionLabel.LinkClicked += delegate
             {
                 Process.Start(new ProcessStartInfo(driver.downloadUrl) { UseShellExecute = true });
+            };
+
+            var symbolLabel = new Label
+            {
+                Text = "",
+                AutoSize = true,
+                Anchor = AnchorStyles.Right,
+                Padding = new Padding(0, 5, 4, 5),
             };
 
             table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
             table.Controls.Add(new Label { Text = driver.categoryName, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Padding = new Padding(5, 5, 5, 5) }, 0, table.RowCount);
             table.Controls.Add(new Label { Text = driver.title, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Padding = new Padding(5, 5, 5, 5) }, 1, table.RowCount);
             table.Controls.Add(new Label { Text = driver.date, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Padding = new Padding(5, 5, 5, 5) }, 2, table.RowCount);
-            table.Controls.Add(versionLabel, 3, table.RowCount);
+            table.Controls.Add(symbolLabel, 3, table.RowCount);
+            table.Controls.Add(versionLabel, 4, table.RowCount);
             table.RowCount++;
         }
 
@@ -255,20 +267,31 @@ namespace GHelper
 
         private void _VisualiseNewDriver(int position, int newer, string tip, TableLayoutPanel table)
         {
-            var label = table.GetControlFromPosition(3, position) as LinkLabel;
-            if (label != null)
+            var symbolLabel = table.GetControlFromPosition(3, position) as Label;
+            var label = table.GetControlFromPosition(4, position) as LinkLabel;
+            if (label == null) return;
+
+            toolTip.SetToolTip(label, tip);
+
+            if (newer == DRIVER_NEWER)
             {
-                toolTip.SetToolTip(label, tip);
-
-                if (newer == DRIVER_NEWER)
+                label.AccessibleName = label.AccessibleName + Properties.Strings.NewUpdates;
+                label.Font = _boldUnderlineFont;
+                label.LinkColor = colorTurbo;
+                if (symbolLabel != null)
                 {
-                    label.AccessibleName = label.AccessibleName + Properties.Strings.NewUpdates;
-                    label.Font = _boldUnderlineFont;
-                    label.LinkColor = colorTurbo;
+                    symbolLabel.Text = SYMBOL_NEW;
+                    symbolLabel.ForeColor = colorTurbo;
                 }
-
-                if (newer == DRIVER_NOT_FOUND) label.LinkColor = Color.Gray;
-
+            }
+            else if (newer == DRIVER_NOT_FOUND)
+            {
+                label.LinkColor = Color.Gray;
+            }
+            else if (symbolLabel != null)
+            {
+                symbolLabel.Text = SYMBOL_UPDATED;
+                symbolLabel.ForeColor = colorEco;
             }
         }
 
