@@ -29,7 +29,7 @@ namespace GHelper.AnimeMatrix.Communication.Platform
             HidStream.WriteTimeout = timeout;
         }
 
-        public WindowsUsbProvider(ushort vendorId, ushort productId, int maxFeatureReportLength)
+        public WindowsUsbProvider(ushort vendorId, ushort productId, int maxFeatureReportLength, string name = "Matrix")
             : base(vendorId, productId)
         {
             try
@@ -37,11 +37,11 @@ namespace GHelper.AnimeMatrix.Communication.Platform
                 HidDevice = DeviceList.Local
                     .GetHidDevices(vendorId, productId)
                     .First(x => x.GetMaxFeatureReportLength() >= maxFeatureReportLength);
-                Logger.WriteLine("Matrix Device: " + HidDevice.DevicePath + " " + HidDevice.GetMaxFeatureReportLength());
+                Logger.WriteLine($"{name} Device: " + HidDevice.DevicePath + " " + HidDevice.GetMaxFeatureReportLength());
             }
             catch
             {
-                throw new IOException("Matrix control device was not found on your machine.");
+                throw new IOException($"{name} control device was not found on your machine.");
             }
 
             var config = new OpenConfiguration();

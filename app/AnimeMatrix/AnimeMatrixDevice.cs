@@ -102,6 +102,8 @@ namespace GHelper.AnimeMatrix
         private static extern IntPtr AddFontMemResourceEx(IntPtr pbFont, uint cbFont, IntPtr pdv, [System.Runtime.InteropServices.In] ref uint pcFonts);
         private PrivateFontCollection fonts = new PrivateFontCollection();
 
+        protected override string LogName => "Matrix";
+
         public AnimeMatrixDevice() : base(0x0B05, 0x193B, 640)
         {
             if (AppConfig.ContainsModel("401"))

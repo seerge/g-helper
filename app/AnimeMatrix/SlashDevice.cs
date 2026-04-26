@@ -43,6 +43,8 @@ namespace GHelper.AnimeMatrix
     public class SlashDevice : Device
     {
 
+        protected override string LogName => "Slash";
+
         protected virtual byte reportID => 0x5E;
 
         protected virtual SlashPacket CreatePacket(byte[] command)
