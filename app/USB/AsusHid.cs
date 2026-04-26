@@ -172,6 +172,35 @@ public static class AsusHid
         }
     }
 
+    public static void SetFeatureAura(byte[] data, bool retry = true)
+    {
+        if (auraStream == null) auraStream = FindHidStream(AURA_ID);
+        if (auraStream == null)
+        {
+            Logger.WriteLine("Aura stream not found");
+            return;
+        }
+
+        try
+        {
+            int featLen = auraStream.Device.GetMaxFeatureReportLength();
+            if (featLen > 0 && data.Length < featLen)
+            {
+                var padded = new byte[featLen];
+                Array.Copy(data, padded, data.Length);
+                data = padded;
+            }
+            auraStream.SetFeature(data);
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine($"Error setting feature on HID device: {ex.Message} {BitConverter.ToString(data, 0, Math.Min(16, data.Length))}");
+            auraStream.Dispose();
+            auraStream = null;
+            if (retry) SetFeatureAura(data, false);
+        }
+    }
+
     public static byte[]? AuraQuery(List<byte[]> primers, byte[] query, byte[] expectedPrefix, int timeoutMs = 300, int pollIntervalMs = 20, string log = "AuraQuery")
     {
         var candidates = FindDevices(AURA_ID).ToList();
