@@ -106,7 +106,6 @@ namespace GHelper.USB
 
         static bool isStrix4Zone = false;
         static bool isStrixNumpad = AppConfig.IsStrixNumpad();
-        static bool isStrix4ZoneCorner = AppConfig.IsStrix4ZoneCorner();
         static bool isStrix4ZoneFlipped = AppConfig.IsStrix4ZoneFlipped();
 
         static public bool isWhite = AppConfig.IsWhite();
@@ -628,17 +627,6 @@ namespace GHelper.USB
 
         };
 
-        static byte[] packet4ZoneCorner = new byte[]
-        {
-/*01        Z1  Z2  Z3  Z4  NA  NA  KeyZone */
-            0,  1,  2,  3,  0,  0,
-
-/*02        R1  R2  -   -   L1  L2  LightBar (corners only) */
-            7,  7,  7,  4,  4,  4,
-
-        };
-
-
         public static void ApplyDirect(Color[] color, bool init = false)
         {
             if (!backlight) return;
@@ -703,9 +691,7 @@ namespace GHelper.USB
 
             if (isStrix4Zone)
             { // per zone
-                var map = isStrix4ZoneCorner ? packet4ZoneCorner
-                        : isStrix4ZoneFlipped ? packet4ZoneFlipped
-                        : packet4Zone;
+                var map = isStrix4ZoneFlipped ? packet4ZoneFlipped : packet4Zone;
                 var leds_4_zone = map.Count();
                 for (int ledIndex = 0; ledIndex < leds_4_zone; ledIndex++)
                 {
