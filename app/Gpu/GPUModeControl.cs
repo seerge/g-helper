@@ -155,7 +155,11 @@ namespace GHelper.Gpu
                 {
                     HardwareControl.KillGPUApps();
                     HardwareControl.DisposeGpuControl();
-                    if (AppConfig.IsNVPlatform()) NvidiaGpuControl.StopNVService();
+                    if (AppConfig.IsNVPlatform())
+                    {
+                        NvpcfPnp.Disable();
+                        NvidiaGpuControl.StopNVService();
+                    }
                 }
 
                 Logger.WriteLine($"Running eco command {eco}");
@@ -164,6 +168,10 @@ namespace GHelper.Gpu
                 {
 
                     status = Program.acpi.SetGPUEco(eco);
+
+                    // PnP-refresh NVPCF before the dGPU driver rebinds to stale state — fixes Device Manager yellow triangle
+                    if (eco == 0 && AppConfig.IsNVPlatform()) NvpcfPnp.Refresh();
+
                     await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("refresh_delay", 500)));
 
                     settings.Invoke(delegate
@@ -179,13 +187,8 @@ namespace GHelper.Gpu
                             await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("nv_delay", 5000)));
                             NvidiaGpuControl.RestartNVService();
                             await Task.Delay(TimeSpan.FromMilliseconds(1000));
-                        } else if (NvidiaGpuControl.IsContainerRestartNeeded())
-                        {
-                            await Task.Delay(TimeSpan.FromMilliseconds(2000));
-                            Logger.WriteLine("Restarting NV Container");
-                            NvidiaGpuControl.RestartNVService(light: true);
-                            await Task.Delay(TimeSpan.FromMilliseconds(1000));
-                        } else
+                        }
+                        else
                         {
                             await Task.Delay(TimeSpan.FromMilliseconds(3000));
                         }
