@@ -106,6 +106,7 @@ namespace GHelper.USB
 
         static bool isStrix4Zone = false;
         static bool isStrixNumpad = AppConfig.IsStrixNumpad();
+        static bool isStrix4ZoneCorner = AppConfig.IsStrix4ZoneCorner();
 
         static public bool isWhite = AppConfig.IsWhite();
 
@@ -630,10 +631,20 @@ namespace GHelper.USB
         static byte[] packet4Zone = new byte[]
         {
 /*01        Z1  Z2  Z3  Z4  NA  NA  KeyZone */
-            0,  1,  2,  3,  0,  0, 
+            0,  1,  2,  3,  0,  0,
 
 /*02        RR  R   RM  LM  L   LL  LighBar */
             7,  7,  6,  5,  4,  4,
+
+        };
+
+        static byte[] packet4ZoneCorner = new byte[]
+        {
+/*01        Z1  Z2  Z3  Z4  NA  NA  KeyZone */
+            0,  1,  2,  3,  0,  0,
+
+/*02        R1  R2  -   -   L1  L2  LightBar (corners only) */
+            7,  7,  7,  4,  4,  4,
 
         };
 
@@ -701,10 +712,11 @@ namespace GHelper.USB
 
             if (isStrix4Zone)
             { // per zone
-                var leds_4_zone = packet4Zone.Count();
+                var map = isStrix4ZoneCorner ? packet4ZoneCorner : packet4Zone;
+                var leds_4_zone = map.Count();
                 for (int ledIndex = 0; ledIndex < leds_4_zone; ledIndex++)
                 {
-                    byte zone = packet4Zone[ledIndex];
+                    byte zone = map[ledIndex];
                     keyBuf[ledIndex * 3] = color[zone].R;
                     keyBuf[ledIndex * 3 + 1] = color[zone].G;
                     keyBuf[ledIndex * 3 + 2] = color[zone].B;
