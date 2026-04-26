@@ -305,7 +305,7 @@ namespace GHelper.USB
         }
 
 
-        public static byte[] AuraMessage(AuraMode mode, Color color, Color color2, int speed, bool mono = false)
+        public static byte[] AuraMessage(AuraMode mode, Color color, Color color2, int speed)
         {
 
             byte[] msg = new byte[17];
@@ -314,14 +314,14 @@ namespace GHelper.USB
             msg[2] = 0x00; // Zone 
             msg[3] = (byte)mode; // Aura Mode
             msg[4] = color.R; // R
-            msg[5] = mono ? (byte)0 : color.G; // G
-            msg[6] = mono ? (byte)0 : color.B; // B
+            msg[5] = isWhite ? (byte)0 : color.G; // G
+            msg[6] = isWhite ? (byte)0 : color.B; // B
             msg[7] = (byte)speed; // aura.speed as u8;
             msg[8] = 0x00; // aura.direction as u8;
             msg[9] = (color.R == 0 && color.G == 0 && color.B == 0) ? (byte)0xFF : (mode == AuraMode.AuraBreathe ? (byte)0x01 : (byte)0x00); // random color flag
             msg[10] = color2.R; // R
-            msg[11] = mono ? (byte)0 : color2.G; // G
-            msg[12] = mono ? (byte)0 : color2.B; // B
+            msg[11] = isWhite ? (byte)0 : color2.G; // G
+            msg[12] = isWhite ? (byte)0 : color2.B; // B
             return msg;
         }
 
@@ -348,7 +348,32 @@ namespace GHelper.USB
             byte feat2 = response[14];
             byte family = year >= 0x23 ? response[17] : (byte)0;
 
-            Logger.WriteLine($"Aura Probe: Type=0x{typeByte:X2} Year=0x{year:X2} Layout=0x{layout:X2} Feat1=0x{feat1:X2} Feat2=0x{feat2:X2} Family=0x{family:X2}");
+            const byte FEAT1_LOGO     = 0x01;
+            const byte FEAT1_LIGHTBAR = 0x02;
+            const byte FEAT1_VCUT     = 0x10;
+            const byte FEAT1_AERO     = 0x20;
+            const byte FEAT1_BUMP     = 0x40;
+            const byte FEAT1_REARGLOW = 0x80;
+            const byte FEAT2_DEFAULT_COLOR        = 0x04;
+            const byte FEAT2_RGB_WHEEL            = 0x08;
+            const byte FEAT2_ONE_ZONE_RED_EFFECT  = 0x10;
+            const byte FEAT2_BIT_FORMAT_KEY_POS   = 0x40;
+
+            string familyName = family switch
+            {
+                0x01 => "Strix",
+                0x02 => "Flow",
+                0x04 => "Zephyrus",
+                0x08 => "TUF",
+                0x10 => "NR2301",
+                0x20 => "Desktop",
+                0x00 => "(pre-2023, no family field)",
+                _    => $"unknown(0x{family:X2})"
+            };
+
+            Logger.WriteLine($"Aura Probe: Type=0x{typeByte:X2} Year=0x{year:X2} Layout=0x{layout:X2} Feat1=0x{feat1:X2} Feat2=0x{feat2:X2} Family=0x{family:X2} ({familyName})");
+            Logger.WriteLine($"Aura Probe Feat1 regions: Logo={(feat1 & FEAT1_LOGO) != 0} Lightbar={(feat1 & FEAT1_LIGHTBAR) != 0} Vcut={(feat1 & FEAT1_VCUT) != 0} Aero={(feat1 & FEAT1_AERO) != 0} Bump={(feat1 & FEAT1_BUMP) != 0} Rearglow={(feat1 & FEAT1_REARGLOW) != 0}");
+            Logger.WriteLine($"Aura Probe Feat2 features: DefaultColor={(feat2 & FEAT2_DEFAULT_COLOR) != 0} RGBWheel={(feat2 & FEAT2_RGB_WHEEL) != 0} OneZoneRedEffect={(feat2 & FEAT2_ONE_ZONE_RED_EFFECT) != 0} PerKeyMap={(feat2 & FEAT2_BIT_FORMAT_KEY_POS) != 0}");
 
             BacklightType = typeByte switch
             {
@@ -364,20 +389,13 @@ namespace GHelper.USB
 
             isStrix4Zone = BacklightType == AuraBacklightType.MultiZone;
 
-            // Note: bytes 13/14 (Feat1/Feat2) carry feature bitmaps but none of the documented
-            // bits (SupportsRGBWheel, SupportsDefaultColor, etc.) reliably distinguish a
-            // white-only keyboard from a colored one — same SKU family ships in both flavors and
-            // returns identical feature bytes. isWhite stays sourced from AppConfig.IsWhite()
-            // until we can compare probe dumps from a confirmed white-only ROG keyboard.
+            if ((feat2 & FEAT2_ONE_ZONE_RED_EFFECT) != 0) isWhite = true;
         }
 
         public static void Init()
         {
             DetectBacklightType();
 
-            // The handshake + status query below is now performed as feature reports inside
-            // DetectBacklightType (matches Armoury Crate / Starlight). Keeping the original
-            // output-report writes commented out as a recovery option.
             /*
             AsusHid.Write(new List<byte[]> {
                 new byte[] { AsusHid.AURA_ID, 0xB9 },
@@ -728,7 +746,7 @@ namespace GHelper.USB
 
             if (AppConfig.IsNoDirectRGB())
             {
-                AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb, isWhite), MESSAGE_SET }, null);
+                AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb), MESSAGE_SET }, null);
                 return;
             }
 
@@ -879,7 +897,7 @@ namespace GHelper.USB
             }
 
             int _speed = (Speed == AuraSpeed.Normal) ? 0xeb : (Speed == AuraSpeed.Fast) ? 0xf5 : 0xe1;
-            AsusHid.Write(new List<byte[]> { AuraMessage(Mode, _Color1, _Color2, _speed, isWhite), MESSAGE_SET, MESSAGE_APPLY }, "Aura", AsusHid.MAIN_AURA_PIDS);
+            AsusHid.Write(new List<byte[]> { AuraMessage(Mode, _Color1, _Color2, _speed), MESSAGE_SET, MESSAGE_APPLY }, "Aura", AsusHid.MAIN_AURA_PIDS);
             XGM.LightMode(Mode, _Color1, _Color2, _speed);
 
             if (isACPI)
@@ -988,7 +1006,7 @@ namespace GHelper.USB
                 }
 
                 if (isACPI) Program.acpi.TUFKeyboardRGB(AuraMode.AuraStatic, color, 0xeb, $"TUF RGB GPU {gpuMode}");
-                AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb, isWhite), MESSAGE_APPLY, MESSAGE_SET });
+                AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb), MESSAGE_APPLY, MESSAGE_SET });
 
             }
 
@@ -1032,7 +1050,7 @@ namespace GHelper.USB
                 }
 
                 if (AppConfig.IsAlly()) color = ColorDim(color);
-                AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb, isWhite), MESSAGE_APPLY, MESSAGE_SET });
+                AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb), MESSAGE_APPLY, MESSAGE_SET });
                 if (isACPI) Program.acpi.TUFKeyboardRGB(AuraMode.AuraStatic, color, 0xeb);
             }
 
