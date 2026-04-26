@@ -102,18 +102,12 @@ namespace GHelper.USB
 
         static bool isACPI = AppConfig.IsTUF() || AppConfig.IsVivoZenPro();
 
-        // 4-zone and per-key RGB laptops always have a lightbar and use the multi-zone packet
-        // format; SingleZone (Zephyrus) and ACPI (TUF) don't. So one property captures both
-        // "uses multi-zone packets" and "has lightbar".
-        static bool isStrix => (BacklightType == AuraBacklightType.MultiZone || BacklightType == AuraBacklightType.PerKey)
-                               && !AppConfig.IsNoDirectRGB();
+        static bool isStrix => BacklightType == AuraBacklightType.MultiZone || BacklightType == AuraBacklightType.PerKey;
 
-        // Set by DetectBacklightType() at Init() time. ACPI keyboards (TUF) skip the probe and
-        // are forced to single-zone single-color in the static ctor below.
         static bool isStrix4Zone = false;
         static bool isStrixNumpad = AppConfig.IsStrixNumpad();
 
-        static public bool isWhite = false;
+        static public bool isWhite = AppConfig.IsWhite();
 
         public static AuraBacklightType BacklightType { get; private set; } = AuraBacklightType.Unknown;
 
@@ -181,10 +175,6 @@ namespace GHelper.USB
         static Aura()
         {
             timer.Elapsed += Timer_Elapsed;
-            // White-only keyboards (older TUF, certain X13/GA401 variants, no_rgb override) come
-            // from a small explicit model list. Everything else defaults to color-capable; the
-            // probe in DetectBacklightType() may upgrade isWhite=true if it finds SingleZone.
-            isWhite = AppConfig.IsWhite();
         }
 
         public static Dictionary<AuraSpeed, string> GetSpeeds()
@@ -218,11 +208,6 @@ namespace GHelper.USB
             if (AppConfig.IsAlly())
             {
                 return _modesAlly;
-            }
-
-            if (AppConfig.IsAdvantageEdition())
-            {
-                return _modes;
             }
 
             if (BacklightType == AuraBacklightType.PerKey)
@@ -512,37 +497,38 @@ namespace GHelper.USB
 
             bool backlightBattery = AppConfig.IsBacklightZones() && (SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online);
 
-            AuraPower flags = new();
+            AuraPower flags = new()
+            {
+                // Keyboard
+                AwakeKeyb = backlightBattery ? AppConfig.IsOnBattery("keyboard_awake") : AppConfig.IsNotFalse("keyboard_awake"),
+                BootKeyb = AppConfig.IsNotFalse("keyboard_boot"),
+                SleepKeyb = AppConfig.IsNotFalse("keyboard_sleep"),
+                ShutdownKeyb = AppConfig.IsNotFalse("keyboard_shutdown"),
 
-            // Keyboard
-            flags.AwakeKeyb = backlightBattery ? AppConfig.IsOnBattery("keyboard_awake") : AppConfig.IsNotFalse("keyboard_awake");
-            flags.BootKeyb = AppConfig.IsNotFalse("keyboard_boot");
-            flags.SleepKeyb = AppConfig.IsNotFalse("keyboard_sleep");
-            flags.ShutdownKeyb = AppConfig.IsNotFalse("keyboard_shutdown");
+                // Logo
+                AwakeLogo = backlightBattery ? AppConfig.IsOnBattery("keyboard_awake_logo") : AppConfig.IsNotFalse("keyboard_awake_logo"),
+                BootLogo = AppConfig.IsNotFalse("keyboard_boot_logo"),
+                SleepLogo = AppConfig.IsNotFalse("keyboard_sleep_logo"),
+                ShutdownLogo = AppConfig.IsNotFalse("keyboard_shutdown_logo"),
 
-            // Logo
-            flags.AwakeLogo = backlightBattery ? AppConfig.IsOnBattery("keyboard_awake_logo") : AppConfig.IsNotFalse("keyboard_awake_logo");
-            flags.BootLogo = AppConfig.IsNotFalse("keyboard_boot_logo");
-            flags.SleepLogo = AppConfig.IsNotFalse("keyboard_sleep_logo");
-            flags.ShutdownLogo = AppConfig.IsNotFalse("keyboard_shutdown_logo");
+                // Lightbar
+                AwakeBar = backlightBattery ? AppConfig.IsOnBattery("keyboard_awake_bar") : AppConfig.IsNotFalse("keyboard_awake_bar"),
+                BootBar = AppConfig.IsNotFalse("keyboard_boot_bar"),
+                SleepBar = AppConfig.IsNotFalse("keyboard_sleep_bar"),
+                ShutdownBar = AppConfig.IsNotFalse("keyboard_shutdown_bar"),
 
-            // Lightbar
-            flags.AwakeBar = backlightBattery ? AppConfig.IsOnBattery("keyboard_awake_bar") : AppConfig.IsNotFalse("keyboard_awake_bar");
-            flags.BootBar = AppConfig.IsNotFalse("keyboard_boot_bar");
-            flags.SleepBar = AppConfig.IsNotFalse("keyboard_sleep_bar");
-            flags.ShutdownBar = AppConfig.IsNotFalse("keyboard_shutdown_bar");
+                // Lid
+                AwakeLid = backlightBattery ? AppConfig.IsOnBattery("keyboard_awake_lid") : AppConfig.IsNotFalse("keyboard_awake_lid"),
+                BootLid = AppConfig.IsNotFalse("keyboard_boot_lid"),
+                SleepLid = AppConfig.IsNotFalse("keyboard_sleep_lid"),
+                ShutdownLid = AppConfig.IsNotFalse("keyboard_shutdown_lid"),
 
-            // Lid
-            flags.AwakeLid = backlightBattery ? AppConfig.IsOnBattery("keyboard_awake_lid") : AppConfig.IsNotFalse("keyboard_awake_lid");
-            flags.BootLid = AppConfig.IsNotFalse("keyboard_boot_lid");
-            flags.SleepLid = AppConfig.IsNotFalse("keyboard_sleep_lid");
-            flags.ShutdownLid = AppConfig.IsNotFalse("keyboard_shutdown_lid");
-
-            // Rear Bar
-            flags.AwakeRear = backlightBattery ? AppConfig.IsOnBattery("keyboard_awake_lid") : AppConfig.IsNotFalse("keyboard_awake_lid");
-            flags.BootRear = AppConfig.IsNotFalse("keyboard_boot_lid");
-            flags.SleepRear = AppConfig.IsNotFalse("keyboard_sleep_lid");
-            flags.ShutdownRear = AppConfig.IsNotFalse("keyboard_shutdown_lid");
+                // Rear Bar
+                AwakeRear = backlightBattery ? AppConfig.IsOnBattery("keyboard_awake_lid") : AppConfig.IsNotFalse("keyboard_awake_lid"),
+                BootRear = AppConfig.IsNotFalse("keyboard_boot_lid"),
+                SleepRear = AppConfig.IsNotFalse("keyboard_sleep_lid"),
+                ShutdownRear = AppConfig.IsNotFalse("keyboard_shutdown_lid")
+            };
 
             // On Z13 back panel light is controlled by mix of different flags, so merging them together
             if (AppConfig.IsZ13())
