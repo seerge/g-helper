@@ -466,7 +466,7 @@ public static class AppConfig
 
     public static bool IsStrix4ZoneCorner()
     {
-        return ContainsModel("G614") || ContainsModel("G814") || ContainsModel("G634") || ContainsModel("G834") 
+        return ContainsModel("G614") || ContainsModel("G814") || ContainsModel("G634") || ContainsModel("G834")
             || ContainsModel("G615") || ContainsModel("G815") || ContainsModel("G635") || ContainsModel("G835");
     }
 

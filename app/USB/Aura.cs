@@ -633,8 +633,8 @@ namespace GHelper.USB
 /*01        Z1  Z2  Z3  Z4  NA  NA  KeyZone */
             0,  1,  2,  3,  0,  0,
 
-/*02        RR  R   RM  LM  L   LL  LighBar */
-            7,  7,  6,  5,  4,  4,
+/*02        L1  L2  L3  R3  R2  R1  LightBar 
+            4,  4,  5,  6,  7,  7,
 
         };
 
