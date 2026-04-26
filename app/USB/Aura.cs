@@ -211,7 +211,7 @@ namespace GHelper.USB
                 return _modesAlly;
             }
 
-            if (BacklightType == AuraBacklightType.PerKey)
+            if (BacklightType == AuraBacklightType.PerKey || BacklightType == AuraBacklightType.MultiZone)
             {
                 return _modesStrix;
             }
