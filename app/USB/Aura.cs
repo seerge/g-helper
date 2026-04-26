@@ -107,71 +107,13 @@ namespace GHelper.USB
         static bool isStrix4Zone = false;
         static bool isStrixNumpad = AppConfig.IsStrixNumpad();
         static bool isStrix4ZoneCorner = AppConfig.IsStrix4ZoneCorner();
+        static bool isStrix4ZoneFlipped = AppConfig.IsStrix4ZoneFlipped();
 
         static public bool isWhite = AppConfig.IsWhite();
 
         public static AuraBacklightType BacklightType { get; private set; } = AuraBacklightType.Unknown;
 
         static System.Timers.Timer timer = new System.Timers.Timer(1000);
-
-        private static Dictionary<AuraMode, string> _modesSingleColor = new Dictionary<AuraMode, string>
-        {
-            { AuraMode.AuraStatic, Properties.Strings.AuraStatic },
-            { AuraMode.AuraBreathe, Properties.Strings.AuraBreathe },
-            { AuraMode.AuraStrobe, Properties.Strings.AuraStrobe },
-        };
-
-        private static Dictionary<AuraMode, string> _modes = new Dictionary<AuraMode, string>
-        {
-            { AuraMode.AuraStatic, Properties.Strings.AuraStatic },
-            { AuraMode.AuraBreathe, Properties.Strings.AuraBreathe },
-            { AuraMode.AuraColorCycle, Properties.Strings.AuraColorCycle },
-            { AuraMode.AuraRainbow, Properties.Strings.AuraRainbow },
-            { AuraMode.AuraStrobe, Properties.Strings.AuraStrobe },
-            { AuraMode.HEATMAP, "Heatmap"},
-            { AuraMode.GPUMODE, "GPU Mode" },
-            { AuraMode.AMBIENT, "Ambient"},
-            { AuraMode.BATTERY, "Battery"},
-        };
-
-        private static Dictionary<AuraMode, string> _modesDynamicLighting = new Dictionary<AuraMode, string>
-        {
-            { AuraMode.AuraStatic, Properties.Strings.AuraStatic },
-            { AuraMode.AuraBreathe, Properties.Strings.AuraColorCycle },
-            { AuraMode.AuraRainbow, Properties.Strings.AuraRainbow },
-            { AuraMode.AuraStrobe, Properties.Strings.AuraStrobe },
-        };
-
-        private static Dictionary<AuraMode, string> _modesAlly = new Dictionary<AuraMode, string>
-        {
-            { AuraMode.AuraStatic, Properties.Strings.AuraStatic },
-            { AuraMode.AuraBreathe, Properties.Strings.AuraBreathe },
-            { AuraMode.AuraColorCycle, Properties.Strings.AuraColorCycle },
-            { AuraMode.AuraRainbow, Properties.Strings.AuraRainbow },
-            { AuraMode.AuraStrobe, Properties.Strings.AuraStrobe },
-            { AuraMode.BATTERY, "Battery"},
-        };
-
-        private static Dictionary<AuraMode, string> _modesStrix = new Dictionary<AuraMode, string>
-        {
-            { AuraMode.AuraStatic, Properties.Strings.AuraStatic },
-            { AuraMode.AuraBreathe, Properties.Strings.AuraBreathe },
-            { AuraMode.AuraColorCycle, Properties.Strings.AuraColorCycle },
-            { AuraMode.AuraRainbow, Properties.Strings.AuraRainbow },
-            { AuraMode.Star, "Star" },
-            { AuraMode.Rain, "Rain" },
-            { AuraMode.Highlight, "Highlight" },
-            { AuraMode.Laser, "Laser" },
-            { AuraMode.Ripple, "Ripple" },
-            { AuraMode.AuraStrobe, Properties.Strings.AuraStrobe},
-            { AuraMode.Comet, "Comet" },
-            { AuraMode.Flash, "Flash" },
-            { AuraMode.HEATMAP, "Heatmap"},
-            { AuraMode.AMBIENT, "Ambient"},
-            { AuraMode.BATTERY, "Battery"},
-            { AuraMode.GRADIENT, "Gradient"},
-            { AuraMode.ZONETEST, "Zone Test"},
-        };
 
         static Aura()
         {
@@ -191,32 +133,70 @@ namespace GHelper.USB
 
         public static Dictionary<AuraMode, string> GetModes()
         {
-            if (isACPI)
-            {
-                _modes.Remove(AuraMode.AuraRainbow);
-            }
+            var modes = new Dictionary<AuraMode, string>();
 
             if (isWhite)
             {
-                return _modesSingleColor;
+                modes[AuraMode.AuraStatic] = Properties.Strings.AuraStatic;
+                modes[AuraMode.AuraBreathe] = Properties.Strings.AuraBreathe;
+                modes[AuraMode.AuraStrobe] = Properties.Strings.AuraStrobe;
+                return modes;
             }
 
             if (AppConfig.IsDynamicLightingOnly())
             {
-                return _modesDynamicLighting;
+                modes[AuraMode.AuraStatic] = Properties.Strings.AuraStatic;
+                modes[AuraMode.AuraBreathe] = Properties.Strings.AuraColorCycle;
+                modes[AuraMode.AuraRainbow] = Properties.Strings.AuraRainbow;
+                modes[AuraMode.AuraStrobe] = Properties.Strings.AuraStrobe;
+                return modes;
             }
 
-            if (AppConfig.IsAlly())
+            bool perKey = BacklightType == AuraBacklightType.PerKey;
+            bool multiZone = BacklightType == AuraBacklightType.MultiZone;
+            bool isStrixKb = perKey || multiZone;
+            bool isAlly = AppConfig.IsAlly();
+
+            modes[AuraMode.AuraStatic] = Properties.Strings.AuraStatic;
+            modes[AuraMode.AuraBreathe] = Properties.Strings.AuraBreathe;
+            modes[AuraMode.AuraColorCycle] = Properties.Strings.AuraColorCycle;
+            if (!isACPI) modes[AuraMode.AuraRainbow] = Properties.Strings.AuraRainbow;
+
+            if (perKey)
             {
-                return _modesAlly;
+                modes[AuraMode.Star] = "Star";
+                modes[AuraMode.Rain] = "Rain";
+                modes[AuraMode.Highlight] = "Highlight";
+                modes[AuraMode.Laser] = "Laser";
+                modes[AuraMode.Ripple] = "Ripple";
             }
 
-            if (BacklightType == AuraBacklightType.PerKey || BacklightType == AuraBacklightType.MultiZone)
+            modes[AuraMode.AuraStrobe] = Properties.Strings.AuraStrobe;
+
+            if (isStrixKb)
             {
-                return _modesStrix;
+                modes[AuraMode.Comet] = "Comet";
+                modes[AuraMode.Flash] = "Flash";
             }
 
-            return _modes;
+            if (isAlly)
+            {
+                modes[AuraMode.BATTERY] = "Battery";
+                return modes;
+            }
+
+            modes[AuraMode.HEATMAP] = "Heatmap";
+            modes[AuraMode.GPUMODE] = "GPU Mode";
+            modes[AuraMode.AMBIENT] = "Ambient";
+            modes[AuraMode.BATTERY] = "Battery";
+
+            if (isStrixKb)
+            {
+                modes[AuraMode.GRADIENT] = "Gradient";
+                modes[AuraMode.ZONETEST] = "Zone Test";
+            }
+
+            return modes;
         }
 
         private static Dictionary<AuraMode, string> _modesRear = new Dictionary<AuraMode, string>
@@ -633,7 +613,17 @@ namespace GHelper.USB
 /*01        Z1  Z2  Z3  Z4  NA  NA  KeyZone */
             0,  1,  2,  3,  0,  0,
 
-/*02        L1  L2  L3  R3  R2  R1  LightBar 
+/*02        R1  R2  R3  L3  L2  L1  LightBar (wire ascending = R->L physical, matches OpenRGB Value 169..174) */
+            7,  7,  6,  5,  4,  4,
+
+        };
+
+        static byte[] packet4ZoneFlipped = new byte[]
+        {
+/*01        Z1  Z2  Z3  Z4  NA  NA  KeyZone */
+            0,  1,  2,  3,  0,  0,
+
+/*02        L1  L2  L3  R3  R2  R1  LightBar (wire ascending = L->R physical, G513 quirk) */
             4,  4,  5,  6,  7,  7,
 
         };
@@ -713,7 +703,9 @@ namespace GHelper.USB
 
             if (isStrix4Zone)
             { // per zone
-                var map = isStrix4ZoneCorner ? packet4ZoneCorner : packet4Zone;
+                var map = isStrix4ZoneCorner ? packet4ZoneCorner
+                        : isStrix4ZoneFlipped ? packet4ZoneFlipped
+                        : packet4Zone;
                 var leds_4_zone = map.Count();
                 for (int ledIndex = 0; ledIndex < leds_4_zone; ledIndex++)
                 {

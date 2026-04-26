@@ -470,6 +470,11 @@ public static class AppConfig
             || ContainsModel("G615") || ContainsModel("G815") || ContainsModel("G635") || ContainsModel("G835");
     }
 
+    public static bool IsStrix4ZoneFlipped()
+    {
+        return ContainsModel("G513");
+    }
+
     public static bool IsZ1325()
     {
         return ContainsModel("GZ302E");
