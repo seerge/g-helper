@@ -112,7 +112,6 @@ namespace GHelper
             labelSettings = new Label();
             panelSettings = new Panel();
             checkAutoToggleClamshellMode = new CheckBox();
-            checkBWIcon = new CheckBox();
             checkTopmost = new CheckBox();
             checkNoOverdrive = new CheckBox();
             checkBootSound = new CheckBox();
@@ -1197,7 +1196,6 @@ namespace GHelper
             panelSettings.AutoSize = true;
             panelSettings.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelSettings.Controls.Add(checkAutoToggleClamshellMode);
-            panelSettings.Controls.Add(checkBWIcon);
             panelSettings.Controls.Add(checkTopmost);
             panelSettings.Controls.Add(checkNoOverdrive);
             panelSettings.Controls.Add(checkKeystoneSound);
@@ -1227,20 +1225,7 @@ namespace GHelper
             checkAutoToggleClamshellMode.TabIndex = 8;
             checkAutoToggleClamshellMode.Text = "Auto Toggle Clamshell Mode";
             checkAutoToggleClamshellMode.UseVisualStyleBackColor = true;
-            // 
-            // checkBWIcon
-            // 
-            checkBWIcon.AutoSize = true;
-            checkBWIcon.Dock = DockStyle.Top;
-            checkBWIcon.Location = new Point(21, 383);
-            checkBWIcon.Margin = new Padding(5, 3, 5, 3);
-            checkBWIcon.Name = "checkBWIcon";
-            checkBWIcon.Padding = new Padding(3);
-            checkBWIcon.Size = new Size(917, 42);
-            checkBWIcon.TabIndex = 11;
-            checkBWIcon.Text = "Black and white tray icon";
-            checkBWIcon.UseVisualStyleBackColor = true;
-            // 
+            //
             // checkTopmost
             // 
             checkTopmost.AutoSize = true;
@@ -1879,7 +1864,6 @@ namespace GHelper
         private RButton buttonACPISend;
         private PictureBox pictureDebug;
         private Label labelACPITitle;
-        private CheckBox checkBWIcon;
         private CheckBox checkStatusLed;
         private CheckBox checkPerKeyRGB;
         private CheckBox checkAspm;

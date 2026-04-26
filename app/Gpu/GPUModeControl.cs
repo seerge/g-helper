@@ -154,15 +154,7 @@ namespace GHelper.Gpu
                 if (eco == 1)
                 {
                     HardwareControl.KillGPUApps();
-                    try
-                    {
-                        HardwareControl.GpuControl?.Dispose();
-                        HardwareControl.GpuControl = null;
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.WriteLine("Failed to dispose GPU control: " + ex.Message);
-                    }
+                    HardwareControl.DisposeGpuControl();
                     if (AppConfig.IsNVPlatform()) NvidiaGpuControl.StopNVService();
                 }
 

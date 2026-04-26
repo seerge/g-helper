@@ -54,19 +54,21 @@ public class NvidiaGpuControl : IGpuControl
 
     private static bool verboseLog = false;
 
-    public bool IsAlive()
+    private enum GpuState { Active, Asleep, Off }
+
+    private GpuState GetGpuState()
     {
-        if (!IsValid) return false;
+        if (!IsValid) return GpuState.Off;
         try
         {
             var perfState = GPUApi.GetCurrentPerformanceState(_internalGpu!.Handle);
             if (verboseLog) Logger.WriteLine($"GPU: {perfState}");
-            return true;
+            return GpuState.Active;
         }
         catch (Exception ex)
         {
             if (verboseLog) Logger.WriteLine($"GPU: {ex.Message}");
-            return false; // (ex.Message == "NVAPI_GPU_NOT_POWERED");
+            return ex.Message == "NVAPI_GPU_NOT_POWERED" ? GpuState.Asleep : GpuState.Off;
         }
     }
 
@@ -74,8 +76,10 @@ public class NvidiaGpuControl : IGpuControl
     {
         if (!IsValid) return null;
 
-        IThermalSensor? gpuSensor =
-            GPUApi.GetThermalSettings(_internalGpu!.Handle).Sensors
+        var thermalSettings = GPUApi.GetThermalSettings(_internalGpu!.Handle);
+        if (thermalSettings.Sensors is null) return null;
+
+        IThermalSensor? gpuSensor = thermalSettings.Sensors
             .FirstOrDefault(s => s.Target == ThermalSettingsTarget.GPU);
 
         if (log || verboseLog) Logger.WriteLine($"GPU Temp: {gpuSensor?.CurrentTemperature}C");
@@ -88,7 +92,10 @@ public class NvidiaGpuControl : IGpuControl
     {
         if (!IsValid) return null;
 
-        if ((_readTask?.IsCompleted ?? true) && (IsAlive() || ShouldRefresh()))
+        var state = GetGpuState();
+        if (state == GpuState.Off) return null;
+
+        if ((_readTask?.IsCompleted ?? true) && (state == GpuState.Active || ShouldRefresh()))
         {
             _readTask = Task.Run(() =>
             {

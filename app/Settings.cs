@@ -853,6 +853,18 @@ namespace GHelper
                 contextMenuStrip.Items.Add("-");
             }
 
+            var bwIcon = new ToolStripMenuItem(Properties.Strings.BWTrayIcon);
+            bwIcon.Margin = padding;
+            bwIcon.Checked = AppConfig.IsBWIcon();
+            bwIcon.Click += (sender, args) =>
+            {
+                bwIcon.Checked = !bwIcon.Checked;
+                AppConfig.Set("bw_icon", bwIcon.Checked ? 1 : 0);
+                VisualiseIcon();
+            };
+            contextMenuStrip.Items.Add(bwIcon);
+
+            contextMenuStrip.Items.Add("-");
 
             var menuOverlay = new ToolStripMenuItem("Hardware Overlay");
             menuOverlay.Click += (sender, args) => ToggleOverlay();
