@@ -1,6 +1,8 @@
 ﻿using GHelper.AnimeMatrix.Communication;
+using HidSharp.Reports;
 using System.Management;
 using System.Text;
+using DeviceList = HidSharp.DeviceList;
 
 namespace GHelper.AnimeMatrix
 {
@@ -114,6 +116,42 @@ namespace GHelper.AnimeMatrix
         public SlashDevice(ushort productId = 0x193B) : base(0x0B05, productId, 128)
         {
             Length = AppConfig.IsSlashLong() ? 35 : 7;
+        }
+
+        public static SlashDevice? Detect()
+        {
+            if (HasSlashInterface(0x19B6, 0x5D))
+                return new SlashDeviceAura();
+
+            if (HasSlashInterface(0x193B, 0x5E))
+                return new SlashDevice();
+
+            return null;
+        }
+
+        private static bool HasSlashInterface(ushort productId, byte reportId)
+        {
+            try
+            {
+                return DeviceList.Local
+                    .GetHidDevices(0x0B05, productId)
+                    .Any(d =>
+                    {
+                        try
+                        {
+                            return d.GetMaxFeatureReportLength() >= 128
+                                && d.GetReportDescriptor().TryGetReport(ReportType.Feature, reportId, out _);
+                        }
+                        catch
+                        {
+                            return false;
+                        }
+                    });
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public void WakeUp()
