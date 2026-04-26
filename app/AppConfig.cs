@@ -411,12 +411,17 @@ public static class AppConfig
 
     public static bool IsSlash()
     {
-        return ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("GU405") || ContainsModel("GU606");
+        return ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("GA405") || ContainsModel("GU405") || ContainsModel("GU606");
     }
 
     public static bool IsSlashAura()
     {
-        return ContainsModel("GA605") || ContainsModel("GU605C") || ContainsModel("GA403W") || ContainsModel("GA403UM") || ContainsModel("GA403UP") || ContainsModel("GA403UH") || ContainsModel("GU405") || ContainsModel("GU606");
+        return ContainsModel("GA605") || ContainsModel("GU605C") || ContainsModel("GA403W") || ContainsModel("GA403UM") || ContainsModel("GA403UP") || ContainsModel("GA403UH") || ContainsModel("GA405") || ContainsModel("GU405") || ContainsModel("GU606");
+    }
+
+    public static bool IsSlashLong()
+    {
+        return ContainsModel("GA405") || ContainsModel("GU405") || ContainsModel("GU606");
     }
 
     public static bool IsInputBacklight()

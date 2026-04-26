@@ -109,8 +109,11 @@ namespace GHelper.AnimeMatrix
             { SlashMode.FX3, 0x62},
         };
 
+        protected int Length { get; private set; }
+
         public SlashDevice(ushort productId = 0x193B) : base(0x0B05, productId, 128)
         {
+            Length = AppConfig.IsSlashLong() ? 35 : 7;
         }
 
         public void WakeUp()
@@ -156,20 +159,17 @@ namespace GHelper.AnimeMatrix
 
         private byte[] GetPercentagePattern(int brightness, double percentage)
         {
-            // because 7 segments, within each led segment represents a percentage bracket of (100/7 = 14.2857%)
-            // set brightness to reflect battery's percentage within that range
+            double step = 100.0 / Length;
+            int bracket = (int)Math.Floor(percentage / step);
+            if (bracket >= Length) return Enumerable.Repeat((byte)(brightness * 85.333), Length).ToArray();
 
-            int bracket = (int)Math.Floor(percentage / 14.2857);
-            if (bracket >= 7) return Enumerable.Repeat((byte)(brightness * 85.333), 7).ToArray();
-
-            byte[] batteryPattern = Enumerable.Repeat((byte)(0x00), 7).ToArray();
-            for (int i = 6; i > 6 - bracket; i--)
+            byte[] batteryPattern = new byte[Length];
+            for (int i = Length - 1; i > Length - 1 - bracket; i--)
             {
                 batteryPattern[i] = (byte)(brightness * 85.333);
             }
 
-            //set the "selected" bracket to the percentage of that bracket filled from 0 to 255 as a hex
-            batteryPattern[6 - bracket] = (byte)(((percentage % 14.2857) * brightness * 85.333) / 14.2857);
+            batteryPattern[Length - 1 - bracket] = (byte)(((percentage % step) * brightness * 85.333) / step);
 
             return batteryPattern;
         }
@@ -186,13 +186,13 @@ namespace GHelper.AnimeMatrix
 
         public void SetAudioPattern(int brightness, double bass, double treble)
         {
-            byte[] payload = new byte[7];
-            double step = 100.0 / 7.0;
-            for (int i = 0; i < 7; i++)
+            byte[] payload = new byte[Length];
+            double step = 100.0 / Length;
+            for (int i = 0; i < Length; i++)
             {
                 double s = step * i, e = step * (i + 1);
-                if (bass > s) payload[6 - i] |= (byte)(Math.Min((bass - s) / (e - s), 1) * brightness * 0x20);
-                if (treble > s) payload[6 - i] |= (byte)(Math.Min((treble - s) / (e - s), 1) * brightness * 0x50);
+                if (bass > s) payload[Length - 1 - i] |= (byte)(Math.Min((bass - s) / (e - s), 1) * brightness * 0x20);
+                if (treble > s) payload[Length - 1 - i] |= (byte)(Math.Min((treble - s) / (e - s), 1) * brightness * 0x50);
             }
             ContinueCustom(payload, null);
         }
@@ -208,8 +208,8 @@ namespace GHelper.AnimeMatrix
 
         public void ContinueCustom(byte[] data, string? log)
         {
-            byte[] payload = new byte[] { 0xD3, 0x00, 0x00, 0x07 };
-            Set(CreatePacket(payload.Concat(data.Take(7)).ToArray()), log);
+            byte[] payload = new byte[] { 0xD3, 0x00, 0x00, (byte)Length };
+            Set(CreatePacket(payload.Concat(data.Take(Length)).ToArray()), log);
         }
 
         public void SetOptions(bool status, int brightness = 0, int interval = 0)
