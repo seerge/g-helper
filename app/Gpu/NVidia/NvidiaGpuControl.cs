@@ -281,21 +281,21 @@ public class NvidiaGpuControl : IGpuControl
     {
         if (!ProcessHelper.IsUserAdministrator()) return;
         if (NvBootState.DGpuArrivedAfterBoot())
-            NvpcfPnp.RestartService("NvContainerLocalSystem");
+            RunPowershellCommand(@"Restart-Service -Name 'NvContainerLocalSystem' -Force");
     }
 
     public static void RestartNVService()
     {
         if (!ProcessHelper.IsUserAdministrator()) return;
-        NvpcfPnp.RestartService("NVDisplay.ContainerLocalSystem");
-        NvpcfPnp.RestartService("NvContainerLocalSystem");
+        RunPowershellCommand(@"Restart-Service -Name 'NVDisplay.ContainerLocalSystem' -Force");
+        RunPowershellCommand(@"Restart-Service -Name 'NvContainerLocalSystem' -Force");
     }
 
     public static void StopNVService()
     {
         if (!ProcessHelper.IsUserAdministrator()) return;
-        NvpcfPnp.StopService("NvContainerLocalSystem");
-        NvpcfPnp.StopService("NVDisplay.ContainerLocalSystem");
+        RunPowershellCommand(@"Stop-Service -Name 'NvContainerLocalSystem' -Force");
+        RunPowershellCommand(@"Stop-Service -Name 'NVDisplay.ContainerLocalSystem' -Force");
     }
 
     public int SetClocks(int core, int memory)
