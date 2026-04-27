@@ -50,18 +50,18 @@ G-Helper is a fast, native tool for tuning performance, fans, GPU, battery, and 
 
 1. Performance modes: Silent - Balanced - Turbo (built-in, with default fan curves)
 2. GPU modes: Eco - Standard - Ultimate - Optimized
-3. Screen refresh rate control with display overdrive (OD) 
+3. Screen refresh rate control with display overdrive
 4. Custom fan curve editor, power limits and turbo boost selection for every performance mode
 5. Anime Matrix or Slash Lighting control including animated GIFs, clock and Audio visualizer
-6. Backlight animation modes and colors 
+6. RGB Backlight animation modes and colors 
 7. Hotkey handling
 8. Monitor CPU and GPU temperature, fan speeds and battery status
 9. Battery charge limit to preserve battery health
 10. NVidia GPU overclocking and undervolting
 11. XG Mobile Control
-12. AMD CPU Undervolting
+12. AMD CPU Undervolting and temp limits
 13. BIOS and Driver Updates
-14. Asus Mice settings
+14. Asus Mice controls
 15. Mini-led multi-zone switch
 16. Flicker-free dimming and Visual Modes
 
@@ -73,16 +73,14 @@ G-Helper is a fast, native tool for tuning performance, fans, GPU, battery, and 
 
 ### :rocket: Performance Modes
 
-<img align="right" width="300" src="https://github.com/seerge/g-helper/assets/5920850/3e119674-db8d-486b-aa65-2bf9b61f9aa6">
+>[!NOTE]
+>All Modes are **baked into BIOS** along with default fan curves and power limits. And and they are the **same thing** as in the Armoury Crate.
 
-All Modes are **baked in BIOS** along with default fan curves and power limits and they are the **same** as in the Armoury Crate.
+Each default BIOS mode is paired with matching [Windows Power Mode](https://support.microsoft.com/en-us/windows/change-the-power-mode-for-your-windows-pc-c2aff038-22c9-f46d-5ca0-78696fdf2de8). You can adjust this setting under ``Fans + Power``
 
-Each BIOS mode is paired with matching Windows Power Mode. You can adjust this setting under ``Fans + Power``
-
-1. **Silent** in BIOS + **Best power efficiency** power mode
-2. **Balanced** (Performance in AC) in BIOS  + **Balanced** power mode
-3. **Turbo** in BIOS + **Best performance** power mode
-   
+1. `Silent` in BIOS + `Best power efficiency` power mode
+2. `Balanced` (Performance in AC) in BIOS  + `Balanced` power mode
+3. `Turbo` in BIOS + `Best performance` power mode
 
 ### :video_game: GPU Modes
 
@@ -97,9 +95,11 @@ Each BIOS mode is paired with matching Windows Power Mode. You can adjust this s
 
 ### :mouse: Asus Mouse and other peripherals support
 
-[Currently supported models](https://github.com/seerge/g-helper/discussions/900)
-- ROG Chakram X 
-- ROG Chakram Core 
+<details>
+<summary><a href="https://github.com/seerge/g-helper/discussions/900">Currently supported models</a> (click to expand)</summary>
+
+- ROG Chakram X
+- ROG Chakram Core
 - ROG Gladius II and Gladius II Origin
 - ROG Gladius II Wireless
 - ROG Gladius III
@@ -112,9 +112,9 @@ Each BIOS mode is paired with matching Windows Power Mode. You can adjust this s
 - ROG Keris II Ace
 - ROG Keris Wireless Aimpoint
 - ROG Strix Carry
-- ROG Strix III Gladius III Aimpoint Wireless 
+- ROG Strix III Gladius III Aimpoint Wireless
 - ROG Strix Impact III
-- ROG Strix Impact III Wireless 
+- ROG Strix Impact III Wireless
 - ROG Spatha X
 - ROG Strix Impact II Wireless
 - ROG Pugio
@@ -126,6 +126,8 @@ Each BIOS mode is paired with matching Windows Power Mode. You can adjust this s
 - TUF Gaming M5
 - TX Gaming Mini
 
+</details>
+
 Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contribution and research (!).
 
 ### ⌨️ Keybindings
@@ -135,7 +137,8 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 - ``Ctrl + Shift + F12`` - Open G-Helper window
 - ``Ctrl + M1 / M2`` - Screen brightness Down / Up
 - ``Shift + M1 / M2`` - Backlight brightness Down / Up
-- ``Fn + C`` - Fn-Lock
+- ``Fn + V`` - Visual Modes
+- ``Fn + C`` / ``Fn + Esc`` - Fn-Lock
 - ``Fn + Ctrl +  F7 / F8`` / ``Ctrl + Shift + Alt +  F7 / F8`` - Flicker-free dimming Down / Up
 - ``Fn + Shift + F7 / F8`` - Matrix / Slash Lighting brightness Down / Up
 - ``Fn + Shift + F7 / F8`` / ``Ctrl + Shift + Alt +  F7 / F8`` - Screenpad brightness Down / Up
@@ -174,7 +177,7 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 - [Linux Kernel](https://github.com/torvalds/linux/blob/master/include/linux/platform_data/x86/asus-wmi.h) for some basic endpoints in ASUS ACPI/WMI interface
 - [NvAPIWrapper](https://github.com/falahati/NvAPIWrapper) for accessing Nvidia API
 - [Starlight](https://github.com/vddCore/Starlight) for anime matrix communication protocol
-- [UXTU](https://github.com/JamesCJ60/Universal-x86-Tuning-Utility) for undervolting using Ryzen System Management Unit
+- [UXTU](https://github.com/JamesCJ60/Universal-x86-Tuning-Utility) for undervolting endpoints using Ryzen SMU
 - [PawnIO](https://github.com/namazso/PawnIO) for access to RyzenSMU
 - [AsusCtl](https://gitlab.com/asus-linux/asusctl) for inspiration and some reverse engineering
 
