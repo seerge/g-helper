@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -368,9 +368,6 @@
   </data>
   <data name="EcoMode" xml:space="preserve">
     <value>Eco</value>
-  </data>
-  <data name="EnableGPUOnShutdown" xml:space="preserve">
-    <value>Abilita la GPU allo spegnimento (evita problemi con la modalità Eco)</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
     <value>Disabilitare la dGPU impostando la modalità Eco quando non è attiva la modalità schermo Optimus nel Pannello di Controllo NVIDIA può causare problemi al controllo della luminosità fino al prossimo riavvio.

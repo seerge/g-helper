@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -368,9 +368,6 @@
   </data>
   <data name="EcoMode" xml:space="preserve">
     <value>Econômico</value>
-  </data>
-  <data name="EnableGPUOnShutdown" xml:space="preserve">
-    <value>Ativar a GPU ao desligar (impede problemas com o modo Eco)</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
     <value>Desativar a dGPU entrando no modo Eco enquanto o Modo de Exibição no painel de controle da NVIDIA não está definido como Optimus pode causar problemas com os controles de brilho até a próxima reinicialização.

@@ -2,7 +2,6 @@
 using GHelper.Gpu.NVidia;
 using GHelper.Helpers;
 using GHelper.USB;
-using Microsoft.Win32;
 using System.Diagnostics;
 
 namespace GHelper.Gpu
@@ -349,42 +348,6 @@ namespace GHelper.Gpu
             {
                 HardwareControl.GpuControl.KillGPUApps();
             }
-        }
-
-        public static bool IsHibernationEnabled()
-        {
-            try
-            {
-                using (RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Power"))
-                {
-                    if (key != null)
-                    {
-                        object value = key.GetValue("HibernateEnabled");
-                        if (value is int intValue)
-                        {
-                            return intValue != 0;
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.WriteLine("Error checking hibernation status: " + ex.Message);
-            }
-            return true;
-        }
-
-
-        // Manually forcing standard mode on shutdown/hibernate for some exotic cases
-        // https://github.com/seerge/g-helper/pull/855 
-        public void StandardModeFix(bool hibernate = false)
-        {
-            if (!AppConfig.IsGPUFix()) return; // No config entry
-            if (Program.acpi.DeviceGet(AsusACPI.GPUMux) == 0) return; // Ultimate mode
-            if (hibernate && !IsHibernationEnabled()) return;
-
-            Logger.WriteLine("Forcing Standard Mode on " + (hibernate ? "hibernation" : "shutdown"));
-            Program.acpi.SetGPUEco(0);
         }
 
     }

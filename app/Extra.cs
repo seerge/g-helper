@@ -139,7 +139,6 @@ namespace GHelper
             labelBacklightTimeout.Text = Properties.Strings.BacklightTimeout;
             //labelBacklightTimeoutPlugged.Text = Properties.Strings.BacklightTimeoutPlugged;
 
-            checkGPUFix.Text = Properties.Strings.EnableGPUOnShutdown;
             checkNoOverdrive.Text = Properties.Strings.DisableOverdrive;
             checkTopmost.Text = Properties.Strings.WindowTop;
             checkUSBC.Text = Properties.Strings.OptimizedUSBC;
@@ -460,10 +459,6 @@ namespace GHelper
 
             pictureLog.Click += PictureLog_Click;
 
-            checkGPUFix.Visible = Program.acpi.IsNVidiaGPU();
-            checkGPUFix.Checked = AppConfig.IsGPUFix();
-            checkGPUFix.CheckedChanged += CheckGPUFix_CheckedChanged;
-
             checkNVPlatform.Visible = Program.acpi.IsNVidiaGPU();
             checkNVPlatform.Checked = AppConfig.IsNVPlatform();
             checkNVPlatform.CheckedChanged += CheckNVPlatform_CheckedChanged;
@@ -628,11 +623,6 @@ namespace GHelper
             int bootSound = checkBootSound.Checked ? 1 : 0;
             Program.acpi.DeviceSet(AsusACPI.BootSound, bootSound, "BootSound");
             AppConfig.Set("boot_sound", bootSound);
-        }
-
-        private void CheckGPUFix_CheckedChanged(object? sender, EventArgs e)
-        {
-            AppConfig.Set("gpu_fix", (checkGPUFix.Checked ? 1 : 0));
         }
 
         private void InitHibernate()
