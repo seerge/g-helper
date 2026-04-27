@@ -89,18 +89,28 @@ public static class NvpcfPnp
         try
         {
             IntPtr svc = OpenService(scm, serviceName, SERVICE_START | SERVICE_QUERY_STATUS);
-            if (svc == IntPtr.Zero) return false;
+            if (svc == IntPtr.Zero)
+            {
+                Logger.WriteLine($"Service '{serviceName}': not found / not accessible");
+                return false;
+            }
             try
             {
                 bool ok = StartServiceW(svc, 0, null);
                 if (!ok)
                 {
                     int err = Marshal.GetLastWin32Error();
-                    if (err != ERROR_SERVICE_ALREADY_RUNNING)
-                        Logger.WriteLine($"StartService({serviceName}) failed: {err}");
-                    return err == ERROR_SERVICE_ALREADY_RUNNING;
+                    if (err == ERROR_SERVICE_ALREADY_RUNNING)
+                    {
+                        Logger.WriteLine($"Service '{serviceName}': already running");
+                        return true;
+                    }
+                    Logger.WriteLine($"Service '{serviceName}': start failed (err {err})");
+                    return false;
                 }
-                return WaitForState(svc, SERVICE_RUNNING, TimeSpan.FromSeconds(10));
+                bool reached = WaitForState(svc, SERVICE_RUNNING, TimeSpan.FromSeconds(10));
+                Logger.WriteLine($"Service '{serviceName}': started" + (reached ? "" : " (timeout waiting for RUNNING)"));
+                return reached;
             }
             finally { CloseServiceHandle(svc); }
         }
@@ -113,23 +123,73 @@ public static class NvpcfPnp
         if (scm == IntPtr.Zero) return false;
         try
         {
-            IntPtr svc = OpenService(scm, serviceName, SERVICE_STOP | SERVICE_QUERY_STATUS);
-            if (svc == IntPtr.Zero) return false;
+            IntPtr svc = OpenService(scm, serviceName,
+                SERVICE_STOP | SERVICE_QUERY_STATUS | SERVICE_ENUMERATE_DEPENDENTS);
+            if (svc == IntPtr.Zero)
+            {
+                Logger.WriteLine($"Service '{serviceName}': not found / not accessible");
+                return false;
+            }
             try
             {
+                // Match PowerShell's "Stop-Service -Force": stop dependent services first.
+                StopDependents(scm, svc, serviceName);
+
                 var status = new SERVICE_STATUS();
                 if (!ControlService(svc, SERVICE_CONTROL_STOP, ref status))
                 {
                     int err = Marshal.GetLastWin32Error();
-                    if (err == ERROR_SERVICE_NOT_ACTIVE) return true;
-                    Logger.WriteLine($"StopService({serviceName}) failed: {err}");
+                    if (err == ERROR_SERVICE_NOT_ACTIVE)
+                    {
+                        Logger.WriteLine($"Service '{serviceName}': already stopped");
+                        return true;
+                    }
+                    Logger.WriteLine($"Service '{serviceName}': stop failed (err {err})");
                     return false;
                 }
-                return WaitForState(svc, SERVICE_STOPPED, TimeSpan.FromSeconds(5));
+                bool reached = WaitForState(svc, SERVICE_STOPPED, TimeSpan.FromSeconds(5));
+                Logger.WriteLine($"Service '{serviceName}': stopped" + (reached ? "" : " (timeout waiting for STOPPED)"));
+                return reached;
             }
             finally { CloseServiceHandle(svc); }
         }
         finally { CloseServiceHandle(scm); }
+    }
+
+    private static void StopDependents(IntPtr scm, IntPtr svc, string parentName)
+    {
+        // First call with size=0 returns the bytes needed for the buffer.
+        EnumDependentServicesW(svc, SERVICE_ACTIVE, IntPtr.Zero, 0, out uint bytesNeeded, out _);
+        if (bytesNeeded == 0) return;
+
+        IntPtr buf = Marshal.AllocHGlobal((int)bytesNeeded);
+        try
+        {
+            if (!EnumDependentServicesW(svc, SERVICE_ACTIVE, buf, bytesNeeded, out _, out uint count) || count == 0)
+                return;
+
+            int structSize = Marshal.SizeOf<ENUM_SERVICE_STATUS>();
+            for (int i = 0; i < count; i++)
+            {
+                var entry = Marshal.PtrToStructure<ENUM_SERVICE_STATUS>(buf + i * structSize);
+                string depName = entry.lpServiceName != IntPtr.Zero
+                    ? Marshal.PtrToStringUni(entry.lpServiceName) ?? ""
+                    : "";
+                if (string.IsNullOrEmpty(depName)) continue;
+
+                Logger.WriteLine($"Service '{parentName}': stopping dependent '{depName}' first");
+                IntPtr depSvc = OpenService(scm, depName, SERVICE_STOP | SERVICE_QUERY_STATUS);
+                if (depSvc == IntPtr.Zero) continue;
+                try
+                {
+                    var depStatus = new SERVICE_STATUS();
+                    if (ControlService(depSvc, SERVICE_CONTROL_STOP, ref depStatus))
+                        WaitForState(depSvc, SERVICE_STOPPED, TimeSpan.FromSeconds(5));
+                }
+                finally { CloseServiceHandle(depSvc); }
+            }
+        }
+        finally { Marshal.FreeHGlobal(buf); }
     }
 
     private static bool WaitForState(IntPtr svc, uint target, TimeSpan timeout)
@@ -196,11 +256,25 @@ public static class NvpcfPnp
     private const uint SERVICE_START = 0x0010;
     private const uint SERVICE_STOP = 0x0020;
     private const uint SERVICE_QUERY_STATUS = 0x0004;
+    private const uint SERVICE_ENUMERATE_DEPENDENTS = 0x0008;
     private const uint SERVICE_CONTROL_STOP = 0x1;
     private const uint SERVICE_STOPPED = 0x1;
     private const uint SERVICE_RUNNING = 0x4;
+    private const uint SERVICE_ACTIVE = 0x1;
     private const int ERROR_SERVICE_NOT_ACTIVE = 1062;
     private const int ERROR_SERVICE_ALREADY_RUNNING = 1056;
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct ENUM_SERVICE_STATUS
+    {
+        public IntPtr lpServiceName;
+        public IntPtr lpDisplayName;
+        public SERVICE_STATUS ServiceStatus;
+    }
+
+    [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode, EntryPoint = "EnumDependentServicesW")]
+    private static extern bool EnumDependentServicesW(IntPtr hService, uint dwServiceState,
+        IntPtr lpServices, uint cbBufSize, out uint pcbBytesNeeded, out uint lpServicesReturned);
 
     [StructLayout(LayoutKind.Sequential)]
     private struct SERVICE_STATUS
