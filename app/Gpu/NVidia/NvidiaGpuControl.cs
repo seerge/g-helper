@@ -287,8 +287,8 @@ public class NvidiaGpuControl : IGpuControl
     public static void StopNVService()
     {
         if (!ProcessHelper.IsUserAdministrator()) return;
-        //NvpcfPnp.StopService("NvContainerLocalSystem");
-        NvpcfPnp.StopService("NVDisplay.ContainerLocalSystem");
+        NvpcfPnp.StopService("NvContainerLocalSystem");
+        //NvpcfPnp.StopService("NVDisplay.ContainerLocalSystem");
     }
 
     public int SetClocks(int core, int memory)
