@@ -144,6 +144,19 @@ namespace GHelper.Gpu
         public void SetGPUEco(int eco)
         {
 
+            if (eco == 1 && NvDDS.TryGetState(out _, out var mux) && mux == NvDDS.DDSMuxState.DGpu)
+            {
+                NvDDS.OpenTray();
+                MessageBox.Show(
+                    settings,
+                    "NVIDIA GPU is currently used for display. Please switch Display Mode to Optimus first.",
+                    "NVIDIA Display Mode",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                InitGPUMode();
+                return;
+            }
+
             settings.LockGPUModes();
 
             Task.Run(async () =>

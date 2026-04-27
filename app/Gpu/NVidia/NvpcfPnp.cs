@@ -56,7 +56,6 @@ public static class NvpcfPnp
                 Logger.WriteLine($"NVPCF {(stateChange == DICS_ENABLE ? "enabled" : "disabled")}");
                 return true;
             }
-            // not found — not an error on AMD machines or systems without NVPCF
             return false;
         }
         finally
@@ -76,8 +75,6 @@ public static class NvpcfPnp
         int nul = first.IndexOf('\0');
         return nul >= 0 ? first[..nul] : first;
     }
-
-    // ---- Direct service control via WinAPI (replaces RunPowershellCommand("Restart-Service ...")) ----
 
     public static void RestartService(string serviceName)
     {
@@ -147,8 +144,6 @@ public static class NvpcfPnp
         }
         return false;
     }
-
-    // ===== P/Invoke =====
 
     [StructLayout(LayoutKind.Sequential)]
     private struct SP_DEVINFO_DATA
