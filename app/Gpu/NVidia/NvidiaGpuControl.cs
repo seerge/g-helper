@@ -99,7 +99,7 @@ public class NvidiaGpuControl : IGpuControl
         {
             _readTask = Task.Run(() =>
             {
-                var temp = ReadCurrentTemperature(true);
+                var temp = ReadCurrentTemperature();
                 if (temp is not null)
                 {
                     _lastTemp = temp;
