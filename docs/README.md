@@ -23,7 +23,6 @@ G-Helper is a fast, native tool for tuning performance, fans, GPU, battery, and 
 
 [![United24](https://github.com/user-attachments/assets/aa9444e3-9daa-4b88-a473-7a7f855e3a07)](https://u24.gov.ua/)
 
-
 ## :loudspeaker: YouTube Reviews and Guides
 | [![Youtube review Josh Cravey](https://i.ytimg.com/vi/hqe-PjuE-K8/hqdefault.jpg)](https://www.youtube.com/watch?v=hqe-PjuE-K8) | [![Youtube review Crimson Tech](https://i.ytimg.com/vi/5XUIMUzgHU0/hqdefault.jpg)](https://www.youtube.com/watch?v=5XUIMUzgHU0) | [![Youtube review cbutters Tech](https://i.ytimg.com/vi/6aVdwJKZSSc/hqdefault.jpg)](https://www.youtube.com/watch?v=6aVdwJKZSSc) |
 | ----------------- | ---------------- | ---------------- | 
@@ -44,7 +43,7 @@ G-Helper is a fast, native tool for tuning performance, fans, GPU, battery, and 
 4. Simple and clean native UI with easy access to all settings
 5. FN-Lock and custom hotkeys
 
-![Screenshot 2024-03-11 104354](https://github.com/seerge/g-helper/assets/5920850/626a5a6e-fdae-431c-843e-92886c8420ee)
+<img width="1960" height="1587" alt="Screenshot 2026-04-27 111020" src="https://github.com/user-attachments/assets/9376fe90-fbb6-420a-abbd-0186189665e1" />
 
 ### :zap: Features
 
@@ -72,7 +71,6 @@ G-Helper is a fast, native tool for tuning performance, fans, GPU, battery, and 
 - Keyboard backlight timeout on battery or when plugged in
 
 ### :rocket: Performance Modes
-
 >[!NOTE]
 >All Modes are **baked into BIOS** along with default fan curves and power limits. And and they are the **same thing** as in the Armoury Crate.
 
@@ -82,6 +80,8 @@ Each default BIOS mode is paired with matching [Windows Power Mode](https://supp
 2. `Balanced` (Performance in AC) in BIOS  + `Balanced` power mode
 3. `Turbo` in BIOS + `Best performance` power mode
 
+<img width="2330" height="1618" alt="Screenshot 2026-04-27 110839" src="https://github.com/user-attachments/assets/ffc93c42-abd2-4408-ae81-e73b36c0bde6" />
+
 ### :video_game: GPU Modes
 
 1. **Eco** : only low power integrated GPU enabled, iGPU drives built in display
@@ -89,8 +89,7 @@ Each default BIOS mode is paired with matching [Windows Power Mode](https://supp
 3. **Ultimate**: iGPU and dGPU enabled, but dGPU drives built in display (supported on 2022+ models)
 4. **Optimized**: disables dGPU on battery (Eco) and enables when plugged in (Standard)
 
-![Screenshot 2024-03-11 111818](https://github.com/seerge/g-helper/assets/5920850/fd69a81e-978d-4d5c-a0a8-26da51f90a5b)
-
+<img width="2354" height="1650" alt="Screenshot 2026-04-27 110733" src="https://github.com/user-attachments/assets/ae5f16eb-e1d2-4040-b2a0-0018d6793e53" />
 <img width="1134" height="746" alt="GPU Modes" src="https://github.com/user-attachments/assets/c273baa1-dbe7-4361-88aa-ec670128f956" />
 
 ### :mouse: Asus Mouse and other peripherals support
@@ -129,6 +128,8 @@ Each default BIOS mode is paired with matching [Windows Power Mode](https://supp
 </details>
 
 Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contribution and research (!).
+
+<img width="2448" height="1758" alt="Screenshot 2026-04-27 110911" src="https://github.com/user-attachments/assets/675b1dc3-3ac5-4493-8bca-a444fb6a97cf" />
 
 ### ⌨️ Keybindings
 
