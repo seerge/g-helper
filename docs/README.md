@@ -33,8 +33,8 @@ G-Helper is a fast, native tool for tuning performance, fans, GPU, battery, and 
 1. [Digital Trends — I finally found a gaming laptop utility that's actually worth using](https://www.digitaltrends.com/computing/g-helper-armoury-crate-alternative/)
 2. [BinaryFork — G-Helper: The Armoury Crate Alternative for ASUS Gaming Laptops](https://binaryfork.com/ghelper-armoury-crate-alternative-10216/)
 3. [Ultrabookreview — Optimized Quiet Gaming (35 dBA) on RTX 5080, RTX 5090 Laptops](https://www.ultrabookreview.com/71392-optimized-quiet-gaming-5080-5090/)
-4. [Notebookcheck — Unbloated: G-Helper – The best open-source alternative to Asus Armoury Crate (Part 2)](https://www.notebookcheck.net/Unbloated-G-Helper-The-best-open-source-alternative-to-Asus-Armoury-Crate-Part-2.1213486.0.html)
-5. [Les Numériques — Marre des lenteurs d'Armoury Crate sur votre PC portable Asus ? Découvrez G-Helper, l'alternative ultra légère](https://www.lesnumeriques.com/appli-logiciel/marre-des-lenteurs-d-armoury-crate-sur-votre-pc-portable-asus-decouvrez-g-helper-l-alternative-ultra-legere-n240111.html)
+4. [Notebookcheck — Unbloated: G-Helper – The best open-source alternative to Asus Armoury Crate](https://www.notebookcheck.net/Unbloated-G-Helper-The-best-open-source-alternative-to-Asus-Armoury-Crate-Part-2.1213486.0.html)
+5. [Marre des lenteurs d'Armoury Crate sur votre PC portable Asus ? Découvrez G-Helper, l'alternative ultra légère](https://www.lesnumeriques.com/appli-logiciel/marre-des-lenteurs-d-armoury-crate-sur-votre-pc-portable-asus-decouvrez-g-helper-l-alternative-ultra-legere-n240111.html)
 
 ## :gift: Advantages 
 
