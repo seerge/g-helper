@@ -82,15 +82,24 @@ Each default BIOS mode is paired with matching [Windows Power Mode](https://supp
 
 <img width="2330" height="1618" alt="Screenshot 2026-04-27 110839" src="https://github.com/user-attachments/assets/ffc93c42-abd2-4408-ae81-e73b36c0bde6" />
 
-### :video_game: GPU Modes
+### :video_game: GPU Tweaking
+
+In each mode dedicated GPU can be tweaked to specific needs, including Core and Memory Clock offsets, GPU power, Dynamic Boost, Temperature Limit etc
+<img width="2354" height="1650" alt="Screenshot 2026-04-27 110733" src="https://github.com/user-attachments/assets/ae5f16eb-e1d2-4040-b2a0-0018d6793e53" />
+
+### 💻 GPU Modes
 
 1. **Eco** : only low power integrated GPU enabled, iGPU drives built in display
 2. **Standard** (MS Hybrid) : iGPU and dGPU enabled, iGPU drives built in display
 3. **Ultimate**: iGPU and dGPU enabled, but dGPU drives built in display (supported on 2022+ models)
 4. **Optimized**: disables dGPU on battery (Eco) and enables when plugged in (Standard)
 
-<img width="2354" height="1650" alt="Screenshot 2026-04-27 110733" src="https://github.com/user-attachments/assets/ae5f16eb-e1d2-4040-b2a0-0018d6793e53" />
 <img width="1134" height="746" alt="GPU Modes" src="https://github.com/user-attachments/assets/c273baa1-dbe7-4361-88aa-ec670128f956" />
+
+### 💿Driver Updates
+The app includes an automatic BIOS and driver update checker that pulls directly from the official Asus website for your specific model, highlighting new downloads as they become available. All links in the `Updates` section point to official Asus downloads.
+
+<img width="2302" height="1594" alt="Screenshot 2026-04-27 110706" src="https://github.com/user-attachments/assets/79402dd0-83cb-4faf-9633-006857441f35" />
 
 ### :mouse: Asus Mouse and other peripherals support
 
