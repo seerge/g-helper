@@ -3,10 +3,10 @@
 [![Github all releases](https://img.shields.io/github/downloads/seerge/g-helper/total?logo=download&color=%234493f8)](https://GitHub.com/seerge/g-helper/releases/)
 [![SLSA3](https://img.shields.io/badge/SLSA-level%203-blue?color=%234493f8)](https://github.com/seerge/g-helper/attestations)
 [![GitHub stars](https://img.shields.io/github/stars/seerge/g-helper?style=flat&color=4493f8&logo=github)](https://GitHub.com/seerge/g-helper/stargazers/)
-[![中文](https://img.shields.io/badge/README-中文-4493f8)](https://github.com/seerge/g-helper/blob/main/docs/README.zh-CN.md)
-[![日本語](https://img.shields.io/badge/README-日本語-4493f8)](https://github.com/seerge/g-helper/blob/main/docs/README.ja-JP.md)
-[![Čeština](https://img.shields.io/badge/README-Čeština-4493f8)](https://github.com/seerge/g-helper/blob/main/docs/README.cs-CZ.md)
-<a href="https://github.com/seerge/g-helper/releases/latest/download/GHelper.exe"><img width="1280" alt="G-Helper - Lightweight control tool for Asus laptops" src="https://github.com/user-attachments/assets/3225d1d1-2a59-4a52-90ee-2d42fdc9c40b" /></a>
+[![中文](https://img.shields.io/badge/-中文-555555)](https://github.com/seerge/g-helper/blob/main/docs/README.zh-CN.md)
+[![日本語](https://img.shields.io/badge/-日本語-555555)](https://github.com/seerge/g-helper/blob/main/docs/README.ja-JP.md)
+[![Čeština](https://img.shields.io/badge/-Čeština-555555)](https://github.com/seerge/g-helper/blob/main/docs/README.cs-CZ.md)
+<a href="https://github.com/seerge/g-helper/releases/latest/download/GHelper.exe"><img width="1280" alt="G-Helper - Lightweight control tool for Asus laptops" src="https://github.com/user-attachments/assets/cb5254a1-2772-45bf-b775-875821f1b44f" /></a>
 
 **The control app every Asus laptop should have come with.**
 G-Helper is a fast, native tool for tuning performance, fans, GPU, battery, and RGB on any Asus laptop or handheld - ROG Zephyrus, Flow, Strix, Scar, TUF, Vivobook, Zenbook, ProArt, ROG Ally, and beyond.
