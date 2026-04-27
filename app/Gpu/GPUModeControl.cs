@@ -155,7 +155,6 @@ namespace GHelper.Gpu
                 {
                     HardwareControl.KillGPUApps();
                     HardwareControl.DisposeGpuControl();
-                    //NvpcfPnp.Disable();
                     if (AppConfig.IsNVPlatform()) NvidiaGpuControl.StopNVService();
                 }
 
@@ -166,10 +165,9 @@ namespace GHelper.Gpu
 
                     status = Program.acpi.SetGPUEco(eco);
 
-                   if (eco == 0)
+                    if (eco == 0)
                     {
                         NvpcfPnp.Refresh();
-                        if (AppConfig.IsNVPlatform()) NvidiaGpuControl.RestartNVService();
                     }
 
                     await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("refresh_delay", 500)));
@@ -182,9 +180,16 @@ namespace GHelper.Gpu
 
                     if (eco == 0)
                     {
-                        if (!AppConfig.IsNVPlatform()) await Task.Delay(TimeSpan.FromMilliseconds(3000));
+                        await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("nv_delay", 3000)));
+                        
+                        if (AppConfig.IsNVPlatform())
+                        {
+                            NvidiaGpuControl.RestartNVService();
+                            await Task.Delay(TimeSpan.FromMilliseconds(1000));
+                        } 
+
                         HardwareControl.RecreateGpuControl();
-                        Program.modeControl.SetGPUClocks(false);
+                        Program.modeControl.SetGPUClocks(false);                    
                     }
 
                     if (AppConfig.IsModeReapplyRequired())
