@@ -1642,6 +1642,7 @@ namespace GHelper
 
         public void ShowMode(int mode)
         {
+            Battery.BatteryReminderForm.DismissIfShowing();
             if (InvokeRequired)
                 Invoke(delegate
                 {
@@ -1804,6 +1805,7 @@ namespace GHelper
 
         public void VisualiseGPUMode(int GPUMode = -1)
         {
+            Battery.BatteryReminderForm.DismissIfShowing();
             if (AppConfig.IsAlly())
             {
                 tableGPU.Visible = false;

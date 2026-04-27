@@ -114,6 +114,12 @@ namespace GHelper
             checkAutoToggleClamshellMode = new CheckBox();
             checkTopmost = new CheckBox();
             checkNoOverdrive = new CheckBox();
+            labelBattery = new Label();
+            checkBatteryRemind = new CheckBox();
+            checkBatteryAutoOptimize = new CheckBox();
+            panelReminderTimeout = new Panel();
+            labelReminderTimeout = new Label();
+            numericReminderTimeout = new NumericUpDown();
             checkBootSound = new CheckBox();
             checkKeystoneSound = new CheckBox();
             checkUSBC = new CheckBox();
@@ -168,6 +174,8 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)pictureLog).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureSettings).BeginInit();
             panelSettings.SuspendLayout();
+            panelReminderTimeout.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericReminderTimeout).BeginInit();
             panelPower.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericHibernateAfter).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureHibernate).BeginInit();
@@ -1205,6 +1213,10 @@ namespace GHelper
             panelSettings.Controls.Add(checkGPUFix);
             panelSettings.Controls.Add(checkNVPlatform);
             panelSettings.Controls.Add(checkStatusLed);
+            panelSettings.Controls.Add(checkBatteryAutoOptimize);
+            panelSettings.Controls.Add(checkBatteryRemind);
+            panelSettings.Controls.Add(panelReminderTimeout);
+            panelSettings.Controls.Add(labelBattery);
             panelSettings.Controls.Add(checkPerKeyRGB);
             panelSettings.Controls.Add(checkAspm);
             panelSettings.Dock = DockStyle.Top;
@@ -1345,8 +1357,68 @@ namespace GHelper
             checkStatusLed.UseVisualStyleBackColor = true;
             checkStatusLed.Visible = false;
             // 
+            // labelBattery
+            //
+            labelBattery.AutoSize = true;
+            labelBattery.Dock = DockStyle.Top;
+            labelBattery.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            labelBattery.Name = "labelBattery";
+            labelBattery.Padding = new Padding(3, 10, 3, 3);
+            labelBattery.Size = new Size(917, 32);
+            labelBattery.Text = "Battery";
+            //
+            // checkBatteryRemind
+            //
+            checkBatteryRemind.AutoSize = true;
+            checkBatteryRemind.Dock = DockStyle.Top;
+            checkBatteryRemind.Margin = new Padding(5, 3, 5, 3);
+            checkBatteryRemind.Name = "checkBatteryRemind";
+            checkBatteryRemind.Padding = new Padding(3);
+            checkBatteryRemind.Size = new Size(917, 42);
+            checkBatteryRemind.TabIndex = 20;
+            checkBatteryRemind.Text = "Show battery optimization notifications";
+            checkBatteryRemind.UseVisualStyleBackColor = true;
+            //
+            // checkBatteryAutoOptimize
+            //
+            checkBatteryAutoOptimize.AutoSize = true;
+            checkBatteryAutoOptimize.Dock = DockStyle.Top;
+            checkBatteryAutoOptimize.Margin = new Padding(5, 3, 5, 3);
+            checkBatteryAutoOptimize.Name = "checkBatteryAutoOptimize";
+            checkBatteryAutoOptimize.Padding = new Padding(3);
+            checkBatteryAutoOptimize.Size = new Size(917, 42);
+            checkBatteryAutoOptimize.TabIndex = 21;
+            checkBatteryAutoOptimize.Text = "Auto-switch to optimized mode on battery";
+            checkBatteryAutoOptimize.UseVisualStyleBackColor = true;
+            //
+            // panelReminderTimeout
+            //
+            panelReminderTimeout.Controls.Add(numericReminderTimeout);
+            panelReminderTimeout.Controls.Add(labelReminderTimeout);
+            panelReminderTimeout.Dock = DockStyle.Top;
+            panelReminderTimeout.Name = "panelReminderTimeout";
+            panelReminderTimeout.Size = new Size(917, 46);
+            //
+            // labelReminderTimeout
+            //
+            labelReminderTimeout.Location = new Point(3, 5);
+            labelReminderTimeout.Margin = new Padding(5, 0, 5, 0);
+            labelReminderTimeout.Name = "labelReminderTimeout";
+            labelReminderTimeout.Size = new Size(613, 43);
+            labelReminderTimeout.Text = "Notification duration (seconds)";
+            //
+            // numericReminderTimeout
+            //
+            numericReminderTimeout.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            numericReminderTimeout.Location = new Point(789, 5);
+            numericReminderTimeout.Minimum = 2;
+            numericReminderTimeout.Maximum = 120;
+            numericReminderTimeout.Value = 30;
+            numericReminderTimeout.Name = "numericReminderTimeout";
+            numericReminderTimeout.Size = new Size(139, 39);
+            //
             // checkPerKeyRGB
-            // 
+            //
             checkPerKeyRGB.AutoSize = true;
             checkPerKeyRGB.Dock = DockStyle.Top;
             checkPerKeyRGB.Location = new Point(21, 5);
@@ -1738,6 +1810,9 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)pictureSettings).EndInit();
             panelSettings.ResumeLayout(false);
             panelSettings.PerformLayout();
+            panelReminderTimeout.ResumeLayout(false);
+            panelReminderTimeout.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numericReminderTimeout).EndInit();
             panelPower.ResumeLayout(false);
             panelPower.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numericHibernateAfter).EndInit();
@@ -1876,5 +1951,11 @@ namespace GHelper
         private RComboBox comboOptimalBrightness;
         private PictureBox pictureOptimalBrightness;
         private Label labelOptimalBrightness;
+        private Label labelBattery;
+        private CheckBox checkBatteryRemind;
+        private CheckBox checkBatteryAutoOptimize;
+        private Panel panelReminderTimeout;
+        private Label labelReminderTimeout;
+        private NumericUpDown numericReminderTimeout;
     }
 }
