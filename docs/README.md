@@ -6,7 +6,7 @@
 [![中文](https://img.shields.io/badge/README-中文-4493f8)](https://github.com/seerge/g-helper/blob/main/docs/README.zh-CN.md)
 [![日本語](https://img.shields.io/badge/README-日本語-4493f8)](https://github.com/seerge/g-helper/blob/main/docs/README.ja-JP.md)
 [![Čeština](https://img.shields.io/badge/README-Čeština-4493f8)](https://github.com/seerge/g-helper/blob/main/docs/README.cs-CZ.md)
-<a href="https://github.com/seerge/g-helper/releases/latest/download/GHelper.exe"><img width="1280" height="620" alt="G-Helper - Lightweight control tool for Asus laptops" src="https://github.com/user-attachments/assets/c0b00b4e-62b3-4411-9a78-beae39b12818" /></a>
+<a href="https://github.com/seerge/g-helper/releases/latest/download/GHelper.exe"><img width="1280" height="620" alt="G-Helper - Lightweight control tool for Asus laptops" src="https://github.com/user-attachments/assets/3225d1d1-2a59-4a52-90ee-2d42fdc9c40b" /></a>
 
 **The control app every Asus laptop should have come with.**
 G-Helper is a fast, native tool for tuning performance, fans, GPU, battery, and RGB on any Asus laptop or handheld - ROG Zephyrus, Flow, Strix, Scar, TUF, Vivobook, Zenbook, ProArt, ROG Ally, and beyond.
@@ -43,7 +43,7 @@ G-Helper is a fast, native tool for tuning performance, fans, GPU, battery, and 
 4. Simple and clean native UI with easy access to all settings
 5. FN-Lock and custom hotkeys
 
-<img width="1960" height="1587" alt="Screenshot 2026-04-27 111020" src="https://github.com/user-attachments/assets/9376fe90-fbb6-420a-abbd-0186189665e1" />
+<img width="1960" height="1587" alt="G-Helper Screenshot" src="https://github.com/user-attachments/assets/9376fe90-fbb6-420a-abbd-0186189665e1" />
 
 ### :zap: Features
 
@@ -80,12 +80,12 @@ Each default BIOS mode is paired with matching [Windows Power Mode](https://supp
 2. `Balanced` (Performance in AC) in BIOS  + `Balanced` power mode
 3. `Turbo` in BIOS + `Best performance` power mode
 
-<img width="2330" height="1618" alt="Screenshot 2026-04-27 110839" src="https://github.com/user-attachments/assets/ffc93c42-abd2-4408-ae81-e73b36c0bde6" />
+<img width="2330" height="1524" alt="Performance Modes" src="https://github.com/user-attachments/assets/254d33eb-2af1-4715-a097-ed8678c7e9db" />
 
 ### :video_game: GPU Tweaking
 
 In each mode dedicated GPU can be tweaked to specific needs, including Core and Memory Clock offsets, GPU power, Dynamic Boost, Temperature Limit etc
-<img width="2354" height="1650" alt="Screenshot 2026-04-27 110733" src="https://github.com/user-attachments/assets/ae5f16eb-e1d2-4040-b2a0-0018d6793e53" />
+<img width="2354" height="1550" alt="GPU Tweaking" src="https://github.com/user-attachments/assets/48ce19a6-d149-40ed-9145-23f974c513f7" />
 
 ### 💻 GPU Modes
 
@@ -98,8 +98,7 @@ In each mode dedicated GPU can be tweaked to specific needs, including Core and 
 
 ### 💿Driver Updates
 The app includes an automatic BIOS and driver update checker that pulls directly from the official Asus website for your specific model, highlighting new downloads as they become available. All links in the `Updates` section point to official Asus downloads.
-
-<img width="2302" height="1594" alt="Screenshot 2026-04-27 110706" src="https://github.com/user-attachments/assets/79402dd0-83cb-4faf-9633-006857441f35" />
+<img width="2302" height="1493" alt="Driver Updates" src="https://github.com/user-attachments/assets/303dfce9-fbbd-4d15-b6d7-f21e7c2c59a4" />
 
 ### :mouse: Asus Mouse and other peripherals support
 
@@ -138,7 +137,7 @@ The app includes an automatic BIOS and driver update checker that pulls directly
 
 Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contribution and research (!).
 
-<img width="2448" height="1758" alt="Screenshot 2026-04-27 110911" src="https://github.com/user-attachments/assets/675b1dc3-3ac5-4493-8bca-a444fb6a97cf" />
+<img width="2448" height="1653" alt="Mouse and other peripherals" src="https://github.com/user-attachments/assets/fe2a766b-f514-42e9-8dff-4bcc915364d4" />
 
 ### ⌨️ Keybindings
 
