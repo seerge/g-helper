@@ -277,10 +277,17 @@ public class NvidiaGpuControl : IGpuControl
 
     }
 
+    public static void FixNvContainer()
+    {
+        if (!ProcessHelper.IsUserAdministrator()) return;
+        if (NvBootState.DGpuArrivedAfterBoot())
+            NvpcfPnp.RestartService("NvContainerLocalSystem");
+    }
+
     public static void RestartNVService()
     {
         if (!ProcessHelper.IsUserAdministrator()) return;
-        //NvpcfPnp.RestartService("NVDisplay.ContainerLocalSystem");
+        NvpcfPnp.RestartService("NVDisplay.ContainerLocalSystem");
         NvpcfPnp.RestartService("NvContainerLocalSystem");
     }
 
@@ -288,7 +295,7 @@ public class NvidiaGpuControl : IGpuControl
     {
         if (!ProcessHelper.IsUserAdministrator()) return;
         NvpcfPnp.StopService("NvContainerLocalSystem");
-        //NvpcfPnp.StopService("NVDisplay.ContainerLocalSystem");
+        NvpcfPnp.StopService("NVDisplay.ContainerLocalSystem");
     }
 
     public int SetClocks(int core, int memory)

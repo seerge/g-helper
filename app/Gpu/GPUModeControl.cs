@@ -149,7 +149,7 @@ namespace GHelper.Gpu
                 NvDDS.OpenTray();
                 MessageBox.Show(
                     settings,
-                    "NVIDIA GPU is currently used for display. Please switch Display Mode to Optimus first.",
+                    "NVIDIA GPU is currently used for display. Please switch Display Mode to Optimus or Auto first.",
                     "NVIDIA Display Mode",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
@@ -193,16 +193,18 @@ namespace GHelper.Gpu
 
                     if (eco == 0)
                     {
-                        await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("nv_delay", 3000)));
-                        
+                        await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("nv_delay", 5000)));
+
                         if (AppConfig.IsNVPlatform())
                         {
                             NvidiaGpuControl.RestartNVService();
                             await Task.Delay(TimeSpan.FromMilliseconds(1000));
-                        } 
+                        } else {
+                            NvidiaGpuControl.FixNvContainer();
+                        }
 
                         HardwareControl.RecreateGpuControl();
-                        Program.modeControl.SetGPUClocks(false);                    
+                        Program.modeControl.SetGPUClocks(false);
                     }
 
                     if (AppConfig.IsModeReapplyRequired())
