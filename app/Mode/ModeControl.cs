@@ -339,13 +339,15 @@ namespace GHelper.Mode
             if (limit_slow < AsusACPI.MinTotal) return;
 
             // SPL and SPPT 
-            if (Program.acpi.DeviceGet(AsusACPI.PPT_APUA0) >= 0)
+            bool nativeAPU = Program.acpi.DeviceGet(AsusACPI.PPT_APUA0) >= 0;
+            if (nativeAPU)
             {
                 Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, limit_total, "PowerLimit A3");
                 Program.acpi.DeviceSet(AsusACPI.PPT_APUA0, limit_slow, "PowerLimit A0");
                 customPower = limit_total;
             }
-            else if (isAMD)
+
+            if (isAMD && (!nativeAPU || AppConfig.Is("ryzen_power")))
             {
                 if (ProcessHelper.IsUserAdministrator())
                 {
@@ -444,7 +446,7 @@ namespace GHelper.Mode
                 var smu = GetSmu();
                 if (smu == null) return;
                 SmuStatus status = smu.SetThm((int)cpuTemp);
-                if (init) Logger.WriteLine($"CPU Temp: {cpuTemp}°C {status}");
+                if (init) Logger.WriteLine($"CPU Temp: {cpuTemp}ï¿½C {status}");
                 if (status == SmuStatus.OK) customTemp = cpuTemp != CpuInfo.DefaultTemp;
             }
         }
@@ -514,9 +516,9 @@ namespace GHelper.Mode
                 if (cpuTemp >= CpuInfo.MinTemp && cpuTemp < CpuInfo.MaxTemp)
                 {
                     SmuStatus s = smu.SetThm(cpuTemp);
-                    Logger.WriteLine($"CPU Temp: {cpuTemp}°C {s}");
+                    Logger.WriteLine($"CPU Temp: {cpuTemp}ï¿½C {s}");
                     if (s == SmuStatus.OK) customTemp = cpuTemp != CpuInfo.DefaultTemp;
-                    lines.AppendLine($"CPU Temp {cpuTemp}°C: {s}");
+                    lines.AppendLine($"CPU Temp {cpuTemp}ï¿½C: {s}");
                 }
             }
             catch (Exception ex)
@@ -540,7 +542,7 @@ namespace GHelper.Mode
 
                 string line = $"SPL: {lim.Stapm:F1}W | sPPT {lim.Slow:F1}W | fPPT {lim.Fast:F1}W";
                 if (lim.ApuSlow.HasValue) line += $" | APU {lim.ApuSlow.Value:F1}W";
-                line += $", Temp: {lim.TctlTemp:F0}°C";
+                line += $", Temp: {lim.TctlTemp:F0}ï¿½C";
                 Logger.WriteLine("Ryzen Limits: " + line);
                 return line;
             }
