@@ -49,6 +49,13 @@ public static class NvBootState
         return _cachedDGpuArrivedLate.Value;
     }
 
+    /// <summary>
+    /// Marks the boot-state fix as handled. After this call <see cref="DGpuArrivedAfterBoot"/>
+    /// always returns false for the rest of the session, so we don't re-restart NvContainer
+    /// on every subsequent Eco→Standard cycle.
+    /// </summary>
+    public static void MarkHandled() => _cachedDGpuArrivedLate = false;
+
     private static bool ComputeDGpuArrivedLate(int thresholdSeconds)
     {
         IntPtr hDevInfo = SetupDiGetClassDevs(DisplayClass, null, IntPtr.Zero, DIGCF_PRESENT);
