@@ -115,19 +115,13 @@ namespace GHelper.Gpu
             }
             else if (GPUMode == AsusACPI.GPUModeEco)
             {
-                if (SetGPUEco(1))
-                {
-                    settings.VisualiseGPUMode(GPUMode);
-                    changed = true;
-                }
+                settings.VisualiseGPUMode(GPUMode);
+                changed = SetGPUEco(1);
             }
             else if (GPUMode == AsusACPI.GPUModeStandard)
             {
-                if (SetGPUEco(0))
-                {
-                    settings.VisualiseGPUMode(GPUMode);
-                    changed = true;
-                }
+                settings.VisualiseGPUMode(GPUMode);
+                changed = SetGPUEco(0);
             }
 
             if (changed)
@@ -158,6 +152,7 @@ namespace GHelper.Gpu
                     "NVIDIA Display Mode",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
+                InitGPUMode();    
                 return false;
             }
 
