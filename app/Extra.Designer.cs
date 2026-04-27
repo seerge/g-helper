@@ -118,7 +118,6 @@ namespace GHelper
             checkKeystoneSound = new CheckBox();
             checkUSBC = new CheckBox();
             checkGpuApps = new CheckBox();
-            checkGPUFix = new CheckBox();
             checkNVPlatform = new CheckBox();
             checkStatusLed = new CheckBox();
             checkPerKeyRGB = new CheckBox();
@@ -1202,7 +1201,6 @@ namespace GHelper
             panelSettings.Controls.Add(checkBootSound);
             panelSettings.Controls.Add(checkUSBC);
             panelSettings.Controls.Add(checkGpuApps);
-            panelSettings.Controls.Add(checkGPUFix);
             panelSettings.Controls.Add(checkNVPlatform);
             panelSettings.Controls.Add(checkStatusLed);
             panelSettings.Controls.Add(checkPerKeyRGB);
@@ -1304,20 +1302,7 @@ namespace GHelper
             checkGpuApps.TabIndex = 2;
             checkGpuApps.Text = "Stop all apps using GPU when switching to Eco";
             checkGpuApps.UseVisualStyleBackColor = true;
-            // 
-            // checkGPUFix
-            // 
-            checkGPUFix.AutoSize = true;
-            checkGPUFix.Dock = DockStyle.Top;
-            checkGPUFix.Location = new Point(21, 131);
-            checkGPUFix.Margin = new Padding(5, 3, 5, 3);
-            checkGPUFix.Name = "checkGPUFix";
-            checkGPUFix.Padding = new Padding(3);
-            checkGPUFix.Size = new Size(917, 42);
-            checkGPUFix.TabIndex = 9;
-            checkGPUFix.Text = "Enable GPU on shutdown (prevents issue with Eco mode)";
-            checkGPUFix.UseVisualStyleBackColor = true;
-            // 
+            //
             // checkNVPlatform
             // 
             checkNVPlatform.AutoSize = true;
@@ -1843,7 +1828,6 @@ namespace GHelper
         private PictureBox pictureHibernate;
         private Label labelHibernateAfter;
         private NumericUpDownWithUnit numericHibernateAfter;
-        private CheckBox checkGPUFix;
         private ToolTip toolTip;
         private CheckBox checkBootSound;
         private CheckBox checkKeystoneSound;
