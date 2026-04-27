@@ -304,13 +304,14 @@ namespace GHelper.Mode
 
             int limit_total = AppConfig.GetMode("limit_total");
             int limit_slow = AppConfig.GetMode("limit_slow", limit_total);
+            int limit_fast = AppConfig.GetMode("limit_fast", limit_slow);
 
             if (limit_total > AsusACPI.MaxTotal) return;
             if (limit_total < AsusACPI.MinTotal) return;
 
-            smu.SetAllLimits(limit_total, limit_slow, limit_slow,
+            smu.SetAllLimits(limit_total, limit_fast, limit_slow,
                 out SmuStatus stapm, out SmuStatus fast, out SmuStatus slow);
-            if (init) Logger.WriteLine($"STAPM: {limit_total}W {stapm} | FAST: {limit_slow}W {fast} | SLOW: {limit_slow}W {slow}");
+            if (init) Logger.WriteLine($"STAPM: {limit_total}W {stapm} | SLOW: {limit_slow}W {slow} | FAST: {limit_fast}W {fast}");
         }
 
         public void SetPower(bool launchAsAdmin = false)
@@ -347,6 +348,16 @@ namespace GHelper.Mode
                 customPower = limit_total;
             }
 
+            if (Program.acpi.IsAllAmdPPT()) // CPU limit all amd models
+            {
+                Program.acpi.DeviceSet(AsusACPI.PPT_CPUB0, limit_cpu, "PowerLimit B0");
+                customPower = limit_cpu;
+            }
+            else if (isAMD && Program.acpi.DeviceGet(AsusACPI.PPT_APUC1) >= 0) // FPPT boost for non all-amd models
+            {
+                Program.acpi.DeviceSet(AsusACPI.PPT_APUC1, limit_fast, "PowerLimit C1");
+            }
+
             if (isAMD && (!nativeAPU || AppConfig.Is("ryzen_power")))
             {
                 if (ProcessHelper.IsUserAdministrator())
@@ -359,17 +370,6 @@ namespace GHelper.Mode
                     return;
                 }
             }
-
-            if (Program.acpi.IsAllAmdPPT()) // CPU limit all amd models
-            {
-                Program.acpi.DeviceSet(AsusACPI.PPT_CPUB0, limit_cpu, "PowerLimit B0");
-                customPower = limit_cpu;
-            }
-            else if (isAMD && Program.acpi.DeviceGet(AsusACPI.PPT_APUC1) >= 0) // FPPT boost for non all-amd models
-            {
-                Program.acpi.DeviceSet(AsusACPI.PPT_APUC1, limit_fast, "PowerLimit C1");
-            }
-
 
             SetModeLabel();
 
@@ -446,7 +446,7 @@ namespace GHelper.Mode
                 var smu = GetSmu();
                 if (smu == null) return;
                 SmuStatus status = smu.SetThm((int)cpuTemp);
-                if (init) Logger.WriteLine($"CPU Temp: {cpuTemp}�C {status}");
+                if (init) Logger.WriteLine($"CPU Temp: {cpuTemp}°C {status}");
                 if (status == SmuStatus.OK) customTemp = cpuTemp != CpuInfo.DefaultTemp;
             }
         }
@@ -516,9 +516,9 @@ namespace GHelper.Mode
                 if (cpuTemp >= CpuInfo.MinTemp && cpuTemp < CpuInfo.MaxTemp)
                 {
                     SmuStatus s = smu.SetThm(cpuTemp);
-                    Logger.WriteLine($"CPU Temp: {cpuTemp}�C {s}");
+                    Logger.WriteLine($"CPU Temp: {cpuTemp}°C {s}");
                     if (s == SmuStatus.OK) customTemp = cpuTemp != CpuInfo.DefaultTemp;
-                    lines.AppendLine($"CPU Temp {cpuTemp}�C: {s}");
+                    lines.AppendLine($"CPU Temp {cpuTemp}°C: {s}");
                 }
             }
             catch (Exception ex)
@@ -542,7 +542,7 @@ namespace GHelper.Mode
 
                 string line = $"SPL: {lim.Stapm:F1}W | sPPT {lim.Slow:F1}W | fPPT {lim.Fast:F1}W";
                 if (lim.ApuSlow.HasValue) line += $" | APU {lim.ApuSlow.Value:F1}W";
-                line += $", Temp: {lim.TctlTemp:F0}�C";
+                line += $", Temp: {lim.TctlTemp:F0}°C";
                 Logger.WriteLine("Ryzen Limits: " + line);
                 return line;
             }
