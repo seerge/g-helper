@@ -435,7 +435,10 @@ public static class AppConfig
     }
 
     private static readonly Lazy<bool> _oledFromRegistry = new(() =>
-        Registry.LocalMachine.OpenSubKey(@"SOFTWARE\ASUS\OLEDCare") is not null);
+    {
+        try { return Registry.LocalMachine.OpenSubKey(@"SOFTWARE\ASUS\OLEDCare") is not null; }
+        catch { return false; }
+    });
 
     public static bool IsNoOverdrive()
     {
