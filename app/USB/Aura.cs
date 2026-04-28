@@ -301,7 +301,6 @@ namespace GHelper.USB
                     Encoding.ASCII.GetBytes("]ASUS Tech.Inc."),
                 },
                 query: new byte[] { AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0x00, 0x20 },
-                expectedPrefix: new byte[] { AsusHid.AURA_ID, 0x05, 0x20, 0x31 },
                 log: "Aura Probe");
 
             if (response is null || response.Length < 18) return;

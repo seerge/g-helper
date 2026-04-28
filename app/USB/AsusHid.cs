@@ -196,66 +196,45 @@ public static class AsusHid
         }
     }
 
-    public static byte[]? AuraQuery(List<byte[]> primers, byte[] query, byte[] expectedPrefix, int timeoutMs = 300, int pollIntervalMs = 30, string log = "AuraQuery")
+    public static byte[]? AuraQuery(List<byte[]> primers, byte[] query, string log = "AuraQuery")
     {
-        var candidates = FindDevices(AURA_ID).ToList();
-        if (candidates.Count == 0) return null;
+        var device = FindDevices(AURA_ID)?.FirstOrDefault();
+        if (device == null) return null;
 
-        foreach (var device in candidates)
+        int featLen = device.GetMaxFeatureReportLength();
+
+        try
         {
-            int featLen = device.GetMaxFeatureReportLength();
+            using var stream = device.Open();
+            var payload = new byte[featLen];
 
-            try
+            foreach (var primer in primers)
             {
-                var config = new OpenConfiguration();
-                config.SetOption(OpenOption.Interruptible, true);
-                config.SetOption(OpenOption.Exclusive, false);
-                config.SetOption(OpenOption.Priority, 10);
-                using var stream = device.Open(config);
-
-                var payload = new byte[featLen];
-                foreach (var primer in primers)
-                {
-                    Array.Clear(payload, 0, featLen);
-                    Array.Copy(primer, payload, Math.Min(primer.Length, featLen));
-                    stream.SetFeature(payload);
-                }
-
                 Array.Clear(payload, 0, featLen);
-                Array.Copy(query, payload, Math.Min(query.Length, featLen));
+                Array.Copy(primer, payload, Math.Min(primer.Length, featLen));
                 stream.SetFeature(payload);
-
-                var response = new byte[featLen];
-                int deadline = Environment.TickCount + timeoutMs;
-                while (Environment.TickCount <= deadline)
-                {
-                    response[0] = AURA_ID;
-                    stream.GetFeature(response);
-
-                    if (MatchesPrefix(response, expectedPrefix))
-                    {
-                        Logger.WriteLine($"{log} {device.ProductID:X}: {BitConverter.ToString(response)}");
-                        return response;
-                    }
-
-                    Thread.Sleep(pollIntervalMs);
-                }
             }
-            catch (Exception ex)
-            {
-                Logger.WriteLine($"{log} {device.ProductID:X} error: {ex.Message}");
-            }
+
+            Array.Clear(payload, 0, featLen);
+            Array.Copy(query, payload, Math.Min(query.Length, featLen));
+            stream.SetFeature(payload);
+
+            var response = new byte[featLen];
+            response[0] = AURA_ID;
+            stream.GetFeature(response);
+
+            int prefixLen = Math.Min(4, query.Length);
+            for (int i = 0; i < prefixLen; i++)
+                if (response[i] != query[i]) return null;
+
+            Logger.WriteLine($"{log}: {BitConverter.ToString(response)}");
+            return response;
         }
-
-        return null;
-    }
-
-    private static bool MatchesPrefix(byte[] data, byte[] prefix)
-    {
-        if (data.Length < prefix.Length) return false;
-        for (int i = 0; i < prefix.Length; i++)
-            if (data[i] != prefix[i]) return false;
-        return true;
+        catch (Exception ex)
+        {
+            Logger.WriteLine($"{log} error: {ex.Message}");
+            return null;
+        }
     }
 
 }
