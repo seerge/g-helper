@@ -358,33 +358,24 @@ namespace GHelper
             checkSleepLogo.CheckedChanged += CheckPower_CheckedChanged;
             checkShutdownLogo.CheckedChanged += CheckPower_CheckedChanged;
 
-            // 4-zone RGB laptops have a lightbar but no logo / lid LEDs; per-key has all of them.
-            // SingleZone / non-zone laptops show no zone toggles. ARCNM is its own special case.
-            bool is4Zone = Aura.BacklightType == AuraBacklightType.MultiZone;
-
-            if (!AppConfig.IsBacklightZones() || is4Zone || AppConfig.IsARCNM())
+            if (!AppConfig.IsBacklightZones() || AppConfig.IsARCNM())
             {
+                labelBacklightKeyboard.Visible = false;
+                checkBattery.Visible = false;
+            }
 
-                if (!is4Zone)
-                {
-                    labelBacklightBar.Visible = false;
-                    checkAwakeBar.Visible = false;
-                    checkBatteryBar.Visible = false;
-                    checkBootBar.Visible = false;
-                    checkSleepBar.Visible = false;
-                    checkShutdownBar.Visible = false;
+            if (!Aura.HasLightbar)
+            {
+                labelBacklightBar.Visible = false;
+                checkAwakeBar.Visible = false;
+                checkBatteryBar.Visible = false;
+                checkBootBar.Visible = false;
+                checkSleepBar.Visible = false;
+                checkShutdownBar.Visible = false;
+            }
 
-                    labelBacklightKeyboard.Visible = false;
-                    checkBattery.Visible = false;
-                }
-
-                labelBacklightLid.Visible = false;
-                checkAwakeLid.Visible = false;
-                checkBatteryLid.Visible = false;
-                checkBootLid.Visible = false;
-                checkSleepLid.Visible = false;
-                checkShutdownLid.Visible = false;
-
+            if (!Aura.HasLogo)
+            {
                 labelBacklightLogo.Visible = false;
                 checkAwakeLogo.Visible = false;
                 checkBatteryLogo.Visible = false;
@@ -393,15 +384,8 @@ namespace GHelper
                 checkShutdownLogo.Visible = false;
             }
 
-            if (AppConfig.IsZ13())
+            if (!Aura.HasRearglow)
             {
-                labelBacklightBar.Visible = false;
-                checkAwakeBar.Visible = false;
-                checkBatteryBar.Visible = false;
-                checkBootBar.Visible = false;
-                checkSleepBar.Visible = false;
-                checkShutdownBar.Visible = false;
-
                 labelBacklightLid.Visible = false;
                 checkAwakeLid.Visible = false;
                 checkBatteryLid.Visible = false;

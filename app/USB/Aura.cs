@@ -113,6 +113,10 @@ namespace GHelper.USB
 
         public static AuraBacklightType BacklightType { get; private set; } = AuraBacklightType.Unknown;
 
+        public static bool HasLogo { get; private set; }
+        public static bool HasLightbar { get; private set; }
+        public static bool HasRearglow { get; private set; }
+
         static System.Timers.Timer timer = new System.Timers.Timer(1000);
 
         static Aura()
@@ -351,6 +355,10 @@ namespace GHelper.USB
             if (!IsBacklightDetected) return;
 
             AppConfig.Set("backlight_type", typeByte);
+
+            HasLogo = (feat1 & FEAT1_LOGO) != 0;
+            HasLightbar = (feat1 & FEAT1_LIGHTBAR) != 0;
+            HasRearglow = (feat1 & FEAT1_REARGLOW) != 0;
 
             isStrix4Zone = BacklightType == AuraBacklightType.MultiZone;
 
