@@ -196,7 +196,7 @@ public static class AsusHid
         }
     }
 
-    public static byte[]? AuraQuery(List<byte[]> primers, byte[] query, string log = "AuraQuery")
+    public static byte[]? AuraProbe(byte[] query, string log = "Aura Probe")
     {
         var device = FindDevices(AURA_ID)?.FirstOrDefault();
         if (device == null) return null;
@@ -207,15 +207,6 @@ public static class AsusHid
         {
             using var stream = device.Open();
             var payload = new byte[featLen];
-
-            foreach (var primer in primers)
-            {
-                Array.Clear(payload, 0, featLen);
-                Array.Copy(primer, payload, Math.Min(primer.Length, featLen));
-                stream.SetFeature(payload);
-            }
-
-            Array.Clear(payload, 0, featLen);
             Array.Copy(query, payload, Math.Min(query.Length, featLen));
             stream.SetFeature(payload);
 

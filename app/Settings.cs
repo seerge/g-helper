@@ -1212,7 +1212,7 @@ namespace GHelper
             Aura.SetColor2(AppConfig.Get("aura_color2"));
 
             comboKeyboard.DropDownStyle = ComboBoxStyle.DropDownList;
-            if (Aura.BacklightType == AuraBacklightType.Unknown && !AppConfig.Is("skip_aura"))
+            if (!Aura.IsBacklightDetected && !AppConfig.Is("skip_aura"))
                 Aura.Init();
 
             comboKeyboard.DataSource = new BindingSource(Aura.GetModes(), null);

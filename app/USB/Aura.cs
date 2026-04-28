@@ -103,6 +103,7 @@ namespace GHelper.USB
         static bool isACPI = AppConfig.IsTUF() || AppConfig.IsVivoZenPro();
 
         static bool isStrix => BacklightType == AuraBacklightType.MultiZone || BacklightType == AuraBacklightType.PerKey;
+        public static bool IsBacklightDetected => BacklightType != AuraBacklightType.Unknown;
 
         static bool isStrix4Zone = false;
         static bool isStrixNumpad = AppConfig.IsStrixNumpad();
@@ -293,15 +294,15 @@ namespace GHelper.USB
         private static void DetectBacklightType()
         {
             if (isACPI) return;
-            if (BacklightType != AuraBacklightType.Unknown) return; // already probed this session
 
-            var response = AsusHid.AuraQuery(
-                primers: new List<byte[]> {
-                    new byte[] { AsusHid.AURA_ID, 0xB9 },
-                    Encoding.ASCII.GetBytes("]ASUS Tech.Inc."),
-                },
-                query: new byte[] { AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0x00, 0x20 },
-                log: "Aura Probe");
+            byte[] query = [AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0x00, 0x20];
+            if (IsBacklightDetected)
+            {
+                AsusHid.SetFeatureAura(query);
+                return;
+            }
+
+            var response = AsusHid.AuraProbe(query);
 
             if (response is null || response.Length < 18) return;
 
@@ -331,7 +332,7 @@ namespace GHelper.USB
                 0x08 => "TUF",
                 0x10 => "NR2301",
                 0x20 => "Desktop",
-                0x00 => "(pre-2023, no family field)",
+                0x00 => "(pre-2023)",
                 _    => $"unknown(0x{family:X2})"
             };
 
@@ -347,7 +348,7 @@ namespace GHelper.USB
                 _ => AuraBacklightType.Unknown
             };
 
-            if (BacklightType == AuraBacklightType.Unknown) return;
+            if (!IsBacklightDetected) return;
 
             AppConfig.Set("backlight_type", typeByte);
 
@@ -358,6 +359,8 @@ namespace GHelper.USB
 
         public static void Init()
         {
+            AsusHid.SetFeatureAura([AsusHid.AURA_ID, 0xB9]);
+            AsusHid.SetFeatureAura([AsusHid.AURA_ID, .. Encoding.ASCII.GetBytes("ASUS Tech.Inc.")]);
             DetectBacklightType();
 
             /*
