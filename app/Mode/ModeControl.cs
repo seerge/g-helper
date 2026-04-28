@@ -283,6 +283,7 @@ namespace GHelper.Mode
 
             Thread.Sleep(500);
             SetGPUPower();
+            Thread.Sleep(1000);
             AutoRyzen(launchAsAdmin);
 
         }

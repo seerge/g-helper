@@ -248,6 +248,7 @@ namespace PawnIO
                 if (!_io.Execute("ioctl_update_pm_table", null, null))
                     return null;
             }
+            Thread.Sleep(50);
 
             ulong[] words = new ulong[64];
             if (!_io.Execute("ioctl_read_pm_table", null, words))
