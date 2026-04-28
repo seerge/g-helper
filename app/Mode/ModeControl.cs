@@ -283,7 +283,7 @@ namespace GHelper.Mode
 
             Thread.Sleep(500);
             SetGPUPower();
-            AutoRyzen();
+            AutoRyzen(launchAsAdmin);
 
         }
 
@@ -340,8 +340,7 @@ namespace GHelper.Mode
             if (limit_slow < AsusACPI.MinTotal) return;
 
             // SPL and SPPT 
-            bool nativeAPU = Program.acpi.DeviceGet(AsusACPI.PPT_APUA0) >= 0;
-            if (nativeAPU)
+            if (Program.acpi.DeviceGet(AsusACPI.PPT_APUA0) >= 0)
             {
                 Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, limit_total, "PowerLimit A3");
                 Program.acpi.DeviceSet(AsusACPI.PPT_APUA0, limit_slow, "PowerLimit A0");
@@ -356,19 +355,6 @@ namespace GHelper.Mode
             else if (isAMD && Program.acpi.DeviceGet(AsusACPI.PPT_APUC1) >= 0) // FPPT boost for non all-amd models
             {
                 Program.acpi.DeviceSet(AsusACPI.PPT_APUC1, limit_fast, "PowerLimit C1");
-            }
-
-            if (isAMD && (!nativeAPU || AppConfig.Is("ryzen_power")))
-            {
-                if (ProcessHelper.IsUserAdministrator())
-                {
-                    SetRyzenPower(true);
-                }
-                else if (launchAsAdmin)
-                {
-                    ProcessHelper.RunAsAdmin("cpu");
-                    return;
-                }
             }
 
             SetModeLabel();
@@ -560,12 +546,26 @@ namespace GHelper.Mode
             reapplyTimer.Enabled = false;
         }
 
-        public void AutoRyzen()
+        public void AutoRyzen(bool launchAsAdmin = false)
         {
             if (!CpuInfo.IsAMD) return;
 
-            if (AppConfig.IsMode("auto_uv")) SetRyzen();
-            else ResetRyzen();
+            bool nativeAPU = Program.acpi.DeviceGet(AsusACPI.PPT_APUA0) >= 0;
+            bool ryzenPower = AppConfig.IsMode("auto_apply_power") && (!nativeAPU || AppConfig.Is("ryzen_power"));
+            bool autoUV = AppConfig.IsMode("auto_uv");
+
+            if (!ryzenPower && !autoUV) { ResetRyzen(); return; }
+
+            if (!ProcessHelper.IsUserAdministrator())
+            {
+                if (launchAsAdmin) ProcessHelper.RunAsAdmin(autoUV ? "uv" : "cpu");
+                return;
+            }
+
+            if (ryzenPower) SetRyzenPower(true);
+            if (autoUV) SetRyzen();
+
+            reapplyTimer.Enabled = autoUV || ryzenPower;
         }
 
         public void ShutdownReset()
