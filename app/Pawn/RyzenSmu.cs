@@ -88,11 +88,11 @@ namespace PawnIO
 
     // Current power limits read from the PM table, in watts.
     public sealed record PowerLimits(
-        float Stapm,       // offset 0x00 — stable across all table versions
-        float Fast,        // offset 0x08 — stable across all table versions
-        float Slow,        // offset 0x10 — stable across all table versions
+        float Stapm,       // offset 0x00 â€” stable across all table versions
+        float Fast,        // offset 0x08 â€” stable across all table versions
+        float Slow,        // offset 0x10 â€” stable across all table versions
         float TctlTemp,    // offset varies by table version (see GetTctlIndex)
-        float? ApuSlow = null  // offset 0x18 — apu_slow_limit; present on 0x37xxxx+ APU tables,
+        float? ApuSlow = null  // offset 0x18 â€” apu_slow_limit; present on 0x37xxxx+ APU tables,
                                // absent on Raven (0x1Exxxx) and Raphael (0x54xxxx)
     );
 
@@ -162,13 +162,13 @@ namespace PawnIO
             uint v = EncodeCurve(value);
             return Family switch
             {
-                // RyzenAdj: _do_adjust(0x55) — MP1 only
+                // RyzenAdj: _do_adjust(0x55) â€” MP1 only
                 CpuFamily.Renoir                         => SendMp1(0x55, v),
-                // RyzenAdj: _do_adjust(0x4C) — MP1 only
+                // RyzenAdj: _do_adjust(0x4C) â€” MP1 only
                 CpuFamily.Mobile or CpuFamily.StrixPoint => SendMp1(0x4C, v),
                 // StrixHalo (Ryzen AI MAX): MP1 0x4C preferred; PSMU 0x5D as fallback
                 CpuFamily.StrixHalo                      => SendMp1(0x4C, v) is var s && s == SmuStatus.OK ? s : SendPsmu(0x5D, v),
-                // RyzenAdj: _do_adjust_psmu(0x07) — PSMU only
+                // RyzenAdj: _do_adjust_psmu(0x07) â€” PSMU only
                 CpuFamily.Raphael                        => SendPsmu(0x07, v),
                 _                                        => SmuStatus.Failed,
             };
@@ -179,10 +179,10 @@ namespace PawnIO
             uint v = EncodeCurve(value);
             return Family switch
             {
-                // RyzenAdj: _do_adjust(0x64) — MP1 only
+                // RyzenAdj: _do_adjust(0x64) â€” MP1 only
                 CpuFamily.Renoir                                 => SendMp1(0x64, v),
-                // UXTU Socket_FT6_FP7_FP8: set-cogfx false 0xB7 — PSMU
-                // Covers Mobile (Phoenix, HawkPoint, Rembrandt…) and StrixHalo (Ryzen AI MAX)
+                // UXTU Socket_FT6_FP7_FP8: set-cogfx false 0xB7 â€” PSMU
+                // Covers Mobile (Phoenix, HawkPoint, Rembrandtâ€¦) and StrixHalo (Ryzen AI MAX)
                 CpuFamily.Mobile or CpuFamily.StrixHalo          => SendPsmu(0xB7, v),
                 // StrixPoint/KrackanPoint: no set-cogfx in UXTU or RyzenAdj
                 _                                                => SmuStatus.Failed,
@@ -194,14 +194,14 @@ namespace PawnIO
             uint v = (uint)celsius;
             return Family switch
             {
-                // RyzenAdj: _do_adjust(0x1F) — MP1 only
+                // RyzenAdj: _do_adjust(0x1F) â€” MP1 only
                 CpuFamily.Raven                          => SendMp1(0x1F, v),
-                // RyzenAdj: _do_adjust(0x19) — MP1 only
+                // RyzenAdj: _do_adjust(0x19) â€” MP1 only
                 CpuFamily.Renoir or CpuFamily.Mobile
                 or CpuFamily.StrixPoint or CpuFamily.StrixHalo => SendMp1(0x19, v),
-                // RyzenAdj: _do_adjust(0x3E) — MP1 only
+                // RyzenAdj: _do_adjust(0x3E) â€” MP1 only
                 CpuFamily.Matisse                        => SendMp1(0x3E, v),
-                // RyzenAdj: _do_adjust(0x3F) — MP1 only
+                // RyzenAdj: _do_adjust(0x3F) â€” MP1 only
                 CpuFamily.Raphael                        => SendMp1(0x3F, v),
                 _                                        => SmuStatus.Failed,
             };
@@ -232,95 +232,48 @@ namespace PawnIO
         }
 
         // Reads current power limits from the SMU PM table.
-        // Returns null if the family is unsupported or the read fails.
-        // Sequence per PawnIO module source (RyzenSMU.p):
-        //   1. ioctl_resolve_pm_table  — resolves g_table_base and table version
-        //   2. ioctl_update_pm_table   — transfers current values to DRAM
-        //   3. ioctl_read_pm_table     — reads from the physical address
+        // First ioctl_update_pm_table after hibernate/sleep resume returns
+        // DEVICE_BUSY while the SMU mailbox is still processing wake-up state;
+        // a brief retry is enough.
         public PowerLimits? GetPowerLimits()
         {
-            // Step 1: resolve — returns [version, base].
-            // The version discriminates PM table layout variants.
             ulong[] resolveOut = new ulong[2];
             if (!_io.Execute("ioctl_resolve_pm_table", null, resolveOut))
                 return null;
-
             uint tableVersion = (uint)resolveOut[0];
 
-            // Step 2: transfer current SMU values to DRAM
             if (!_io.Execute("ioctl_update_pm_table", null, null))
-                return null;
-
-            // Step 3: always read 128 floats (64 qwords = 512 bytes) so we can see
-            // every field without truncating the table on any layout variant.
-            const int READ_FLOATS = 128;
-            ulong[] tableWords = new ulong[READ_FLOATS / 2];
-
-            const int READ_RETRIES = 3;
-            bool readOk = false;
-            byte[] tableBytes = new byte[READ_FLOATS * sizeof(float)];
-            for (int attempt = 0; attempt < READ_RETRIES; attempt++)
             {
-                if (attempt > 0)
-                {
-                    Thread.Sleep(50);
-                    _io.Execute("ioctl_update_pm_table", null, null);
-                }
-
-                if (!_io.Execute("ioctl_read_pm_table", null, tableWords))
+                Thread.Sleep(50);
+                if (!_io.Execute("ioctl_update_pm_table", null, null))
                     return null;
-
-                Buffer.BlockCopy(tableWords, 0, tableBytes, 0, tableBytes.Length);
-                ReadOnlySpan<float> check = MemoryMarshal.Cast<byte, float>(tableBytes);
-
-                // Consider the table populated when STAPM (index 0) is non-zero.
-                if (check.Length > 0 && check[0] != 0f)
-                {
-                    readOk = true;
-                    break;
-                }
             }
 
-            if (!readOk)
+            ulong[] words = new ulong[64];
+            if (!_io.Execute("ioctl_read_pm_table", null, words))
                 return null;
 
-            // Reinterpret as floats
-            ReadOnlySpan<float> floats = MemoryMarshal.Cast<byte, float>(tableBytes);
+            ReadOnlySpan<float> floats = MemoryMarshal.Cast<ulong, float>(words);
 
-            // Log full PM table for debugging.
             var sb = new System.Text.StringBuilder();
             sb.Append($"PMTable ver=0x{tableVersion:X6} floats:");
             for (int i = 0; i < floats.Length; i++)
                 sb.Append($" [{i}]={floats[i]:G6}");
             Logger.WriteLine(sb.ToString());
 
-            // PM table layout — tctl_temp byte offset per RyzenAdj api.c get_tctl_temp():
-            //
-            //  ver 0x1Exxxx  (Raven/Picasso/Dali)           : offset 0x58 = float index 22
-            //  ver 0x37xxxx–0x5Dxxxx                        : offset 0x40 = float index 16
-            //    covers: Renoir(0x37), Lucienne/Cezanne(0x3F/0x40), Rembrandt(0x45),
-            //            Phoenix/HawkPoint(0x4C), StrixPoint/KrackanPoint(0x5D)
-            //  ver 0x64020C  (StrixHalo)                    : offset 0x58 = float index 22
-            //  ver 0x54xxxx  (DragonRange/Raphael)          : not in RyzenAdj;
-            //                                                 empirically index 10 from user data
-            //
-            // Power limits are at fixed offsets for all known versions:
-            //   [0] stapm_limit  [2] fast_limit  [4] slow_limit
-            //
-            // Rembrandt + AMD dGPU (ver 0x380904+):
-            //   [6] cpu_limit (CPU-only PPT, distinct from platform PPT at [2])
+            if (floats[0] == 0f)
+                return null;
+
             int thmIdx = GetTctlIndex(tableVersion);
             if (thmIdx < 0 || floats.Length <= thmIdx)
                 return null;
-
-            float? apuSlow = HasApuSlowField(tableVersion) ? floats[6] : null;
 
             return new PowerLimits(
                 Stapm:    floats[0],
                 Fast:     floats[2],
                 Slow:     floats[4],
                 TctlTemp: floats[thmIdx],
-                ApuSlow:  apuSlow
+                ApuSlow:  HasApuSlowField(tableVersion) ? floats[6] : null
             );
         }
 
@@ -355,7 +308,7 @@ namespace PawnIO
 
         // Returns true when the PM table includes apu_slow_limit at float index 6 (offset 0x18).
         // Per RyzenAdj api.c get_apu_slow_limit(): present on all mobile APU tables from
-        // 0x37xxxx onwards (Renoir, Cezanne, Rembrandt, Phoenix, StrixPoint, StrixHalo, …).
+        // 0x37xxxx onwards (Renoir, Cezanne, Rembrandt, Phoenix, StrixPoint, StrixHalo, â€¦).
         // Absent on Raven (0x1Exxxx) and Raphael/DragonRange (0x54xxxx).
         private static bool HasApuSlowField(uint tableVersion)
         {
