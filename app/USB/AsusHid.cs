@@ -14,6 +14,25 @@ public static class AsusHid
     public static int[] ALL_PIDS = MAIN_AURA_PIDS.Concat(REAR_LIGHT_PIDS).ToArray();
 
     static HidStream? auraStream;
+    static int auraFeatLen;
+    static byte[]? auraScratch;
+
+    static void EnsureAuraStream()
+    {
+        if (auraStream != null) return;
+        auraStream = FindHidStream(AURA_ID);
+        if (auraStream == null) return;
+        auraFeatLen = auraStream.Device.GetMaxFeatureReportLength();
+        auraScratch = auraFeatLen > 0 ? new byte[auraFeatLen] : null;
+    }
+
+    static void DisposeAuraStream()
+    {
+        auraStream?.Dispose();
+        auraStream = null;
+        auraFeatLen = 0;
+        auraScratch = null;
+    }
 
     public static IEnumerable<HidDevice>? FindDevices(byte reportId, int[]? pids = null)
     {
@@ -149,10 +168,9 @@ public static class AsusHid
             }
     }
 
-    public static void WriteAura(byte[] data, bool retry = true)
+    public static void SetFeatureAura(byte[] data, bool retry = true)
     {
-
-        if (auraStream == null) auraStream = FindHidStream(AURA_ID);
+        EnsureAuraStream();
         if (auraStream == null)
         {
             Logger.WriteLine("Aura stream not found");
@@ -161,14 +179,52 @@ public static class AsusHid
 
         try
         {
-            auraStream.Write(data);
+            byte[] payload = data;
+            if (auraScratch != null && data.Length < auraFeatLen)
+            {
+                Array.Clear(auraScratch, 0, auraFeatLen);
+                Array.Copy(data, auraScratch, data.Length);
+                payload = auraScratch;
+            }
+            auraStream.SetFeature(payload);
         }
         catch (Exception ex)
         {
-            Logger.WriteLine($"Error writing data to HID device: {ex.Message} {BitConverter.ToString(data)}");
-            auraStream.Dispose();
-            auraStream = null;
-            if (retry) WriteAura(data, false);
+            Logger.WriteLine($"Error setting feature on HID device: {ex.Message} {BitConverter.ToString(data, 0, Math.Min(16, data.Length))}");
+            DisposeAuraStream();
+            if (retry) SetFeatureAura(data, false);
+        }
+    }
+
+    public static byte[]? AuraProbe(byte[] query, string log = "Aura Probe")
+    {
+        var device = FindDevices(AURA_ID)?.FirstOrDefault();
+        if (device == null) return null;
+
+        int featLen = device.GetMaxFeatureReportLength();
+
+        try
+        {
+            using var stream = device.Open();
+            var payload = new byte[featLen];
+            Array.Copy(query, payload, Math.Min(query.Length, featLen));
+            stream.SetFeature(payload);
+
+            var response = new byte[featLen];
+            response[0] = AURA_ID;
+            stream.GetFeature(response);
+
+            int prefixLen = Math.Min(4, query.Length);
+            for (int i = 0; i < prefixLen; i++)
+                if (response[i] != query[i]) return null;
+
+            Logger.WriteLine($"{log}: {BitConverter.ToString(response)}");
+            return response;
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine($"{log} error: {ex.Message}");
+            return null;
         }
     }
 
