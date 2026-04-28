@@ -283,7 +283,6 @@ namespace GHelper.Mode
 
             Thread.Sleep(500);
             SetGPUPower();
-            Thread.Sleep(1000);
             AutoRyzen(launchAsAdmin);
 
         }
@@ -563,7 +562,10 @@ namespace GHelper.Mode
                 return;
             }
 
-            if (ryzenPower) SetRyzenPower(true);
+            if (ryzenPower) {
+                Thread.Sleep(1000);
+                SetRyzenPower(true);
+            }
             if (autoUV) SetRyzen();
 
             reapplyTimer.Enabled = autoUV || ryzenPower;
