@@ -163,7 +163,7 @@
     <value>적용</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>사용자 설정 팬 커브 적용</value>
+    <value>커스텀 팬커브 적용</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>전력 제한 적용</value>
