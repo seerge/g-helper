@@ -906,11 +906,13 @@ public class AsusACPI
         if (AppConfig.IsVivoZenPro() && DeviceGet(KBD_BACKLIGHT_OOBE) >= 0) DeviceSet(KBD_BACKLIGHT_OOBE, 1, "VIVO OOBE");
     }
 
+    private ManagementEventWatcher? watcher;
+
     public void SubscribeToEvents(Action<object, EventArrivedEventArgs> EventHandler)
     {
         try
         {
-            ManagementEventWatcher watcher = new ManagementEventWatcher();
+            watcher = new ManagementEventWatcher();
             watcher.EventArrived += new EventArrivedEventHandler(EventHandler);
             watcher.Scope = new ManagementScope("root\\wmi");
             watcher.Query = new WqlEventQuery("SELECT * FROM AsusAtkWmiEvent");
