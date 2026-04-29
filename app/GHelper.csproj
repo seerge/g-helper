@@ -89,8 +89,7 @@
   </ItemGroup>
 
 	<Target Name="KillRunningGHelper" BeforeTargets="Build" Condition="'$(GITHUB_ACTIONS)'!='true' AND '$(PublishProtocol)'!=''">
-		<Exec Command="taskkill /IM GHelper.exe /F" IgnoreExitCode="true" />
-		<Exec Command="powershell -NoProfile -Command &quot;Start-Sleep -Milliseconds 500&quot;" />
+		<Exec Command="powershell -NoProfile -Command &quot;Get-Process -Name GHelper -ErrorAction SilentlyContinue | Stop-Process -Force; Start-Sleep -Milliseconds 500&quot;" />
 	</Target>
 
 	<Target Name="ZipSingleExe" AfterTargets="Publish" Condition="'$(GITHUB_ACTIONS)'!='true'">
