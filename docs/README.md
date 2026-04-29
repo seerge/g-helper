@@ -10,7 +10,7 @@
 
 **The control app every laptop should come with.** G-Helper is fast, native, and straight to the point - a tool for tuning performance, fans, GPU, battery, and RGB on any Asus laptop or handheld: ROG Zephyrus, Flow, Strix, Scar, TUF, Vivobook, Zenbook, ProArt, ROG Ally, and beyond.
 
-<a href="https://github.com/seerge/g-helper/releases/latest/download/GHelper.exe"><img width="200" alt="Download" src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/Download.png" /></a> &nbsp; <a href="https://g-helper.com/support"><img height="40" alt="Support" src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/Support.png" /></a>
+<a href="https://github.com/seerge/g-helper/releases/latest/download/GHelper.exe"><img width="300" alt="Download" src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/Download.png" /></a> &nbsp; <a href="https://g-helper.com/support"><img width="300" alt="Support" src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/Support.png" /></a>
 
 **⭐ Like the app? Help spread the word.**
 
@@ -28,11 +28,11 @@
 | [Josh Cravey](https://www.youtube.com/watch?v=hqe-PjuE-K8) | [Crimson Tech](https://www.youtube.com/watch?v=5XUIMUzgHU0) | [cbutters Tech](https://www.youtube.com/watch?v=6aVdwJKZSSc) | 
 
 ## 📰 Articles
-1. [Digital Trends — I finally found a gaming laptop utility that's actually worth using](https://www.digitaltrends.com/computing/g-helper-armoury-crate-alternative/)
-2. [BinaryFork — G-Helper: The Armoury Crate Alternative for ASUS Gaming Laptops](https://binaryfork.com/ghelper-armoury-crate-alternative-10216/)
-3. [Ultrabookreview — Optimized Quiet Gaming (35 dBA) on RTX 5080, RTX 5090 Laptops](https://www.ultrabookreview.com/71392-optimized-quiet-gaming-5080-5090/)
-4. [Notebookcheck — Unbloated: G-Helper – The best open-source alternative to Asus Armoury Crate](https://www.notebookcheck.net/Unbloated-G-Helper-The-best-open-source-alternative-to-Asus-Armoury-Crate-Part-2.1213486.0.html)
-5. [Marre des lenteurs d'Armoury Crate sur votre PC portable Asus ? Découvrez G-Helper, l'alternative ultra légère](https://www.lesnumeriques.com/appli-logiciel/marre-des-lenteurs-d-armoury-crate-sur-votre-pc-portable-asus-decouvrez-g-helper-l-alternative-ultra-legere-n240111.html)
+1. [Digital Trends](https://www.digitaltrends.com/computing/g-helper-armoury-crate-alternative/)
+2. [BinaryFork](https://binaryfork.com/ghelper-armoury-crate-alternative-10216/)
+3. [Ultrabookreview](https://www.ultrabookreview.com/71392-optimized-quiet-gaming-5080-5090/)
+4. [Notebookcheck](https://www.notebookcheck.net/Unbloated-G-Helper-The-best-open-source-alternative-to-Asus-Armoury-Crate-Part-2.1213486.0.html)
+5. [Les Numériques](https://www.lesnumeriques.com/appli-logiciel/marre-des-lenteurs-d-armoury-crate-sur-votre-pc-portable-asus-decouvrez-g-helper-l-alternative-ultra-legere-n240111.html)
 
 ## :gift: Advantages 
 
