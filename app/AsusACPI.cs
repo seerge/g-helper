@@ -644,16 +644,21 @@ public class AsusACPI
     public int SetFanHysteresis(int up, int down)
     {
         int value = (down << 8) | up;
-        Logger.WriteLine($"FanHysteresis Write: up={up} down={down} (payload=0x{value:X4})");
-        var cpuResult = DeviceSet(FanHysteresisCPU, value, "FanHysteresis CPU");
-        var gpuResult = DeviceSet(FanHysteresisGPU, value, "FanHysteresis GPU");
-        
-        if (DeviceGet(FanHysteresisMid) >= 0)
+        int result = -1;
+
+        if (DeviceGet(FanHysteresisCPU) >= 0)
         {
-            var midResult = DeviceSet(FanHysteresisMid, value, "FanHysteresis Mid");
+            Logger.WriteLine($"FanHysteresis Write: up={up} down={down} (payload=0x{value:X4})");
+            result = DeviceSet(FanHysteresisCPU, value, "FanHysteresis CPU");
         }
 
-        return cpuResult;
+        if (DeviceGet(FanHysteresisGPU) >= 0)
+            DeviceSet(FanHysteresisGPU, value, "FanHysteresis GPU");
+
+        if (DeviceGet(FanHysteresisMid) >= 0)
+            DeviceSet(FanHysteresisMid, value, "FanHysteresis Mid");
+
+        return result;
     }
 
     public static byte[] FixFanCurve(byte[] curve)
