@@ -691,6 +691,7 @@ namespace GHelper.USB
                     buffer[6] = (byte)i;
                     Buffer.BlockCopy(keyBuf, 3 * i, buffer, 9, 3 * buffer[7]);
                     AsusHid.SetFeatureAura(buffer);
+                    Thread.Sleep(1);
                 }
             }
 
@@ -712,6 +713,7 @@ namespace GHelper.USB
                 }
                 Buffer.BlockCopy(keyBuf, 0, buffer, 9, 3 * leds_4_zone);
                 AsusHid.SetFeatureAura(buffer);
+                Thread.Sleep(1);
                 return;
             }
 
