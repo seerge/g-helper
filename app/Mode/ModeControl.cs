@@ -279,7 +279,7 @@ namespace GHelper.Mode
                 Thread.Sleep(500);
             }
 
-            if (applyPower) SetPower(launchAsAdmin);
+            SetPower();
 
             Thread.Sleep(500);
             SetGPUPower();
@@ -314,7 +314,7 @@ namespace GHelper.Mode
             if (init) Logger.WriteLine($"STAPM: {limit_total}W {stapm} | SLOW: {limit_slow}W {slow} | FAST: {limit_fast}W {fast}");
         }
 
-        public void SetPower(bool launchAsAdmin = false)
+        public void SetPower()
         {
 
             bool allAMD = Program.acpi.IsAllAmdPPT();
