@@ -26,24 +26,30 @@ namespace GHelper.Helpers
 
         public static void CheckAlreadyRunning()
         {
-            Process currentProcess = Process.GetCurrentProcess();
+            using Process currentProcess = Process.GetCurrentProcess();
             Process[] processes = Process.GetProcessesByName(currentProcess.ProcessName);
-
-            if (processes.Length > 1)
+            try
             {
-                foreach (Process process in processes)
-                    if (process.Id != currentProcess.Id)
-                        try
-                        {
-                            process.Kill();
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.WriteLine(ex.ToString());
-                            MessageBox.Show(Properties.Strings.AppAlreadyRunningText, Properties.Strings.AppAlreadyRunning, MessageBoxButtons.OK);
-                            Application.Exit();
-                            return;
-                        }
+                if (processes.Length > 1)
+                {
+                    foreach (Process process in processes)
+                        if (process.Id != currentProcess.Id)
+                            try
+                            {
+                                process.Kill();
+                            }
+                            catch (Exception ex)
+                            {
+                                Logger.WriteLine(ex.ToString());
+                                MessageBox.Show(Properties.Strings.AppAlreadyRunningText, Properties.Strings.AppAlreadyRunning, MessageBoxButtons.OK);
+                                Application.Exit();
+                                return;
+                            }
+                }
+            }
+            finally
+            {
+                foreach (Process p in processes) p.Dispose();
             }
         }
 
@@ -84,17 +90,25 @@ namespace GHelper.Helpers
 
         public static void KillByName(string name)
         {
-            foreach (var process in Process.GetProcessesByName(name))
+            var processes = Process.GetProcessesByName(name);
+            try
             {
-                try
+                foreach (var process in processes)
                 {
-                    process.Kill();
-                    Logger.WriteLine($"Stopped: {process.ProcessName}");
+                    try
+                    {
+                        process.Kill();
+                        Logger.WriteLine($"Stopped: {process.ProcessName}");
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.WriteLine($"Failed to stop: {process.ProcessName} {ex.Message}");
+                    }
                 }
-                catch (Exception ex)
-                {
-                    Logger.WriteLine($"Failed to stop: {process.ProcessName} {ex.Message}");
-                }
+            }
+            finally
+            {
+                foreach (var p in processes) p.Dispose();
             }
         }
 
