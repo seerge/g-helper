@@ -276,6 +276,7 @@ namespace GHelper.Peripherals
                         0x1A72 => new GladiusIIIAimpointOmni(),
                         0x1A68 => new KerisWirelssAimpointOmni(),
                         0x1A6A => new KerisWirelssAimpointOmni(),
+                        0x1B06 => new KerisAceIIOmni(), 
                         0x1B1A => new KerisAceIIOmni(),
                         0x1B18 => new KerisAceIIOmni(),
                         0x1B68 => new HarpeAceExtremeOmni(),
