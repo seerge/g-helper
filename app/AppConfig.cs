@@ -394,7 +394,7 @@ public static class AppConfig
         return (ContainsModel("GA401I") && !ContainsModel("GA401IHR")) || ContainsModel("G712L") || ContainsModel("GX502L");
     }
 
-    public static bool IsSingleColor()
+    public static bool IsWhite()
     {
         return ContainsModel("GA401") || ContainsModel("FX517Z") || ContainsModel("FX516P") || ContainsModel("X13") || IsARCNM() || ContainsModel("FA617N") || ContainsModel("FA617X") || NoAura() || Is("no_rgb");
     }
@@ -419,11 +419,6 @@ public static class AppConfig
         return ContainsModel("GA405") || ContainsModel("GU405") || ContainsModel("GU606");
     }
 
-    public static bool IsInputBacklight()
-    {
-        return ContainsModel("GA503") || IsSlash() || IsVivoZenPro();
-    }
-
     public static bool IsInvertedFNLock()
     {
         return ContainsModel("M140") || ContainsModel("S550") || ContainsModel("P540") || IsTUF();
@@ -431,17 +426,18 @@ public static class AppConfig
 
     public static bool IsOLED()
     {
-        return ContainsModel("OLED") || IsSlash() || ContainsModel("M7600") || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M340") || ContainsModel("M350") || ContainsModel("K650") || ContainsModel("UM53") || ContainsModel("K660") || ContainsModel("UX84") || ContainsModel("M650") || ContainsModel("M550") || ContainsModel("M540") || ContainsModel("K340") || ContainsModel("K350") || ContainsModel("M140") || ContainsModel("S540") || ContainsModel("S550") || ContainsModel("M7400") || ContainsModel("N650") || ContainsModel("HN7306") || ContainsModel("H760") || ContainsModel("UX5406") || ContainsModel("M5606") || ContainsModel("X513") || ContainsModel("N7400") || ContainsModel("UX760") || ContainsModel("Q530VJ");
+        return ContainsModel("OLED") || IsSlash() || ContainsModel("M7600") || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M340") || ContainsModel("M350") || ContainsModel("K650") || ContainsModel("UM53") || ContainsModel("K660") || ContainsModel("UX84") || ContainsModel("M650") || ContainsModel("M550") || ContainsModel("M540") || ContainsModel("K340") || ContainsModel("K350") || ContainsModel("M140") || ContainsModel("S540") || ContainsModel("S550") || ContainsModel("M7400") || ContainsModel("N650") || ContainsModel("HN7306") || ContainsModel("H760") || ContainsModel("UX5406") || ContainsModel("M5606") || ContainsModel("X513") || ContainsModel("N7400") || ContainsModel("UX760") || ContainsModel("Q530VJ") || _oledFromRegistry.Value;
     }
+
+    private static readonly Lazy<bool> _oledFromRegistry = new(() =>
+    {
+        try { return Registry.LocalMachine.OpenSubKey(@"SOFTWARE\ASUS\OLEDCare") is not null; }
+        catch { return false; }
+    });
 
     public static bool IsNoOverdrive()
     {
         return Is("no_overdrive");
-    }
-
-    public static bool IsNoSleepEvent()
-    {
-        return ContainsModel("FX505");
     }
 
     public static bool IsStrix()
@@ -449,29 +445,9 @@ public static class AppConfig
         return ContainsModel("Strix") || ContainsModel("Scar") || ContainsModel("G703G");
     }
 
-    public static bool IsAdvancedRGB()
-    {
-        return IsStrix() || ContainsModel("GX650");
-    }
-
     public static bool IsBacklightZones()
     {
         return IsStrix() || IsZ13();
-    }
-
-    public static bool IsStrixLimitedRGB()
-    {
-        return ContainsModel("G614PM") || ContainsModel("G614PP") || ContainsModel("G614PR") || ContainsModel("G512LI") || ContainsModel("G513R") || ContainsModel("G713QM") || ContainsModel("G713PV") || ContainsModel("G513IE") || ContainsModel("G513IC") || ContainsModel("G713RC") || ContainsModel("G713IC") || ContainsModel("G713PU") || ContainsModel("G513QE") || ContainsModel("G513QM") || ContainsModel("G513QC") || ContainsModel("G531G") || ContainsModel("G615JMR") || ContainsModel("G615LM") || ContainsModel("G815LR");
-    }
-
-    public static bool IsPossible4ZoneRGB()
-    {
-        return ContainsModel("G614JI") || ContainsModel("G614JV") || ContainsModel("G614JZ") || ContainsModel("G614JU") || IsStrixLimitedRGB();
-    }
-
-    public static bool Is4ZoneRGB()
-    {
-        return IsPossible4ZoneRGB() && !Is("per_key_rgb");
     }
 
     public static bool IsHardwareHotkeys()
@@ -486,12 +462,17 @@ public static class AppConfig
 
     public static bool IsNoDirectRGB()
     {
-        return ContainsModel("GA503") || ContainsModel("G533Q") || ContainsModel("GU502") || ContainsModel("GU603") || IsSlash() || IsAlly();
+        return ContainsModel("GA503") || ContainsModel("G533Q") || ContainsModel("GU502");
     }
 
     public static bool IsStrixNumpad()
     {
         return ContainsModel("G713R");
+    }
+
+    public static bool IsStrix4ZoneFlipped()
+    {
+        return ContainsModel("G513");
     }
 
     public static bool IsZ1325()

@@ -120,7 +120,6 @@ namespace GHelper
             checkGpuApps = new CheckBox();
             checkNVPlatform = new CheckBox();
             checkStatusLed = new CheckBox();
-            checkPerKeyRGB = new CheckBox();
             checkAspm = new CheckBox();
             panelPower = new Panel();
             numericHibernateAfter = new NumericUpDownWithUnit();
@@ -1203,7 +1202,6 @@ namespace GHelper
             panelSettings.Controls.Add(checkGpuApps);
             panelSettings.Controls.Add(checkNVPlatform);
             panelSettings.Controls.Add(checkStatusLed);
-            panelSettings.Controls.Add(checkPerKeyRGB);
             panelSettings.Controls.Add(checkAspm);
             panelSettings.Dock = DockStyle.Top;
             panelSettings.Location = new Point(15, 1252);
@@ -1329,23 +1327,9 @@ namespace GHelper
             checkStatusLed.Text = "LED Status Indicators";
             checkStatusLed.UseVisualStyleBackColor = true;
             checkStatusLed.Visible = false;
-            // 
-            // checkPerKeyRGB
-            // 
-            checkPerKeyRGB.AutoSize = true;
-            checkPerKeyRGB.Dock = DockStyle.Top;
-            checkPerKeyRGB.Location = new Point(21, 5);
-            checkPerKeyRGB.Margin = new Padding(5, 3, 5, 3);
-            checkPerKeyRGB.Name = "checkPerKeyRGB";
-            checkPerKeyRGB.Padding = new Padding(3);
-            checkPerKeyRGB.Size = new Size(917, 42);
-            checkPerKeyRGB.TabIndex = 13;
-            checkPerKeyRGB.Text = "Per-Key RGB Keyboard";
-            checkPerKeyRGB.UseVisualStyleBackColor = true;
-            checkPerKeyRGB.Visible = false;
-            // 
+            //
             // checkAspm
-            // 
+            //
             checkAspm.AutoSize = true;
             checkAspm.Dock = DockStyle.Top;
             checkAspm.Location = new Point(21, 5);
@@ -1849,7 +1833,6 @@ namespace GHelper
         private PictureBox pictureDebug;
         private Label labelACPITitle;
         private CheckBox checkStatusLed;
-        private CheckBox checkPerKeyRGB;
         private CheckBox checkAspm;
         private CheckBox checkBatteryLogo;
         private CheckBox checkBattery;

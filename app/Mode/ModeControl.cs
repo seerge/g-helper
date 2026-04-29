@@ -279,11 +279,11 @@ namespace GHelper.Mode
                 Thread.Sleep(500);
             }
 
-            if (applyPower) SetPower(launchAsAdmin);
+            SetPower();
 
             Thread.Sleep(500);
             SetGPUPower();
-            AutoRyzen();
+            AutoRyzen(launchAsAdmin);
 
         }
 
@@ -304,16 +304,17 @@ namespace GHelper.Mode
 
             int limit_total = AppConfig.GetMode("limit_total");
             int limit_slow = AppConfig.GetMode("limit_slow", limit_total);
+            int limit_fast = AppConfig.GetMode("limit_fast", limit_slow);
 
             if (limit_total > AsusACPI.MaxTotal) return;
             if (limit_total < AsusACPI.MinTotal) return;
 
-            smu.SetAllLimits(limit_total, limit_slow, limit_slow,
+            smu.SetAllLimits(limit_total, limit_fast, limit_slow,
                 out SmuStatus stapm, out SmuStatus fast, out SmuStatus slow);
-            if (init) Logger.WriteLine($"STAPM: {limit_total}W {stapm} | FAST: {limit_slow}W {fast} | SLOW: {limit_slow}W {slow}");
+            if (init) Logger.WriteLine($"STAPM: {limit_total}W {stapm} | SLOW: {limit_slow}W {slow} | FAST: {limit_fast}W {fast}");
         }
 
-        public void SetPower(bool launchAsAdmin = false)
+        public void SetPower()
         {
 
             bool allAMD = Program.acpi.IsAllAmdPPT();
@@ -345,18 +346,6 @@ namespace GHelper.Mode
                 Program.acpi.DeviceSet(AsusACPI.PPT_APUA0, limit_slow, "PowerLimit A0");
                 customPower = limit_total;
             }
-            else if (isAMD)
-            {
-                if (ProcessHelper.IsUserAdministrator())
-                {
-                    SetRyzenPower(true);
-                }
-                else if (launchAsAdmin)
-                {
-                    ProcessHelper.RunAsAdmin("cpu");
-                    return;
-                }
-            }
 
             if (Program.acpi.IsAllAmdPPT()) // CPU limit all amd models
             {
@@ -367,7 +356,6 @@ namespace GHelper.Mode
             {
                 Program.acpi.DeviceSet(AsusACPI.PPT_APUC1, limit_fast, "PowerLimit C1");
             }
-
 
             SetModeLabel();
 
@@ -444,7 +432,7 @@ namespace GHelper.Mode
                 var smu = GetSmu();
                 if (smu == null) return;
                 SmuStatus status = smu.SetThm((int)cpuTemp);
-                if (init) Logger.WriteLine($"CPU Temp: {cpuTemp}캜 {status}");
+                if (init) Logger.WriteLine($"CPU Temp: {cpuTemp}째C {status}");
                 if (status == SmuStatus.OK) customTemp = cpuTemp != CpuInfo.DefaultTemp;
             }
         }
@@ -514,9 +502,9 @@ namespace GHelper.Mode
                 if (cpuTemp >= CpuInfo.MinTemp && cpuTemp < CpuInfo.MaxTemp)
                 {
                     SmuStatus s = smu.SetThm(cpuTemp);
-                    Logger.WriteLine($"CPU Temp: {cpuTemp}캜 {s}");
+                    Logger.WriteLine($"CPU Temp: {cpuTemp}째C {s}");
                     if (s == SmuStatus.OK) customTemp = cpuTemp != CpuInfo.DefaultTemp;
-                    lines.AppendLine($"CPU Temp {cpuTemp}캜: {s}");
+                    lines.AppendLine($"CPU Temp {cpuTemp}째C: {s}");
                 }
             }
             catch (Exception ex)
@@ -540,7 +528,7 @@ namespace GHelper.Mode
 
                 string line = $"SPL: {lim.Stapm:F1}W | sPPT {lim.Slow:F1}W | fPPT {lim.Fast:F1}W";
                 if (lim.ApuSlow.HasValue) line += $" | APU {lim.ApuSlow.Value:F1}W";
-                line += $", Temp: {lim.TctlTemp:F0}캜";
+                line += $", Temp: {lim.TctlTemp:F0}째C";
                 Logger.WriteLine("Ryzen Limits: " + line);
                 return line;
             }
@@ -558,12 +546,29 @@ namespace GHelper.Mode
             reapplyTimer.Enabled = false;
         }
 
-        public void AutoRyzen()
+        public void AutoRyzen(bool launchAsAdmin = false)
         {
             if (!CpuInfo.IsAMD) return;
 
-            if (AppConfig.IsMode("auto_uv")) SetRyzen();
-            else ResetRyzen();
+            bool nativeAPU = Program.acpi.DeviceGet(AsusACPI.PPT_APUA0) >= 0;
+            bool ryzenPower = AppConfig.IsMode("auto_apply_power") && (!nativeAPU || AppConfig.Is("ryzen_power"));
+            bool autoUV = AppConfig.IsMode("auto_uv");
+
+            if (!ryzenPower && !autoUV) { ResetRyzen(); return; }
+
+            if (!ProcessHelper.IsUserAdministrator())
+            {
+                if (launchAsAdmin) ProcessHelper.RunAsAdmin(autoUV ? "uv" : "cpu");
+                return;
+            }
+
+            if (ryzenPower) {
+                Thread.Sleep(1000);
+                SetRyzenPower(true);
+            }
+            if (autoUV) SetRyzen();
+
+            reapplyTimer.Enabled = autoUV || ryzenPower;
         }
 
         public void ShutdownReset()
