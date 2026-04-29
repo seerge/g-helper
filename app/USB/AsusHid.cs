@@ -9,7 +9,7 @@ public static class AsusHid
     public const byte INPUT_ID = 0x5a;
     public const byte AURA_ID = 0x5d;
 
-    public static int[] MAIN_AURA_PIDS = { 0x1a30, 0x1854, 0x1869, 0x1866, 0x19b6, 0x1822, 0x1837, 0x1854, 0x184a, 0x183d, 0x8502, 0x1807, 0x17e0, 0x1abe, 0x1b4c, 0x1b6e, 0x1b2c, 0x8854 };
+    public static int[] MAIN_AURA_PIDS = { 0x1a30, 0x1854, 0x1869, 0x1866, 0x19b6, 0x1822, 0x1837, 0x1854, 0x184a, 0x183d, 0x8502, 0x1807, 0x17e0, 0x1abe, 0x1b4c, 0x1b6e, 0x1b2c, 0x8854, 0x1CE7 };
     public static int[] REAR_LIGHT_PIDS = { 0x18c6 };
     public static int[] ALL_PIDS = MAIN_AURA_PIDS.Concat(REAR_LIGHT_PIDS).ToArray();
 
@@ -193,6 +193,45 @@ public static class AsusHid
             Logger.WriteLine($"Error setting feature on HID device: {ex.Message} {BitConverter.ToString(data, 0, Math.Min(16, data.Length))}");
             DisposeAuraStream();
             if (retry) SetFeatureAura(data, false);
+        }
+    }
+
+    public static void DebugScanAllAsusDevices()
+    {
+        try
+        {
+            var devices = DeviceList.Local.GetHidDevices(ASUS_ID).Where(d => d.CanOpen).ToList();
+            Logger.WriteLine($"HID Scan: {devices.Count} openable ASUS device(s) (VID 0x{ASUS_ID:X4})");
+
+            foreach (var device in devices)
+            {
+                int featLen = -1, outLen = -1, inLen = -1;
+                bool hasAura = false, hasInput = false;
+                string err = "";
+
+                try { featLen = device.GetMaxFeatureReportLength(); } catch (Exception e) { err += $" feat={e.Message}"; }
+                try { outLen = device.GetMaxOutputReportLength(); } catch { }
+                try { inLen = device.GetMaxInputReportLength(); } catch { }
+
+                try
+                {
+                    var desc = device.GetReportDescriptor();
+                    hasAura = desc.TryGetReport(ReportType.Feature, AURA_ID, out _);
+                    hasInput = desc.TryGetReport(ReportType.Feature, INPUT_ID, out _);
+                }
+                catch (Exception e) { err += $" desc={e.Message}"; }
+
+                string tag;
+                if (MAIN_AURA_PIDS.Contains(device.ProductID)) tag = "[AURA ]";
+                else if (REAR_LIGHT_PIDS.Contains(device.ProductID)) tag = "[REAR ]";
+                else tag = "[?????]";
+
+                Logger.WriteLine($"HID Scan {tag} PID={device.ProductID:X4} feat={featLen} out={outLen} in={inLen} aura5D={hasAura} input5A={hasInput} path={device.DevicePath}{err}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine($"HID Scan failed: {ex.Message}");
         }
     }
 
