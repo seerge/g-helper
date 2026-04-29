@@ -1,9 +1,6 @@
 ﻿using GHelper.Gpu;
 using GHelper.Helpers;
 using GHelper.Input;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
 using System.Text;
 using static GHelper.Helpers.DynamicLightingHelper;
 
@@ -825,6 +822,7 @@ namespace GHelper.USB
             }
 
             timer.Stop();
+            CustomRGB.ReleaseAmbient();
 
             Logger.WriteLine($"AuraMode: {Mode}");
 
@@ -846,8 +844,8 @@ namespace GHelper.USB
 
             if (Mode == AuraMode.AMBIENT)
             {
-                CustomRGB.ApplyAmbient(true);
                 timer.Interval = AppConfig.Get("aura_refresh", AppConfig.IsStrix() ? 100 : 300);
+                CustomRGB.ApplyAmbient(true);
                 timer.Start();
                 return;
             }
@@ -920,6 +918,8 @@ namespace GHelper.USB
 
         public static class CustomRGB
         {
+
+            public static void ReleaseAmbient() => AmbientData.Release();
 
             static int tempFreeze = AppConfig.Get("temp_freeze", 20);
             static int tempCold = AppConfig.Get("temp_cold", 40);
@@ -1063,37 +1063,39 @@ namespace GHelper.USB
 
                 var bound = Screen.GetBounds(Point.Empty);
                 bound.Y += bound.Height / 3;
-                bound.Height -= (int)Math.Round(bound.Height * (0.33f + 0.022f)); // cut 1/3 of the top screen + windows panel
+                bound.Height -= (int)Math.Round(bound.Height * (0.33f + 0.022f));
+                AmbientData.Sampler.Capture(bound); // updates source rect for the capture thread
 
-                Bitmap screen_low = AmbientData.CamptureScreen(bound, 512, 288);   //quality decreases greatly if it is less 512 ;
-                Bitmap screeb_pxl = AmbientData.ResizeImage(screen_low, 4, 2);     // 4x2 zone. top for keyboard and bot for lightbar;
+                // Sync capture throttle to the ambient timer interval on first call.
+                if (init) AmbientData.Sampler.IntervalMs = (int)timer.Interval;
+
+                // Skip if the capture thread hasn't delivered a new frame since last call.
+                // This avoids redundant USB sends when the screen content hasn't changed.
+                if (!init && !AmbientData.Sampler.HasNewFrame) return;
+                AmbientData.Sampler.HasNewFrame = false;
 
                 int zones = AURA_ZONES;
 
                 if (isStrix) // laptop with lightbar
                 {
-                    var mid_left = ColorUtils.GetMidColor(screeb_pxl.GetPixel(0, 1), screeb_pxl.GetPixel(1, 1));
-                    var mid_right = ColorUtils.GetMidColor(screeb_pxl.GetPixel(2, 1), screeb_pxl.GetPixel(3, 1));
+                    var mid_left = ColorUtils.GetMidColor(AmbientData.Sampler.GetPixel(0, 1), AmbientData.Sampler.GetPixel(1, 1));
+                    var mid_right = ColorUtils.GetMidColor(AmbientData.Sampler.GetPixel(2, 1), AmbientData.Sampler.GetPixel(3, 1));
 
-                    AmbientData.Colors[4].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(1, 1)); // left bck
+                    AmbientData.Colors[4].RGB = ColorUtils.HSV.UpSaturation(AmbientData.Sampler.GetPixel(1, 1)); // left bck
                     AmbientData.Colors[5].RGB = ColorUtils.HSV.UpSaturation(mid_left);  // center left
                     AmbientData.Colors[6].RGB = ColorUtils.HSV.UpSaturation(mid_right); // center right
-                    AmbientData.Colors[7].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(3, 1)); // right bck
+                    AmbientData.Colors[7].RGB = ColorUtils.HSV.UpSaturation(AmbientData.Sampler.GetPixel(3, 1)); // right bck
 
                     for (int i = 0; i < 4; i++) // keyboard
-                        AmbientData.Colors[i].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(i, 0));
+                        AmbientData.Colors[i].RGB = ColorUtils.HSV.UpSaturation(AmbientData.Sampler.GetPixel(i, 0));
                 }
                 else
                 {
                     zones = 1;
-                    AmbientData.Colors[0].RGB = ColorUtils.HSV.UpSaturation(ColorUtils.GetDominantColor(screeb_pxl), (float)0.3);
+                    AmbientData.Colors[0].RGB = ColorUtils.HSV.UpSaturation(AmbientData.Sampler.GetAverageColor(), (float)0.3);
                 }
 
-                //screen_low.Save("big.jpg", ImageFormat.Jpeg);
-                //screeb_pxl.Save("small.jpg", ImageFormat.Jpeg);
 
-                screen_low.Dispose();
-                screeb_pxl.Dispose();
 
                 bool is_fresh = init;
 
@@ -1113,92 +1115,15 @@ namespace GHelper.USB
 
             static class AmbientData
             {
+                private static ScreenCaptureSampler? _sampler;
+                public static ScreenCaptureSampler Sampler =>
+                    _sampler ??= new ScreenCaptureSampler(4, 2);
 
-                public enum StretchMode
+                public static void Release()
                 {
-                    STRETCH_ANDSCANS = 1,
-                    STRETCH_ORSCANS = 2,
-                    STRETCH_DELETESCANS = 3,
-                    STRETCH_HALFTONE = 4,
-                }
-
-                [DllImport("user32.dll")]
-                private static extern IntPtr GetDesktopWindow();
-
-                [DllImport("user32.dll")]
-                private static extern IntPtr GetWindowDC(IntPtr hWnd);
-
-                [DllImport("gdi32.dll")]
-                private static extern IntPtr CreateCompatibleDC(IntPtr hDC);
-
-                [DllImport("gdi32.dll")]
-                private static extern IntPtr CreateCompatibleBitmap(IntPtr hDC, int nWidth, int nHeight);
-
-                [DllImport("gdi32.dll")]
-                private static extern IntPtr SelectObject(IntPtr hDC, IntPtr hObject);
-
-                [DllImport("user32.dll")]
-                private static extern bool ReleaseDC(IntPtr hWnd, IntPtr hDC);
-
-                [DllImport("gdi32.dll")]
-                private static extern bool DeleteDC(IntPtr hdc);
-
-                [DllImport("gdi32.dll")]
-                private static extern bool DeleteObject(IntPtr hObject);
-
-                [DllImport("gdi32.dll")]
-                private static extern bool StretchBlt(IntPtr hdcDest, int nXOriginDest, int nYOriginDest,
-                int nWidthDest, int nHeightDest,
-                IntPtr hdcSrc, int nXOriginSrc, int nYOriginSrc, int nWidthSrc, int nHeightSrc, Int32 dwRop);
-
-                [DllImport("gdi32.dll")]
-                static extern bool SetStretchBltMode(IntPtr hdc, StretchMode iStretchMode);
-
-                /// <summary>
-                /// Captures a screenshot. 
-                /// </summary>
-                public static Bitmap CamptureScreen(Rectangle rec, int out_w, int out_h)
-                {
-                    IntPtr desktop = GetDesktopWindow();
-                    IntPtr hdc = GetWindowDC(desktop);
-                    IntPtr hdcMem = CreateCompatibleDC(hdc);
-
-                    IntPtr hBitmap = CreateCompatibleBitmap(hdc, out_w, out_h);
-                    IntPtr hOld = SelectObject(hdcMem, hBitmap);
-                    SetStretchBltMode(hdcMem, StretchMode.STRETCH_DELETESCANS);
-                    StretchBlt(hdcMem, 0, 0, out_w, out_h, hdc, rec.X, rec.Y, rec.Width, rec.Height, 0x00CC0020);
-                    SelectObject(hdcMem, hOld);
-
-                    DeleteDC(hdcMem);
-                    ReleaseDC(desktop, hdc);
-                    var result = Image.FromHbitmap(hBitmap, IntPtr.Zero);
-                    DeleteObject(hBitmap);
-                    return result;
-                }
-
-                public static Bitmap ResizeImage(Image image, int width, int height)
-                {
-                    var destRect = new Rectangle(0, 0, width, height);
-                    var destImage = new Bitmap(width, height);
-
-                    destImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
-
-                    using (var graphics = Graphics.FromImage(destImage))
-                    {
-                        graphics.CompositingMode = CompositingMode.SourceCopy;
-                        graphics.CompositingQuality = CompositingQuality.HighQuality;
-                        graphics.InterpolationMode = InterpolationMode.Bicubic;
-                        graphics.SmoothingMode = SmoothingMode.None;
-                        graphics.PixelOffsetMode = PixelOffsetMode.None;
-
-                        using (var wrapMode = new ImageAttributes())
-                        {
-                            wrapMode.SetWrapMode(WrapMode.TileFlipXY);
-                            graphics.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
-                        }
-                    }
-
-                    return destImage;
+                    if (_sampler == null) return;
+                    _sampler.Dispose();
+                    _sampler = null;
                 }
 
                 static public Color[] result = new Color[AURA_ZONES];
