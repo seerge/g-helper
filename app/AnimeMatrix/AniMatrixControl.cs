@@ -49,10 +49,7 @@ namespace GHelper.AnimeMatrix
             {
                 if (AppConfig.IsSlash())
                 {
-                    if (AppConfig.IsSlashAura())
-                        deviceSlash = new SlashDeviceAura();
-                    else
-                        deviceSlash = new SlashDevice();
+                    deviceSlash = SlashDevice.Detect();
                 }
                 else
                 {

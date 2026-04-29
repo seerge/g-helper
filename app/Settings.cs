@@ -1218,6 +1218,9 @@ namespace GHelper
             Aura.SetColor2(AppConfig.Get("aura_color2"));
 
             comboKeyboard.DropDownStyle = ComboBoxStyle.DropDownList;
+            if (!Aura.IsBacklightDetected && !AppConfig.Is("skip_aura"))
+                Aura.Init();
+
             comboKeyboard.DataSource = new BindingSource(Aura.GetModes(), null);
             comboKeyboard.DisplayMember = "Value";
             comboKeyboard.ValueMember = "Key";
@@ -1225,7 +1228,7 @@ namespace GHelper
             comboKeyboard.SelectedValueChanged += ComboKeyboard_SelectedValueChanged;
 
 
-            if (AppConfig.IsSingleColor())
+            if (Aura.isWhite)
             {
                 panelColor.Visible = false;
             }

@@ -98,8 +98,8 @@ public class AsusACPI
     public const uint DevsGPUFanCurve = 0x00110025;
     public const uint DevsMidFanCurve = 0x00110032;
 
-    public const uint FanHysteresisCPU = 0x00110034;
-    public const uint FanHysteresisGPU = 0x00110035;
+    public const uint FanHysteresis = 0x00110034;
+    public const uint FanHysteresisGPU = 0x00110035; // GPU fan hysteresis candidate
     public const uint FanHysteresisMid = 0x00110036; // Mid fan hysteresis candidate
 
     public const int Temp_CPU = 0x00120094;
@@ -629,7 +629,7 @@ public class AsusACPI
 
     public (int up, int down) GetFanHysteresis()
     {
-        int value = DeviceGet(FanHysteresisCPU);
+        int value = DeviceGet(FanHysteresis);
         if (value < 0)
         {
             //Logger.WriteLine($"FanHysteresis Read: not supported ({value})");
@@ -643,17 +643,23 @@ public class AsusACPI
 
     public int SetFanHysteresis(int up, int down)
     {
+        int result = -1;
         int value = (down << 8) | up;
-        Logger.WriteLine($"FanHysteresis Write: up={up} down={down} (payload=0x{value:X4})");
-        var cpuResult = DeviceSet(FanHysteresisCPU, value, "FanHysteresis CPU");
-        var gpuResult = DeviceSet(FanHysteresisGPU, value, "FanHysteresis GPU");
-        
-        if (DeviceGet(FanHysteresisMid) >= 0)
+
+        if (DeviceGet(FanHysteresis) >= 0)
         {
-            var midResult = DeviceSet(FanHysteresisMid, value, "FanHysteresis Mid");
+            byte[] payload = new byte[16];
+            int slots = AppConfig.Is("mid_fan") ? 3 : 2;
+            for (int i = 0; i < slots; i++)
+            {
+                payload[i * 4]     = (byte)up;
+                payload[i * 4 + 1] = (byte)down;
+            }
+            Logger.WriteLine($"FanHysteresis Write: up={up} down={down} (per-fan=0x{value:X4}, slots={slots})");
+            result = DeviceSet(FanHysteresis, payload, "FanHysteresis");
         }
 
-        return cpuResult;
+        return result;
     }
 
     public static byte[] FixFanCurve(byte[] curve)
@@ -900,11 +906,13 @@ public class AsusACPI
         if (AppConfig.IsVivoZenPro() && DeviceGet(KBD_BACKLIGHT_OOBE) >= 0) DeviceSet(KBD_BACKLIGHT_OOBE, 1, "VIVO OOBE");
     }
 
+    private ManagementEventWatcher? watcher;
+
     public void SubscribeToEvents(Action<object, EventArrivedEventArgs> EventHandler)
     {
         try
         {
-            ManagementEventWatcher watcher = new ManagementEventWatcher();
+            watcher = new ManagementEventWatcher();
             watcher.EventArrived += new EventArrivedEventHandler(EventHandler);
             watcher.Scope = new ManagementScope("root\\wmi");
             watcher.Query = new WqlEventQuery("SELECT * FROM AsusAtkWmiEvent");

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -368,9 +368,6 @@
   </data>
   <data name="EcoMode" xml:space="preserve">
     <value>Еко</value>
-  </data>
-  <data name="EnableGPUOnShutdown" xml:space="preserve">
-    <value>Увімкнути GPU при вимиканні лептопу</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
     <value>Вимкнення dGPU коли NVIDIA Display Mode не встановлено в режим Optimus може спричинити проблеми з управлінням яскравістю до наступного перезавантаження. 

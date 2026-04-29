@@ -80,6 +80,7 @@ namespace GHelper.Fan
         {
             if (AppConfig.ContainsModel("GA403")) return new int[3] { 22, 22, 22 };
             if (AppConfig.ContainsModel("GU605")) return new int[3] { 22, 22, 22 };
+            if (AppConfig.ContainsModel("HN7306")) return new int[3] { 22, 22, 22 };
             return new int[3] { DEFAULT_FAN_MIN, DEFAULT_FAN_MIN, DEFAULT_FAN_MIN };
         }
 

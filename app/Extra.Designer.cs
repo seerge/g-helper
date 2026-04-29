@@ -118,10 +118,8 @@ namespace GHelper
             checkKeystoneSound = new CheckBox();
             checkUSBC = new CheckBox();
             checkGpuApps = new CheckBox();
-            checkGPUFix = new CheckBox();
             checkNVPlatform = new CheckBox();
             checkStatusLed = new CheckBox();
-            checkPerKeyRGB = new CheckBox();
             checkAspm = new CheckBox();
             panelPower = new Panel();
             numericHibernateAfter = new NumericUpDownWithUnit();
@@ -1202,10 +1200,8 @@ namespace GHelper
             panelSettings.Controls.Add(checkBootSound);
             panelSettings.Controls.Add(checkUSBC);
             panelSettings.Controls.Add(checkGpuApps);
-            panelSettings.Controls.Add(checkGPUFix);
             panelSettings.Controls.Add(checkNVPlatform);
             panelSettings.Controls.Add(checkStatusLed);
-            panelSettings.Controls.Add(checkPerKeyRGB);
             panelSettings.Controls.Add(checkAspm);
             panelSettings.Dock = DockStyle.Top;
             panelSettings.Location = new Point(15, 1252);
@@ -1304,20 +1300,7 @@ namespace GHelper
             checkGpuApps.TabIndex = 2;
             checkGpuApps.Text = "Stop all apps using GPU when switching to Eco";
             checkGpuApps.UseVisualStyleBackColor = true;
-            // 
-            // checkGPUFix
-            // 
-            checkGPUFix.AutoSize = true;
-            checkGPUFix.Dock = DockStyle.Top;
-            checkGPUFix.Location = new Point(21, 131);
-            checkGPUFix.Margin = new Padding(5, 3, 5, 3);
-            checkGPUFix.Name = "checkGPUFix";
-            checkGPUFix.Padding = new Padding(3);
-            checkGPUFix.Size = new Size(917, 42);
-            checkGPUFix.TabIndex = 9;
-            checkGPUFix.Text = "Enable GPU on shutdown (prevents issue with Eco mode)";
-            checkGPUFix.UseVisualStyleBackColor = true;
-            // 
+            //
             // checkNVPlatform
             // 
             checkNVPlatform.AutoSize = true;
@@ -1344,23 +1327,9 @@ namespace GHelper
             checkStatusLed.Text = "LED Status Indicators";
             checkStatusLed.UseVisualStyleBackColor = true;
             checkStatusLed.Visible = false;
-            // 
-            // checkPerKeyRGB
-            // 
-            checkPerKeyRGB.AutoSize = true;
-            checkPerKeyRGB.Dock = DockStyle.Top;
-            checkPerKeyRGB.Location = new Point(21, 5);
-            checkPerKeyRGB.Margin = new Padding(5, 3, 5, 3);
-            checkPerKeyRGB.Name = "checkPerKeyRGB";
-            checkPerKeyRGB.Padding = new Padding(3);
-            checkPerKeyRGB.Size = new Size(917, 42);
-            checkPerKeyRGB.TabIndex = 13;
-            checkPerKeyRGB.Text = "Per-Key RGB Keyboard";
-            checkPerKeyRGB.UseVisualStyleBackColor = true;
-            checkPerKeyRGB.Visible = false;
-            // 
+            //
             // checkAspm
-            // 
+            //
             checkAspm.AutoSize = true;
             checkAspm.Dock = DockStyle.Top;
             checkAspm.Location = new Point(21, 5);
@@ -1843,7 +1812,6 @@ namespace GHelper
         private PictureBox pictureHibernate;
         private Label labelHibernateAfter;
         private NumericUpDownWithUnit numericHibernateAfter;
-        private CheckBox checkGPUFix;
         private ToolTip toolTip;
         private CheckBox checkBootSound;
         private CheckBox checkKeystoneSound;
@@ -1865,7 +1833,6 @@ namespace GHelper
         private PictureBox pictureDebug;
         private Label labelACPITitle;
         private CheckBox checkStatusLed;
-        private CheckBox checkPerKeyRGB;
         private CheckBox checkAspm;
         private CheckBox checkBatteryLogo;
         private CheckBox checkBattery;

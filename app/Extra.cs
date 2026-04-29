@@ -139,7 +139,6 @@ namespace GHelper
             labelBacklightTimeout.Text = Properties.Strings.BacklightTimeout;
             //labelBacklightTimeoutPlugged.Text = Properties.Strings.BacklightTimeoutPlugged;
 
-            checkGPUFix.Text = Properties.Strings.EnableGPUOnShutdown;
             checkNoOverdrive.Text = Properties.Strings.DisableOverdrive;
             checkTopmost.Text = Properties.Strings.WindowTop;
             checkUSBC.Text = Properties.Strings.OptimizedUSBC;
@@ -358,29 +357,24 @@ namespace GHelper
             checkSleepLogo.CheckedChanged += CheckPower_CheckedChanged;
             checkShutdownLogo.CheckedChanged += CheckPower_CheckedChanged;
 
-            if (!AppConfig.IsBacklightZones() || AppConfig.IsStrixLimitedRGB() || AppConfig.IsARCNM())
+            if (!AppConfig.IsBacklightZones() || AppConfig.IsARCNM())
             {
+                labelBacklightKeyboard.Visible = false;
+                checkBattery.Visible = false;
+            }
 
-                if (!AppConfig.IsStrixLimitedRGB())
-                {
-                    labelBacklightBar.Visible = false;
-                    checkAwakeBar.Visible = false;
-                    checkBatteryBar.Visible = false;
-                    checkBootBar.Visible = false;
-                    checkSleepBar.Visible = false;
-                    checkShutdownBar.Visible = false;
+            if (!Aura.HasLightbar)
+            {
+                labelBacklightBar.Visible = false;
+                checkAwakeBar.Visible = false;
+                checkBatteryBar.Visible = false;
+                checkBootBar.Visible = false;
+                checkSleepBar.Visible = false;
+                checkShutdownBar.Visible = false;
+            }
 
-                    labelBacklightKeyboard.Visible = false;
-                    checkBattery.Visible = false;
-                }
-
-                labelBacklightLid.Visible = false;
-                checkAwakeLid.Visible = false;
-                checkBatteryLid.Visible = false;
-                checkBootLid.Visible = false;
-                checkSleepLid.Visible = false;
-                checkShutdownLid.Visible = false;
-
+            if (!Aura.HasLogo)
+            {
                 labelBacklightLogo.Visible = false;
                 checkAwakeLogo.Visible = false;
                 checkBatteryLogo.Visible = false;
@@ -389,15 +383,8 @@ namespace GHelper
                 checkShutdownLogo.Visible = false;
             }
 
-            if (AppConfig.IsZ13())
+            if (!Aura.HasRearglow)
             {
-                labelBacklightBar.Visible = false;
-                checkAwakeBar.Visible = false;
-                checkBatteryBar.Visible = false;
-                checkBootBar.Visible = false;
-                checkSleepBar.Visible = false;
-                checkShutdownBar.Visible = false;
-
                 labelBacklightLid.Visible = false;
                 checkAwakeLid.Visible = false;
                 checkBatteryLid.Visible = false;
@@ -460,18 +447,9 @@ namespace GHelper
 
             pictureLog.Click += PictureLog_Click;
 
-            checkGPUFix.Visible = Program.acpi.IsNVidiaGPU();
-            checkGPUFix.Checked = AppConfig.IsGPUFix();
-            checkGPUFix.CheckedChanged += CheckGPUFix_CheckedChanged;
-
             checkNVPlatform.Visible = Program.acpi.IsNVidiaGPU();
             checkNVPlatform.Checked = AppConfig.IsNVPlatform();
             checkNVPlatform.CheckedChanged += CheckNVPlatform_CheckedChanged;
-
-
-            checkPerKeyRGB.Visible = AppConfig.IsPossible4ZoneRGB();
-            checkPerKeyRGB.Checked = AppConfig.Is("per_key_rgb");
-            checkPerKeyRGB.CheckedChanged += CheckPerKeyRGB_CheckedChanged;
 
             checkAspm.Checked = AppConfig.IsAutoASPM();
             checkAspm.CheckedChanged += CheckAspm_CheckedChanged;
@@ -511,11 +489,6 @@ namespace GHelper
         private void OptimalBrightness_Changed(object? sender, EventArgs e)
         {
             ScreenControl.SetOptimalBrightness(comboOptimalBrightness.SelectedIndex);
-        }
-
-        private void CheckPerKeyRGB_CheckedChanged(object? sender, EventArgs e)
-        {
-            AppConfig.Set("per_key_rgb", (checkPerKeyRGB.Checked ? 1 : 0));
         }
 
         private void CheckLEDStatus_CheckedChanged(object? sender, EventArgs e)
@@ -628,11 +601,6 @@ namespace GHelper
             int bootSound = checkBootSound.Checked ? 1 : 0;
             Program.acpi.DeviceSet(AsusACPI.BootSound, bootSound, "BootSound");
             AppConfig.Set("boot_sound", bootSound);
-        }
-
-        private void CheckGPUFix_CheckedChanged(object? sender, EventArgs e)
-        {
-            AppConfig.Set("gpu_fix", (checkGPUFix.Checked ? 1 : 0));
         }
 
         private void InitHibernate()

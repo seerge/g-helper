@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -369,9 +369,6 @@
   <data name="EcoMode" xml:space="preserve">
     <value>Eko</value>
   </data>
-  <data name="EnableGPUOnShutdown" xml:space="preserve">
-    <value>Kapatma sırasında GPU'yu etkinleştir (Eco modundaki sorunları önler)</value>
-  </data>
   <data name="EnableOptimusText" xml:space="preserve">
     <value>NVIDIA Denetim Masası'ndaki Görüntü Modu Optimus olarak ayarlı değilken Eko moduna geçilerek harici GPU'nun devre dışı bırakılması, bir sonraki yeniden başlatmaya kadar parlaklık ayarlarında sorunlara neden olabilir. 
 
@@ -561,7 +558,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Dakika</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Angle Snapping / Tuning</value>
+    <value>Açı Yakalama / Ayarlama</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>Sonrasında Otomatik Kapat</value>
@@ -879,13 +876,13 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Aralık {0}</value>
   </data>
   <data name="DisableDynamicLighting" xml:space="preserve">
-    <value>Lütfen Windows &gt; Dinamik Aydınlatma'yı devre dışı bırakın</value>
+    <value>Windows Dinamik Aydınlatmayı &gt; Lütfen Kapatın</value>
   </data>
   <data name="AmbientModeResources" xml:space="preserve">
-    <value>Ambians modu kaynak kullanımını artırabilir</value>
+    <value>Ortam modu kaynak kullanımını artırabilir</value>
   </data>
   <data name="MouseMotionSync" xml:space="preserve">
-    <value>Motion Sync</value>
+    <value>Hareket Eşitlemesi</value>
   </data>
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Zone Mode</value>
