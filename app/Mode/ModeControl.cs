@@ -44,15 +44,23 @@ namespace GHelper.Mode
         public static bool IsPawnAvailable()  => GetSmu() != null;
         public static bool IsPawnInstalled()   => RyzenSmuService.IsPawnInstalled();
 
-        static System.Timers.Timer reapplyTimer = default!;
+        static System.Timers.Timer? reapplyTimer;
         static System.Timers.Timer modeToggleTimer = default!;
         static CancellationTokenSource _modeCts = new();
 
         public ModeControl()
         {
-            reapplyTimer = new System.Timers.Timer(AppConfig.GetMode("reapply_time", 30) * 1000);
-            reapplyTimer.Enabled = false;
-            reapplyTimer.Elapsed += ReapplyTimer_Elapsed;
+            int reapplyTime = AppConfig.Get("reapply_time", 0);
+            if (reapplyTime > 0)
+            {
+                reapplyTimer = new System.Timers.Timer(reapplyTime * 1000);
+                reapplyTimer.Elapsed += ReapplyTimer_Elapsed;
+            }
+        }
+
+        private static void SetReapplyEnabled(bool enabled)
+        {
+            if (reapplyTimer != null) reapplyTimer.Enabled = enabled;
         }
 
 
@@ -512,7 +520,7 @@ namespace GHelper.Mode
                 Logger.WriteLine("UV Error: " + ex.ToString());
             }
 
-            reapplyTimer.Enabled = AppConfig.IsMode("auto_uv");
+            SetReapplyEnabled(AppConfig.IsMode("auto_uv"));
             return lines.ToString().TrimEnd();
         }
 
@@ -543,7 +551,7 @@ namespace GHelper.Mode
         {
             if (_cpuUV != 0) SetUV(0);
             if (_igpuUV != 0) SetUViGPU(0);
-            reapplyTimer.Enabled = false;
+            SetReapplyEnabled(false);
         }
 
         public void AutoRyzen(bool launchAsAdmin = false)
@@ -568,7 +576,7 @@ namespace GHelper.Mode
             }
             if (autoUV) SetRyzen();
 
-            reapplyTimer.Enabled = autoUV || ryzenPower;
+            SetReapplyEnabled(autoUV || ryzenPower);
         }
 
         public void ShutdownReset()
