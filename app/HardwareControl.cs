@@ -615,8 +615,7 @@ public static class HardwareControl
                 cpuPower = null;
         }
 
-        float? newGpu = GetGPUPower();
-        gpuPower = newGpu > 0 ? newGpu : null;
+        gpuPower = GetGPUPower();
 
         // Read only the fast IOCTL battery rate � skip health, WMI and design capacity queries
         try

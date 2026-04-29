@@ -294,7 +294,7 @@ namespace GHelper.Overlay
             _cpuTempStr = "CPU:" + FmtTemp(cpuTemp) + " ";
             _gpuFanNum = FormatFan(HardwareControl.gpuFanRPM);
             _cpuFanNum = FormatFan(HardwareControl.cpuFanRPM);
-            _gpuPow = gpuActive ? FmtPow(D(HardwareControl.gpuPower)) : "";
+            _gpuPow = HardwareControl.gpuPower is null ? "" : Math.Round(HardwareControl.gpuPower.Value, 1).ToString("F1") + "W";
             _cpuPow = FmtPow(D(HardwareControl.cpuPower));
 
             _cpuHistory[_historyHead] = (float)Math.Max(0, D(HardwareControl.cpuPower));
