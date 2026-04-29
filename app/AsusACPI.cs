@@ -649,12 +649,13 @@ public class AsusACPI
         if (DeviceGet(FanHysteresis) >= 0)
         {
             byte[] payload = new byte[16];
-            for (int i = 0; i < 3; i++)
+            int slots = AppConfig.Is("mid_fan") ? 3 : 2;
+            for (int i = 0; i < slots; i++)
             {
                 payload[i * 4]     = (byte)up;
                 payload[i * 4 + 1] = (byte)down;
             }
-            Logger.WriteLine($"FanHysteresis Write: up={up} down={down} (per-fan=0x{value:X4}, 16-byte payload)");
+            Logger.WriteLine($"FanHysteresis Write: up={up} down={down} (per-fan=0x{value:X4}, slots={slots})");
             result = DeviceSet(FanHysteresis, payload, "FanHysteresis");
         }
 
