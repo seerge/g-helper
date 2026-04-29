@@ -223,7 +223,6 @@ namespace GHelper
 
         private static void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
         {
-            gpuControl.StandardModeFix();
             modeControl.ShutdownReset();
             BatteryControl.AutoBattery();
             InputDispatcher.ShutdownStatusLed();
@@ -334,7 +333,6 @@ namespace GHelper
             if (e.Mode == PowerModes.Suspend)
             {
                 Logger.WriteLine("Power Mode Changed:" + e.Mode.ToString());
-                gpuControl.StandardModeFix(true);
                 modeControl.ShutdownReset();
                 InputDispatcher.ShutdownStatusLed();
             }

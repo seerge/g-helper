@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -368,9 +368,6 @@
   </data>
   <data name="EcoMode" xml:space="preserve">
     <value>Eco</value>
-  </data>
-  <data name="EnableGPUOnShutdown" xml:space="preserve">
-    <value>종료 시 GPU 활성화 (Eco 모드 문제 방지)</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
     <value>NVIDIA 제어판에서 디스플레이 모드가 Optimus로 설정되지 않은 상태에서 Eco 모드로 전환하여 dGPU를 비활성화하면 다시 시작하기 전까지 밝기 조절에 문제가 발생할 수 있습니다.

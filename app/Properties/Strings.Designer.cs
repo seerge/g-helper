@@ -853,15 +853,6 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enable GPU on shutdown (prevents issue with Eco mode).
-        /// </summary>
-        internal static string EnableGPUOnShutdown {
-            get {
-                return ResourceManager.GetString("EnableGPUOnShutdown", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Disabling the dGPU by going into Eco mode while Display Mode in NVIDIA Control Panel is not set to Optimus might cause problems with brightness controls until after the next reboot. 
         ///
         ///Do you still want to continue?.
