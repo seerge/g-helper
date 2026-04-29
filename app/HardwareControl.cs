@@ -586,7 +586,7 @@ public static class HardwareControl
         ReadBatteryState();
     }
 
-    // Lightweight sensor read used by the overlay timer — skips battery health, WMI and design capacity
+    // Lightweight sensor read used by the overlay timer ï¿½ skips battery health, WMI and design capacity
     public static void ReadSensorsOverlay()
     {
         if (Program.acpi is null) return;
@@ -618,7 +618,7 @@ public static class HardwareControl
         float? newGpu = GetGPUPower();
         if (newGpu > 0) gpuPower = newGpu;
 
-        // Read only the fast IOCTL battery rate — skip health, WMI and design capacity queries
+        // Read only the fast IOCTL battery rate ï¿½ skip health, WMI and design capacity queries
         try
         {
             decimal? discharge = Program.acpi.GetBatteryDischarge();
@@ -697,7 +697,7 @@ public static class HardwareControl
         if (AppConfig.NoGpu()) return;
         try
         {
-            GpuControl?.Dispose();
+            DisposeGpuControl();
 
             IGpuControl _gpuControl = new NvidiaGpuControl();
 
