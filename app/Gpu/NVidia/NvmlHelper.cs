@@ -1,4 +1,3 @@
-﻿using NAudio.Wave;
 using System.Runtime.InteropServices;
 
 public static class NvmlHelper
@@ -11,92 +10,72 @@ public static class NvmlHelper
     [DllImport(NvmlDll)] static extern int nvmlDeviceGetTemperature(IntPtr device, uint sensorType, out uint temp);
     [DllImport(NvmlDll)] static extern int nvmlDeviceGetPowerUsage(IntPtr device, out uint powerMilliWatts);
 
-
     const uint NVML_TEMPERATURE_GPU = 0;
     const int NVML_SUCCESS = 0;
 
-    static bool init = false;
+    private static readonly object _lock = new();
+    private static bool _init = false;
 
     public static void Init()
     {
-        if (!init)
+        if (_init) return;
+        try
         {
-            try
-            {
-                var result = nvmlInit_v2();
-                init = result == NVML_SUCCESS;
-                Logger.WriteLine($"NVML Init: {result}");
-            }
-            catch (Exception e)
-            {
-                Logger.WriteLine($"NVML Init exception: {e.Message}");
-            }
+            int rc = nvmlInit_v2();
+            _init = rc == NVML_SUCCESS;
+            Logger.WriteLine($"NVML Init: {rc}");
+        }
+        catch (Exception e)
+        {
+            Logger.WriteLine($"NVML Init exception: {e.Message}");
         }
     }
 
     public static int? GetTemperature(uint gpuIndex = 0)
     {
-        Init();
-        try
+        lock (_lock)
         {
-            if (nvmlDeviceGetHandleByIndex_v2(gpuIndex, out IntPtr device) != NVML_SUCCESS)
+            Init();
+            if (!_init) return null;
+            try
             {
-                Shutdown();
-                return null;
+                if (nvmlDeviceGetHandleByIndex_v2(gpuIndex, out IntPtr device) != NVML_SUCCESS) return null;
+                if (nvmlDeviceGetTemperature(device, NVML_TEMPERATURE_GPU, out uint temp) != NVML_SUCCESS) return null;
+                return (int)temp;
             }
-            if (nvmlDeviceGetTemperature(device, NVML_TEMPERATURE_GPU, out uint temp) != NVML_SUCCESS)
-            {
-                Shutdown();
-                return null;
-            }
-            return (int)temp;
-        }
-        catch
-        {
-            Shutdown();
-            return null;
+            catch { return null; }
         }
     }
 
     public static float? GetGpuPower(uint gpuIndex = 0)
     {
-        try
+        lock (_lock)
         {
-            if (nvmlInit_v2() != NVML_SUCCESS) return null;
+            Init();
+            if (!_init) return null;
             try
             {
                 if (nvmlDeviceGetHandleByIndex_v2(gpuIndex, out IntPtr device) != NVML_SUCCESS) return null;
                 if (nvmlDeviceGetPowerUsage(device, out uint mW) != NVML_SUCCESS) return null;
-
                 if (mW > 200_000f) return null;
                 return mW / 1000f;
             }
-            finally
-            {
-                nvmlShutdown();
-            }
-        }
-        catch
-        {
-            Logger.WriteLine("NVML power read failed");
-            return null;
+            catch { return null; }
         }
     }
 
     public static void Shutdown()
     {
-        if (init)
+        lock (_lock)
         {
+            if (!_init) return;
             try
             {
-                var result = nvmlShutdown();
-                Logger.WriteLine($"NVML Shutdown: {result}");
-                init = false;
+                int rc = nvmlShutdown();
+                Logger.WriteLine($"NVML Shutdown: {rc}");
             }
-            catch
-            {
-            }
+            catch { }
+            _init = false;
         }
     }
-
 }

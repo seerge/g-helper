@@ -616,7 +616,7 @@ public static class HardwareControl
         }
 
         float? newGpu = GetGPUPower();
-        if (newGpu > 0) gpuPower = newGpu;
+        gpuPower = newGpu > 0 ? newGpu : null;
 
         // Read only the fast IOCTL battery rate � skip health, WMI and design capacity queries
         try
@@ -679,6 +679,7 @@ public static class HardwareControl
     {
         GpuControl?.Dispose();
         GpuControl = null;
+        NvmlHelper.Shutdown();
     }
 
     public static void RecreateGpuControlWithDelay(int delay = 5)
