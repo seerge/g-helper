@@ -150,6 +150,7 @@ namespace GHelper.Mode
                     await Task.Delay(TimeSpan.FromMilliseconds(1000), ct);
                     ct.ThrowIfCancellationRequested();
                     AutoPower();
+                    SetGPUPower();
 
                     var command = AppConfig.GetModeString("mode_command");
                     if (command is not null)
@@ -287,8 +288,7 @@ namespace GHelper.Mode
                 Thread.Sleep(500);
             }
 
-            SetPower();
-            SetGPUPower();
+            if (applyPower) SetPower();
             AutoRyzen(launchAsAdmin);
 
         }
