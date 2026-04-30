@@ -509,7 +509,8 @@ namespace PawnIO
                 if (status != (uint)SmuStatus.OK) return (SmuStatus)status;
 
                 for (int i = 0; i < 6; i++)
-                    ReadReg(argAddr + (uint)(i * 4), out response[i]);
+                    if (!ReadReg(argAddr + (uint)(i * 4), out response[i]))
+                        return SmuStatus.Failed;
 
                 return SmuStatus.OK;
             }
