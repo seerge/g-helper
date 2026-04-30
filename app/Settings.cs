@@ -1410,10 +1410,12 @@ namespace GHelper
             {
                 button120Hz.Text = maxFrequency.ToString() + "Hz" + (overdriveSetting ? " + OD" : "");
                 panelScreen.Visible = true;
+                tableScreen.Visible = true;
             }
             else if (maxFrequency > 0)
             {
-                panelScreen.Visible = false;
+                tableScreen.Visible = false;
+                panelScreen.Visible = AppConfig.NoGpu();
             }
 
             if (fhd >= 0)
