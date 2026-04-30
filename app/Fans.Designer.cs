@@ -76,6 +76,8 @@ namespace GHelper
             checkApplyUV = new RCheckBox();
             panelAdvancedApply = new Panel();
             buttonApplyAdvanced = new RButton();
+            panelAdvancedReadLimits = new Panel();
+            buttonReadLimits = new RButton();
             labelRisky = new Label();
             panelUViGPU = new Panel();
             labelUViGPU = new Label();
@@ -180,6 +182,7 @@ namespace GHelper
             panelAdvanced.SuspendLayout();
             panelAdvancedAlways.SuspendLayout();
             panelAdvancedApply.SuspendLayout();
+            panelAdvancedReadLimits.SuspendLayout();
             panelUViGPU.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackUViGPU).BeginInit();
             panelUV.SuspendLayout();
@@ -750,7 +753,35 @@ namespace GHelper
             buttonApplyAdvanced.Text = "Apply";
             buttonApplyAdvanced.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonApplyAdvanced.UseVisualStyleBackColor = false;
-            // 
+            //
+            // panelAdvancedReadLimits
+            //
+            panelAdvancedReadLimits.AutoSize = true;
+            panelAdvancedReadLimits.Controls.Add(buttonReadLimits);
+            panelAdvancedReadLimits.Dock = DockStyle.Top;
+            panelAdvancedReadLimits.Name = "panelAdvancedReadLimits";
+            panelAdvancedReadLimits.Padding = new Padding(15);
+            panelAdvancedReadLimits.Size = new Size(520, 80);
+            panelAdvancedReadLimits.TabIndex = 52;
+            //
+            // buttonReadLimits
+            //
+            buttonReadLimits.Activated = false;
+            buttonReadLimits.BackColor = SystemColors.ControlLight;
+            buttonReadLimits.BorderColor = Color.Transparent;
+            buttonReadLimits.BorderRadius = 2;
+            buttonReadLimits.Dock = DockStyle.Top;
+            buttonReadLimits.FlatStyle = FlatStyle.Flat;
+            buttonReadLimits.Location = new Point(15, 15);
+            buttonReadLimits.Margin = new Padding(4, 2, 15, 15);
+            buttonReadLimits.Name = "buttonReadLimits";
+            buttonReadLimits.Secondary = true;
+            buttonReadLimits.Size = new Size(490, 50);
+            buttonReadLimits.TabIndex = 53;
+            buttonReadLimits.Text = "Read Limits";
+            buttonReadLimits.TextImageRelation = TextImageRelation.ImageBeforeText;
+            buttonReadLimits.UseVisualStyleBackColor = false;
+            //
             // labelRisky
             // 
             labelRisky.BackColor = Color.IndianRed;
@@ -981,6 +1012,7 @@ namespace GHelper
             // 
             panelPawnIO.AutoSize = true;
             panelPawnIO.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelPawnIO.Controls.Add(panelAdvancedReadLimits);
             panelPawnIO.Controls.Add(panelAdvancedAlways);
             panelPawnIO.Controls.Add(panelAdvancedApply);
             panelPawnIO.Controls.Add(labelRisky);
@@ -1885,6 +1917,7 @@ namespace GHelper
             panelAdvanced.PerformLayout();
             panelAdvancedAlways.ResumeLayout(false);
             panelAdvancedApply.ResumeLayout(false);
+            panelAdvancedReadLimits.ResumeLayout(false);
             panelUViGPU.ResumeLayout(false);
             panelUViGPU.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)trackUViGPU).EndInit();
@@ -2026,6 +2059,8 @@ namespace GHelper
         private PictureBox pictureUV;
         private Label labelTitleUV;
         private RButton buttonApplyAdvanced;
+        private Panel panelAdvancedReadLimits;
+        private RButton buttonReadLimits;
         private Panel panelApplyPower;
         private Panel panelAdvanced;
         private Panel panelAdvancedApply;

@@ -69,6 +69,7 @@ namespace GHelper
 
             labelRisky.Text = Properties.Strings.UndervoltingRisky;
             buttonApplyAdvanced.Text = Properties.Strings.Apply;
+            buttonReadLimits.Text = "Read Limits";
             checkApplyUV.Text = Properties.Strings.AutoApply;
 
             buttonCalibrate.Text = Properties.Strings.Calibrate;
@@ -224,6 +225,7 @@ namespace GHelper
             trackTemp.Scroll += TrackUV_Scroll;
 
             buttonApplyAdvanced.Click += ButtonApplyAdvanced_Click;
+            buttonReadLimits.Click += ButtonReadLimits_Click;
 
             buttonCPU.BorderColor = colorStandard;
             buttonGPU.BorderColor = colorTurbo;
@@ -366,21 +368,19 @@ namespace GHelper
         {
             string result = modeControl.SetRyzen(true);
             checkApplyUV.Enabled = true;
-            ShowRyzenLimits(result);
+            ShowLabelRisky(result);
         }
 
-        private void ShowRyzenLimits(string? prefix = null)
+        private void ButtonReadLimits_Click(object? sender, EventArgs e)
         {
-            string limits = modeControl.ReadRyzenLimits();
-            var sections = new List<string>();
-            if (!string.IsNullOrEmpty(prefix)) sections.Add(prefix);
-            if (limits.Length > 0) sections.Add(limits);
+            ShowLabelRisky(modeControl.ReadRyzenLimits());
+        }
 
-            if (sections.Count > 0)
-            {
-                labelRisky.Text = string.Join(Environment.NewLine + Environment.NewLine, sections);
-                labelRisky.Visible = true;
-            }
+        private void ShowLabelRisky(string text)
+        {
+            if (string.IsNullOrEmpty(text)) return;
+            labelRisky.Text = text;
+            labelRisky.Visible = true;
         }
 
         public void InitUV()
