@@ -163,9 +163,6 @@ namespace GHelper.Mode
                 }
             }, ct);
 
-
-            if (AppConfig.Is("xgm_fan")) XGM.Reset();
-
             if (notify) Toast();
 
             if (!AppConfig.Is("skip_powermode"))
@@ -267,6 +264,9 @@ namespace GHelper.Mode
                     });
                 }
 
+            } else
+            {
+                XGM.Reset();
             }
 
             SetModeLabel();
