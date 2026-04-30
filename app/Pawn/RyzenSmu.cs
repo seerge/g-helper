@@ -431,6 +431,22 @@ namespace PawnIO
         private bool WriteReg(uint addr, uint value)
             => _io.Execute("ioctl_write_smu_register", new ulong[] { addr, value }, null);
 
+        private bool WaitForMailboxIdle(uint rspAddr)
+        {
+            var sw = System.Diagnostics.Stopwatch.StartNew();
+            int spins = 0;
+            while (sw.ElapsedMilliseconds < MAILBOX_TIMEOUT_MS)
+            {
+                if (!ReadReg(rspAddr, out uint value)) return false;
+                if (value != 0) return true;
+
+                spins++;
+                if (spins > 256) Thread.Sleep(1);
+                else if (spins > 32) Thread.Yield();
+            }
+            return false;
+        }
+
 
         private SmuStatus SendMp1(uint cmd, uint arg)
         {
@@ -456,6 +472,9 @@ namespace PawnIO
             try
             {
                 if (_disposed) return SmuStatus.Failed;
+
+                if (!WaitForMailboxIdle(rspAddr))
+                    return SmuStatus.CmdRejectedBusy;
 
                 if (!WriteReg(rspAddr, 0))
                     return SmuStatus.Failed;
