@@ -1,5 +1,6 @@
 ﻿using HidSharp;
 using HidSharp.Reports;
+using System.Text;
 
 namespace GHelper.USB;
 public static class AsusHid
@@ -235,27 +236,43 @@ public static class AsusHid
         }
     }
 
-    public static byte[]? AuraProbe(byte[] query, string log = "Aura Probe")
+    public static byte[]? AuraProbe(bool query, string log = "Aura Probe")
     {
         var device = FindDevices(AURA_ID)?.FirstOrDefault();
         if (device == null) return null;
 
         int featLen = device.GetMaxFeatureReportLength();
 
+        byte[][] primers = [
+            [AURA_ID, 0xB9],
+            [AURA_ID, .. Encoding.ASCII.GetBytes("ASUS Tech.Inc.")],
+        ];
+        byte[] queryBytes = [AURA_ID, 0x05, 0x20, 0x31, 0x00, 0x20];
+
         try
         {
             using var stream = device.Open();
             var payload = new byte[featLen];
-            Array.Copy(query, payload, Math.Min(query.Length, featLen));
+
+            foreach (var primer in primers)
+            {
+                Array.Clear(payload, 0, featLen);
+                Array.Copy(primer, payload, Math.Min(primer.Length, featLen));
+                stream.SetFeature(payload);
+            }
+
+            Array.Clear(payload, 0, featLen);
+            Array.Copy(queryBytes, payload, Math.Min(queryBytes.Length, featLen));
             stream.SetFeature(payload);
+
+            if (!query) return null;
 
             var response = new byte[featLen];
             response[0] = AURA_ID;
             stream.GetFeature(response);
 
-            int prefixLen = Math.Min(4, query.Length);
-            for (int i = 0; i < prefixLen; i++)
-                if (response[i] != query[i]) return null;
+            for (int i = 0; i < 4; i++)
+                if (response[i] != queryBytes[i]) return null;
 
             Logger.WriteLine($"{log}: {BitConverter.ToString(response)}");
             return response;
