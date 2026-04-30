@@ -317,7 +317,7 @@ namespace GHelper.Gpu
 
                     await Task.Delay(TimeSpan.FromSeconds(15));
 
-                    if (AppConfig.IsMode("auto_apply"))
+                    if (AppConfig.IsApplyFans())
                         XGM.SetFan(AppConfig.GetFanConfig(AsusFan.XGM));
 
                     HardwareControl.RecreateGpuControl();

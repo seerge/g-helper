@@ -394,7 +394,7 @@ namespace GHelper
             int temp = AppConfig.GetMode("cpu_temp");
             if (temp < CpuInfo.MinTemp || temp > CpuInfo.MaxTemp) temp = CpuInfo.MaxTemp;
 
-            checkApplyUV.Enabled = checkApplyUV.Checked = AppConfig.IsMode("auto_uv");
+            checkApplyUV.Enabled = checkApplyUV.Checked = AppConfig.IsApplyUV();
 
             trackUV.Value = cpuUV;
             trackUViGPU.Value = igpuUV;
@@ -986,7 +986,7 @@ namespace GHelper
 
             }
 
-            checkApplyPower.Checked = AppConfig.IsMode("auto_apply_power");
+            checkApplyPower.Checked = AppConfig.IsApplyPower();
 
             int limit_total = AppConfig.GetMode("limit_total", AsusACPI.DefaultTotal);
             int limit_slow = AppConfig.GetMode("limit_slow", limit_total);
@@ -1106,8 +1106,8 @@ namespace GHelper
             LoadProfile(seriesCPU, AsusFan.CPU);
             LoadProfile(seriesGPU, AsusFan.GPU);
 
-            bool autoFans = AppConfig.IsMode("auto_apply_power") && AppConfig.IsFanRequired();
-            bool applyFans = AppConfig.IsMode("auto_apply");
+            bool autoFans = AppConfig.IsApplyPower() && AppConfig.IsFanRequired();
+            bool applyFans = AppConfig.IsApplyFans();
 
             checkApplyFans.Checked = applyFans;
 

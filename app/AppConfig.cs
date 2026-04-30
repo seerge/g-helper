@@ -541,9 +541,13 @@ public static class AppConfig
         return ContainsModel("FA507NUR") || ContainsModel("FA506NCR") || ContainsModel("FA507NVR");
     }
 
+    public static bool IsApplyPower() => IsMode("auto_apply_power");
+    public static bool IsApplyFans() => IsMode("auto_apply");
+    public static bool IsApplyUV() => IsMode("auto_uv");
+
     public static bool IsManualModeRequired()
     {
-        if (!IsMode("auto_apply_power")) return false;
+        if (!IsApplyPower()) return false;
         return Is("manual_mode") || ContainsModel("G733");
     }
 

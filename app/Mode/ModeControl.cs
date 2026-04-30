@@ -120,7 +120,7 @@ namespace GHelper.Mode
             {
                 try
                 {
-                    bool reset = AppConfig.IsResetRequired() && (Modes.GetBase(oldMode) == Modes.GetBase(mode)) && customPower > 0 && !AppConfig.IsMode("auto_apply_power");
+                    bool reset = AppConfig.IsResetRequired() && (Modes.GetBase(oldMode) == Modes.GetBase(mode)) && customPower > 0 && !AppConfig.IsApplyPower();
 
                     customFans = false;
                     customPower = 0;
@@ -150,8 +150,7 @@ namespace GHelper.Mode
                     await Task.Delay(TimeSpan.FromMilliseconds(1000), ct);
                     ct.ThrowIfCancellationRequested();
                     AutoPower();
-                    SetGPUPower();
-
+                    
                     var command = AppConfig.GetModeString("mode_command");
                     if (command is not null)
                     {   Logger.WriteLine("Running mode command: " + command);
@@ -213,7 +212,7 @@ namespace GHelper.Mode
         {
             customFans = false;
 
-            if (AppConfig.IsMode("auto_apply") || force)
+            if (AppConfig.IsApplyFans() || force)
             {
 
                 bool xgmFan = false;
@@ -255,7 +254,7 @@ namespace GHelper.Mode
                     Program.acpi.SetFanHysteresis(hystUp, hystDown);
 
                 // force set PPTs for missbehaving bios on FX507/517 series
-                if ((AppConfig.IsPowerRequired() || xgmFan) && !AppConfig.IsMode("auto_apply_power"))
+                if ((AppConfig.IsPowerRequired() || xgmFan) && !AppConfig.IsApplyPower())
                 {
                     Task.Run(async () =>
                     {
@@ -279,8 +278,8 @@ namespace GHelper.Mode
 
             customPower = 0;
 
-            bool applyPower = AppConfig.IsMode("auto_apply_power");
-            bool applyFans = AppConfig.IsMode("auto_apply");
+            bool applyPower = AppConfig.IsApplyPower();
+            bool applyFans = AppConfig.IsApplyFans();
 
             if (applyPower && !applyFans && AppConfig.IsFanRequired())
             {
@@ -289,6 +288,9 @@ namespace GHelper.Mode
             }
 
             if (applyPower) SetPower();
+            
+            Thread.Sleep(500);
+            SetGPUPower();
             AutoRyzen(launchAsAdmin);
 
         }
@@ -303,7 +305,7 @@ namespace GHelper.Mode
             if (init) _ryzenPower = true;
 
             if (!_ryzenPower) return;
-            if (!AppConfig.IsMode("auto_apply_power")) return;
+            if (!AppConfig.IsApplyPower()) return;
 
             var smu = GetSmu();
             if (smu == null) return;
@@ -518,7 +520,7 @@ namespace GHelper.Mode
                 Logger.WriteLine("UV Error: " + ex.ToString());
             }
 
-            SetReapplyEnabled(AppConfig.IsMode("auto_uv"));
+            SetReapplyEnabled(AppConfig.IsApplyUV());
             return lines.ToString().TrimEnd();
         }
 
@@ -557,8 +559,8 @@ namespace GHelper.Mode
             if (!CpuInfo.IsAMD) return;
 
             bool nativeAPU = Program.acpi.IsSupported(AsusACPI.PPT_APUA0);
-            bool ryzenPower = AppConfig.IsMode("auto_apply_power") && (!nativeAPU || AppConfig.Is("ryzen_power"));
-            bool autoUV = AppConfig.IsMode("auto_uv");
+            bool ryzenPower = AppConfig.IsApplyPower() && (!nativeAPU || AppConfig.Is("ryzen_power"));
+            bool autoUV = AppConfig.IsApplyUV();
 
             if (!ryzenPower && !autoUV) { ResetRyzen(); return; }
 
