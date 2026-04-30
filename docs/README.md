@@ -1,5 +1,4 @@
-# G-Helper - Lightweight control tool for Asus laptops
-
+# G-Helper - Enhance Laptop Control
 [![GitHub release](https://img.shields.io/github/release/seerge/g-helper?color=%234493f8)](https://GitHub.com/seerge/g-helper/releases/)
 [![Github all releases](https://img.shields.io/github/downloads/seerge/g-helper/total?logo=download&color=%234493f8)](https://GitHub.com/seerge/g-helper/releases/)
 [![SLSA3](https://img.shields.io/badge/SLSA-level%203-blue?color=%234493f8)](https://github.com/seerge/g-helper/attestations)
