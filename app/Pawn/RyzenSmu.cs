@@ -242,13 +242,11 @@ namespace PawnIO
                 return null;
             uint tableVersion = (uint)resolveOut[0];
 
+            _io.Execute("ioctl_update_pm_table", null, null);
+            Thread.Sleep(100);
             if (!_io.Execute("ioctl_update_pm_table", null, null))
-            {
-                Thread.Sleep(50);
-                if (!_io.Execute("ioctl_update_pm_table", null, null))
-                    return null;
-            }
-            Thread.Sleep(50);
+                return null;
+            Thread.Sleep(200);
 
             ulong[] words = new ulong[64];
             if (!_io.Execute("ioctl_read_pm_table", null, words))
