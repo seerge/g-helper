@@ -288,8 +288,6 @@ namespace GHelper.Mode
             }
 
             SetPower();
-
-            Thread.Sleep(500);
             SetGPUPower();
             AutoRyzen(launchAsAdmin);
 
@@ -347,20 +345,20 @@ namespace GHelper.Mode
             if (limit_slow > AsusACPI.MaxTotal) return;
             if (limit_slow < AsusACPI.MinTotal) return;
 
-            // SPL and SPPT 
-            if (Program.acpi.DeviceGet(AsusACPI.PPT_APUA0) >= 0)
+            // SPL and SPPT
+            if (Program.acpi.IsSupported(AsusACPI.PPT_APUA0))
             {
                 Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, limit_total, "PowerLimit A3");
                 Program.acpi.DeviceSet(AsusACPI.PPT_APUA0, limit_slow, "PowerLimit A0");
                 customPower = limit_total;
             }
 
-            if (Program.acpi.IsAllAmdPPT()) // CPU limit all amd models
+            if (allAMD) // CPU limit all amd models
             {
                 Program.acpi.DeviceSet(AsusACPI.PPT_CPUB0, limit_cpu, "PowerLimit B0");
                 customPower = limit_cpu;
             }
-            else if (isAMD && Program.acpi.DeviceGet(AsusACPI.PPT_APUC1) >= 0) // FPPT boost for non all-amd models
+            else if (isAMD && Program.acpi.IsSupported(AsusACPI.PPT_APUC1)) // FPPT boost for non all-amd models
             {
                 Program.acpi.DeviceSet(AsusACPI.PPT_APUC1, limit_fast, "PowerLimit C1");
             }
@@ -412,13 +410,13 @@ namespace GHelper.Mode
 
             int boostResult = -1;
 
-            if (gpu_power >= AsusACPI.MinGPUPower && gpu_power <= AsusACPI.MaxGPUPower && Program.acpi.DeviceGet(AsusACPI.GPU_POWER) >= 0)
+            if (gpu_power >= AsusACPI.MinGPUPower && gpu_power <= AsusACPI.MaxGPUPower && Program.acpi.IsSupported(AsusACPI.GPU_POWER))
                 Program.acpi.DeviceSet(AsusACPI.GPU_POWER, gpu_power, "PowerLimit TGP (GPU VAR)");
 
-            if (gpu_boost >= AsusACPI.MinGPUBoost && gpu_boost <= AsusACPI.MaxGPUBoost && Program.acpi.DeviceGet(AsusACPI.PPT_GPUC0) >= 0)
+            if (gpu_boost >= AsusACPI.MinGPUBoost && gpu_boost <= AsusACPI.MaxGPUBoost && Program.acpi.IsSupported(AsusACPI.PPT_GPUC0))
                 boostResult = Program.acpi.DeviceSet(AsusACPI.PPT_GPUC0, gpu_boost, "PowerLimit C0 (GPU BOOST)");
 
-            if (gpu_temp >= AsusACPI.MinGPUTemp && gpu_temp <= AsusACPI.MaxGPUTemp && Program.acpi.DeviceGet(AsusACPI.PPT_GPUC2) >= 0)
+            if (gpu_temp >= AsusACPI.MinGPUTemp && gpu_temp <= AsusACPI.MaxGPUTemp && Program.acpi.IsSupported(AsusACPI.PPT_GPUC2))
                 Program.acpi.DeviceSet(AsusACPI.PPT_GPUC2, gpu_temp, "PowerLimit C2 (GPU TEMP)");
 
             // Fallback
@@ -558,7 +556,7 @@ namespace GHelper.Mode
         {
             if (!CpuInfo.IsAMD) return;
 
-            bool nativeAPU = Program.acpi.DeviceGet(AsusACPI.PPT_APUA0) >= 0;
+            bool nativeAPU = Program.acpi.IsSupported(AsusACPI.PPT_APUA0);
             bool ryzenPower = AppConfig.IsMode("auto_apply_power") && (!nativeAPU || AppConfig.Is("ryzen_power"));
             bool autoUV = AppConfig.IsMode("auto_uv");
 

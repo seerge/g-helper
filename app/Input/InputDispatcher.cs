@@ -677,8 +677,8 @@ namespace GHelper.Input
         static void MuteLEDInit()
         {
             if (!AppConfig.IsVivoZenbook()) return;
-            if (Program.acpi.DeviceGet(AsusACPI.MicMuteLed) >= 0) Program.acpi.DeviceSet(AsusACPI.MicMuteLed, Audio.IsMicMuted() ? 1 : 0, "MicmuteLedInit");
-            if (Program.acpi.DeviceGet(AsusACPI.SoundMuteLed) >= 0) Program.acpi.DeviceSet(AsusACPI.SoundMuteLed, Audio.IsMuted() ? 1 : 0, "SoundLedInit");
+            if (Program.acpi.IsSupported(AsusACPI.MicMuteLed)) Program.acpi.DeviceSet(AsusACPI.MicMuteLed, Audio.IsMicMuted() ? 1 : 0, "MicmuteLedInit");
+            if (Program.acpi.IsSupported(AsusACPI.SoundMuteLed)) Program.acpi.DeviceSet(AsusACPI.SoundMuteLed, Audio.IsMuted() ? 1 : 0, "SoundLedInit");
         }
 
         static bool GetTouchpadState()

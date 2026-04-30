@@ -244,7 +244,7 @@ namespace GHelper
 
             ToggleNavigation(0);
 
-            if (Program.acpi.DeviceGet(AsusACPI.DevsCPUFanCurve) < 0) buttonCalibrate.Visible = false;
+            if (!Program.acpi.IsSupported(AsusACPI.DevsCPUFanCurve)) buttonCalibrate.Visible = false;
 
             FormClosed += Fans_FormClosed;
             Activated  += (_, _) => VisualiseAdvanced();
@@ -618,8 +618,8 @@ namespace GHelper
                         try { gpuName = nvControl.FullName; } catch { }
                     }
 
-                    bool boostVisible = (Program.acpi.DeviceGet(AsusACPI.PPT_GPUC0) >= 0);
-                    bool tempVisible = (Program.acpi.DeviceGet(AsusACPI.PPT_GPUC2) >= 0);
+                    bool boostVisible = Program.acpi.IsSupported(AsusACPI.PPT_GPUC0);
+                    bool tempVisible = Program.acpi.IsSupported(AsusACPI.PPT_GPUC2);
 
                     Invoke(delegate
                     {
@@ -947,9 +947,9 @@ namespace GHelper
         public void InitPower()
         {
 
-            bool modeA = Program.acpi.DeviceGet(AsusACPI.PPT_APUA0) >= 0 || CpuInfo.IsAMD;
+            bool modeA = Program.acpi.IsSupported(AsusACPI.PPT_APUA0) || CpuInfo.IsAMD;
             bool modeB0 = Program.acpi.IsAllAmdPPT();
-            bool modeC1 = Program.acpi.DeviceGet(AsusACPI.PPT_APUC1) >= 0;
+            bool modeC1 = Program.acpi.IsSupported(AsusACPI.PPT_APUC1);
 
             panelTotal.Visible = modeA;
             panelCPU.Visible = modeB0;
