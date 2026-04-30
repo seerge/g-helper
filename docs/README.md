@@ -1,5 +1,4 @@
-# G-Helper - Lightweight control tool for Asus laptops
-
+# G-Helper - Enhance Laptop Control
 [![GitHub release](https://img.shields.io/github/release/seerge/g-helper?color=%234493f8)](https://GitHub.com/seerge/g-helper/releases/)
 [![Github all releases](https://img.shields.io/github/downloads/seerge/g-helper/total?logo=download&color=%234493f8)](https://GitHub.com/seerge/g-helper/releases/)
 [![SLSA3](https://img.shields.io/badge/SLSA-level%203-blue?color=%234493f8)](https://github.com/seerge/g-helper/attestations)
@@ -7,7 +6,7 @@
 [![中文](https://img.shields.io/badge/-中文-555555)](https://github.com/seerge/g-helper/blob/main/docs/README.zh-CN.md)
 [![日本語](https://img.shields.io/badge/-日本語-555555)](https://github.com/seerge/g-helper/blob/main/docs/README.ja-JP.md)
 [![Čeština](https://img.shields.io/badge/-Čeština-555555)](https://github.com/seerge/g-helper/blob/main/docs/README.cs-CZ.md)
-<a href="https://github.com/seerge/g-helper/releases/latest/download/GHelper.exe" alt="G-Helper is fast, native, and straight to the point - a tool for tuning performance, fans, GPU, battery, and RGB on any Asus laptop or handheld: ROG Zephyrus, Flow, Strix, Scar, TUF, Vivobook, Zenbook, ProArt, ROG Ally, and beyond."><img width="1280" alt="G-Helper is fast, native, and straight to the point - a tool for tuning performance, fans, GPU, battery, and RGB on any Asus laptop or handheld: ROG Zephyrus, Flow, Strix, Scar, TUF, Vivobook, Zenbook, ProArt, ROG Ally, and beyond." src="https://github.com/user-attachments/assets/8ba47820-e0ae-4431-a50a-0ec31e07ffa7" /></a>
+<a href="https://github.com/seerge/g-helper/releases/latest/download/GHelper.exe" alt="G-Helper - Lightweight control tool for Asus laptops"><img width="1280" alt="G-Helper - Lightweight control tool for Asus laptops" src="https://github.com/user-attachments/assets/8ba47820-e0ae-4431-a50a-0ec31e07ffa7" /></a>
 
 **The control app every laptop should come with.** G-Helper is fast, native, and straight to the point - a tool for tuning performance, fans, GPU, battery, and RGB on any Asus laptop or handheld: ROG Zephyrus, Flow, Strix, Scar, TUF, Vivobook, Zenbook, ProArt, ROG Ally, and beyond.
 

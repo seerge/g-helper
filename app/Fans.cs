@@ -366,10 +366,14 @@ namespace GHelper
         {
             string result = modeControl.SetRyzen(true);
             checkApplyUV.Enabled = true;
+            ShowRyzenLimits(result);
+        }
 
+        private void ShowRyzenLimits(string? prefix = null)
+        {
             string limits = modeControl.ReadRyzenLimits();
             var sections = new List<string>();
-            if (result.Length > 0) sections.Add(result);
+            if (!string.IsNullOrEmpty(prefix)) sections.Add(prefix);
             if (limits.Length > 0) sections.Add(limits);
 
             if (sections.Count > 0)

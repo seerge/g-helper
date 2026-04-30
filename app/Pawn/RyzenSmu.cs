@@ -98,7 +98,7 @@ namespace PawnIO
 
     public sealed class RyzenSmuService : IDisposable
     {
-        private const int RETRIES = 8192; 
+        private const int MAILBOX_TIMEOUT_MS = 200;
 
         private readonly PawnIOWrapper _io = new();
         private bool _init, _disposed;
@@ -242,13 +242,11 @@ namespace PawnIO
                 return null;
             uint tableVersion = (uint)resolveOut[0];
 
+            _io.Execute("ioctl_update_pm_table", null, null);
+            Thread.Sleep(100);
             if (!_io.Execute("ioctl_update_pm_table", null, null))
-            {
-                Thread.Sleep(50);
-                if (!_io.Execute("ioctl_update_pm_table", null, null))
-                    return null;
-            }
-            Thread.Sleep(50);
+                return null;
+            Thread.Sleep(200);
 
             ulong[] words = new ulong[64];
             if (!_io.Execute("ioctl_read_pm_table", null, words))
@@ -357,6 +355,8 @@ namespace PawnIO
             CpuCodeName.StrixHalo        => CpuFamily.StrixHalo,
 
             CpuCodeName.ShimadaPeak      => CpuFamily.ShimadaPeak,
+
+            _                            => CpuFamily.Unknown,
         };
 
         private static uint EncodeCurve(int steps) => (uint)(0x100000 - (uint)(-steps));
@@ -431,6 +431,22 @@ namespace PawnIO
         private bool WriteReg(uint addr, uint value)
             => _io.Execute("ioctl_write_smu_register", new ulong[] { addr, value }, null);
 
+        private bool WaitForMailboxIdle(uint rspAddr)
+        {
+            var sw = System.Diagnostics.Stopwatch.StartNew();
+            int spins = 0;
+            while (sw.ElapsedMilliseconds < MAILBOX_TIMEOUT_MS)
+            {
+                if (!ReadReg(rspAddr, out uint value)) return false;
+                if (value != 0) return true;
+
+                spins++;
+                if (spins > 256) Thread.Sleep(1);
+                else if (spins > 32) Thread.Yield();
+            }
+            return false;
+        }
+
 
         private SmuStatus SendMp1(uint cmd, uint arg)
         {
@@ -450,15 +466,19 @@ namespace PawnIO
         {
             response = new uint[6];
 
-            if (!_smuMutex.WaitOne(5000))
-                return SmuStatus.Failed;
+            if (_disposed) return SmuStatus.Failed;
+            if (!_smuMutex.WaitOne(5000)) return SmuStatus.Failed;
 
             try
             {
-                // Clear response register
-                WriteReg(rspAddr, 0);
+                if (_disposed) return SmuStatus.Failed;
 
-                // Write all 6 argument slots
+                if (!WaitForMailboxIdle(rspAddr))
+                    return SmuStatus.CmdRejectedBusy;
+
+                if (!WriteReg(rspAddr, 0))
+                    return SmuStatus.Failed;
+
                 for (int i = 0; i < 6; i++)
                 {
                     uint argValue = (args != null && i < args.Length) ? args[i] : 0;
@@ -466,27 +486,31 @@ namespace PawnIO
                         return SmuStatus.Failed;
                 }
 
-                // Send the command
                 if (!WriteReg(cmdAddr, cmd))
                     return SmuStatus.Failed;
 
-                // Poll until SMU response is non-zero (0x00 = still processing).
-                // All non-zero values are terminal states: 0x01=OK, 0xFF=Failed, etc.
-                // Bail immediately on a driver read failure since that won't self-recover.
+                // Poll for non-zero response (0x00 = still processing).
+                // Bounded by wall clock with a yield/sleep ladder so a slow or
+                // contended mailbox can't pin the thread spinning ioctls.
                 uint status = 0;
-                int pollTimeout = RETRIES;
-                while (--pollTimeout > 0)
+                var sw = System.Diagnostics.Stopwatch.StartNew();
+                int spins = 0;
+                while (sw.ElapsedMilliseconds < MAILBOX_TIMEOUT_MS)
                 {
                     if (!ReadReg(rspAddr, out status)) return SmuStatus.Failed;
                     if (status != 0) break;
+
+                    spins++;
+                    if (spins > 256) Thread.Sleep(1);
+                    else if (spins > 32) Thread.Yield();
                 }
 
-                if (pollTimeout == 0 || status != (uint)SmuStatus.OK)
-                    return status == 0 ? SmuStatus.Failed : (SmuStatus)status;
+                if (status == 0) return SmuStatus.Failed;
+                if (status != (uint)SmuStatus.OK) return (SmuStatus)status;
 
-                // Read back response arguments
                 for (int i = 0; i < 6; i++)
-                    ReadReg(argAddr + (uint)(i * 4), out response[i]);
+                    if (!ReadReg(argAddr + (uint)(i * 4), out response[i]))
+                        return SmuStatus.Failed;
 
                 return SmuStatus.OK;
             }
