@@ -12,10 +12,10 @@ namespace GHelper.Mode
 
         private static bool customFans = false;
         private static int customPower = 0;
-        private static bool customTemp = false;
 
         private int _cpuUV = 0;
         private int _igpuUV = 0;
+        private int _cpuTemp = CpuInfo.DefaultTemp;
         private bool _ryzenPower = false;
 
         private static RyzenSmuService? _smu;
@@ -124,7 +124,6 @@ namespace GHelper.Mode
 
                     customFans = false;
                     customPower = 0;
-                    customTemp = false;
 
                     SetModeLabel();
 
@@ -439,22 +438,17 @@ namespace GHelper.Mode
 
         }
 
-        public void SetCPUTemp(int? cpuTemp, bool init = false)
+        public SmuStatus? SetCPUTemp(int cpuTemp, bool log = false)
         {
-            if (cpuTemp == CpuInfo.MaxTemp && customTemp)
-            {
-                cpuTemp = CpuInfo.DefaultTemp;
-                Logger.WriteLine($"Custom CPU Temp reset");
-            }
+            if (cpuTemp < CpuInfo.MinTemp || cpuTemp > CpuInfo.DefaultTemp) return null;
+            if (cpuTemp == CpuInfo.DefaultTemp && _cpuTemp == CpuInfo.DefaultTemp) return null;
 
-            if (cpuTemp >= CpuInfo.MinTemp && cpuTemp < CpuInfo.MaxTemp)
-            {
-                var smu = GetSmu();
-                if (smu == null) return;
-                SmuStatus status = smu.SetThm((int)cpuTemp);
-                if (init) Logger.WriteLine($"CPU Temp: {cpuTemp}°C {status}");
-                if (status == SmuStatus.OK) customTemp = cpuTemp != CpuInfo.DefaultTemp;
-            }
+            var smu = GetSmu();
+            if (smu == null) return null;
+            SmuStatus status = smu.SetThm(cpuTemp);
+            if (log) Logger.WriteLine($"CPU Temp: {cpuTemp}°C {status}");
+            if (status == SmuStatus.OK) _cpuTemp = cpuTemp;
+            return status;
         }
 
         public void SetUV(int cpuUV)
@@ -519,13 +513,8 @@ namespace GHelper.Mode
                     lines.AppendLine($"iGPU UV {igpuUV}: {s}");
                 }
 
-                if (cpuTemp >= CpuInfo.MinTemp && cpuTemp < CpuInfo.MaxTemp)
-                {
-                    SmuStatus s = smu.SetThm(cpuTemp);
-                    Logger.WriteLine($"CPU Temp: {cpuTemp}°C {s}");
-                    if (s == SmuStatus.OK) customTemp = cpuTemp != CpuInfo.DefaultTemp;
-                    lines.AppendLine($"CPU Temp {cpuTemp}°C: {s}");
-                }
+                SmuStatus? tempStatus = SetCPUTemp(cpuTemp, true);
+                if (tempStatus.HasValue) lines.AppendLine($"CPU Temp {cpuTemp}°C: {tempStatus}");
             }
             catch (Exception ex)
             {
@@ -563,6 +552,7 @@ namespace GHelper.Mode
         {
             if (_cpuUV != 0) SetUV(0);
             if (_igpuUV != 0) SetUViGPU(0);
+            if (_cpuTemp != CpuInfo.DefaultTemp) SetCPUTemp(CpuInfo.DefaultTemp, true);
             SetReapplyEnabled(false);
         }
 

@@ -194,7 +194,7 @@ namespace GHelper
             trackUViGPU.Maximum = CpuInfo.MaxIGPUUV;
 
             trackTemp.Minimum = CpuInfo.MinTemp;
-            trackTemp.Maximum = CpuInfo.MaxTemp;
+            trackTemp.Maximum = CpuInfo.DefaultTemp;
 
             comboPowerMode.DropDownStyle = ComboBoxStyle.DropDownList;
             comboPowerMode.DataSource = new BindingSource(PowerNative.powerModes, null);
@@ -392,7 +392,7 @@ namespace GHelper
             int igpuUV = Math.Max(trackUViGPU.Minimum, Math.Min(trackUViGPU.Maximum, AppConfig.GetMode("igpu_uv", 0)));
 
             int temp = AppConfig.GetMode("cpu_temp");
-            if (temp < CpuInfo.MinTemp || temp > CpuInfo.MaxTemp) temp = CpuInfo.MaxTemp;
+            if (temp < CpuInfo.MinTemp || temp > CpuInfo.DefaultTemp) temp = CpuInfo.DefaultTemp;
 
             checkApplyUV.Enabled = checkApplyUV.Checked = AppConfig.IsApplyUV();
 
@@ -425,7 +425,7 @@ namespace GHelper
             labelUV.Text     = trackUV.Value.ToString();
             labelUViGPU.Text = trackUViGPU.Value.ToString();
 
-            labelTemp.Text = (trackTemp.Value < CpuInfo.MaxTemp) ? trackTemp.Value.ToString() + "\u00b0C" : "Default";
+            labelTemp.Text = (trackTemp.Value < CpuInfo.DefaultTemp) ? trackTemp.Value.ToString() + "\u00b0C" : "Default";
         }
 
         private void AdvancedScroll()
@@ -1207,7 +1207,7 @@ namespace GHelper
 
             trackUV.Value = CpuInfo.MaxCPUUV;
             trackUViGPU.Value = CpuInfo.MaxIGPUUV;
-            trackTemp.Value = CpuInfo.MaxTemp;
+            trackTemp.Value = CpuInfo.DefaultTemp;
 
             AdvancedScroll();
             AppConfig.RemoveMode("cpu_temp");
