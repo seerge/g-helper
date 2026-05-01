@@ -428,6 +428,12 @@ Do you still want to continue?</value>
   <data name="FnLockOn" xml:space="preserve">
     <value>FN-Lock On</value>
   </data>
+  <data name="WinLockOff" xml:space="preserve">
+    <value>Win-Lock Off</value>
+  </data>
+  <data name="WinLockOn" xml:space="preserve">
+    <value>Win-Lock On</value>
+  </data>
   <data name="WinLockToggle" xml:space="preserve">
     <value>Win-Lock Toggle</value>
   </data>

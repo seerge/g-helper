@@ -1026,6 +1026,24 @@ namespace GHelper.Properties {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Win-Lock Off.
+        /// </summary>
+        internal static string WinLockOff {
+            get {
+                return ResourceManager.GetString("WinLockOff", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Win-Lock On.
+        /// </summary>
+        internal static string WinLockOn {
+            get {
+                return ResourceManager.GetString("WinLockOn", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Win-Lock Toggle.
         /// </summary>
         internal static string WinLockToggle {

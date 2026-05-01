@@ -39,6 +39,7 @@ namespace GHelper.Input
         static bool isTUF = AppConfig.IsTUF();
 
         KeyboardListener listener;
+        AuraListener auraListener;
         KeyboardHook hook = new KeyboardHook();
 
         public InputDispatcher()
@@ -102,6 +103,9 @@ namespace GHelper.Input
             {
                 Logger.WriteLine("Optimization service is running");
             }
+
+            auraListener?.Dispose();
+            auraListener = new AuraListener(locked => ToggleWinLock(locked));
 
             InitBacklightTimer();
             MuteLEDInit();
@@ -758,9 +762,15 @@ namespace GHelper.Input
             Program.toast.RunToast(fnLock ? Properties.Strings.FnLockOn : Properties.Strings.FnLockOff, ToastIcon.FnLock);
         }
 
-        public static void ToggleWinLock()
+        public static void ToggleWinLock(bool? locked = null)
         {
-            Program.toast.RunToast(Properties.Strings.WinLockToggle);
+            string text = locked switch
+            {
+                true => Properties.Strings.WinLockOn,
+                false => Properties.Strings.WinLockOff,
+                _ => Properties.Strings.WinLockToggle,
+            };
+            Program.toast.RunToast(text, ToastIcon.FnLock);
         }
 
         public static void SetSlateMode(int status)
