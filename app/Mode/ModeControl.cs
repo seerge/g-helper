@@ -348,25 +348,13 @@ namespace GHelper.Mode
             if (limit_slow < AsusACPI.MinTotal) return;
 
             // SPL and SPPT
-            bool nativeAPU = Program.acpi.IsSupported(AsusACPI.PPT_APUA0);
-            if (nativeAPU)
+            if (Program.acpi.IsSupported(AsusACPI.PPT_APUA0))
             {
                 Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, limit_total, "PowerLimit A3");
                 Program.acpi.DeviceSet(AsusACPI.PPT_APUA0, limit_slow, "PowerLimit A0");
                 customPower = limit_total;
             }
-
-            if (allAMD) // CPU limit all amd models
-            {
-                Program.acpi.DeviceSet(AsusACPI.PPT_CPUB0, limit_cpu, "PowerLimit B0");
-                customPower = limit_cpu;
-            }
-            else if (isAMD && Program.acpi.IsSupported(AsusACPI.PPT_APUC1)) // FPPT boost for non all-amd models
-            {
-                Program.acpi.DeviceSet(AsusACPI.PPT_APUC1, limit_fast, "PowerLimit C1");
-            }
-
-            if (isAMD && !nativeAPU)
+            else if (isAMD)
             {
                 if (ProcessHelper.IsUserAdministrator())
                 {
@@ -377,6 +365,16 @@ namespace GHelper.Mode
                     ProcessHelper.RunAsAdmin("cpu");
                     return;
                 }
+            }
+
+            if (allAMD) // CPU limit all amd models
+            {
+                Program.acpi.DeviceSet(AsusACPI.PPT_CPUB0, limit_cpu, "PowerLimit B0");
+                customPower = limit_cpu;
+            }
+            else if (isAMD && Program.acpi.IsSupported(AsusACPI.PPT_APUC1)) // FPPT boost for non all-amd models
+            {
+                Program.acpi.DeviceSet(AsusACPI.PPT_APUC1, limit_fast, "PowerLimit C1");
             }
 
             SetModeLabel();
