@@ -99,9 +99,6 @@ public class AsusACPI
     public const uint DevsMidFanCurve = 0x00110032;
 
     public const uint FanHysteresis = 0x00110034;
-    public const uint FanHysteresisGPU = 0x00110035; // GPU fan hysteresis candidate
-    public const uint FanHysteresisMid = 0x00110036; // Mid fan hysteresis candidate
-
     public const int Temp_CPU = 0x00120094;
     public const int Temp_GPU = 0x00120097;
 
