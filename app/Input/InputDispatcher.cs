@@ -792,6 +792,8 @@ namespace GHelper.Input
         static int GetTentState()
         {
             var tentState = Program.acpi.DeviceGet(AsusACPI.TentState);
+            // TentState is sticky on some convertibles (e.g. ProArt PX13); cross-check TabletState.
+            if (tentState > 0 && Program.acpi.DeviceGet(AsusACPI.TabletState) == AsusACPI.Tablet_Notebook) tentState = 0;
             Logger.WriteLine($"Tent: {tentState}");
             return tentState;
         }
@@ -1019,7 +1021,7 @@ namespace GHelper.Input
 
             if (tentMode)
             {
-                tentMode = GetTentState() > 0 && Program.acpi.DeviceGet(AsusACPI.TabletState) != AsusACPI.Tablet_Notebook;
+                tentMode = GetTentState() > 0;
                 if (tentMode)
                 {
                     Logger.WriteLine("Skipping Backlight Init: Tent Mode");
