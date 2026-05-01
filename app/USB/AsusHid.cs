@@ -238,10 +238,27 @@ public static class AsusHid
 
     public static byte[]? AuraProbe(bool query, string log = "Aura Probe")
     {
-        var device = FindDevices(AURA_ID)?.FirstOrDefault();
-        if (device == null) return null;
+        Logger.WriteLine($"{log}: start (query={query})");
 
-        int featLen = device.GetMaxFeatureReportLength();
+        var devices = FindDevices(AURA_ID)?.ToList();
+        if (devices == null || devices.Count == 0)
+        {
+            Logger.WriteLine($"{log}: no device");
+            return null;
+        }
+
+        for (int i = 0; i < devices.Count; i++)
+        {
+            var d = devices[i];
+            int reportLen = 0;
+            try
+            {
+                if (d.GetReportDescriptor().TryGetReport(ReportType.Feature, AURA_ID, out var r))
+                    reportLen = r.Length;
+            }
+            catch { }
+            Logger.WriteLine($"{log}: candidate[{i}] PID={d.ProductID:X4} feat={d.GetMaxFeatureReportLength()} auraReport={reportLen} out={d.GetMaxOutputReportLength()} in={d.GetMaxInputReportLength()} path={d.DevicePath}");
+        }
 
         byte[][] primers = [
             [AURA_ID, 0xB9],
@@ -249,39 +266,74 @@ public static class AsusHid
         ];
         byte[] queryBytes = [AURA_ID, 0x05, 0x20, 0x31, 0x00, 0x20];
 
-        try
+        for (int i = 0; i < devices.Count; i++)
         {
-            using var stream = device.Open();
-            var payload = new byte[featLen];
+            var device = devices[i];
 
-            foreach (var primer in primers)
+            int featLen = 0;
+            try
             {
-                Array.Clear(payload, 0, featLen);
-                Array.Copy(primer, payload, Math.Min(primer.Length, featLen));
-                stream.SetFeature(payload);
+                if (device.GetReportDescriptor().TryGetReport(ReportType.Feature, AURA_ID, out var r))
+                    featLen = r.Length;
             }
+            catch { }
+            if (featLen <= 0) featLen = device.GetMaxFeatureReportLength();
+            if (featLen <= 0) continue;
 
-            Array.Clear(payload, 0, featLen);
-            Array.Copy(queryBytes, payload, Math.Min(queryBytes.Length, featLen));
-            stream.SetFeature(payload);
+            try
+            {
+                using var stream = device.Open();
 
-            if (!query) return null;
+                foreach (var primer in primers)
+                    stream.Write(primer);
+                stream.Write(queryBytes);
 
-            var response = new byte[featLen];
-            response[0] = AURA_ID;
-            stream.GetFeature(response);
+                if (!query)
+                {
+                    if (i == 0) return null;
+                    continue;
+                }
 
-            for (int i = 0; i < 4; i++)
-                if (response[i] != queryBytes[i]) return null;
+                var response = new byte[featLen];
+                int deadline = Environment.TickCount + 300;
+                int attempts = 0;
+                bool matched = false;
+                while (true)
+                {
+                    attempts++;
+                    Array.Clear(response, 0, featLen);
+                    response[0] = AURA_ID;
+                    stream.GetFeature(response);
 
-            Logger.WriteLine($"{log}: {BitConverter.ToString(response)}");
-            return response;
+                    bool match = true;
+                    for (int j = 0; j < 4; j++)
+                        if (response[j] != queryBytes[j]) { match = false; break; }
+
+                    if (match)
+                    {
+                        Logger.WriteLine($"{log} candidate[{i}] (attempt {attempts}): {BitConverter.ToString(response)}");
+                        matched = true;
+                        return response;
+                    }
+
+                    if (Environment.TickCount >= deadline)
+                    {
+                        Logger.WriteLine($"{log} candidate[{i}]: no match after {attempts} polls, last={BitConverter.ToString(response, 0, Math.Min(16, featLen))}");
+                        break;
+                    }
+
+                    Thread.Sleep(20);
+                }
+
+                if (matched) break;
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine($"{log} candidate[{i}] error: {ex.Message}");
+            }
         }
-        catch (Exception ex)
-        {
-            Logger.WriteLine($"{log} error: {ex.Message}");
-            return null;
-        }
+
+        return null;
     }
 
 }
