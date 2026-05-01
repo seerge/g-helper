@@ -758,6 +758,11 @@ namespace GHelper.Input
             Program.toast.RunToast(fnLock ? Properties.Strings.FnLockOn : Properties.Strings.FnLockOff, ToastIcon.FnLock);
         }
 
+        public static void ToggleWinLock()
+        {
+            Program.toast.RunToast(Properties.Strings.WinLockToggle);
+        }
+
         public static void SetSlateMode(int status)
         {
             try
@@ -964,6 +969,9 @@ namespace GHelper.Input
                     return;
                 case 78:    // Fn + ESC
                     ToggleFnLock();
+                    return;
+                case 79:    // Fn + Win
+                    ToggleWinLock();
                     return;
                 case 75:    // Fn + Arrow Lock
                     ToggleArrowLock();
