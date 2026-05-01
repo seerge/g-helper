@@ -1291,6 +1291,9 @@ namespace GHelper.Input
             int EventID = int.Parse(e.NewEvent["EventID"].ToString());
             Logger.WriteLine("WMI event " + EventID);
             if (AppConfig.NoWMI()) return;
+
+            if (EventID == 87 || EventID == 88) Program.OnChargerEvent();
+
             HandleEvent(EventID);
         }
     }
