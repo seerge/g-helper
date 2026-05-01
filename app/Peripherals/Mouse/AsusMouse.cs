@@ -586,7 +586,8 @@ public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
                         if (IsPacketLoggerEnabled())
                             Logger.WriteLine(GetDisplayName() + ": Read packet: " + ByteArrayToString(response));
 
-                        Logger.WriteLine(GetDisplayName() + ": Mouse returned error (FF AA). Packet probably not supported by mouse firmware.");
+                        if (!(packet[1] == 0x12 && packet[2] == 0x07))
+                            Logger.WriteLine(GetDisplayName() + ": Mouse returned error (FF AA). Packet probably not supported by mouse firmware.");
                         //Error. Mouse could not understand or process the sent packet
                         return response;
                     }
@@ -779,11 +780,12 @@ public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
                 Charging = ParseChargingState(response);
 
                 //If the device goes to standby it will not report battery state anymore.
+                bool wasReady = IsDeviceReady;
                 SetDeviceReady(Battery > 0);
 
                 if (!IsDeviceReady)
                 {
-                    Logger.WriteLine(GetDisplayName() + ": Device gone");
+                    if (wasReady) Logger.WriteLine(GetDisplayName() + ": Device gone");
                     return;
                 }
 
