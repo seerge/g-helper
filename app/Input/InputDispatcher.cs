@@ -1011,7 +1011,7 @@ namespace GHelper.Input
 
             if (tentMode)
             {
-                tentMode = GetTentState() > 0; 
+                tentMode = GetTentState() > 0 && Program.acpi.DeviceGet(AsusACPI.TabletState) != AsusACPI.Tablet_Notebook;
                 if (tentMode)
                 {
                     Logger.WriteLine("Skipping Backlight Init: Tent Mode");
