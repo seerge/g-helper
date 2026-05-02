@@ -791,10 +791,17 @@ namespace GHelper.Input
 
         static int GetTentState()
         {
-            var tentState = Program.acpi.DeviceGet(AsusACPI.TentState);
-            // TentState is sticky on some convertibles (e.g. ProArt PX13); cross-check TabletState.
-            if (tentState > 0 && Program.acpi.DeviceGet(AsusACPI.TabletState) == AsusACPI.Tablet_Notebook) tentState = 0;
-            Logger.WriteLine($"Tent: {tentState}");
+            var tentRaw = Program.acpi.DeviceGet(AsusACPI.TentState);
+
+            if (!AppConfig.IsPX13())
+            {
+                Logger.WriteLine($"Tent: {tentRaw}");
+                return tentRaw;
+            }
+
+            var tabletRaw = Program.acpi.DeviceGet(AsusACPI.TabletState);
+            var tentState = (tentRaw > 0 && tabletRaw == AsusACPI.Tablet_Notebook) ? 0 : tentRaw;
+            Logger.WriteLine($"Tent: {tentState} (raw: {tentRaw}, tablet: {tabletRaw})");
             return tentState;
         }
 
@@ -990,6 +997,7 @@ namespace GHelper.Input
                     return;
                 case 250:
                     // Tent Mode
+                    if (AppConfig.IsPX13()) return;
                     TentMode();
                     return;
             }

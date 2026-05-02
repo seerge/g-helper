@@ -358,6 +358,11 @@ public static class AppConfig
         return ContainsModel("ProArt");
     }
 
+    public static bool IsPX13()
+    {
+        return ContainsModel("HN7306");
+    }
+
     public static bool IsVivoZenbook()
     {
         return ContainsModel("Vivobook") || ContainsModel("Zenbook") || ContainsModel("EXPERTBOOK") || ContainsModel(" V16") || ContainsModel("ASUSLaptop");
