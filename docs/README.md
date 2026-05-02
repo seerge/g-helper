@@ -15,6 +15,9 @@
 
 **⭐ Like the app? Help spread the word.**
 
+> or use a package manager\
+> [Chocolatey](https://community.chocolatey.org/packages/g-helper): `choco install g-helper`
+
 - [FAQ](https://github.com/seerge/g-helper/wiki/FAQ)
 - [Setup and Requirements](https://github.com/seerge/g-helper/wiki/Requirements)
 - [Troubleshooting](https://github.com/seerge/g-helper/wiki/Troubleshooting)
