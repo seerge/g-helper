@@ -792,13 +792,6 @@ namespace GHelper.Input
         static int GetTentState()
         {
             var tentRaw = Program.acpi.DeviceGet(AsusACPI.TentState);
-
-            if (!AppConfig.IsPX13())
-            {
-                Logger.WriteLine($"Tent: {tentRaw}");
-                return tentRaw;
-            }
-
             var tabletRaw = Program.acpi.DeviceGet(AsusACPI.TabletState);
             var tentState = (tentRaw > 0 && tabletRaw == AsusACPI.Tablet_Notebook) ? 0 : tentRaw;
             Logger.WriteLine($"Tent: {tentState} (raw: {tentRaw}, tablet: {tabletRaw})");
