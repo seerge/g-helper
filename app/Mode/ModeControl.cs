@@ -401,8 +401,8 @@ namespace GHelper.Mode
                 using NvidiaGpuControl nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
                 try
                 {
-                    int statusLimit = nvControl.SetMaxGPUClock(clock_limit);
                     int statusClocks = nvControl.SetClocks(core, memory);
+                    int statusLimit = nvControl.SetMaxGPUClock(clock_limit);
                     if ((statusLimit != 0 || statusClocks != 0) && launchAsAdmin) ProcessHelper.RunAsAdmin("gpu");
                 }
                 catch (Exception ex)
