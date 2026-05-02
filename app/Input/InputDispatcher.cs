@@ -1033,6 +1033,7 @@ namespace GHelper.Input
                 if (tentMode)
                 {
                     Logger.WriteLine("Skipping Backlight Init: Tent Mode");
+                    Aura.ApplyBrightness(0, "Tent Off");
                     return;
                 }
             }
