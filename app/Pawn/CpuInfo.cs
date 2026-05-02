@@ -32,9 +32,8 @@ namespace PawnIO
         public static int MaxCPUUV   => AppConfig.Get("max_uv",        0);
         public static int MinIGPUUV  => AppConfig.Get("min_igpu_uv", -30);
         public static int MaxIGPUUV  => AppConfig.Get("max_igpu_uv",   0);
-        public static int MinTemp    => AppConfig.Get("min_temp",      75);
-        public const  int MaxTemp    = 98;
-        public const  int DefaultTemp= 96;
+        public static int MinTemp    => AppConfig.Get("min_temp",     75);
+        public static int DefaultTemp=> AppConfig.Get("max_temp",     96);
 
         public static bool IsSupportedUV()
             => Name.Contains("RYZEN AI MAX") ||

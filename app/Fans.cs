@@ -69,6 +69,7 @@ namespace GHelper
 
             labelRisky.Text = Properties.Strings.UndervoltingRisky;
             buttonApplyAdvanced.Text = Properties.Strings.Apply;
+            buttonReadLimits.Text = "Read Limits";
             checkApplyUV.Text = Properties.Strings.AutoApply;
 
             buttonCalibrate.Text = Properties.Strings.Calibrate;
@@ -193,7 +194,7 @@ namespace GHelper
             trackUViGPU.Maximum = CpuInfo.MaxIGPUUV;
 
             trackTemp.Minimum = CpuInfo.MinTemp;
-            trackTemp.Maximum = CpuInfo.MaxTemp;
+            trackTemp.Maximum = CpuInfo.DefaultTemp;
 
             comboPowerMode.DropDownStyle = ComboBoxStyle.DropDownList;
             comboPowerMode.DataSource = new BindingSource(PowerNative.powerModes, null);
@@ -224,6 +225,7 @@ namespace GHelper
             trackTemp.Scroll += TrackUV_Scroll;
 
             buttonApplyAdvanced.Click += ButtonApplyAdvanced_Click;
+            buttonReadLimits.Click += ButtonReadLimits_Click;
 
             buttonCPU.BorderColor = colorStandard;
             buttonGPU.BorderColor = colorTurbo;
@@ -244,7 +246,7 @@ namespace GHelper
 
             ToggleNavigation(0);
 
-            if (Program.acpi.DeviceGet(AsusACPI.DevsCPUFanCurve) < 0) buttonCalibrate.Visible = false;
+            if (!Program.acpi.IsSupported(AsusACPI.DevsCPUFanCurve)) buttonCalibrate.Visible = false;
 
             FormClosed += Fans_FormClosed;
             Activated  += (_, _) => VisualiseAdvanced();
@@ -366,17 +368,19 @@ namespace GHelper
         {
             string result = modeControl.SetRyzen(true);
             checkApplyUV.Enabled = true;
+            ShowLabelRisky(result);
+        }
 
-            string limits = modeControl.ReadRyzenLimits();
-            var sections = new List<string>();
-            if (result.Length > 0) sections.Add(result);
-            if (limits.Length > 0) sections.Add(limits);
+        private void ButtonReadLimits_Click(object? sender, EventArgs e)
+        {
+            ShowLabelRisky(modeControl.ReadRyzenLimits());
+        }
 
-            if (sections.Count > 0)
-            {
-                labelRisky.Text = string.Join(Environment.NewLine + Environment.NewLine, sections);
-                labelRisky.Visible = true;
-            }
+        private void ShowLabelRisky(string text)
+        {
+            if (string.IsNullOrEmpty(text)) return;
+            labelRisky.Text = text;
+            labelRisky.Visible = true;
         }
 
         public void InitUV()
@@ -388,9 +392,9 @@ namespace GHelper
             int igpuUV = Math.Max(trackUViGPU.Minimum, Math.Min(trackUViGPU.Maximum, AppConfig.GetMode("igpu_uv", 0)));
 
             int temp = AppConfig.GetMode("cpu_temp");
-            if (temp < CpuInfo.MinTemp || temp > CpuInfo.MaxTemp) temp = CpuInfo.MaxTemp;
+            if (temp < CpuInfo.MinTemp || temp > CpuInfo.DefaultTemp) temp = CpuInfo.DefaultTemp;
 
-            checkApplyUV.Enabled = checkApplyUV.Checked = AppConfig.IsMode("auto_uv");
+            checkApplyUV.Enabled = checkApplyUV.Checked = AppConfig.IsApplyUV();
 
             trackUV.Value = cpuUV;
             trackUViGPU.Value = igpuUV;
@@ -421,7 +425,7 @@ namespace GHelper
             labelUV.Text     = trackUV.Value.ToString();
             labelUViGPU.Text = trackUViGPU.Value.ToString();
 
-            labelTemp.Text = (trackTemp.Value < CpuInfo.MaxTemp) ? trackTemp.Value.ToString() + "\u00b0C" : "Default";
+            labelTemp.Text = (trackTemp.Value < CpuInfo.DefaultTemp) ? trackTemp.Value.ToString() + "\u00b0C" : "Default";
         }
 
         private void AdvancedScroll()
@@ -562,89 +566,88 @@ namespace GHelper
 
         public void InitGPU()
         {
-
-            if (Program.acpi.DeviceGet(AsusACPI.GPUEco) == 1)
+            Task.Run(() =>
             {
-                gpuVisible = buttonGPU.Visible = false;
-                return;
-            }
-
-            if (HardwareControl.GpuControl is null || !HardwareControl.GpuControl.IsValid) HardwareControl.RecreateGpuControl();
-
-            if (HardwareControl.GpuControl is not null && HardwareControl.GpuControl.IsNvidia)
-            {
-                nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
-            }
-            else
-            {
-                gpuVisible = buttonGPU.Visible = false;
-                return;
-            }
-
-            try
-            {
-                gpuVisible = buttonGPU.Visible = true;
-
-                int gpu_boost = AppConfig.GetMode("gpu_boost");
-                int gpu_temp = AppConfig.GetMode("gpu_temp");
-
-                int core = AppConfig.GetMode("gpu_core");
-                int memory = AppConfig.GetMode("gpu_memory");
-                int clock_limit = AppConfig.GetMode("gpu_clock_limit");
-
-                if (gpu_boost < 0) gpu_boost = AsusACPI.MaxGPUBoost;
-                if (gpu_temp < 0) gpu_temp = AsusACPI.MaxGPUTemp;
-
-                if (core == -1) core = 0;
-                if (memory == -1) memory = 0;
-                if (clock_limit == -1) clock_limit = NvidiaGpuControl.MaxClockLimit;
-
-                if (nvControl is not null)
+                if (Program.acpi.DeviceGet(AsusACPI.GPUEco) == 1)
                 {
-                    if (nvControl.GetClocks(out int current_core, out int current_memory))
-                    {
-                        core = current_core;
-                        memory = current_memory;
-                    }
-
-                    int _clockLimit = nvControl.GetMaxGPUCLock();
-
-                    if (_clockLimit == 0) clock_limit = NvidiaGpuControl.MaxClockLimit;
-                    else if (_clockLimit > 0) clock_limit = _clockLimit;
-
-                    try
-                    {
-                        labelGPU.Text = nvControl.FullName;
-                    }
-                    catch
-                    {
-
-                    }
+                    Invoke(delegate { gpuVisible = buttonGPU.Visible = false; });
+                    return;
                 }
 
-                trackGPUClockLimit.Value = Math.Max(Math.Min(clock_limit, NvidiaGpuControl.MaxClockLimit), NvidiaGpuControl.MinClockLimit);
+                if (HardwareControl.GpuControl is null || !HardwareControl.GpuControl.IsValid) HardwareControl.RecreateGpuControl();
 
-                trackGPUCore.Value = Math.Max(Math.Min(core, NvidiaGpuControl.MaxCoreOffset), NvidiaGpuControl.MinCoreOffset);
-                trackGPUMemory.Value = Math.Max(Math.Min(memory, NvidiaGpuControl.MaxMemoryOffset), NvidiaGpuControl.MinMemoryOffset);
+                if (HardwareControl.GpuControl is not NvidiaGpuControl nv)
+                {
+                    Invoke(delegate { gpuVisible = buttonGPU.Visible = false; });
+                    return;
+                }
 
-                trackGPUBoost.Value = Math.Max(Math.Min(gpu_boost, AsusACPI.MaxGPUBoost), AsusACPI.MinGPUBoost);
-                trackGPUTemp.Value = Math.Max(Math.Min(gpu_temp, AsusACPI.MaxGPUTemp), AsusACPI.MinGPUTemp);
+                nvControl = nv;
 
+                try
+                {
+                    int gpu_boost = AppConfig.GetMode("gpu_boost");
+                    int gpu_temp = AppConfig.GetMode("gpu_temp");
 
-                panelGPUBoost.Visible = (Program.acpi.DeviceGet(AsusACPI.PPT_GPUC0) >= 0);
-                panelGPUTemp.Visible = (Program.acpi.DeviceGet(AsusACPI.PPT_GPUC2) >= 0);
+                    int core = AppConfig.GetMode("gpu_core");
+                    int memory = AppConfig.GetMode("gpu_memory");
+                    int clock_limit = AppConfig.GetMode("gpu_clock_limit");
 
-                VisualiseGPUSettings();
+                    if (gpu_boost < 0) gpu_boost = AsusACPI.MaxGPUBoost;
+                    if (gpu_temp < 0) gpu_temp = AsusACPI.MaxGPUTemp;
 
-                InitGPUPower();
+                    if (core == -1) core = 0;
+                    if (memory == -1) memory = 0;
+                    if (clock_limit == -1) clock_limit = NvidiaGpuControl.MaxClockLimit;
 
-            }
-            catch (Exception ex)
-            {
-                Logger.WriteLine(ex.ToString());
-                gpuVisible = buttonGPU.Visible = false;
-            }
+                    string? gpuName = null;
 
+                    if (nvControl is not null)
+                    {
+                        if (nvControl.GetClocks(out int current_core, out int current_memory))
+                        {
+                            core = current_core;
+                            memory = current_memory;
+                        }
+
+                        int _clockLimit = nvControl.GetMaxGPUCLock();
+
+                        if (_clockLimit == 0) clock_limit = NvidiaGpuControl.MaxClockLimit;
+                        else if (_clockLimit > 0) clock_limit = _clockLimit;
+
+                        try { gpuName = nvControl.FullName; } catch { }
+                    }
+
+                    bool boostVisible = Program.acpi.IsSupported(AsusACPI.PPT_GPUC0);
+                    bool tempVisible = Program.acpi.IsSupported(AsusACPI.PPT_GPUC2);
+
+                    Invoke(delegate
+                    {
+                        gpuVisible = buttonGPU.Visible = true;
+                        if (gpuName is not null) labelGPU.Text = gpuName;
+
+                        trackGPUClockLimit.Value = Math.Max(Math.Min(clock_limit, NvidiaGpuControl.MaxClockLimit), NvidiaGpuControl.MinClockLimit);
+
+                        trackGPUCore.Value = Math.Max(Math.Min(core, NvidiaGpuControl.MaxCoreOffset), NvidiaGpuControl.MinCoreOffset);
+                        trackGPUMemory.Value = Math.Max(Math.Min(memory, NvidiaGpuControl.MaxMemoryOffset), NvidiaGpuControl.MinMemoryOffset);
+
+                        trackGPUBoost.Value = Math.Max(Math.Min(gpu_boost, AsusACPI.MaxGPUBoost), AsusACPI.MinGPUBoost);
+                        trackGPUTemp.Value = Math.Max(Math.Min(gpu_temp, AsusACPI.MaxGPUTemp), AsusACPI.MinGPUTemp);
+
+                        panelGPUBoost.Visible = boostVisible;
+                        panelGPUTemp.Visible = tempVisible;
+
+                        VisualiseGPUSettings();
+
+                        InitGPUPower();
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteLine(ex.ToString());
+                    try { Invoke(delegate { gpuVisible = buttonGPU.Visible = false; }); } catch { }
+                }
+            });
         }
 
         private void VisualiseGPUSettings()
@@ -944,9 +947,9 @@ namespace GHelper
         public void InitPower()
         {
 
-            bool modeA = Program.acpi.DeviceGet(AsusACPI.PPT_APUA0) >= 0 || CpuInfo.IsAMD;
+            bool modeA = Program.acpi.IsSupported(AsusACPI.PPT_APUA0) || CpuInfo.IsAMD;
             bool modeB0 = Program.acpi.IsAllAmdPPT();
-            bool modeC1 = Program.acpi.DeviceGet(AsusACPI.PPT_APUC1) >= 0;
+            bool modeC1 = Program.acpi.IsSupported(AsusACPI.PPT_APUC1);
 
             panelTotal.Visible = modeA;
             panelCPU.Visible = modeB0;
@@ -983,7 +986,7 @@ namespace GHelper
 
             }
 
-            checkApplyPower.Checked = AppConfig.IsMode("auto_apply_power");
+            checkApplyPower.Checked = AppConfig.IsApplyPower();
 
             int limit_total = AppConfig.GetMode("limit_total", AsusACPI.DefaultTotal);
             int limit_slow = AppConfig.GetMode("limit_slow", limit_total);
@@ -1103,8 +1106,8 @@ namespace GHelper
             LoadProfile(seriesCPU, AsusFan.CPU);
             LoadProfile(seriesGPU, AsusFan.GPU);
 
-            bool autoFans = AppConfig.IsMode("auto_apply_power") && AppConfig.IsFanRequired();
-            bool applyFans = AppConfig.IsMode("auto_apply");
+            bool autoFans = AppConfig.IsApplyPower() && AppConfig.IsFanRequired();
+            bool applyFans = AppConfig.IsApplyFans();
 
             checkApplyFans.Checked = applyFans;
 
@@ -1204,7 +1207,7 @@ namespace GHelper
 
             trackUV.Value = CpuInfo.MaxCPUUV;
             trackUViGPU.Value = CpuInfo.MaxIGPUUV;
-            trackTemp.Value = CpuInfo.MaxTemp;
+            trackTemp.Value = CpuInfo.DefaultTemp;
 
             AdvancedScroll();
             AppConfig.RemoveMode("cpu_temp");

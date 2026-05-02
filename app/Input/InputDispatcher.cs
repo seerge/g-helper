@@ -677,8 +677,8 @@ namespace GHelper.Input
         static void MuteLEDInit()
         {
             if (!AppConfig.IsVivoZenbook()) return;
-            if (Program.acpi.DeviceGet(AsusACPI.MicMuteLed) >= 0) Program.acpi.DeviceSet(AsusACPI.MicMuteLed, Audio.IsMicMuted() ? 1 : 0, "MicmuteLedInit");
-            if (Program.acpi.DeviceGet(AsusACPI.SoundMuteLed) >= 0) Program.acpi.DeviceSet(AsusACPI.SoundMuteLed, Audio.IsMuted() ? 1 : 0, "SoundLedInit");
+            if (Program.acpi.IsSupported(AsusACPI.MicMuteLed)) Program.acpi.DeviceSet(AsusACPI.MicMuteLed, Audio.IsMicMuted() ? 1 : 0, "MicmuteLedInit");
+            if (Program.acpi.IsSupported(AsusACPI.SoundMuteLed)) Program.acpi.DeviceSet(AsusACPI.SoundMuteLed, Audio.IsMuted() ? 1 : 0, "SoundLedInit");
         }
 
         static bool GetTouchpadState()
@@ -758,6 +758,11 @@ namespace GHelper.Input
             Program.toast.RunToast(fnLock ? Properties.Strings.FnLockOn : Properties.Strings.FnLockOff, ToastIcon.FnLock);
         }
 
+        public static void ToggleWinLock()
+        {
+            Program.toast.RunToast(Properties.Strings.WinLockToggle);
+        }
+
         public static void SetSlateMode(int status)
         {
             try
@@ -787,6 +792,8 @@ namespace GHelper.Input
         static int GetTentState()
         {
             var tentState = Program.acpi.DeviceGet(AsusACPI.TentState);
+            // TentState is sticky on some convertibles (e.g. ProArt PX13); cross-check TabletState.
+            if (tentState > 0 && Program.acpi.DeviceGet(AsusACPI.TabletState) == AsusACPI.Tablet_Notebook) tentState = 0;
             Logger.WriteLine($"Tent: {tentState}");
             return tentState;
         }
@@ -965,6 +972,9 @@ namespace GHelper.Input
                 case 78:    // Fn + ESC
                     ToggleFnLock();
                     return;
+                case 79:    // Fn + Win
+                    ToggleWinLock();
+                    return;
                 case 75:    // Fn + Arrow Lock
                     ToggleArrowLock();
                     return;
@@ -1011,7 +1021,7 @@ namespace GHelper.Input
 
             if (tentMode)
             {
-                tentMode = GetTentState() > 0; 
+                tentMode = GetTentState() > 0;
                 if (tentMode)
                 {
                     Logger.WriteLine("Skipping Backlight Init: Tent Mode");
@@ -1024,6 +1034,9 @@ namespace GHelper.Input
                 Aura.Init();
                 Aura.ApplyPower();
                 Aura.ApplyAura();
+            } else
+            {
+                Logger.WriteLine("Skipping Aura");
             }
 
             SetBacklightAuto(true);

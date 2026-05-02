@@ -99,7 +99,7 @@ namespace GHelper.Display
         {
             if (miniled >= 0)
             {
-                if (Program.acpi.DeviceGet(AsusACPI.ScreenMiniled1) >= 0)
+                if (Program.acpi.IsSupported(AsusACPI.ScreenMiniled1))
                     Program.acpi.DeviceSet(AsusACPI.ScreenMiniled1, miniled, "Miniled1");
                 else
                 {

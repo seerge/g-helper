@@ -72,7 +72,7 @@ namespace GHelper.AnimeMatrix.Communication.Platform
                 HidStream.Flush();
             });
 
-            return data;
+            return outData;
         }
 
         public override void Read(byte[] data)

@@ -36,15 +36,19 @@ namespace GHelper.Helpers
                 "LightingService",
         };
 
-        public static bool IsAsusOptimizationRunning()
+        private static bool IsRunning(string name)
         {
-            return Process.GetProcessesByName("AsusOptimization").Length > 0;
+            var procs = Process.GetProcessesByName(name);
+            try { return procs.Length > 0; }
+            finally { foreach (var p in procs) p.Dispose(); }
         }
+
+        public static bool IsAsusOptimizationRunning() => IsRunning("AsusOptimization");
 
         public static bool IsArmouryRunning()
         {
-            var acService = Process.GetProcessesByName("ArmouryCrate.Service").Length > 0;
-            var lightingService = Process.GetProcessesByName("LightingService").Length > 0;   
+            var acService = IsRunning("ArmouryCrate.Service");
+            var lightingService = IsRunning("LightingService");
             Logger.WriteLine($"AC Service: {acService}, Lighting Service: {lightingService}");
             return acService || lightingService;
         }
@@ -54,10 +58,7 @@ namespace GHelper.Helpers
             Process.Start(new ProcessStartInfo("https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip") { UseShellExecute = true });
         }
 
-        public static bool IsOSDRunning()
-        {
-            return Process.GetProcessesByName("AsusOSD").Length > 0;
-        }
+        public static bool IsOSDRunning() => IsRunning("AsusOSD");
 
 
         public static int GetRunningCount()
@@ -65,13 +66,13 @@ namespace GHelper.Helpers
             int count = 0;
             foreach (string service in services)
             {
-                if (Process.GetProcessesByName(service).Count() > 0) count++;
+                if (IsRunning(service)) count++;
             }
 
             if (AppConfig.IsStopAC())
                 foreach (string service in processesAC)
                 {
-                    if (Process.GetProcessesByName(service).Count() > 0)
+                    if (IsRunning(service))
                     {
                         count++;
                         Logger.WriteLine(service);

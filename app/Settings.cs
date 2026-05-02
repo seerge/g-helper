@@ -1212,6 +1212,9 @@ namespace GHelper
             Aura.SetColor2(AppConfig.Get("aura_color2"));
 
             comboKeyboard.DropDownStyle = ComboBoxStyle.DropDownList;
+            if (!Aura.IsBacklightDetected && !AppConfig.Is("skip_aura"))
+                Aura.Init();
+
             comboKeyboard.DataSource = new BindingSource(Aura.GetModes(), null);
             comboKeyboard.DisplayMember = "Value";
             comboKeyboard.ValueMember = "Key";
@@ -1219,7 +1222,7 @@ namespace GHelper
             comboKeyboard.SelectedValueChanged += ComboKeyboard_SelectedValueChanged;
 
 
-            if (AppConfig.IsSingleColor())
+            if (Aura.isWhite)
             {
                 panelColor.Visible = false;
             }
@@ -1407,10 +1410,12 @@ namespace GHelper
             {
                 button120Hz.Text = maxFrequency.ToString() + "Hz" + (overdriveSetting ? " + OD" : "");
                 panelScreen.Visible = true;
+                tableScreen.Visible = true;
             }
             else if (maxFrequency > 0)
             {
-                panelScreen.Visible = false;
+                tableScreen.Visible = false;
+                panelScreen.Visible = AppConfig.NoGpu();
             }
 
             if (fhd >= 0)

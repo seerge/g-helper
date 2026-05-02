@@ -1024,7 +1024,16 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("FnLockOn", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Win-Lock Toggle.
+        /// </summary>
+        internal static string WinLockToggle {
+            get {
+                return ResourceManager.GetString("WinLockToggle", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Dynamic Boost.
         /// </summary>
