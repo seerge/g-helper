@@ -173,21 +173,16 @@ namespace GHelper.Gpu
 
                     if (eco == 0)
                     {
+                        await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("nv_delay", 5000)));
+
                         if (AppConfig.IsNVPlatform())
                         {
-                            await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("nv_delay", 5000)));
                             NvidiaGpuControl.RestartNVService();
                             await Task.Delay(TimeSpan.FromMilliseconds(1000));
-                        } else if (NvidiaGpuControl.IsContainerRestartNeeded())
-                        {
-                            await Task.Delay(TimeSpan.FromMilliseconds(2000));
-                            Logger.WriteLine("Restarting NV Container");
-                            NvidiaGpuControl.RestartNVService(light: true);
-                            await Task.Delay(TimeSpan.FromMilliseconds(1000));
-                        } else
-                        {
-                            await Task.Delay(TimeSpan.FromMilliseconds(3000));
+                        } else {
+                            NvidiaGpuControl.FixNvContainer();
                         }
+
                         HardwareControl.RecreateGpuControl();
                         Program.modeControl.SetGPUClocks(false);
                     }
