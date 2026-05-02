@@ -428,6 +428,9 @@ Voulez-vous continuer ?</value>
   <data name="FnLockOn" xml:space="preserve">
     <value>Verrouillage Fn activé</value>
   </data>
+  <data name="WinLockToggle" xml:space="preserve">
+    <value>Win-Lock Toggle</value>
+  </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Dynamic Boost</value>
   </data>
