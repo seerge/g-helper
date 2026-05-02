@@ -348,7 +348,7 @@ namespace GHelper
         public static void SchedulePowerCheck()
         {
             if (AppConfig.Is("disable_power_event")) return;
-            powerSettleTimer.Interval = Math.Max(AppConfig.Get("charger_delay"), 1000);
+            powerSettleTimer.Interval = Math.Max(AppConfig.Get("charger_delay"), 2000);
             powerSettleTimer.Stop();
             powerSettleTimer.Start();
         }
