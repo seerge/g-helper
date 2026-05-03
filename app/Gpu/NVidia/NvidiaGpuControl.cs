@@ -5,7 +5,6 @@ using NvAPIWrapper.Native.GPU;
 using NvAPIWrapper.Native.GPU.Structures;
 using NvAPIWrapper.Native.Interfaces.GPU;
 using System.Diagnostics;
-using System.Text.RegularExpressions;
 using static NvAPIWrapper.Native.GPU.Structures.PerformanceStates20InfoV1;
 
 namespace GHelper.Gpu.NVidia;
@@ -262,44 +261,29 @@ public class NvidiaGpuControl : IGpuControl
 
         int _clockLimit = GetMaxGPUCLock();
 
-        if (_clockLimit < 0 && clock == 0) return 0;
+        if (_clockLimit == clock) return 0;
 
-        if (_clockLimit != clock)
-        {
-            if (clock > 0) RunPowershellCommand($"nvidia-smi -lgc 0,{clock}");
-            else RunPowershellCommand($"nvidia-smi -rgc");
-            return 1;
-        }
-        else
-        {
-            return 0;
-        }
+        if (clock > 0) RunPowershellCommand($"nvidia-smi -lgc 0,{clock}");
+        else RunPowershellCommand($"nvidia-smi -rgc");
+        return 1;
 
 
     }
 
-    public static bool IsContainerRestartNeeded()
-    {
-        var logPath = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
-            @"NVIDIA Corporation\NVIDIA App\NvContainer\NvContainerLocalSystem.log"
-        );
-
-        using var fs = new FileStream(logPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-        fs.Seek(-Math.Min(8192, fs.Length), SeekOrigin.End);
-        var tail = new StreamReader(fs).ReadToEnd();
-
-        var match = Regex.Match(tail,
-            @"NvcPluginLoadStats for 'NvPluginWatchdog'.*?InitializeProcTime = (\d+) us",
-            RegexOptions.Singleline);
-
-        return match.Success && match.Groups[1].Value == "0";
-    }
-
-    public static void RestartNVService(bool light = false)
+    public static void FixNvContainer()
     {
         if (!ProcessHelper.IsUserAdministrator()) return;
-        if (!light) RunPowershellCommand(@"Restart-Service -Name 'NVDisplay.ContainerLocalSystem' -Force");
+        if (NvBootState.DGpuArrivedAfterBoot())
+        {
+            RunPowershellCommand(@"Restart-Service -Name 'NvContainerLocalSystem' -Force");
+            NvBootState.MarkHandled();
+        }
+    }
+
+    public static void RestartNVService()
+    {
+        if (!ProcessHelper.IsUserAdministrator()) return;
+        RunPowershellCommand(@"Restart-Service -Name 'NVDisplay.ContainerLocalSystem' -Force");
         RunPowershellCommand(@"Restart-Service -Name 'NvContainerLocalSystem' -Force");
     }
 

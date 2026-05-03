@@ -1,6 +1,7 @@
 using GHelper.Helpers;
 using GHelper.Mode;
 using Microsoft.Win32;
+using System.Management;
 using System.Text.Json;
 
 public static class AppConfig
@@ -95,38 +96,43 @@ public static class AppConfig
     private static readonly Lazy<(string Bios, string ModelShort)> _biosData =
         new Lazy<(string, string)>(LoadBios, LazyThreadSafetyMode.ExecutionAndPublication);
 
-    private const string BiosRegKey = @"HARDWARE\DESCRIPTION\System\BIOS";
-
     private static string LoadModel()
     {
         try
         {
-            using var key = Registry.LocalMachine.OpenSubKey(BiosRegKey);
-            return key?.GetValue("SystemProductName")?.ToString()?.Trim() ?? string.Empty;
+            using var searcher = new ManagementObjectSearcher("Select * from Win32_ComputerSystem");
+            foreach (var obj in searcher.Get())
+            {
+                using (obj) return obj["Model"]?.ToString() ?? string.Empty;
+            }
         }
         catch (Exception ex)
         {
             Logger.WriteLine(ex.Message);
-            return string.Empty;
         }
+        return string.Empty;
     }
 
     private static (string Bios, string ModelShort) LoadBios()
     {
         try
         {
-            using var key = Registry.LocalMachine.OpenSubKey(BiosRegKey);
-            string raw = key?.GetValue("BIOSVersion")?.ToString()?.Trim() ?? string.Empty;
-            string[] parts = raw.Split('.');
-            return parts.Length > 1
-                ? (parts[1], parts[0])
-                : (string.Empty, raw);
+            using var searcher = new ManagementObjectSearcher("SELECT * FROM Win32_BIOS");
+            foreach (var obj in searcher.Get())
+            {
+                using (obj)
+                {
+                    string raw = obj["SMBIOSBIOSVersion"]?.ToString() ?? string.Empty;
+                    string[] parts = raw.Split('.');
+                    return parts.Length > 1 ? (parts[1], parts[0]) : (string.Empty, raw);
+                }
+            }
         }
         catch (Exception ex)
         {
             Logger.WriteLine(ex.Message);
-            return (string.Empty, string.Empty);
         }
+        return (string.Empty, string.Empty);
     }
 
     public static string GetModel() => _model.Value;
@@ -522,7 +528,7 @@ public static class AppConfig
 
     public static bool DynamicBoost15()
     {
-        return ContainsModel("FX507ZC4") || ContainsModel("GA403UM") || ContainsModel("GU605CP") || ContainsModel("FX608J") || ContainsModel("FX608L") || ContainsModel("FA608U") || ContainsModel("FA608P") || ContainsModel("FA608W") ||
+        return ContainsModel("FX507ZC4") || ContainsModel("GA403UM") || ContainsModel("GU605CP") || ContainsModel("FX608J") || ContainsModel("FX608L") || ContainsModel("FA608U") || ContainsModel("FA608P") ||
         ContainsModel("FA401K") || ContainsModel("FA401UM") || ContainsModel("FA401UH");
     }
 
@@ -541,9 +547,13 @@ public static class AppConfig
         return ContainsModel("FA507NUR") || ContainsModel("FA506NCR") || ContainsModel("FA507NVR");
     }
 
+    public static bool IsApplyPower() => IsMode("auto_apply_power");
+    public static bool IsApplyFans() => IsMode("auto_apply");
+    public static bool IsApplyUV() => IsMode("auto_uv");
+
     public static bool IsManualModeRequired()
     {
-        if (!IsMode("auto_apply_power")) return false;
+        if (!IsApplyPower()) return false;
         return Is("manual_mode") || ContainsModel("G733");
     }
 
