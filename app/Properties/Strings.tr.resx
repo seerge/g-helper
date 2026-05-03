@@ -429,7 +429,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>FN-Lock Açık</value>
   </data>
   <data name="WinLockToggle" xml:space="preserve">
-    <value>Win-Lock Toggle</value>
+    <value>Windows Tuşu Kilidi</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Dynamic Boost</value>
