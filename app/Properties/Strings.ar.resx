@@ -428,6 +428,9 @@
   <data name="FnLockOn" xml:space="preserve">
     <value>تشغيل قفل FN</value>
   </data>
+  <data name="WinLockToggle" xml:space="preserve">
+    <value>Win-Lock Toggle</value>
+  </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>تعزيز ديناميكي</value>
   </data>
