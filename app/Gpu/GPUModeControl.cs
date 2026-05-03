@@ -221,20 +221,9 @@ namespace GHelper.Gpu
             return true;
         }
 
-        public static bool IsPlugged()
-        {
-            if (SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online) return false;
-            if (!AppConfig.Is("optimized_usbc")) return true;
-
-            if (AppConfig.ContainsModel("FA507")) Thread.Sleep(1000);
-
-            int chargerMode = Program.acpi.DeviceGet(AsusACPI.ChargerMode);
-            Logger.WriteLine("ChargerStatus: " + chargerMode);
-
-            if (chargerMode <= 0) return true;
-            return (chargerMode & AsusACPI.ChargerBarrel) > 0;
-
-        }
+        public static bool IsPlugged() =>
+            Program.currentSource == Program.PowerSource.Barrel ||
+            (Program.currentSource == Program.PowerSource.USBC && !AppConfig.Is("optimized_usbc"));
 
         public bool AutoGPUMode(bool optimized = false, int delay = 0)
         {
