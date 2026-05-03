@@ -149,6 +149,7 @@ namespace GHelper
             settingsForm.InitMatrix();
 
             XGM.Init();
+            if (Keystone.IsSupported) Keystone.Init();
 
             SetAutoModes(init: true);
 
@@ -441,6 +442,7 @@ namespace GHelper
             clamshellControl.UnregisterDisplayEvents();
             NativeMethods.UnregisterPowerSettingNotification(unRegPowerNotify);
             NativeMethods.UnregisterPowerSettingNotification(unRegPowerNotifyLid);
+            Keystone.Dispose();
             Application.Exit();
         }
 
