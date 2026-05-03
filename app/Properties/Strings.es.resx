@@ -429,7 +429,7 @@
     <value>Tecla Fn bloqueada</value>
   </data>
   <data name="WinLockToggle" xml:space="preserve">
-    <value>Win-Lock Toggle</value>
+    <value>Alternar Bloq-Win</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Dynamic Boost</value>
