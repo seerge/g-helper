@@ -55,6 +55,7 @@ namespace GHelper.USB
         BATTERY = 23,
         GRADIENT = 24,
         ZONETEST = 25,
+        AUDIO = 26,
     }
 
     public enum AuraSpeed : int
@@ -117,6 +118,9 @@ namespace GHelper.USB
         public static bool HasRearglow { get; private set; }
 
         static System.Timers.Timer timer = new System.Timers.Timer(1000);
+
+        static readonly List<double> audioMaxes = new List<double>();
+        static long lastAudioPresent;
 
         static Aura()
         {
@@ -192,6 +196,7 @@ namespace GHelper.USB
             modes[AuraMode.GPUMODE] = "GPU Mode";
             modes[AuraMode.AMBIENT] = "Ambient";
             modes[AuraMode.BATTERY] = "Battery";
+            modes[AuraMode.AUDIO] = "Audio";
 
             if (isStrixKb)
             {
@@ -251,7 +256,7 @@ namespace GHelper.USB
 
         public static bool HasSecondColor()
         {
-            return (mode == AuraMode.AuraBreathe || mode == AuraMode.GRADIENT) && !isACPI;
+            return (mode == AuraMode.AuraBreathe || mode == AuraMode.GRADIENT || mode == AuraMode.AUDIO) && !isACPI;
         }
 
         private static void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
@@ -391,7 +396,11 @@ namespace GHelper.USB
 
         public static void ApplyBrightness(int brightness, string log = "Backlight", bool delay = false)
         {
-            if (brightness == 0) backlight = false;
+            if (brightness == 0)
+            {
+                backlight = false;
+                StopAudio();
+            }
 
             Task.Run(async () =>
             {
@@ -403,6 +412,7 @@ namespace GHelper.USB
                 {
                     if (!backlight) initDirect = true;
                     backlight = true;
+                    if (Mode == AuraMode.AUDIO) StartAudio();
                 }
             });
         }
@@ -815,8 +825,15 @@ namespace GHelper.USB
             }
 
             timer.Stop();
+            if (Mode != AuraMode.AUDIO) StopAudio();
 
             Logger.WriteLine($"AuraMode: {Mode}");
+
+            if (Mode == AuraMode.AUDIO)
+            {
+                StartAudio();
+                return;
+            }
 
             if (Mode == AuraMode.HEATMAP)
             {
@@ -905,6 +922,76 @@ namespace GHelper.USB
 
             ApplyRearLight();
 
+        }
+
+        public static void StopAudio()
+        {
+            AudioVisualizer.Shared.Unsubscribe(OnAudioSpectrum);
+        }
+
+        public static void StartAudio()
+        {
+            if (!backlight) return;
+
+            initDirect = true;
+            audioMaxes.Clear();
+            lastAudioPresent = 0;
+
+            AudioVisualizer.Shared.Subscribe(OnAudioSpectrum);
+        }
+
+        private static void OnAudioSpectrum(double[] fftMag)
+        {
+            if (!backlight || sessionLock || Mode != AuraMode.AUDIO) return;
+
+            long now = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            if (Math.Abs(now - lastAudioPresent) < 50) return;
+            lastAudioPresent = now;
+
+            int bands = AURA_ZONES;
+            if (fftMag.Length < bands) return;
+
+            double[] bars = new double[bands];
+            double max = 2;
+            for (int i = 0; i < bands; i++)
+            {
+                bars[i] = Math.Sqrt(fftMag[i] * 10000);
+                if (bars[i] > max) max = bars[i];
+            }
+
+            audioMaxes.Add(max);
+            if (audioMaxes.Count > 20) audioMaxes.RemoveAt(0);
+            double maxAvg = audioMaxes.Average();
+            if (maxAvg < 1) maxAvg = 1;
+
+            Color c1 = Color1, c2 = Color2;
+
+            try
+            {
+                if (isStrix)
+                {
+                    Color[] colors = new Color[AURA_ZONES];
+                    for (int i = 0; i < AURA_ZONES; i++)
+                    {
+                        float t = (float)Math.Min(1.0, bars[i] / maxAvg);
+                        colors[i] = ColorUtils.GetWeightedAverage(c2, c1, t);
+                    }
+                    ApplyDirect(colors);
+                }
+                else
+                {
+                    double energy = 0;
+                    for (int i = 0; i < bands; i++) energy += bars[i];
+                    energy /= bands;
+
+                    float t = (float)Math.Min(1.0, energy / maxAvg);
+                    ApplyDirect(ColorUtils.GetWeightedAverage(c2, c1, t));
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine("Aura audio: " + ex.Message);
+            }
         }
 
 
