@@ -1010,6 +1010,7 @@ namespace GHelper.USB
                         break;
                 }
 
+                PeripheralsProvider.StreamMouseColor(color);
                 if (isACPI) Program.acpi.TUFKeyboardRGB(AuraMode.AuraStatic, color, 0xeb, $"TUF RGB GPU {gpuMode}");
                 AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb), MESSAGE_APPLY, MESSAGE_SET });
 
@@ -1055,6 +1056,7 @@ namespace GHelper.USB
                 }
 
                 if (AppConfig.IsAlly()) color = ColorDim(color);
+                PeripheralsProvider.StreamMouseColor(color);
                 AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb), MESSAGE_APPLY, MESSAGE_SET });
                 if (isACPI) Program.acpi.TUFKeyboardRGB(AuraMode.AuraStatic, color, 0xeb);
             }

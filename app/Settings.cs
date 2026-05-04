@@ -83,7 +83,7 @@ namespace GHelper
             labelPerf.Text = Properties.Strings.PerformanceMode;
             labelGPU.Text = Properties.Strings.GPUMode;
             labelSreen.Text = Properties.Strings.LaptopScreen;
-            labelKeyboard.Text = Properties.Strings.LaptopKeyboard;
+            UpdateKeyboardLabel();
             labelMatrix.Text = Properties.Strings.AnimeMatrix;
             labelBatteryTitle.Text = Properties.Strings.BatteryChargeLimit;
 
@@ -1955,6 +1955,11 @@ namespace GHelper
 
         }
 
+
+        public void UpdateKeyboardLabel()
+        {
+            labelKeyboard.Text = Properties.Strings.LaptopKeyboard + (PeripheralsProvider.IsAuraSync ? " +" : "");
+        }
 
         public void VisualizePeripherals()
         {
