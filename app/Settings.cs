@@ -1593,7 +1593,7 @@ namespace GHelper
             Task.Run((Action)PeripheralsProvider.RefreshBatteryForAllDevices);
 
             if (HardwareControl.cpuTemp > 0)
-                cpuTemp = ": " + AppConfig.FormatTemp((double)HardwareControl.cpuTemp);
+                cpuTemp = ": " + TempHelper.FormatTemp((double)HardwareControl.cpuTemp);
 
             if (HardwareControl.batteryCapacity > 0)
             {
@@ -1608,7 +1608,7 @@ namespace GHelper
 
             if (HardwareControl.gpuTemp > 0)
             {
-                gpuTemp = ": " + AppConfig.FormatTemp((double)HardwareControl.gpuTemp);
+                gpuTemp = ": " + TempHelper.FormatTemp((double)HardwareControl.gpuTemp);
             }
 
             string trayTip = "CPU" + cpuTemp + " " + HardwareControl.cpuFan;
