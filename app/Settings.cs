@@ -1974,36 +1974,49 @@ namespace GHelper
                 IPeripheral m = lp.ElementAt(i);
                 Button b = buttons[i];
 
-                if (m.IsDeviceReady)
+                string id = m.GetDisplayName();
+                bool ready = m.IsDeviceReady;
+                bool hasBat = m.HasBattery();
+                bool charging = ready && hasBat && m.Charging;
+                int level = (ready && hasBat) ? Math.Min(5, (m.Battery + 10) / 20) : -1;
+                var state = (id, ready, charging, level, b.ForeColor.ToArgb());
+
+                if (b.Tag is ValueTuple<string, bool, bool, int, int> prev && prev.Equals(state) && b.Visible)
+                    continue;
+
+                b.Text = id;
+
+                Image? baseIcon = m.DeviceType() switch
                 {
-                    if (m.HasBattery())
+                    PeripheralType.Mouse => Properties.Resources.icons8_maus_48,
+                    PeripheralType.Keyboard => Properties.Resources.icons8_keyboard_32,
+                    _ => null,
+                };
+
+                if (baseIcon is not null)
+                {
+                    int iw = baseIcon.Width;
+                    int ih = baseIcon.Height;
+                    Image composed = ControlHelper.TintImage(baseIcon, b.ForeColor);
+                    if (!ready)
                     {
-                        b.Text = m.GetDisplayName() + "\n" + m.Battery + "%"
-                                            + (m.Charging ? "(" + Properties.Strings.Charging + ")" : "");
+                        composed = ControlHelper.OverlayBadge(composed, Properties.Resources.icons8_cancel_48, RForm.colorTurbo, iconWidth: iw, iconHeight: ih);
                     }
-                    else
+                    else if (hasBat)
                     {
-                        b.Text = m.GetDisplayName();
+                        if (charging)
+                            composed = ControlHelper.OverlayBadge(composed, Properties.Resources.icons8_flash_48, RForm.colorEco, iconWidth: iw, iconHeight: ih);
+
+                        Color barColor = level <= 1 ? colorTurbo
+                                       : level <= 3 ? colorStandard
+                                       : colorEco;
+                        composed = ControlHelper.OverlayChargeBars(composed, level, 5, barColor, iconWidth: iw, iconHeight: ih);
                     }
 
-                }
-                else
-                {
-                    //Mouse is either not connected or in standby
-                    b.Text = m.GetDisplayName() + "\n(" + Properties.Strings.NotConnected + ")";
+                    b.Image = ControlHelper.ResizeImage(composed, ControlHelper.Scale);
                 }
 
-                switch (m.DeviceType())
-                {
-                    case PeripheralType.Mouse:
-                        b.Image = ControlHelper.ResizeImage(ControlHelper.TintImage(Properties.Resources.icons8_maus_48, b.ForeColor), ControlHelper.Scale);
-                        break;
-
-                    case PeripheralType.Keyboard:
-                        b.Image = ControlHelper.ResizeImage(ControlHelper.TintImage(Properties.Resources.icons8_keyboard_32, b.ForeColor), ControlHelper.Scale);
-                        break;
-                }
-
+                b.Tag = state;
                 b.Visible = true;
             }
 

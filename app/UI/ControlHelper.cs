@@ -205,4 +205,91 @@ public static class ControlHelper
         return pic;
     }
 
+    public static Image RecolorDarkPixels(Image image, Color targetColor, byte luminanceThreshold = 128)
+    {
+        var pic = new Bitmap(image);
+        for (int y = 0; y < pic.Height; y++)
+        {
+            for (int x = 0; x < pic.Width; x++)
+            {
+                Color col = pic.GetPixel(x, y);
+                if (col.A == 0) continue;
+                int lum = (col.R + col.G + col.B) / 3;
+                if (lum < luminanceThreshold)
+                    pic.SetPixel(x, y, Color.FromArgb(col.A, targetColor));
+            }
+        }
+        return pic;
+    }
+
+    public static Image OverlayBadge(Image baseImage, Image badge, Color circleColor,
+        float badgeScale = 0.5f, float shiftFraction = 0.18f,
+        int? iconWidth = null, int? iconHeight = null)
+    {
+        int iw = iconWidth ?? baseImage.Width;
+        int ih = iconHeight ?? baseImage.Height;
+
+        int badgeSize = (int)(iw * badgeScale);
+        int shift = (int)(badgeSize * shiftFraction);
+
+        int newW = Math.Max(baseImage.Width, iw + shift);
+        int newH = Math.Max(baseImage.Height, ih + shift);
+
+        var pic = new Bitmap(newW, newH);
+        using (var g = Graphics.FromImage(pic))
+        using (var coloredBadge = (Bitmap)RecolorDarkPixels(badge, circleColor))
+        {
+            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+            g.DrawImage(baseImage, 0, 0, baseImage.Width, baseImage.Height);
+
+            int badgeX = iw - badgeSize + shift;
+            int badgeY = ih - badgeSize + shift;
+            g.DrawImage(coloredBadge, badgeX, badgeY, badgeSize, badgeSize);
+        }
+        return pic;
+    }
+
+    public static Image OverlayChargeBars(Image baseImage, int level, int max, Color color,
+        int? iconWidth = null, int? iconHeight = null)
+    {
+        if (max <= 0) return baseImage;
+
+        int iw = iconWidth ?? baseImage.Width;
+        int ih = iconHeight ?? baseImage.Height;
+
+        float s = iw / 48f;
+        int barHeight = Math.Max(2, (int)Math.Round(10 * s));
+        int barWidth = Math.Max(1, (int)Math.Round(4 * s));
+        int barGap = Math.Max(1, (int)Math.Round(2 * s));
+        int totalGap = barGap * (max - 1);
+        int usedW = barWidth * max + totalGap;
+        int xStart = (iw - usedW) / 2;
+
+        // If a previous overlay extended the canvas below the icon (e.g. a corner badge),
+        // start the bars below that extension; otherwise sit them right under the icon.
+        int yStart = baseImage.Height > ih
+            ? baseImage.Height + Math.Max(2, (int)Math.Round(2 * s))
+            : ih + Math.Max(2, (int)Math.Round(3 * s));
+
+        int newH = Math.Max(baseImage.Height, yStart + barHeight);
+        int newW = Math.Max(baseImage.Width, iw);
+
+        var pic = new Bitmap(newW, newH);
+        using (var g = Graphics.FromImage(pic))
+        using (var filled = new SolidBrush(color))
+        using (var empty = new SolidBrush(Color.FromArgb(72, color)))
+        {
+            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            g.DrawImage(baseImage, 0, 0, baseImage.Width, baseImage.Height);
+
+            for (int i = 0; i < max; i++)
+            {
+                var rect = new Rectangle(xStart + i * (barWidth + barGap), yStart, barWidth, barHeight);
+                g.FillRectangle(i < level ? filled : empty, rect);
+            }
+        }
+        return pic;
+    }
+
 }
