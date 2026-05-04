@@ -17,6 +17,9 @@ public static class HardwareControl
     public static float? cpuTemp = -1;
     public static float? gpuTemp = -1;
 
+    public static float? cpuPower;
+    public static float? gpuPower;
+
     public static decimal? batteryRate = 0;
     public static decimal batteryHealth = -1;
     public static decimal batteryCapacity = -1;
@@ -30,6 +33,9 @@ public static class HardwareControl
     public static string? cpuFan;
     public static string? gpuFan;
     public static string? midFan;
+
+    public static int? cpuFanRPM;
+    public static int? gpuFanRPM;
 
     public static int? gpuUse;
 
@@ -485,6 +491,82 @@ public static class HardwareControl
         return gpuTemp;
     }
 
+    private static PerformanceCounter? _cpuPowerCounter;
+    private static bool _cpuPowerCounterFailed;
+    private static bool _cpuPowerInitStarted;
+    private static int _cpuPowerNullTicks;
+    private static readonly string[] _powerCounterInstances = { "Apu Power", "RAPL_Package0_PKG", "CPU Power", "Socket Power", "Current Socket Power" };
+
+    public static void InitCPUPowerAsync()
+    {
+        if (_cpuPowerInitStarted) return;
+        _cpuPowerInitStarted = true;
+
+        Task.Run(() =>
+        {
+            try
+            {
+                var category = new PerformanceCounterCategory("Energy Meter");
+                var instances = category.GetInstanceNames();
+
+                foreach (var name in _powerCounterInstances)
+                {
+                    if (instances.Contains(name, StringComparer.OrdinalIgnoreCase))
+                    {
+                        var counter = new PerformanceCounter("Energy Meter", "Power", name, true);
+                        counter.NextValue();
+                        _cpuPowerCounter = counter;
+                        Logger.WriteLine("CPU Power source: " + name);
+                        return;
+                    }
+                }
+
+                _cpuPowerCounterFailed = true;
+            }
+            catch
+            {
+                _cpuPowerCounterFailed = true;
+            }
+        });
+    }
+
+    public static float? GetCPUPower()
+    {
+        if (_cpuPowerCounterFailed || _cpuPowerCounter == null) return null;
+
+        try
+        {
+            float mW = _cpuPowerCounter.NextValue();
+            if (mW > 0) return mW / 1000f;
+        }
+        catch
+        {
+            // Counter became invalid (e.g. after a fullscreen game exits on Intel).
+            // Reset so InitCPUPowerAsync can reinitialize it on the next overlay tick.
+            _cpuPowerCounter?.Dispose();
+            _cpuPowerCounter = null;
+            _cpuPowerCounterFailed = false;
+            _cpuPowerInitStarted = false;
+        }
+
+        return null;
+    }
+
+
+    public static float? GetGPUPower()
+    {
+        try
+        {
+            float? power = GpuControl?.GetGpuPower();
+            if (power is not null) return power.Value;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine("Failed reading GPU power: " + ex.Message);
+        }
+
+        return null;
+    }
 
     public static void ReadSensors(bool log = false)
     {
@@ -502,6 +584,58 @@ public static class HardwareControl
         if (log) Logger.WriteLine($"Temps: {cpuTemp} {gpuTemp} {cpuFan} {gpuFan} {midFan}");
 
         ReadBatteryState();
+    }
+
+    // Lightweight sensor read used by the overlay timer � skips battery health, WMI and design capacity
+    public static void ReadSensorsOverlay()
+    {
+        if (Program.acpi is null) return;
+
+        InitCPUPowerAsync();
+
+        cpuFanRPM = Program.acpi.GetFan(AsusFan.CPU) * 100;
+        gpuFanRPM = Program.acpi.GetFan(AsusFan.GPU) * 100;
+
+        cpuTemp = GetCPUTemp();
+        gpuTemp = GetGPUTemp();
+
+        // Only overwrite with a new reading when the counter returns a valid value.
+        // If the counter is absent or returns 0 for several consecutive ticks (e.g. after
+        // a game exits and invalidates the Intel Energy Meter counter), clear the stale
+        // value so the overlay shows "--" rather than the last-seen wattage.
+        float? newCpu = GetCPUPower();
+        if (newCpu > 0)
+        {
+            cpuPower = newCpu;
+            _cpuPowerNullTicks = 0;
+        }
+        else
+        {
+            if (++_cpuPowerNullTicks >= 5)
+                cpuPower = null;
+        }
+
+        gpuPower = GetGPUPower();
+
+        // Read only the fast IOCTL battery rate � skip health, WMI and design capacity queries
+        try
+        {
+            decimal? discharge = Program.acpi.GetBatteryDischarge();
+            if (discharge is not null)
+            {
+                batteryRate = discharge;
+            }
+            else
+            {
+                var directStatus = QueryBatteryStatus();
+                if (directStatus.HasValue && directStatus.Value.Rate != 0)
+                    batteryRate = (decimal)directStatus.Value.Rate / 1000;
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine("Overlay battery read: " + ex.Message);
+        }
     }
 
     public static double GetBatteryChargePercentage()
@@ -544,6 +678,7 @@ public static class HardwareControl
     {
         GpuControl?.Dispose();
         GpuControl = null;
+        NvmlHelper.Shutdown();
     }
 
     public static void RecreateGpuControlWithDelay(int delay = 5)
@@ -562,7 +697,7 @@ public static class HardwareControl
         if (AppConfig.NoGpu()) return;
         try
         {
-            GpuControl?.Dispose();
+            DisposeGpuControl();
 
             IGpuControl _gpuControl = new NvidiaGpuControl();
 

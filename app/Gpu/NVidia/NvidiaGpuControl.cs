@@ -350,14 +350,28 @@ public class NvidiaGpuControl : IGpuControl
 
     public int? GetGpuUse()
     {
-        if (!IsValid)
-            return null;
+        if (!IsValid) return null;
+         if (GetGpuState() != GpuState.Active) return null;
 
         PhysicalGPU internalGpu = _internalGpu!;
         IUtilizationDomainInfo? gpuUsage = GPUApi.GetUsages(internalGpu.Handle).GPU;
 
         return (int?)gpuUsage?.Percentage;
 
+    }
+
+
+    public float? GetGpuPower()
+    {
+        if (!IsValid) return null;
+        var state = GetGpuState();
+        if (state == GpuState.Off)
+        {
+            NvmlHelper.Shutdown();
+            return null;
+        }
+        if (state != GpuState.Active) return 0f;
+        return NvmlHelper.GetGpuPower() ?? 0f;
     }
 
 }

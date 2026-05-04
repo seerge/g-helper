@@ -866,6 +866,12 @@ namespace GHelper
 
             contextMenuStrip.Items.Add("-");
 
+            var menuOverlay = new ToolStripMenuItem("Hardware Overlay");
+            menuOverlay.Click += (sender, args) => ToggleOverlay();
+            menuOverlay.Margin = padding;
+            menuOverlay.Checked = AppConfig.Is("overlay");
+            contextMenuStrip.Items.Add(menuOverlay);
+
             var quit = new ToolStripMenuItem(Properties.Strings.Quit);
             quit.Click += ButtonQuit_Click;
             quit.Margin = padding;
@@ -1513,7 +1519,7 @@ namespace GHelper
             if (matrixForm != null && matrixForm.Text != "") matrixForm.Close();
             if (handheldForm != null && handheldForm.Text != "") handheldForm.Close();
             if (mouseSettings != null && mouseSettings.Text != "") mouseSettings.Close();
-
+            MemoryHelper.TrimAfter();
         }
 
         /// <summary>
@@ -1586,6 +1592,11 @@ namespace GHelper
 
             string cpuTemp = "";
             string gpuTemp = "";
+
+            string cpuFan = "";
+            string gpuFan = "";
+            string midFan = "";
+
             string battery = "";
             string charge = "";
 
@@ -1611,29 +1622,29 @@ namespace GHelper
                 gpuTemp = $": {HardwareControl.gpuTemp}°C";
             }
 
-            string trayTip = "CPU" + cpuTemp + " " + HardwareControl.cpuFan;
-            if (gpuTemp.Length > 0) trayTip += "\nGPU" + gpuTemp + " " + HardwareControl.gpuFan;
-            if (battery.Length > 0) trayTip += "\n" + battery;
+            if (HardwareControl.cpuFan is not null) cpuFan = Strings.FanSpeed + ": " + HardwareControl.cpuFan;
+            if (HardwareControl.gpuFan is not null) gpuFan = Strings.FanSpeed + ": " + HardwareControl.gpuFan;
+            if (HardwareControl.midFan is not null) midFan = Strings.FanSpeed + ": " + HardwareControl.midFan;
 
+            string trayTip = "CPU" + cpuTemp + " " + cpuFan;
+            if (gpuTemp.Length > 0) trayTip += "\nGPU" + gpuTemp + " " + gpuFan;
+            if (battery.Length > 0) trayTip += "\n" + battery;
+            
             if (Program.settingsForm.IsHandleCreated)
                 Program.settingsForm.BeginInvoke(delegate
                 {
-                    labelCPUFan.Text = "CPU" + cpuTemp + " " + HardwareControl.cpuFan;
-                    labelGPUFan.Text = "GPU" + gpuTemp + " " + HardwareControl.gpuFan;
+                    labelCPUFan.Text = "CPU" + cpuTemp + "  " + cpuFan;
+                    labelGPUFan.Text = "GPU" + gpuTemp + "  " + gpuFan;
+
                     if (HardwareControl.gpuFan is not null && AppConfig.NoGpu())
-                    {
-                        labelMidFan.Text = "GPU" + gpuTemp + " " + HardwareControl.gpuFan;
-                    }
+                        labelMidFan.Text = "GPU" + gpuTemp + " " + gpuFan;
 
-                    if (HardwareControl.midFan is not null)
-                        labelMidFan.Text = "Mid " + HardwareControl.midFan;
-
+                    if (HardwareControl.midFan is not null) 
+                        labelMidFan.Text = "Mid " + midFan;
+                    
                     labelBattery.Text = battery;
                     if (!batteryMouseOver && !batteryFullMouseOver) labelCharge.Text = charge;
-
-                    //panelPerformance.AccessibleName = labelPerf.Text + " " + trayTip;
                 });
-
 
             if (Program.trayIcon is not null) Program.trayIcon.Text = trayTip;
 
@@ -1643,6 +1654,17 @@ namespace GHelper
         {
             if (fansForm != null && !fansForm.IsDisposed && fansForm.Text != "")
                 fansForm.LabelFansResult(text);
+        }
+
+        public void ToggleOverlay()
+        {
+            bool enable = !AppConfig.Is("overlay");
+            AppConfig.Set("overlay", enable ? 1 : 0);
+            if (enable)
+                Program.hardwareOverlay?.StartOverlay();
+            else
+                Program.hardwareOverlay?.StopOverlay();
+            SetContextMenu();
         }
 
         public void ShowMode(int mode)

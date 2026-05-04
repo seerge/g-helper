@@ -130,16 +130,31 @@ public class AmdGpuControl : IGpuControl
 
     }
 
-    public int? GetGpuPower()
+    public float? GetGpuPower()
     {
-        if (_adlContextHandle == nint.Zero || _iGPU == null) return null;
-        if (ADL2_New_QueryPMLogData_Get(_adlContextHandle, ((ADLAdapterInfo)_iGPU).AdapterIndex, out ADLPMLogDataOutput adlpmLogDataOutput) != Adl2.ADL_SUCCESS) return null;
+        if (!IsValid) return null;
+        if (ADL2_New_QueryPMLogData_Get(_adlContextHandle, _internalDiscreteAdapter.AdapterIndex, out ADLPMLogDataOutput adlpmLogDataOutput) != Adl2.ADL_SUCCESS) return null;
+
+        foreach (var sensorType in new[] { ADLSensorType.PMLOG_ASIC_POWER, ADLSensorType.PMLOG_GFX_POWER, ADLSensorType.PMLOG_BOARD_POWER })
+        {
+            ADLSingleSensorData sensor = adlpmLogDataOutput.Sensors[(int)sensorType];
+            if (sensor.Supported != 0 && sensor.Value > 0)
+                return sensor.Value;
+        }
+
+        return null;
+    }
+
+    // Used by ROG Ally (iGPU-only) for auto-TDP logic — queries the integrated GPU adapter
+    public int GetiGpuPower()
+    {
+        if (_adlContextHandle == nint.Zero || _iGPU == null) return 0;
+        if (ADL2_New_QueryPMLogData_Get(_adlContextHandle, ((ADLAdapterInfo)_iGPU).AdapterIndex, out ADLPMLogDataOutput adlpmLogDataOutput) != Adl2.ADL_SUCCESS) return 0;
 
         ADLSingleSensorData gpuUsage = adlpmLogDataOutput.Sensors[(int)ADLSensorType.PMLOG_ASIC_POWER];
-        if (gpuUsage.Supported == 0) return null;
+        if (gpuUsage.Supported == 0) return 0;
 
         return gpuUsage.Value;
-
     }
 
 
