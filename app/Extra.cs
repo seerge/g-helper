@@ -222,8 +222,9 @@ namespace GHelper
                 labelFNE.Visible = comboFNE.Visible = textFNE.Visible = false;
             }
 
-            if (AppConfig.IsNoFNV())
+            if (AppConfig.IsNoFNCV())
             {
+                labelFNC.Visible = comboFNC.Visible = textFNC.Visible = false;
                 labelFNV.Visible = comboFNV.Visible = textFNV.Visible = false;
             }
 

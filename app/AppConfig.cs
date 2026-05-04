@@ -627,7 +627,7 @@ public static class AppConfig
         return ContainsModel("FX507Z") || ContainsModel("GU603ZV");
     }
 
-    public static bool IsNoFNV()
+    public static bool IsNoFNCV()
     {
         return ContainsModel("FX507") || ContainsModel("FX707");
     }
@@ -709,6 +709,5 @@ public static class AppConfig
     {
         return IsNotFalse("aspm");
     }
-
 
 }
