@@ -2109,22 +2109,33 @@ public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
             }
         }
 
+        private int _streamingBusy;
+
         public void WriteColorDirect(Color color)
         {
             if (!HasRGB() || !IsDeviceReady) return;
+            if (Interlocked.CompareExchange(ref _streamingBusy, 1, 0) != 0) return;
 
-            LightingSetting cached = LightingSettingForZone(LightingZone.All);
-            LightingSetting tmp = new LightingSetting
+            try
             {
-                LightingMode = LightingMode.Static,
-                RGBColor = color,
-                Brightness = cached?.Brightness ?? 25,
-            };
+                LightingSetting cached = LightingSettingForZone(LightingZone.All);
+                LightingSetting tmp = new LightingSetting
+                {
+                    LightingMode = LightingMode.Static,
+                    RGBColor = color,
+                    Brightness = cached?.Brightness ?? 25,
+                };
 
-            byte[] packet = GetUpdateLightingModePacket(tmp, LightingZone.All);
-            Array.Resize(ref packet, USBPacketSize());
+                byte[] packet = GetUpdateLightingModePacket(tmp, LightingZone.All);
+                Array.Resize(ref packet, USBPacketSize());
 
-            try { Write(packet); } catch { }
+                Write(packet);
+            }
+            catch { }
+            finally
+            {
+                Interlocked.Exchange(ref _streamingBusy, 0);
+            }
         }
 
         public bool SyncFromKeyboardAura()
