@@ -2365,5 +2365,14 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("Zoom", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Tray Temps.
+        /// </summary>
+        internal static string TrayTemps {
+            get {
+                return ResourceManager.GetString("TrayTemps", resourceCulture);
+            }
+        }
     }
 }
