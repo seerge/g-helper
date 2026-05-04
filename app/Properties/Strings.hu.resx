@@ -429,7 +429,7 @@ Folytatni szeretnéd?</value>
     <value>Fn-Lock Be</value>
   </data>
   <data name="WinLockToggle" xml:space="preserve">
-    <value>Win-Lock Toggle</value>
+    <value>Win-Lock kapcsoló</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Dinamikus gyorsítás</value>
