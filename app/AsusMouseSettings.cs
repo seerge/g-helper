@@ -1,4 +1,5 @@
-﻿using GHelper.Peripherals.Mouse;
+﻿using GHelper.Peripherals;
+using GHelper.Peripherals.Mouse;
 using GHelper.UI;
 
 namespace GHelper
@@ -393,7 +394,7 @@ namespace GHelper
             ApplyAuraSyncUIState();
             if (loadingSettings) return;
 
-            AppConfig.Set("mouse_aura_sync", checkBoxSyncAura.Checked ? 1 : 0);
+            PeripheralsProvider.SetAuraSync(checkBoxSyncAura.Checked);
 
             if (checkBoxSyncAura.Checked)
             {

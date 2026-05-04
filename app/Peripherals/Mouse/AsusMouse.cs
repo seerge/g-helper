@@ -2110,6 +2110,24 @@ public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
             }
         }
 
+        public void WriteColorDirect(Color color)
+        {
+            if (!HasRGB() || !IsDeviceReady) return;
+
+            LightingSetting cached = LightingSettingForZone(LightingZone.All);
+            LightingSetting tmp = new LightingSetting
+            {
+                LightingMode = LightingMode.Static,
+                RGBColor = color,
+                Brightness = cached?.Brightness ?? 25,
+            };
+
+            byte[] packet = GetUpdateLightingModePacket(tmp, LightingZone.All);
+            Array.Resize(ref packet, USBPacketSize());
+
+            try { Write(packet); } catch { }
+        }
+
         public bool SyncFromKeyboardAura()
         {
             if (!HasRGB() || !IsDeviceReady) return false;
@@ -2132,20 +2150,14 @@ public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
                 _ => AnimationSpeed.Medium,
             };
 
-            foreach (LightingZone zone in SupportedLightingZones())
-            {
-                if (!IsLightingModeSupportedForZone(lm, zone)) continue;
+            LightingSetting ls = LightingSettingForZone(LightingZone.All);
+            if (ls is null) return false;
 
-                LightingSetting ls = LightingSettingForZone(zone);
-                if (ls is null) continue;
+            ls.LightingMode = lm;
+            if (SupportsColorSetting(lm)) ls.RGBColor = color;
+            if (SupportsAnimationSpeed(lm)) ls.AnimationSpeed = mappedSpeed;
 
-                ls.LightingMode = lm;
-                if (SupportsColorSetting(lm)) ls.RGBColor = color;
-                if (SupportsAnimationSpeed(lm)) ls.AnimationSpeed = mappedSpeed;
-
-                SetLightingSetting(ls, zone);
-            }
-
+            SetLightingSetting(ls, LightingZone.All);
             return true;
         }
 

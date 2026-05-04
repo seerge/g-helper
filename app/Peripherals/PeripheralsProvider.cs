@@ -11,6 +11,14 @@ namespace GHelper.Peripherals
 
         public static List<AsusMouse> ConnectedMice = new List<AsusMouse>();
 
+        public static bool IsAuraSync { get; private set; } = AppConfig.IsAuraSync();
+
+        public static void SetAuraSync(bool enabled)
+        {
+            AppConfig.Set("mouse_aura_sync", enabled ? 1 : 0);
+            IsAuraSync = enabled;
+        }
+
         public static event EventHandler? DeviceChanged;
 
         private static System.Timers.Timer timer = new System.Timers.Timer(1000);
@@ -57,9 +65,25 @@ namespace GHelper.Peripherals
             RefreshBatteryForAllDevices(false);
         }
 
+        public static void StreamMouseColor(Color color)
+        {
+            if (!IsAuraSync) return;
+
+            List<AsusMouse> mice;
+            lock (_LOCK) { mice = new List<AsusMouse>(ConnectedMice); }
+
+            foreach (AsusMouse m in mice)
+            {
+                Task.Run(() =>
+                {
+                    try { m.WriteColorDirect(color); } catch { }
+                });
+            }
+        }
+
         public static void SyncMiceWithKeyboardAura()
         {
-            if (!AppConfig.IsAuraSync()) return;
+            if (!IsAuraSync) return;
 
             List<AsusMouse> mice;
             lock (_LOCK) { mice = new List<AsusMouse>(ConnectedMice); }

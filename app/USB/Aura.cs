@@ -628,6 +628,9 @@ namespace GHelper.USB
 
         public static void ApplyDirect(Color[] color, bool init = false)
         {
+            if (color is { Length: > 0 })
+                PeripheralsProvider.StreamMouseColor(color.Length > 3 ? color[3] : color[0]);
+
             if (!backlight) return;
 
             const byte keySet = 167;
@@ -735,6 +738,7 @@ namespace GHelper.USB
 
         public static void ApplyDirect(Color color, bool init = false)
         {
+            PeripheralsProvider.StreamMouseColor(color);
 
             if (!backlight) return;
 
@@ -898,7 +902,7 @@ namespace GHelper.USB
             }
 
             AuraSpeed effectiveSpeed = Speed;
-            if (AppConfig.IsAuraSync() && (Mode == AuraMode.AuraBreathe || Mode == AuraMode.AuraColorCycle))
+            if (PeripheralsProvider.IsAuraSync && (Mode == AuraMode.AuraBreathe || Mode == AuraMode.AuraColorCycle))
                 effectiveSpeed = AuraSpeed.Slow;
 
             int _speed = (effectiveSpeed == AuraSpeed.Normal) ? 0xeb : (effectiveSpeed == AuraSpeed.Fast) ? 0xf5 : 0xe1;
