@@ -395,6 +395,7 @@ namespace GHelper
             if (loadingSettings) return;
 
             PeripheralsProvider.SetAuraSync(checkBoxSyncAura.Checked);
+            Program.settingsForm.UpdateKeyboardLabel();
 
             if (checkBoxSyncAura.Checked)
             {
