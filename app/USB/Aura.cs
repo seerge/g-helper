@@ -354,7 +354,7 @@ namespace GHelper.USB
 
             AppConfig.Set("backlight_type", typeByte);
 
-            HasLogo = (feat1 & FEAT1_LOGO) != 0;
+            HasLogo = (feat1 & FEAT1_LOGO) != 0 || AppConfig.IsZ13();
             HasLightbar = (feat1 & FEAT1_LIGHTBAR) != 0;
             HasRearglow = (feat1 & FEAT1_REARGLOW) != 0;
 
