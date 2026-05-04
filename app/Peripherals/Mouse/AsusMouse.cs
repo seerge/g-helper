@@ -2097,16 +2097,15 @@ public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
             }
         }
 
-        public static LightingMode? MapAuraToLightingMode(AuraMode auraMode)
+        public static LightingMode MapAuraToLightingMode(AuraMode auraMode)
         {
             switch (auraMode)
             {
-                case AuraMode.AuraStatic: return LightingMode.Static;
                 case AuraMode.AuraBreathe: return LightingMode.Breathing;
                 case AuraMode.AuraColorCycle: return LightingMode.ColorCycle;
                 case AuraMode.AuraRainbow: return LightingMode.Rainbow;
                 case AuraMode.Comet: return LightingMode.Comet;
-                default: return null;
+                default: return LightingMode.Static;
             }
         }
 
@@ -2132,10 +2131,7 @@ public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
         {
             if (!HasRGB() || !IsDeviceReady) return false;
 
-            LightingMode? mapped = MapAuraToLightingMode((AuraMode)AppConfig.Get("aura_mode"));
-            if (mapped is null) return false;
-
-            LightingMode lm = mapped.Value;
+            LightingMode lm = MapAuraToLightingMode((AuraMode)AppConfig.Get("aura_mode"));
 
             if (lm == LightingMode.Rainbow && !IsLightingModeSupported(LightingMode.Rainbow))
                 lm = LightingMode.ColorCycle;
