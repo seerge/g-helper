@@ -115,14 +115,12 @@ namespace GHelper.Gpu
             else if (GPUMode == AsusACPI.GPUModeEco)
             {
                 settings.VisualiseGPUMode(GPUMode);
-                SetGPUEco(1);
-                changed = true;
+                changed = SetGPUEco(1);
             }
             else if (GPUMode == AsusACPI.GPUModeStandard)
             {
                 settings.VisualiseGPUMode(GPUMode);
-                SetGPUEco(0);
-                changed = true;
+                changed = SetGPUEco(0);
             }
 
             if (changed)
@@ -140,8 +138,22 @@ namespace GHelper.Gpu
 
 
 
-        public void SetGPUEco(int eco)
+        // Returns true if the switch was started (work dispatched), false if cancelled by a guard.
+        public bool SetGPUEco(int eco)
         {
+
+            if (eco == 1 && NvDDS.TryGetState(out _, out var mux) && mux == NvDDS.DDSMuxState.DGpu)
+            {
+                NvDDS.OpenTray();
+                MessageBox.Show(
+                    settings,
+                    "NVIDIA GPU is currently used for display. Please switch Display Mode to Optimus or Auto first.",
+                    "NVIDIA Display Mode",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                InitGPUMode();    
+                return false;
+            }
 
             settings.LockGPUModes();
 
@@ -163,6 +175,12 @@ namespace GHelper.Gpu
                 {
 
                     status = Program.acpi.SetGPUEco(eco);
+
+                    if (eco == 0)
+                    {
+                        NvpcfPnp.Refresh();
+                    }
+
                     await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("refresh_delay", 500)));
 
                     settings.Invoke(delegate
@@ -200,7 +218,7 @@ namespace GHelper.Gpu
 
             });
 
-
+            return true;
         }
 
         public static bool IsPlugged() =>
@@ -232,8 +250,7 @@ namespace GHelper.Gpu
                     if ((GpuAuto && IsPlugged()) || (ForceGPU && GpuMode == AsusACPI.GPUModeStandard))
                     {
                         if (delay > 0) Thread.Sleep(delay);
-                        SetGPUEco(0);
-                        return true;
+                        return SetGPUEco(0);
                     }
                 if (eco == 0)
                     if ((GpuAuto && !IsPlugged()) || (ForceGPU && GpuMode == AsusACPI.GPUModeEco))
@@ -247,8 +264,7 @@ namespace GHelper.Gpu
                         }
 
                         if (delay > 0) Thread.Sleep(delay);
-                        SetGPUEco(1);
-                        return true;
+                        return SetGPUEco(1);
                     }
             }
 
