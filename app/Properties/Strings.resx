@@ -731,6 +731,9 @@ Do you still want to continue?</value>
   <data name="ToggleClamshellMode" xml:space="preserve">
     <value>Auto Toggle Clamshell Mode</value>
   </data>
+  <data name="HibernateHelper" xml:space="preserve">
+    <value>Modern Standby Assist</value>
+  </data>
   <data name="ToggleFnLock" xml:space="preserve">
     <value>Toggle Fn-Lock</value>
   </data>

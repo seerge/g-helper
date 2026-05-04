@@ -143,6 +143,7 @@ namespace GHelper
             checkTopmost.Text = Properties.Strings.WindowTop;
             checkUSBC.Text = Properties.Strings.OptimizedUSBC;
             checkAutoToggleClamshellMode.Text = Properties.Strings.ToggleClamshellMode;
+            checkHibernateHelper.Text = Properties.Strings.HibernateHelper;
 
             labelBacklightKeyboard.Text = Properties.Strings.Keyboard;
             labelBacklightBar.Text = Properties.Strings.Lightbar;
@@ -397,6 +398,12 @@ namespace GHelper
             checkAutoToggleClamshellMode.Checked = AppConfig.Is("toggle_clamshell_mode");
             checkAutoToggleClamshellMode.CheckedChanged += checkAutoToggleClamshellMode_CheckedChanged;
 
+            int hibernateHelper = Program.acpi.GetHibernateHelper();
+            Logger.WriteLine($"Modern Standby Assist = {hibernateHelper} (endpoint = 0x{Program.acpi.HibernateHelperEndpoint:X})");
+            checkHibernateHelper.Visible = hibernateHelper >= 0;
+            checkHibernateHelper.Checked = hibernateHelper >= 1;
+            checkHibernateHelper.CheckedChanged += CheckHibernateHelper_CheckedChanged;
+
             checkTopmost.Checked = AppConfig.Is("topmost");
             checkTopmost.CheckedChanged += CheckTopmost_CheckedChanged; ;
 
@@ -603,6 +610,11 @@ namespace GHelper
             AppConfig.Set("boot_sound", bootSound);
         }
 
+        private void CheckHibernateHelper_CheckedChanged(object? sender, EventArgs e)
+        {
+            Program.acpi.SetHibernateHelper(checkHibernateHelper.Checked, (int)numericHibernateAfter.Value);
+        }
+
         private void InitHibernate()
         {
             try
@@ -623,7 +635,9 @@ namespace GHelper
 
         private void NumericHibernateAfter_ValueChanged(object? sender, EventArgs e)
         {
-            PowerNative.SetHibernateAfter((int)numericHibernateAfter.Value);
+            int minutes = (int)numericHibernateAfter.Value;
+            PowerNative.SetHibernateAfter(minutes);
+            if (checkHibernateHelper.Checked) Program.acpi.SetHibernateHelper(true, minutes);
         }
 
         private void PictureLog_Click(object? sender, EventArgs e)
