@@ -112,6 +112,7 @@ namespace GHelper
             labelSettings = new Label();
             panelSettings = new Panel();
             checkAutoToggleClamshellMode = new CheckBox();
+            checkHibernateHelper = new CheckBox();
             checkTopmost = new CheckBox();
             checkNoOverdrive = new CheckBox();
             checkBootSound = new CheckBox();
@@ -1193,6 +1194,7 @@ namespace GHelper
             panelSettings.AccessibleRole = AccessibleRole.Grouping;
             panelSettings.AutoSize = true;
             panelSettings.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelSettings.Controls.Add(checkHibernateHelper);
             panelSettings.Controls.Add(checkAutoToggleClamshellMode);
             panelSettings.Controls.Add(checkTopmost);
             panelSettings.Controls.Add(checkNoOverdrive);
@@ -1222,8 +1224,21 @@ namespace GHelper
             checkAutoToggleClamshellMode.Text = "Auto Toggle Clamshell Mode";
             checkAutoToggleClamshellMode.UseVisualStyleBackColor = true;
             //
+            // checkHibernateHelper
+            //
+            checkHibernateHelper.AutoSize = true;
+            checkHibernateHelper.Dock = DockStyle.Top;
+            checkHibernateHelper.Location = new Point(21, 467);
+            checkHibernateHelper.Margin = new Padding(5, 3, 5, 3);
+            checkHibernateHelper.Name = "checkHibernateHelper";
+            checkHibernateHelper.Padding = new Padding(3);
+            checkHibernateHelper.Size = new Size(917, 42);
+            checkHibernateHelper.TabIndex = 11;
+            checkHibernateHelper.Text = "Modern Standby Assist";
+            checkHibernateHelper.UseVisualStyleBackColor = true;
+            //
             // checkTopmost
-            // 
+            //
             checkTopmost.AutoSize = true;
             checkTopmost.Dock = DockStyle.Top;
             checkTopmost.Location = new Point(21, 341);
@@ -1804,6 +1819,7 @@ namespace GHelper
         private Slider sliderBrightness;
         private PictureBox pictureLog;
         private CheckBox checkAutoToggleClamshellMode;
+        private CheckBox checkHibernateHelper;
         private Label labelFNE;
         private RComboBox comboFNE;
         private TextBox textFNE;

@@ -146,6 +146,8 @@ public class AsusACPI
     public const int StatusLed = 0x000600C2;
 
     public const int BootSound = 0x00130022;
+    public const int HibernateHelper = 0x0012008E;
+    public const int HibernateHelperLegacy = 0x0012007E;
 
     public const int Tablet_Notebook = 0;
     public const int Tablet_Tablet = 1;
@@ -453,6 +455,47 @@ public class AsusACPI
         BitConverter.GetBytes((uint)Status).CopyTo(args, 4);
 
         return CallMethod(DSTS, args);
+    }
+
+    private int hibernateHelperEndpoint = -2;
+
+    public int HibernateHelperEndpoint
+    {
+        get
+        {
+            if (hibernateHelperEndpoint == -2)
+            {
+                if (DeviceGet(HibernateHelper) >= 0) hibernateHelperEndpoint = HibernateHelper;
+                else if (DeviceGet(HibernateHelperLegacy) >= 0) hibernateHelperEndpoint = HibernateHelperLegacy;
+                else hibernateHelperEndpoint = -1;
+            }
+            return hibernateHelperEndpoint;
+        }
+    }
+
+    public int GetHibernateHelper()
+    {
+        int ep = HibernateHelperEndpoint;
+        return ep < 0 ? -1 : DeviceGet((uint)ep);
+    }
+
+    public int SetHibernateHelper(bool enabled, int idleMinutes = 0)
+    {
+        int ep = HibernateHelperEndpoint;
+        if (ep < 0) return -1;
+
+        uint packed = 0;
+        if (enabled)
+        {
+            ushort idle = (ushort)(idleMinutes > 0 ? idleMinutes : 30);
+            packed = 1u | (1u << 8) | ((uint)idle << 16);
+        }
+
+        byte[] args = new byte[8];
+        BitConverter.GetBytes(packed).CopyTo(args, 0);
+        BitConverter.GetBytes(enabled ? 1u : 0u).CopyTo(args, 4);
+
+        return DeviceSet((uint)ep, args, "HibernateHelper");
     }
 
 
