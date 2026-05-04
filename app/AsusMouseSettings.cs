@@ -23,6 +23,7 @@ namespace GHelper
         private LightingZone visibleZone = LightingZone.All;
 
         private bool updateMouseDPI = true;
+        private bool loadingSettings = true;
 
         public AsusMouseSettings(AsusMouse mouse)
         {
@@ -38,6 +39,7 @@ namespace GHelper
             labelEnergy.Text = Properties.Strings.EnergySettings;
             labelPerformance.Text = Properties.Strings.MousePerformance;
             checkBoxRandomColor.Text = Properties.Strings.AuraRandomColor;
+            checkBoxSyncAura.Text = Properties.Strings.MouseSyncWithAura;
             labelLowBatteryWarning.Text = Properties.Strings.MouseLowBatteryWarning;
             labelAutoPowerOff.Text = Properties.Strings.MouseAutoPowerOff;
             buttonSync.Text = Properties.Strings.MouseSynchronize;
@@ -114,6 +116,7 @@ namespace GHelper
             comboBoxAnimationSpeed.DropDownClosed += ComboBoxAnimationSpeed_DropDownClosed;
             comboBoxAnimationDirection.DropDownClosed += ComboBoxAnimationDirection_DropDownClosed;
             checkBoxRandomColor.CheckedChanged += CheckBoxRandomColor_CheckedChanged;
+            checkBoxSyncAura.CheckedChanged += CheckBoxSyncAura_CheckedChanged;
 
             sliderLowBatteryWarning.ValueChanged += SliderLowBatteryWarning_ValueChanged;
             sliderLowBatteryWarning.MouseUp += SliderLowBatteryWarning_MouseUp;
@@ -129,6 +132,8 @@ namespace GHelper
             InitMouseCapabilities();
             Logger.WriteLine(mouse.GetDisplayName() + " (GUI): Initialized capabilities. Synchronizing mouse data");
             RefreshMouseData();
+
+            loadingSettings = false;
         }
 
         public void ToggleBindingsPanel(bool show)
@@ -381,6 +386,30 @@ namespace GHelper
             ls.RandomColor = checkBoxRandomColor.Checked;
 
             UpdateLightingSettings(ls, visibleZone);
+        }
+
+        private void CheckBoxSyncAura_CheckedChanged(object? sender, EventArgs e)
+        {
+            ApplyAuraSyncUIState();
+            if (loadingSettings) return;
+
+            AppConfig.Set("mouse_aura_sync", checkBoxSyncAura.Checked ? 1 : 0);
+
+            if (checkBoxSyncAura.Checked)
+            {
+                mouse.SyncFromKeyboardAura();
+                VisusalizeLightingSettings();
+            }
+        }
+
+        private void ApplyAuraSyncUIState()
+        {
+            bool syncOn = checkBoxSyncAura.Checked;
+            comboBoxLightingMode.Enabled = !syncOn;
+            buttonLightingColor.Enabled = !syncOn;
+            checkBoxRandomColor.Enabled = !syncOn;
+            comboBoxAnimationSpeed.Enabled = !syncOn;
+            comboBoxAnimationDirection.Enabled = !syncOn;
         }
 
         private void ComboBoxAnimationDirection_DropDownClosed(object? sender, EventArgs e)
@@ -795,6 +824,9 @@ namespace GHelper
                     buttonLightingZoneUnderglow.Visible = false;
                     buttonLightingZoneDock.Visible = false;
                 }
+
+                checkBoxSyncAura.Checked = AppConfig.IsAuraSync();
+                ApplyAuraSyncUIState();
 
                 sliderBrightness.Max = mouse.MaxBrightness();
 

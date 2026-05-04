@@ -57,6 +57,29 @@ namespace GHelper.Peripherals
             RefreshBatteryForAllDevices(false);
         }
 
+        public static void SyncMiceWithKeyboardAura()
+        {
+            if (!AppConfig.IsAuraSync()) return;
+
+            List<AsusMouse> mice;
+            lock (_LOCK) { mice = new List<AsusMouse>(ConnectedMice); }
+
+            foreach (AsusMouse m in mice)
+            {
+                Task.Run(() =>
+                {
+                    try
+                    {
+                        m.SyncFromKeyboardAura();
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.WriteLine(m.GetDisplayName() + ": Failed to sync with keyboard aura: " + e.Message);
+                    }
+                });
+            }
+        }
+
         public static void RefreshBatteryForAllDevices(bool force)
         {
             //Polling the battery every 20s should be enough

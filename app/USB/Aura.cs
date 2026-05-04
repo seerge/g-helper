@@ -1,6 +1,7 @@
 ﻿using GHelper.Gpu;
 using GHelper.Helpers;
 using GHelper.Input;
+using GHelper.Peripherals;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
@@ -896,7 +897,14 @@ namespace GHelper.USB
                 return;
             }
 
-            int _speed = (Speed == AuraSpeed.Normal) ? 0xeb : (Speed == AuraSpeed.Fast) ? 0xf5 : 0xe1;
+            AuraSpeed effectiveSpeed = Speed;
+            if (AppConfig.IsAuraSync() && (Mode == AuraMode.AuraBreathe || Mode == AuraMode.AuraColorCycle))
+                effectiveSpeed = AuraSpeed.Slow;
+
+            int _speed = (effectiveSpeed == AuraSpeed.Normal) ? 0xeb : (effectiveSpeed == AuraSpeed.Fast) ? 0xf5 : 0xe1;
+
+            PeripheralsProvider.SyncMiceWithKeyboardAura();
+
             AsusHid.Write(new List<byte[]> { AuraMessage(Mode, _Color1, _Color2, _speed), MESSAGE_SET, MESSAGE_APPLY }, "Aura", AsusHid.MAIN_AURA_PIDS);
             XGM.LightMode(Mode, _Color1, _Color2, _speed);
 

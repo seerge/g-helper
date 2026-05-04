@@ -1,5 +1,6 @@
 ﻿using GHelper.AnimeMatrix.Communication;
 using GHelper.AnimeMatrix.Communication.Platform;
+using GHelper.USB;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -2094,6 +2095,58 @@ public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
             {
                 this.LightingSetting[IndexForZone(zone)] = lightingSetting;
             }
+        }
+
+        public static LightingMode? MapAuraToLightingMode(AuraMode auraMode)
+        {
+            switch (auraMode)
+            {
+                case AuraMode.AuraStatic: return LightingMode.Static;
+                case AuraMode.AuraBreathe: return LightingMode.Breathing;
+                case AuraMode.AuraColorCycle: return LightingMode.ColorCycle;
+                case AuraMode.AuraRainbow: return LightingMode.Rainbow;
+                case AuraMode.Comet: return LightingMode.Comet;
+                default: return null;
+            }
+        }
+
+        public bool SyncFromKeyboardAura()
+        {
+            if (!HasRGB() || !IsDeviceReady) return false;
+
+            LightingMode? mapped = MapAuraToLightingMode((AuraMode)AppConfig.Get("aura_mode"));
+            if (mapped is null) return false;
+
+            LightingMode lm = mapped.Value;
+
+            if (lm == LightingMode.Rainbow && !IsLightingModeSupported(LightingMode.Rainbow))
+                lm = LightingMode.ColorCycle;
+
+            if (!IsLightingModeSupported(lm)) return false;
+
+            Color color = Color.FromArgb(AppConfig.Get("aura_color"));
+            AnimationSpeed mappedSpeed = (AuraSpeed)AppConfig.Get("aura_speed") switch
+            {
+                AuraSpeed.Fast => AnimationSpeed.Fast,
+                AuraSpeed.Slow => AnimationSpeed.Slow,
+                _ => AnimationSpeed.Medium,
+            };
+
+            foreach (LightingZone zone in SupportedLightingZones())
+            {
+                if (!IsLightingModeSupportedForZone(lm, zone)) continue;
+
+                LightingSetting ls = LightingSettingForZone(zone);
+                if (ls is null) continue;
+
+                ls.LightingMode = lm;
+                if (SupportsColorSetting(lm)) ls.RGBColor = color;
+                if (SupportsAnimationSpeed(lm)) ls.AnimationSpeed = mappedSpeed;
+
+                SetLightingSetting(ls, zone);
+            }
+
+            return true;
         }
 
         protected virtual byte[] GetSaveProfilePacket()
