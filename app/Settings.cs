@@ -732,6 +732,13 @@ namespace GHelper
         protected override void WndProc(ref Message m)
         {
 
+            if (m.Msg == NativeMethods.WM_POWERBROADCAST && m.WParam == (IntPtr)NativeMethods.PBT_APMSUSPEND)
+            {
+                Logger.WriteLine("System Suspend");
+                Program.modeControl.SleepReset();
+                m.Result = (IntPtr)1;
+            }
+
             if (m.Msg == NativeMethods.WM_POWERBROADCAST && m.WParam == (IntPtr)NativeMethods.PBT_POWERSETTINGCHANGE)
             {
                 var settings = (NativeMethods.POWERBROADCAST_SETTING)m.GetLParam(typeof(NativeMethods.POWERBROADCAST_SETTING));
@@ -762,7 +769,6 @@ namespace GHelper
                         case 0:
                             Logger.WriteLine("Monitor Power Off");
                             Aura.SleepBrightness();
-                            Program.modeControl.SleepReset();
                             break;
                         case 1:
                             Logger.WriteLine("Monitor Power On");

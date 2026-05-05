@@ -69,12 +69,20 @@ public static class NativeMethods
     internal const uint DEVICE_NOTIFY_SERVICE_HANDLE = 0x1;
     internal const int WM_POWERBROADCAST = 0x0218;
     internal const int PBT_POWERSETTINGCHANGE = 0x8013;
+    internal const int PBT_APMSUSPEND = 0x0004;
+    internal const int PBT_APMRESUMESUSPEND = 0x0007;
 
     [DllImport("User32.dll", SetLastError = true)]
     internal static extern IntPtr RegisterPowerSettingNotification(IntPtr hWnd, [In] Guid PowerSettingGuid, uint Flags);
 
     [DllImport("User32.dll", SetLastError = true)]
     internal static extern bool UnregisterPowerSettingNotification(IntPtr hWnd);
+
+    [DllImport("User32.dll", SetLastError = true)]
+    internal static extern IntPtr RegisterSuspendResumeNotification(IntPtr hRecipient, uint Flags);
+
+    [DllImport("User32.dll", SetLastError = true)]
+    internal static extern bool UnregisterSuspendResumeNotification(IntPtr handle);
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     internal struct POWERBROADCAST_SETTING
