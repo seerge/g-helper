@@ -150,4 +150,11 @@
         }
 
     }
+
+    public class TUFM4WirelssBle : TUFM4Wirelss
+    {
+        public TUFM4WirelssBle() : base(0x19F5, true) { }
+        protected override bool IsBluetoothLe => true;
+        public override string GetDisplayName() => "TUF Gaming M4 Wireless (Bluetooth)";
+    }
 }

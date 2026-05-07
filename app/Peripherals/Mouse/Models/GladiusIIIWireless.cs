@@ -127,4 +127,11 @@
                 || lightingMode == LightingMode.Comet;
         }
     }
+
+    public class GladiusIIIWirelessBle : GladiusIIIWireless
+    {
+        public GladiusIIIWirelessBle() : base(0x1981, true) { }
+        protected override bool IsBluetoothLe => true;
+        public override string GetDisplayName() => "ROG Gladius III Wireless (Bluetooth)";
+    }
 }

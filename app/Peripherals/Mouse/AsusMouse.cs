@@ -492,8 +492,12 @@ public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
             ReadBattery();
         }
 
-        public bool IsDeviceConnected()
+        protected virtual bool IsBluetoothLe => false;
+        private string? bleDevicePath;
+
+        public virtual bool IsDeviceConnected()
         {
+            if (IsBluetoothLe) return BleMouseTransport.TryLocate(VendorID(), ProductID(), out bleDevicePath);
             try
             {
                 return HidSharp.DeviceList.Local.GetHidDevices(VendorID(), ProductID())
@@ -517,6 +521,13 @@ public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
 
         public override void SetProvider()
         {
+            if (IsBluetoothLe)
+            {
+                if (bleDevicePath is null && !IsDeviceConnected())
+                    throw new IOException("BLE device not present");
+                _usbProvider = BleMouseTransport.OpenProvider(VendorID(), ProductID(), bleDevicePath!);
+                return;
+            }
             _usbProvider = new WindowsUsbProvider(_vendorId, _productId, path, USBTimeout());
         }
 

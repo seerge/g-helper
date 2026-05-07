@@ -172,6 +172,13 @@
     }
 
 
+    public class HarpeAceAimLabEditionBle : HarpeAceAimLabEdition
+    {
+        public HarpeAceAimLabEditionBle() : base(0x1A96, true, "ble", 0x00) { }
+        protected override bool IsBluetoothLe => true;
+        public override string GetDisplayName() => "ROG Harpe Ace Aim Lab Edition (Bluetooth)";
+    }
+
     public class HarpeAceExtremeWeird : HarpeAceAimLabEdition
     {
         public HarpeAceExtremeWeird() : base(0x1B67, false, "mi_00", 0x00)

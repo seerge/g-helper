@@ -125,4 +125,11 @@
         }
     }
 
+    public class HarpeAceMiniBle : HarpeAceMiniWired
+    {
+        public HarpeAceMiniBle() : base(0x1B66, true, "ble", 0x00) { }
+        protected override bool IsBluetoothLe => true;
+        public override string GetDisplayName() => "Harpe Ace Mini (Bluetooth)";
+    }
+
 }

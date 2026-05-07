@@ -235,4 +235,11 @@ namespace GHelper.Peripherals.Mouse.Models
             };
         }
     }
+
+    public class ChakramXBle : ChakramX
+    {
+        public ChakramXBle() : base(0x1A1C, true) { }
+        protected override bool IsBluetoothLe => true;
+        public override string GetDisplayName() => "ROG Chakram X (Bluetooth)";
+    }
 }

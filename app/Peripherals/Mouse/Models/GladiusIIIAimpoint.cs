@@ -139,6 +139,20 @@
         }
     }
 
+    public class GladiusIIIAimpointBle : GladiusIIIAimpoint
+    {
+        public GladiusIIIAimpointBle() : base(0x1A74, true) { }
+        protected override bool IsBluetoothLe => true;
+        public override string GetDisplayName() => "ROG Gladius III Wireless Aimpoint (Bluetooth)";
+    }
+
+    public class GladiusIIIAimpointEva2Ble : GladiusIIIAimpointEva2
+    {
+        public GladiusIIIAimpointEva2Ble() : base(0x1B0D) { }
+        protected override bool IsBluetoothLe => true;
+        public override string GetDisplayName() => "ROG Gladius III Aimpoint EVA02 (Bluetooth)";
+    }
+
     public class GladiusIIIAimpointEva2Wired : GladiusIIIAimpointEva2
     {
         public GladiusIIIAimpointEva2Wired() : base(0x1B0A)

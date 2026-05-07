@@ -135,4 +135,11 @@
         }
     }
 
+    public class KerisWirelssAimpointBle : KerisWirelssAimpoint
+    {
+        public KerisWirelssAimpointBle() : base(0x1A6A, true) { }
+        protected override bool IsBluetoothLe => true;
+        public override string GetDisplayName() => "ROG Keris Wireless Aimpoint (Bluetooth)";
+    }
+
 }

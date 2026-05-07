@@ -231,6 +231,8 @@ namespace GHelper.Peripherals
         public static void DetectAllAsusMice()
         {
             //Add one line for every supported mouse class here to support them.
+            try { DetectBleMice(); }
+            catch (Exception e) { Logger.WriteLine("DetectBleMice crashed: " + e); }
             DedectOmniMouse();
             DetectMouse(new ChakramX());
             DetectMouse(new ChakramXWired());
@@ -284,6 +286,48 @@ namespace GHelper.Peripherals
             DetectMouse(new TXGamingMiniWired());
             DetectMouse(new Pugio());
             DetectMouse(new MD200());
+        }
+
+        private static readonly Dictionary<int, Func<AsusMouse>> BleMiceByPid = new()
+        {
+            { 0x1981, () => new GladiusIIIWirelessBle() },
+            { 0x19F5, () => new TUFM4WirelssBle() },
+            { 0x1A1C, () => new ChakramXBle() },
+            { 0x1A6A, () => new KerisWirelssAimpointBle() },
+            { 0x1A74, () => new GladiusIIIAimpointBle() },
+            { 0x1A96, () => new HarpeAceAimLabEditionBle() },
+            { 0x1B0D, () => new GladiusIIIAimpointEva2Ble() },
+            { 0x1B66, () => new HarpeAceMiniBle() },
+        };
+
+        public static void DetectBleMice()
+        {
+            List<string> paths;
+            try
+            {
+                paths = USB.BluetoothLeNative.EnumerateVendorBleInterfaces().ToList();
+            }
+            catch (Exception e)
+            {
+                Logger.WriteLine("BLE enumeration failed: " + e);
+                return;
+            }
+            if (paths.Count == 0) return;
+
+            foreach (var path in paths)
+            {
+                try
+                {
+                    if (!USB.BluetoothLeNative.TryParseVidPid(path, out var vid, out var pid)) continue;
+                    if (vid != 0x0B05) continue;
+                    if (!BleMiceByPid.TryGetValue(pid, out var factory)) continue;
+                    DetectMouse(factory());
+                }
+                catch (Exception e)
+                {
+                    Logger.WriteLine($"BLE mouse handling failed for path {path}: " + e);
+                }
+            }
         }
 
         public static void DedectOmniMouse()
