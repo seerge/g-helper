@@ -584,6 +584,9 @@ Yine de devam etmek istiyor musunuz?</value>
   <data name="MouseSynchronize" xml:space="preserve">
     <value>Fare ile eşitle</value>
   </data>
+  <data name="MouseSyncWithAura" xml:space="preserve">
+    <value>Sync with laptop</value>
+  </data>
   <data name="Multizone" xml:space="preserve">
     <value>Çoklu Bölge</value>
   </data>
