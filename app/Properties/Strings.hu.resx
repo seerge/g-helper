@@ -585,7 +585,7 @@ Folytatni szeretnéd?</value>
     <value>Szinkronizálás egérrel</value>
   </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
-    <value>Sync with laptop</value>
+    <value>Szinkronizálás laptoppal</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Multi Zóna</value>
