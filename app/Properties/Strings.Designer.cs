@@ -1555,7 +1555,16 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("MouseSynchronize", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Sync with laptop.
+        /// </summary>
+        internal static string MouseSyncWithAura {
+            get {
+                return ResourceManager.GetString("MouseSyncWithAura", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Zone Mode.
         /// </summary>

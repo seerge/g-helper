@@ -332,6 +332,11 @@ public static class AppConfig
         return ContainsModel("RC7");
     }
 
+    public static bool IsAuraSync()
+    {
+        return Is("mouse_aura_sync");
+    }
+
     public static bool NoMKeys()
     {
         return (ContainsModel("Z13") && !IsARCNM()) ||

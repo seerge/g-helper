@@ -34,7 +34,7 @@ namespace GHelper
 
         public static HardwareOverlay? hardwareOverlay;
 
-        public static IntPtr unRegPowerNotify, unRegPowerNotifyLid;
+        public static IntPtr unRegPowerNotify, unRegPowerNotifyLid, unRegSuspendResume;
         public static int WM_TASKBARCREATED = 0;
 
         private static long lastAuto;
@@ -172,6 +172,7 @@ namespace GHelper
             // Subscribing for monitor power on events
             unRegPowerNotify = NativeMethods.RegisterPowerSettingNotification(settingsForm.Handle, PowerSettingGuid.ConsoleDisplayState, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
             unRegPowerNotifyLid = NativeMethods.RegisterPowerSettingNotification(settingsForm.Handle, PowerSettingGuid.LIDSWITCH_STATE_CHANGE, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
+            unRegSuspendResume = NativeMethods.RegisterSuspendResumeNotification(settingsForm.Handle, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
 
 
             Task task = Task.Run((Action)PeripheralsProvider.DetectAllAsusMice);
@@ -449,6 +450,7 @@ namespace GHelper
             clamshellControl.UnregisterDisplayEvents();
             NativeMethods.UnregisterPowerSettingNotification(unRegPowerNotify);
             NativeMethods.UnregisterPowerSettingNotification(unRegPowerNotifyLid);
+            NativeMethods.UnregisterSuspendResumeNotification(unRegSuspendResume);
             Application.Exit();
         }
 

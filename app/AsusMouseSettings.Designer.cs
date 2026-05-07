@@ -91,6 +91,7 @@ namespace GHelper
             comboBoxAnimationDirection = new GHelper.UI.RComboBox();
             labelAnimationDirection = new Label();
             checkBoxRandomColor = new CheckBox();
+            checkBoxSyncAura = new CheckBox();
             comboBoxAnimationSpeed = new GHelper.UI.RComboBox();
             labelAnimationSpeed = new Label();
             pictureBoxLightingColor = new PictureBox();
@@ -924,6 +925,7 @@ namespace GHelper
             panelLightingContent.Controls.Add(tableLayoutLightingZones);
             panelLightingContent.Controls.Add(comboBoxAnimationDirection);
             panelLightingContent.Controls.Add(labelAnimationDirection);
+            panelLightingContent.Controls.Add(checkBoxSyncAura);
             panelLightingContent.Controls.Add(checkBoxRandomColor);
             panelLightingContent.Controls.Add(comboBoxAnimationSpeed);
             panelLightingContent.Controls.Add(labelAnimationSpeed);
@@ -1115,6 +1117,17 @@ namespace GHelper
             checkBoxRandomColor.Text = "Random";
             checkBoxRandomColor.UseVisualStyleBackColor = true;
             // 
+            // checkBoxSyncAura
+            // 
+            checkBoxSyncAura.AutoSize = true;
+            checkBoxSyncAura.Location = new Point(10, 148);
+            checkBoxSyncAura.Margin = new Padding(8, 0, 8, 0);
+            checkBoxSyncAura.Name = "checkBoxSyncAura";
+            checkBoxSyncAura.Size = new Size(420, 30);
+            checkBoxSyncAura.TabIndex = 56;
+            checkBoxSyncAura.Text = "Sync with Keyboard Aura";
+            checkBoxSyncAura.UseVisualStyleBackColor = true;
+            // 
             // comboBoxAnimationSpeed
             // 
             comboBoxAnimationSpeed.BorderColor = Color.White;
@@ -1164,7 +1177,7 @@ namespace GHelper
             buttonLightingColor.Size = new Size(180, 50);
             buttonLightingColor.TabIndex = 49;
             buttonLightingColor.Text = Properties.Strings.Color;
-            buttonLightingColor.TextAlign = ContentAlignment.MiddleLeft;
+            buttonLightingColor.TextAlign = ContentAlignment.MiddleCenter;
             buttonLightingColor.UseVisualStyleBackColor = false;
             // 
             // comboBoxLightingMode
@@ -1769,6 +1782,7 @@ namespace GHelper
         private PictureBox pictureBoxLightingColor;
         private UI.RButton buttonLightingColor;
         private CheckBox checkBoxRandomColor;
+        private CheckBox checkBoxSyncAura;
         private UI.RComboBox comboBoxAnimationSpeed;
         private Label labelAnimationSpeed;
         private UI.RComboBox comboBoxAnimationDirection;

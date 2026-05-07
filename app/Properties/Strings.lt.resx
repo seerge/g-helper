@@ -584,6 +584,9 @@ Vis tiek norite tęsti?</value>
   <data name="MouseSynchronize" xml:space="preserve">
     <value>Sinchronizuoti su pele</value>
   </data>
+  <data name="MouseSyncWithAura" xml:space="preserve">
+    <value>Sync with laptop</value>
+  </data>
   <data name="Multizone" xml:space="preserve">
     <value>Kelios zonos</value>
   </data>

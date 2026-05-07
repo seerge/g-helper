@@ -34,32 +34,27 @@ public static class NvBootState
         pid = 102,
     };
 
-    private static bool? _cachedDGpuArrivedLate;
+    private static DateTime? _handledArrivalUtc;
+    private static DateTime? _pendingArrivalUtc;
 
-    /// <summary>
-    /// Returns true when the NVIDIA dGPU first appeared on the PCI bus more than
-    /// <paramref name="thresholdSeconds"/> seconds after system boot — the typical signature
-    /// of "machine booted with dGPU disabled, GPU was enabled mid-session". The result is
-    /// cached on first call because PnP arrival is a one-shot event per session.
-    /// </summary>
     public static bool DGpuArrivedAfterBoot(int thresholdSeconds = 30)
     {
-        if (_cachedDGpuArrivedLate.HasValue) return _cachedDGpuArrivedLate.Value;
-        _cachedDGpuArrivedLate = ComputeDGpuArrivedLate(thresholdSeconds);
-        return _cachedDGpuArrivedLate.Value;
+        DateTime? arrivalUtc = ReadDGpuArrivalUtc();
+        _pendingArrivalUtc = arrivalUtc;
+        if (!arrivalUtc.HasValue) return false;
+
+        var bootUtc = DateTime.UtcNow - TimeSpan.FromMilliseconds(Environment.TickCount64);
+        if ((arrivalUtc.Value - bootUtc).TotalSeconds <= thresholdSeconds) return false;
+
+        return _handledArrivalUtc != arrivalUtc.Value;
     }
 
-    /// <summary>
-    /// Marks the boot-state fix as handled. After this call <see cref="DGpuArrivedAfterBoot"/>
-    /// always returns false for the rest of the session, so we don't re-restart NvContainer
-    /// on every subsequent Eco→Standard cycle.
-    /// </summary>
-    public static void MarkHandled() => _cachedDGpuArrivedLate = false;
+    public static void MarkHandled() => _handledArrivalUtc = _pendingArrivalUtc;
 
-    private static bool ComputeDGpuArrivedLate(int thresholdSeconds)
+    private static DateTime? ReadDGpuArrivalUtc()
     {
         IntPtr hDevInfo = SetupDiGetClassDevs(DisplayClass, null, IntPtr.Zero, DIGCF_PRESENT);
-        if (hDevInfo == new IntPtr(-1)) return false;
+        if (hDevInfo == new IntPtr(-1)) return null;
         try
         {
             var devInfo = new SP_DEVINFO_DATA { cbSize = (uint)Marshal.SizeOf<SP_DEVINFO_DATA>() };
@@ -72,16 +67,15 @@ public static class NvBootState
                     continue;
 
                 var bootUtc = DateTime.UtcNow - TimeSpan.FromMilliseconds(Environment.TickCount64);
-                var sinceBoot = arrivalUtc - bootUtc;
-                Logger.WriteLine($"NV dGPU LastArrivalDate = {arrivalUtc:o}, boot = {bootUtc:o}, +{sinceBoot.TotalSeconds:F1}s");
-                return sinceBoot.TotalSeconds > thresholdSeconds;
+                Logger.WriteLine($"NV dGPU LastArrivalDate = {arrivalUtc:o}, boot = {bootUtc:o}, +{(arrivalUtc - bootUtc).TotalSeconds:F1}s");
+                return arrivalUtc;
             }
-            return false;
+            return null;
         }
         catch (Exception ex)
         {
             Logger.WriteLine("NvBootState exception: " + ex.Message);
-            return false;
+            return null;
         }
         finally { SetupDiDestroyDeviceInfoList(hDevInfo); }
     }

@@ -68,7 +68,7 @@ namespace GHelper
             tableBios.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 23F));
             tableBios.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
             tableBios.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
-            tableBios.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 28F));
+            tableBios.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 44F));
             tableBios.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 22F));
             tableBios.Dock = DockStyle.Top;
             tableBios.Location = new Point(20, 20);
@@ -172,7 +172,7 @@ namespace GHelper
             tableDrivers.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 23F));
             tableDrivers.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
             tableDrivers.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
-            tableDrivers.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 28F));
+            tableDrivers.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 44F));
             tableDrivers.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 22F));
             tableDrivers.Dock = DockStyle.Top;
             tableDrivers.Location = new Point(20, 20);
