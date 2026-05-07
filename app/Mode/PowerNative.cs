@@ -60,6 +60,7 @@ namespace GHelper.Mode
 
         private static Guid GUID_SLEEP_SUBGROUP = new Guid("238c9fa8-0aad-41ed-83f4-97be242c8f20");
         private static Guid GUID_HIBERNATEIDLE = new Guid("9d7815a6-7ee4-497e-8888-515a05f02364");
+        private static Guid GUID_STANDBYRESERVETIME = new Guid("468fe7e5-1158-46ec-88bc-5b96c9e44fd0");
 
         private static Guid GUID_SYSTEM_BUTTON_SUBGROUP = new Guid("4f971e89-eebd-4455-a8de-9e59040e7347");
         private static Guid GUID_LIDACTION = new Guid("5CA83367-6E45-459F-A27B-476B1D01C936");
@@ -329,16 +330,23 @@ namespace GHelper.Mode
             int seconds = minutes * 60;
 
             Guid activeSchemeGuid = GetActiveScheme();
-            var hrAC = PowerWriteDCValueIndex(
+            var hrIdle = PowerWriteDCValueIndex(
                 IntPtr.Zero,
                 activeSchemeGuid,
                 GUID_SLEEP_SUBGROUP,
                 GUID_HIBERNATEIDLE,
                 seconds);
 
+            var hrReserve = PowerWriteDCValueIndex(
+                IntPtr.Zero,
+                activeSchemeGuid,
+                GUID_SLEEP_SUBGROUP,
+                GUID_STANDBYRESERVETIME,
+                seconds);
+
             PowerSetActiveScheme(IntPtr.Zero, activeSchemeGuid);
 
-            Logger.WriteLine("Setting Hibernate after " + seconds + ": " + (hrAC == 0 ? "OK" : hrAC));
+            Logger.WriteLine($"Setting Hibernate after {seconds}: HibernateIdle={(hrIdle == 0 ? "OK" : hrIdle.ToString())}, StandbyReserveTime={(hrReserve == 0 ? "OK" : hrReserve.ToString())}");
         }
 
         [DllImport("Kernel32")]
