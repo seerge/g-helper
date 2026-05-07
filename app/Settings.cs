@@ -308,7 +308,7 @@ namespace GHelper
 
         private void LabelBattery_Click(object? sender, EventArgs e)
         {
-            HardwareControl.chargeWatt = !HardwareControl.chargeWatt;
+            BatteryReader.chargeWatt = !BatteryReader.chargeWatt;
             RefreshSensors(true);
         }
 
@@ -678,12 +678,12 @@ namespace GHelper
             if (lastBatteryRefresh == 0 || Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastBatteryRefresh) > 15 * 60_000)
             {
                 lastBatteryRefresh = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-                HardwareControl.RefreshBatteryHealth();
+                BatteryReader.RefreshBatteryHealth();
             }
 
-            if (HardwareControl.batteryHealth != -1)
+            if (BatteryReader.batteryHealth != -1)
             {
-                labelCharge.Text = Properties.Strings.BatteryHealth + ": " + Math.Round(HardwareControl.batteryHealth, 1) + "%";
+                labelCharge.Text = Properties.Strings.BatteryHealth + ": " + Math.Round(BatteryReader.batteryHealth, 1) + "%";
             }
         }
 
@@ -1601,15 +1601,15 @@ namespace GHelper
             if (HardwareControl.cpuTemp > 0)
                 cpuTemp = ": " + TempHelper.FormatTemp((double)HardwareControl.cpuTemp);
 
-            if (HardwareControl.batteryCapacity > 0)
+            if (BatteryReader.batteryCapacity > 0)
             {
-                charge = Properties.Strings.BatteryCharge + ": " + HardwareControl.batteryCharge;
+                charge = Properties.Strings.BatteryCharge + ": " + BatteryReader.batteryCharge;
             }
 
-            if (HardwareControl.batteryRate < 0)
-                battery = Properties.Strings.Discharging + ": " + Math.Round(-(decimal)HardwareControl.batteryRate, 1).ToString() + "W";
-            else if (HardwareControl.batteryRate > 0)
-                battery = Properties.Strings.Charging + ": " + Math.Round((decimal)HardwareControl.batteryRate, 1).ToString() + "W";
+            if (BatteryReader.batteryRate < 0)
+                battery = Properties.Strings.Discharging + ": " + Math.Round(-(decimal)BatteryReader.batteryRate, 1).ToString() + "W";
+            else if (BatteryReader.batteryRate > 0)
+                battery = Properties.Strings.Charging + ": " + Math.Round((decimal)BatteryReader.batteryRate, 1).ToString() + "W";
 
 
             if (HardwareControl.gpuTemp > 0)

@@ -1,4 +1,5 @@
-﻿using GHelper.Gpu;
+﻿using GHelper.Battery;
+using GHelper.Gpu;
 using GHelper.Helpers;
 using GHelper.Input;
 using GHelper.Peripherals;
@@ -1031,7 +1032,7 @@ namespace GHelper.USB
 
             public static void ApplyBattery()
             {
-                float battery = (float)HardwareControl.GetBatteryChargePercentage();
+                float battery = (float)BatteryReader.GetBatteryChargePercentage();
                 Color color = colorLow;
 
                 if (battery < battLow)

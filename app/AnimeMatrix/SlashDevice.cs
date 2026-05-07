@@ -1,4 +1,5 @@
 ﻿using GHelper.AnimeMatrix.Communication;
+using GHelper.Battery;
 using HidSharp.Reports;
 using System.Management;
 using System.Text;
@@ -216,7 +217,7 @@ namespace GHelper.AnimeMatrix
 
         public void SetBatteryPattern(int brightness)
         {
-            SetCustom(GetPercentagePattern(brightness, 100 * (HardwareControl.GetBatteryChargePercentage() / AppConfig.Get("charge_limit", 100))), null);
+            SetCustom(GetPercentagePattern(brightness, 100 * (BatteryReader.GetBatteryChargePercentage() / AppConfig.Get("charge_limit", 100))), null);
         }
 
         public void SetEmpty()
