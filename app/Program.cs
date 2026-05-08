@@ -30,6 +30,7 @@ namespace GHelper
         public static ClamshellModeControl clamshellControl;
 
         public static ToastForm toast;
+        public static BlackoutForm blackout;
 
         public static IntPtr unRegPowerNotify, unRegPowerNotifyLid, unRegSuspendResume;
         public static int WM_TASKBARCREATED = 0;
@@ -94,6 +95,7 @@ namespace GHelper
             allyControl = new AllyControl(settingsForm);
             clamshellControl = new ClamshellModeControl();
             toast = new ToastForm();
+            blackout = new BlackoutForm();
 
             ProcessHelper.CheckAlreadyRunning();
             ProcessHelper.SetPriority();
