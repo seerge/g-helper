@@ -107,6 +107,15 @@ namespace GHelper
             buttonFnLock = new RButton();
             pictureKeyboard = new PictureBox();
             labelKeyboard = new Label();
+            panelRearLight = new Panel();
+            tableLayoutRearLight = new TableLayoutPanel();
+            panelRearColor = new Panel();
+            pictureRearColor = new PictureBox();
+            buttonRearColor = new RButton();
+            comboRearLight = new RComboBox();
+            panelRearLightTitle = new Panel();
+            pictureRearLight = new PictureBox();
+            labelRearLight = new Label();
             panelStartup = new Panel();
             labelCharge = new Label();
             panelPeripherals = new Panel();
@@ -170,6 +179,12 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)pictureColor).BeginInit();
             panelKeyboardTitle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureKeyboard).BeginInit();
+            panelRearLight.SuspendLayout();
+            tableLayoutRearLight.SuspendLayout();
+            panelRearColor.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureRearColor).BeginInit();
+            panelRearLightTitle.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureRearLight).BeginInit();
             panelStartup.SuspendLayout();
             panelPeripherals.SuspendLayout();
             tableLayoutPeripherals.SuspendLayout();
@@ -235,7 +250,7 @@ namespace GHelper
             checkMatrix.Location = new Point(8, 0);
             checkMatrix.Margin = new Padding(8, 4, 8, 4);
             checkMatrix.Name = "checkMatrix";
-            checkMatrix.Padding = new Padding(0, 0, 11, 0);
+            checkMatrix.Padding = new Padding(0, 0, 5, 0);
             checkMatrix.Size = new Size(252, 40);
             checkMatrix.TabIndex = 19;
             checkMatrix.Text = Properties.Strings.TurnOffOnBattery;
@@ -501,7 +516,7 @@ namespace GHelper
             buttonDonate.BorderRadius = 2;
             buttonDonate.Dock = DockStyle.Top;
             buttonDonate.FlatStyle = FlatStyle.Flat;
-            buttonDonate.Image = Properties.Resources.icons8_dollar_32;
+            buttonDonate.Image = Properties.Resources.icons8_heart_32;
             buttonDonate.ImageAlign = ContentAlignment.MiddleRight;
             buttonDonate.Location = new Point(4, 5);
             buttonDonate.Margin = new Padding(4, 5, 4, 5);
@@ -1460,6 +1475,136 @@ namespace GHelper
             labelKeyboard.TabIndex = 34;
             labelKeyboard.Text = "Laptop Keyboard";
             // 
+            // panelRearLight
+            // 
+            panelRearLight.AccessibleRole = AccessibleRole.Grouping;
+            panelRearLight.AutoSize = true;
+            panelRearLight.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelRearLight.Controls.Add(tableLayoutRearLight);
+            panelRearLight.Controls.Add(panelRearLightTitle);
+            panelRearLight.Dock = DockStyle.Top;
+            panelRearLight.Location = new Point(11, 1540);
+            panelRearLight.Margin = new Padding(0);
+            panelRearLight.Name = "panelRearLight";
+            panelRearLight.Padding = new Padding(20, 20, 20, 0);
+            panelRearLight.Size = new Size(827, 112);
+            panelRearLight.TabIndex = 5;
+            panelRearLight.TabStop = true;
+            panelRearLight.Visible = false;
+            // 
+            // tableLayoutRearLight
+            // 
+            tableLayoutRearLight.AutoSize = true;
+            tableLayoutRearLight.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            tableLayoutRearLight.ColumnCount = 3;
+            tableLayoutRearLight.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
+            tableLayoutRearLight.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
+            tableLayoutRearLight.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
+            tableLayoutRearLight.Controls.Add(panelRearColor, 0, 0);
+            tableLayoutRearLight.Controls.Add(comboRearLight, 0, 0);
+            tableLayoutRearLight.Dock = DockStyle.Top;
+            tableLayoutRearLight.Location = new Point(20, 60);
+            tableLayoutRearLight.Margin = new Padding(8, 4, 8, 4);
+            tableLayoutRearLight.Name = "tableLayoutRearLight";
+            tableLayoutRearLight.RowCount = 1;
+            tableLayoutRearLight.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutRearLight.Size = new Size(787, 52);
+            tableLayoutRearLight.TabIndex = 39;
+            // 
+            // panelRearColor
+            // 
+            panelRearColor.AutoSize = true;
+            panelRearColor.Controls.Add(pictureRearColor);
+            panelRearColor.Controls.Add(buttonRearColor);
+            panelRearColor.Dock = DockStyle.Fill;
+            panelRearColor.Location = new Point(266, 4);
+            panelRearColor.Margin = new Padding(4);
+            panelRearColor.Name = "panelRearColor";
+            panelRearColor.Size = new Size(254, 44);
+            panelRearColor.TabIndex = 36;
+            // 
+            // pictureRearColor
+            // 
+            pictureRearColor.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            pictureRearColor.Location = new Point(218, 13);
+            pictureRearColor.Margin = new Padding(8);
+            pictureRearColor.Name = "pictureRearColor";
+            pictureRearColor.Size = new Size(20, 20);
+            pictureRearColor.TabIndex = 40;
+            pictureRearColor.TabStop = false;
+            // 
+            // buttonRearColor
+            // 
+            buttonRearColor.Activated = false;
+            buttonRearColor.AutoSize = true;
+            buttonRearColor.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            buttonRearColor.BackColor = SystemColors.ButtonHighlight;
+            buttonRearColor.BorderColor = Color.Transparent;
+            buttonRearColor.BorderRadius = 2;
+            buttonRearColor.Dock = DockStyle.Top;
+            buttonRearColor.FlatStyle = FlatStyle.Flat;
+            buttonRearColor.ForeColor = SystemColors.ControlText;
+            buttonRearColor.Location = new Point(0, 0);
+            buttonRearColor.Margin = new Padding(4);
+            buttonRearColor.MaximumSize = new Size(0, 48);
+            buttonRearColor.MinimumSize = new Size(0, 44);
+            buttonRearColor.Name = "buttonRearColor";
+            buttonRearColor.Secondary = false;
+            buttonRearColor.Size = new Size(254, 44);
+            buttonRearColor.TabIndex = 14;
+            buttonRearColor.Text = Properties.Strings.Color;
+            buttonRearColor.UseVisualStyleBackColor = false;
+            // 
+            // comboRearLight
+            // 
+            comboRearLight.BorderColor = Color.White;
+            comboRearLight.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboRearLight.Dock = DockStyle.Top;
+            comboRearLight.FlatStyle = FlatStyle.Flat;
+            comboRearLight.Font = new Font("Segoe UI", 9F);
+            comboRearLight.FormattingEnabled = true;
+            comboRearLight.ItemHeight = 32;
+            comboRearLight.Items.AddRange(new object[] { "Static", "Breathe", "Color Cycle", "Strobe" });
+            comboRearLight.Location = new Point(7, 7);
+            comboRearLight.Margin = new Padding(7, 7, 7, 4);
+            comboRearLight.Name = "comboRearLight";
+            comboRearLight.Size = new Size(248, 40);
+            comboRearLight.TabIndex = 13;
+            // 
+            // panelRearLightTitle
+            // 
+            panelRearLightTitle.Controls.Add(pictureRearLight);
+            panelRearLightTitle.Controls.Add(labelRearLight);
+            panelRearLightTitle.Dock = DockStyle.Top;
+            panelRearLightTitle.Location = new Point(20, 20);
+            panelRearLightTitle.Margin = new Padding(0);
+            panelRearLightTitle.Name = "panelRearLightTitle";
+            panelRearLightTitle.Padding = new Padding(0, 0, 5, 0);
+            panelRearLightTitle.Size = new Size(787, 40);
+            panelRearLightTitle.TabIndex = 40;
+            // 
+            // labelRearLight
+            // 
+            labelRearLight.AutoSize = true;
+            labelRearLight.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            labelRearLight.Location = new Point(43, 0);
+            labelRearLight.Margin = new Padding(4, 0, 4, 0);
+            labelRearLight.Name = "labelRearLight";
+            labelRearLight.Size = new Size(120, 32);
+            labelRearLight.TabIndex = 34;
+            labelRearLight.Text = "Rear Light";
+            // 
+            // pictureRearLight
+            // 
+            pictureRearLight.BackgroundImage = Properties.Resources.icons8_show_right_side_panel_48;
+            pictureRearLight.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureRearLight.Location = new Point(8, 0);
+            pictureRearLight.Margin = new Padding(4);
+            pictureRearLight.Name = "pictureRearLight";
+            pictureRearLight.Size = new Size(32, 32);
+            pictureRearLight.TabIndex = 35;
+            pictureRearLight.TabStop = false;
+            // 
             // panelStartup
             // 
             panelStartup.Controls.Add(labelCharge);
@@ -2040,6 +2185,7 @@ namespace GHelper
             Controls.Add(panelBattery);
             Controls.Add(panelPeripherals);
             Controls.Add(panelKeyboard);
+            Controls.Add(panelRearLight);
             Controls.Add(panelAlly);
             Controls.Add(panelMatrix);
             Controls.Add(panelGamma);
@@ -2101,6 +2247,16 @@ namespace GHelper
             panelKeyboardTitle.ResumeLayout(false);
             panelKeyboardTitle.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureKeyboard).EndInit();
+            panelRearLight.ResumeLayout(false);
+            panelRearLight.PerformLayout();
+            tableLayoutRearLight.ResumeLayout(false);
+            tableLayoutRearLight.PerformLayout();
+            panelRearColor.ResumeLayout(false);
+            panelRearColor.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureRearColor).EndInit();
+            panelRearLightTitle.ResumeLayout(false);
+            panelRearLightTitle.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureRearLight).EndInit();
             panelStartup.ResumeLayout(false);
             panelStartup.PerformLayout();
             panelPeripherals.ResumeLayout(false);
@@ -2233,5 +2389,14 @@ namespace GHelper
         private RButton buttonAmdOled;
         private RButton buttonArmoury;
         private RButton buttonHDRControl;
+        private Panel panelRearLight;
+        private TableLayoutPanel tableLayoutRearLight;
+        private Panel panelRearColor;
+        private PictureBox pictureRearColor;
+        private RButton buttonRearColor;
+        private RComboBox comboRearLight;
+        private Panel panelRearLightTitle;
+        private PictureBox pictureRearLight;
+        private Label labelRearLight;
     }
 }

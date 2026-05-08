@@ -22,6 +22,7 @@ namespace GHelper
     {
         ContextMenuStrip contextMenuStrip = new CustomContextMenu();
         ToolStripMenuItem menuEco, menuStandard, menuUltimate, menuOptimized;
+        DonateControl donateControl;
 
         public GPUModeControl gpuControl;
         public AllyControl allyControl;
@@ -32,6 +33,7 @@ namespace GHelper
         public AniMatrixControl matrixControl;
 
         public static System.Timers.Timer sensorTimer = default!;
+        private static readonly bool sensorsAlways = AppConfig.Is("sensors_always");
 
         public Matrix? matrixForm;
         public Fans? fansForm;
@@ -82,7 +84,7 @@ namespace GHelper
             labelPerf.Text = Properties.Strings.PerformanceMode;
             labelGPU.Text = Properties.Strings.GPUMode;
             labelSreen.Text = Properties.Strings.LaptopScreen;
-            labelKeyboard.Text = Properties.Strings.LaptopKeyboard;
+            UpdateKeyboardLabel();
             labelMatrix.Text = Properties.Strings.AnimeMatrix;
             labelBatteryTitle.Text = Properties.Strings.BatteryChargeLimit;
 
@@ -243,7 +245,7 @@ namespace GHelper
 
             sensorTimer = new System.Timers.Timer(AppConfig.Get("sensor_timer", 1000));
             sensorTimer.Elapsed += OnTimedEvent;
-            sensorTimer.Enabled = false;
+            sensorTimer.Enabled = sensorsAlways;
 
             labelCharge.MouseEnter += PanelBattery_MouseEnter;
             labelCharge.MouseLeave += PanelBattery_MouseLeave;
@@ -282,15 +284,8 @@ namespace GHelper
             labelVisual.Click += LabelVisual_Click;
             labelCharge.Click += LabelCharge_Click;
 
-            buttonDonate.Click += ButtonDonate_Click;
-
-            int click = AppConfig.Get("donate_click");
-            int startCount = AppConfig.Get("start_count");
-            if (startCount >= ((click < 10) ? 10 : click + 50))
-            {
-                buttonDonate.BorderColor = colorTurbo;
-                buttonDonate.Badge = Math.Clamp((startCount - click) / 50, 1, 9);
-            }
+            donateControl = new DonateControl(this, buttonDonate);
+            donateControl.Init();
 
             labelBacklight.ForeColor = colorStandard;
             labelBacklight.Click += LabelBacklight_Click;
@@ -322,13 +317,6 @@ namespace GHelper
         {
             KeyboardHook.KeyKeyPress(Keys.LWin, Keys.A);
             activateCheck = true;
-        }
-
-        private void ButtonDonate_Click(object? sender, EventArgs e)
-        {
-            AppConfig.Set("donate_click", AppConfig.Get("start_count"));
-            buttonDonate.Badge = 0;
-            Process.Start(new ProcessStartInfo("https://g-helper.com/support") { UseShellExecute = true });
         }
 
         private void LabelBacklight_Click(object? sender, EventArgs e)
@@ -702,7 +690,7 @@ namespace GHelper
 
         private void SettingsForm_VisibleChanged(object? sender, EventArgs e)
         {
-            sensorTimer.Enabled = this.Visible;
+            sensorTimer.Enabled = this.Visible || sensorsAlways;
             if (this.Visible)
             {
                 ScreenControl.InitScreen();
@@ -744,6 +732,13 @@ namespace GHelper
 
         protected override void WndProc(ref Message m)
         {
+
+            if (m.Msg == NativeMethods.WM_POWERBROADCAST && m.WParam == (IntPtr)NativeMethods.PBT_APMSUSPEND)
+            {
+                Logger.WriteLine("System Suspend");
+                Program.modeControl.SleepReset();
+                m.Result = (IntPtr)1;
+            }
 
             if (m.Msg == NativeMethods.WM_POWERBROADCAST && m.WParam == (IntPtr)NativeMethods.PBT_POWERSETTINGCHANGE)
             {
@@ -816,7 +811,7 @@ namespace GHelper
             contextMenuStrip.ShowCheckMargin = true;
             contextMenuStrip.ImageScalingSize = new Size(16, 16);
             contextMenuStrip.ShowImageMargin = false;
-            Padding padding = new Padding(15, 5, 5, 5);
+            Padding padding = new Padding(5, 5, 5, 5);
 
             var title = new ToolStripMenuItem(Properties.Strings.PerformanceMode);
             title.Margin = padding;
@@ -865,6 +860,18 @@ namespace GHelper
                 contextMenuStrip.Items.Add("-");
             }
 
+            var bwIcon = new ToolStripMenuItem(Properties.Strings.BWTrayIcon);
+            bwIcon.Margin = padding;
+            bwIcon.Checked = AppConfig.IsBWIcon();
+            bwIcon.Click += (sender, args) =>
+            {
+                bwIcon.Checked = !bwIcon.Checked;
+                AppConfig.Set("bw_icon", bwIcon.Checked ? 1 : 0);
+                VisualiseIcon();
+            };
+            contextMenuStrip.Items.Add(bwIcon);
+
+            contextMenuStrip.Items.Add("-");
 
             var quit = new ToolStripMenuItem(Properties.Strings.Quit);
             quit.Click += ButtonQuit_Click;
@@ -872,7 +879,7 @@ namespace GHelper
             contextMenuStrip.Items.Add(quit);
 
             //contextMenuStrip.ShowCheckMargin = true;
-            contextMenuStrip.RenderMode = ToolStripRenderMode.System;
+            contextMenuStrip.Renderer = new CustomMenuRenderer();
 
             InitContextMenuTheme();
 
@@ -888,6 +895,8 @@ namespace GHelper
                 contextMenuStrip.BackColor = this.BackColor;
                 contextMenuStrip.ForeColor = this.ForeColor;
             }
+
+            donateControl?.ApplyTheme();
         }
 
         private void ButtonXGM_Click(object? sender, EventArgs e)
@@ -988,7 +997,7 @@ namespace GHelper
 
         private void ButtonScreenAuto_Click(object? sender, EventArgs e)
         {
-            AppConfig.Set("screen_auto", 1);
+            ScreenControl.SetAutoRefresh(1);
             ScreenControl.AutoScreen();
         }
 
@@ -1139,11 +1148,11 @@ namespace GHelper
             FansToggle();
         }
 
-        private void SetColorPicker(string colorField = "aura_color")
+        private void SetColorPicker(string colorField = "aura_color", PictureBox? preview = null)
         {
             ColorDialog colorDlg = new ColorDialog();
             colorDlg.AllowFullOpen = true;
-            colorDlg.Color = pictureColor.BackColor;
+            colorDlg.Color = (preview ?? pictureColor).BackColor;
 
             try
             {
@@ -1164,6 +1173,44 @@ namespace GHelper
             SetColorPicker("aura_color");
         }
 
+        private void ButtonRearColor_Click(object? sender, EventArgs e)
+        {
+            SetColorPicker("rear_color", pictureRearColor);
+        }
+
+        private void PictureRearColor_Click(object? sender, EventArgs e)
+        {
+            SetColorPicker("rear_color", pictureRearColor);
+        }
+
+        private void ComboRearLight_SelectedValueChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("rear_mode", (int)comboRearLight.SelectedValue);
+            SetAura();
+        }
+
+        public void InitRearLight()
+        {
+            if (!AppConfig.HasRearLight())
+                return;
+
+            Aura.RearMode = (AuraMode)AppConfig.Get("rear_mode");
+            Aura.SetRearColor(AppConfig.Get("rear_color"));
+
+            comboRearLight.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboRearLight.DataSource = new BindingSource(Aura.GetRearModes(), null);
+            comboRearLight.DisplayMember = "Value";
+            comboRearLight.ValueMember = "Key";
+            comboRearLight.SelectedValue = Aura.RearMode;
+            comboRearLight.SelectedValueChanged += ComboRearLight_SelectedValueChanged;
+
+            buttonRearColor.Click += ButtonRearColor_Click;
+            pictureRearColor.Click += PictureRearColor_Click;
+
+            pictureRearColor.BackColor = Aura.RearColor;
+            panelRearLight.Visible = true;
+        }
+
         public void InitAura()
         {
             Aura.Mode = (AuraMode)AppConfig.Get("aura_mode");
@@ -1172,6 +1219,9 @@ namespace GHelper
             Aura.SetColor2(AppConfig.Get("aura_color2"));
 
             comboKeyboard.DropDownStyle = ComboBoxStyle.DropDownList;
+            if (!Aura.IsBacklightDetected && !AppConfig.Is("skip_aura"))
+                Aura.Init();
+
             comboKeyboard.DataSource = new BindingSource(Aura.GetModes(), null);
             comboKeyboard.DisplayMember = "Value";
             comboKeyboard.ValueMember = "Key";
@@ -1179,7 +1229,7 @@ namespace GHelper
             comboKeyboard.SelectedValueChanged += ComboKeyboard_SelectedValueChanged;
 
 
-            if (AppConfig.IsSingleColor())
+            if (Aura.isWhite)
             {
                 panelColor.Visible = false;
             }
@@ -1191,6 +1241,7 @@ namespace GHelper
 
             VisualiseAura();
 
+            InitRearLight();
         }
 
         public void SetAura()
@@ -1207,6 +1258,8 @@ namespace GHelper
             pictureColor.BackColor = Aura.Color1;
             pictureColor2.BackColor = Aura.Color2;
             pictureColor2.Visible = Aura.HasSecondColor();
+
+            if (panelRearLight.Visible) pictureRearColor.BackColor = Aura.RearColor;
 
             bool dynamic = AppConfig.IsDynamicLighting() && DynamicLightingHelper.IsEnabled() && !AppConfig.IsDynamicLightingOnly();
 
@@ -1311,13 +1364,13 @@ namespace GHelper
 
         private void Button120Hz_Click(object? sender, EventArgs e)
         {
-            AppConfig.Set("screen_auto", 0);
+            ScreenControl.SetAutoRefresh(0);
             ScreenControl.SetScreen(ScreenControl.MAX_REFRESH, 1);
         }
 
         private void Button60Hz_Click(object? sender, EventArgs e)
         {
-            AppConfig.Set("screen_auto", 0);
+            ScreenControl.SetAutoRefresh(0);
             ScreenControl.SetScreen(ScreenControl.MIN_RATE, 0);
         }
 
@@ -1364,10 +1417,12 @@ namespace GHelper
             {
                 button120Hz.Text = maxFrequency.ToString() + "Hz" + (overdriveSetting ? " + OD" : "");
                 panelScreen.Visible = true;
+                tableScreen.Visible = true;
             }
             else if (maxFrequency > 0)
             {
-                panelScreen.Visible = false;
+                tableScreen.Visible = false;
+                panelScreen.Visible = AppConfig.NoGpu();
             }
 
             if (fhd >= 0)
@@ -1541,11 +1596,11 @@ namespace GHelper
             string battery = "";
             string charge = "";
 
-            HardwareControl.ReadSensors();
+            await Task.Run(() => HardwareControl.ReadSensors());
             Task.Run((Action)PeripheralsProvider.RefreshBatteryForAllDevices);
 
             if (HardwareControl.cpuTemp > 0)
-                cpuTemp = ": " + Math.Round((decimal)HardwareControl.cpuTemp).ToString() + "°C";
+                cpuTemp = ": " + TempHelper.FormatTemp((double)HardwareControl.cpuTemp);
 
             if (HardwareControl.batteryCapacity > 0)
             {
@@ -1560,7 +1615,7 @@ namespace GHelper
 
             if (HardwareControl.gpuTemp > 0)
             {
-                gpuTemp = $": {HardwareControl.gpuTemp}°C";
+                gpuTemp = ": " + TempHelper.FormatTemp((double)HardwareControl.gpuTemp);
             }
 
             string trayTip = "CPU" + cpuTemp + " " + HardwareControl.cpuFan;
@@ -1588,12 +1643,11 @@ namespace GHelper
 
 
             if (Program.trayIcon is not null) Program.trayIcon.Text = trayTip;
-
         }
 
         public void LabelFansResult(string text)
         {
-            if (fansForm != null && fansForm.Text != "")
+            if (fansForm != null && !fansForm.IsDisposed && fansForm.Text != "")
                 fansForm.LabelFansResult(text);
         }
 
@@ -1840,18 +1894,16 @@ namespace GHelper
             int GPUMode = AppConfig.Get("gpu_mode");
             bool isDark = CheckSystemDarkModeStatus();
 
-            switch (GPUMode)
+            Icon newIcon = GPUMode switch
             {
-                case AsusACPI.GPUModeEco:
-                    Program.trayIcon.Icon = AppConfig.IsBWIcon() ? (!isDark ? Properties.Resources.dark_eco : Properties.Resources.light_eco) : Properties.Resources.eco;
-                    break;
-                case AsusACPI.GPUModeUltimate:
-                    Program.trayIcon.Icon = AppConfig.IsBWIcon() ? (!isDark ? Properties.Resources.dark_standard : Properties.Resources.light_standard) : Properties.Resources.ultimate;
-                    break;
-                default:
-                    Program.trayIcon.Icon = AppConfig.IsBWIcon() ? (!isDark ? Properties.Resources.dark_standard : Properties.Resources.light_standard) : Properties.Resources.standard;
-                    break;
-            }
+                AsusACPI.GPUModeEco => AppConfig.IsBWIcon() ? (!isDark ? Properties.Resources.dark_eco : Properties.Resources.light_eco) : Properties.Resources.eco,
+                AsusACPI.GPUModeUltimate => AppConfig.IsBWIcon() ? (!isDark ? Properties.Resources.dark_standard : Properties.Resources.light_standard) : Properties.Resources.ultimate,
+                _ => AppConfig.IsBWIcon() ? (!isDark ? Properties.Resources.dark_standard : Properties.Resources.light_standard) : Properties.Resources.standard,
+            };
+
+            Icon? oldIcon = Program.trayIcon.Icon;
+            Program.trayIcon.Icon = newIcon;
+            oldIcon?.Dispose();
         }
 
         private void ButtonSilent_Click(object? sender, EventArgs e)
@@ -1910,6 +1962,11 @@ namespace GHelper
         }
 
 
+        public void UpdateKeyboardLabel()
+        {
+            labelKeyboard.Text = Properties.Strings.LaptopKeyboard + (PeripheralsProvider.IsAuraSync ? " +" : "");
+        }
+
         public void VisualizePeripherals()
         {
             if (!PeripheralsProvider.IsAnyPeripheralConnect())
@@ -1928,40 +1985,49 @@ namespace GHelper
                 IPeripheral m = lp.ElementAt(i);
                 Button b = buttons[i];
 
-                if (m.IsDeviceReady)
+                string id = m.GetDisplayName();
+                bool ready = m.IsDeviceReady;
+                bool hasBat = m.HasBattery();
+                bool charging = ready && hasBat && m.Charging;
+                int level = (ready && hasBat) ? Math.Min(5, (m.Battery + 10) / 20) : -1;
+                var state = (id, ready, charging, level, b.ForeColor.ToArgb());
+
+                if (b.Tag is ValueTuple<string, bool, bool, int, int> prev && prev.Equals(state) && b.Visible)
+                    continue;
+
+                b.Text = id;
+
+                Image? baseIcon = m.DeviceType() switch
                 {
-                    if (m.HasBattery())
+                    PeripheralType.Mouse => Properties.Resources.icons8_maus_48,
+                    PeripheralType.Keyboard => Properties.Resources.icons8_keyboard_32,
+                    _ => null,
+                };
+
+                if (baseIcon is not null)
+                {
+                    int iw = baseIcon.Width;
+                    int ih = baseIcon.Height;
+                    Image composed = ControlHelper.TintImage(baseIcon, b.ForeColor);
+                    if (!ready)
                     {
-                        b.Text = m.GetDisplayName() + "\n" + m.Battery + "%"
-                                            + (m.Charging ? "(" + Properties.Strings.Charging + ")" : "");
+                        composed = ControlHelper.OverlayBadge(composed, Properties.Resources.icons8_cancel_48, RForm.colorTurbo, iconWidth: iw, iconHeight: ih);
                     }
-                    else
+                    else if (hasBat)
                     {
-                        b.Text = m.GetDisplayName();
+                        if (charging)
+                            composed = ControlHelper.OverlayBadge(composed, Properties.Resources.icons8_flash_48, RForm.colorEco, iconWidth: iw, iconHeight: ih);
+
+                        Color barColor = level <= 1 ? colorTurbo
+                                       : level <= 3 ? colorStandard
+                                       : colorEco;
+                        composed = ControlHelper.OverlayChargeBars(composed, level, 5, barColor, iconWidth: iw, iconHeight: ih);
                     }
 
-                }
-                else
-                {
-                    //Mouse is either not connected or in standby
-                    b.Text = m.GetDisplayName() + "\n(" + Properties.Strings.NotConnected + ")";
+b.Image = ControlHelper.ResizeImage(composed, ControlHelper.Scale);
                 }
 
-                switch (m.DeviceType())
-                {
-                    case PeripheralType.Mouse:
-                        b.Image = ControlHelper.ResizeImage(ControlHelper.TintImage(Properties.Resources.icons8_maus_48, b.ForeColor), ControlHelper.Scale);
-                        break;
-
-                    case PeripheralType.Keyboard:
-                        b.Image = ControlHelper.ResizeImage(ControlHelper.TintImage(Properties.Resources.icons8_keyboard_32, b.ForeColor), ControlHelper.Scale);
-                        break;
-
-                    case PeripheralType.Headset:
-                        b.Image = ControlHelper.ResizeImage(ControlHelper.TintImage(Properties.Resources.icons8_headset_48, b.ForeColor), ControlHelper.Scale);
-                        break;
-                }
-
+                b.Tag = state;
                 b.Visible = true;
             }
 

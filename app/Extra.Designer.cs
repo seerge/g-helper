@@ -44,26 +44,26 @@ namespace GHelper
             tableBindings = new TableLayoutPanel();
             labelFNE = new Label();
             comboFNE = new RComboBox();
-            textFNE = new TextBox();
+            textFNE = new RTextBox();
             labelFNV = new Label();
             comboFNV = new RComboBox();
-            textFNV = new TextBox();
+            textFNV = new RTextBox();
             labelFNC = new Label();
             comboFNC = new RComboBox();
-            textFNC = new TextBox();
+            textFNC = new RTextBox();
             labelFNF4 = new Label();
             comboFNF4 = new RComboBox();
-            textFNF4 = new TextBox();
+            textFNF4 = new RTextBox();
             comboM4 = new RComboBox();
-            textM4 = new TextBox();
+            textM4 = new RTextBox();
             labelM4 = new Label();
             comboM3 = new RComboBox();
-            textM3 = new TextBox();
+            textM3 = new RTextBox();
             labelM3 = new Label();
-            textM2 = new TextBox();
+            textM2 = new RTextBox();
             labelM2 = new Label();
             comboM2 = new RComboBox();
-            textM1 = new TextBox();
+            textM1 = new RTextBox();
             comboM1 = new RComboBox();
             labelM1 = new Label();
             tableKeys = new TableLayoutPanel();
@@ -112,16 +112,15 @@ namespace GHelper
             labelSettings = new Label();
             panelSettings = new Panel();
             checkAutoToggleClamshellMode = new CheckBox();
-            checkBWIcon = new CheckBox();
             checkTopmost = new CheckBox();
             checkNoOverdrive = new CheckBox();
             checkBootSound = new CheckBox();
+            checkKeystoneSound = new CheckBox();
             checkUSBC = new CheckBox();
             checkGpuApps = new CheckBox();
-            checkGPUFix = new CheckBox();
             checkNVPlatform = new CheckBox();
             checkStatusLed = new CheckBox();
-            checkPerKeyRGB = new CheckBox();
+            checkAspm = new CheckBox();
             panelPower = new Panel();
             numericHibernateAfter = new NumericUpDownWithUnit();
             labelHibernateAfter = new Label();
@@ -138,8 +137,8 @@ namespace GHelper
             pictureCores = new PictureBox();
             label1 = new Label();
             panelACPI = new Panel();
-            textACPIParam = new TextBox();
-            textACPICommand = new TextBox();
+            textACPIParam = new RTextBox();
+            textACPICommand = new RTextBox();
             buttonACPISend = new RButton();
             pictureDebug = new PictureBox();
             labelACPITitle = new Label();
@@ -1195,16 +1194,15 @@ namespace GHelper
             panelSettings.AutoSize = true;
             panelSettings.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelSettings.Controls.Add(checkAutoToggleClamshellMode);
-            panelSettings.Controls.Add(checkBWIcon);
             panelSettings.Controls.Add(checkTopmost);
             panelSettings.Controls.Add(checkNoOverdrive);
+            panelSettings.Controls.Add(checkKeystoneSound);
             panelSettings.Controls.Add(checkBootSound);
             panelSettings.Controls.Add(checkUSBC);
             panelSettings.Controls.Add(checkGpuApps);
-            panelSettings.Controls.Add(checkGPUFix);
             panelSettings.Controls.Add(checkNVPlatform);
             panelSettings.Controls.Add(checkStatusLed);
-            panelSettings.Controls.Add(checkPerKeyRGB);
+            panelSettings.Controls.Add(checkAspm);
             panelSettings.Dock = DockStyle.Top;
             panelSettings.Location = new Point(15, 1252);
             panelSettings.Name = "panelSettings";
@@ -1223,20 +1221,7 @@ namespace GHelper
             checkAutoToggleClamshellMode.TabIndex = 8;
             checkAutoToggleClamshellMode.Text = "Auto Toggle Clamshell Mode";
             checkAutoToggleClamshellMode.UseVisualStyleBackColor = true;
-            // 
-            // checkBWIcon
-            // 
-            checkBWIcon.AutoSize = true;
-            checkBWIcon.Dock = DockStyle.Top;
-            checkBWIcon.Location = new Point(21, 383);
-            checkBWIcon.Margin = new Padding(5, 3, 5, 3);
-            checkBWIcon.Name = "checkBWIcon";
-            checkBWIcon.Padding = new Padding(3);
-            checkBWIcon.Size = new Size(917, 42);
-            checkBWIcon.TabIndex = 11;
-            checkBWIcon.Text = "Black and white tray icon";
-            checkBWIcon.UseVisualStyleBackColor = true;
-            // 
+            //
             // checkTopmost
             // 
             checkTopmost.AutoSize = true;
@@ -1275,6 +1260,20 @@ namespace GHelper
             checkBootSound.TabIndex = 10;
             checkBootSound.Text = "Boot Sound";
             checkBootSound.UseVisualStyleBackColor = true;
+            //
+            // checkKeystoneSound
+            //
+            checkKeystoneSound.AutoSize = true;
+            checkKeystoneSound.Dock = DockStyle.Top;
+            checkKeystoneSound.Location = new Point(21, 299);
+            checkKeystoneSound.Margin = new Padding(5, 3, 5, 3);
+            checkKeystoneSound.Name = "checkKeystoneSound";
+            checkKeystoneSound.Padding = new Padding(3);
+            checkKeystoneSound.Size = new Size(917, 42);
+            checkKeystoneSound.TabIndex = 16;
+            checkKeystoneSound.Text = "Keystone Sound";
+            checkKeystoneSound.UseVisualStyleBackColor = true;
+            checkKeystoneSound.Visible = false;
             // 
             // checkUSBC
             // 
@@ -1301,20 +1300,7 @@ namespace GHelper
             checkGpuApps.TabIndex = 2;
             checkGpuApps.Text = "Stop all apps using GPU when switching to Eco";
             checkGpuApps.UseVisualStyleBackColor = true;
-            // 
-            // checkGPUFix
-            // 
-            checkGPUFix.AutoSize = true;
-            checkGPUFix.Dock = DockStyle.Top;
-            checkGPUFix.Location = new Point(21, 131);
-            checkGPUFix.Margin = new Padding(5, 3, 5, 3);
-            checkGPUFix.Name = "checkGPUFix";
-            checkGPUFix.Padding = new Padding(3);
-            checkGPUFix.Size = new Size(917, 42);
-            checkGPUFix.TabIndex = 9;
-            checkGPUFix.Text = "Enable GPU on shutdown (prevents issue with Eco mode)";
-            checkGPUFix.UseVisualStyleBackColor = true;
-            // 
+            //
             // checkNVPlatform
             // 
             checkNVPlatform.AutoSize = true;
@@ -1341,20 +1327,20 @@ namespace GHelper
             checkStatusLed.Text = "LED Status Indicators";
             checkStatusLed.UseVisualStyleBackColor = true;
             checkStatusLed.Visible = false;
-            // 
-            // checkPerKeyRGB
-            // 
-            checkPerKeyRGB.AutoSize = true;
-            checkPerKeyRGB.Dock = DockStyle.Top;
-            checkPerKeyRGB.Location = new Point(21, 5);
-            checkPerKeyRGB.Margin = new Padding(5, 3, 5, 3);
-            checkPerKeyRGB.Name = "checkPerKeyRGB";
-            checkPerKeyRGB.Padding = new Padding(3);
-            checkPerKeyRGB.Size = new Size(917, 42);
-            checkPerKeyRGB.TabIndex = 13;
-            checkPerKeyRGB.Text = "Per-Key RGB Keyboard";
-            checkPerKeyRGB.UseVisualStyleBackColor = true;
-            checkPerKeyRGB.Visible = false;
+            //
+            // checkAspm
+            //
+            checkAspm.AutoSize = true;
+            checkAspm.Dock = DockStyle.Top;
+            checkAspm.Location = new Point(21, 5);
+            checkAspm.Margin = new Padding(5, 3, 5, 3);
+            checkAspm.Name = "checkAspm";
+            checkAspm.Padding = new Padding(3);
+            checkAspm.Size = new Size(917, 42);
+            checkAspm.TabIndex = 13;
+            checkAspm.Text = "Disable PCIe Link State Management (plugged in)";
+            checkAspm.UseVisualStyleBackColor = true;
+            checkAspm.Visible = true;
             // 
             // panelPower
             // 
@@ -1750,25 +1736,25 @@ namespace GHelper
         private TableLayoutPanel tableBindings;
         private Label labelFNC;
         private Label labelFNV;
-        private TextBox textM2;
-        private TextBox textM1;
+        private RTextBox textM2;
+        private RTextBox textM1;
         private RComboBox comboM1;
         private Label labelM1;
         private RComboBox comboM4;
         private RComboBox comboM3;
-        private TextBox textM4;
-        private TextBox textM3;
+        private RTextBox textM4;
+        private RTextBox textM3;
         private Label labelM4;
         private Label labelM3;
         private Label labelM2;
         private RComboBox comboM2;
         private Label labelFNF4;
         private RComboBox comboFNF4;
-        private TextBox textFNF4;
+        private RTextBox textFNF4;
         private RComboBox comboFNC;
         private RComboBox comboFNV;
-        private TextBox textFNC;
-        private TextBox textFNV;
+        private RTextBox textFNC;
+        private RTextBox textFNV;
         private PictureBox pictureHelp;
         private TableLayoutPanel tableKeys;
         private PictureBox pictureBindings;
@@ -1820,15 +1806,15 @@ namespace GHelper
         private CheckBox checkAutoToggleClamshellMode;
         private Label labelFNE;
         private RComboBox comboFNE;
-        private TextBox textFNE;
+        private RTextBox textFNE;
         private Slider slider1;
         private Panel panelPower;
         private PictureBox pictureHibernate;
         private Label labelHibernateAfter;
         private NumericUpDownWithUnit numericHibernateAfter;
-        private CheckBox checkGPUFix;
         private ToolTip toolTip;
         private CheckBox checkBootSound;
+        private CheckBox checkKeystoneSound;
         private Panel panelAPU;
         private PictureBox pictureAPUMem;
         private Label labelAPUMem;
@@ -1841,14 +1827,13 @@ namespace GHelper
         private RComboBox comboCoresP;
         private RButton buttonCores;
         private Panel panelACPI;
-        private TextBox textACPIParam;
-        private TextBox textACPICommand;
+        private RTextBox textACPIParam;
+        private RTextBox textACPICommand;
         private RButton buttonACPISend;
         private PictureBox pictureDebug;
         private Label labelACPITitle;
-        private CheckBox checkBWIcon;
         private CheckBox checkStatusLed;
-        private CheckBox checkPerKeyRGB;
+        private CheckBox checkAspm;
         private CheckBox checkBatteryLogo;
         private CheckBox checkBattery;
         private CheckBox checkBatteryLid;

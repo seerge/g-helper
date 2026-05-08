@@ -66,6 +66,8 @@ public class AsusACPI
     public const uint BatteryDischarge = 0x0012005A;
 
     public const uint StatusMode = 0x00090031;
+    public const uint PowerSavingMode = 0x00090032;
+
     public const uint PerformanceMode = 0x00120075; // Performance modes
     public const uint VivoBookMode = 0x00110019; // Vivobook performance modes
 
@@ -96,6 +98,7 @@ public class AsusACPI
     public const uint DevsGPUFanCurve = 0x00110025;
     public const uint DevsMidFanCurve = 0x00110032;
 
+    public const uint FanHysteresis = 0x00110034;
     public const int Temp_CPU = 0x00120094;
     public const int Temp_GPU = 0x00120097;
 
@@ -183,7 +186,7 @@ public class AsusACPI
     public const int ECoreMax = 16;
 
     private bool? _allAMD = null;
-    private bool? _overdrive = null;
+    private readonly Dictionary<uint, bool> _supportCache = new();
 
     public static uint GPUEco => AppConfig.IsVivoZenPro() ? GPUEcoVivo : GPUEcoROG;
     public static uint GPUMux => AppConfig.IsVivoZenPro() ? GPUMuxVivo : GPUMuxROG;
@@ -330,7 +333,7 @@ public class AsusACPI
             MaxGPUBoost = 20;
         }
 
-        if (AppConfig.IsAMDLight())
+        if (AppConfig.IsCPULight())
         {
             MaxTotal = 90;
         }
@@ -340,7 +343,7 @@ public class AsusACPI
             MaxTotal = 93;
         }
 
-        if (AppConfig.IsFA401EA())
+        if (AppConfig.IsOnlyAIMAX())
         {
             MaxTotal = 115;
             MaxCPU = 115;
@@ -518,6 +521,10 @@ public class AsusACPI
         return fan;
     }
 
+    public bool IsMidFanSupported()
+    {
+        return IsSupported(Mid_Fan);
+    }
 
     public int SetFanRange(AsusFan device, byte[] curve)
     {
@@ -617,6 +624,41 @@ public class AsusACPI
         return curve.All(singleByte => singleByte == 0);
     }
 
+    public (int up, int down) GetFanHysteresis()
+    {
+        int value = DeviceGet(FanHysteresis);
+        if (value < 0)
+        {
+            //Logger.WriteLine($"FanHysteresis Read: not supported ({value})");
+            return (-1, -1);
+        }
+        int up = value & 0xFF;
+        int down = (value >> 8) & 0xFF;
+        Logger.WriteLine($"FanHysteresis Read: up={up} down={down} (raw=0x{value:X4})");
+        return (up, down);
+    }
+
+    public int SetFanHysteresis(int up, int down)
+    {
+        int result = -1;
+        int value = (down << 8) | up;
+
+        if (IsSupported(FanHysteresis))
+        {
+            byte[] payload = new byte[16];
+            int slots = AppConfig.Is("mid_fan") ? 3 : 2;
+            for (int i = 0; i < slots; i++)
+            {
+                payload[i * 4]     = (byte)up;
+                payload[i * 4 + 1] = (byte)down;
+            }
+            Logger.WriteLine($"FanHysteresis Write: up={up} down={down} (per-fan=0x{value:X4}, slots={slots})");
+            result = DeviceSet(FanHysteresis, payload, "FanHysteresis");
+        }
+
+        return result;
+    }
+
     public static byte[] FixFanCurve(byte[] curve)
     {
         if (curve.Length != 16) throw new Exception("Incorrect curve");
@@ -676,19 +718,28 @@ public class AsusACPI
 
     public bool IsAllAmdPPT()
     {
-        if (_allAMD is null) _allAMD = DeviceGet(PPT_CPUB0) >= 0 && DeviceGet(PPT_GPUC0) < 0 && !AppConfig.IsAMDiGPU();
+        if (_allAMD is null) _allAMD = IsSupported(PPT_CPUB0) && !IsSupported(PPT_GPUC0) && !AppConfig.IsAMDiGPU();
         return (bool)_allAMD;
     }
 
     public bool IsOverdriveSupported()
     {
-        if (_overdrive is null) _overdrive = DeviceGet(ScreenOverdrive) >= 0;
-        return (bool)_overdrive;
+        return IsSupported(ScreenOverdrive);
+    }
+
+    public bool IsSupported(uint DeviceID)
+    {
+        if (!_supportCache.TryGetValue(DeviceID, out bool supported))
+        {
+            supported = DeviceGet(DeviceID) >= 0;
+            _supportCache[DeviceID] = supported;
+        }
+        return supported;
     }
 
     public bool IsNVidiaGPU()
     {
-        return (!IsAllAmdPPT() && Program.acpi.DeviceGet(GPUEco) >= 0 && !AppConfig.IsAlly());
+        return (!IsAllAmdPPT() && IsSupported(GPUEco) && !AppConfig.IsAlly());
     }
 
     public void SetAPUMem(int memory = 4)
@@ -858,14 +909,16 @@ public class AsusACPI
         state = state | 0x01 << 8;
 
         DeviceSet(TUF_KB_STATE, state, "TUF_KB");
-        if (AppConfig.IsVivoZenPro() && DeviceGet(KBD_BACKLIGHT_OOBE) >= 0) DeviceSet(KBD_BACKLIGHT_OOBE, 1, "VIVO OOBE");
+        if (AppConfig.IsVivoZenPro() && IsSupported(KBD_BACKLIGHT_OOBE)) DeviceSet(KBD_BACKLIGHT_OOBE, 1, "VIVO OOBE");
     }
+
+    private ManagementEventWatcher? watcher;
 
     public void SubscribeToEvents(Action<object, EventArrivedEventArgs> EventHandler)
     {
         try
         {
-            ManagementEventWatcher watcher = new ManagementEventWatcher();
+            watcher = new ManagementEventWatcher();
             watcher.EventArrived += new EventArrivedEventHandler(EventHandler);
             watcher.Scope = new ManagementScope("root\\wmi");
             watcher.Query = new WqlEventQuery("SELECT * FROM AsusAtkWmiEvent");

@@ -797,7 +797,16 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("Donate", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Thank You.
+        /// </summary>
+        internal static string ThankYou {
+            get {
+                return ResourceManager.GetString("ThankYou", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Download Color Profiles.
         /// </summary>
@@ -840,15 +849,6 @@ namespace GHelper.Properties {
         internal static string EcoMode {
             get {
                 return ResourceManager.GetString("EcoMode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Enable GPU on shutdown (prevents issue with Eco mode).
-        /// </summary>
-        internal static string EnableGPUOnShutdown {
-            get {
-                return ResourceManager.GetString("EnableGPUOnShutdown", resourceCulture);
             }
         }
         
@@ -1024,7 +1024,16 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("FnLockOn", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Win-Lock Toggle.
+        /// </summary>
+        internal static string WinLockToggle {
+            get {
+                return ResourceManager.GetString("WinLockToggle", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Dynamic Boost.
         /// </summary>
@@ -1546,7 +1555,16 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("MouseSynchronize", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Sync with laptop.
+        /// </summary>
+        internal static string MouseSyncWithAura {
+            get {
+                return ResourceManager.GetString("MouseSyncWithAura", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Zone Mode.
         /// </summary>
@@ -2295,7 +2313,7 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Visual Modes are not available when HDR is active.
+        ///   Looks up a localized string similar to Visual Modes are not available when HDR or ACM is active.
         /// </summary>
         internal static string VisualModesHDR {
             get {

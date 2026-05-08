@@ -8,7 +8,6 @@ using GHelper.Mode;
 using GHelper.Peripherals;
 using GHelper.USB;
 using Microsoft.Win32;
-using Ryzen;
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
@@ -23,24 +22,22 @@ namespace GHelper
         public static NotifyIcon trayIcon;
         public static AsusACPI acpi;
 
-        public static SettingsForm settingsForm = new SettingsForm();
+        public static SettingsForm settingsForm;
 
-        public static ModeControl modeControl = new ModeControl();
-        public static GPUModeControl gpuControl = new GPUModeControl(settingsForm);
-        public static AllyControl allyControl = new AllyControl(settingsForm);
-        public static ClamshellModeControl clamshellControl = new ClamshellModeControl();
+        public static ModeControl modeControl;
+        public static GPUModeControl gpuControl;
+        public static AllyControl allyControl;
+        public static ClamshellModeControl clamshellControl;
 
-        public static ToastForm toast = new ToastForm();
+        public static ToastForm toast;
 
-        public static IntPtr unRegPowerNotify, unRegPowerNotifyLid;
+        public static IntPtr unRegPowerNotify, unRegPowerNotifyLid, unRegSuspendResume;
         public static int WM_TASKBARCREATED = 0;
 
         private static long lastAuto;
         private static long lastTheme;
 
         public static InputDispatcher? inputDispatcher;
-
-        private static PowerLineStatus isPlugged = SystemInformation.PowerStatus.PowerLineStatus;
 
         // The main entry point for the application
         public static void Main(string[] args)
@@ -73,21 +70,35 @@ namespace GHelper
             }
 
             string language = AppConfig.GetString("language");
-
-            if (language != null && language.Length > 0)
-                Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(language);
-            else
+            try
             {
-                var culture = CultureInfo.CurrentUICulture;
-                if (culture.ToString() == "kr") culture = CultureInfo.GetCultureInfo("ko");
-                Thread.CurrentThread.CurrentUICulture = culture;
+                if (language != null && language.Length > 0)
+                    Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(language);
+                else
+                {
+                    var culture = CultureInfo.CurrentUICulture;
+                    if (culture.ToString() == "kr") culture = CultureInfo.GetCultureInfo("ko");
+                    Thread.CurrentThread.CurrentUICulture = culture;
+                }
+            } catch
+            {
+                Logger.WriteLine("Unknown Language: " + language);
             }
+
+            Logger.WriteLine("----------------------");
+            Logger.WriteLine("App launched: " + AppConfig.GetModel() + " :" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + CultureInfo.CurrentUICulture + (ProcessHelper.IsUserAdministrator() ? "." : ""));
+
+            settingsForm = new SettingsForm();
+            modeControl = new ModeControl();
+            gpuControl = new GPUModeControl(settingsForm);
+            allyControl = new AllyControl(settingsForm);
+            clamshellControl = new ClamshellModeControl();
+            toast = new ToastForm();
 
             ProcessHelper.CheckAlreadyRunning();
             ProcessHelper.SetPriority();
 
-            Logger.WriteLine("------------");
-            Logger.WriteLine("App launched: " + AppConfig.GetModel() + " :" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + CultureInfo.CurrentUICulture + (ProcessHelper.IsUserAdministrator() ? "." : ""));
+            CleanupLegacyFiles();
 
             var startCount = AppConfig.Get("start_count") + 1;
             AppConfig.Set("start_count", startCount);
@@ -112,7 +123,6 @@ namespace GHelper
             Application.EnableVisualStyles();
 
             HardwareControl.RecreateGpuControl();
-            RyzenControl.Init();
 
             trayIcon = new NotifyIcon
             {
@@ -120,6 +130,10 @@ namespace GHelper
                 Icon = Properties.Resources.standard,
                 Visible = true
             };
+
+            var trayRetry = new System.Windows.Forms.Timer { Interval = 5000 };
+            trayRetry.Tick += (_, _) => { trayRetry.Dispose(); trayIcon.Visible = false; trayIcon.Visible = true; };
+            trayRetry.Start();
 
             WM_TASKBARCREATED = RegisterWindowMessage("TaskbarCreated");
             Logger.WriteLine($"Tray Icon: {trayIcon.Visible} | {WM_TASKBARCREATED}");
@@ -138,6 +152,8 @@ namespace GHelper
 
             SetAutoModes(init: true);
 
+            powerSettleTimer.Elapsed += OnPowerSettled;
+
             // Subscribing for system power change events
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
             SystemEvents.UserPreferenceChanged += SystemEvents_UserPreferenceChanged;
@@ -151,6 +167,7 @@ namespace GHelper
             // Subscribing for monitor power on events
             unRegPowerNotify = NativeMethods.RegisterPowerSettingNotification(settingsForm.Handle, PowerSettingGuid.ConsoleDisplayState, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
             unRegPowerNotifyLid = NativeMethods.RegisterPowerSettingNotification(settingsForm.Handle, PowerSettingGuid.LIDSWITCH_STATE_CHANGE, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
+            unRegSuspendResume = NativeMethods.RegisterSuspendResumeNotification(settingsForm.Handle, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
 
 
             Task task = Task.Run((Action)PeripheralsProvider.DetectAllAsusMice);
@@ -203,13 +220,11 @@ namespace GHelper
             });
 
             Application.Run();
-
         }
 
 
         private static void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
         {
-            gpuControl.StandardModeFix();
             modeControl.ShutdownReset();
             BatteryControl.AutoBattery();
             InputDispatcher.ShutdownStatusLed();
@@ -276,8 +291,8 @@ namespace GHelper
             if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < skipDelay) return false;
             lastAuto = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
-            isPlugged = SystemInformation.PowerStatus.PowerLineStatus;
-            Logger.WriteLine("AutoSetting for " + isPlugged.ToString());
+            currentSource = ReadPowerSource();
+            Logger.WriteLine("AutoSetting for " + SystemInformation.PowerStatus.PowerLineStatus.ToString());
 
             BatteryControl.AutoBattery(init);
             if (init) InputDispatcher.InitScreenpad();
@@ -315,30 +330,55 @@ namespace GHelper
             return true;
         }
 
+        public enum PowerSource { Battery, USBC, Barrel }
+
+        public static PowerSource currentSource = PowerSource.Battery;
+        private static readonly System.Timers.Timer powerSettleTimer = new() { AutoReset = false };
+
+        public static PowerSource ReadPowerSource()
+        {
+            if (SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online)
+                return PowerSource.Battery;
+
+            int chargerMode = acpi?.DeviceGet(AsusACPI.ChargerMode) ?? 0;
+            if (chargerMode > 0 && (chargerMode & AsusACPI.ChargerBarrel) == 0)
+                return PowerSource.USBC;
+
+            return PowerSource.Barrel;
+        }
+
+        public static void SchedulePowerCheck()
+        {
+            if (AppConfig.Is("disable_power_event")) return;
+            powerSettleTimer.Interval = Math.Max(AppConfig.Get("charger_delay"), 2000);
+            powerSettleTimer.Stop();
+            powerSettleTimer.Start();
+        }
+
+        private static void OnPowerSettled(object? sender, System.Timers.ElapsedEventArgs e)
+        {
+            PowerSource source = ReadPowerSource();
+            if (source == currentSource) return;
+
+            Logger.WriteLine($"Power source: {currentSource} -> {source}");
+            currentSource = source;
+            SetAutoModes(powerChanged: true);
+        }
+
+        public static void OnChargerEvent() => SchedulePowerCheck();
+
         private static void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
         {
             if (e.Mode == PowerModes.Suspend)
             {
                 Logger.WriteLine("Power Mode Changed:" + e.Mode.ToString());
-                gpuControl.StandardModeFix(true);
                 modeControl.ShutdownReset();
                 InputDispatcher.ShutdownStatusLed();
+                return;
             }
 
-            if (SystemInformation.PowerStatus.PowerLineStatus == isPlugged) return;
             Logger.WriteLine($"Power Mode {e.Mode}: {SystemInformation.PowerStatus.PowerLineStatus}");
-            
-            if (AppConfig.Is("disable_power_event")) return;
-
-            int delay = AppConfig.Get("charger_delay");
-            if (delay > 0)
-            {
-                Logger.WriteLine($"Charger Delay: {delay}");
-                Thread.Sleep(delay);
-                if (SystemInformation.PowerStatus.PowerLineStatus == isPlugged) return;
-            }
-
-            SetAutoModes(powerChanged: true);
+            SchedulePowerCheck();
         }
 
         public static void SettingsToggle(bool checkForFocus = true, bool trayClick = false)
@@ -403,6 +443,7 @@ namespace GHelper
             clamshellControl.UnregisterDisplayEvents();
             NativeMethods.UnregisterPowerSettingNotification(unRegPowerNotify);
             NativeMethods.UnregisterPowerSettingNotification(unRegPowerNotifyLid);
+            NativeMethods.UnregisterSuspendResumeNotification(unRegSuspendResume);
             Application.Exit();
         }
 
@@ -424,6 +465,29 @@ namespace GHelper
             catch (Exception ex)
             {
                 Logger.WriteLine("Startup Battery Limit Error: " + ex.Message);
+            }
+        }
+
+        static void CleanupLegacyFiles()
+        {
+            string appDir = Path.GetDirectoryName(Application.ExecutablePath) ?? "";
+            string[] legacyFiles = ["WinRing0x64.sys", "WinRing0x64.dll"];
+
+            foreach (string fileName in legacyFiles)
+            {
+                string filePath = Path.Combine(appDir, fileName);
+                if (File.Exists(filePath))
+                {
+                    try
+                    {
+                        File.Delete(filePath);
+                        Logger.WriteLine($"Deleted legacy file: {fileName}");
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.WriteLine($"Failed to delete legacy file {fileName}: {ex.Message}");
+                    }
+                }
             }
         }
 

@@ -49,10 +49,7 @@ namespace GHelper.AnimeMatrix
             {
                 if (AppConfig.IsSlash())
                 {
-                    if (AppConfig.IsSlashAura())
-                        deviceSlash = new SlashDeviceAura();
-                    else
-                        deviceSlash = new SlashDevice();
+                    deviceSlash = SlashDevice.Detect();
                 }
                 else
                 {
@@ -348,6 +345,10 @@ namespace GHelper.AnimeMatrix
         public void Dispose()
         {
             StopAudio();
+            matrixTimer?.Stop();
+            matrixTimer?.Dispose();
+            slashTimer?.Stop();
+            slashTimer?.Dispose();
         }
 
         void StopAudio()

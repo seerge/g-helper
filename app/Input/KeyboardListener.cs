@@ -1,4 +1,4 @@
-﻿using GHelper.USB;
+using GHelper.USB;
 using HidSharp;
 using System.Text;
 
@@ -9,8 +9,7 @@ namespace GHelper.Input
 
         CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         Action<int> _handler;
-
-        static int retry = 0;
+        HidStream? input;
 
         public KeyboardListener(Action<int> KeyHandler)
         {
@@ -21,7 +20,7 @@ namespace GHelper.Input
         private void Listen()
         {
 
-            HidStream? input = AsusHid.FindHidStream(AsusHid.INPUT_ID);
+            input = AsusHid.FindHidStream(AsusHid.INPUT_ID);
 
             // Fallback
             int count = 0;
@@ -70,10 +69,10 @@ namespace GHelper.Input
             catch (Exception ex)
             {
                 Logger.WriteLine($"Listener exited: {ex.Message}");
-                if (retry++ < 2)
+                if (!cancellationTokenSource.Token.IsCancellationRequested)
                 {
                     Thread.Sleep(300);
-                    Logger.WriteLine($"Restarting listener {retry}");
+                    Logger.WriteLine($"Restarting listener");
                     Listen();
                 }
             }
@@ -83,6 +82,7 @@ namespace GHelper.Input
         public void Dispose()
         {
             cancellationTokenSource?.Cancel();
+            input?.Dispose();
         }
     }
 }

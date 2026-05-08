@@ -6,6 +6,14 @@ namespace GHelper.UI
 {
     public class RComboBox : ComboBox
     {
+        protected override void OnMouseWheel(MouseEventArgs e)
+        {
+            var args = (HandledMouseEventArgs)e;
+            if (!DroppedDown)
+                args.Handled = true;
+            else
+                base.OnMouseWheel(e);
+        }
 
         private Color borderColor = Color.Gray;
         [DefaultValue(typeof(Color), "Gray")]

@@ -1,7 +1,8 @@
-﻿using System.Globalization;
+﻿using GHelper.UI;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
-public class NumericUpDownWithUnit : NumericUpDown
+public class NumericUpDownWithUnit : RNumericUpDown
 {
     #region| Fields |
 
@@ -37,6 +38,12 @@ public class NumericUpDownWithUnit : NumericUpDown
     #endregion
 
     #region| Methods |
+
+    protected override void OnMouseWheel(MouseEventArgs e)
+    {
+        if (ContainsFocus)
+            base.OnMouseWheel(e);
+    }
 
     /// <summary>
     /// Method called when updating the numeric updown text.

@@ -23,7 +23,7 @@ namespace GHelper.Helpers
         }
         private void UpdateLayeredWindow()
         {
-            Bitmap bitmap1 = new Bitmap(Size.Width, Size.Height, PixelFormat.Format32bppArgb);
+            using Bitmap bitmap1 = new Bitmap(Size.Width, Size.Height, PixelFormat.Format32bppArgb);
             using (Graphics graphics1 = Graphics.FromImage(bitmap1))
             {
                 Rectangle rectangle1;

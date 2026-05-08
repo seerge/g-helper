@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -369,9 +369,6 @@
   <data name="EcoMode" xml:space="preserve">
     <value>Eco</value>
   </data>
-  <data name="EnableGPUOnShutdown" xml:space="preserve">
-    <value>Aktywuj GPU przy wyłączaniu (zapobiega problemom z trybem Eco)</value>
-  </data>
   <data name="EnableOptimusText" xml:space="preserve">
     <value>Wyłączenie dGPU przez przejście do trybu Eco, podczas gdy tryb wyświetlania w Panelu sterowania NVIDIA nie jest ustawiony na Optimus, może powodować problemy z regulacją jasności do czasu następnego restartu systemu. 
 
@@ -430,6 +427,9 @@ Nadal chcesz kontynuować?</value>
   </data>
   <data name="FnLockOn" xml:space="preserve">
     <value>Fn-Lock wł.</value>
+  </data>
+  <data name="WinLockToggle" xml:space="preserve">
+    <value>Win-Lock Toggle</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Dynamic Boost</value>
@@ -583,6 +583,9 @@ Nadal chcesz kontynuować?</value>
   </data>
   <data name="MouseSynchronize" xml:space="preserve">
     <value>Synchronizuj z myszką</value>
+  </data>
+  <data name="MouseSyncWithAura" xml:space="preserve">
+    <value>Sync with laptop</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Wiele stref</value>
@@ -802,6 +805,9 @@ Nadal chcesz kontynuować?</value>
   </data>
   <data name="Donate" xml:space="preserve">
     <value>Wesprzyj</value>
+  </data>
+  <data name="ThankYou" xml:space="preserve">
+    <value>Dziękujemy</value>
   </data>
   <data name="Legend" xml:space="preserve">
     <value>Legenda</value>

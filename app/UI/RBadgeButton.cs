@@ -41,11 +41,13 @@ namespace GHelper.UI
                 pevent.Graphics.FillEllipse(brush, badgeRect);
 
                 using (Font badgeFont = new Font("Arial", (float)(0.8 * Font.Size), FontStyle.Bold))
-                using (StringFormat sf = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center })
+                using (StringFormat sf = StringFormat.GenericTypographic)
                 {
-                    badgeRect.Width = (float)Math.Ceiling(badgeRect.Width*ratio)/ratio;
-                    badgeRect.Height = (float)Math.Ceiling(badgeRect.Height*ratio)/ratio;
-                    pevent.Graphics.DrawString(badge.ToString(), badgeFont, Brushes.White, badgeRect, sf);
+                    string text = badge.ToString();
+                    SizeF textSize = pevent.Graphics.MeasureString(text, badgeFont, PointF.Empty, sf);
+                    float x = badgeRect.X + (badgeRect.Width - textSize.Width) / 2f;
+                    float y = badgeRect.Y + (badgeRect.Height - textSize.Height) / 2f;
+                    pevent.Graphics.DrawString(text, badgeFont, Brushes.White, x, y, sf);
                 }
             }
         }

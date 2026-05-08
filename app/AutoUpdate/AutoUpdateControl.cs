@@ -1,6 +1,7 @@
 ﻿using GHelper.Helpers;
 using System.Diagnostics;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -73,7 +74,7 @@ namespace GHelper.AutoUpdate
 
                 using (var httpClient = new HttpClient())
                 {
-                    httpClient.DefaultRequestHeaders.Add("User-Agent", "C# App");
+                    httpClient.DefaultRequestHeaders.Add("User-Agent", "G-Helper App");
                     var json = await httpClient.GetStringAsync("https://api.github.com/repos/seerge/g-helper/releases/latest");
                     var config = JsonSerializer.Deserialize<JsonElement>(json);
                     var tag = config.GetProperty("tag_name").ToString().Replace("v", "");
@@ -156,6 +157,8 @@ namespace GHelper.AutoUpdate
 
             using (WebClient client = new WebClient())
             {
+
+                client.Headers.Add("User-Agent", "G-Helper App");
                 Logger.WriteLine(requestUri);
                 Logger.WriteLine(exeDir);
                 Logger.WriteLine(zipName);

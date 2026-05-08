@@ -25,6 +25,12 @@ namespace GHelper.UI
         [DllImport("UXTheme.dll", SetLastError = true, EntryPoint = "#138")]
         public static extern bool CheckSystemDarkModeStatus();
 
+        [DllImport("UXTheme.dll", SetLastError = true, EntryPoint = "#135")]
+        private static extern int SetPreferredAppMode(int preferredAppMode);
+
+        [DllImport("UXTheme.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        private static extern int SetWindowTheme(nint hWnd, string pszSubAppName, string? pszSubIdList);
+
         [DllImport("DwmApi")] //System.Runtime.InteropServices
         private static extern int DwmSetWindowAttribute(nint hwnd, int attr, int[] attrValue, int attrSize);
 
@@ -107,6 +113,8 @@ namespace GHelper.UI
             if (changed)
             {
                 DwmSetWindowAttribute(Handle, 20, new[] { darkTheme ? 1 : 0 }, 4);
+                SetPreferredAppMode(darkTheme ? 1 : 0); 
+                SetWindowTheme(Handle, darkTheme ? "DarkMode_Explorer" : "Explorer", null);
                 ControlHelper.Adjust(this, changed);
                 this.Invalidate();
             }

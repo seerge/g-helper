@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -369,9 +369,6 @@
   <data name="EcoMode" xml:space="preserve">
     <value>Econômico</value>
   </data>
-  <data name="EnableGPUOnShutdown" xml:space="preserve">
-    <value>Ativar a GPU ao desligar (impede problemas com o modo Eco)</value>
-  </data>
   <data name="EnableOptimusText" xml:space="preserve">
     <value>Desativar a dGPU entrando no modo Eco enquanto o Modo de Exibição no painel de controle da NVIDIA não está definido como Optimus pode causar problemas com os controles de brilho até a próxima reinicialização.
 
@@ -430,6 +427,9 @@ Ainda quer continuar?</value>
   </data>
   <data name="FnLockOn" xml:space="preserve">
     <value>Tecla Fn bloqueada</value>
+  </data>
+  <data name="WinLockToggle" xml:space="preserve">
+    <value>Win-Lock Toggle</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Boost dinâmico</value>
@@ -583,6 +583,9 @@ Ainda quer continuar?</value>
   </data>
   <data name="MouseSynchronize" xml:space="preserve">
     <value>Sincronizar com o mouse</value>
+  </data>
+  <data name="MouseSyncWithAura" xml:space="preserve">
+    <value>Sync with laptop</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Multi zona</value>
@@ -802,6 +805,9 @@ Ainda quer continuar?</value>
   </data>
   <data name="Donate" xml:space="preserve">
     <value>Doar</value>
+  </data>
+  <data name="ThankYou" xml:space="preserve">
+    <value>Obrigado</value>
   </data>
   <data name="Legend" xml:space="preserve">
     <value>Legenda</value>
