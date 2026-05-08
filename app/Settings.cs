@@ -33,6 +33,7 @@ namespace GHelper
         public AniMatrixControl matrixControl;
 
         public static System.Timers.Timer sensorTimer = default!;
+        private static readonly bool sensorsAlways = AppConfig.Is("sensors_always");
 
         public Matrix? matrixForm;
         public Fans? fansForm;
@@ -244,7 +245,7 @@ namespace GHelper
 
             sensorTimer = new System.Timers.Timer(AppConfig.Get("sensor_timer", 1000));
             sensorTimer.Elapsed += OnTimedEvent;
-            sensorTimer.Enabled = false;
+            sensorTimer.Enabled = sensorsAlways;
 
             labelCharge.MouseEnter += PanelBattery_MouseEnter;
             labelCharge.MouseLeave += PanelBattery_MouseLeave;
@@ -689,7 +690,7 @@ namespace GHelper
 
         private void SettingsForm_VisibleChanged(object? sender, EventArgs e)
         {
-            sensorTimer.Enabled = this.Visible;
+            sensorTimer.Enabled = this.Visible || sensorsAlways;
             if (this.Visible)
             {
                 ScreenControl.InitScreen();
@@ -1590,7 +1591,7 @@ namespace GHelper
             gpuControl.KillGPUApps();
         }
 
-        public async void RefreshSensors(bool force = false, bool toast = false)
+        public async void RefreshSensors(bool force = false)
         {
 
             if (!force && Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastRefresh) < 2000) return;
@@ -1653,8 +1654,6 @@ namespace GHelper
                 });
 
             if (Program.trayIcon is not null) Program.trayIcon.Text = trayTip;
-
-            if (toast) Program.toast.RunToast(trayTip.Replace("\n", ", "));
         }
 
         public void LabelFansResult(string text)

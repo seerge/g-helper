@@ -80,15 +80,16 @@ namespace GHelper.UI
             base.OnPaint(pevent);
 
             float ratio = pevent.Graphics.DpiX / 192.0f;
-            int border = (int)(ratio * borderSize);
+            int border = (int)Math.Round(ratio * borderSize, MidpointRounding.AwayFromZero);
+            int radius = (int)Math.Round(ratio * borderRadius, MidpointRounding.AwayFromZero);
 
             Rectangle rectSurface = ClientRectangle;
             Rectangle rectBorder = Rectangle.Inflate(rectSurface, -border, -border);
 
             Color borderDrawColor = activated ? borderColor : Color.Transparent;
 
-            using (GraphicsPath pathSurface = GetFigurePath(rectSurface, borderRadius + border))
-            using (GraphicsPath pathBorder = GetFigurePath(rectBorder, borderRadius))
+            using (GraphicsPath pathSurface = GetFigurePath(rectSurface, radius + border))
+            using (GraphicsPath pathBorder = GetFigurePath(rectBorder, radius))
             using (Pen penSurface = new Pen(Parent.BackColor, border))
             using (Pen penBorder = new Pen(borderDrawColor, border))
             {

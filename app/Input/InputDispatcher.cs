@@ -647,9 +647,6 @@ namespace GHelper.Input
                 case "touchscreen":
                     ToggleTouchScreen();
                     break;
-                case "sensors":
-                    Program.settingsForm.RefreshSensors(force: true, toast: true);
-                    break;
                 default:
                     break;
             }
