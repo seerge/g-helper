@@ -274,9 +274,24 @@ namespace GHelper.Input
         static void SetBrightness(bool up, bool hotkey = false)
         {
             int brightness = -1;
+            bool isOLED = AppConfig.IsOLED();
 
-            if (isTUF) brightness = ScreenBrightness.Get();
+            if (isTUF || isOLED) brightness = ScreenBrightness.Get();
             if (AppConfig.SwappedBrightness() && !hotkey) up = !up;
+
+            if (isOLED)
+            {
+                if (Program.blackout.IsActive)
+                {
+                    if (up) Program.blackout.SetActive(false);
+                    return;
+                }
+                if (!up && brightness == 0)
+                {
+                    Program.blackout.SetActive(true);
+                    return;
+                }
+            }
 
             int step = AppConfig.Get("brightness_step", 10);
             if (step != 10)
