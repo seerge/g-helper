@@ -11,6 +11,14 @@ namespace GHelper.Peripherals
 
         public static List<AsusMouse> ConnectedMice = new List<AsusMouse>();
 
+        public static bool IsAuraSync { get; private set; } = AppConfig.IsAuraSync();
+
+        public static void SetAuraSync(bool enabled)
+        {
+            AppConfig.Set("mouse_aura_sync", enabled ? 1 : 0);
+            IsAuraSync = enabled;
+        }
+
         public static event EventHandler? DeviceChanged;
 
         private static System.Timers.Timer timer = new System.Timers.Timer(1000);
@@ -55,6 +63,45 @@ namespace GHelper.Peripherals
         public static void RefreshBatteryForAllDevices()
         {
             RefreshBatteryForAllDevices(false);
+        }
+
+        public static void StreamMouseColor(Color color)
+        {
+            if (!IsAuraSync) return;
+
+            List<AsusMouse> mice;
+            lock (_LOCK) { mice = new List<AsusMouse>(ConnectedMice); }
+
+            foreach (AsusMouse m in mice)
+            {
+                Task.Run(() =>
+                {
+                    try { m.WriteColorDirect(color); } catch { }
+                });
+            }
+        }
+
+        public static void SyncMiceWithKeyboardAura()
+        {
+            if (!IsAuraSync) return;
+
+            List<AsusMouse> mice;
+            lock (_LOCK) { mice = new List<AsusMouse>(ConnectedMice); }
+
+            foreach (AsusMouse m in mice)
+            {
+                Task.Run(() =>
+                {
+                    try
+                    {
+                        m.SyncFromKeyboardAura();
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.WriteLine(m.GetDisplayName() + ": Failed to sync with keyboard aura: " + e.Message);
+                    }
+                });
+            }
         }
 
         public static void RefreshBatteryForAllDevices(bool force)
@@ -264,25 +311,9 @@ namespace GHelper.Peripherals
                     stream.Write([0x01, 0xA0, 0x00, 0x00]);
                     stream.Read(response);
 
-                    int mousePid = response[5] | (response[6] << 8);
-                    Logger.WriteLine($"Omni Mouse PID: {mousePid:X4} = {BitConverter.ToString(response.Skip(5).Take(12).ToArray())}");
+                    Logger.WriteLine($"Omni paired devices: {BitConverter.ToString(response.Skip(5).Take(12).ToArray())}");
 
-                    omniMouse = mousePid switch
-                    {
-                        0x1B65 => new HarpeAceMiniOmni(),
-                        0x1C0E => new KerisIIOriginOmni(),
-                        0x1A94 => new HarpeAceAimLabEditionOmni(),
-                        0x1AD7 => new StrixImpactIIIWirelessOmni(),
-                        0x1A72 => new GladiusIIIAimpointOmni(),
-                        0x1A68 => new KerisWirelssAimpointOmni(),
-                        0x1A6A => new KerisWirelssAimpointOmni(),
-                        0x1B06 => new KerisAceIIOmni(), 
-                        0x1B1A => new KerisAceIIOmni(),
-                        0x1B18 => new KerisAceIIOmni(),
-                        0x1B68 => new HarpeAceExtremeOmni(),
-                        _ => new HarpeAceAimLabEditionOmni()
-                    };
-
+                    omniMouse = ResolveOmniMouse(response);
                 }
 
                 using (var stream = device.Open(config))
@@ -313,6 +344,44 @@ namespace GHelper.Peripherals
                 return;
             }
         }
+
+        private static readonly HashSet<int> KnownOmniKeyboards = new()
+        {
+            0x1B06, // Falchion RX Low Profile
+        };
+
+        private static AsusMouse ResolveOmniMouse(byte[] response)
+        {
+            for (int offset = 5; offset + 3 < response.Length; offset += 4)
+            {
+                int pid = response[offset] | (response[offset + 1] << 8);
+                if (pid == 0) break;
+
+                var mouse = MouseFromOmniPid(pid);
+                if (mouse is not null)
+                {
+                    Logger.WriteLine($"Omni slot @{offset}: {pid:X4} -> {mouse.GetDisplayName()}");
+                    return mouse;
+                }
+
+                Logger.WriteLine($"Omni slot @{offset}: {pid:X4} ({(KnownOmniKeyboards.Contains(pid) ? "keyboard, skipped" : "unknown, skipped")})");
+            }
+
+            return new HarpeAceAimLabEditionOmni();
+        }
+
+        private static AsusMouse? MouseFromOmniPid(int pid) => pid switch
+        {
+            0x1B65 => new HarpeAceMiniOmni(),
+            0x1C0E => new KerisIIOriginOmni(),
+            0x1A94 => new HarpeAceAimLabEditionOmni(),
+            0x1AD7 => new StrixImpactIIIWirelessOmni(),
+            0x1A72 => new GladiusIIIAimpointOmni(),
+            0x1A68 or 0x1A6A => new KerisWirelssAimpointOmni(),
+            0x1B1A or 0x1B18 => new KerisAceIIOmni(),
+            0x1B68 or 0x1B69 => new HarpeAceExtremeOmni(),
+            _ => null,
+        };
 
         public static void DetectMouse(AsusMouse am)
         {

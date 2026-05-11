@@ -429,7 +429,7 @@ Folytatni szeretnéd?</value>
     <value>Fn-Lock Be</value>
   </data>
   <data name="WinLockToggle" xml:space="preserve">
-    <value>Win-Lock Toggle</value>
+    <value>Win-Lock kapcsoló</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Dinamikus gyorsítás</value>
@@ -583,6 +583,9 @@ Folytatni szeretnéd?</value>
   </data>
   <data name="MouseSynchronize" xml:space="preserve">
     <value>Szinkronizálás egérrel</value>
+  </data>
+  <data name="MouseSyncWithAura" xml:space="preserve">
+    <value>Szinkronizálás laptoppal</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Multi Zóna</value>

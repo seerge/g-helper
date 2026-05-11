@@ -1,6 +1,5 @@
 using GHelper.USB;
 using HidSharp;
-using System.Text;
 
 namespace GHelper.Input
 {
@@ -37,7 +36,7 @@ namespace GHelper.Input
                 return;
             }
 
-            AsusHid.WriteInput(Encoding.ASCII.GetBytes("ZASUS Tech.Inc."));
+            AsusHid.InitInput();
             Logger.WriteLine($"Input: {input.Device.DevicePath}");
 
             try

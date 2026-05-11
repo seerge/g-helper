@@ -564,6 +564,22 @@ namespace GHelper.Mode
             else ResetRyzen();
         }
 
+        public void AutoCPUTemp()
+        {
+            if (!CpuInfo.IsAMD) return;
+            if (!AppConfig.IsApplyUV()) return;
+            if (!ProcessHelper.IsUserAdministrator()) return;
+
+            try
+            {
+                SetCPUTemp(AppConfig.GetMode("cpu_temp"), true);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine("AutoCPUTemp Error: " + ex.Message);
+            }
+        }
+
         public void ShutdownReset()
         {
             if (!AppConfig.IsShutdownReset()) return;

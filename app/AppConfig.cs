@@ -332,6 +332,11 @@ public static class AppConfig
         return ContainsModel("RC7");
     }
 
+    public static bool IsAuraSync()
+    {
+        return Is("mouse_aura_sync");
+    }
+
     public static bool NoMKeys()
     {
         return (ContainsModel("Z13") && !IsARCNM()) ||
@@ -427,7 +432,7 @@ public static class AppConfig
 
     public static bool IsInvertedFNLock()
     {
-        return ContainsModel("M140") || ContainsModel("S550") || ContainsModel("P540") || IsTUF();
+        return ContainsModel("M140") || ContainsModel("S550") || ContainsModel("K650") || ContainsModel("P540") || IsTUF();
     }
 
     public static bool IsOLED()
@@ -559,7 +564,7 @@ public static class AppConfig
 
     public static bool IsResetRequired()
     {
-        return ContainsModel("GA403UI") || ContainsModel("GA403UU") || ContainsModel("GA403UV") || ContainsModel("FA507XV");
+        return ContainsModel("GA403UI") || ContainsModel("GA403UU") || ContainsModel("GA403UV") || ContainsModel("GU605MI") || ContainsModel("FA507XV");
     }
 
     public static bool IsFanRequired()

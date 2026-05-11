@@ -1,5 +1,6 @@
 ﻿using GHelper.AnimeMatrix.Communication;
 using GHelper.AnimeMatrix.Communication.Platform;
+using GHelper.USB;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -2094,6 +2095,77 @@ public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
             {
                 this.LightingSetting[IndexForZone(zone)] = lightingSetting;
             }
+        }
+
+        public static LightingMode MapAuraToLightingMode(AuraMode auraMode)
+        {
+            switch (auraMode)
+            {
+                case AuraMode.AuraBreathe: return LightingMode.Breathing;
+                case AuraMode.AuraColorCycle: return LightingMode.ColorCycle;
+                case AuraMode.AuraRainbow: return LightingMode.Rainbow;
+                case AuraMode.Comet: return LightingMode.Comet;
+                default: return LightingMode.Static;
+            }
+        }
+
+        private int _streamingBusy;
+
+        public void WriteColorDirect(Color color)
+        {
+            if (!HasRGB() || !IsDeviceReady) return;
+            if (Interlocked.CompareExchange(ref _streamingBusy, 1, 0) != 0) return;
+
+            try
+            {
+                LightingSetting cached = LightingSettingForZone(LightingZone.All);
+                LightingSetting tmp = new LightingSetting
+                {
+                    LightingMode = LightingMode.Static,
+                    RGBColor = color,
+                    Brightness = cached?.Brightness ?? 25,
+                };
+
+                byte[] packet = GetUpdateLightingModePacket(tmp, LightingZone.All);
+                Array.Resize(ref packet, USBPacketSize());
+
+                Write(packet);
+            }
+            catch { }
+            finally
+            {
+                Interlocked.Exchange(ref _streamingBusy, 0);
+            }
+        }
+
+        public bool SyncFromKeyboardAura()
+        {
+            if (!HasRGB() || !IsDeviceReady) return false;
+
+            LightingMode lm = MapAuraToLightingMode((AuraMode)AppConfig.Get("aura_mode"));
+
+            if (lm == LightingMode.Rainbow && !IsLightingModeSupported(LightingMode.Rainbow))
+                lm = LightingMode.ColorCycle;
+
+            if (!IsLightingModeSupported(lm)) return false;
+
+            Color color = Color.FromArgb(AppConfig.Get("aura_color"));
+            AnimationSpeed mappedSpeed = (AuraSpeed)AppConfig.Get("aura_speed") switch
+            {
+                AuraSpeed.Fast => AnimationSpeed.Fast,
+                AuraSpeed.Slow => AnimationSpeed.Slow,
+                _ => AnimationSpeed.Medium,
+            };
+
+            LightingSetting ls = LightingSettingForZone(LightingZone.All);
+            if (ls is null) return false;
+
+            ls.LightingMode = lm;
+            if (SupportsColorSetting(lm)) ls.RGBColor = color;
+            if (SupportsAnimationSpeed(lm)) ls.AnimationSpeed = mappedSpeed;
+
+            SetLightingSetting(ls, LightingZone.All);
+            return true;
         }
 
         protected virtual byte[] GetSaveProfilePacket()

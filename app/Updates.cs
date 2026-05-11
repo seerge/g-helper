@@ -142,7 +142,7 @@ namespace GHelper
 
         private void AlignLabelUpdates()
         {
-            int dateColumnLeft = panelBios.Padding.Left + (int)(0.63 * (tableBios.Width - 28)) + 10;
+            int dateColumnLeft = panelBios.Padding.Left + (int)(0.63 * (tableBios.Width - 44)) + 10;
             labelUpdates.Left = dateColumnLeft;
         }
 

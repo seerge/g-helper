@@ -584,6 +584,9 @@ Voulez-vous continuer ?</value>
   <data name="MouseSynchronize" xml:space="preserve">
     <value>Synchroniser avec le pointeur</value>
   </data>
+  <data name="MouseSyncWithAura" xml:space="preserve">
+    <value>Sync with laptop</value>
+  </data>
   <data name="Multizone" xml:space="preserve">
     <value>Multi-zones</value>
   </data>

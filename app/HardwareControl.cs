@@ -479,7 +479,8 @@ public static class HardwareControl
 
         if (gpuTemp is null || gpuTemp < 0)
         {
-            gpuTemp = Program.acpi.DeviceGet(AsusACPI.Temp_GPU);
+            int acpiTemp = Program.acpi.DeviceGet(AsusACPI.Temp_GPU);
+            gpuTemp = (acpiTemp > 0 && acpiTemp < 125) ? acpiTemp : null;
         }
 
         return gpuTemp;
