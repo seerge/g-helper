@@ -232,6 +232,13 @@ namespace GHelper
 
         private static void SystemEvents_SessionSwitch(object sender, SessionSwitchEventArgs e)
         {
+            if (e.Reason == SessionSwitchReason.ConsoleDisconnect || e.Reason == SessionSwitchReason.SessionLogoff)
+            {
+                Logger.WriteLine("Session:" + e.Reason.ToString());
+                SingleInstance.TriggerExit(e.Reason.ToString());
+                return;
+            }
+
             if (e.Reason == SessionSwitchReason.SessionLogon || e.Reason == SessionSwitchReason.SessionUnlock)
             {
                 Logger.WriteLine("Session:" + e.Reason.ToString());

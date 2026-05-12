@@ -1,4 +1,4 @@
-﻿using GHelper.Helpers;
+using GHelper.Helpers;
 using Microsoft.Win32.TaskScheduler;
 using System.Diagnostics;
 using System.Reflection;
@@ -9,14 +9,84 @@ public class Startup
 
     static string taskName = "GHelper";
     static string chargeTaskName = taskName + "Charge";
+    static string subFolderName = "GHelper";
     static string strExeFilePath = Application.ExecutablePath.Trim();
+
+    private static string CurrentSid => WindowsIdentity.GetCurrent().User!.Value;
+    private static string CurrentUserName => WindowsIdentity.GetCurrent().Name;
+    private static string PerUserTaskName => $"{taskName}_{CurrentSid}";
+
+    private static bool Equal(string a, string b) =>
+        !string.IsNullOrEmpty(a) && string.Equals(a, b, StringComparison.OrdinalIgnoreCase);
+
+    private static bool IsTaskOwnedByCurrentUser(Microsoft.Win32.TaskScheduler.Task task)
+    {
+        if (task == null) return false;
+
+        string sid = CurrentSid;
+        string name = CurrentUserName;
+        string sam = name.Contains('\\') ? name.Split('\\').Last() : name;
+
+        var principal = task.Definition.Principal.UserId ?? "";
+        if (!string.IsNullOrEmpty(principal))
+            return Equal(principal, sid) || Equal(principal, name) || Equal(principal, sam);
+
+        // Legacy tasks may have empty Principal.UserId — fall back to security descriptor owner
+        try
+        {
+            var sddl = task.GetSecurityDescriptorSddlForm(System.Security.AccessControl.SecurityInfos.Owner);
+            if (sddl.StartsWith("O:"))
+            {
+                var owner = sddl[2..].TrimEnd();
+                if (Equal(owner, sid)) return true;
+            }
+        }
+        catch { }
+
+        // Last resort — registration author is auto-populated to DOMAIN\User
+        var author = task.Definition.RegistrationInfo.Author ?? "";
+        if (!string.IsNullOrEmpty(author))
+            return Equal(author, name) || Equal(author, sam);
+
+        return false;
+    }
+
+    private static TaskFolder? GetSubFolder(TaskService taskService, bool create = false)
+    {
+        try
+        {
+            var folder = taskService.RootFolder.SubFolders.FirstOrDefault(f => f.Name == subFolderName);
+            if (folder == null && create) folder = taskService.RootFolder.CreateFolder(subFolderName);
+            return folder;
+        }
+        catch (Exception e)
+        {
+            Logger.WriteLine("Can't access GHelper task folder: " + e.Message);
+            return null;
+        }
+    }
+
+    private static Microsoft.Win32.TaskScheduler.Task? GetCurrentUserTask(TaskService taskService)
+    {
+        var rootTask = taskService.RootFolder.AllTasks.FirstOrDefault(t => t.Name == taskName);
+        if (rootTask != null && IsTaskOwnedByCurrentUser(rootTask)) return rootTask;
+
+        var folder = GetSubFolder(taskService);
+        if (folder != null)
+        {
+            var userTask = folder.AllTasks.FirstOrDefault(t => t.Name == PerUserTaskName);
+            if (userTask != null) return userTask;
+        }
+
+        return null;
+    }
 
     public static bool IsScheduled()
     {
         try
         {
             using (TaskService taskService = new TaskService())
-                return (taskService.RootFolder.AllTasks.Any(t => t.Name == taskName));
+                return GetCurrentUserTask(taskService) != null;
         }
         catch (Exception e)
         {
@@ -38,7 +108,7 @@ public class Startup
     {
         using (TaskService taskService = new TaskService())
         {
-            var task = taskService.RootFolder.AllTasks.FirstOrDefault(t => t.Name == taskName);
+            var task = GetCurrentUserTask(taskService);
             if (task != null)
             {
                 try
@@ -75,6 +145,19 @@ public class Startup
                             {
                                 Logger.WriteLine("Can't compare assembly versions: " + ex.Message);
                             }
+                        }
+                    }
+
+                    // One-time migration to ConsoleConnect trigger so fast-user-switch works
+                    if (!needsReschedule)
+                    {
+                        bool hasConsoleConnect = task.Definition.Triggers
+                            .OfType<SessionStateChangeTrigger>()
+                            .Any(t => t.StateChange == TaskSessionStateChangeType.ConsoleConnect);
+                        if (!hasConsoleConnect)
+                        {
+                            Logger.WriteLine("Migrating startup task to ConsoleConnect trigger");
+                            needsReschedule = true;
                         }
                     }
 
@@ -128,7 +211,7 @@ public class Startup
             td.Triggers.Add(new EventTrigger
             {
                 Subscription = "<QueryList><Query Id='0' Path='System'><Select Path='System'>*[System[Provider[@Name='Microsoft-Windows-Kernel-Boot'] and EventID=27]]</Select></Query></QueryList>"
-            }); 
+            });
             td.Actions.Add(strExeFilePath, "charge");
 
             td.Principal.UserId = "SYSTEM";
@@ -155,13 +238,22 @@ public class Startup
     public static void Schedule()
     {
 
-        using (TaskDefinition td = TaskService.Instance.NewTask())
+        using (TaskService taskService = new TaskService())
+        using (TaskDefinition td = taskService.NewTask())
         {
 
             td.RegistrationInfo.Description = "G-Helper Auto Start";
-            td.Triggers.Add(new LogonTrigger { Delay = TimeSpan.FromSeconds(1) });
+
+            td.Triggers.Add(new SessionStateChangeTrigger
+            {
+                StateChange = TaskSessionStateChangeType.ConsoleConnect,
+                UserId = CurrentUserName,
+                Delay = TimeSpan.FromSeconds(1)
+            });
+
             td.Actions.Add(strExeFilePath);
 
+            td.Principal.UserId = CurrentSid;
             td.Principal.LogonType = TaskLogonType.InteractiveToken;
             if (ProcessHelper.IsUserAdministrator())
                 td.Principal.RunLevel = TaskRunLevel.Highest;
@@ -170,19 +262,31 @@ public class Startup
             td.Settings.DisallowStartIfOnBatteries = false;
             td.Settings.ExecutionTimeLimit = TimeSpan.Zero;
 
+            // Decide where to register: legacy root for single-user case, per-user subfolder for additional users
+            var rootTask = taskService.RootFolder.AllTasks.FirstOrDefault(t => t.Name == taskName);
+            bool useRoot = rootTask == null || IsTaskOwnedByCurrentUser(rootTask);
+
             try
             {
-                TaskService.Instance.RootFolder.RegisterTaskDefinition(taskName, td);
+                if (useRoot)
+                {
+                    taskService.RootFolder.RegisterTaskDefinition(taskName, td);
+                    Logger.WriteLine("Startup task scheduled at root: " + strExeFilePath);
+                }
+                else
+                {
+                    var folder = GetSubFolder(taskService, create: true);
+                    folder?.RegisterTaskDefinition(PerUserTaskName, td);
+                    Logger.WriteLine($"Startup task scheduled per-user ({PerUserTaskName}): " + strExeFilePath);
+                }
             }
             catch (Exception e)
             {
                 if (ProcessHelper.IsUserAdministrator())
-                    MessageBox.Show("Can't create a start up task. Try running Task Scheduler by hand and manually deleting GHelper task if it exists there.", "Scheduler Error", MessageBoxButtons.OK);
+                    MessageBox.Show("Can't create a start up task. Try running Task Scheduler by hand and manually deleting GHelper task if it exists there.\n\n" + e.Message, "Scheduler Error", MessageBoxButtons.OK);
                 else
                     ProcessHelper.RunAsAdmin();
             }
-
-            Logger.WriteLine("Startup task scheduled: " + strExeFilePath);
         }
 
         ScheduleCharge();
@@ -195,12 +299,31 @@ public class Startup
         {
             try
             {
-                taskService.RootFolder.DeleteTask(taskName);
+                var rootTask = taskService.RootFolder.AllTasks.FirstOrDefault(t => t.Name == taskName);
+                if (rootTask != null && IsTaskOwnedByCurrentUser(rootTask))
+                {
+                    taskService.RootFolder.DeleteTask(taskName);
+                }
+                else
+                {
+                    var folder = GetSubFolder(taskService);
+                    if (folder != null && folder.AllTasks.Any(t => t.Name == PerUserTaskName))
+                    {
+                        folder.DeleteTask(PerUserTaskName);
+                        // Best-effort cleanup of empty subfolder
+                        try
+                        {
+                            if (!folder.AllTasks.Any() && !folder.SubFolders.Any())
+                                taskService.RootFolder.DeleteFolder(subFolderName, false);
+                        }
+                        catch { }
+                    }
+                }
             }
             catch (Exception e)
             {
                 if (ProcessHelper.IsUserAdministrator())
-                    MessageBox.Show("Can't remove task. Try running Task Scheduler by hand and manually deleting GHelper task if it exists there.", "Scheduler Error", MessageBoxButtons.OK);
+                    MessageBox.Show("Can't remove task. Try running Task Scheduler by hand and manually deleting GHelper task if it exists there.\n\n" + e.Message, "Scheduler Error", MessageBoxButtons.OK);
                 else
                     ProcessHelper.RunAsAdmin();
             }
