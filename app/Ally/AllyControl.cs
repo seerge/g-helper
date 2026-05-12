@@ -4,7 +4,6 @@ using GHelper.Input;
 using GHelper.Mode;
 using GHelper.USB;
 using HidSharp;
-using System.Text;
 
 
 
@@ -642,7 +641,7 @@ namespace GHelper.Ally
 
         static void WakeUp()
         {
-            AsusHid.WriteInput(Encoding.ASCII.GetBytes("ZASUS Tech.Inc."), "Init");
+            AsusHid.InitInput();
         }
 
         static public void SetDeadzones()

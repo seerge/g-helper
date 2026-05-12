@@ -567,6 +567,16 @@ public static class AppConfig
         return ContainsModel("GA403UI") || ContainsModel("GA403UU") || ContainsModel("GA403UV") || ContainsModel("FA507XV");
     }
 
+    public static bool IsReapplyTempRequired()
+    {
+        return ContainsModel("GA402");
+    }
+
+    public static bool IsReapplyRyzen()
+    {
+        return ContainsModel("G614F") || ContainsModel("G814F");
+    }
+
     public static bool IsFanRequired()
     {
         return ContainsModel("GA402X") || ContainsModel("GU604") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("G634J") || ContainsModel("G834J") || ContainsModel("G614J") || ContainsModel("G814J") || ContainsModel("FX507V") || ContainsModel("FX507ZV") || ContainsModel("FX608") || ContainsModel("FA608P") || ContainsModel("G614F") || ContainsModel("G614R") || ContainsModel("G733") || ContainsModel("H7606");
@@ -579,12 +589,17 @@ public static class AppConfig
 
     public static bool IsPowerRequired()
     {
-        return ContainsModel("FX507") || ContainsModel("FX517") || ContainsModel("FX707");
+        return ContainsModel("GU605M") || ContainsModel("FX507") || ContainsModel("FX517") || ContainsModel("FX707");
     }
 
     public static bool IsModeReapplyRequired()
     {
         return Is("mode_reapply") || ContainsModel("FA401");
+    }
+
+    public static bool IsStandardModeFix()
+    {
+        return Is("shutdown_gpu") || ContainsModel("FX506HCB");
     }
 
     public static bool IsShutdownReset()

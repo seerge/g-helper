@@ -138,6 +138,11 @@ public static class AsusHid
         }
     }
 
+    public static void InitInput(string? log = "Input Init")
+    {
+        WriteInput([INPUT_ID, .. Encoding.ASCII.GetBytes("ASUS Tech.Inc.")], log);
+    }
+
     public static void Write(byte[] data, string log = "USB")
     {
         Write(new List<byte[]> { data }, log);

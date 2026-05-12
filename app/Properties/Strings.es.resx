@@ -585,7 +585,7 @@
     <value>Sincronizar con el ratón</value>
   </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
-    <value>Sync with laptop</value>
+    <value>Sincronizar con portátil</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Multizona</value>

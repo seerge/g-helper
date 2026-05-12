@@ -232,6 +232,7 @@ namespace GHelper
 
         private static void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
         {
+            gpuControl.StandardModeFix();
             modeControl.ShutdownReset();
             BatteryControl.AutoBattery();
             InputDispatcher.ShutdownStatusLed();
@@ -242,8 +243,14 @@ namespace GHelper
             if (e.Reason == SessionSwitchReason.SessionLogon || e.Reason == SessionSwitchReason.SessionUnlock)
             {
                 Logger.WriteLine("Session:" + e.Reason.ToString());
+                bool wasLocked = Aura.sessionLock;
                 Aura.sessionLock = false;
                 ScreenControl.AutoScreen();
+                if (wasLocked) Task.Delay(2000).ContinueWith(_ =>
+                {
+                    if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < 10000) return;
+                    modeControl.AutoCPUTemp();
+                });
             }
             if (e.Reason == SessionSwitchReason.SessionLock)
             {
@@ -340,6 +347,7 @@ namespace GHelper
         public enum PowerSource { Battery, USBC, Barrel }
 
         public static PowerSource currentSource = PowerSource.Battery;
+        private static PowerLineStatus lastLineStatus = SystemInformation.PowerStatus.PowerLineStatus;
         private static readonly System.Timers.Timer powerSettleTimer = new() { AutoReset = false };
 
         public static PowerSource ReadPowerSource()
@@ -379,12 +387,19 @@ namespace GHelper
             if (e.Mode == PowerModes.Suspend)
             {
                 Logger.WriteLine("Power Mode Changed:" + e.Mode.ToString());
+                gpuControl.StandardModeFix();
                 modeControl.ShutdownReset();
                 InputDispatcher.ShutdownStatusLed();
                 return;
             }
 
-            Logger.WriteLine($"Power Mode {e.Mode}: {SystemInformation.PowerStatus.PowerLineStatus}");
+            PowerLineStatus status = SystemInformation.PowerStatus.PowerLineStatus;
+            if (status != lastLineStatus)
+            {
+                lastLineStatus = status;
+                Logger.WriteLine($"Power Mode {e.Mode}: {status}");
+            }
+
             SchedulePowerCheck();
         }
 

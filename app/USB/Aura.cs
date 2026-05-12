@@ -177,7 +177,7 @@ namespace GHelper.USB
 
             modes[AuraMode.AuraStrobe] = Properties.Strings.AuraStrobe;
 
-            if (isStrixKb)
+            if (perKey)
             {
                 modes[AuraMode.Comet] = "Comet";
                 modes[AuraMode.Flash] = "Flash";

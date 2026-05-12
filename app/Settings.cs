@@ -1593,8 +1593,8 @@ namespace GHelper
 
         public async void RefreshSensors(bool force = false)
         {
-
-            if (!force && Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastRefresh) < 2000) return;
+            int throttle = (!Visible && sensorsAlways) ? 6000 : 2000;
+            if (!force && Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastRefresh) < throttle) return;
             lastRefresh = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
             string cpuTemp = "";
