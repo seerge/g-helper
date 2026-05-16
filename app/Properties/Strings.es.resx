@@ -894,9 +894,9 @@
     <value>Modo zona</value>
   </data>
   <data name="DisablePCIeASPM" xml:space="preserve">
-    <value>Desactivar la gestión de estado del enlace PCIe (con cargador)</value>
+    <value>Disable PCIe Link State Management (plugged in)</value>
   </data>
   <data name="StopStartNVServices" xml:space="preserve">
-    <value>Detener/iniciar servicios NVIDIA según el estado de la dGPU</value>
+    <value>Stop/Start NVIDIA services based on dGPU state</value>
   </data>
 </root>
