@@ -893,4 +893,10 @@ Vil du stadig fortsætte?</value>
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Zone Mode</value>
   </data>
+  <data name="DisablePCIeASPM" xml:space="preserve">
+    <value>Deaktiver PCIe Link State Management (tilsluttet strøm)</value>
+  </data>
+  <data name="StopStartNVServices" xml:space="preserve">
+    <value>Stop/start NVIDIA-tjenester baseret på dGPU-tilstand</value>
+  </data>
 </root>

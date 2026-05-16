@@ -893,4 +893,10 @@
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Zone Mode</value>
   </data>
+  <data name="DisablePCIeASPM" xml:space="preserve">
+    <value>تعطيل إدارة حالة وصلة PCIe (عند توصيل الشاحن)</value>
+  </data>
+  <data name="StopStartNVServices" xml:space="preserve">
+    <value>إيقاف/تشغيل خدمات NVIDIA حسب حالة بطاقة الرسومات المنفصلة</value>
+  </data>
 </root>

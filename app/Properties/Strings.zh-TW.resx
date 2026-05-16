@@ -893,4 +893,10 @@
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Zone 模式</value>
   </data>
+  <data name="DisablePCIeASPM" xml:space="preserve">
+    <value>停用 PCIe 連結狀態管理（接上電源時）</value>
+  </data>
+  <data name="StopStartNVServices" xml:space="preserve">
+    <value>根據獨顯狀態停止/啟動 NVIDIA 服務</value>
+  </data>
 </root>
