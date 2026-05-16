@@ -1038,20 +1038,19 @@ namespace GHelper.Input
             {
                 Aura.Init();
                 Aura.ApplyPower();
+                SetBacklightAuto();
                 Aura.ApplyAura();
             } else
             {
                 Logger.WriteLine("Skipping Aura");
             }
-
-            SetBacklightAuto(true);
         }
 
 
-        public static void SetBacklightAuto(bool init = false)
+        public static void SetBacklightAuto()
         {
             if (lidClose || tentMode) return;
-            Aura.ApplyBrightness(GetBacklight(), "Auto", init);
+            Aura.ApplyBrightness(GetBacklight(), "Auto");
             backlightActivity = true;
         }
 
