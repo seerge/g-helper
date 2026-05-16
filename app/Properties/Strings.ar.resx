@@ -894,9 +894,9 @@
     <value>Zone Mode</value>
   </data>
   <data name="DisablePCIeASPM" xml:space="preserve">
-    <value>Disable PCIe Link State Management (plugged in)</value>
+    <value>تعطيل إدارة حالة وصلة PCIe (عند توصيل الشاحن)</value>
   </data>
   <data name="StopStartNVServices" xml:space="preserve">
-    <value>Stop/Start NVIDIA services based on dGPU state</value>
+    <value>إيقاف/تشغيل خدمات NVIDIA حسب حالة بطاقة الرسومات المنفصلة</value>
   </data>
 </root>
