@@ -894,9 +894,9 @@
     <value>Zone Mode</value>
   </data>
   <data name="DisablePCIeASPM" xml:space="preserve">
-    <value>Disable PCIe Link State Management (plugged in)</value>
+    <value>PCIe 링크 상태 관리 비활성화 (전원 연결 시)</value>
   </data>
   <data name="StopStartNVServices" xml:space="preserve">
-    <value>Stop/Start NVIDIA services based on dGPU state</value>
+    <value>dGPU 상태에 따라 NVIDIA 서비스 중지/시작</value>
   </data>
 </root>
