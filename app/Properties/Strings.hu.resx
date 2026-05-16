@@ -894,9 +894,9 @@ Folytatni szeretnéd?</value>
     <value>Zóna mód</value>
   </data>
   <data name="DisablePCIeASPM" xml:space="preserve">
-    <value>PCIe energiagazdálkodás letiltása (hálózati áramellátáskor)</value>
+    <value>Disable PCIe Link State Management (plugged in)</value>
   </data>
   <data name="StopStartNVServices" xml:space="preserve">
-    <value>NVIDIA szolgáltatások leállítása/indítása a dGPU állapotától függően</value>
+    <value>Stop/Start NVIDIA services based on dGPU state</value>
   </data>
 </root>
