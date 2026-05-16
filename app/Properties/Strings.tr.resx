@@ -894,9 +894,9 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Zone Mode</value>
   </data>
   <data name="DisablePCIeASPM" xml:space="preserve">
-    <value>PCIe Bağlantı Durumu Yönetimini devre dışı bırak (şarjda)</value>
+    <value>Disable PCIe Link State Management (plugged in)</value>
   </data>
   <data name="StopStartNVServices" xml:space="preserve">
-    <value>dGPU durumuna göre NVIDIA hizmetlerini durdur/başlat</value>
+    <value>Stop/Start NVIDIA services based on dGPU state</value>
   </data>
 </root>
