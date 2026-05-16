@@ -894,9 +894,9 @@
     <value>Zone Mode</value>
   </data>
   <data name="DisablePCIeASPM" xml:space="preserve">
-    <value>Dezactivează gestionarea stării legăturii PCIe (la priză)</value>
+    <value>Disable PCIe Link State Management (plugged in)</value>
   </data>
   <data name="StopStartNVServices" xml:space="preserve">
-    <value>Oprește/pornește serviciile NVIDIA în funcție de starea dGPU</value>
+    <value>Stop/Start NVIDIA services based on dGPU state</value>
   </data>
 </root>
