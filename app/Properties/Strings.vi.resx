@@ -894,9 +894,9 @@ Bạn có muốn tiếp tục không?</value>
     <value>Zone Mode</value>
   </data>
   <data name="DisablePCIeASPM" xml:space="preserve">
-    <value>Tắt PCIe Link State Management (khi cắm sạc)</value>
+    <value>Disable PCIe Link State Management (plugged in)</value>
   </data>
   <data name="StopStartNVServices" xml:space="preserve">
-    <value>Dừng/khởi động dịch vụ NVIDIA theo trạng thái dGPU</value>
+    <value>Stop/Start NVIDIA services based on dGPU state</value>
   </data>
 </root>
