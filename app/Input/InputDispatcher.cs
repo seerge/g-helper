@@ -622,6 +622,9 @@ namespace GHelper.Input
                 case "fnlock":
                     ToggleFnLock();
                     break;
+                case "overlay":
+                    Program.settingsForm.BeginInvoke(Program.settingsForm.ToggleOverlay);
+                    break;
                 case "micmute":
                     ToggleMic();
                     break;

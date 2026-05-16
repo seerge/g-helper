@@ -130,10 +130,8 @@ namespace GHelper
             {
                 _cts.Cancel();
                 _cts.Dispose();
-                // Dispose fonts when form closes
                 _boldUnderlineFont.Dispose();
                 _font.Dispose();
-                MemoryHelper.TrimAfter();
             };
         }
 
