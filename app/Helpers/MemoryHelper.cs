@@ -26,9 +26,9 @@ namespace GHelper.Helpers
 
         private static void Trim()
         {
-            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, blocking: true, compacting: true);
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Optimized);
             GC.WaitForPendingFinalizers();
-            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, blocking: true, compacting: true);
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Optimized);
 
             using var p = System.Diagnostics.Process.GetCurrentProcess();
             SetProcessWorkingSetSize(p.Handle, -1, -1);
