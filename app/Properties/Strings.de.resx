@@ -894,9 +894,9 @@ Trotzdem fortfahren?</value>
     <value>Zone Mode</value>
   </data>
   <data name="DisablePCIeASPM" xml:space="preserve">
-    <value>PCIe-Link State Management deaktivieren (im Netzbetrieb)</value>
+    <value>Disable PCIe Link State Management (plugged in)</value>
   </data>
   <data name="StopStartNVServices" xml:space="preserve">
-    <value>NVIDIA-Dienste je nach dGPU-Status stoppen/starten</value>
+    <value>Stop/Start NVIDIA services based on dGPU state</value>
   </data>
 </root>
