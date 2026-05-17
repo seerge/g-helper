@@ -887,4 +887,10 @@ Chcete přesto pokračovat?</value>
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Režim zóny</value>
   </data>
+  <data name="DisablePCIeASPM" xml:space="preserve">
+    <value>Zakázat správu úsporného stavu PCIe (při napájení ze sítě)</value>
+  </data>
+  <data name="StopStartNVServices" xml:space="preserve">
+    <value>Zastavit/spustit služby NVIDIA podle stavu dGPU</value>
+  </data>
 </root>

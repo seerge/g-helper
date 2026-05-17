@@ -348,6 +348,7 @@ namespace GHelper.USB
                 (byte)AuraBacklightType.MultiZone => AuraBacklightType.MultiZone,
                 (byte)AuraBacklightType.PerKey => AuraBacklightType.PerKey,
                 (byte)AuraBacklightType.SingleZone => AuraBacklightType.SingleZone,
+                0x00 => AuraBacklightType.SingleZone,
                 _ => AuraBacklightType.Unknown
             };
 
@@ -390,22 +391,18 @@ namespace GHelper.USB
             if (!AppConfig.IsSleepBacklight() || !AppConfig.Is("keyboard_sleep")) ApplyBrightness(0, "Sleep");
         }
 
-        public static void ApplyBrightness(int brightness, string log = "Backlight", bool delay = false)
+        public static void ApplyBrightness(int brightness, string log = "Backlight")
         {
             if (brightness == 0) backlight = false;
 
-            Task.Run(async () =>
-            {
-                if (delay) await Task.Delay(TimeSpan.FromSeconds(1));
-                DirectBrightness(brightness, log);
-                if (AppConfig.IsAlly()) ApplyAura();
+            DirectBrightness(brightness, log);
+            if (AppConfig.IsAlly()) ApplyAura();
 
-                if (brightness > 0)
-                {
-                    if (!backlight) initDirect = true;
-                    backlight = true;
-                }
-            });
+            if (brightness > 0)
+            {
+                if (!backlight) initDirect = true;
+                backlight = true;
+            }
         }
 
         public static void DirectBrightness(int brightness, string log)

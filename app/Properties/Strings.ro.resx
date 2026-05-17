@@ -893,4 +893,10 @@
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Zone Mode</value>
   </data>
+  <data name="DisablePCIeASPM" xml:space="preserve">
+    <value>Dezactivează gestionarea stării legăturii PCIe (la priză)</value>
+  </data>
+  <data name="StopStartNVServices" xml:space="preserve">
+    <value>Oprește/pornește serviciile NVIDIA în funcție de starea dGPU</value>
+  </data>
 </root>

@@ -779,7 +779,16 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("DisableOverdrive", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Disable PCIe Link State Management (plugged in).
+        /// </summary>
+        internal static string DisablePCIeASPM {
+            get {
+                return ResourceManager.GetString("DisablePCIeASPM", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Discharging.
         /// </summary>
@@ -2149,7 +2158,16 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("StoppingServices", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Stop/Start NVIDIA services based on dGPU state.
+        /// </summary>
+        internal static string StopStartNVServices {
+            get {
+                return ResourceManager.GetString("StopStartNVServices", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Toggle Aura.
         /// </summary>

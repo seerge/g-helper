@@ -150,6 +150,8 @@ namespace GHelper
             labelBacklightLogo.Text = Properties.Strings.Logo;
 
             checkGpuApps.Text = Properties.Strings.KillGpuApps;
+            checkAspm.Text = Properties.Strings.DisablePCIeASPM;
+            checkNVPlatform.Text = Properties.Strings.StopStartNVServices;
             labelHibernateAfter.Text = Properties.Strings.HibernateAfter;
 
             labelAPUMem.Text = Properties.Strings.APUMemory;
@@ -423,6 +425,7 @@ namespace GHelper
             checkGpuApps.CheckedChanged += CheckGpuApps_CheckedChanged;
 
             int bootSound = Program.acpi.DeviceGet(AsusACPI.BootSound);
+            checkBootSound.Visible = bootSound >= 0;
             if (bootSound < 0 || bootSound > UInt16.MaxValue) bootSound = AppConfig.Get("boot_sound", 0);
 
             checkBootSound.Checked = (bootSound == 1);
