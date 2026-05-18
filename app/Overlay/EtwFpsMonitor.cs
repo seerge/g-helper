@@ -223,6 +223,13 @@ namespace GHelper.Overlay
         {
             _targetPid = targetPid;
 
+            // Kill any stale session left by a previous unclean exit. Otherwise StartTrace
+            // returns ERROR_ALREADY_EXISTS without populating sessionHandle, EnableTraceEx2
+            // silently fails against the invalid handle, and FPS stays at "--" until the
+            // user hides/shows the overlay (Stop() finds the orphaned session by name).
+            var stopProps = BuildSessionProperties();
+            StopTrace(0, SessionName, ref stopProps);
+
             // 1. Create the real-time ETW session
             var props = BuildSessionProperties();
             uint hr = StartTrace(out _sessionHandle, SessionName, ref props);
