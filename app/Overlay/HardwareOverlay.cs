@@ -496,6 +496,7 @@ namespace GHelper.Overlay
             _active = true;
             _lastFgPid = 0;
             _lightMode = AppConfig.Is("overlay_light_mode");
+            HardwareControl.ResetCPUPowerCounter();
 
             _fps?.Dispose();
             _currentFps = 0;

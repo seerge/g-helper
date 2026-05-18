@@ -496,6 +496,8 @@ public static class HardwareControl
     private static bool _cpuPowerCounterFailed;
     private static bool _cpuPowerInitStarted;
     private static int _cpuPowerNullTicks;
+    private static int _cpuPowerReadErrors;
+    private const int CpuPowerMaxReadErrors = 3;
     private static readonly string[] _powerCounterInstances = { "Apu Power", "RAPL_Package0_PKG", "CPU Power", "Socket Power", "Current Socket Power" };
 
     public static void InitCPUPowerAsync()
@@ -543,14 +545,29 @@ public static class HardwareControl
         catch
         {
             // Counter became invalid (e.g. after a fullscreen game exits on Intel).
-            // Reset so InitCPUPowerAsync can reinitialize it on the next overlay tick.
+            // Allow a few re-init attempts, then give up so we don't spawn a Task.Run
+            // every second forever on machines where the counter is permanently broken.
+            // ResetCPUPowerCounter() on overlay toggle gives it another fresh chance.
             _cpuPowerCounter?.Dispose();
             _cpuPowerCounter = null;
-            _cpuPowerCounterFailed = false;
-            _cpuPowerInitStarted = false;
+            if (++_cpuPowerReadErrors >= CpuPowerMaxReadErrors)
+            {
+                _cpuPowerCounterFailed = true;
+            }
+            else
+            {
+                _cpuPowerCounterFailed = false;
+                _cpuPowerInitStarted = false;
+            }
         }
 
         return null;
+    }
+
+    public static void ResetCPUPowerCounter()
+    {
+        _cpuPowerReadErrors = 0;
+        _cpuPowerCounterFailed = false;
     }
 
 
