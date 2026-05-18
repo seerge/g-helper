@@ -145,7 +145,7 @@ public class AmdGpuControl : IGpuControl
         return null;
     }
 
-    // Used by ROG Ally (iGPU-only) for auto-TDP logic — queries the integrated GPU adapter
+    // Used by ROG Ally (iGPU-only) for auto-TDP logic - queries the integrated GPU adapter
     public int GetiGpuPower()
     {
         if (_adlContextHandle == nint.Zero || _iGPU == null) return 0;
