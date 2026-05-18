@@ -30,6 +30,10 @@ namespace GHelper.Overlay
         [DllImport("user32.dll")]
         private static extern short GetAsyncKeyState(int vKey);
 
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetWindow(IntPtr hWnd, uint uCmd);
+        private const uint GW_HWNDPREV = 3;
+
         private const uint MONITOR_DEFAULTTOPRIMARY = 1;
         private const int MDT_EFFECTIVE_DPI = 0;
         private const int BaseDpi = 96;
@@ -263,9 +267,9 @@ namespace GHelper.Overlay
                 Cursor.Current = keysDown ? Cursors.Hand : Cursors.Default;
             }
 
-            if (Handle != nint.Zero)
+            if (Handle != nint.Zero && GetWindow(Handle, GW_HWNDPREV) != IntPtr.Zero)
                 SetWindowPos(Handle, HWND_TOPMOST, 0, 0, 0, 0,
-                SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+                    SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
 
             // Pin FPS counter to foreground process — queried every second so
             // switching games is handled automatically without manual configuration.
