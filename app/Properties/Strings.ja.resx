@@ -893,4 +893,10 @@
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Zoneモード</value>
   </data>
+  <data name="DisablePCIeASPM" xml:space="preserve">
+    <value>PCIe リンク状態管理を無効化（電源接続時）</value>
+  </data>
+  <data name="StopStartNVServices" xml:space="preserve">
+    <value>dGPU の状態に応じて NVIDIA サービスを停止／開始</value>
+  </data>
 </root>

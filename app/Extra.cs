@@ -151,6 +151,8 @@ namespace GHelper
             labelBacklightLogo.Text = Properties.Strings.Logo;
 
             checkGpuApps.Text = Properties.Strings.KillGpuApps;
+            checkAspm.Text = Properties.Strings.DisablePCIeASPM;
+            checkNVPlatform.Text = Properties.Strings.StopStartNVServices;
             labelHibernateAfter.Text = Properties.Strings.HibernateAfter;
 
             labelAPUMem.Text = Properties.Strings.APUMemory;

@@ -893,4 +893,10 @@ Sei sicuro di voler continuare?</value>
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Zone Mode</value>
   </data>
+  <data name="DisablePCIeASPM" xml:space="preserve">
+    <value>Disattiva PCIe Link State Management (collegato alla corrente)</value>
+  </data>
+  <data name="StopStartNVServices" xml:space="preserve">
+    <value>Arresta/avvia i servizi NVIDIA in base allo stato della dGPU</value>
+  </data>
 </root>

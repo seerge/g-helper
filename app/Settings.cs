@@ -2012,12 +2012,14 @@ namespace GHelper
                 bool hasBat = m.HasBattery();
                 bool charging = ready && hasBat && m.Charging;
                 int level = (ready && hasBat) ? Math.Min(5, (m.Battery + 10) / 20) : -1;
-                var state = (id, ready, charging, level, b.ForeColor.ToArgb());
+                bool showPercent = AppConfig.Is("mouse_battery") && ready && hasBat;
+                int cacheBattery = showPercent ? m.Battery : -1;
+                var state = (id, ready, charging, level, cacheBattery, b.ForeColor.ToArgb());
 
-                if (b.Tag is ValueTuple<string, bool, bool, int, int> prev && prev.Equals(state) && b.Visible)
+                if (b.Tag is ValueTuple<string, bool, bool, int, int, int> prev && prev.Equals(state) && b.Visible)
                     continue;
 
-                b.Text = id;
+                b.Text = showPercent ? id + "\n" + m.Battery + "%" : id;
 
                 Image? baseIcon = m.DeviceType() switch
                 {
