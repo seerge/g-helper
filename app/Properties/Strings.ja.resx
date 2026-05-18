@@ -899,4 +899,15 @@
   <data name="StopStartNVServices" xml:space="preserve">
     <value>dGPU の状態に応じて NVIDIA サービスを停止／開始</value>
   </data>
+  <data name="ClamshellModeTooltip" xml:space="preserve">
+    <value>電源接続中かつ外部モニターが接続されているとき、画面を閉じてもスリープしません</value>
+  </data>
+  <data name="NVPlatformTooltip" xml:space="preserve">
+    <value>独立 GPU が無効化されたときに NVIDIA サービスを停止し、
+GPU が有効化されたときに自動的に再起動します</value>
+  </data>
+  <data name="DisablePCIeASPMTooltip" xml:space="preserve">
+    <value>PCIe デバイスが低電力アイドル状態に入るのを防ぎます。
+ランダムなフリーズやハードウェアの無応答が発生する場合に推奨されます。</value>
+  </data>
 </root>

@@ -790,6 +790,33 @@ namespace GHelper.Properties {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Prevents PCIe devices from entering low-power idle states.
+        /// </summary>
+        internal static string DisablePCIeASPMTooltip {
+            get {
+                return ResourceManager.GetString("DisablePCIeASPMTooltip", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Stops NVIDIA services when the discrete GPU is disabled.
+        /// </summary>
+        internal static string NVPlatformTooltip {
+            get {
+                return ResourceManager.GetString("NVPlatformTooltip", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Disable sleep on lid close when plugged in and external monitor is connected.
+        /// </summary>
+        internal static string ClamshellModeTooltip {
+            get {
+                return ResourceManager.GetString("ClamshellModeTooltip", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Discharging.
         /// </summary>
         internal static string Discharging {
