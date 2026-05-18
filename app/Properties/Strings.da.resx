@@ -899,4 +899,15 @@ Vil du stadig fortsætte?</value>
   <data name="StopStartNVServices" xml:space="preserve">
     <value>Stop/start NVIDIA-tjenester baseret på dGPU-tilstand</value>
   </data>
+  <data name="ClamshellModeTooltip" xml:space="preserve">
+    <value>Deaktiver dvale ved låget lukket, når tilsluttet strøm og ekstern skærm er forbundet</value>
+  </data>
+  <data name="NVPlatformTooltip" xml:space="preserve">
+    <value>Stopper NVIDIA-tjenester, når den dedikerede GPU er deaktiveret,
+og genstarter dem automatisk, når GPU'en er aktiveret</value>
+  </data>
+  <data name="DisablePCIeASPMTooltip" xml:space="preserve">
+    <value>Forhindrer PCIe-enheder i at gå i lavenergi-inaktive tilstande.
+Anbefales, hvis du oplever tilfældige hængninger eller hardware, der ikke reagerer.</value>
+  </data>
 </root>

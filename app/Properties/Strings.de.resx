@@ -899,4 +899,15 @@ Trotzdem fortfahren?</value>
   <data name="StopStartNVServices" xml:space="preserve">
     <value>NVIDIA-Dienste je nach dGPU-Status stoppen/starten</value>
   </data>
+  <data name="ClamshellModeTooltip" xml:space="preserve">
+    <value>Ruhezustand beim Schließen des Deckels deaktivieren, wenn am Netz und ein externer Monitor angeschlossen ist</value>
+  </data>
+  <data name="NVPlatformTooltip" xml:space="preserve">
+    <value>Stoppt NVIDIA-Dienste, wenn die dedizierte GPU deaktiviert ist,
+und startet sie automatisch neu, wenn die GPU aktiviert wird</value>
+  </data>
+  <data name="DisablePCIeASPMTooltip" xml:space="preserve">
+    <value>Verhindert, dass PCIe-Geräte in energiesparende Leerlaufzustände wechseln.
+Empfohlen, wenn zufällige Hänger oder nicht reagierende Hardware auftreten.</value>
+  </data>
 </root>

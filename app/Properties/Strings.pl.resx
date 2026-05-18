@@ -899,4 +899,15 @@ Nadal chcesz kontynuować?</value>
   <data name="StopStartNVServices" xml:space="preserve">
     <value>Zatrzymuj/uruchamiaj usługi NVIDIA w zależności od stanu dGPU</value>
   </data>
+  <data name="ClamshellModeTooltip" xml:space="preserve">
+    <value>Wyłącz uśpienie po zamknięciu pokrywy, gdy podłączone zasilanie i monitor zewnętrzny</value>
+  </data>
+  <data name="NVPlatformTooltip" xml:space="preserve">
+    <value>Zatrzymuje usługi NVIDIA, gdy dedykowany GPU jest wyłączony,
+i automatycznie je uruchamia, gdy GPU jest włączony</value>
+  </data>
+  <data name="DisablePCIeASPMTooltip" xml:space="preserve">
+    <value>Zapobiega przechodzeniu urządzeń PCIe w stany niskiego poboru mocy.
+Zalecane, jeśli występują losowe zawieszenia lub niereagujący sprzęt.</value>
+  </data>
 </root>

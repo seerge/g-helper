@@ -899,4 +899,15 @@
   <data name="StopStartNVServices" xml:space="preserve">
     <value>إيقاف/تشغيل خدمات NVIDIA حسب حالة بطاقة الرسومات المنفصلة</value>
   </data>
+  <data name="ClamshellModeTooltip" xml:space="preserve">
+    <value>تعطيل وضع السكون عند إغلاق الغطاء أثناء توصيل الشاحن وتوصيل شاشة خارجية</value>
+  </data>
+  <data name="NVPlatformTooltip" xml:space="preserve">
+    <value>يوقف خدمات NVIDIA عند تعطيل بطاقة الرسومات المنفصلة
+ويعيد تشغيلها تلقائيًا عند تفعيلها</value>
+  </data>
+  <data name="DisablePCIeASPMTooltip" xml:space="preserve">
+    <value>يمنع أجهزة PCIe من الدخول في حالات الخمول منخفضة الطاقة.
+موصى به في حال حدوث تعليق عشوائي أو عدم استجابة الأجهزة.</value>
+  </data>
 </root>

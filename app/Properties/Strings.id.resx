@@ -899,4 +899,15 @@ Apakah Anda masih ingin melanjutkan?</value>
   <data name="StopStartNVServices" xml:space="preserve">
     <value>Hentikan/jalankan layanan NVIDIA berdasarkan status dGPU</value>
   </data>
+  <data name="ClamshellModeTooltip" xml:space="preserve">
+    <value>Nonaktifkan tidur saat tutup ditutup ketika tersambung daya dan monitor eksternal terhubung</value>
+  </data>
+  <data name="NVPlatformTooltip" xml:space="preserve">
+    <value>Menghentikan layanan NVIDIA saat GPU diskret dinonaktifkan
+dan menjalankannya kembali secara otomatis saat GPU diaktifkan</value>
+  </data>
+  <data name="DisablePCIeASPMTooltip" xml:space="preserve">
+    <value>Mencegah perangkat PCIe memasuki status idle hemat daya.
+Direkomendasikan jika Anda mengalami hang acak atau perangkat keras tidak responsif.</value>
+  </data>
 </root>

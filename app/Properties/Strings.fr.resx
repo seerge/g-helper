@@ -899,4 +899,15 @@ Voulez-vous continuer ?</value>
   <data name="StopStartNVServices" xml:space="preserve">
     <value>Arrêter/démarrer les services NVIDIA selon l'état du dGPU</value>
   </data>
+  <data name="ClamshellModeTooltip" xml:space="preserve">
+    <value>Désactiver la mise en veille à la fermeture du capot lorsque branché et qu'un écran externe est connecté</value>
+  </data>
+  <data name="NVPlatformTooltip" xml:space="preserve">
+    <value>Arrête les services NVIDIA lorsque le GPU dédié est désactivé
+et les redémarre automatiquement lorsqu'il est activé</value>
+  </data>
+  <data name="DisablePCIeASPMTooltip" xml:space="preserve">
+    <value>Empêche les périphériques PCIe d'entrer dans des états d'inactivité à faible consommation.
+Recommandé en cas de blocages aléatoires ou de matériel qui ne répond plus.</value>
+  </data>
 </root>
