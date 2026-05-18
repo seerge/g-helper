@@ -213,7 +213,6 @@ namespace GHelper.Overlay
         private long _traceHandle;
         private volatile int _targetPid;  // written by overlay timer thread, read by ETW callback thread
         private int _lastTargetPid;       // detects PID switches so the window can be reset
-        private bool _kernelFiltersApplied; // gate so kernel filters are pushed exactly once per session
 
         // When a game fires DXGI event 42, we prefer it over DxgKrnl to avoid double-counting.
         // Some DX12 games emit both — this flag suppresses DxgKrnl once DXGI is confirmed active
@@ -243,16 +242,14 @@ namespace GHelper.Overlay
             get => _targetPid;
             set
             {
+                if (_targetPid == value) return;
                 _targetPid = value;
-                // First time we have a real foreground PID, push kernel-side filters so
-                // events from every other GPU-using process are dropped before reaching
-                // our callback. Done exactly once — switching foreground later is handled
-                // by the callback-side ProcessId check (a hide/show re-applies the filter).
-                if (value != 0 && !_kernelFiltersApplied && _sessionHandle != 0)
-                {
-                    _kernelFiltersApplied = true;
+                // Push the kernel-side filter on every foreground PID change. One-shot
+                // doesn't work: if the user launches a game while the overlay is already
+                // open, the kernel filter would stay pinned to the previous foreground
+                // and events from the new game would be dropped before reaching us.
+                if (value != 0 && _sessionHandle != 0)
                     ApplyKernelFilters(value);
-                }
             }
         }
 
