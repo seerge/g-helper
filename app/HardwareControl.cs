@@ -634,26 +634,6 @@ public static class HardwareControl
         }
 
         gpuPower = GetGPUPower();
-
-        // Read only the fast IOCTL battery rate - skip health, WMI and design capacity queries
-        try
-        {
-            decimal? discharge = Program.acpi.GetBatteryDischarge();
-            if (discharge is not null)
-            {
-                batteryRate = discharge;
-            }
-            else
-            {
-                var directStatus = QueryBatteryStatus();
-                if (directStatus.HasValue && directStatus.Value.Rate != 0)
-                    batteryRate = (decimal)directStatus.Value.Rate / 1000;
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine("Overlay battery read: " + ex.Message);
-        }
     }
 
     public static double GetBatteryChargePercentage()
