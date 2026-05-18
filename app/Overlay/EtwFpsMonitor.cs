@@ -35,6 +35,12 @@ namespace GHelper.Overlay
         // so we don't receive every kernel GPU event system-wide (which would be very high volume).
         private const ulong DXGKRNL_KEYWORD_PRESENT = 0x0000040000000000UL;
 
+        // Kernel-side filter descriptors — applied once on first known foreground PID so we
+        // stop receiving events from every other GPU process system-wide.
+        private const uint EVENT_FILTER_TYPE_PID             = 0x80000004;
+        private const uint EVENT_FILTER_TYPE_EVENT_ID        = 0x80000200;
+        private const uint ENABLE_TRACE_PARAMETERS_VERSION_2 = 2;
+
         private const string SessionName = "FpsMonitorSession";
 
         // ── P/Invoke Structures ──────────────────────────────────────────────────
@@ -121,6 +127,27 @@ namespace GHelper.Overlay
             public ushort LoggerId;
         }
 
+        // Ptr is declared ULONGLONG in Windows headers (not a real pointer) so it's 8 bytes
+        // on every architecture — using ulong keeps the layout right regardless of bitness.
+        [StructLayout(LayoutKind.Sequential)]
+        private struct EVENT_FILTER_DESCRIPTOR
+        {
+            public ulong Ptr;
+            public uint  Size;
+            public uint  Type;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct ENABLE_TRACE_PARAMETERS
+        {
+            public uint   Version;
+            public uint   EnableProperty;
+            public uint   ControlFlags;
+            public Guid   SourceId;
+            public IntPtr EnableFilterDesc;
+            public uint   FilterDescCount;
+        }
+
         // ── EVENT_TRACE_LOGFILE — explicit layout with correct 64-bit offsets ───
         //
         // Native field map (x64):
@@ -186,6 +213,7 @@ namespace GHelper.Overlay
         private long _traceHandle;
         private volatile int _targetPid;  // written by overlay timer thread, read by ETW callback thread
         private int _lastTargetPid;       // detects PID switches so the window can be reset
+        private bool _kernelFiltersApplied; // gate so kernel filters are pushed exactly once per session
 
         // When a game fires DXGI event 42, we prefer it over DxgKrnl to avoid double-counting.
         // Some DX12 games emit both — this flag suppresses DxgKrnl once DXGI is confirmed active
@@ -210,7 +238,97 @@ namespace GHelper.Overlay
 
         /// Set to the foreground process PID to filter events.
         /// 0 = no target, no events counted (overlay shows "--").
-        public int TargetPid { get => _targetPid; set => _targetPid = value; }
+        public int TargetPid
+        {
+            get => _targetPid;
+            set
+            {
+                _targetPid = value;
+                // First time we have a real foreground PID, push kernel-side filters so
+                // events from every other GPU-using process are dropped before reaching
+                // our callback. Done exactly once — switching foreground later is handled
+                // by the callback-side ProcessId check (a hide/show re-applies the filter).
+                if (value != 0 && !_kernelFiltersApplied && _sessionHandle != 0)
+                {
+                    _kernelFiltersApplied = true;
+                    ApplyKernelFilters(value);
+                }
+            }
+        }
+
+        private void ApplyKernelFilters(int pid)
+        {
+            EnableProviderWithFilters(DxgiProviderId,    0,                       pid, applyDxgiEventIdFilter: true);
+            EnableProviderWithFilters(DxgKrnlProviderId, DXGKRNL_KEYWORD_PRESENT, pid, applyDxgiEventIdFilter: false);
+        }
+
+        // Re-enables a provider with EVENT_FILTER_TYPE_PID (+ EVENT_FILTER_TYPE_EVENT_ID for
+        // DXGI) so the kernel drops events from other processes before delivering them.
+        // ETW copies all filter buffers internally — they're freed immediately in the finally.
+        private void EnableProviderWithFilters(Guid providerId, ulong keyword, int pid, bool applyDxgiEventIdFilter)
+        {
+            int filterCount = applyDxgiEventIdFilter ? 2 : 1;
+            int descSize    = Marshal.SizeOf<EVENT_FILTER_DESCRIPTOR>();
+
+            IntPtr descs      = Marshal.AllocHGlobal(filterCount * descSize);
+            IntPtr pidBuf     = Marshal.AllocHGlobal(sizeof(uint));
+            IntPtr eventIdBuf = applyDxgiEventIdFilter ? Marshal.AllocHGlobal(8) : IntPtr.Zero;
+            IntPtr paramsPtr  = Marshal.AllocHGlobal(Marshal.SizeOf<ENABLE_TRACE_PARAMETERS>());
+
+            try
+            {
+                Marshal.WriteInt32(pidBuf, pid);
+                var pidDesc = new EVENT_FILTER_DESCRIPTOR
+                {
+                    Ptr  = (ulong)pidBuf.ToInt64(),
+                    Size = sizeof(uint),
+                    Type = EVENT_FILTER_TYPE_PID,
+                };
+                Marshal.StructureToPtr(pidDesc, descs, false);
+
+                if (applyDxgiEventIdFilter)
+                {
+                    // EVENT_FILTER_EVENT_ID: BOOLEAN FilterIn; UCHAR Reserved; USHORT Count;
+                    // USHORT Events[Count]. For Count=1 the descriptor is 6 bytes.
+                    Marshal.WriteByte (eventIdBuf, 0, 1);                        // FilterIn = true
+                    Marshal.WriteByte (eventIdBuf, 1, 0);                        // Reserved
+                    Marshal.WriteInt16(eventIdBuf, 2, 1);                        // Count = 1
+                    Marshal.WriteInt16(eventIdBuf, 4, EVENT_DXGI_PRESENT_START); // Events[0] = 42
+
+                    var eidDesc = new EVENT_FILTER_DESCRIPTOR
+                    {
+                        Ptr  = (ulong)eventIdBuf.ToInt64(),
+                        Size = 6,
+                        Type = EVENT_FILTER_TYPE_EVENT_ID,
+                    };
+                    Marshal.StructureToPtr(eidDesc, descs + descSize, false);
+                }
+
+                var enableParams = new ENABLE_TRACE_PARAMETERS
+                {
+                    Version          = ENABLE_TRACE_PARAMETERS_VERSION_2,
+                    EnableFilterDesc = descs,
+                    FilterDescCount  = (uint)filterCount,
+                };
+                Marshal.StructureToPtr(enableParams, paramsPtr, false);
+
+                uint hr = EnableTraceEx2(_sessionHandle, providerId,
+                    EVENT_CONTROL_CODE_ENABLE_PROVIDER,
+                    TRACE_LEVEL_INFORMATION, keyword, 0, 0, paramsPtr);
+                // Log on failure so a regression like the previous attempt is observable next
+                // time. Failure here is non-fatal: providers were already enabled unfiltered
+                // in Start(), so callback-side filtering continues to work.
+                if (hr != ERROR_SUCCESS)
+                    Logger.WriteLine($"EnableTraceEx2 (filter) failed for {providerId}: 0x{hr:X}");
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(paramsPtr);
+                if (eventIdBuf != IntPtr.Zero) Marshal.FreeHGlobal(eventIdBuf);
+                Marshal.FreeHGlobal(pidBuf);
+                Marshal.FreeHGlobal(descs);
+            }
+        }
 
         // ── Public API ───────────────────────────────────────────────────────────
 
@@ -362,9 +480,11 @@ namespace GHelper.Overlay
             LogFileNameOffset = 0,
             LoggerNameOffset = (uint)Marshal.OffsetOf<EVENT_TRACE_PROPERTIES>(
                 nameof(EVENT_TRACE_PROPERTIES.LoggerName)),
-            BufferSize = 4,           // 4 KB per buffer (minimum)
-            MinimumBuffers = 2,
-            MaximumBuffers = 4,
+            // Sized for bursty real-time delivery — the original 16 KB total budget
+            // (4 KB × 2-4) is enough to drop frames under heavy GPU activity.
+            BufferSize = 16,          // KB per buffer
+            MinimumBuffers = 8,
+            MaximumBuffers = 16,
         };
     }
 }
