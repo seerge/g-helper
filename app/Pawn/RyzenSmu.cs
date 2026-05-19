@@ -174,6 +174,43 @@ namespace PawnIO
             };
         }
 
+        // Reads core 0's DLDO PSM margin (curve optimizer value).
+        // No firmware "GetAll" exists; SetCoAll writes the same value to every core,
+        // so reading any one core verifies the active all-cores setting.
+        // Per-family Get opcodes via PSMU mailbox (ZenStates-Core SMUSettings):
+        //   Renoir/Cezanne          : 0xC3
+        //   Mobile/StrixPoint/Halo  : 0xE1
+        //   Raphael/DragonRange     : 0xD5
+        // StrixPoint/StrixHalo: no working Get opcode found on firmware v2909.4.0.
+        // 0xE1 (Phoenix) and 0xD5 (Zen5 desktop) are silently ACKed without writing args;
+        // 0xC3 (Cezanne legacy) is recognized but returns CmdRejectedPrereq, and the
+        // OcMode-enable opcodes are unknown (Phoenix MP1 0x2F/PSMU 0x17 both rejected).
+        // SENTINEL probe detects silently-ACKed no-ops on firmwares that differ from
+        // ZenStates-Core's documented opcodes.
+        public int? GetCo()
+        {
+            const uint SENTINEL = 0xCAFEBABE;
+
+            uint cmd = Family switch
+            {
+                CpuFamily.Renoir   => 0xC3,
+                CpuFamily.Mobile   => 0xE1,
+                CpuFamily.Raphael  => 0xD5,
+                _                  => 0,
+            };
+            if (cmd == 0) return null;
+
+            GetPsmuAddrs(out uint cmdAddr, out uint rspAddr, out uint argAddr);
+            if (cmdAddr == 0) return null;
+
+            if (MailboxRaw(cmdAddr, rspAddr, argAddr, cmd, new uint[] { SENTINEL }, out uint[] resp) != SmuStatus.OK
+                || resp[0] == SENTINEL)
+                return null;
+
+            ushort lo = (ushort)(resp[0] & 0xFFFF);
+            return (lo & 0x8000) != 0 ? lo - 0x10000 : lo;
+        }
+
         public SmuStatus SetCoGfx(int value)
         {
             uint v = EncodeCurve(value);

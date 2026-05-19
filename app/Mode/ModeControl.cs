@@ -541,6 +541,10 @@ namespace GHelper.Mode
                 string line = $"SPL: {lim.Stapm:F1}W | sPPT {lim.Slow:F1}W | fPPT {lim.Fast:F1}W";
                 if (lim.ApuSlow.HasValue) line += $" | APU {lim.ApuSlow.Value:F1}W";
                 line += $", Temp: {lim.TctlTemp:F0}°C";
+
+                int? co = smu.GetCo();
+                if (co.HasValue) line += $", CO: {co.Value}";
+
                 Logger.WriteLine("Ryzen Limits: " + line);
                 return line;
             }
