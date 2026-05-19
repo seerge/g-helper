@@ -510,6 +510,25 @@ public static class HardwareControl
 
         Task.Run(() =>
         {
+            // Try cached instance name first — skips the PerformanceCounterCategory
+            // enumeration which costs ~1–2 s on a cold perflib cache.
+            var cached = AppConfig.GetString("cpu_power_counter");
+            if (!string.IsNullOrEmpty(cached))
+            {
+                try
+                {
+                    var counter = new PerformanceCounter("Energy Meter", "Power", cached, true);
+                    counter.NextValue();
+                    _cpuPowerCounter = counter;
+                    Logger.WriteLine("CPU Power source (cached): " + cached);
+                    return;
+                }
+                catch
+                {
+                    AppConfig.Set("cpu_power_counter", "");
+                }
+            }
+
             try
             {
                 var category = new PerformanceCounterCategory("Energy Meter");
@@ -522,6 +541,7 @@ public static class HardwareControl
                         var counter = new PerformanceCounter("Energy Meter", "Power", name, true);
                         counter.NextValue();
                         _cpuPowerCounter = counter;
+                        AppConfig.Set("cpu_power_counter", name);
                         Logger.WriteLine("CPU Power source: " + name);
                         return;
                     }
@@ -584,24 +604,33 @@ public static class HardwareControl
 
         Task.Run(() =>
         {
-            try
-            {
-                var counter = new PerformanceCounter("Processor Information", "% Processor Utility", "_Total", true);
-                counter.NextValue();
-                _cpuUsageCounter = counter;
-            }
-            catch
+            // 0 = "Processor Information \ % Processor Utility" (preferred)
+            // 1 = "Processor \ % Processor Time" (fallback). Cached so we skip the
+            // failed first attempt on systems where only the fallback is available.
+            int path = AppConfig.Get("cpu_usage_counter", 0);
+
+            if (path == 0)
             {
                 try
                 {
-                    var counter = new PerformanceCounter("Processor", "% Processor Time", "_Total", true);
+                    var counter = new PerformanceCounter("Processor Information", "% Processor Utility", "_Total", true);
                     counter.NextValue();
                     _cpuUsageCounter = counter;
+                    return;
                 }
-                catch
-                {
-                    _cpuUsageCounterFailed = true;
-                }
+                catch { /* fall through */ }
+            }
+
+            try
+            {
+                var counter = new PerformanceCounter("Processor", "% Processor Time", "_Total", true);
+                counter.NextValue();
+                _cpuUsageCounter = counter;
+                AppConfig.Set("cpu_usage_counter", 1);
+            }
+            catch
+            {
+                _cpuUsageCounterFailed = true;
             }
         });
     }
