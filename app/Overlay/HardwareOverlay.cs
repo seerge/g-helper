@@ -1,4 +1,5 @@
 using GHelper.Helpers;
+using Microsoft.Win32;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Runtime.InteropServices;
@@ -523,6 +524,15 @@ namespace GHelper.Overlay
             AppConfig.Set("overlay_offset_y", offsetY);
         }
 
+        // Re-anchor the overlay after the user changes resolution or swaps the primary
+        // display — without this the absolute Location can end up off-screen or far
+        // from the corner the user originally pinned it to.
+        private void OnDisplaySettingsChanged(object? sender, EventArgs e)
+        {
+            if (!_active) return;
+            Program.settingsForm?.BeginInvoke(() => { if (_active) RestorePosition(); });
+        }
+
         private void RestorePosition()
         {
             int anchor = AppConfig.Get("overlay_anchor", -1);
@@ -545,6 +555,7 @@ namespace GHelper.Overlay
             _active = true;
             _lastFgPid = 0;
             _lightMode = AppConfig.Is("overlay_light_mode");
+            SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
             HardwareControl.ResetCPUPowerCounter();
 
             _fps?.Dispose();
@@ -569,6 +580,7 @@ namespace GHelper.Overlay
         public void StopOverlay()
         {
             _active = false;
+            SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
             _timer.Stop();
             _dragModeActive = false;
             _dragging = false;
