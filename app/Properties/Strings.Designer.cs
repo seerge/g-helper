@@ -2212,7 +2212,16 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("ToggleClamshellMode", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Modern Standby Assist.
+        /// </summary>
+        internal static string HibernateHelper {
+            get {
+                return ResourceManager.GetString("HibernateHelper", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Toggle Fn-Lock.
         /// </summary>
