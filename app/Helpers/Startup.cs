@@ -68,9 +68,6 @@ public class Startup
 
     private static Microsoft.Win32.TaskScheduler.Task? GetCurrentUserTask(TaskService taskService)
     {
-        var rootTask = taskService.RootFolder.AllTasks.FirstOrDefault(t => t.Name == taskName);
-        if (rootTask != null && IsTaskOwnedByCurrentUser(rootTask)) return rootTask;
-
         var folder = GetSubFolder(taskService);
         if (folder != null)
         {
@@ -78,8 +75,14 @@ public class Startup
             if (userTask != null) return userTask;
         }
 
+        var rootTask = taskService.RootFolder.AllTasks.FirstOrDefault(t => t.Name == taskName);
+        if (rootTask != null && IsTaskOwnedByCurrentUser(rootTask)) return rootTask;
+
         return null;
     }
+
+    private static bool IsLegacyRootTask(Microsoft.Win32.TaskScheduler.Task task) =>
+        task != null && task.Path.TrimStart('\\').Equals(taskName, StringComparison.OrdinalIgnoreCase);
 
     public static bool IsScheduled()
     {
@@ -148,15 +151,16 @@ public class Startup
                         }
                     }
 
-                    // One-time migration to ConsoleConnect trigger so fast-user-switch works
                     if (!needsReschedule)
                     {
+                        bool hasLogon = task.Definition.Triggers.OfType<LogonTrigger>().Any();
                         bool hasConsoleConnect = task.Definition.Triggers
                             .OfType<SessionStateChangeTrigger>()
                             .Any(t => t.StateChange == TaskSessionStateChangeType.ConsoleConnect);
-                        if (!hasConsoleConnect)
+
+                        if (!hasLogon || !hasConsoleConnect || IsLegacyRootTask(task))
                         {
-                            Logger.WriteLine("Migrating startup task to ConsoleConnect trigger");
+                            Logger.WriteLine("Migrating startup task layout/triggers");
                             needsReschedule = true;
                         }
                     }
@@ -178,7 +182,10 @@ public class Startup
                     Logger.WriteLine($"Can't check startup task: {ex.Message}");
                 }
 
-                if (taskService.RootFolder.AllTasks.FirstOrDefault(t => t.Name == chargeTaskName) == null) ScheduleCharge();
+                var subFolder = GetSubFolder(taskService);
+                bool chargeInSubFolder = subFolder != null && subFolder.AllTasks.Any(t => t.Name == chargeTaskName);
+                bool chargeAtRoot = taskService.RootFolder.AllTasks.Any(t => t.Name == chargeTaskName);
+                if (!chargeInSubFolder || chargeAtRoot) ScheduleCharge();
 
             }
         }
@@ -190,7 +197,12 @@ public class Startup
         {
             try
             {
-                taskService.RootFolder.DeleteTask(chargeTaskName);
+                var folder = GetSubFolder(taskService);
+                if (folder != null && folder.AllTasks.Any(t => t.Name == chargeTaskName))
+                    folder.DeleteTask(chargeTaskName);
+
+                if (taskService.RootFolder.AllTasks.Any(t => t.Name == chargeTaskName))
+                    taskService.RootFolder.DeleteTask(chargeTaskName);
             }
             catch (Exception e)
             {
@@ -204,7 +216,8 @@ public class Startup
 
         if (strExeFilePath is null) return;
 
-        using (TaskDefinition td = TaskService.Instance.NewTask())
+        using (TaskService taskService = new TaskService())
+        using (TaskDefinition td = taskService.NewTask())
         {
             td.RegistrationInfo.Description = "G-Helper Charge Limit";
             td.Triggers.Add(new BootTrigger());
@@ -225,8 +238,29 @@ public class Startup
 
             try
             {
-                TaskService.Instance.RootFolder.RegisterTaskDefinition(chargeTaskName, td);
+                var folder = GetSubFolder(taskService, create: true);
+                if (folder == null)
+                {
+                    Logger.WriteLine("Can't access GHelper task folder for charge task");
+                    return;
+                }
+
+                folder.RegisterTaskDefinition(chargeTaskName, td);
                 Logger.WriteLine("Charge limit task scheduled: " + strExeFilePath);
+
+                var legacy = taskService.RootFolder.AllTasks.FirstOrDefault(t => t.Name == chargeTaskName);
+                if (legacy != null)
+                {
+                    try
+                    {
+                        taskService.RootFolder.DeleteTask(chargeTaskName);
+                        Logger.WriteLine("Removed legacy root GHelperCharge task");
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.WriteLine("Can't remove legacy root charge task: " + ex.Message);
+                    }
+                }
             }
             catch (Exception e)
             {
@@ -244,6 +278,13 @@ public class Startup
 
             td.RegistrationInfo.Description = "G-Helper Auto Start";
 
+            // LogonTrigger fires on initial boot logon; ConsoleConnect fires on fast-user-switch back.
+            // No SessionUnlock — would relaunch on every sleep/wake for the same user.
+            td.Triggers.Add(new LogonTrigger
+            {
+                UserId = CurrentUserName,
+                Delay = TimeSpan.FromSeconds(1)
+            });
             td.Triggers.Add(new SessionStateChangeTrigger
             {
                 StateChange = TaskSessionStateChangeType.ConsoleConnect,
@@ -262,22 +303,34 @@ public class Startup
             td.Settings.DisallowStartIfOnBatteries = false;
             td.Settings.ExecutionTimeLimit = TimeSpan.Zero;
 
-            // Decide where to register: legacy root for single-user case, per-user subfolder for additional users
-            var rootTask = taskService.RootFolder.AllTasks.FirstOrDefault(t => t.Name == taskName);
-            bool useRoot = rootTask == null || IsTaskOwnedByCurrentUser(rootTask);
-
             try
             {
-                if (useRoot)
+                var folder = GetSubFolder(taskService, create: true);
+                if (folder == null)
                 {
-                    taskService.RootFolder.RegisterTaskDefinition(taskName, td);
-                    Logger.WriteLine("Startup task scheduled at root: " + strExeFilePath);
+                    if (ProcessHelper.IsUserAdministrator())
+                        MessageBox.Show("Can't create GHelper task folder in Task Scheduler. Try opening Task Scheduler manually and check permissions on the Task Scheduler Library root.", "Scheduler Error", MessageBoxButtons.OK);
+                    else
+                        ProcessHelper.RunAsAdmin();
                 }
                 else
                 {
-                    var folder = GetSubFolder(taskService, create: true);
-                    folder?.RegisterTaskDefinition(PerUserTaskName, td);
-                    Logger.WriteLine($"Startup task scheduled per-user ({PerUserTaskName}): " + strExeFilePath);
+                    folder.RegisterTaskDefinition(PerUserTaskName, td);
+                    Logger.WriteLine($"Startup task scheduled ({PerUserTaskName}): " + strExeFilePath);
+
+                    var legacy = taskService.RootFolder.AllTasks.FirstOrDefault(t => t.Name == taskName);
+                    if (legacy != null && IsTaskOwnedByCurrentUser(legacy))
+                    {
+                        try
+                        {
+                            taskService.RootFolder.DeleteTask(taskName);
+                            Logger.WriteLine("Removed legacy root GHelper task");
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.WriteLine("Can't remove legacy root task: " + ex.Message);
+                        }
+                    }
                 }
             }
             catch (Exception e)
@@ -289,6 +342,13 @@ public class Startup
             }
         }
 
+        try
+        {
+            if (!IsScheduled())
+                Logger.WriteLine("Warning: Schedule() returned but IsScheduled() is false");
+        }
+        catch { }
+
         ScheduleCharge();
 
     }
@@ -299,26 +359,21 @@ public class Startup
         {
             try
             {
+                var folder = GetSubFolder(taskService);
+                if (folder != null && folder.AllTasks.Any(t => t.Name == PerUserTaskName))
+                {
+                    folder.DeleteTask(PerUserTaskName);
+                    try
+                    {
+                        if (!folder.AllTasks.Any() && !folder.SubFolders.Any())
+                            taskService.RootFolder.DeleteFolder(subFolderName, false);
+                    }
+                    catch { }
+                }
+
                 var rootTask = taskService.RootFolder.AllTasks.FirstOrDefault(t => t.Name == taskName);
                 if (rootTask != null && IsTaskOwnedByCurrentUser(rootTask))
-                {
                     taskService.RootFolder.DeleteTask(taskName);
-                }
-                else
-                {
-                    var folder = GetSubFolder(taskService);
-                    if (folder != null && folder.AllTasks.Any(t => t.Name == PerUserTaskName))
-                    {
-                        folder.DeleteTask(PerUserTaskName);
-                        // Best-effort cleanup of empty subfolder
-                        try
-                        {
-                            if (!folder.AllTasks.Any() && !folder.SubFolders.Any())
-                                taskService.RootFolder.DeleteFolder(subFolderName, false);
-                        }
-                        catch { }
-                    }
-                }
             }
             catch (Exception e)
             {
