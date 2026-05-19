@@ -243,6 +243,8 @@ namespace GHelper
             sliderBattery.KeyUp += SliderBattery_KeyUp;
             sliderBattery.ValueChanged += SliderBattery_ValueChanged;
 
+            sliderBattery.Stops = BatteryControl.GetSupportedLimits(sliderBattery.Step);
+
             sensorTimer = new System.Timers.Timer(AppConfig.Get("sensor_timer", 1000));
             sensorTimer.Elapsed += OnTimedEvent;
             sensorTimer.Enabled = sensorsAlways;

@@ -72,14 +72,19 @@ namespace GHelper.UI
                 _step = value;
             }
         }
+
+        public int[]? Stops { get; set; }
+
         private int _value = 50;
         public int Value
         {
             get => _value;
             set
             {
-
-                value = (int)Math.Round(value / (float)_step) * _step;
+                if (Stops != null && Stops.Length > 0)
+                    value = Stops.MinBy(s => Math.Abs(s - value));
+                else
+                    value = (int)Math.Round(value / (float)_step) * _step;
 
                 if (_value != value)
                 {
@@ -107,16 +112,19 @@ namespace GHelper.UI
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-
             switch (e.KeyCode)
             {
                 case Keys.Right:
                 case Keys.Up:
-                    Value = Math.Min(Max, Value + Step);
+                    Value = Stops != null
+                        ? (Stops.FirstOrDefault(s => s > Value, Stops[^1]))
+                        : Math.Min(Max, Value + Step);
                     break;
                 case Keys.Left:
                 case Keys.Down:
-                    Value = Math.Max(Min, Value - Step);
+                    Value = Stops != null
+                        ? (Stops.LastOrDefault(s => s < Value, Stops[0]))
+                        : Math.Max(Min, Value - Step);
                     break;
             }
 
@@ -134,6 +142,17 @@ namespace GHelper.UI
             Brush brushBorder = new SolidBrush(borderColor);
 
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+
+            if (Stops != null && Stops.Length > 0 && Max > Min)
+            {
+                float snapRadius = _barSize.Height * 0.9f;
+                foreach (int stop in Stops)
+                {
+                    float x = _barSize.Width / (Max - Min) * (stop - Min) + _barPos.X;
+                    e.Graphics.FillCircle(brushEmpty, x, _thumbPos.Y, snapRadius);
+                }
+            }
+
             e.Graphics.FillRectangle(brushEmpty,
                 _barPos.X, _barPos.Y, _barSize.Width, _barSize.Height);
             e.Graphics.FillRectangle(brushAccent,
