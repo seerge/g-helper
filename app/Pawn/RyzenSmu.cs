@@ -296,10 +296,10 @@ namespace PawnIO
                 // RyzenAdj: offset 0x40 = float index 16
                 0x37 or 0x3F or 0x40 or 0x45 or 0x4C or 0x5D or 0x65 => 16,
 
-                // DragonRange / Raphael  (0x54xxxx)
-                // Not in RyzenAdj; empirically confirmed at float index 10
-                // from user PMTable log: [10]=95 matches known tctl limit.
-                0x54 => 10,
+                // DragonRange / Raphael      (0x54xxxx)
+                // FireRange / GraniteRidge   (0x62xxxx) — same AM5 layout
+                // Not in RyzenAdj; empirically confirmed at float index 10.
+                0x54 or 0x62 => 10,
 
                 _ => 16,   // safe fallback for any future unknown version
             };

@@ -38,6 +38,7 @@ namespace GHelper
               {"touchscreen", Properties.Strings.ToggleTouchscreen },
               {"micmute", Properties.Strings.MuteMic},
               {"ghelper", Properties.Strings.OpenGHelper},
+              {"overlay", "Hardware Overlay"},
               {"custom", Properties.Strings.Custom}
             };
 
@@ -151,6 +152,8 @@ namespace GHelper
             labelBacklightLogo.Text = Properties.Strings.Logo;
 
             checkGpuApps.Text = Properties.Strings.KillGpuApps;
+            checkAspm.Text = Properties.Strings.DisablePCIeASPM;
+            checkNVPlatform.Text = Properties.Strings.StopStartNVServices;
             labelHibernateAfter.Text = Properties.Strings.HibernateAfter;
 
             labelAPUMem.Text = Properties.Strings.APUMemory;
@@ -399,7 +402,7 @@ namespace GHelper
             checkAutoToggleClamshellMode.CheckedChanged += checkAutoToggleClamshellMode_CheckedChanged;
 
             int hibernateHelper = Program.acpi.GetHibernateHelper();
-            Logger.WriteLine($"Modern Standby Assist = {hibernateHelper} (endpoint = 0x{Program.acpi.HibernateHelperEndpoint:X})");
+            Logger.WriteLine($"Modern Standby Assist = {hibernateHelper}");
             checkHibernateHelper.Visible = hibernateHelper >= 0;
             checkHibernateHelper.Checked = hibernateHelper >= 1;
             checkHibernateHelper.CheckedChanged += CheckHibernateHelper_CheckedChanged;
@@ -430,6 +433,7 @@ namespace GHelper
             checkGpuApps.CheckedChanged += CheckGpuApps_CheckedChanged;
 
             int bootSound = Program.acpi.DeviceGet(AsusACPI.BootSound);
+            checkBootSound.Visible = bootSound >= 0;
             if (bootSound < 0 || bootSound > UInt16.MaxValue) bootSound = AppConfig.Get("boot_sound", 0);
 
             checkBootSound.Checked = (bootSound == 1);
@@ -465,9 +469,9 @@ namespace GHelper
             checkKeystoneSound.Checked = Keystone.IsEnabled();
             checkKeystoneSound.CheckedChanged += CheckKeystoneSoundCheckedChanged;
 
-            toolTip.SetToolTip(checkAutoToggleClamshellMode, "Disable sleep on lid close when plugged in and external monitor is connected");
-            toolTip.SetToolTip(checkNVPlatform, "Stops NVIDIA services when the discrete GPU is disabled\nand restarts them automatically when the GPU is enabled");
-            toolTip.SetToolTip(checkAspm, "Prevents PCIe devices from entering low-power idle states.\nRecommended if you experience random hangs or unresponsive hardware.");
+            toolTip.SetToolTip(checkAutoToggleClamshellMode, Properties.Strings.ClamshellModeTooltip);
+            toolTip.SetToolTip(checkNVPlatform, Properties.Strings.NVPlatformTooltip);
+            toolTip.SetToolTip(checkAspm, Properties.Strings.DisablePCIeASPMTooltip);
 
             InitCores();
             InitServices();
@@ -612,7 +616,7 @@ namespace GHelper
 
         private void CheckHibernateHelper_CheckedChanged(object? sender, EventArgs e)
         {
-            Program.acpi.SetHibernateHelper(checkHibernateHelper.Checked, (int)numericHibernateAfter.Value);
+            Program.acpi.SetHibernateHelper(checkHibernateHelper.Checked);
         }
 
         private void InitHibernate()
@@ -635,9 +639,7 @@ namespace GHelper
 
         private void NumericHibernateAfter_ValueChanged(object? sender, EventArgs e)
         {
-            int minutes = (int)numericHibernateAfter.Value;
-            PowerNative.SetHibernateAfter(minutes);
-            if (checkHibernateHelper.Checked) Program.acpi.SetHibernateHelper(true, minutes);
+            PowerNative.SetHibernateAfter((int)numericHibernateAfter.Value);
         }
 
         private void PictureLog_Click(object? sender, EventArgs e)

@@ -50,7 +50,7 @@ namespace GHelper.Mode
 
         public ModeControl()
         {
-            int reapplyTime = AppConfig.Get("reapply_time", 0);
+            int reapplyTime = AppConfig.Get("reapply_time", AppConfig.IsReapplyTempRequired() ? 30 : 0);
             if (reapplyTime > 0)
             {
                 reapplyTimer = new System.Timers.Timer(reapplyTime * 1000);
@@ -291,6 +291,9 @@ namespace GHelper.Mode
             Thread.Sleep(500);
             SetGPUPower();
             AutoRyzen();
+
+            if (AppConfig.IsReapplyRyzen())
+                Task.Delay(5000).ContinueWith(_ => { AutoRyzen(); ReadRyzenLimits(); });
 
         }
 
@@ -562,6 +565,22 @@ namespace GHelper.Mode
 
             if (AppConfig.IsApplyUV()) SetRyzen();
             else ResetRyzen();
+        }
+
+        public void AutoCPUTemp()
+        {
+            if (!CpuInfo.IsAMD) return;
+            if (!AppConfig.IsApplyUV()) return;
+            if (!ProcessHelper.IsUserAdministrator()) return;
+
+            try
+            {
+                SetCPUTemp(AppConfig.GetMode("cpu_temp"), true);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine("AutoCPUTemp Error: " + ex.Message);
+            }
         }
 
         public void ShutdownReset()

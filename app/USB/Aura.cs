@@ -1,6 +1,7 @@
 ﻿using GHelper.Gpu;
 using GHelper.Helpers;
 using GHelper.Input;
+using GHelper.Peripherals;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
@@ -176,7 +177,7 @@ namespace GHelper.USB
 
             modes[AuraMode.AuraStrobe] = Properties.Strings.AuraStrobe;
 
-            if (isStrixKb)
+            if (perKey)
             {
                 modes[AuraMode.Comet] = "Comet";
                 modes[AuraMode.Flash] = "Flash";
@@ -347,6 +348,7 @@ namespace GHelper.USB
                 (byte)AuraBacklightType.MultiZone => AuraBacklightType.MultiZone,
                 (byte)AuraBacklightType.PerKey => AuraBacklightType.PerKey,
                 (byte)AuraBacklightType.SingleZone => AuraBacklightType.SingleZone,
+                0x00 => AuraBacklightType.SingleZone,
                 _ => AuraBacklightType.Unknown
             };
 
@@ -354,7 +356,7 @@ namespace GHelper.USB
 
             AppConfig.Set("backlight_type", typeByte);
 
-            HasLogo = (feat1 & FEAT1_LOGO) != 0;
+            HasLogo = (feat1 & FEAT1_LOGO) != 0 || AppConfig.IsZ13();
             HasLightbar = (feat1 & FEAT1_LIGHTBAR) != 0;
             HasRearglow = (feat1 & FEAT1_REARGLOW) != 0;
 
@@ -389,22 +391,18 @@ namespace GHelper.USB
             if (!AppConfig.IsSleepBacklight() || !AppConfig.Is("keyboard_sleep")) ApplyBrightness(0, "Sleep");
         }
 
-        public static void ApplyBrightness(int brightness, string log = "Backlight", bool delay = false)
+        public static void ApplyBrightness(int brightness, string log = "Backlight")
         {
             if (brightness == 0) backlight = false;
 
-            Task.Run(async () =>
-            {
-                if (delay) await Task.Delay(TimeSpan.FromSeconds(1));
-                DirectBrightness(brightness, log);
-                if (AppConfig.IsAlly()) ApplyAura();
+            DirectBrightness(brightness, log);
+            if (AppConfig.IsAlly()) ApplyAura();
 
-                if (brightness > 0)
-                {
-                    if (!backlight) initDirect = true;
-                    backlight = true;
-                }
-            });
+            if (brightness > 0)
+            {
+                if (!backlight) initDirect = true;
+                backlight = true;
+            }
         }
 
         public static void DirectBrightness(int brightness, string log)
@@ -627,6 +625,9 @@ namespace GHelper.USB
 
         public static void ApplyDirect(Color[] color, bool init = false)
         {
+            if (color is { Length: > 0 })
+                PeripheralsProvider.StreamMouseColor(color.Length > 3 ? color[3] : color[0]);
+
             if (!backlight) return;
 
             const byte keySet = 167;
@@ -734,6 +735,7 @@ namespace GHelper.USB
 
         public static void ApplyDirect(Color color, bool init = false)
         {
+            PeripheralsProvider.StreamMouseColor(color);
 
             if (!backlight) return;
 
@@ -896,7 +898,14 @@ namespace GHelper.USB
                 return;
             }
 
-            int _speed = (Speed == AuraSpeed.Normal) ? 0xeb : (Speed == AuraSpeed.Fast) ? 0xf5 : 0xe1;
+            AuraSpeed effectiveSpeed = Speed;
+            if (PeripheralsProvider.IsAuraSync && (Mode == AuraMode.AuraBreathe || Mode == AuraMode.AuraColorCycle))
+                effectiveSpeed = AuraSpeed.Slow;
+
+            int _speed = (effectiveSpeed == AuraSpeed.Normal) ? 0xeb : (effectiveSpeed == AuraSpeed.Fast) ? 0xf5 : 0xe1;
+
+            PeripheralsProvider.SyncMiceWithKeyboardAura();
+
             AsusHid.Write(new List<byte[]> { AuraMessage(Mode, _Color1, _Color2, _speed), MESSAGE_SET, MESSAGE_APPLY }, "Aura", AsusHid.MAIN_AURA_PIDS);
             XGM.LightMode(Mode, _Color1, _Color2, _speed);
 
@@ -998,6 +1007,7 @@ namespace GHelper.USB
                         break;
                 }
 
+                PeripheralsProvider.StreamMouseColor(color);
                 if (isACPI) Program.acpi.TUFKeyboardRGB(AuraMode.AuraStatic, color, 0xeb, $"TUF RGB GPU {gpuMode}");
                 AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb), MESSAGE_APPLY, MESSAGE_SET });
 
@@ -1043,6 +1053,7 @@ namespace GHelper.USB
                 }
 
                 if (AppConfig.IsAlly()) color = ColorDim(color);
+                PeripheralsProvider.StreamMouseColor(color);
                 AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb), MESSAGE_APPLY, MESSAGE_SET });
                 if (isACPI) Program.acpi.TUFKeyboardRGB(AuraMode.AuraStatic, color, 0xeb);
             }

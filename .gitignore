@@ -367,3 +367,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 tools/
+app/*.lscache

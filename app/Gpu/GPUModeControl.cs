@@ -323,5 +323,14 @@ namespace GHelper.Gpu
             }
         }
 
+        public void StandardModeFix()
+        {
+            if (!AppConfig.IsStandardModeFix()) return;
+            if (Program.acpi.DeviceGet(AsusACPI.GPUMux) == 0) return; // Ultimate mode
+
+            Logger.WriteLine("Forcing Standard Mode on shutdown");
+            Program.acpi.SetGPUEco(0);
+        }
+
     }
 }

@@ -584,6 +584,9 @@ Bạn có muốn tiếp tục không?</value>
   <data name="MouseSynchronize" xml:space="preserve">
     <value>Synchronize with mouse</value>
   </data>
+  <data name="MouseSyncWithAura" xml:space="preserve">
+    <value>Sync with laptop</value>
+  </data>
   <data name="Multizone" xml:space="preserve">
     <value>Multi Zone</value>
   </data>
@@ -889,5 +892,22 @@ Bạn có muốn tiếp tục không?</value>
   </data>
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Zone Mode</value>
+  </data>
+  <data name="DisablePCIeASPM" xml:space="preserve">
+    <value>Tắt PCIe Link State Management (khi cắm sạc)</value>
+  </data>
+  <data name="StopStartNVServices" xml:space="preserve">
+    <value>Dừng/khởi động dịch vụ NVIDIA theo trạng thái dGPU</value>
+  </data>
+  <data name="ClamshellModeTooltip" xml:space="preserve">
+    <value>Tắt chế độ ngủ khi đóng nắp lúc đang cắm sạc và có màn hình ngoài kết nối</value>
+  </data>
+  <data name="NVPlatformTooltip" xml:space="preserve">
+    <value>Dừng các dịch vụ NVIDIA khi GPU rời bị tắt
+và tự khởi động lại khi GPU được bật</value>
+  </data>
+  <data name="DisablePCIeASPMTooltip" xml:space="preserve">
+    <value>Ngăn các thiết bị PCIe vào trạng thái nhàn rỗi tiết kiệm điện.
+Khuyến nghị nếu bạn gặp tình trạng treo ngẫu nhiên hoặc phần cứng không phản hồi.</value>
   </data>
 </root>

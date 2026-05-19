@@ -779,7 +779,43 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("DisableOverdrive", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Disable PCIe Link State Management (plugged in).
+        /// </summary>
+        internal static string DisablePCIeASPM {
+            get {
+                return ResourceManager.GetString("DisablePCIeASPM", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Prevents PCIe devices from entering low-power idle states.
+        /// </summary>
+        internal static string DisablePCIeASPMTooltip {
+            get {
+                return ResourceManager.GetString("DisablePCIeASPMTooltip", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Stops NVIDIA services when the discrete GPU is disabled.
+        /// </summary>
+        internal static string NVPlatformTooltip {
+            get {
+                return ResourceManager.GetString("NVPlatformTooltip", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Disable sleep on lid close when plugged in and external monitor is connected.
+        /// </summary>
+        internal static string ClamshellModeTooltip {
+            get {
+                return ResourceManager.GetString("ClamshellModeTooltip", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Discharging.
         /// </summary>
@@ -1555,7 +1591,16 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("MouseSynchronize", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Sync with laptop.
+        /// </summary>
+        internal static string MouseSyncWithAura {
+            get {
+                return ResourceManager.GetString("MouseSyncWithAura", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Zone Mode.
         /// </summary>
@@ -2140,7 +2185,16 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("StoppingServices", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Stop/Start NVIDIA services based on dGPU state.
+        /// </summary>
+        internal static string StopStartNVServices {
+            get {
+                return ResourceManager.GetString("StopStartNVServices", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Toggle Aura.
         /// </summary>

@@ -5,6 +5,7 @@ using GHelper.Gpu;
 using GHelper.Helpers;
 using GHelper.Input;
 using GHelper.Mode;
+using GHelper.Overlay;
 using GHelper.Peripherals;
 using GHelper.USB;
 using Microsoft.Win32;
@@ -31,7 +32,9 @@ namespace GHelper
 
         public static ToastForm toast;
 
-        public static IntPtr unRegPowerNotify, unRegPowerNotifyLid;
+        public static HardwareOverlay? hardwareOverlay;
+
+        public static IntPtr unRegPowerNotify, unRegPowerNotifyLid, unRegSuspendResume;
         public static int WM_TASKBARCREATED = 0;
 
         private static long lastAuto;
@@ -94,6 +97,8 @@ namespace GHelper
             allyControl = new AllyControl(settingsForm);
             clamshellControl = new ClamshellModeControl();
             toast = new ToastForm();
+
+            hardwareOverlay = new HardwareOverlay();
 
             ProcessHelper.CheckAlreadyRunning();
             ProcessHelper.SetPriority();
@@ -167,6 +172,7 @@ namespace GHelper
             // Subscribing for monitor power on events
             unRegPowerNotify = NativeMethods.RegisterPowerSettingNotification(settingsForm.Handle, PowerSettingGuid.ConsoleDisplayState, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
             unRegPowerNotifyLid = NativeMethods.RegisterPowerSettingNotification(settingsForm.Handle, PowerSettingGuid.LIDSWITCH_STATE_CHANGE, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
+            unRegSuspendResume = NativeMethods.RegisterSuspendResumeNotification(settingsForm.Handle, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
 
 
             Task task = Task.Run((Action)PeripheralsProvider.DetectAllAsusMice);
@@ -217,12 +223,16 @@ namespace GHelper
                 settingsForm.VisualiseArmoury(AsusService.IsArmouryRunning());
             });
 
+            if (AppConfig.Is("overlay"))
+                hardwareOverlay?.StartOverlay();
+
             Application.Run();
         }
 
 
         private static void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
         {
+            gpuControl.StandardModeFix();
             modeControl.ShutdownReset();
             BatteryControl.AutoBattery();
             InputDispatcher.ShutdownStatusLed();
@@ -233,8 +243,14 @@ namespace GHelper
             if (e.Reason == SessionSwitchReason.SessionLogon || e.Reason == SessionSwitchReason.SessionUnlock)
             {
                 Logger.WriteLine("Session:" + e.Reason.ToString());
+                bool wasLocked = Aura.sessionLock;
                 Aura.sessionLock = false;
                 ScreenControl.AutoScreen();
+                if (wasLocked) Task.Delay(2000).ContinueWith(_ =>
+                {
+                    if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < 10000) return;
+                    modeControl.AutoCPUTemp();
+                });
             }
             if (e.Reason == SessionSwitchReason.SessionLock)
             {
@@ -331,6 +347,7 @@ namespace GHelper
         public enum PowerSource { Battery, USBC, Barrel }
 
         public static PowerSource currentSource = PowerSource.Battery;
+        private static PowerLineStatus lastLineStatus = SystemInformation.PowerStatus.PowerLineStatus;
         private static readonly System.Timers.Timer powerSettleTimer = new() { AutoReset = false };
 
         public static PowerSource ReadPowerSource()
@@ -370,12 +387,19 @@ namespace GHelper
             if (e.Mode == PowerModes.Suspend)
             {
                 Logger.WriteLine("Power Mode Changed:" + e.Mode.ToString());
+                gpuControl.StandardModeFix();
                 modeControl.ShutdownReset();
                 InputDispatcher.ShutdownStatusLed();
                 return;
             }
 
-            Logger.WriteLine($"Power Mode {e.Mode}: {SystemInformation.PowerStatus.PowerLineStatus}");
+            PowerLineStatus status = SystemInformation.PowerStatus.PowerLineStatus;
+            if (status != lastLineStatus)
+            {
+                lastLineStatus = status;
+                Logger.WriteLine($"Power Mode {e.Mode}: {status}");
+            }
+
             SchedulePowerCheck();
         }
 
@@ -441,6 +465,7 @@ namespace GHelper
             clamshellControl.UnregisterDisplayEvents();
             NativeMethods.UnregisterPowerSettingNotification(unRegPowerNotify);
             NativeMethods.UnregisterPowerSettingNotification(unRegPowerNotifyLid);
+            NativeMethods.UnregisterSuspendResumeNotification(unRegSuspendResume);
             Application.Exit();
         }
 
