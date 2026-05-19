@@ -574,7 +574,7 @@ public static class AppConfig
 
     public static bool IsReapplyRyzen()
     {
-        return ContainsModel("G614F") || ContainsModel("G814F");
+        return ContainsModel("G614F") || ContainsModel("G814F") || ContainsModel("G733P");
     }
 
     public static bool IsFanRequired()
