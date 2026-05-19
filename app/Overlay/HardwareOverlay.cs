@@ -70,8 +70,9 @@ namespace GHelper.Overlay
         // └──────┴────────┴─────┴──────────┴────────┴────────┴────────┴─────┴──────┘
         // BaseLightWidth = 8 + 52 + 8 + 76 + 4 + 50 + 7 + 5 + 5 = 215
         //
-        // Each usage bar = 10 equal cells filling bottom-up; bar < lineH so the
-        // leftover gives a visual gap between GPU and CPU rows.
+        // Bar height is fixed per DPI (~BaseBarHeight * sc). Cell pitch is also integer
+        // per DPI, so the number of cells varies with available pixels — more cells at
+        // higher DPI, fewer at lower DPI — while every cell stays a clean integer height.
         //
         private const float BaseFontSize = 13f;
         private const float BaseRpmFontSize = 8.5f;
@@ -92,6 +93,8 @@ namespace GHelper.Overlay
         private const int BaseUsageBarGap = 7;        // gap between W letter and bar
         private const int BaseUsageBarWidth = 5;
         private const int BaseUsageBarRightPad = 5;   // replaces trailing padX next to bar
+        // Target bar height at base DPI; tuned so at 2x DPI numCells = 10 (matches earlier design).
+        private const int BaseUsageBarHeight = 15;
         private const int BaseLightWidth = BasePadX + BaseFpsColWidth + BaseColGap + BaseLightLeftColWidth + BasePowerGap + BasePowerColWidth + BaseUsageBarGap + BaseUsageBarWidth + BaseUsageBarRightPad;
 
         private static readonly SolidBrush _bgBrush = new(Color.FromArgb(128, 0, 0, 0));
@@ -397,30 +400,31 @@ namespace GHelper.Overlay
                 g.DrawString(_cpuPow, font, _cpuBrush,
                 new PointF(powX + powColW - g.MeasureString(_cpuPow, font).Width, textY + lineH + lineGap));
 
-            // Pitch = cell + sep. Separators are gaps between cells (overlay bg shows
-            // through) — not drawn on top, so every cell is pixel-identical.
-            // Use sepH=1 only when cells stay ≥ 2 px; otherwise the gap dominates.
+            // Fixed bar height per DPI; cellH grows with DPI but sepH stays 1, so
+            // higher DPI naturally fits more cells in the same proportional space.
+            int cellH = Math.Max(1, (int)Math.Floor(sc));
             int sepH = 1;
-            int cellH = (lineH - 6 - 9 * sepH) / 10;
-            if (cellH < 2) { sepH = 0; cellH = Math.Max(1, (lineH - 6) / 10); }
-            int barH = 10 * cellH + 9 * sepH;
+            int targetBarH = S(sc, BaseUsageBarHeight);
+            int pitch = cellH + sepH;
+            int numCells = Math.Max(2, (targetBarH + sepH) / pitch);
+            int barH = numCells * cellH + (numCells - 1) * sepH;
             int barYOff = (lineH - barH) / 2;
 
-            DrawUsageBar(g, barX, topY + barYOff, barW, cellH, sepH, _gpuUsage, _gpuBrush, _gpuFillBrush);
-            DrawUsageBar(g, barX, topY + lineH + lineGap + barYOff, barW, cellH, sepH, _cpuUsage, _cpuBrush, _cpuFillBrush);
+            DrawUsageBar(g, barX, topY + barYOff, barW, cellH, sepH, numCells, _gpuUsage, _gpuBrush, _gpuFillBrush);
+            DrawUsageBar(g, barX, topY + lineH + lineGap + barYOff, barW, cellH, sepH, numCells, _cpuUsage, _cpuBrush, _cpuFillBrush);
         }
 
-        private static void DrawUsageBar(Graphics g, int x, int y, int w, int cellH, int sepH, int usage, SolidBrush litBrush, SolidBrush dimBrush)
+        private static void DrawUsageBar(Graphics g, int x, int y, int w, int cellH, int sepH, int numCells, int usage, SolidBrush litBrush, SolidBrush dimBrush)
         {
             var prevSmoothing = g.SmoothingMode;
             g.SmoothingMode = SmoothingMode.None;
 
-            int lit = Math.Clamp((int)Math.Round(usage / 10f), 0, 10);
+            int lit = Math.Clamp((int)Math.Round(usage * numCells / 100f), 0, numCells);
             int pitch = cellH + sepH;
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < numCells; i++)
             {
-                bool isLit = i >= (10 - lit);
+                bool isLit = i >= (numCells - lit);
                 g.FillRectangle(isLit ? litBrush : dimBrush, x, y + i * pitch, w, cellH);
             }
 
