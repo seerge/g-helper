@@ -893,4 +893,21 @@ Yine de devam etmek istiyor musunuz?</value>
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Zone Mode</value>
   </data>
+  <data name="DisablePCIeASPM" xml:space="preserve">
+    <value>PCIe Bağlantı Durumu Yönetimini devre dışı bırak (şarjda)</value>
+  </data>
+  <data name="StopStartNVServices" xml:space="preserve">
+    <value>dGPU durumuna göre NVIDIA hizmetlerini durdur/başlat</value>
+  </data>
+  <data name="ClamshellModeTooltip" xml:space="preserve">
+    <value>Şarjda ve harici monitör bağlıyken kapağı kapatınca uyku moduna geçme</value>
+  </data>
+  <data name="NVPlatformTooltip" xml:space="preserve">
+    <value>Ayrık GPU devre dışıyken NVIDIA hizmetlerini durdurur
+ve GPU etkinleştirildiğinde otomatik olarak yeniden başlatır</value>
+  </data>
+  <data name="DisablePCIeASPMTooltip" xml:space="preserve">
+    <value>PCIe aygıtlarının düşük güçlü boşta durumlarına geçmesini engeller.
+Rastgele takılmalar veya yanıt vermeyen donanım yaşıyorsanız önerilir.</value>
+  </data>
 </root>

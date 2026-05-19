@@ -893,4 +893,21 @@
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Zone Mode</value>
   </data>
+  <data name="DisablePCIeASPM" xml:space="preserve">
+    <value>Dezactivează gestionarea stării legăturii PCIe (la priză)</value>
+  </data>
+  <data name="StopStartNVServices" xml:space="preserve">
+    <value>Oprește/pornește serviciile NVIDIA în funcție de starea dGPU</value>
+  </data>
+  <data name="ClamshellModeTooltip" xml:space="preserve">
+    <value>Dezactivează somnul la închiderea capacului când este la priză și monitorul extern este conectat</value>
+  </data>
+  <data name="NVPlatformTooltip" xml:space="preserve">
+    <value>Oprește serviciile NVIDIA când GPU-ul dedicat este dezactivat
+și le repornește automat când GPU-ul este activat</value>
+  </data>
+  <data name="DisablePCIeASPMTooltip" xml:space="preserve">
+    <value>Împiedică dispozitivele PCIe să intre în stări inactive cu consum redus.
+Recomandat dacă întâmpinați blocaje aleatorii sau hardware care nu răspunde.</value>
+  </data>
 </root>

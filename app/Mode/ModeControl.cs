@@ -292,6 +292,9 @@ namespace GHelper.Mode
             SetGPUPower();
             AutoRyzen();
 
+            if (AppConfig.IsReapplyRyzen())
+                Task.Delay(5000).ContinueWith(_ => { AutoRyzen(); ReadRyzenLimits(); });
+
         }
 
         public void SetModeLabel()

@@ -220,11 +220,11 @@ public class NvidiaGpuControl : IGpuControl
     }
 
 
-    private static bool RunPowershellCommand(string script)
+    private static bool RunPowershellCommand(string script, int timeoutMs = 0)
     {
         try
         {
-            ProcessHelper.RunCMD("powershell", script);
+            ProcessHelper.RunCMD("powershell", script, timeoutMs: timeoutMs);
             return true;
         }
         catch (Exception ex)
@@ -275,7 +275,7 @@ public class NvidiaGpuControl : IGpuControl
         if (!ProcessHelper.IsUserAdministrator()) return;
         if (NvBootState.DGpuArrivedAfterBoot())
         {
-            RunPowershellCommand(@"Restart-Service -Name 'NvContainerLocalSystem' -Force");
+            RunPowershellCommand(@"Restart-Service -Name 'NvContainerLocalSystem' -Force", 15000);
             NvBootState.MarkHandled();
         }
     }
@@ -283,15 +283,15 @@ public class NvidiaGpuControl : IGpuControl
     public static void RestartNVService()
     {
         if (!ProcessHelper.IsUserAdministrator()) return;
-        RunPowershellCommand(@"Restart-Service -Name 'NVDisplay.ContainerLocalSystem' -Force");
-        RunPowershellCommand(@"Restart-Service -Name 'NvContainerLocalSystem' -Force");
+        RunPowershellCommand(@"Restart-Service -Name 'NVDisplay.ContainerLocalSystem' -Force", 15000);
+        RunPowershellCommand(@"Restart-Service -Name 'NvContainerLocalSystem' -Force", 15000);
     }
 
     public static void StopNVService()
     {
         if (!ProcessHelper.IsUserAdministrator()) return;
-        RunPowershellCommand(@"Stop-Service -Name 'NvContainerLocalSystem' -Force");
-        RunPowershellCommand(@"Stop-Service -Name 'NVDisplay.ContainerLocalSystem' -Force");
+        RunPowershellCommand(@"Stop-Service -Name 'NvContainerLocalSystem' -Force", 15000);
+        RunPowershellCommand(@"Stop-Service -Name 'NVDisplay.ContainerLocalSystem' -Force", 15000);
     }
 
     public int SetClocks(int core, int memory)
@@ -350,14 +350,28 @@ public class NvidiaGpuControl : IGpuControl
 
     public int? GetGpuUse()
     {
-        if (!IsValid)
-            return null;
+        if (!IsValid) return null;
+         if (GetGpuState() != GpuState.Active) return null;
 
         PhysicalGPU internalGpu = _internalGpu!;
         IUtilizationDomainInfo? gpuUsage = GPUApi.GetUsages(internalGpu.Handle).GPU;
 
         return (int?)gpuUsage?.Percentage;
 
+    }
+
+
+    public float? GetGpuPower()
+    {
+        if (!IsValid) return null;
+        var state = GetGpuState();
+        if (state == GpuState.Off)
+        {
+            NvmlHelper.Shutdown();
+            return null;
+        }
+        if (state != GpuState.Active) return 0f;
+        return NvmlHelper.GetGpuPower() ?? 0f;
     }
 
 }

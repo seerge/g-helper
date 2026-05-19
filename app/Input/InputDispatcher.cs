@@ -179,6 +179,7 @@ namespace GHelper.Input
                 hook.RegisterHotKey(ModifierKeys.Shift, Keys.VolumeDown);
                 hook.RegisterHotKey(ModifierKeys.Shift, Keys.VolumeUp);
                 hook.RegisterHotKey(keyModifier, Keys.F20);
+                hook.RegisterHotKey(keyModifierAlt, Keys.O);
             }
 
             if (!AppConfig.IsZ13() && !AppConfig.IsAlly() && !AppConfig.IsVivoZenPro())
@@ -512,9 +513,11 @@ namespace GHelper.Input
                         Program.toast.RunToast(Properties.Strings.StandardMode);
                         Program.settingsForm.gpuControl.SetGPUMode(AsusACPI.GPUModeStandard);
                         break;
+                    case Keys.O:
+                        Program.settingsForm.BeginInvoke(Program.settingsForm.ToggleOverlay);
+                        break;
                 }
             }
-
 
             if (e.Modifier == (ModifierKeys.Control))
             {
@@ -618,6 +621,9 @@ namespace GHelper.Input
                     break;
                 case "fnlock":
                     ToggleFnLock();
+                    break;
+                case "overlay":
+                    Program.settingsForm.BeginInvoke(Program.settingsForm.ToggleOverlay);
                     break;
                 case "micmute":
                     ToggleMic();
@@ -1035,20 +1041,19 @@ namespace GHelper.Input
             {
                 Aura.Init();
                 Aura.ApplyPower();
+                SetBacklightAuto();
                 Aura.ApplyAura();
             } else
             {
                 Logger.WriteLine("Skipping Aura");
             }
-
-            SetBacklightAuto(true);
         }
 
 
-        public static void SetBacklightAuto(bool init = false)
+        public static void SetBacklightAuto()
         {
             if (lidClose || tentMode) return;
-            Aura.ApplyBrightness(GetBacklight(), "Auto", init);
+            Aura.ApplyBrightness(GetBacklight(), "Auto");
             backlightActivity = true;
         }
 
@@ -1140,37 +1145,29 @@ namespace GHelper.Input
             int cameraShutter = Program.acpi.DeviceGet(AsusACPI.CameraShutter);
             Logger.WriteLine("Camera Shutter status: " + cameraShutter);
 
-            if (cameraShutter == 0)
+            int state = cameraShutter & 1;
+            int feature = cameraShutter & ~1;
+
+            switch (feature)
             {
-                Program.acpi.DeviceSet(AsusACPI.CameraShutter, 1, "CameraShutterOn");
-                Program.toast.RunToast($"Camera Off");
-            }
-            else if (cameraShutter == 1)
-            {
-                Program.acpi.DeviceSet(AsusACPI.CameraShutter, 0, "CameraShutterOff");
-                Program.toast.RunToast($"Camera On");
-            }
-            else if (cameraShutter == 1048577)
-            {
-                Program.acpi.DeviceSet(AsusACPI.CameraShutter, 5, "CameraShutter");
-                Program.toast.RunToast($"Camera Off");
-            }
-            else if (cameraShutter == 1048576)
-            {
-                Program.acpi.DeviceSet(AsusACPI.CameraShutter, 4, "CameraShutter");
-                Program.toast.RunToast($"Camera On");
-            }
-            else if (cameraShutter == 262144)
-            {
-                Program.toast.RunToast($"Camera Off");
-            }
-            else if (cameraShutter == 262145)
-            {
-                Program.toast.RunToast($"Camera On");
-            }
-            else
-            {
-                SetCamera(2);
+                case 0x00000:
+                    Program.acpi.DeviceSet(AsusACPI.CameraShutter, state ^ 1,
+                        state == 0 ? "CameraShutterOn" : "CameraShutterOff");
+                    Program.toast.RunToast(state == 0 ? "Camera Off" : "Camera On");
+                    break;
+                case 0x40000:
+                    Program.toast.RunToast(state == 0 ? "Camera Off" : "Camera On");
+                    break;
+                case 0xC0000:
+                    SetCamera(state ^ 1);
+                    break;
+                case 0x100000:
+                    Program.acpi.DeviceSet(AsusACPI.CameraShutter, 4 | state, "CameraShutter");
+                    Program.toast.RunToast(state == 0 ? "Camera On" : "Camera Off");
+                    break;
+                default:
+                    SetCamera(2);
+                    break;
             }
         }
 

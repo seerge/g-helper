@@ -893,4 +893,21 @@ Vis tiek norite tęsti?</value>
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Zone Mode</value>
   </data>
+  <data name="DisablePCIeASPM" xml:space="preserve">
+    <value>Išjungti PCIe Link State Management (prijungus prie tinklo)</value>
+  </data>
+  <data name="StopStartNVServices" xml:space="preserve">
+    <value>Stabdyti/paleisti NVIDIA paslaugas pagal dGPU būseną</value>
+  </data>
+  <data name="ClamshellModeTooltip" xml:space="preserve">
+    <value>Išjungti miego režimą uždarius dangtį, kai prijungtas prie tinklo ir prijungtas išorinis monitorius</value>
+  </data>
+  <data name="NVPlatformTooltip" xml:space="preserve">
+    <value>Sustabdo NVIDIA paslaugas, kai diskretinis GPU yra išjungtas,
+ir automatiškai jas paleidžia, kai GPU yra įjungtas</value>
+  </data>
+  <data name="DisablePCIeASPMTooltip" xml:space="preserve">
+    <value>Neleidžia PCIe įrenginiams pereiti į mažo energijos suvartojimo budėjimo būsenas.
+Rekomenduojama, jei pastebėjote atsitiktinius užstrigimus ar nereaguojančią aparatinę įrangą.</value>
+  </data>
 </root>

@@ -11,6 +11,7 @@ namespace GHelper.Helpers
         private byte _alpha = 250;
         private Size _size = new Size(350, 50);
         private Point _location = new Point(50, 50);
+        private readonly object _paintLock = new();
 
 
         protected virtual void PerformPaint(PaintEventArgs e)
@@ -23,37 +24,45 @@ namespace GHelper.Helpers
         }
         private void UpdateLayeredWindow()
         {
-            using Bitmap bitmap1 = new Bitmap(Size.Width, Size.Height, PixelFormat.Format32bppArgb);
-            using (Graphics graphics1 = Graphics.FromImage(bitmap1))
+            if (!Monitor.TryEnter(_paintLock)) return;
+            try
             {
-                Rectangle rectangle1;
-                SIZE size1;
-                POINT point1;
-                POINT point2;
-                BLENDFUNCTION blendfunction1;
-                rectangle1 = new Rectangle(0, 0, Size.Width, Size.Height);
-                PerformPaint(new PaintEventArgs(graphics1, rectangle1));
-                nint ptr1 = User32.GetDC(nint.Zero);
-                nint ptr2 = Gdi32.CreateCompatibleDC(ptr1);
-                nint ptr3 = bitmap1.GetHbitmap(Color.FromArgb(0));
-                nint ptr4 = Gdi32.SelectObject(ptr2, ptr3);
-                size1.cx = Size.Width;
-                size1.cy = Size.Height;
-                point1.x = Location.X;
-                point1.x = Location.X;
-                point1.y = Location.Y;
-                point2.x = 0;
-                point2.y = 0;
-                blendfunction1 = new BLENDFUNCTION();
-                blendfunction1.BlendOp = 0;
-                blendfunction1.BlendFlags = 0;
-                blendfunction1.SourceConstantAlpha = _alpha;
-                blendfunction1.AlphaFormat = 1;
-                User32.UpdateLayeredWindow(Handle, ptr1, ref point1, ref size1, ptr2, ref point2, 0, ref blendfunction1, 2); //2=ULW_ALPHA
-                Gdi32.SelectObject(ptr2, ptr4);
-                User32.ReleaseDC(nint.Zero, ptr1);
-                Gdi32.DeleteObject(ptr3);
-                Gdi32.DeleteDC(ptr2);
+                using Bitmap bitmap1 = new Bitmap(Size.Width, Size.Height, PixelFormat.Format32bppArgb);
+                using (Graphics graphics1 = Graphics.FromImage(bitmap1))
+                {
+                    Rectangle rectangle1;
+                    SIZE size1;
+                    POINT point1;
+                    POINT point2;
+                    BLENDFUNCTION blendfunction1;
+                    rectangle1 = new Rectangle(0, 0, Size.Width, Size.Height);
+                    PerformPaint(new PaintEventArgs(graphics1, rectangle1));
+                    nint ptr1 = User32.GetDC(nint.Zero);
+                    nint ptr2 = Gdi32.CreateCompatibleDC(ptr1);
+                    nint ptr3 = bitmap1.GetHbitmap(Color.FromArgb(0));
+                    nint ptr4 = Gdi32.SelectObject(ptr2, ptr3);
+                    size1.cx = Size.Width;
+                    size1.cy = Size.Height;
+                    point1.x = Location.X;
+                    point1.x = Location.X;
+                    point1.y = Location.Y;
+                    point2.x = 0;
+                    point2.y = 0;
+                    blendfunction1 = new BLENDFUNCTION();
+                    blendfunction1.BlendOp = 0;
+                    blendfunction1.BlendFlags = 0;
+                    blendfunction1.SourceConstantAlpha = _alpha;
+                    blendfunction1.AlphaFormat = 1;
+                    User32.UpdateLayeredWindow(Handle, ptr1, ref point1, ref size1, ptr2, ref point2, 0, ref blendfunction1, 2); //2=ULW_ALPHA
+                    Gdi32.SelectObject(ptr2, ptr4);
+                    User32.ReleaseDC(nint.Zero, ptr1);
+                    Gdi32.DeleteObject(ptr3);
+                    Gdi32.DeleteDC(ptr2);
+                }
+            }
+            finally
+            {
+                Monitor.Exit(_paintLock);
             }
         }
 

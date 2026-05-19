@@ -893,4 +893,21 @@ Do you still want to continue?</value>
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Zone Mode</value>
   </data>
+  <data name="DisablePCIeASPM" xml:space="preserve">
+    <value>Disable PCIe Link State Management (plugged in)</value>
+  </data>
+  <data name="StopStartNVServices" xml:space="preserve">
+    <value>Stop/Start NVIDIA services based on dGPU state</value>
+  </data>
+  <data name="ClamshellModeTooltip" xml:space="preserve">
+    <value>Disable sleep on lid close when plugged in and external monitor is connected</value>
+  </data>
+  <data name="NVPlatformTooltip" xml:space="preserve">
+    <value>Stops NVIDIA services when the discrete GPU is disabled
+and restarts them automatically when the GPU is enabled</value>
+  </data>
+  <data name="DisablePCIeASPMTooltip" xml:space="preserve">
+    <value>Prevents PCIe devices from entering low-power idle states.
+Recommended if you experience random hangs or unresponsive hardware.</value>
+  </data>
 </root>

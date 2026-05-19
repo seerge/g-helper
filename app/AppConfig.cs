@@ -473,7 +473,7 @@ public static class AppConfig
 
     public static bool IsNoDirectRGB()
     {
-        return ContainsModel("GA503") || ContainsModel("G533Q") || ContainsModel("GU502");
+        return ContainsModel("GA503") || ContainsModel("G533Q") || ContainsModel("GU502") || IsSlash();
     }
 
     public static bool IsStrixNumpad()
@@ -570,6 +570,11 @@ public static class AppConfig
     public static bool IsReapplyTempRequired()
     {
         return ContainsModel("GA402");
+    }
+
+    public static bool IsReapplyRyzen()
+    {
+        return ContainsModel("G614F") || ContainsModel("G814F") || ContainsModel("G733P");
     }
 
     public static bool IsFanRequired()

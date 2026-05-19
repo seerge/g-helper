@@ -893,4 +893,21 @@
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Zone Mode</value>
   </data>
+  <data name="DisablePCIeASPM" xml:space="preserve">
+    <value>PCIe 링크 상태 관리 비활성화 (전원 연결 시)</value>
+  </data>
+  <data name="StopStartNVServices" xml:space="preserve">
+    <value>dGPU 상태에 따라 NVIDIA 서비스 중지/시작</value>
+  </data>
+  <data name="ClamshellModeTooltip" xml:space="preserve">
+    <value>전원 연결 및 외부 모니터 연결 시 화면을 닫아도 절전 모드로 전환하지 않음</value>
+  </data>
+  <data name="NVPlatformTooltip" xml:space="preserve">
+    <value>외장 GPU가 비활성화될 때 NVIDIA 서비스를 중지하고
+GPU가 활성화될 때 자동으로 다시 시작합니다</value>
+  </data>
+  <data name="DisablePCIeASPMTooltip" xml:space="preserve">
+    <value>PCIe 장치가 저전력 유휴 상태로 진입하는 것을 방지합니다.
+무작위 멈춤이나 응답하지 않는 하드웨어가 발생하는 경우 권장됩니다.</value>
+  </data>
 </root>

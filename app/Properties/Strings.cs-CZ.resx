@@ -887,4 +887,21 @@ Chcete přesto pokračovat?</value>
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Režim zóny</value>
   </data>
+  <data name="DisablePCIeASPM" xml:space="preserve">
+    <value>Zakázat správu úsporného stavu PCIe (při napájení ze sítě)</value>
+  </data>
+  <data name="StopStartNVServices" xml:space="preserve">
+    <value>Zastavit/spustit služby NVIDIA podle stavu dGPU</value>
+  </data>
+  <data name="ClamshellModeTooltip" xml:space="preserve">
+    <value>Zakázat uspání při zavření víka, pokud je notebook napájen ze sítě a je připojen externí monitor</value>
+  </data>
+  <data name="NVPlatformTooltip" xml:space="preserve">
+    <value>Zastaví služby NVIDIA, když je dedikované GPU vypnuté,
+a automaticky je spustí, jakmile je GPU zapnuté</value>
+  </data>
+  <data name="DisablePCIeASPMTooltip" xml:space="preserve">
+    <value>Zabraňuje zařízením PCIe vstoupit do nízkoenergetických nečinných stavů.
+Doporučeno, pokud zaznamenáváte náhodné zaseknutí nebo nereagující hardware.</value>
+  </data>
 </root>
