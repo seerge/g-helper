@@ -53,7 +53,11 @@ namespace GHelper.Helpers
                     exitEvent.Set();
                     exitEvent.Reset();
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    Logger.WriteLine("Broadcast exit failed: " + ex.Message);
+                    exitEvent = null;
+                }
             }
 
             using Process currentProcess = Process.GetCurrentProcess();
@@ -82,12 +86,18 @@ namespace GHelper.Helpers
                         Thread.Sleep(2000);
 
                         foreach (var p in failed)
-                            if (!p.HasExited)
+                        {
+                            bool stillAlive;
+                            try { stillAlive = !p.HasExited; }
+                            catch { stillAlive = true; }
+
+                            if (stillAlive)
                             {
                                 MessageBox.Show(Properties.Strings.AppAlreadyRunningText, Properties.Strings.AppAlreadyRunning, MessageBoxButtons.OK);
                                 Application.Exit();
                                 return;
                             }
+                        }
                     }
                 }
             }
