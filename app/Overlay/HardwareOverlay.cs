@@ -467,12 +467,17 @@ namespace GHelper.Overlay
                 _gpuPts[i]  = new PointF(px, y + h - cpuH - gpuH);
             }
 
+            var saved = g.Save();
+            g.SetClip(new RectangleF(x, y, w, h));
+
             FillArea(g, _cpuPts, _basePts, _cpuFillBrush);
             g.DrawLines(_cpuLinePen, _cpuPts);
             FillArea(g, _gpuPts, _cpuPts, _gpuFillBrush);
             g.DrawLines(_gpuLinePen, _gpuPts);
 
             g.DrawLines(_totalPen!, _gpuPts);
+
+            g.Restore(saved);
             g.DrawLine(_axPen!, x, y + h, x + w, y + h);
         }
 
