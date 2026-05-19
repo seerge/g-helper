@@ -153,7 +153,7 @@ namespace GHelper.Helpers
             }
         }
 
-        public static string RunCMD(string name, string args, string? directory = null)
+        public static string RunCMD(string name, string args, string? directory = null, int timeoutMs = 0)
         {
             using var cmd = new Process();
             cmd.StartInfo.UseShellExecute = false;
@@ -165,9 +165,27 @@ namespace GHelper.Helpers
             if (directory != null) cmd.StartInfo.WorkingDirectory = directory;
             cmd.Start();
 
-
             var watch = Stopwatch.StartNew();
-            string result = cmd.StandardOutput.ReadToEnd().Replace(Environment.NewLine, " ").Trim(' ');
+            string result;
+
+            if (timeoutMs > 0)
+            {
+                var readTask = cmd.StandardOutput.ReadToEndAsync();
+                if (!readTask.Wait(timeoutMs))
+                {
+                    try { cmd.Kill(entireProcessTree: true); } catch { }
+                    watch.Stop();
+                    Logger.WriteLine(name + " " + args);
+                    Logger.WriteLine($"{watch.ElapsedMilliseconds} ms: TIMEOUT after {timeoutMs} ms");
+                    return string.Empty;
+                }
+                result = readTask.Result.Replace(Environment.NewLine, " ").Trim(' ');
+            }
+            else
+            {
+                result = cmd.StandardOutput.ReadToEnd().Replace(Environment.NewLine, " ").Trim(' ');
+            }
+
             watch.Stop();
             Logger.WriteLine(name + " " + args);
             Logger.WriteLine(watch.ElapsedMilliseconds + " ms: " + result);
