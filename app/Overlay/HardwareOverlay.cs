@@ -56,18 +56,21 @@ namespace GHelper.Overlay
         // ── Layout constants (base = 96 dpi) ─────────────────────────────────
         //
         // Full mode:
-        // ┌─padX─┬─fpsCol─┬─gap─┬─── leftCol ─────┬─gap─┬─chartCol─┬─pwrGap─┬─powCol─┬─padX─┐
-        // │      │  fps   │     │ GPU: 82° 5300RPM│     │  chart   │        │ 111.3W │      │
-        // │      │        │     │ CPU: 78° 4500RPM│     │          │        │  16.9W │      │
-        // └──────┴────────┴─────┴─────────────────┴─────┴──────────┴────────┴────────┴──────┘
-        // BaseWidth = 8 + 52 + 8 + 128 + 8 + 120 + 4 + 50 + 8 = 386
+        // ┌─padX─┬─fpsCol─┬─gap─┬─── leftCol ─────┬─gap─┬─chartCol─┬─pwrGap─┬─powCol─┬─barGap─┬─bar─┬─padX─┐
+        // │      │  fps   │     │ GPU: 82° 5300RPM│     │  chart   │        │ 111.3W │        │ ▓▓▓ │      │
+        // │      │        │     │ CPU: 78° 4500RPM│     │          │        │  16.9W │        │ ▒▒▒ │      │
+        // └──────┴────────┴─────┴─────────────────┴─────┴──────────┴────────┴────────┴────────┴─────┴──────┘
+        // BaseWidth = 8 + 52 + 8 + 128 + 8 + 120 + 4 + 50 + 7 + 5 + 5 = 395
         //
         // Light mode (no chart, no fan RPM — narrower left col fits "GPU: 82° "):
-        // ┌─padX─┬─fpsCol─┬─gap─┬─lightCol─┬─pwrGap─┬─powCol─┬─padX─┐
-        // │      │  fps   │     │ GPU: 82° │        │ 111.3W │      │
-        // │      │        │     │ CPU: 78° │        │  16.9W │      │
-        // └──────┴────────┴─────┴──────────┴────────┴────────┴──────┘
-        // BaseLightWidth = 8 + 52 + 8 + 76 + 4 + 50 + 8 = 206
+        // ┌─padX─┬─fpsCol─┬─gap─┬─lightCol─┬─pwrGap─┬─powCol─┬─barGap─┬─bar─┬─rPad─┐
+        // │      │  fps   │     │ GPU: 82° │        │ 111.3W │        │ ▓▓▓ │      │
+        // │      │        │     │ CPU: 78° │        │  16.9W │        │ ▒▒▒ │      │
+        // └──────┴────────┴─────┴──────────┴────────┴────────┴────────┴─────┴──────┘
+        // BaseLightWidth = 8 + 52 + 8 + 76 + 4 + 50 + 7 + 5 + 5 = 215
+        //
+        // Each usage bar = 10 equal cells filling bottom-up; bar < lineH so the
+        // leftover gives a visual gap between GPU and CPU rows.
         //
         private const float BaseFontSize = 13f;
         private const float BaseRpmFontSize = 8.5f;
@@ -75,7 +78,7 @@ namespace GHelper.Overlay
         private const int BaseLineSpacing = 1;
         private const int BasePadX = 8;
         private const int BasePadY = 4;
-        private const int BaseWidth = 386;
+        private const int BaseWidth = BasePadX + BaseFpsColWidth + BaseColGap + BaseLeftColWidth + BaseColGap + BaseChartColWidth + BasePowerGap + BasePowerColWidth + BaseUsageBarGap + BaseUsageBarWidth + BaseUsageBarRightPad;
         private const int BaseFpsColWidth = 52;
         private const int BaseLeftColWidth = 128;
         private const int BaseChartColWidth = 120;
@@ -85,7 +88,10 @@ namespace GHelper.Overlay
         private const int CornerRadius = 3;
         private const int MarginFromEdge = 10;
         private const int BaseLightLeftColWidth = 76; // fits "GPU: 82° " (9 Consolas chars) with a little breathing room
-        private const int BaseLightWidth = BasePadX + BaseFpsColWidth + BaseColGap + BaseLightLeftColWidth + BasePowerGap + BasePowerColWidth + BasePadX; // 206
+        private const int BaseUsageBarGap = 7;        // gap between W letter and bar
+        private const int BaseUsageBarWidth = 5;
+        private const int BaseUsageBarRightPad = 5;   // replaces trailing padX next to bar
+        private const int BaseLightWidth = BasePadX + BaseFpsColWidth + BaseColGap + BaseLightLeftColWidth + BasePowerGap + BasePowerColWidth + BaseUsageBarGap + BaseUsageBarWidth + BaseUsageBarRightPad;
 
         private static readonly SolidBrush _bgBrush = new(Color.FromArgb(128, 0, 0, 0));
         private static readonly SolidBrush _gpuBrush = new(Color.FromArgb(255, 0, 255, 80));
@@ -116,6 +122,8 @@ namespace GHelper.Overlay
         private string _cpuFanNum = "";
         private string _gpuPow = "";
         private string _cpuPow = "";
+        private int _gpuUsage;
+        private int _cpuUsage;
 
         private const int HistoryLength = 60;
         private readonly float[] _cpuHistory = new float[HistoryLength];
@@ -305,6 +313,9 @@ namespace GHelper.Overlay
             _gpuHistory[_historyHead] = gpuActive ? (float)Math.Max(0, D(HardwareControl.gpuPower)) : 0f;
             _historyHead = (_historyHead + 1) % HistoryLength;
 
+            _cpuUsage = HardwareControl.cpuUsage ?? 0;
+            _gpuUsage = gpuActive ? (HardwareControl.gpuUsage ?? 0) : 0;
+
             Invalidate();
         }
 
@@ -357,7 +368,11 @@ namespace GHelper.Overlay
             int leftX = padX + fpsColW + colGap;
             int chartX = leftX + S(sc, _lightMode ? BaseLightLeftColWidth : BaseLeftColWidth);
             int powX = _lightMode ? chartX + powGap : chartX + chartColW + powGap;
+            int barX = powX + powColW + S(sc, BaseUsageBarGap);
+            int barW = S(sc, BaseUsageBarWidth);
             int topY = padY;
+            // Nudge per-row text down so it lines up with the vertically centered usage bars.
+            int textY = topY + Math.Max(1, (int)Math.Round(2 * sc));
 
             // FPS
             string fpsStr = _currentFps > 0 ? _currentFps.ToString() : "--";
@@ -366,8 +381,8 @@ namespace GHelper.Overlay
             new PointF(padX + (fpsColW - fpsW) / 2f, topY));
 
             // Left column: fan RPM only in full mode
-            DrawTempFan(g, font, rpmFont, charW, sc, leftX, topY, _gpuTempStr, _lightMode ? "" : _gpuFanNum, _gpuBrush);
-            DrawTempFan(g, font, rpmFont, charW, sc, leftX, topY + lineH + lineGap, _cpuTempStr, _lightMode ? "" : _cpuFanNum, _cpuBrush);
+            DrawTempFan(g, font, rpmFont, charW, sc, leftX, textY, _gpuTempStr, _lightMode ? "" : _gpuFanNum, _gpuBrush);
+            DrawTempFan(g, font, rpmFont, charW, sc, leftX, textY + lineH + lineGap, _cpuTempStr, _lightMode ? "" : _cpuFanNum, _cpuBrush);
 
             // Chart — full mode only
             if (!_lightMode)
@@ -376,10 +391,39 @@ namespace GHelper.Overlay
             // Power — right-aligned
             if (_gpuPow.Length > 0)
                 g.DrawString(_gpuPow, font, _gpuBrush,
-                new PointF(powX + powColW - g.MeasureString(_gpuPow, font).Width, topY));
+                new PointF(powX + powColW - g.MeasureString(_gpuPow, font).Width, textY));
             if (_cpuPow.Length > 0)
                 g.DrawString(_cpuPow, font, _cpuBrush,
-                new PointF(powX + powColW - g.MeasureString(_cpuPow, font).Width, topY + lineH + lineGap));
+                new PointF(powX + powColW - g.MeasureString(_cpuPow, font).Width, textY + lineH + lineGap));
+
+            // Pitch = cell + sep. Separators are gaps between cells (overlay bg shows
+            // through) — not drawn on top, so every cell is pixel-identical.
+            // Use sepH=1 only when cells stay ≥ 2 px; otherwise the gap dominates.
+            int sepH = 1;
+            int cellH = (lineH - 6 - 9 * sepH) / 10;
+            if (cellH < 2) { sepH = 0; cellH = Math.Max(1, (lineH - 6) / 10); }
+            int barH = 10 * cellH + 9 * sepH;
+            int barYOff = (lineH - barH) / 2;
+
+            DrawUsageBar(g, barX, topY + barYOff, barW, cellH, sepH, _gpuUsage, _gpuBrush, _gpuFillBrush);
+            DrawUsageBar(g, barX, topY + lineH + lineGap + barYOff, barW, cellH, sepH, _cpuUsage, _cpuBrush, _cpuFillBrush);
+        }
+
+        private static void DrawUsageBar(Graphics g, int x, int y, int w, int cellH, int sepH, int usage, SolidBrush litBrush, SolidBrush dimBrush)
+        {
+            var prevSmoothing = g.SmoothingMode;
+            g.SmoothingMode = SmoothingMode.None;
+
+            int lit = Math.Clamp((int)Math.Round(usage / 10f), 0, 10);
+            int pitch = cellH + sepH;
+
+            for (int i = 0; i < 10; i++)
+            {
+                bool isLit = i >= (10 - lit);
+                g.FillRectangle(isLit ? litBrush : dimBrush, x, y + i * pitch, w, cellH);
+            }
+
+            g.SmoothingMode = prevSmoothing;
         }
 
         // tempStr already has a trailing space — natural separator from fan number.

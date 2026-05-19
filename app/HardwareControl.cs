@@ -39,6 +39,9 @@ public static class HardwareControl
 
     public static int? gpuUse;
 
+    public static int? cpuUsage;
+    public static int? gpuUsage;
+
     static long lastUpdate;
 
     static bool isPZ13 = AppConfig.IsPZ13();
@@ -570,6 +573,56 @@ public static class HardwareControl
         _cpuPowerCounterFailed = false;
     }
 
+    private static PerformanceCounter? _cpuUsageCounter;
+    private static bool _cpuUsageCounterFailed;
+    private static bool _cpuUsageInitStarted;
+
+    public static void InitCPUUsageAsync()
+    {
+        if (_cpuUsageInitStarted) return;
+        _cpuUsageInitStarted = true;
+
+        Task.Run(() =>
+        {
+            try
+            {
+                var counter = new PerformanceCounter("Processor Information", "% Processor Utility", "_Total", true);
+                counter.NextValue();
+                _cpuUsageCounter = counter;
+            }
+            catch
+            {
+                try
+                {
+                    var counter = new PerformanceCounter("Processor", "% Processor Time", "_Total", true);
+                    counter.NextValue();
+                    _cpuUsageCounter = counter;
+                }
+                catch
+                {
+                    _cpuUsageCounterFailed = true;
+                }
+            }
+        });
+    }
+
+    public static int? GetCPUUsage()
+    {
+        if (_cpuUsageCounterFailed || _cpuUsageCounter == null) return null;
+        try
+        {
+            float v = _cpuUsageCounter.NextValue();
+            return (int)Math.Round(Math.Clamp(v, 0f, 100f));
+        }
+        catch
+        {
+            _cpuUsageCounter?.Dispose();
+            _cpuUsageCounter = null;
+            _cpuUsageCounterFailed = true;
+            return null;
+        }
+    }
+
 
     public static float? GetGPUPower()
     {
@@ -610,12 +663,16 @@ public static class HardwareControl
         if (Program.acpi is null) return;
 
         InitCPUPowerAsync();
+        InitCPUUsageAsync();
 
         cpuFanRPM = Program.acpi.GetFan(AsusFan.CPU) * 100;
         gpuFanRPM = Program.acpi.GetFan(AsusFan.GPU) * 100;
 
         cpuTemp = GetCPUTemp();
         gpuTemp = GetGPUTemp();
+
+        cpuUsage = GetCPUUsage();
+        try { gpuUsage = GpuControl?.GetGpuUse(); } catch { gpuUsage = null; }
 
         // Only overwrite with a new reading when the counter returns a valid value.
         // If the counter is absent or returns 0 for several consecutive ticks (e.g. after
