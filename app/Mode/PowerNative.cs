@@ -336,7 +336,7 @@ namespace GHelper.Mode
             int seconds = minutes * 60;
 
             Guid activeSchemeGuid = GetActiveScheme();
-            var hr = PowerWriteDCValueIndex(
+            var hrAC = PowerWriteDCValueIndex(
                 IntPtr.Zero,
                 activeSchemeGuid,
                 GUID_SLEEP_SUBGROUP,
@@ -345,7 +345,7 @@ namespace GHelper.Mode
 
             PowerSetActiveScheme(IntPtr.Zero, activeSchemeGuid);
 
-            Logger.WriteLine($"Setting Hibernate after {seconds}: {(hr == 0 ? "OK" : hr.ToString())}");
+            Logger.WriteLine("Setting Hibernate after " + seconds + ": " + (hrAC == 0 ? "OK" : hrAC));
         }
 
         [DllImport("Kernel32")]
