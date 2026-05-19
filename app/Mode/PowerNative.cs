@@ -314,39 +314,38 @@ namespace GHelper.Mode
         public static int GetHibernateAfter()
         {
             Guid activeSchemeGuid = GetActiveScheme();
-            IntPtr seconds;
+
+            IntPtr idleSeconds;
             PowerReadDCValueIndex(IntPtr.Zero,
                     activeSchemeGuid,
                     GUID_SLEEP_SUBGROUP,
-                    GUID_HIBERNATEIDLE, out seconds);
+                    GUID_HIBERNATEIDLE, out idleSeconds);
 
-            Logger.WriteLine("Hibernate after " + seconds);
-            return (seconds.ToInt32() / 60);
+            IntPtr reserveSeconds;
+            PowerReadDCValueIndex(IntPtr.Zero,
+                    activeSchemeGuid,
+                    GUID_SLEEP_SUBGROUP,
+                    GUID_STANDBYRESERVETIME, out reserveSeconds);
+
+            Logger.WriteLine($"Hibernate after: HibernateIdle={idleSeconds}, StandbyReserveTime={reserveSeconds}");
+            return (idleSeconds.ToInt32() / 60);
         }
-
 
         public static void SetHibernateAfter(int minutes)
         {
             int seconds = minutes * 60;
 
             Guid activeSchemeGuid = GetActiveScheme();
-            var hrIdle = PowerWriteDCValueIndex(
+            var hr = PowerWriteDCValueIndex(
                 IntPtr.Zero,
                 activeSchemeGuid,
                 GUID_SLEEP_SUBGROUP,
                 GUID_HIBERNATEIDLE,
                 seconds);
 
-            var hrReserve = PowerWriteDCValueIndex(
-                IntPtr.Zero,
-                activeSchemeGuid,
-                GUID_SLEEP_SUBGROUP,
-                GUID_STANDBYRESERVETIME,
-                seconds);
-
             PowerSetActiveScheme(IntPtr.Zero, activeSchemeGuid);
 
-            Logger.WriteLine($"Setting Hibernate after {seconds}: HibernateIdle={(hrIdle == 0 ? "OK" : hrIdle.ToString())}, StandbyReserveTime={(hrReserve == 0 ? "OK" : hrReserve.ToString())}");
+            Logger.WriteLine($"Setting Hibernate after {seconds}: {(hr == 0 ? "OK" : hr.ToString())}");
         }
 
         [DllImport("Kernel32")]
