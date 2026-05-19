@@ -372,7 +372,7 @@ namespace GHelper.Overlay
             int barW = S(sc, BaseUsageBarWidth);
             int topY = padY;
             // Nudge per-row text down so it lines up with the vertically centered usage bars.
-            int textY = topY + Math.Max(1, (int)Math.Round(2 * sc));
+            int textY = topY + (int)Math.Round(sc);
 
             // FPS
             string fpsStr = _currentFps > 0 ? _currentFps.ToString() : "--";
