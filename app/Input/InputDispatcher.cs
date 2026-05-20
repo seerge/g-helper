@@ -1,6 +1,8 @@
 using GHelper.Display;
 using GHelper.Helpers;
 using GHelper.Mode;
+using GHelper.Peripherals;
+using GHelper.Peripherals.Mouse;
 using GHelper.USB;
 using Microsoft.Win32;
 using System.Diagnostics;
@@ -212,6 +214,21 @@ namespace GHelper.Input
                 hook.RegisterHotKey(ModifierKeys.None, Keys.Down);
             }
 
+            foreach (ushort code in GetActiveMouseComboCarriers())
+                hook.RegisterHotKey(ModifierKeys.None, Keys.F13 + (code - 0x0068));
+
+        }
+
+        private static IEnumerable<ushort> GetActiveMouseComboCarriers()
+        {
+            var seen = new HashSet<ushort>();
+            foreach (var m in PeripheralsProvider.ConnectedMice.ToArray())
+            {
+                if (!m.HasButtonBindings() || m.ButtonBindings is null) continue;
+                foreach (ushort code in m.ButtonBindings)
+                    if (AsusMouse.CombosByCode.ContainsKey(code) && seen.Add(code))
+                        yield return code;
+            }
         }
 
 
@@ -239,18 +256,10 @@ namespace GHelper.Input
         }
 
 
-        static void CustomKey(string configKey = "m3")
+        static void RunKeyCommand(string command, bool launchOnNoKeys = true)
         {
-            string command = AppConfig.GetString(configKey + "_custom");
             int[] hexKeys = new int[0];
-
-            try
-            {
-                hexKeys = ParseHexValues(command);
-            }
-            catch
-            {
-            }
+            try { hexKeys = ParseHexValues(command); } catch { }
 
             switch (hexKeys.Length)
             {
@@ -267,10 +276,14 @@ namespace GHelper.Input
                     KeyboardHook.KeyKeyKeyKeyPress((Keys)hexKeys[0], (Keys)hexKeys[1], (Keys)hexKeys[2], (Keys)hexKeys[3]);
                     break;
                 default:
-                    LaunchProcess(command);
+                    if (launchOnNoKeys && !string.IsNullOrWhiteSpace(command)) LaunchProcess(command);
                     break;
             }
+        }
 
+        static void CustomKey(string configKey = "m3")
+        {
+            RunKeyCommand(AppConfig.GetString(configKey + "_custom"));
         }
 
 
@@ -317,6 +330,16 @@ namespace GHelper.Input
 
             if (e.Modifier == ModifierKeys.None)
             {
+                if (e.Key >= Keys.F13 && e.Key <= Keys.F24)
+                {
+                    ushort code = (ushort)(0x68 + (e.Key - Keys.F13));
+                    if (AsusMouse.CombosByCode.TryGetValue(code, out var combo))
+                    {
+                        RunKeyCommand(combo.ResolveCommand(), launchOnNoKeys: false);
+                        return;
+                    }
+                }
+
                 if (AppConfig.NoMKeys())
                 {
                     switch (e.Key)
