@@ -893,4 +893,21 @@ Folytatni szeretnéd?</value>
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Zóna mód</value>
   </data>
+  <data name="DisablePCIeASPM" xml:space="preserve">
+    <value>PCIe energiagazdálkodás letiltása (hálózati áramellátáskor)</value>
+  </data>
+  <data name="StopStartNVServices" xml:space="preserve">
+    <value>NVIDIA szolgáltatások leállítása/indítása a dGPU állapotától függően</value>
+  </data>
+  <data name="ClamshellModeTooltip" xml:space="preserve">
+    <value>Ne aludjon el a fedél lecsukásakor, ha hálózati áramellátás és külső monitor van csatlakoztatva</value>
+  </data>
+  <data name="NVPlatformTooltip" xml:space="preserve">
+    <value>Leállítja az NVIDIA szolgáltatásokat, ha a dedikált GPU le van tiltva,
+és automatikusan újraindítja, amikor a GPU engedélyezve van</value>
+  </data>
+  <data name="DisablePCIeASPMTooltip" xml:space="preserve">
+    <value>Megakadályozza, hogy a PCIe eszközök alacsony fogyasztású tétlen állapotba lépjenek.
+Ajánlott, ha véletlenszerű lefagyásokat vagy nem reagáló hardvert tapasztal.</value>
+  </data>
 </root>

@@ -1,4 +1,5 @@
 ﻿using GHelper.UI;
+using GHelper.Helpers;
 using System.Diagnostics;
 using System.Management;
 using System.Net;
@@ -129,7 +130,6 @@ namespace GHelper
             {
                 _cts.Cancel();
                 _cts.Dispose();
-                // Dispose fonts when form closes
                 _boldUnderlineFont.Dispose();
                 _font.Dispose();
             };

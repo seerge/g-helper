@@ -50,7 +50,7 @@ namespace GHelper.Mode
 
         public ModeControl()
         {
-            int reapplyTime = AppConfig.Get("reapply_time", 0);
+            int reapplyTime = AppConfig.Get("reapply_time", AppConfig.IsReapplyTempRequired() ? 30 : 0);
             if (reapplyTime > 0)
             {
                 reapplyTimer = new System.Timers.Timer(reapplyTime * 1000);
@@ -291,6 +291,9 @@ namespace GHelper.Mode
             Thread.Sleep(500);
             SetGPUPower();
             AutoRyzen();
+
+            if (AppConfig.IsReapplyRyzen())
+                Task.Delay(5000).ContinueWith(_ => { AutoRyzen(); ReadRyzenLimits(); });
 
         }
 
