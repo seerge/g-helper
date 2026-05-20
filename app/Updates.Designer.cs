@@ -50,7 +50,7 @@ namespace GHelper
             labelLegendRed = new Label();
             labelLegend = new Label();
             toolTip = new ToolTip(components);
-            textSerial = new TextBox();
+            textSerial = new RTextBox();
             ((System.ComponentModel.ISupportInitialize)pictureBios).BeginInit();
             panelBiosTitle.SuspendLayout();
             panelBios.SuspendLayout();
@@ -375,6 +375,6 @@ namespace GHelper
         private Label labelLegendGreen;
         private ToolTip toolTip;
         private Label labelSerialTitle;
-        private TextBox textSerial;
+        private RTextBox textSerial;
     }
 }

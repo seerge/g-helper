@@ -584,6 +584,9 @@ Quer prosseguir?</value>
   <data name="MouseSynchronize" xml:space="preserve">
     <value>Sincronizar com o rato</value>
   </data>
+  <data name="MouseSyncWithAura" xml:space="preserve">
+    <value>Sync with laptop</value>
+  </data>
   <data name="Multizone" xml:space="preserve">
     <value>Múltipla Zona</value>
   </data>
@@ -889,5 +892,22 @@ Quer prosseguir?</value>
   </data>
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Zone Mode</value>
+  </data>
+  <data name="DisablePCIeASPM" xml:space="preserve">
+    <value>Desativar gestão de estado da ligação PCIe (ligado à corrente)</value>
+  </data>
+  <data name="StopStartNVServices" xml:space="preserve">
+    <value>Parar/iniciar serviços NVIDIA com base no estado da dGPU</value>
+  </data>
+  <data name="ClamshellModeTooltip" xml:space="preserve">
+    <value>Desativar suspensão ao fechar a tampa quando ligado à corrente e com monitor externo ligado</value>
+  </data>
+  <data name="NVPlatformTooltip" xml:space="preserve">
+    <value>Para os serviços NVIDIA quando a GPU dedicada está desativada
+e reinicia-os automaticamente quando a GPU é ativada</value>
+  </data>
+  <data name="DisablePCIeASPMTooltip" xml:space="preserve">
+    <value>Impede que os dispositivos PCIe entrem em estados de inatividade de baixa energia.
+Recomendado se ocorrerem bloqueios aleatórios ou hardware que não responde.</value>
   </data>
 </root>

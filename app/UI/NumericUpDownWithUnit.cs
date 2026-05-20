@@ -1,7 +1,8 @@
-﻿using System.Globalization;
+﻿using GHelper.UI;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
-public class NumericUpDownWithUnit : NumericUpDown
+public class NumericUpDownWithUnit : RNumericUpDown
 {
     #region| Fields |
 

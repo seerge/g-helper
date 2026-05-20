@@ -584,6 +584,9 @@
   <data name="MouseSynchronize" xml:space="preserve">
     <value>和鼠标同步</value>
   </data>
+  <data name="MouseSyncWithAura" xml:space="preserve">
+    <value>Sync with laptop</value>
+  </data>
   <data name="Multizone" xml:space="preserve">
     <value>多区</value>
   </data>
@@ -889,5 +892,22 @@
   </data>
   <data name="MouseZoneMode" xml:space="preserve">
     <value>Zone 模式</value>
+  </data>
+  <data name="DisablePCIeASPM" xml:space="preserve">
+    <value>禁用 PCIe 链路状态管理（接入电源时）</value>
+  </data>
+  <data name="StopStartNVServices" xml:space="preserve">
+    <value>根据独显状态停止/启动 NVIDIA 服务</value>
+  </data>
+  <data name="ClamshellModeTooltip" xml:space="preserve">
+    <value>接入电源且连接外部显示器时，合盖不进入睡眠</value>
+  </data>
+  <data name="NVPlatformTooltip" xml:space="preserve">
+    <value>在独显被禁用时停止 NVIDIA 服务，
+并在独显启用时自动重新启动</value>
+  </data>
+  <data name="DisablePCIeASPMTooltip" xml:space="preserve">
+    <value>防止 PCIe 设备进入低功耗空闲状态。
+如遇随机卡死或硬件无响应，建议启用。</value>
   </data>
 </root>

@@ -1,3 +1,5 @@
+using GHelper.UI;
+
 namespace GHelper
 {
     partial class AsusMouseSettings
@@ -49,7 +51,7 @@ namespace GHelper
             sliderButtonDebounce = new GHelper.UI.Slider();
             labelButtonDebounceValue = new Label();
             panelZoneMode = new Panel();
-            numericUpDownZoneModeDPI = new NumericUpDown();
+            numericUpDownZoneModeDPI = new RNumericUpDown();
             sliderZoneModeDPI = new GHelper.UI.Slider();
             comboBoxZoneModePollingRate = new GHelper.UI.RComboBox();
             checkBoxZoneMode = new CheckBox();
@@ -67,7 +69,7 @@ namespace GHelper
             tableLayoutPanel1 = new TableLayoutPanel();
             labelMinDPI = new Label();
             labelMaxDPI = new Label();
-            numericUpDownCurrentDPI = new NumericUpDown();
+            numericUpDownCurrentDPI = new RNumericUpDown();
             panelDPITile = new Panel();
             pictureDPIColor = new PictureBox();
             buttonDPIColor = new GHelper.UI.RButton();
@@ -572,7 +574,7 @@ namespace GHelper
             labelAngleAdjustmentValue.Name = "labelAngleAdjustmentValue";
             labelAngleAdjustmentValue.Size = new Size(64, 40);
             labelAngleAdjustmentValue.TabIndex = 47;
-            labelAngleAdjustmentValue.Text = "0°";
+            labelAngleAdjustmentValue.Text = "0Â°";
             labelAngleAdjustmentValue.TextAlign = ContentAlignment.MiddleRight;
             // 
             // panelPollingRate
@@ -1820,7 +1822,7 @@ namespace GHelper
         private CheckBox checkBoxZoneMode;
         private UI.RComboBox comboBoxZoneModePollingRate;
         private UI.Slider sliderZoneModeDPI;
-        private NumericUpDown numericUpDownZoneModeDPI;
+        private RNumericUpDown numericUpDownZoneModeDPI;
         private Panel panelLiftOffDistance;
         private Panel panelDebounce;
         private Panel panelDeceleration;
@@ -1833,7 +1835,7 @@ namespace GHelper
         private Label labelAccelerationValue;
         private UI.RButton buttonImport;
         private UI.RButton buttonExport;
-        private NumericUpDown numericUpDownCurrentDPI;
+        private RNumericUpDown numericUpDownCurrentDPI;
         private Label labelMaxDPI;
         private Panel panelLeft;
         private Panel panelRight;
