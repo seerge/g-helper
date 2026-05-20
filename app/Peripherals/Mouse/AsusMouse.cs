@@ -783,6 +783,16 @@ public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
                 return;
             }
 
+            if (IsBluetoothLe && !BleMouseTransport.TryLocate(VendorID(), ProductID(), out _))
+            {
+                if (IsDeviceReady)
+                {
+                    Logger.WriteLine(GetDisplayName() + ": BLE link down, skipping poll");
+                    SetDeviceReady(false);
+                }
+                return;
+            }
+
             byte[]? response = WriteForResponse(GetBatteryReportPacket());
             if (response is null) return;
 
