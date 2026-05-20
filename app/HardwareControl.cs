@@ -39,6 +39,14 @@ public static class HardwareControl
 
     public static int? gpuUse;
 
+    public static int? cpuUsage;
+    public static int? gpuUsage;
+
+    // Set by the overlay so ReadSensorsOverlay skips sensors that won't be
+    // displayed in the current mode (fan ACPI calls and CPU usage counter).
+    public static bool readFans;
+    public static bool readUsage;
+
     static long lastUpdate;
 
     static bool isPZ13 = AppConfig.IsPZ13();
@@ -507,6 +515,25 @@ public static class HardwareControl
 
         Task.Run(() =>
         {
+            // Try cached instance name first — skips the PerformanceCounterCategory
+            // enumeration which costs ~1–2 s on a cold perflib cache.
+            var cached = AppConfig.GetString("cpu_power_counter");
+            if (!string.IsNullOrEmpty(cached))
+            {
+                try
+                {
+                    var counter = new PerformanceCounter("Energy Meter", "Power", cached, true);
+                    counter.NextValue();
+                    _cpuPowerCounter = counter;
+                    Logger.WriteLine("CPU Power source (cached): " + cached);
+                    return;
+                }
+                catch
+                {
+                    AppConfig.Set("cpu_power_counter", "");
+                }
+            }
+
             try
             {
                 var category = new PerformanceCounterCategory("Energy Meter");
@@ -519,6 +546,7 @@ public static class HardwareControl
                         var counter = new PerformanceCounter("Energy Meter", "Power", name, true);
                         counter.NextValue();
                         _cpuPowerCounter = counter;
+                        AppConfig.Set("cpu_power_counter", name);
                         Logger.WriteLine("CPU Power source: " + name);
                         return;
                     }
@@ -570,6 +598,39 @@ public static class HardwareControl
         _cpuPowerCounterFailed = false;
     }
 
+    // Direct Win32 API — same source Task Manager uses, avoids PerformanceCounter
+    // sampling artifacts and the ~1 s warm-up delay of `% Processor Time \ _Total`.
+    [DllImport("kernel32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool GetSystemTimes(out long lpIdleTime, out long lpKernelTime, out long lpUserTime);
+
+    private static long _cpuLastIdle, _cpuLastKernel, _cpuLastUser, _cpuLastTick;
+    private static bool _cpuUsageBaseline;
+
+    public static int? GetCPUUsage()
+    {
+        if (!GetSystemTimes(out long idle, out long kernel, out long user)) return null;
+
+        long now = Environment.TickCount64;
+
+        // First read, or resumed after a long pause (mode switch, overlay restart) —
+        // capture baseline and skip this tick so the next delta covers a clean ~1 s window.
+        if (!_cpuUsageBaseline || now - _cpuLastTick > 2000)
+        {
+            _cpuLastIdle = idle; _cpuLastKernel = kernel; _cpuLastUser = user; _cpuLastTick = now;
+            _cpuUsageBaseline = true;
+            return null;
+        }
+
+        long deltaIdle = idle - _cpuLastIdle;
+        long deltaTotal = (kernel - _cpuLastKernel) + (user - _cpuLastUser); // kernel includes idle
+
+        _cpuLastIdle = idle; _cpuLastKernel = kernel; _cpuLastUser = user; _cpuLastTick = now;
+
+        if (deltaTotal <= 0) return 0;
+        return Math.Clamp((int)Math.Round((1.0 - (double)deltaIdle / deltaTotal) * 100), 0, 100);
+    }
+
 
     public static float? GetGPUPower()
     {
@@ -611,11 +672,30 @@ public static class HardwareControl
 
         InitCPUPowerAsync();
 
-        cpuFanRPM = Program.acpi.GetFan(AsusFan.CPU) * 100;
-        gpuFanRPM = Program.acpi.GetFan(AsusFan.GPU) * 100;
+        if (readFans)
+        {
+            cpuFanRPM = Program.acpi.GetFan(AsusFan.CPU) * 100;
+            gpuFanRPM = Program.acpi.GetFan(AsusFan.GPU) * 100;
+        }
+        else
+        {
+            cpuFanRPM = null;
+            gpuFanRPM = null;
+        }
 
         cpuTemp = GetCPUTemp();
         gpuTemp = GetGPUTemp();
+
+        if (readUsage)
+        {
+            cpuUsage = GetCPUUsage();
+            try { gpuUsage = GpuControl?.GetGpuUse(); } catch { gpuUsage = null; }
+        }
+        else
+        {
+            cpuUsage = null;
+            gpuUsage = null;
+        }
 
         // Only overwrite with a new reading when the counter returns a valid value.
         // If the counter is absent or returns 0 for several consecutive ticks (e.g. after
