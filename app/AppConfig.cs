@@ -569,7 +569,7 @@ public static class AppConfig
 
     public static bool IsReapplyTempRequired()
     {
-        return ContainsModel("GA402");
+        return ContainsModel("GA402") || ContainsModel("GV601");
     }
 
     public static bool IsReapplyRyzen()
