@@ -804,5 +804,22 @@ namespace GHelper.Ally
             }
         }
 
+        private static ControllerMode? _navSavedMode;
+
+        public void EnterNavMode()
+        {
+            if (!AppConfig.IsAlly() || _navSavedMode is not null) return;
+            _navSavedMode = _mode;
+            SetMode(ControllerMode.Mouse);
+        }
+
+        public void LeaveNavMode()
+        {
+            if (_navSavedMode is null) return;
+            var saved = _navSavedMode.Value;
+            _navSavedMode = null;
+            SetMode(saved);
+        }
+
     }
 }

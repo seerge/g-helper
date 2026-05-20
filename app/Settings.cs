@@ -53,6 +53,21 @@ namespace GHelper
         bool sliderGammaIgnore = false;
         bool activateCheck = false;
 
+        private const int WS_EX_NOACTIVATE = 0x08000000;
+        protected override bool ShowWithoutActivation => AppConfig.Is("nofocus") || AppConfig.IsAlly();
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var p = base.CreateParams;
+                if (ShowWithoutActivation) p.ExStyle |= WS_EX_NOACTIVATE;
+                return p;
+            }
+        }
+
+        public Ally.AllyNavigator? allyNavigator;
+
         public SettingsForm()
         {
 
@@ -274,6 +289,8 @@ namespace GHelper
 
             Text = "G-Helper " + (ProcessHelper.IsUserAdministrator() ? "—" : "-") + " " + AppConfig.GetModelShort();
             TopMost = AppConfig.Is("topmost");
+
+            if (AppConfig.IsAlly()) allyNavigator = new Ally.AllyNavigator(this, allyControl);
 
             //This will auto position the window again when it resizes. Might mess with position if people drag the window somewhere else.
             this.Resize += SettingsForm_Resize;
@@ -657,8 +674,14 @@ namespace GHelper
 
         private void SettingsForm_Resize(object? sender, EventArgs e)
         {
-            Left = Screen.FromControl(this).WorkingArea.Width - 10 - Width;
-            Top = Screen.FromControl(this).WorkingArea.Height - 10 - Height;
+            RepositionWindow();
+        }
+
+        public void RepositionWindow()
+        {
+            var screen = Screen.FromControl(this);
+            Left = screen.WorkingArea.Width - 10 - Width;
+            Top = screen.WorkingArea.Height - 10 - Height;
         }
 
         private void PanelBattery_MouseEnter(object? sender, EventArgs e)

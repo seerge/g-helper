@@ -42,6 +42,20 @@ namespace GHelper.UI
             }
         }
 
+        private bool navFocused = false;
+        public bool NavFocused
+        {
+            get { return navFocused; }
+            set
+            {
+                if (navFocused != value)
+                    Invalidate();
+                navFocused = value;
+            }
+        }
+
+        public static Color NavFocusColor = Color.FromArgb(255, 255, 165, 0);
+
         private bool secondary = false;
         public bool Secondary
         {
@@ -112,7 +126,19 @@ namespace GHelper.UI
                 TextRenderer.DrawText(pevent.Graphics, Text, Font, rect, Color.Gray, flags);
             }
 
-
+            if (navFocused)
+            {
+                int focusInset = border * 2;
+                int focusRadius = Math.Max(1, radius);
+                var focusRect = Rectangle.Inflate(rectSurface, -focusInset, -focusInset);
+                if (focusRect.Width > 0 && focusRect.Height > 0)
+                {
+                    using GraphicsPath focusPath = GetFigurePath(focusRect, focusRadius);
+                    using Pen focusPen = new Pen(NavFocusColor, Math.Max(2, border / 2));
+                    pevent.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                    pevent.Graphics.DrawPath(focusPen, focusPath);
+                }
+            }
         }
 
     }

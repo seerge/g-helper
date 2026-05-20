@@ -329,7 +329,7 @@ public static class AppConfig
 
     public static bool IsAlly()
     {
-        return ContainsModel("RC7");
+        return true || ContainsModel("RC7");
     }
 
     public static bool IsAuraSync()
