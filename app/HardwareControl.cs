@@ -609,16 +609,17 @@ public static class HardwareControl
 
         Task.Run(() =>
         {
-            // 0 = "Processor Information \ % Processor Utility" (preferred)
-            // 1 = "Processor \ % Processor Time" (fallback). Cached so we skip the
-            // failed first attempt on systems where only the fallback is available.
+            // 0 = "Processor Information \ % Processor Time" (matches Task Manager)
+            // 1 = "Processor \ % Processor Time" (legacy fallback for older Windows).
+            // % Processor Utility is intentionally avoided — it's measured against
+            // base clock and reads higher than Task Manager during turbo.
             int path = AppConfig.Get("cpu_usage_counter", 0);
 
             if (path == 0)
             {
                 try
                 {
-                    var counter = new PerformanceCounter("Processor Information", "% Processor Utility", "_Total", true);
+                    var counter = new PerformanceCounter("Processor Information", "% Processor Time", "_Total", true);
                     counter.NextValue();
                     _cpuUsageCounter = counter;
                     return;
