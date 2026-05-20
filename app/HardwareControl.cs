@@ -42,6 +42,11 @@ public static class HardwareControl
     public static int? cpuUsage;
     public static int? gpuUsage;
 
+    // Set by the overlay so ReadSensorsOverlay skips sensors that won't be
+    // displayed in the current mode (fan ACPI calls and CPU usage counter).
+    public static bool readFans;
+    public static bool readUsage;
+
     static long lastUpdate;
 
     static bool isPZ13 = AppConfig.IsPZ13();
@@ -692,16 +697,32 @@ public static class HardwareControl
         if (Program.acpi is null) return;
 
         InitCPUPowerAsync();
-        InitCPUUsageAsync();
 
-        cpuFanRPM = Program.acpi.GetFan(AsusFan.CPU) * 100;
-        gpuFanRPM = Program.acpi.GetFan(AsusFan.GPU) * 100;
+        if (readFans)
+        {
+            cpuFanRPM = Program.acpi.GetFan(AsusFan.CPU) * 100;
+            gpuFanRPM = Program.acpi.GetFan(AsusFan.GPU) * 100;
+        }
+        else
+        {
+            cpuFanRPM = null;
+            gpuFanRPM = null;
+        }
 
         cpuTemp = GetCPUTemp();
         gpuTemp = GetGPUTemp();
 
-        cpuUsage = GetCPUUsage();
-        try { gpuUsage = GpuControl?.GetGpuUse(); } catch { gpuUsage = null; }
+        if (readUsage)
+        {
+            InitCPUUsageAsync();
+            cpuUsage = GetCPUUsage();
+            try { gpuUsage = GpuControl?.GetGpuUse(); } catch { gpuUsage = null; }
+        }
+        else
+        {
+            cpuUsage = null;
+            gpuUsage = null;
+        }
 
         // Only overwrite with a new reading when the counter returns a valid value.
         // If the counter is absent or returns 0 for several consecutive ticks (e.g. after
