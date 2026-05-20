@@ -434,7 +434,8 @@ namespace GHelper.Overlay
 
         private static void DrawUsagePercent(Graphics g, Font font, int x, int colW, int y, int? usage, SolidBrush brush)
         {
-            string s = usage.HasValue ? usage.Value + "%" : "--";
+            if (!usage.HasValue) return; // mirror the power column — empty when unavailable
+            string s = usage.Value + "%";
             g.DrawString(s, font, brush, new PointF(x + colW - g.MeasureString(s, font).Width, y));
         }
 
