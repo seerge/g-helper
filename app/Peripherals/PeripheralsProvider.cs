@@ -139,6 +139,7 @@ namespace GHelper.Peripherals
             {
                 DeviceChanged(am, EventArgs.Empty);
             }
+            Program.inputDispatcher?.RegisterKeys();
         }
 
         public static void Connect(AsusMouse am)
@@ -187,6 +188,7 @@ namespace GHelper.Peripherals
                 DeviceChanged(am, EventArgs.Empty);
             }
             UpdateSettingsView();
+            Program.inputDispatcher?.RegisterKeys();
         }
 
         private static void BatteryUpdated(object? sender, EventArgs e)
@@ -216,6 +218,7 @@ namespace GHelper.Peripherals
             am.Dispose();
 
             UpdateSettingsView();
+            Program.inputDispatcher?.RegisterKeys();
         }
 
 
