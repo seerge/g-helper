@@ -598,64 +598,37 @@ public static class HardwareControl
         _cpuPowerCounterFailed = false;
     }
 
-    private static PerformanceCounter? _cpuUsageCounter;
-    private static bool _cpuUsageCounterFailed;
-    private static bool _cpuUsageInitStarted;
+    // Direct Win32 API — same source Task Manager uses, avoids PerformanceCounter
+    // sampling artifacts and the ~1 s warm-up delay of `% Processor Time \ _Total`.
+    [DllImport("kernel32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool GetSystemTimes(out long lpIdleTime, out long lpKernelTime, out long lpUserTime);
 
-    public static void InitCPUUsageAsync()
-    {
-        if (_cpuUsageInitStarted) return;
-        _cpuUsageInitStarted = true;
-
-        Task.Run(() =>
-        {
-            // 0 = "Processor Information \ % Processor Time" (matches Task Manager)
-            // 1 = "Processor \ % Processor Time" (legacy fallback for older Windows).
-            // % Processor Utility is intentionally avoided — it's measured against
-            // base clock and reads higher than Task Manager during turbo.
-            int path = AppConfig.Get("cpu_usage_counter", 0);
-
-            if (path == 0)
-            {
-                try
-                {
-                    var counter = new PerformanceCounter("Processor Information", "% Processor Time", "_Total", true);
-                    counter.NextValue();
-                    _cpuUsageCounter = counter;
-                    return;
-                }
-                catch { /* fall through */ }
-            }
-
-            try
-            {
-                var counter = new PerformanceCounter("Processor", "% Processor Time", "_Total", true);
-                counter.NextValue();
-                _cpuUsageCounter = counter;
-                AppConfig.Set("cpu_usage_counter", 1);
-            }
-            catch
-            {
-                _cpuUsageCounterFailed = true;
-            }
-        });
-    }
+    private static long _cpuLastIdle, _cpuLastKernel, _cpuLastUser, _cpuLastTick;
+    private static bool _cpuUsageBaseline;
 
     public static int? GetCPUUsage()
     {
-        if (_cpuUsageCounterFailed || _cpuUsageCounter == null) return null;
-        try
+        if (!GetSystemTimes(out long idle, out long kernel, out long user)) return null;
+
+        long now = Environment.TickCount64;
+
+        // First read, or resumed after a long pause (mode switch, overlay restart) —
+        // capture baseline and skip this tick so the next delta covers a clean ~1 s window.
+        if (!_cpuUsageBaseline || now - _cpuLastTick > 2000)
         {
-            float v = _cpuUsageCounter.NextValue();
-            return (int)Math.Round(Math.Clamp(v, 0f, 100f));
-        }
-        catch
-        {
-            _cpuUsageCounter?.Dispose();
-            _cpuUsageCounter = null;
-            _cpuUsageCounterFailed = true;
+            _cpuLastIdle = idle; _cpuLastKernel = kernel; _cpuLastUser = user; _cpuLastTick = now;
+            _cpuUsageBaseline = true;
             return null;
         }
+
+        long deltaIdle = idle - _cpuLastIdle;
+        long deltaTotal = (kernel - _cpuLastKernel) + (user - _cpuLastUser); // kernel includes idle
+
+        _cpuLastIdle = idle; _cpuLastKernel = kernel; _cpuLastUser = user; _cpuLastTick = now;
+
+        if (deltaTotal <= 0) return 0;
+        return Math.Clamp((int)Math.Round((1.0 - (double)deltaIdle / deltaTotal) * 100), 0, 100);
     }
 
 
@@ -715,7 +688,6 @@ public static class HardwareControl
 
         if (readUsage)
         {
-            InitCPUUsageAsync();
             cpuUsage = GetCPUUsage();
             try { gpuUsage = GpuControl?.GetGpuUse(); } catch { gpuUsage = null; }
         }
