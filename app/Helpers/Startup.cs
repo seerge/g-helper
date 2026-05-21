@@ -9,7 +9,6 @@ public class Startup
 
     static string taskName = "GHelper";
     static string chargeTaskName = taskName + "Charge";
-    static string subFolderName = "GHelper";
     static string strExeFilePath = Application.ExecutablePath.Trim();
 
     private static string CurrentSid => WindowsIdentity.GetCurrent().User!.Value;
@@ -31,7 +30,6 @@ public class Startup
         if (!string.IsNullOrEmpty(principal))
             return Equal(principal, sid) || Equal(principal, name) || Equal(principal, sam);
 
-        // Legacy tasks may have empty Principal.UserId — fall back to security descriptor owner
         try
         {
             var sddl = task.GetSecurityDescriptorSddlForm(System.Security.AccessControl.SecurityInfos.Owner);
@@ -43,7 +41,6 @@ public class Startup
         }
         catch { }
 
-        // Last resort — registration author is auto-populated to DOMAIN\User
         var author = task.Definition.RegistrationInfo.Author ?? "";
         if (!string.IsNullOrEmpty(author))
             return Equal(author, name) || Equal(author, sam);
@@ -51,38 +48,16 @@ public class Startup
         return false;
     }
 
-    private static TaskFolder? GetSubFolder(TaskService taskService, bool create = false)
-    {
-        try
-        {
-            var folder = taskService.RootFolder.SubFolders.FirstOrDefault(f => f.Name == subFolderName);
-            if (folder == null && create) folder = taskService.RootFolder.CreateFolder(subFolderName);
-            return folder;
-        }
-        catch (Exception e)
-        {
-            Logger.WriteLine("Can't access GHelper task folder: " + e.Message);
-            return null;
-        }
-    }
-
     private static Microsoft.Win32.TaskScheduler.Task? GetCurrentUserTask(TaskService taskService)
     {
-        var folder = GetSubFolder(taskService);
-        if (folder != null)
-        {
-            var userTask = folder.AllTasks.FirstOrDefault(t => t.Name == PerUserTaskName);
-            if (userTask != null) return userTask;
-        }
+        var userTask = taskService.RootFolder.AllTasks.FirstOrDefault(t => t.Name == PerUserTaskName);
+        if (userTask != null) return userTask;
 
-        var rootTask = taskService.RootFolder.AllTasks.FirstOrDefault(t => t.Name == taskName);
-        if (rootTask != null && IsTaskOwnedByCurrentUser(rootTask)) return rootTask;
+        var legacyTask = taskService.RootFolder.AllTasks.FirstOrDefault(t => t.Name == taskName);
+        if (legacyTask != null && IsTaskOwnedByCurrentUser(legacyTask)) return legacyTask;
 
         return null;
     }
-
-    private static bool IsLegacyRootTask(Microsoft.Win32.TaskScheduler.Task task) =>
-        task != null && task.Path.TrimStart('\\').Equals(taskName, StringComparison.OrdinalIgnoreCase);
 
     public static bool IsScheduled()
     {
@@ -157,8 +132,9 @@ public class Startup
                         bool hasConsoleConnect = task.Definition.Triggers
                             .OfType<SessionStateChangeTrigger>()
                             .Any(t => t.StateChange == TaskSessionStateChangeType.ConsoleConnect);
+                        bool isLegacyName = task.Name.Equals(taskName, StringComparison.OrdinalIgnoreCase);
 
-                        if (!hasLogon || !hasConsoleConnect || IsLegacyRootTask(task))
+                        if (!hasLogon || !hasConsoleConnect || isLegacyName)
                         {
                             Logger.WriteLine("Migrating startup task layout/triggers");
                             needsReschedule = true;
@@ -182,11 +158,7 @@ public class Startup
                     Logger.WriteLine($"Can't check startup task: {ex.Message}");
                 }
 
-                var subFolder = GetSubFolder(taskService);
-                bool chargeInSubFolder = subFolder != null && subFolder.AllTasks.Any(t => t.Name == chargeTaskName);
-                bool chargeAtRoot = taskService.RootFolder.AllTasks.Any(t => t.Name == chargeTaskName);
-                if (!chargeInSubFolder || chargeAtRoot) ScheduleCharge();
-
+                if (taskService.RootFolder.AllTasks.FirstOrDefault(t => t.Name == chargeTaskName) == null) ScheduleCharge();
             }
         }
     }
@@ -197,12 +169,7 @@ public class Startup
         {
             try
             {
-                var folder = GetSubFolder(taskService);
-                if (folder != null && folder.AllTasks.Any(t => t.Name == chargeTaskName))
-                    folder.DeleteTask(chargeTaskName);
-
-                if (taskService.RootFolder.AllTasks.Any(t => t.Name == chargeTaskName))
-                    taskService.RootFolder.DeleteTask(chargeTaskName);
+                taskService.RootFolder.DeleteTask(chargeTaskName);
             }
             catch (Exception e)
             {
@@ -216,8 +183,7 @@ public class Startup
 
         if (strExeFilePath is null) return;
 
-        using (TaskService taskService = new TaskService())
-        using (TaskDefinition td = taskService.NewTask())
+        using (TaskDefinition td = TaskService.Instance.NewTask())
         {
             td.RegistrationInfo.Description = "G-Helper Charge Limit";
             td.Triggers.Add(new BootTrigger());
@@ -238,29 +204,8 @@ public class Startup
 
             try
             {
-                var folder = GetSubFolder(taskService, create: true);
-                if (folder == null)
-                {
-                    Logger.WriteLine("Can't access GHelper task folder for charge task");
-                    return;
-                }
-
-                folder.RegisterTaskDefinition(chargeTaskName, td);
+                TaskService.Instance.RootFolder.RegisterTaskDefinition(chargeTaskName, td);
                 Logger.WriteLine("Charge limit task scheduled: " + strExeFilePath);
-
-                var legacy = taskService.RootFolder.AllTasks.FirstOrDefault(t => t.Name == chargeTaskName);
-                if (legacy != null)
-                {
-                    try
-                    {
-                        taskService.RootFolder.DeleteTask(chargeTaskName);
-                        Logger.WriteLine("Removed legacy root GHelperCharge task");
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.WriteLine("Can't remove legacy root charge task: " + ex.Message);
-                    }
-                }
             }
             catch (Exception e)
             {
@@ -305,31 +250,20 @@ public class Startup
 
             try
             {
-                var folder = GetSubFolder(taskService, create: true);
-                if (folder == null)
-                {
-                    if (ProcessHelper.IsUserAdministrator())
-                        MessageBox.Show("Can't create GHelper task folder in Task Scheduler. Try opening Task Scheduler manually and check permissions on the Task Scheduler Library root.", "Scheduler Error", MessageBoxButtons.OK);
-                    else
-                        ProcessHelper.RunAsAdmin();
-                }
-                else
-                {
-                    folder.RegisterTaskDefinition(PerUserTaskName, td);
-                    Logger.WriteLine($"Startup task scheduled ({PerUserTaskName}): " + strExeFilePath);
+                taskService.RootFolder.RegisterTaskDefinition(PerUserTaskName, td);
+                Logger.WriteLine($"Startup task scheduled ({PerUserTaskName}): " + strExeFilePath);
 
-                    var legacy = taskService.RootFolder.AllTasks.FirstOrDefault(t => t.Name == taskName);
-                    if (legacy != null && IsTaskOwnedByCurrentUser(legacy))
+                var legacy = taskService.RootFolder.AllTasks.FirstOrDefault(t => t.Name == taskName);
+                if (legacy != null && IsTaskOwnedByCurrentUser(legacy))
+                {
+                    try
                     {
-                        try
-                        {
-                            taskService.RootFolder.DeleteTask(taskName);
-                            Logger.WriteLine("Removed legacy root GHelper task");
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.WriteLine("Can't remove legacy root task: " + ex.Message);
-                        }
+                        taskService.RootFolder.DeleteTask(taskName);
+                        Logger.WriteLine("Removed legacy root GHelper task");
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.WriteLine("Can't remove legacy root task: " + ex.Message);
                     }
                 }
             }
@@ -359,20 +293,11 @@ public class Startup
         {
             try
             {
-                var folder = GetSubFolder(taskService);
-                if (folder != null && folder.AllTasks.Any(t => t.Name == PerUserTaskName))
-                {
-                    folder.DeleteTask(PerUserTaskName);
-                    try
-                    {
-                        if (!folder.AllTasks.Any() && !folder.SubFolders.Any())
-                            taskService.RootFolder.DeleteFolder(subFolderName, false);
-                    }
-                    catch { }
-                }
+                if (taskService.RootFolder.AllTasks.Any(t => t.Name == PerUserTaskName))
+                    taskService.RootFolder.DeleteTask(PerUserTaskName);
 
-                var rootTask = taskService.RootFolder.AllTasks.FirstOrDefault(t => t.Name == taskName);
-                if (rootTask != null && IsTaskOwnedByCurrentUser(rootTask))
+                var legacyTask = taskService.RootFolder.AllTasks.FirstOrDefault(t => t.Name == taskName);
+                if (legacyTask != null && IsTaskOwnedByCurrentUser(legacyTask))
                     taskService.RootFolder.DeleteTask(taskName);
             }
             catch (Exception e)
