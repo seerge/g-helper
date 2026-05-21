@@ -133,6 +133,7 @@ namespace GHelper.Peripherals
                 am.Disconnect -= Mouse_Disconnect;
                 am.MouseReadyChanged -= MouseReadyChanged;
                 am.BatteryUpdated -= BatteryUpdated;
+                am.ButtonBindingsChanged -= ButtonBindingsChanged;
                 ConnectedMice.Remove(am);
             }
             if (DeviceChanged is not null)
@@ -183,6 +184,7 @@ namespace GHelper.Peripherals
             am.Disconnect += Mouse_Disconnect;
             am.MouseReadyChanged += MouseReadyChanged;
             am.BatteryUpdated += BatteryUpdated;
+            am.ButtonBindingsChanged += ButtonBindingsChanged;
             if (DeviceChanged is not null)
             {
                 DeviceChanged(am, EventArgs.Empty);
@@ -199,6 +201,11 @@ namespace GHelper.Peripherals
         private static void MouseReadyChanged(object? sender, EventArgs e)
         {
             UpdateSettingsView();
+        }
+
+        private static void ButtonBindingsChanged(object? sender, EventArgs e)
+        {
+            Program.inputDispatcher?.RegisterKeys();
         }
 
         private static void Mouse_Disconnect(object? sender, EventArgs e)
