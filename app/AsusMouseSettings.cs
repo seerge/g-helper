@@ -977,6 +977,7 @@ namespace GHelper
         {
             mouse.ResetButtonBindings();
             VisualizeButtonBindings();
+            Program.inputDispatcher?.RegisterKeys();
         }
 
         private void BindingCombo_Changed(object? sender, EventArgs e)
@@ -991,7 +992,10 @@ namespace GHelper
                 return;
             }
             if (cmb.SelectedItem is BindingItem item)
+            {
                 mouse.SetButtonBinding(slot, item.Code);
+                Program.inputDispatcher?.RegisterKeys();
+            }
         }
 
         private void VisualizeButtonBindings()
