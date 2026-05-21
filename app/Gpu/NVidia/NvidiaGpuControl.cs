@@ -138,6 +138,7 @@ public class NvidiaGpuControl : IGpuControl
 
     public void Dispose()
     {
+        _internalGpu = null;
     }
 
     private static readonly HashSet<string> _systemProcessNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
