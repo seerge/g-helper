@@ -254,8 +254,20 @@ namespace GHelper.Peripherals.Mouse
         public bool ZoneMode { get; protected set; }
         public int ZoneModeDPI { get; set; } = 1600;
         public PollingRate ZoneModePollingRate { get; set; } = PollingRate.PR4000Hz;
-public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
-        public bool ButtonBindingsReady { get; protected set; }
+        public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
+
+        private bool _buttonBindingsReady;
+        public bool ButtonBindingsReady
+        {
+            get => _buttonBindingsReady;
+            protected set
+            {
+                _buttonBindingsReady = value;
+                if (value) ButtonBindingsChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        public event EventHandler? ButtonBindingsChanged;
 
         public bool Booster = false;
 
@@ -2288,7 +2300,7 @@ public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
             new(0x0070, "Paste",              Hex(Keys.LControlKey, Keys.V)),
             new(0x0071, "Undo",               Hex(Keys.LControlKey, Keys.Z)),
             new(0x0072, "Task Manager",       Hex(Keys.LControlKey, Keys.LShiftKey, Keys.Escape)),
-            new(0x0073, "Show Desktop",       Hex(Keys.LWin,        Keys.Oemcomma)),
+            new(0x0073, "Minimize All",       Hex(Keys.LWin,        Keys.M)),
         };
 
         public static readonly Dictionary<ushort, ComboDef> CombosByCode =

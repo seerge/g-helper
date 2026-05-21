@@ -50,12 +50,19 @@ namespace GHelper.Mode
 
         public ModeControl()
         {
-            int reapplyTime = AppConfig.Get("reapply_time", CpuInfo.IsReapplyTempRequired() ? 30 : 0);
+            int reapplyTime = AppConfig.Get("reapply_time", IsReapplyTempRequired() ? 30 : 0);
             if (reapplyTime > 0)
             {
                 reapplyTimer = new System.Timers.Timer(reapplyTime * 1000);
                 reapplyTimer.Elapsed += ReapplyTimer_Elapsed;
             }
+        }
+
+        // Cezanne/Rembrandt (Renoir) + Phoenix/HawkPoint (Mobile) silently reset temp limit under load.
+        private static bool IsReapplyTempRequired()
+        {
+            var smu = GetSmu();
+            return smu != null && smu.Family is CpuFamily.Renoir or CpuFamily.Mobile;
         }
 
         private static void SetReapplyEnabled(bool enabled)
