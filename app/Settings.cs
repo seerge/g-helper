@@ -1400,6 +1400,8 @@ namespace GHelper
                 ? Properties.Strings.LaptopScreen + ": " + frequency + "Hz" + ((overdrive == 1) ? " + " + Properties.Strings.Overdrive : "")
                 : Properties.Strings.LaptopScreen + ": " + Properties.Strings.TurnedOff;
 
+            panelScreen.AccessibleName = labelSreen.Text;
+
             button60Hz.Activated = false;
             button120Hz.Activated = false;
             buttonScreenAuto.Activated = false;
