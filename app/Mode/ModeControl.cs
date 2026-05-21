@@ -50,7 +50,7 @@ namespace GHelper.Mode
 
         public ModeControl()
         {
-            int reapplyTime = AppConfig.Get("reapply_time", AppConfig.IsReapplyTempRequired() ? 30 : 0);
+            int reapplyTime = AppConfig.Get("reapply_time", CpuInfo.IsReapplyTempRequired() ? 30 : 0);
             if (reapplyTime > 0)
             {
                 reapplyTimer = new System.Timers.Timer(reapplyTime * 1000);
@@ -401,7 +401,7 @@ namespace GHelper.Mode
                 if (HardwareControl.GpuControl is null) { Logger.WriteLine("Clocks: NoGPUControl"); return; }
                 if (!HardwareControl.GpuControl!.IsNvidia) { Logger.WriteLine("Clocks: NotNvidia"); return; }
 
-                using NvidiaGpuControl nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
+                NvidiaGpuControl nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
                 try
                 {
                     int statusClocks = nvControl.SetClocks(core, memory);
