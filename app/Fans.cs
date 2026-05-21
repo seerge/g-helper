@@ -1320,7 +1320,11 @@ namespace GHelper
             curPoint = null;
             curIndex = -1;
             labelTip.Visible = false;
+            Chart_SaveCurves();
+        }
 
+        private void Chart_SaveCurves()
+        {
             SaveProfile(seriesCPU, AsusFan.CPU);
             SaveProfile(seriesGPU, AsusFan.GPU);
 
@@ -1383,7 +1387,7 @@ namespace GHelper
 
         private void Chart_LostFocus(object? sender, EventArgs e)
         {
-            Chart_Save();
+            labelTip.Visible = false;
         }
 
         private void Chart_KeyDown(object? sender, KeyEventArgs e, AsusFan device)
@@ -1457,6 +1461,7 @@ namespace GHelper
             curPoint.YValues[0] = newY;
 
             AdjustAllLevels(curIndex, newX, newY, series);
+            Chart_SaveCurves();
         }
 
         private void UpdateChartTip(Chart chart, AsusFan device)
