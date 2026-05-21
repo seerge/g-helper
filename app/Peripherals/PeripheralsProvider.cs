@@ -139,7 +139,7 @@ namespace GHelper.Peripherals
             {
                 DeviceChanged(am, EventArgs.Empty);
             }
-            Program.inputDispatcher?.RegisterKeys();
+            RefreshHotkeys();
         }
 
         public static void Connect(AsusMouse am)
@@ -188,7 +188,7 @@ namespace GHelper.Peripherals
                 DeviceChanged(am, EventArgs.Empty);
             }
             UpdateSettingsView();
-            Program.inputDispatcher?.RegisterKeys();
+            RefreshHotkeys();
         }
 
         private static void BatteryUpdated(object? sender, EventArgs e)
@@ -218,9 +218,21 @@ namespace GHelper.Peripherals
             am.Dispose();
 
             UpdateSettingsView();
-            Program.inputDispatcher?.RegisterKeys();
+            RefreshHotkeys();
         }
 
+
+        // RegisterHotKey is thread-affine: hotkeys registered by a Task-pool thread are torn down
+        // when that thread is released, and UnregisterHotKey only frees the calling thread's
+        // registrations. Always run RegisterKeys on the UI thread.
+        private static void RefreshHotkeys()
+        {
+            if (Program.inputDispatcher is null || Program.settingsForm is null) return;
+            if (Program.settingsForm.InvokeRequired)
+                Program.settingsForm.BeginInvoke((Action)Program.inputDispatcher.RegisterKeys);
+            else
+                Program.inputDispatcher.RegisterKeys();
+        }
 
         private static void UpdateSettingsView()
         {
