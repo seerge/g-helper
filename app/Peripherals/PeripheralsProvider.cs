@@ -234,8 +234,11 @@ namespace GHelper.Peripherals
         public static void DetectAllAsusMice()
         {
             //Add one line for every supported mouse class here to support them.
-            try { DetectBleMice(); }
-            catch (Exception e) { Logger.WriteLine("DetectBleMice crashed: " + e); }
+            Task.Run(() =>
+            {
+                try { DetectBleMice(); }
+                catch (Exception e) { Logger.WriteLine("DetectBleMice crashed: " + e); }
+            });
             DedectOmniMouse();
             DetectMouse(new ChakramX());
             DetectMouse(new ChakramXWired());
