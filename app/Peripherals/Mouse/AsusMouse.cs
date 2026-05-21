@@ -2300,7 +2300,7 @@ namespace GHelper.Peripherals.Mouse
             new(0x0070, "Paste",              Hex(Keys.LControlKey, Keys.V)),
             new(0x0071, "Undo",               Hex(Keys.LControlKey, Keys.Z)),
             new(0x0072, "Task Manager",       Hex(Keys.LControlKey, Keys.LShiftKey, Keys.Escape)),
-            new(0x0073, "Show Desktop",       Hex(Keys.LWin,        Keys.Oemcomma)),
+            new(0x0073, "Minimize All",       Hex(Keys.LWin,        Keys.M)),
         };
 
         public static readonly Dictionary<ushort, ComboDef> CombosByCode =
