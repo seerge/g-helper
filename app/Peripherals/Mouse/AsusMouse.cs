@@ -255,7 +255,19 @@ namespace GHelper.Peripherals.Mouse
         public int ZoneModeDPI { get; set; } = 1600;
         public PollingRate ZoneModePollingRate { get; set; } = PollingRate.PR4000Hz;
 public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
-        public bool ButtonBindingsReady { get; protected set; }
+
+        private bool _buttonBindingsReady;
+        public bool ButtonBindingsReady
+        {
+            get => _buttonBindingsReady;
+            protected set
+            {
+                _buttonBindingsReady = value;
+                if (value) ButtonBindingsChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        public event EventHandler? ButtonBindingsChanged;
 
         public bool Booster = false;
 
