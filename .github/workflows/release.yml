@@ -22,7 +22,16 @@ jobs:
 
     - name: Publish
       run: |
-        dotnet publish app/GHelper.sln --configuration Release --runtime win-x64 -p:PublishSingleFile=true --no-self-contained
+        dotnet publish app/GHelper.sln --configuration Release --runtime win-x64 -p:PublishSingleFile=true --no-self-contained -p:EnableUIAccess=true
+
+    - name: Verify uiAccess in manifest
+      shell: pwsh
+      run: |
+        $exe = 'app/bin/x64/Release/net8.0-windows/win-x64/publish/GHelper.exe'
+        $bytes = [System.IO.File]::ReadAllBytes($exe)
+        $text = [System.Text.Encoding]::ASCII.GetString($bytes)
+        if ($text -notmatch 'uiAccess="true"') { Write-Error 'uiAccess="true" missing from embedded manifest'; exit 1 }
+        Write-Host 'uiAccess="true" confirmed in manifest'
 
     - name: Upload unsigned EXE
       id: upload-unsigned
