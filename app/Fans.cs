@@ -15,6 +15,8 @@ namespace GHelper
 
         int curIndex = -1;
         DataPoint? curPoint = null;
+        bool _chartKeyboardMode = false;
+        Point _lastMousePos = Point.Empty;
 
         Series seriesCPU;
         Series seriesGPU;
@@ -1391,6 +1393,8 @@ namespace GHelper
             int count = series.Points.Count;
             if (count == 0) return;
 
+            _chartKeyboardMode = true;
+
             if (curIndex < 0 || curIndex >= count) curIndex = 0;
             curPoint = series.Points[curIndex];
 
@@ -1479,7 +1483,7 @@ namespace GHelper
                     chart.AccessibilityObject.RaiseAutomationNotification(
                         System.Windows.Forms.Automation.AutomationNotificationKind.Other,
                         System.Windows.Forms.Automation.AutomationNotificationProcessing.MostRecent,
-                        $"point {curIndex + 1}, {labelTip.Text}");
+                        $"{device} point {curIndex + 1}, {labelTip.Text}");
                 }
                 catch { }
             }
@@ -1499,7 +1503,13 @@ namespace GHelper
 
             Series series = chart.Series[0];
 
-            if (!e.Button.HasFlag(MouseButtons.Left) || curPoint == null)
+            if (e.Location != _lastMousePos)
+            {
+                _lastMousePos = e.Location;
+                _chartKeyboardMode = false;
+            }
+
+            if ((!e.Button.HasFlag(MouseButtons.Left) || curPoint == null) && !_chartKeyboardMode)
             {
                 try
                 {
