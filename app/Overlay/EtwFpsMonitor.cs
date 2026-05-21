@@ -446,6 +446,18 @@ namespace GHelper.Overlay
             // EventHeader.TimeStamp = kernel QPC tick at the moment Present() was called.
             // This is NOT affected by ETW delivery batching, giving accurate inter-frame timing.
             long now = record.EventHeader.TimeStamp;
+
+            // Some engines call Present() twice per
+            // displayed frame, ~100-200 μs apart, then wait ~16 ms — doubling reported FPS.
+            // Drop the second event when it arrives within < 1 ms of the previous counted
+            // one; that's 5× above any observed duplicate gap and well below any realistic
+            // real frame gap (≥ 2 ms at 500 FPS).
+            if (_framesFilled > 0)
+            {
+                int prevIdx = (_frameHead - 1 + RollingWindowSize) % RollingWindowSize;
+                if (now - _frameTimes[prevIdx] < Stopwatch.Frequency / 1000) return;
+            }
+
             _frameTimes[_frameHead] = now;
             _frameHead = (_frameHead + 1) % RollingWindowSize;
             if (_framesFilled < RollingWindowSize) _framesFilled++;
