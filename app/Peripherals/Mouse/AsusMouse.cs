@@ -254,7 +254,7 @@ namespace GHelper.Peripherals.Mouse
         public bool ZoneMode { get; protected set; }
         public int ZoneModeDPI { get; set; } = 1600;
         public PollingRate ZoneModePollingRate { get; set; } = PollingRate.PR4000Hz;
-public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
+        public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
 
         private bool _buttonBindingsReady;
         public bool ButtonBindingsReady
