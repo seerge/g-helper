@@ -222,7 +222,7 @@ namespace GHelper.Input
         private static IEnumerable<ushort> GetActiveMouseComboCarriers()
         {
             var seen = new HashSet<ushort>();
-            foreach (var m in PeripheralsProvider.ConnectedMice.ToArray())
+            foreach (var m in PeripheralsProvider.SnapshotMice())
             {
                 if (!m.HasButtonBindings() || m.ButtonBindings is null) continue;
                 foreach (ushort code in m.ButtonBindings)

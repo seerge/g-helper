@@ -60,6 +60,14 @@ namespace GHelper.Peripherals
             return l;
         }
 
+        public static List<AsusMouse> SnapshotMice()
+        {
+            lock (_LOCK)
+            {
+                return new List<AsusMouse>(ConnectedMice);
+            }
+        }
+
         public static void RefreshBatteryForAllDevices()
         {
             RefreshBatteryForAllDevices(false);
@@ -205,7 +213,7 @@ namespace GHelper.Peripherals
 
         private static void ButtonBindingsChanged(object? sender, EventArgs e)
         {
-            Program.inputDispatcher?.RegisterKeys();
+            RefreshHotkeys();
         }
 
         private static void Mouse_Disconnect(object? sender, EventArgs e)
