@@ -1320,11 +1320,7 @@ namespace GHelper
             curPoint = null;
             curIndex = -1;
             labelTip.Visible = false;
-            Chart_SaveCurves();
-        }
 
-        private void Chart_SaveCurves()
-        {
             SaveProfile(seriesCPU, AsusFan.CPU);
             SaveProfile(seriesGPU, AsusFan.GPU);
 
@@ -1419,16 +1415,16 @@ namespace GHelper
                     curPoint = series.Points[curIndex];
                     break;
                 case Keys.Left:
-                    Chart_AdjustPoint(-step, 0, series);
+                    Chart_AdjustPoint(-step, 0, series, device);
                     break;
                 case Keys.Right:
-                    Chart_AdjustPoint(step, 0, series);
+                    Chart_AdjustPoint(step, 0, series, device);
                     break;
                 case Keys.Down:
-                    Chart_AdjustPoint(0, -step, series);
+                    Chart_AdjustPoint(0, -step, series, device);
                     break;
                 case Keys.Up:
-                    Chart_AdjustPoint(0, step, series);
+                    Chart_AdjustPoint(0, step, series, device);
                     break;
                 default:
                     return;
@@ -1438,7 +1434,7 @@ namespace GHelper
             e.Handled = true;
         }
 
-        private void Chart_AdjustPoint(int dx, int dy, Series series)
+        private void Chart_AdjustPoint(int dx, int dy, Series series, AsusFan device)
         {
             if (curPoint == null) return;
 
@@ -1461,7 +1457,7 @@ namespace GHelper
             curPoint.YValues[0] = newY;
 
             AdjustAllLevels(curIndex, newX, newY, series);
-            Chart_SaveCurves();
+            SaveProfile(series, device);
         }
 
         private void UpdateChartTip(Chart chart, AsusFan device)
