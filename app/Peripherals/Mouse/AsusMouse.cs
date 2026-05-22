@@ -254,8 +254,20 @@ namespace GHelper.Peripherals.Mouse
         public bool ZoneMode { get; protected set; }
         public int ZoneModeDPI { get; set; } = 1600;
         public PollingRate ZoneModePollingRate { get; set; } = PollingRate.PR4000Hz;
-public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
-        public bool ButtonBindingsReady { get; protected set; }
+        public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
+
+        private bool _buttonBindingsReady;
+        public bool ButtonBindingsReady
+        {
+            get => _buttonBindingsReady;
+            protected set
+            {
+                _buttonBindingsReady = value;
+                if (value) ButtonBindingsChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        public event EventHandler? ButtonBindingsChanged;
 
         public bool Booster = false;
 
@@ -2231,6 +2243,9 @@ public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
             (0x003A, "F1" ), (0x003B, "F2" ), (0x003C, "F3" ), (0x003D, "F4" ),
             (0x003E, "F5" ), (0x003F, "F6" ), (0x0040, "F7" ), (0x0041, "F8" ),
             (0x0042, "F9" ), (0x0043, "F10"), (0x0044, "F11"), (0x0045, "F12"),
+            (0x0068, "F13"), (0x0069, "F14"), (0x006A, "F15"), (0x006B, "F16"),
+            (0x006C, "F17"), (0x006D, "F18"), (0x006E, "F19"), (0x006F, "F20"),
+            (0x0070, "F21"), (0x0071, "F22"), (0x0072, "F23"), (0x0073, "F24"),
             // navigation
             (0x0049, "Insert"   ), (0x004A, "Home"     ), (0x004B, "Page Up"  ),
             (0x004C, "Delete"   ), (0x004D, "End"      ), (0x004E, "Page Down"),
@@ -2263,16 +2278,46 @@ public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
             (0x0000, "Disabled"     ),
         };
 
+        public sealed record ComboDef(ushort PassthroughCode, string Label, string DefaultCommand)
+        {
+            public string ConfigKey => $"mouse_combo_F{13 + (PassthroughCode - 0x0068)}";
+            public string ResolveCommand() => AppConfig.GetString(ConfigKey) ?? DefaultCommand;
+        }
+
+        private static string Hex(params Keys[] keys) =>
+            string.Join(" ", keys.Select(k => $"0x{(int)k:X2}"));
+
+        public static readonly IReadOnlyList<ComboDef> MouseCombos = new List<ComboDef>
+        {
+            new(0x0068, "Alt + Tab",          Hex(Keys.LMenu,       Keys.Tab)),
+            new(0x0069, "Alt + F4",           Hex(Keys.LMenu,       Keys.F4)),
+            new(0x006A, "Win + D",            Hex(Keys.LWin,        Keys.D)),
+            new(0x006B, "Win + E",            Hex(Keys.LWin,        Keys.E)),
+            new(0x006C, "Win + L",            Hex(Keys.LWin,        Keys.L)),
+            new(0x006D, "Win + Tab",          Hex(Keys.LWin,        Keys.Tab)),
+            new(0x006E, "Win + V",            Hex(Keys.LWin,        Keys.V)),
+            new(0x006F, "Copy",               Hex(Keys.LControlKey, Keys.C)),
+            new(0x0070, "Paste",              Hex(Keys.LControlKey, Keys.V)),
+            new(0x0071, "Undo",               Hex(Keys.LControlKey, Keys.Z)),
+            new(0x0072, "Task Manager",       Hex(Keys.LControlKey, Keys.LShiftKey, Keys.Escape)),
+            new(0x0073, "Minimize All",       Hex(Keys.LWin,        Keys.M)),
+        };
+
+        public static readonly Dictionary<ushort, ComboDef> CombosByCode =
+            MouseCombos.ToDictionary(c => c.PassthroughCode);
+
         public static readonly IReadOnlyList<(string GroupLabel, IReadOnlyList<(ushort Code, string Name)> Items)>
         DefaultBindingGroups = new List<(string, IReadOnlyList<(ushort, string)>)>
         {
-            ("Mouse",      MouseBindings     ),
+            ("Mouse",      MouseBindings),
+            ("Combos",     MouseCombos.Select(c => (c.PassthroughCode, c.Label)).ToList()),
             ("Multimedia", MultimediaBindings),
-            ("Keyboard",   KeyboardBindings  ),
+            ("Keyboard",   KeyboardBindings),
         };
 
         public static readonly Dictionary<ushort, string> BindingCodes =
             DefaultBindingGroups.SelectMany(g => g.Items)
+                .DistinctBy(e => e.Code)
                 .ToDictionary(e => e.Code, e => e.Name);
 
         public static string LabelForActionCode(ushort code)

@@ -425,6 +425,16 @@ namespace GHelper.Overlay
             if (targetPid == 0) return;                                    // no foreground target yet
             if ((int)record.EventHeader.ProcessId != targetPid) return;    // wrong process
 
+            // DXGI_PRESENT_TEST presents probe swapchain state without displaying a frame.
+            // S.T.A.L.K.E.R. Anomaly's X-Ray engine fires one between every real Present,
+            // which would otherwise double the reported FPS. Skip them — by definition
+            // they never produce a displayed frame, so this is safe for any game.
+            if (isDxgiPresent && record.UserDataLength >= 12)
+            {
+                uint dxgiFlags = (uint)Marshal.ReadInt32(record.UserData, 8);
+                if ((dxgiFlags & 0x1 /*DXGI_PRESENT_TEST*/) != 0) return;
+            }
+
             // Prefer DXGI when available — if DXGI event 42 has been seen for this PID,
             // ignore DxgKrnl events to avoid double-counting frames on games that emit both.
             if (isDxgiPresent)
@@ -446,18 +456,6 @@ namespace GHelper.Overlay
             // EventHeader.TimeStamp = kernel QPC tick at the moment Present() was called.
             // This is NOT affected by ETW delivery batching, giving accurate inter-frame timing.
             long now = record.EventHeader.TimeStamp;
-
-            // Some engines call Present() twice per
-            // displayed frame, ~100-200 μs apart, then wait ~16 ms — doubling reported FPS.
-            // Drop the second event when it arrives within < 1 ms of the previous counted
-            // one; that's 5× above any observed duplicate gap and well below any realistic
-            // real frame gap (≥ 2 ms at 500 FPS).
-            if (_framesFilled > 0)
-            {
-                int prevIdx = (_frameHead - 1 + RollingWindowSize) % RollingWindowSize;
-                if (now - _frameTimes[prevIdx] < Stopwatch.Frequency / 1000) return;
-            }
-
             _frameTimes[_frameHead] = now;
             _frameHead = (_frameHead + 1) % RollingWindowSize;
             if (_framesFilled < RollingWindowSize) _framesFilled++;

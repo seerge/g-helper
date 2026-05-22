@@ -45,11 +45,6 @@ namespace PawnIO
 
         public static bool IsSupportedUViGPU() => Name.Contains("6900H");
 
-        // Cezanne (Ryzen 5000H) and Rembrandt (Ryzen 6000H) — temp limit resets under load, needs periodic reapply.
-        public static bool IsReapplyTempRequired()
-            => Name.Contains("5800H") || Name.Contains("5900H") || Name.Contains("5980H")
-            || Name.Contains("6800H") || Name.Contains("6900H") || Name.Contains("6980H");
-
         private static (string Name, string Caption) Load()
         {
             try
