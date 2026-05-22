@@ -15,8 +15,7 @@ namespace GHelper
 
         int curIndex = -1;
         DataPoint? curPoint = null;
-        bool _chartKeyboardMode = false;
-        Point _lastMousePos = Point.Empty;
+        int _kbIndex = 0;
         int _chartTabDirection = 0;
 
         Series seriesCPU;
@@ -1342,7 +1341,6 @@ namespace GHelper
 
         private void ChartCPU_MouseLeave(object? sender, EventArgs e)
         {
-            if (_chartKeyboardMode) return;
             curPoint = null;
             curIndex = -1;
             labelTip.Visible = false;
@@ -1365,7 +1363,7 @@ namespace GHelper
                     break;
                 case Keys.Tab:
                     bool back = e.Modifiers.HasFlag(Keys.Shift);
-                    if (back ? curIndex > 0 : curIndex < count - 1)
+                    if (back ? _kbIndex > 0 : _kbIndex < count - 1)
                         e.IsInputKey = true;
                     else
                         _chartTabDirection = back ? -1 : 1;
@@ -1375,19 +1373,15 @@ namespace GHelper
 
         private void Chart_GotFocus(object? sender, AsusFan device)
         {
-            if (MouseButtons != MouseButtons.None) return;
-
             Chart chart = (Chart)sender!;
-            Series series = chart.Series[0];
-            int count = series.Points.Count;
+            int count = chart.Series[0].Points.Count;
             if (count == 0) return;
 
-            if (_chartTabDirection > 0) curIndex = 0;
-            else if (_chartTabDirection < 0) curIndex = count - 1;
-            else if (curIndex < 0 || curIndex >= count) curIndex = 0;
+            if (_chartTabDirection > 0) _kbIndex = 0;
+            else if (_chartTabDirection < 0) _kbIndex = count - 1;
+            else if (_kbIndex < 0 || _kbIndex >= count) _kbIndex = 0;
             _chartTabDirection = 0;
 
-            curPoint = series.Points[curIndex];
             UpdateChartTip(chart, device);
         }
 
@@ -1403,26 +1397,20 @@ namespace GHelper
             int count = series.Points.Count;
             if (count == 0) return;
 
-            _chartKeyboardMode = true;
-
-            if (curIndex < 0 || curIndex >= count) curIndex = 0;
-            curPoint = series.Points[curIndex];
+            if (_kbIndex < 0 || _kbIndex >= count) _kbIndex = 0;
 
             int step = e.Shift ? 5 : 1;
 
             switch (e.KeyCode)
             {
                 case Keys.Tab:
-                    curIndex = Math.Max(0, Math.Min(count - 1, e.Shift ? curIndex - 1 : curIndex + 1));
-                    curPoint = series.Points[curIndex];
+                    _kbIndex = Math.Max(0, Math.Min(count - 1, e.Shift ? _kbIndex - 1 : _kbIndex + 1));
                     break;
                 case Keys.Home:
-                    curIndex = 0;
-                    curPoint = series.Points[curIndex];
+                    _kbIndex = 0;
                     break;
                 case Keys.End:
-                    curIndex = count - 1;
-                    curPoint = series.Points[curIndex];
+                    _kbIndex = count - 1;
                     break;
                 case Keys.Left:
                     Chart_AdjustPoint(-step, 0, series, device);
@@ -1446,15 +1434,15 @@ namespace GHelper
 
         private void Chart_AdjustPoint(int dx, int dy, Series series, AsusFan device)
         {
-            if (curPoint == null) return;
+            DataPoint point = series.Points[_kbIndex];
 
-            double newX = curPoint.XValue + dx;
-            double newY = curPoint.YValues[0] + dy;
+            double newX = point.XValue + dx;
+            double newY = point.YValues[0] + dy;
 
             newX = Math.Max(tempMin, Math.Min(tempMax, newX));
             if (clampFanDots)
             {
-                double minX = 30 + (curIndex * 10);
+                double minX = 30 + (_kbIndex * 10);
                 double maxX = minX + 9;
                 newX = Math.Max(minX, Math.Min(maxX, newX));
             }
@@ -1463,24 +1451,23 @@ namespace GHelper
             double dymin = (newX - 70) * 1.2;
             if (newY < dymin) newY = dymin;
 
-            curPoint.XValue = newX;
-            curPoint.YValues[0] = newY;
+            point.XValue = newX;
+            point.YValues[0] = newY;
 
-            AdjustAllLevels(curIndex, newX, newY, series);
+            AdjustAllLevels(_kbIndex, newX, newY, series);
             SaveProfile(series, device);
         }
 
         private void UpdateChartTip(Chart chart, AsusFan device)
         {
-            if (curPoint == null) return;
-
-            labelTip.Text = TempHelper.FormatTemp(curPoint.XValue) + ", " + ChartYLabel((int)curPoint.YValues[0], device, " " + Properties.Strings.RPM);
+            DataPoint point = chart.Series[0].Points[_kbIndex];
+            labelTip.Text = TempHelper.FormatTemp(point.XValue) + ", " + ChartYLabel((int)point.YValues[0], device, " " + Properties.Strings.RPM);
 
             try
             {
                 ChartArea ca = chart.ChartAreas[0];
-                double pixX = ca.AxisX.ValueToPixelPosition(curPoint.XValue);
-                double pixY = ca.AxisY.ValueToPixelPosition(curPoint.YValues[0]);
+                double pixX = ca.AxisX.ValueToPixelPosition(point.XValue);
+                double pixY = ca.AxisY.ValueToPixelPosition(point.YValues[0]);
                 labelTip.Top = (int)pixY + chart.Top;
                 labelTip.Left = Math.Min(chart.Width - labelTip.Width - 20, (int)pixX - 50);
                 labelTip.Visible = true;
@@ -1494,7 +1481,7 @@ namespace GHelper
                     chart.AccessibilityObject.RaiseAutomationNotification(
                         System.Windows.Forms.Automation.AutomationNotificationKind.Other,
                         System.Windows.Forms.Automation.AutomationNotificationProcessing.MostRecent,
-                        $"{device} point {curIndex + 1}, {labelTip.Text}");
+                        $"{device} point {_kbIndex + 1}, {labelTip.Text}");
                 }
                 catch { }
             }
@@ -1514,13 +1501,7 @@ namespace GHelper
 
             Series series = chart.Series[0];
 
-            if (e.Location != _lastMousePos)
-            {
-                _lastMousePos = e.Location;
-                _chartKeyboardMode = false;
-            }
-
-            if ((!e.Button.HasFlag(MouseButtons.Left) || curPoint == null) && !_chartKeyboardMode)
+            if (!e.Button.HasFlag(MouseButtons.Left) || curPoint == null)
             {
                 try
                 {
