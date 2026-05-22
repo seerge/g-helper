@@ -410,6 +410,7 @@ namespace GHelper
             checkUSBC.CheckedChanged += CheckUSBC_CheckedChanged;
 
             sliderBrightness.Value = InputDispatcher.GetBacklight();
+            sliderBrightness.AccessibleName = Properties.Strings.LaptopBacklight + ": " + sliderBrightness.Value;
             sliderBrightness.ValueChanged += SliderBrightness_ValueChanged;
 
             panelXGM.Visible = XGM.IsConnected();
@@ -651,6 +652,7 @@ namespace GHelper
                 AppConfig.Set("keyboard_brightness", sliderBrightness.Value);
 
             Aura.ApplyBrightness(sliderBrightness.Value, "Slider");
+            sliderBrightness.AccessibleName = Properties.Strings.LaptopBacklight + ": " + sliderBrightness.Value;
         }
 
         private void InitServices()
