@@ -17,6 +17,7 @@ namespace GHelper
         DataPoint? curPoint = null;
         bool _chartKeyboardMode = false;
         Point _lastMousePos = Point.Empty;
+        int _chartTabDirection = 0;
 
         Series seriesCPU;
         Series seriesGPU;
@@ -1341,7 +1342,7 @@ namespace GHelper
 
         private void ChartCPU_MouseLeave(object? sender, EventArgs e)
         {
-            if (((Control)sender!).Focused) return;
+            if (_chartKeyboardMode) return;
             curPoint = null;
             curIndex = -1;
             labelTip.Visible = false;
@@ -1366,17 +1367,26 @@ namespace GHelper
                     bool back = e.Modifiers.HasFlag(Keys.Shift);
                     if (back ? curIndex > 0 : curIndex < count - 1)
                         e.IsInputKey = true;
+                    else
+                        _chartTabDirection = back ? -1 : 1;
                     break;
             }
         }
 
         private void Chart_GotFocus(object? sender, AsusFan device)
         {
+            if (MouseButtons != MouseButtons.None) return;
+
             Chart chart = (Chart)sender!;
             Series series = chart.Series[0];
-            if (series.Points.Count == 0) return;
+            int count = series.Points.Count;
+            if (count == 0) return;
 
-            if (curIndex < 0 || curIndex >= series.Points.Count) curIndex = 0;
+            if (_chartTabDirection > 0) curIndex = 0;
+            else if (_chartTabDirection < 0) curIndex = count - 1;
+            else if (curIndex < 0 || curIndex >= count) curIndex = 0;
+            _chartTabDirection = 0;
+
             curPoint = series.Points[curIndex];
             UpdateChartTip(chart, device);
         }
