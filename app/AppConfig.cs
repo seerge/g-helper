@@ -567,14 +567,9 @@ public static class AppConfig
         return ContainsModel("GA403UI") || ContainsModel("GA403UU") || ContainsModel("GA403UV") || ContainsModel("FA507XV");
     }
 
-    public static bool IsReapplyTempRequired()
-    {
-        return ContainsModel("GA402");
-    }
-
     public static bool IsReapplyRyzen()
     {
-        return ContainsModel("G614F") || ContainsModel("G814F");
+        return ContainsModel("G614F") || ContainsModel("G814F") || ContainsModel("G733P");
     }
 
     public static bool IsFanRequired()
