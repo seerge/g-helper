@@ -273,6 +273,9 @@
   <data name="Balanced" xml:space="preserve">
     <value>Bilanciato</value>
   </data>
+  <data name="Battery" xml:space="preserve">
+    <value>Batteria</value>
+  </data>
   <data name="BatteryCharge" xml:space="preserve">
     <value>Carica</value>
   </data>
@@ -332,6 +335,9 @@
   </data>
   <data name="CPUBoost" xml:space="preserve">
     <value>Boost CPU</value>
+  </data>
+  <data name="CPUCoresConfiguration" xml:space="preserve">
+    <value>Configurazione core CPU</value>
   </data>
   <data name="Custom" xml:space="preserve">
     <value>Personalizzato</value>
@@ -482,6 +488,9 @@ Sei sicuro di voler continuare?</value>
   <data name="Keyboard" xml:space="preserve">
     <value>Tastiera</value>
   </data>
+  <data name="KeystoneSound" xml:space="preserve">
+    <value>Suono Keystone</value>
+  </data>
   <data name="KillGpuApps" xml:space="preserve">
     <value>Arresta tutte le app che usano la GPU passando ad Eco</value>
   </data>
@@ -617,11 +626,20 @@ Sei sicuro di voler continuare?</value>
   <data name="On" xml:space="preserve">
     <value>Acceso</value>
   </data>
+  <data name="OnAlways" xml:space="preserve">
+    <value>Sempre attivo</value>
+  </data>
+  <data name="OnBattery" xml:space="preserve">
+    <value>A batteria</value>
+  </data>
   <data name="OneZone" xml:space="preserve">
     <value>One Zone</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>Apri G-Helper</value>
+  </data>
+  <data name="OptimalDisplayBrightness" xml:space="preserve">
+    <value>Luminosità display ottimale</value>
   </data>
   <data name="Optimized" xml:space="preserve">
     <value>Ottimizzata</value>
