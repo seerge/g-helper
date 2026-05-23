@@ -536,7 +536,16 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("Balanced", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Battery.
+        /// </summary>
+        internal static string Battery {
+            get {
+                return ResourceManager.GetString("Battery", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Charge.
         /// </summary>
@@ -716,7 +725,16 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("CPUBoost", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to CPU Cores Configuration.
+        /// </summary>
+        internal static string CPUCoresConfiguration {
+            get {
+                return ResourceManager.GetString("CPUCoresConfiguration", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Custom.
         /// </summary>
@@ -1240,7 +1258,16 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("Keyboard", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Keystone Sound.
+        /// </summary>
+        internal static string KeystoneSound {
+            get {
+                return ResourceManager.GetString("KeystoneSound", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Stop all apps using GPU when switching to Eco.
         /// </summary>
@@ -1699,7 +1726,25 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("On", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to On Always.
+        /// </summary>
+        internal static string OnAlways {
+            get {
+                return ResourceManager.GetString("OnAlways", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to On Battery.
+        /// </summary>
+        internal static string OnBattery {
+            get {
+                return ResourceManager.GetString("OnBattery", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to One Zone.
         /// </summary>
@@ -1717,7 +1762,16 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("OpenGHelper", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Optimal Display Brightness.
+        /// </summary>
+        internal static string OptimalDisplayBrightness {
+            get {
+                return ResourceManager.GetString("OptimalDisplayBrightness", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Optimized.
         /// </summary>

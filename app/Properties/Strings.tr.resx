@@ -273,6 +273,9 @@
   <data name="Balanced" xml:space="preserve">
     <value>Dengeli</value>
   </data>
+  <data name="Battery" xml:space="preserve">
+    <value>Pil</value>
+  </data>
   <data name="BatteryCharge" xml:space="preserve">
     <value>Şarj</value>
   </data>
@@ -332,6 +335,9 @@
   </data>
   <data name="CPUBoost" xml:space="preserve">
     <value>CPU Artışı</value>
+  </data>
+  <data name="CPUCoresConfiguration" xml:space="preserve">
+    <value>CPU Çekirdek Yapılandırması</value>
   </data>
   <data name="Custom" xml:space="preserve">
     <value>Özel</value>
@@ -482,6 +488,9 @@ Yine de devam etmek istiyor musunuz?</value>
   <data name="Keyboard" xml:space="preserve">
     <value>Klavye</value>
   </data>
+  <data name="KeystoneSound" xml:space="preserve">
+    <value>Keystone Sesi</value>
+  </data>
   <data name="KillGpuApps" xml:space="preserve">
     <value>Eco moda geçerken GPU kullanan tüm uygulamaları durdur</value>
   </data>
@@ -617,11 +626,20 @@ Yine de devam etmek istiyor musunuz?</value>
   <data name="On" xml:space="preserve">
     <value>Açık</value>
   </data>
+  <data name="OnAlways" xml:space="preserve">
+    <value>Her zaman açık</value>
+  </data>
+  <data name="OnBattery" xml:space="preserve">
+    <value>Pilde</value>
+  </data>
   <data name="OneZone" xml:space="preserve">
     <value>Tek Bölge</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>G-Helper penceresini aç</value>
+  </data>
+  <data name="OptimalDisplayBrightness" xml:space="preserve">
+    <value>Optimum Ekran Parlaklığı</value>
   </data>
   <data name="Optimized" xml:space="preserve">
     <value>İyileştirilmiş</value>
