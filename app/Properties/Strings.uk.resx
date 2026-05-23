@@ -147,6 +147,9 @@
   <data name="AllyController" xml:space="preserve">
     <value>Ally Контролер</value>
   </data>
+  <data name="AnimationDirection" xml:space="preserve">
+    <value>Напрямок анімації</value>
+  </data>
   <data name="AnimationSpeed" xml:space="preserve">
     <value>Швидкість Анімації</value>
   </data>
@@ -324,6 +327,9 @@
   <data name="Charging" xml:space="preserve">
     <value>Зарядка</value>
   </data>
+  <data name="ClampToGrid" xml:space="preserve">
+    <value>До сітки</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>Колір</value>
   </data>
@@ -476,11 +482,20 @@
   <data name="High" xml:space="preserve">
     <value>Висока</value>
   </data>
+  <data name="HysteresisDown" xml:space="preserve">
+    <value>Гістерезис вниз</value>
+  </data>
+  <data name="HysteresisUp" xml:space="preserve">
+    <value>Гістерезис вгору</value>
+  </data>
   <data name="ImageRotation" xml:space="preserve">
     <value>Поворот</value>
   </data>
   <data name="Import" xml:space="preserve">
     <value>Імпорт Профілю</value>
+  </data>
+  <data name="InstallPawnIODriver" xml:space="preserve">
+    <value>Встановити драйвер PawnIO (pawnio.eu)</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Прив'язки клавіш</value>
@@ -560,6 +575,9 @@
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Максимальна частота оновлення для мінімізації затримок</value>
   </data>
+  <data name="Medium" xml:space="preserve">
+    <value>Середня</value>
+  </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
     <value>Частота 60Гц, щоб зберегти заряд батареї</value>
   </data>
@@ -570,7 +588,7 @@
     <value>Хвилини</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Angle Snapping / Tuning</value>
+    <value>Вирівнювання кута / Налаштування</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>Авто-вимикання</value>
@@ -594,7 +612,7 @@
     <value>Синхронізувати з мишею</value>
   </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
-    <value>Sync with laptop</value>
+    <value>Синхронізувати з ноутбуком</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Мульти зона</value>
@@ -685,6 +703,9 @@
   </data>
   <data name="Quit" xml:space="preserve">
     <value>Вихід</value>
+  </data>
+  <data name="ReadLimits" xml:space="preserve">
+    <value>Зчитати ліміти</value>
   </data>
   <data name="Reset" xml:space="preserve">
     <value>Скинути</value>
@@ -793,6 +814,12 @@
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>Версія</value>
+  </data>
+  <data name="VeryHigh" xml:space="preserve">
+    <value>Висока+</value>
+  </data>
+  <data name="VeryLow" xml:space="preserve">
+    <value>Низька-</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
     <value>Сила вібрації</value>
