@@ -147,6 +147,9 @@
   <data name="AllyController" xml:space="preserve">
     <value>Ally Kontrolcüsü</value>
   </data>
+  <data name="AnimationDirection" xml:space="preserve">
+    <value>Animasyon yönü</value>
+  </data>
   <data name="AnimationSpeed" xml:space="preserve">
     <value>Animasyon Hızı</value>
   </data>
@@ -609,7 +612,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Fare ile eşitle</value>
   </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
-    <value>Sync with laptop</value>
+    <value>Dizüstüyle senkronize et</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Çoklu Bölge</value>

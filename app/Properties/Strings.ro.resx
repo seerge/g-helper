@@ -147,6 +147,9 @@
   <data name="AllyController" xml:space="preserve">
     <value>Ally Controller</value>
   </data>
+  <data name="AnimationDirection" xml:space="preserve">
+    <value>Direcție animație</value>
+  </data>
   <data name="AnimationSpeed" xml:space="preserve">
     <value>Viteza animației</value>
   </data>
@@ -585,7 +588,7 @@
     <value>Minute</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Angle Snapping / Tuning</value>
+    <value>Aliniere unghi / Reglare</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>Oprire automată după</value>
@@ -609,7 +612,7 @@
     <value>Sincronizare cu mouse-ul</value>
   </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
-    <value>Sync with laptop</value>
+    <value>Sincronizează cu laptopul</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Multi Zone</value>

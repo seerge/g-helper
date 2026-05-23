@@ -147,6 +147,9 @@
   <data name="AllyController" xml:space="preserve">
     <value>Kontroler Ally</value>
   </data>
+  <data name="AnimationDirection" xml:space="preserve">
+    <value>Kierunek animacji</value>
+  </data>
   <data name="AnimationSpeed" xml:space="preserve">
     <value>Prędkość animacji</value>
   </data>
@@ -585,7 +588,7 @@ Nadal chcesz kontynuować?</value>
     <value>min.</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Angle Snapping / Tuning</value>
+    <value>Wyrównanie kąta / Strojenie</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>Przejście w tryb uśpienia po</value>
@@ -609,7 +612,7 @@ Nadal chcesz kontynuować?</value>
     <value>Synchronizuj z myszką</value>
   </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
-    <value>Sync with laptop</value>
+    <value>Synchronizuj z laptopem</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Wiele stref</value>

@@ -147,6 +147,9 @@
   <data name="AllyController" xml:space="preserve">
     <value>Ally Controller</value>
   </data>
+  <data name="AnimationDirection" xml:space="preserve">
+    <value>Arah Animasi</value>
+  </data>
   <data name="AnimationSpeed" xml:space="preserve">
     <value>Kecepatan Animasi</value>
   </data>
@@ -585,7 +588,7 @@ Apakah Anda masih ingin melanjutkan?</value>
     <value>Menit</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Angle Snapping / Tuning</value>
+    <value>Angle Snapping / Penyetelan</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>Mati Otomatis Setelah</value>
@@ -609,7 +612,7 @@ Apakah Anda masih ingin melanjutkan?</value>
     <value>Sinkronkan dengan mouse</value>
   </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
-    <value>Sync with laptop</value>
+    <value>Sinkronkan dengan laptop</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Multi Zone</value>

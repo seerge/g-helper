@@ -158,7 +158,16 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("AmbientModeResources", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Animation Direction.
+        /// </summary>
+        internal static string AnimationDirection {
+            get {
+                return ResourceManager.GetString("AnimationDirection", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Animation Speed.
         /// </summary>
@@ -608,7 +617,7 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("BindingSecondary", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to BIOS and Driver Updates.
         /// </summary>
@@ -1969,7 +1978,7 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("Reset", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk).
         /// </summary>

@@ -147,6 +147,9 @@
   <data name="AllyController" xml:space="preserve">
     <value>Ally Контролер</value>
   </data>
+  <data name="AnimationDirection" xml:space="preserve">
+    <value>Напрямок анімації</value>
+  </data>
   <data name="AnimationSpeed" xml:space="preserve">
     <value>Швидкість Анімації</value>
   </data>
@@ -585,7 +588,7 @@
     <value>Хвилини</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Angle Snapping / Tuning</value>
+    <value>Вирівнювання кута / Налаштування</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>Авто-вимикання</value>
@@ -609,7 +612,7 @@
     <value>Синхронізувати з мишею</value>
   </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
-    <value>Sync with laptop</value>
+    <value>Синхронізувати з ноутбуком</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Мульти зона</value>

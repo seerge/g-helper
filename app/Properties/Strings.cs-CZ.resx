@@ -147,6 +147,9 @@
   <data name="AllyController" xml:space="preserve">
     <value>Ovladač Ally</value>
   </data>
+  <data name="AnimationDirection" xml:space="preserve">
+    <value>Směr animace</value>
+  </data>
   <data name="AnimationSpeed" xml:space="preserve">
     <value>Rychlost animace</value>
   </data>
@@ -582,7 +585,7 @@ Chcete přesto pokračovat?</value>
     <value>Minut/y</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Angle Snapping / Ladění</value>
+    <value>Vyrovnání úhlu / Ladění</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>Automaticky vypnout po</value>
@@ -601,6 +604,9 @@ Chcete přesto pokračovat?</value>
   </data>
   <data name="MousePerformance" xml:space="preserve">
     <value>Vlastnosti</value>
+  </data>
+  <data name="MouseSyncWithAura" xml:space="preserve">
+    <value>Synchronizovat s notebookem</value>
   </data>
   <data name="MouseSynchronize" xml:space="preserve">
     <value>Synchronizovat s myší</value>

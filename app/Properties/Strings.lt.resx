@@ -147,6 +147,9 @@
   <data name="AllyController" xml:space="preserve">
     <value>„Ally“ valdiklis</value>
   </data>
+  <data name="AnimationDirection" xml:space="preserve">
+    <value>Animacijos kryptis</value>
+  </data>
   <data name="AnimationSpeed" xml:space="preserve">
     <value>Animacijos greitis</value>
   </data>
@@ -585,7 +588,7 @@ Vis tiek norite tęsti?</value>
     <value>min.</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Angle Snapping / Tuning</value>
+    <value>Kampų lygiavimas / Derinimas</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>Automatiškai išjungti po</value>
@@ -609,7 +612,7 @@ Vis tiek norite tęsti?</value>
     <value>Sinchronizuoti su pele</value>
   </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
-    <value>Sync with laptop</value>
+    <value>Sinchronizuoti su nešiojamuoju</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Kelios zonos</value>

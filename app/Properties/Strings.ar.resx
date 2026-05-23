@@ -147,6 +147,9 @@
   <data name="AllyController" xml:space="preserve">
     <value>وحدة تحكم ألي</value>
   </data>
+  <data name="AnimationDirection" xml:space="preserve">
+    <value>اتجاه الحركة</value>
+  </data>
   <data name="AnimationSpeed" xml:space="preserve">
     <value>سرعة الحركة</value>
   </data>
@@ -585,7 +588,7 @@
     <value>دقائق</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Angle Snapping / Tuning</value>
+    <value>محاذاة الزاوية / ضبط</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>إيقاف تشغيل الماوس تلقائيًا بعد</value>
@@ -609,7 +612,7 @@
     <value>مزامنة مع الماوس</value>
   </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
-    <value>Sync with laptop</value>
+    <value>مزامنة مع اللاب توب</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>عدة مناطق</value>

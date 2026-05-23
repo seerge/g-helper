@@ -147,6 +147,9 @@
   <data name="AllyController" xml:space="preserve">
     <value>Ally Controller</value>
   </data>
+  <data name="AnimationDirection" xml:space="preserve">
+    <value>Animation Direction</value>
+  </data>
   <data name="AnimationSpeed" xml:space="preserve">
     <value>Animation Speed</value>
   </data>

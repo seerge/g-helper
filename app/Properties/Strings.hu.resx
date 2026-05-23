@@ -147,6 +147,9 @@
   <data name="AllyController" xml:space="preserve">
     <value>Ally vezérlő</value>
   </data>
+  <data name="AnimationDirection" xml:space="preserve">
+    <value>Animáció iránya</value>
+  </data>
   <data name="AnimationSpeed" xml:space="preserve">
     <value>Animáció sebessége</value>
   </data>
