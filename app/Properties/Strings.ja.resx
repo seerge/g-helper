@@ -324,6 +324,9 @@
   <data name="Charging" xml:space="preserve">
     <value>充電中</value>
   </data>
+  <data name="ClampToGrid" xml:space="preserve">
+    <value>グリッド吸着</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>カラー</value>
   </data>
@@ -476,11 +479,20 @@
   <data name="High" xml:space="preserve">
     <value>High</value>
   </data>
+  <data name="HysteresisDown" xml:space="preserve">
+    <value>ヒステリシス（下降）</value>
+  </data>
+  <data name="HysteresisUp" xml:space="preserve">
+    <value>ヒステリシス（上昇）</value>
+  </data>
   <data name="ImageRotation" xml:space="preserve">
     <value>画像の回転</value>
   </data>
   <data name="Import" xml:space="preserve">
     <value>プロファイルをインポート</value>
+  </data>
+  <data name="InstallPawnIODriver" xml:space="preserve">
+    <value>PawnIO ドライバーをインストール (pawnio.eu)</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>キー割り当て</value>
@@ -559,6 +571,9 @@
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>最大リフレッシュレートで低遅延を実現</value>
+  </data>
+  <data name="Medium" xml:space="preserve">
+    <value>中</value>
   </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
     <value>バッテリーを節約するために60Hzのリフレッシュレートを使用</value>
@@ -686,6 +701,9 @@
   <data name="Quit" xml:space="preserve">
     <value>終了</value>
   </data>
+  <data name="ReadLimits" xml:space="preserve">
+    <value>制限を読み取る</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>リセット</value>
   </data>
@@ -793,6 +811,12 @@
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>バージョン</value>
+  </data>
+  <data name="VeryHigh" xml:space="preserve">
+    <value>最高</value>
+  </data>
+  <data name="VeryLow" xml:space="preserve">
+    <value>最低</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
     <value>振動の強さ</value>

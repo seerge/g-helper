@@ -689,7 +689,16 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("Charging", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Clamp to Grid.
+        /// </summary>
+        internal static string ClampToGrid {
+            get {
+                return ResourceManager.GetString("ClampToGrid", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Color.
         /// </summary>
@@ -1204,7 +1213,25 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("High", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Hysteresis Down.
+        /// </summary>
+        internal static string HysteresisDown {
+            get {
+                return ResourceManager.GetString("HysteresisDown", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Hysteresis Up.
+        /// </summary>
+        internal static string HysteresisUp {
+            get {
+                return ResourceManager.GetString("HysteresisUp", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Image Rotation.
         /// </summary>
@@ -1222,7 +1249,16 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("Import", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Install PawnIO Driver (pawnio.eu).
+        /// </summary>
+        internal static string InstallPawnIODriver {
+            get {
+                return ResourceManager.GetString("InstallPawnIODriver", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Interval Off.
         /// </summary>
@@ -1510,7 +1546,16 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("MaxRefreshTooltip", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Medium.
+        /// </summary>
+        internal static string Medium {
+            get {
+                return ResourceManager.GetString("Medium", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to 60Hz refresh rate to save battery.
         /// </summary>
@@ -1906,7 +1951,16 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("Quit", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Read Limits.
+        /// </summary>
+        internal static string ReadLimits {
+            get {
+                return ResourceManager.GetString("ReadLimits", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Reset.
         /// </summary>
@@ -2392,7 +2446,25 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("VersionLabel", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Very High.
+        /// </summary>
+        internal static string VeryHigh {
+            get {
+                return ResourceManager.GetString("VeryHigh", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Very Low.
+        /// </summary>
+        internal static string VeryLow {
+            get {
+                return ResourceManager.GetString("VeryLow", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Vibration Strength.
         /// </summary>

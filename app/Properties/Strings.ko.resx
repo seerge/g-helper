@@ -324,6 +324,9 @@
   <data name="Charging" xml:space="preserve">
     <value>충전 중</value>
   </data>
+  <data name="ClampToGrid" xml:space="preserve">
+    <value>그리드에 맞추기</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>색상</value>
   </data>
@@ -476,11 +479,20 @@
   <data name="High" xml:space="preserve">
     <value>높게</value>
   </data>
+  <data name="HysteresisDown" xml:space="preserve">
+    <value>히스테리시스 하강</value>
+  </data>
+  <data name="HysteresisUp" xml:space="preserve">
+    <value>히스테리시스 상승</value>
+  </data>
   <data name="ImageRotation" xml:space="preserve">
     <value>이미지 방향</value>
   </data>
   <data name="Import" xml:space="preserve">
     <value>프로필 가져오기</value>
+  </data>
+  <data name="InstallPawnIODriver" xml:space="preserve">
+    <value>PawnIO 드라이버 설치 (pawnio.eu)</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>키 바인딩</value>
@@ -559,6 +571,9 @@
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>최대 주사율 설정</value>
+  </data>
+  <data name="Medium" xml:space="preserve">
+    <value>중간</value>
   </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
     <value>60Hz 주사율 설정</value>
@@ -686,6 +701,9 @@
   <data name="Quit" xml:space="preserve">
     <value>종료</value>
   </data>
+  <data name="ReadLimits" xml:space="preserve">
+    <value>한계 읽기</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>초기화</value>
   </data>
@@ -793,6 +811,12 @@
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>버전</value>
+  </data>
+  <data name="VeryHigh" xml:space="preserve">
+    <value>매우 높게</value>
+  </data>
+  <data name="VeryLow" xml:space="preserve">
+    <value>매우 낮게</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
     <value>진동 세기</value>

@@ -324,6 +324,9 @@
   <data name="Charging" xml:space="preserve">
     <value>Oplader</value>
   </data>
+  <data name="ClampToGrid" xml:space="preserve">
+    <value>Lås til gitter</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>Farve</value>
   </data>
@@ -476,11 +479,20 @@ Vil du stadig fortsætte?</value>
   <data name="High" xml:space="preserve">
     <value>Høj</value>
   </data>
+  <data name="HysteresisDown" xml:space="preserve">
+    <value>Hysterese ned</value>
+  </data>
+  <data name="HysteresisUp" xml:space="preserve">
+    <value>Hysterese op</value>
+  </data>
   <data name="ImageRotation" xml:space="preserve">
     <value>Billedrotation</value>
   </data>
   <data name="Import" xml:space="preserve">
     <value>Importer profil</value>
+  </data>
+  <data name="InstallPawnIODriver" xml:space="preserve">
+    <value>Installer PawnIO-driver (pawnio.eu)</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Tastebindinger</value>
@@ -559,6 +571,9 @@ Vil du stadig fortsætte?</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Maks. opdateringshastighed for lavere latenstid</value>
+  </data>
+  <data name="Medium" xml:space="preserve">
+    <value>Mellem</value>
   </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
     <value>60Hz opdateringshastighed for at spare på batteriet</value>
@@ -686,6 +701,9 @@ Vil du stadig fortsætte?</value>
   <data name="Quit" xml:space="preserve">
     <value>Afslut</value>
   </data>
+  <data name="ReadLimits" xml:space="preserve">
+    <value>Læs grænser</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Nulstil</value>
   </data>
@@ -793,6 +811,12 @@ Vil du stadig fortsætte?</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>Version</value>
+  </data>
+  <data name="VeryHigh" xml:space="preserve">
+    <value>Meget høj</value>
+  </data>
+  <data name="VeryLow" xml:space="preserve">
+    <value>Meget lav</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
     <value>Vibrationsstyrke</value>

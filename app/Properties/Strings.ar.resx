@@ -324,6 +324,9 @@
   <data name="Charging" xml:space="preserve">
     <value>جاري الشحن</value>
   </data>
+  <data name="ClampToGrid" xml:space="preserve">
+    <value>تثبيت على الشبكة</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>اللون</value>
   </data>
@@ -476,11 +479,20 @@
   <data name="High" xml:space="preserve">
     <value>مرتفع</value>
   </data>
+  <data name="HysteresisDown" xml:space="preserve">
+    <value>التباطؤ نزولاً</value>
+  </data>
+  <data name="HysteresisUp" xml:space="preserve">
+    <value>التباطؤ صعوداً</value>
+  </data>
   <data name="ImageRotation" xml:space="preserve">
     <value>تدوير الصورة</value>
   </data>
   <data name="Import" xml:space="preserve">
     <value>استيراد الملف الشخصي</value>
+  </data>
+  <data name="InstallPawnIODriver" xml:space="preserve">
+    <value>تثبيت محرك PawnIO ‏(pawnio.eu)</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>تعيينات المفاتيح</value>
@@ -559,6 +571,9 @@
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>أعلى معدل تحديث لأقل تأخير</value>
+  </data>
+  <data name="Medium" xml:space="preserve">
+    <value>متوسط</value>
   </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
     <value>معدل تحديث 60 هرتز لتوفير البطارية</value>
@@ -686,6 +701,9 @@
   <data name="Quit" xml:space="preserve">
     <value>خروج</value>
   </data>
+  <data name="ReadLimits" xml:space="preserve">
+    <value>قراءة الحدود</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>إعادة ضبط</value>
   </data>
@@ -793,6 +811,12 @@
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>الإصدار</value>
+  </data>
+  <data name="VeryHigh" xml:space="preserve">
+    <value>مرتفع جداً</value>
+  </data>
+  <data name="VeryLow" xml:space="preserve">
+    <value>منخفض جداً</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
     <value>قوة الاهتزاز</value>

@@ -324,6 +324,9 @@
   <data name="Charging" xml:space="preserve">
     <value>Töltés</value>
   </data>
+  <data name="ClampToGrid" xml:space="preserve">
+    <value>Rácshoz</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>Szín</value>
   </data>
@@ -476,11 +479,20 @@ Folytatni szeretnéd?</value>
   <data name="High" xml:space="preserve">
     <value>Magas</value>
   </data>
+  <data name="HysteresisDown" xml:space="preserve">
+    <value>Hiszterézis le</value>
+  </data>
+  <data name="HysteresisUp" xml:space="preserve">
+    <value>Hiszterézis fel</value>
+  </data>
   <data name="ImageRotation" xml:space="preserve">
     <value>Kép elforgatás</value>
   </data>
   <data name="Import" xml:space="preserve">
     <value>Profil importálása</value>
+  </data>
+  <data name="InstallPawnIODriver" xml:space="preserve">
+    <value>PawnIO illesztőprogram telepítése (pawnio.eu)</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Gyorsbillentyűk</value>
@@ -559,6 +571,9 @@ Folytatni szeretnéd?</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Max frissítési gyakoriság kevés késleltetéshez</value>
+  </data>
+  <data name="Medium" xml:space="preserve">
+    <value>Közepes</value>
   </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
     <value>60Hz-s frissítési gyakoriság, hogy spóroljon az akkuval</value>
@@ -686,6 +701,9 @@ Folytatni szeretnéd?</value>
   <data name="Quit" xml:space="preserve">
     <value>Bezárás</value>
   </data>
+  <data name="ReadLimits" xml:space="preserve">
+    <value>Korlátok beolvasása</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Visszaállítás</value>
   </data>
@@ -793,6 +811,12 @@ Folytatni szeretnéd?</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>Verzió</value>
+  </data>
+  <data name="VeryHigh" xml:space="preserve">
+    <value>Magas+</value>
+  </data>
+  <data name="VeryLow" xml:space="preserve">
+    <value>Alacsony-</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
     <value>Rezgés erőssége</value>

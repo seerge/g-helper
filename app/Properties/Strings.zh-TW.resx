@@ -324,6 +324,9 @@
   <data name="Charging" xml:space="preserve">
     <value>充電中</value>
   </data>
+  <data name="ClampToGrid" xml:space="preserve">
+    <value>對齊格線</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>顏色</value>
   </data>
@@ -476,11 +479,20 @@
   <data name="High" xml:space="preserve">
     <value>高</value>
   </data>
+  <data name="HysteresisDown" xml:space="preserve">
+    <value>遲滯（下降）</value>
+  </data>
+  <data name="HysteresisUp" xml:space="preserve">
+    <value>遲滯（上升）</value>
+  </data>
   <data name="ImageRotation" xml:space="preserve">
     <value>圖像旋轉</value>
   </data>
   <data name="Import" xml:space="preserve">
     <value>匯入設定檔</value>
+  </data>
+  <data name="InstallPawnIODriver" xml:space="preserve">
+    <value>安裝 PawnIO 驅動 (pawnio.eu)</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>按鍵綁定</value>
@@ -559,6 +571,9 @@
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>更高的更新率和更低延遲</value>
+  </data>
+  <data name="Medium" xml:space="preserve">
+    <value>中</value>
   </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
     <value>維持60Hz以節省電量</value>
@@ -686,6 +701,9 @@
   <data name="Quit" xml:space="preserve">
     <value>退出</value>
   </data>
+  <data name="ReadLimits" xml:space="preserve">
+    <value>讀取限制</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>重設</value>
   </data>
@@ -793,6 +811,12 @@
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>版本</value>
+  </data>
+  <data name="VeryHigh" xml:space="preserve">
+    <value>最高</value>
+  </data>
+  <data name="VeryLow" xml:space="preserve">
+    <value>最低</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
     <value>震動強度</value>

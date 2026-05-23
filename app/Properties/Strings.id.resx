@@ -324,6 +324,9 @@
   <data name="Charging" xml:space="preserve">
     <value>Mengisi Daya</value>
   </data>
+  <data name="ClampToGrid" xml:space="preserve">
+    <value>Lekatkan ke Grid</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>Warna</value>
   </data>
@@ -476,11 +479,20 @@ Apakah Anda masih ingin melanjutkan?</value>
   <data name="High" xml:space="preserve">
     <value>Tinggi</value>
   </data>
+  <data name="HysteresisDown" xml:space="preserve">
+    <value>Histeresis Turun</value>
+  </data>
+  <data name="HysteresisUp" xml:space="preserve">
+    <value>Histeresis Naik</value>
+  </data>
   <data name="ImageRotation" xml:space="preserve">
     <value>Rotasi Gambar</value>
   </data>
   <data name="Import" xml:space="preserve">
     <value>Impor Profil</value>
+  </data>
+  <data name="InstallPawnIODriver" xml:space="preserve">
+    <value>Instal Driver PawnIO (pawnio.eu)</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Pintasan Keyboard</value>
@@ -559,6 +571,9 @@ Apakah Anda masih ingin melanjutkan?</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Maks refresh rate untuk mengurangi latensi</value>
+  </data>
+  <data name="Medium" xml:space="preserve">
+    <value>Sedang</value>
   </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
     <value>60Hz refresh rate untuk menghemat baterai</value>
@@ -686,6 +701,9 @@ Apakah Anda masih ingin melanjutkan?</value>
   <data name="Quit" xml:space="preserve">
     <value>Keluar</value>
   </data>
+  <data name="ReadLimits" xml:space="preserve">
+    <value>Baca Batas</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Reset</value>
   </data>
@@ -793,6 +811,12 @@ Apakah Anda masih ingin melanjutkan?</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>Versi</value>
+  </data>
+  <data name="VeryHigh" xml:space="preserve">
+    <value>Tinggi+</value>
+  </data>
+  <data name="VeryLow" xml:space="preserve">
+    <value>Rendah-</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
     <value>Kekuatan Getaran</value>

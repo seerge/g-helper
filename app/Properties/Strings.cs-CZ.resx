@@ -324,6 +324,9 @@
   <data name="Charging" xml:space="preserve">
     <value>Nabíjení</value>
   </data>
+  <data name="ClampToGrid" xml:space="preserve">
+    <value>Přichytit</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>Barva</value>
   </data>
@@ -473,11 +476,20 @@ Chcete přesto pokračovat?</value>
   <data name="High" xml:space="preserve">
     <value>Vysoký</value>
   </data>
+  <data name="HysteresisDown" xml:space="preserve">
+    <value>Hystereze dolů</value>
+  </data>
+  <data name="HysteresisUp" xml:space="preserve">
+    <value>Hystereze nahoru</value>
+  </data>
   <data name="ImageRotation" xml:space="preserve">
     <value>Otočení obrázku</value>
   </data>
   <data name="Import" xml:space="preserve">
     <value>Import Profilu</value>
+  </data>
+  <data name="InstallPawnIODriver" xml:space="preserve">
+    <value>Nainstalovat ovladač PawnIO (pawnio.eu)</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Klávesové zkratky</value>
@@ -556,6 +568,9 @@ Chcete přesto pokračovat?</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Max. obn. frekvence pro nižší latenci</value>
+  </data>
+  <data name="Medium" xml:space="preserve">
+    <value>Střední</value>
   </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
     <value>60 Hz obn. frekvence pro úsporu baterie</value>
@@ -680,6 +695,9 @@ Chcete přesto pokračovat?</value>
   <data name="Quit" xml:space="preserve">
     <value>Ukončit</value>
   </data>
+  <data name="ReadLimits" xml:space="preserve">
+    <value>Načíst limity</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Obnovit</value>
   </data>
@@ -787,6 +805,12 @@ Chcete přesto pokračovat?</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>Verze</value>
+  </data>
+  <data name="VeryHigh" xml:space="preserve">
+    <value>Vysoký+</value>
+  </data>
+  <data name="VeryLow" xml:space="preserve">
+    <value>Nízký-</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
     <value>Síla vibrací</value>

@@ -324,6 +324,9 @@
   <data name="Charging" xml:space="preserve">
     <value>Įkrovimas</value>
   </data>
+  <data name="ClampToGrid" xml:space="preserve">
+    <value>Prie tinklelio</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>Spalva</value>
   </data>
@@ -476,11 +479,20 @@ Vis tiek norite tęsti?</value>
   <data name="High" xml:space="preserve">
     <value>Aukštas</value>
   </data>
+  <data name="HysteresisDown" xml:space="preserve">
+    <value>Histerezė į apačią</value>
+  </data>
+  <data name="HysteresisUp" xml:space="preserve">
+    <value>Histerezė į viršų</value>
+  </data>
   <data name="ImageRotation" xml:space="preserve">
     <value>Atvaizdo pasukimas</value>
   </data>
   <data name="Import" xml:space="preserve">
     <value>Importuoti profilį</value>
+  </data>
+  <data name="InstallPawnIODriver" xml:space="preserve">
+    <value>Įdiegti PawnIO tvarkyklę (pawnio.eu)</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Klavišų priskyrimas</value>
@@ -559,6 +571,9 @@ Vis tiek norite tęsti?</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Maksimalus kadrų dažnis (mažesnė delsa)</value>
+  </data>
+  <data name="Medium" xml:space="preserve">
+    <value>Vidutinis</value>
   </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
     <value>Nustatomas 60Hz kadrų dažnis (tausojama baterija)</value>
@@ -686,6 +701,9 @@ Vis tiek norite tęsti?</value>
   <data name="Quit" xml:space="preserve">
     <value>Išeiti</value>
   </data>
+  <data name="ReadLimits" xml:space="preserve">
+    <value>Skaityti ribas</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Atstatyti</value>
   </data>
@@ -793,6 +811,12 @@ Vis tiek norite tęsti?</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>Versija</value>
+  </data>
+  <data name="VeryHigh" xml:space="preserve">
+    <value>Aukštas+</value>
+  </data>
+  <data name="VeryLow" xml:space="preserve">
+    <value>Žemas-</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
     <value>Vibracijos stiprumas</value>

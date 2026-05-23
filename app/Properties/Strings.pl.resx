@@ -324,6 +324,9 @@
   <data name="Charging" xml:space="preserve">
     <value>Ładowanie</value>
   </data>
+  <data name="ClampToGrid" xml:space="preserve">
+    <value>Przyciągaj</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>Kolor</value>
   </data>
@@ -476,11 +479,20 @@ Nadal chcesz kontynuować?</value>
   <data name="High" xml:space="preserve">
     <value>Wysoka</value>
   </data>
+  <data name="HysteresisDown" xml:space="preserve">
+    <value>Histereza w dół</value>
+  </data>
+  <data name="HysteresisUp" xml:space="preserve">
+    <value>Histereza w górę</value>
+  </data>
   <data name="ImageRotation" xml:space="preserve">
     <value>Obracanie obrazu</value>
   </data>
   <data name="Import" xml:space="preserve">
     <value>Importuj profil</value>
+  </data>
+  <data name="InstallPawnIODriver" xml:space="preserve">
+    <value>Zainstaluj sterownik PawnIO (pawnio.eu)</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Ustawienia klawiszy skrótów</value>
@@ -559,6 +571,9 @@ Nadal chcesz kontynuować?</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Maksymalna częstotliwość odświeżania dla mniejszych opóźnień</value>
+  </data>
+  <data name="Medium" xml:space="preserve">
+    <value>Średnia</value>
   </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
     <value>Częstotliwość odświeżania 60 Hz dla oszczędzania baterii</value>
@@ -686,6 +701,9 @@ Nadal chcesz kontynuować?</value>
   <data name="Quit" xml:space="preserve">
     <value>Zamknij</value>
   </data>
+  <data name="ReadLimits" xml:space="preserve">
+    <value>Odczytaj limity</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Reset</value>
   </data>
@@ -793,6 +811,12 @@ Nadal chcesz kontynuować?</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>Wersja</value>
+  </data>
+  <data name="VeryHigh" xml:space="preserve">
+    <value>Wysoka+</value>
+  </data>
+  <data name="VeryLow" xml:space="preserve">
+    <value>Niska-</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
     <value>Siła wibracji</value>

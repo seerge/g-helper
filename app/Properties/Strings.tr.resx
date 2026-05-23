@@ -324,6 +324,9 @@
   <data name="Charging" xml:space="preserve">
     <value>Şarj oluyor</value>
   </data>
+  <data name="ClampToGrid" xml:space="preserve">
+    <value>Izgaraya hizala</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>Renk</value>
   </data>
@@ -476,11 +479,20 @@ Yine de devam etmek istiyor musunuz?</value>
   <data name="High" xml:space="preserve">
     <value>Yüksek</value>
   </data>
+  <data name="HysteresisDown" xml:space="preserve">
+    <value>Histerezis aşağı</value>
+  </data>
+  <data name="HysteresisUp" xml:space="preserve">
+    <value>Histerezis yukarı</value>
+  </data>
   <data name="ImageRotation" xml:space="preserve">
     <value>Görüntü Döndürme</value>
   </data>
   <data name="Import" xml:space="preserve">
     <value>Profili İçe Aktar</value>
+  </data>
+  <data name="InstallPawnIODriver" xml:space="preserve">
+    <value>PawnIO sürücüsünü yükle (pawnio.eu)</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Tuş Atamaları</value>
@@ -559,6 +571,9 @@ Yine de devam etmek istiyor musunuz?</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>En düşük gecikme için en yüksek yenileme hızı</value>
+  </data>
+  <data name="Medium" xml:space="preserve">
+    <value>Orta</value>
   </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
     <value>Pil tasarrufu için 60Hz yenileme hızı</value>
@@ -686,6 +701,9 @@ Yine de devam etmek istiyor musunuz?</value>
   <data name="Quit" xml:space="preserve">
     <value>Çıkış</value>
   </data>
+  <data name="ReadLimits" xml:space="preserve">
+    <value>Limitleri oku</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Sıfırla</value>
   </data>
@@ -793,6 +811,12 @@ Yine de devam etmek istiyor musunuz?</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>Sürüm</value>
+  </data>
+  <data name="VeryHigh" xml:space="preserve">
+    <value>Çok yüksek</value>
+  </data>
+  <data name="VeryLow" xml:space="preserve">
+    <value>Çok düşük</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
     <value>Titreşim Yoğunluğu</value>

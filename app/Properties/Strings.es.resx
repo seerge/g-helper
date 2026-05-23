@@ -324,6 +324,9 @@
   <data name="Charging" xml:space="preserve">
     <value>Cargando</value>
   </data>
+  <data name="ClampToGrid" xml:space="preserve">
+    <value>A cuadrícula</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>Color</value>
   </data>
@@ -476,11 +479,20 @@
   <data name="High" xml:space="preserve">
     <value>Alto</value>
   </data>
+  <data name="HysteresisDown" xml:space="preserve">
+    <value>Histéresis bajada</value>
+  </data>
+  <data name="HysteresisUp" xml:space="preserve">
+    <value>Histéresis subida</value>
+  </data>
   <data name="ImageRotation" xml:space="preserve">
     <value>Rotación de imagen</value>
   </data>
   <data name="Import" xml:space="preserve">
     <value>Importar perfil</value>
+  </data>
+  <data name="InstallPawnIODriver" xml:space="preserve">
+    <value>Instalar controlador PawnIO (pawnio.eu)</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Teclas de acceso rápido</value>
@@ -559,6 +571,9 @@
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Frecuencia de actualización máxima para una latencia más baja</value>
+  </data>
+  <data name="Medium" xml:space="preserve">
+    <value>Medio</value>
   </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
     <value>Frecuencia de actualización de 60Hz para ahorrar batería</value>
@@ -686,6 +701,9 @@
   <data name="Quit" xml:space="preserve">
     <value>Quitar</value>
   </data>
+  <data name="ReadLimits" xml:space="preserve">
+    <value>Leer límites</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Reiniciar</value>
   </data>
@@ -793,6 +811,12 @@
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>Versión</value>
+  </data>
+  <data name="VeryHigh" xml:space="preserve">
+    <value>Muy alto</value>
+  </data>
+  <data name="VeryLow" xml:space="preserve">
+    <value>Muy bajo</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
     <value>Intensidad de vibración</value>

@@ -324,6 +324,9 @@
   <data name="Charging" xml:space="preserve">
     <value>Lädt</value>
   </data>
+  <data name="ClampToGrid" xml:space="preserve">
+    <value>Einrasten</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>Farbe</value>
   </data>
@@ -476,11 +479,20 @@ Trotzdem fortfahren?</value>
   <data name="High" xml:space="preserve">
     <value>Hoch</value>
   </data>
+  <data name="HysteresisDown" xml:space="preserve">
+    <value>Hysterese runter</value>
+  </data>
+  <data name="HysteresisUp" xml:space="preserve">
+    <value>Hysterese hoch</value>
+  </data>
   <data name="ImageRotation" xml:space="preserve">
     <value>Bilddrehung</value>
   </data>
   <data name="Import" xml:space="preserve">
     <value>Profil importieren</value>
+  </data>
+  <data name="InstallPawnIODriver" xml:space="preserve">
+    <value>PawnIO-Treiber installieren (pawnio.eu)</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Tastenbelegung</value>
@@ -559,6 +571,9 @@ Trotzdem fortfahren?</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Maximale Wiederholrate für niedrigste Latenz</value>
+  </data>
+  <data name="Medium" xml:space="preserve">
+    <value>Mittel</value>
   </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
     <value>60Hz um Strom zu sparen</value>
@@ -686,6 +701,9 @@ Trotzdem fortfahren?</value>
   <data name="Quit" xml:space="preserve">
     <value>Schließen</value>
   </data>
+  <data name="ReadLimits" xml:space="preserve">
+    <value>Limits lesen</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Zurücksetzen</value>
   </data>
@@ -793,6 +811,12 @@ Trotzdem fortfahren?</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>Version</value>
+  </data>
+  <data name="VeryHigh" xml:space="preserve">
+    <value>Hoch+</value>
+  </data>
+  <data name="VeryLow" xml:space="preserve">
+    <value>Niedrig-</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
     <value>Vibrationsstärke</value>

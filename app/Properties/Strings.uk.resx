@@ -324,6 +324,9 @@
   <data name="Charging" xml:space="preserve">
     <value>Зарядка</value>
   </data>
+  <data name="ClampToGrid" xml:space="preserve">
+    <value>До сітки</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>Колір</value>
   </data>
@@ -476,11 +479,20 @@
   <data name="High" xml:space="preserve">
     <value>Висока</value>
   </data>
+  <data name="HysteresisDown" xml:space="preserve">
+    <value>Гістерезис вниз</value>
+  </data>
+  <data name="HysteresisUp" xml:space="preserve">
+    <value>Гістерезис вгору</value>
+  </data>
   <data name="ImageRotation" xml:space="preserve">
     <value>Поворот</value>
   </data>
   <data name="Import" xml:space="preserve">
     <value>Імпорт Профілю</value>
+  </data>
+  <data name="InstallPawnIODriver" xml:space="preserve">
+    <value>Встановити драйвер PawnIO (pawnio.eu)</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Прив'язки клавіш</value>
@@ -559,6 +571,9 @@
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Максимальна частота оновлення для мінімізації затримок</value>
+  </data>
+  <data name="Medium" xml:space="preserve">
+    <value>Середня</value>
   </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
     <value>Частота 60Гц, щоб зберегти заряд батареї</value>
@@ -686,6 +701,9 @@
   <data name="Quit" xml:space="preserve">
     <value>Вихід</value>
   </data>
+  <data name="ReadLimits" xml:space="preserve">
+    <value>Зчитати ліміти</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Скинути</value>
   </data>
@@ -793,6 +811,12 @@
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>Версія</value>
+  </data>
+  <data name="VeryHigh" xml:space="preserve">
+    <value>Висока+</value>
+  </data>
+  <data name="VeryLow" xml:space="preserve">
+    <value>Низька-</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
     <value>Сила вібрації</value>

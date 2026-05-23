@@ -324,6 +324,9 @@
   <data name="Charging" xml:space="preserve">
     <value>In carica</value>
   </data>
+  <data name="ClampToGrid" xml:space="preserve">
+    <value>Aggancia</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>Colore</value>
   </data>
@@ -476,11 +479,20 @@ Sei sicuro di voler continuare?</value>
   <data name="High" xml:space="preserve">
     <value>Elevato</value>
   </data>
+  <data name="HysteresisDown" xml:space="preserve">
+    <value>Isteresi discesa</value>
+  </data>
+  <data name="HysteresisUp" xml:space="preserve">
+    <value>Isteresi salita</value>
+  </data>
   <data name="ImageRotation" xml:space="preserve">
     <value>Rotazione Immagine</value>
   </data>
   <data name="Import" xml:space="preserve">
     <value>Importa Profilo</value>
+  </data>
+  <data name="InstallPawnIODriver" xml:space="preserve">
+    <value>Installa driver PawnIO (pawnio.eu)</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Associazione Tasti</value>
@@ -559,6 +571,9 @@ Sei sicuro di voler continuare?</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Massimo refresh rate per latenza ridotta</value>
+  </data>
+  <data name="Medium" xml:space="preserve">
+    <value>Medio</value>
   </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
     <value>60Hz refresh rate per risparmiare batteria</value>
@@ -686,6 +701,9 @@ Sei sicuro di voler continuare?</value>
   <data name="Quit" xml:space="preserve">
     <value>Esci</value>
   </data>
+  <data name="ReadLimits" xml:space="preserve">
+    <value>Leggi limiti</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Reimposta</value>
   </data>
@@ -793,6 +811,12 @@ Sei sicuro di voler continuare?</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>Versione</value>
+  </data>
+  <data name="VeryHigh" xml:space="preserve">
+    <value>Elevato+</value>
+  </data>
+  <data name="VeryLow" xml:space="preserve">
+    <value>Basso-</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
     <value>Intensità vibrazione</value>
