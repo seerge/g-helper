@@ -84,15 +84,16 @@ namespace GHelper.Overlay
         private const int CornerRadius = 3;
         private const int MarginFromEdge = 10;
         private const int BaseLightLeftColWidth = 76; // fits "GPU: 82° " (9 Consolas chars) with a little breathing room
-        private const int BaseUsageBarGap = 7;        // gap between W letter and bar (full mode)
+        private const int BaseUsageBarGap = 11;       // gap between W letter and bar (full mode)
         private const int BaseUsageBarWidth = 5;
         private const int BaseUsageNumGap = 4;        // gap between bar and usage % text
         private const int BaseUsageNumColWidth = 30;  // right-aligned column fitting "100%"
+        private const int BaseFullPadRight = 4;       // tighter right margin in full mode (vs BasePadX)
         // Target bar height at base DPI; tuned so at 2x DPI numCells = 10.
         private const int BaseUsageBarHeight = 15;
         private const int BaseLightWidth = BasePadX + BaseFpsColWidth + BaseColGap + BaseLightLeftColWidth + BasePowerGap + BasePowerColWidth + BasePadX;
         private const int BaseWidth = BasePadX + BaseFpsColWidth + BaseColGap + BaseLeftColWidth + BaseColGap + BaseChartColWidth + BasePowerGap + BasePowerColWidth + BasePadX;
-        private const int BaseFullWidth = BaseWidth - BasePadX + BaseUsageBarGap + BaseUsageBarWidth + BaseUsageNumGap + BaseUsageNumColWidth + BasePadX;
+        private const int BaseFullWidth = BaseWidth - BasePadX + BaseUsageBarGap + BaseUsageBarWidth + BaseUsageNumGap + BaseUsageNumColWidth + BaseFullPadRight;
 
         private static readonly SolidBrush _bgBrush = new(Color.FromArgb(128, 0, 0, 0));
         private static readonly SolidBrush _gpuBrush = new(Color.FromArgb(255, 0, 255, 80));
