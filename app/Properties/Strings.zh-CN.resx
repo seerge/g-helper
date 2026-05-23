@@ -147,6 +147,9 @@
   <data name="AllyController" xml:space="preserve">
     <value>Ally 控制器</value>
   </data>
+  <data name="AnimationDirection" xml:space="preserve">
+    <value>动画方向</value>
+  </data>
   <data name="AnimationSpeed" xml:space="preserve">
     <value>动画速度</value>
   </data>
@@ -324,6 +327,9 @@
   <data name="Charging" xml:space="preserve">
     <value>充电中</value>
   </data>
+  <data name="ClampToGrid" xml:space="preserve">
+    <value>对齐网格</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>颜色</value>
   </data>
@@ -476,11 +482,20 @@
   <data name="High" xml:space="preserve">
     <value>高</value>
   </data>
+  <data name="HysteresisDown" xml:space="preserve">
+    <value>滞后（下降）</value>
+  </data>
+  <data name="HysteresisUp" xml:space="preserve">
+    <value>滞后（上升）</value>
+  </data>
   <data name="ImageRotation" xml:space="preserve">
     <value>图像旋转</value>
   </data>
   <data name="Import" xml:space="preserve">
     <value>导入配置</value>
+  </data>
+  <data name="InstallPawnIODriver" xml:space="preserve">
+    <value>安装 PawnIO 驱动 (pawnio.eu)</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>按键绑定</value>
@@ -560,6 +575,9 @@
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>更高的刷新率和更低的延迟</value>
   </data>
+  <data name="Medium" xml:space="preserve">
+    <value>中</value>
+  </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
     <value>调整刷新率为60Hz以节省电量</value>
   </data>
@@ -570,7 +588,7 @@
     <value>分钟</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Angle Snapping / Tuning</value>
+    <value>直线修正 / 微调</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>自动关闭时间</value>
@@ -594,7 +612,7 @@
     <value>和鼠标同步</value>
   </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
-    <value>Sync with laptop</value>
+    <value>与笔记本同步</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>多区</value>
@@ -685,6 +703,9 @@
   </data>
   <data name="Quit" xml:space="preserve">
     <value>退出</value>
+  </data>
+  <data name="ReadLimits" xml:space="preserve">
+    <value>读取限制</value>
   </data>
   <data name="Reset" xml:space="preserve">
     <value>重置</value>
@@ -793,6 +814,12 @@
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>版本</value>
+  </data>
+  <data name="VeryHigh" xml:space="preserve">
+    <value>最高</value>
+  </data>
+  <data name="VeryLow" xml:space="preserve">
+    <value>最低</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
     <value>震动强度</value>
