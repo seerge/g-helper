@@ -147,6 +147,9 @@
   <data name="AllyController" xml:space="preserve">
     <value>Bộ điều khiển Ally</value>
   </data>
+  <data name="AnimationDirection" xml:space="preserve">
+    <value>Hướng hoạt ảnh</value>
+  </data>
   <data name="AnimationSpeed" xml:space="preserve">
     <value>Tốc độ</value>
   </data>
@@ -324,6 +327,9 @@
   <data name="Charging" xml:space="preserve">
     <value>Đang sạc</value>
   </data>
+  <data name="ClampToGrid" xml:space="preserve">
+    <value>Bám lưới</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>Màu</value>
   </data>
@@ -476,11 +482,20 @@ Bạn có muốn tiếp tục không?</value>
   <data name="High" xml:space="preserve">
     <value>Cao</value>
   </data>
+  <data name="HysteresisDown" xml:space="preserve">
+    <value>Trễ giảm</value>
+  </data>
+  <data name="HysteresisUp" xml:space="preserve">
+    <value>Trễ tăng</value>
+  </data>
   <data name="ImageRotation" xml:space="preserve">
     <value>Xoay Hình Ảnh</value>
   </data>
   <data name="Import" xml:space="preserve">
     <value>Nhập cấu hình từ file</value>
+  </data>
+  <data name="InstallPawnIODriver" xml:space="preserve">
+    <value>Cài đặt driver PawnIO (pawnio.eu)</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Tổ hợp phím</value>
@@ -560,6 +575,9 @@ Bạn có muốn tiếp tục không?</value>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Tần số quét tối đa để có độ trễ thấp</value>
   </data>
+  <data name="Medium" xml:space="preserve">
+    <value>Vừa</value>
+  </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
     <value>Tần số quét 60Hz để tiết kiệm pin</value>
   </data>
@@ -570,7 +588,7 @@ Bạn có muốn tiếp tục không?</value>
     <value>Minutes</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Angle Snapping / Tuning</value>
+    <value>Khóa góc / Tinh chỉnh</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>Auto Power Off After</value>
@@ -594,7 +612,7 @@ Bạn có muốn tiếp tục không?</value>
     <value>Synchronize with mouse</value>
   </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
-    <value>Sync with laptop</value>
+    <value>Đồng bộ với laptop</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Multi Zone</value>
@@ -685,6 +703,9 @@ Bạn có muốn tiếp tục không?</value>
   </data>
   <data name="Quit" xml:space="preserve">
     <value>Thoát</value>
+  </data>
+  <data name="ReadLimits" xml:space="preserve">
+    <value>Đọc giới hạn</value>
   </data>
   <data name="Reset" xml:space="preserve">
     <value>Reset</value>
@@ -793,6 +814,12 @@ Bạn có muốn tiếp tục không?</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>Phiên bản</value>
+  </data>
+  <data name="VeryHigh" xml:space="preserve">
+    <value>Rất cao</value>
+  </data>
+  <data name="VeryLow" xml:space="preserve">
+    <value>Rất thấp</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
     <value>Vibration Strength</value>
