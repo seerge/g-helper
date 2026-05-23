@@ -147,6 +147,9 @@
   <data name="AllyController" xml:space="preserve">
     <value>Allyコントローラ</value>
   </data>
+  <data name="AnimationDirection" xml:space="preserve">
+    <value>アニメーション方向</value>
+  </data>
   <data name="AnimationSpeed" xml:space="preserve">
     <value>アニメーション速度</value>
   </data>
@@ -324,6 +327,9 @@
   <data name="Charging" xml:space="preserve">
     <value>充電中</value>
   </data>
+  <data name="ClampToGrid" xml:space="preserve">
+    <value>グリッド吸着</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>カラー</value>
   </data>
@@ -476,11 +482,20 @@
   <data name="High" xml:space="preserve">
     <value>High</value>
   </data>
+  <data name="HysteresisDown" xml:space="preserve">
+    <value>ヒステリシス（下降）</value>
+  </data>
+  <data name="HysteresisUp" xml:space="preserve">
+    <value>ヒステリシス（上昇）</value>
+  </data>
   <data name="ImageRotation" xml:space="preserve">
     <value>画像の回転</value>
   </data>
   <data name="Import" xml:space="preserve">
     <value>プロファイルをインポート</value>
+  </data>
+  <data name="InstallPawnIODriver" xml:space="preserve">
+    <value>PawnIO ドライバーをインストール (pawnio.eu)</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>キー割り当て</value>
@@ -560,6 +575,9 @@
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>最大リフレッシュレートで低遅延を実現</value>
   </data>
+  <data name="Medium" xml:space="preserve">
+    <value>中</value>
+  </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
     <value>バッテリーを節約するために60Hzのリフレッシュレートを使用</value>
   </data>
@@ -570,7 +588,7 @@
     <value>Minutes</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Angle Snapping / Tuning</value>
+    <value>アングルスナップ / 調整</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>自動電源オフ</value>
@@ -594,7 +612,7 @@
     <value>マウスと同期</value>
   </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
-    <value>Sync with laptop</value>
+    <value>ノートPCと同期</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Multi Zone</value>
@@ -685,6 +703,9 @@
   </data>
   <data name="Quit" xml:space="preserve">
     <value>終了</value>
+  </data>
+  <data name="ReadLimits" xml:space="preserve">
+    <value>制限を読み取る</value>
   </data>
   <data name="Reset" xml:space="preserve">
     <value>リセット</value>
@@ -793,6 +814,12 @@
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>バージョン</value>
+  </data>
+  <data name="VeryHigh" xml:space="preserve">
+    <value>最高</value>
+  </data>
+  <data name="VeryLow" xml:space="preserve">
+    <value>最低</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
     <value>振動の強さ</value>
