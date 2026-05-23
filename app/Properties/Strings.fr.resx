@@ -147,6 +147,9 @@
   <data name="AllyController" xml:space="preserve">
     <value>Contrôleur Ally </value>
   </data>
+  <data name="AnimationDirection" xml:space="preserve">
+    <value>Sens d'animation</value>
+  </data>
   <data name="AnimationSpeed" xml:space="preserve">
     <value>Vitesse de l'animation</value>
   </data>
@@ -324,6 +327,9 @@
   <data name="Charging" xml:space="preserve">
     <value>Taux de charge </value>
   </data>
+  <data name="ClampToGrid" xml:space="preserve">
+    <value>À la grille</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>Couleur</value>
   </data>
@@ -476,11 +482,20 @@ Voulez-vous continuer ?</value>
   <data name="High" xml:space="preserve">
     <value>Élevé</value>
   </data>
+  <data name="HysteresisDown" xml:space="preserve">
+    <value>Hystérésis descente</value>
+  </data>
+  <data name="HysteresisUp" xml:space="preserve">
+    <value>Hystérésis montée</value>
+  </data>
   <data name="ImageRotation" xml:space="preserve">
     <value>Rotation de l'image</value>
   </data>
   <data name="Import" xml:space="preserve">
     <value>Importer profil</value>
+  </data>
+  <data name="InstallPawnIODriver" xml:space="preserve">
+    <value>Installer le pilote PawnIO (pawnio.eu)</value>
   </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Raccourcis clavier</value>
@@ -560,6 +575,9 @@ Voulez-vous continuer ?</value>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Rafraîchissement maximum, faible latence</value>
   </data>
+  <data name="Medium" xml:space="preserve">
+    <value>Moyen</value>
+  </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
     <value>Rafraichîssement 60 Hz pour économiser de la batterie</value>
   </data>
@@ -570,7 +588,7 @@ Voulez-vous continuer ?</value>
     <value>Minutes</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Angle Snapping / Tuning</value>
+    <value>Alignement angulaire / Ajustage</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>Arrêt automatique après</value>
@@ -594,7 +612,7 @@ Voulez-vous continuer ?</value>
     <value>Synchroniser avec le pointeur</value>
   </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
-    <value>Sync with laptop</value>
+    <value>Synchroniser avec le portable</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Multi-zones</value>
@@ -685,6 +703,9 @@ Voulez-vous continuer ?</value>
   </data>
   <data name="Quit" xml:space="preserve">
     <value>Quitter</value>
+  </data>
+  <data name="ReadLimits" xml:space="preserve">
+    <value>Lire les limites</value>
   </data>
   <data name="Reset" xml:space="preserve">
     <value>Réinitialiser</value>
@@ -793,6 +814,12 @@ Voulez-vous continuer ?</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>Version </value>
+  </data>
+  <data name="VeryHigh" xml:space="preserve">
+    <value>Très haut</value>
+  </data>
+  <data name="VeryLow" xml:space="preserve">
+    <value>Très bas</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
     <value>Intensité de la vibration</value>
