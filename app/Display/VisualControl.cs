@@ -478,7 +478,7 @@ namespace GHelper.Display
             }
             catch (Exception ex)
             {
-                Logger.WriteLine("Dimmer error: " + ex.Message);
+                Logger.WriteLine("Dimmer error: " + ex.ToString());
             }
         }
 
