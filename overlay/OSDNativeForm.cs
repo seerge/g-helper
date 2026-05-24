@@ -11,6 +11,18 @@ public class OSDNativeForm : NativeWindow, IDisposable
     private Point _location = new(50, 50);
     private readonly object _paintLock = new();
 
+    // Cached DIBSection-backed canvas. The HBITMAP and managed Bitmap share
+    // the same pixel buffer (via CreateDIBSection), so we never call
+    // Bitmap.GetHbitmap — which leaks HBITMAPs on net48's System.Drawing
+    // because GDI+ retains internal references even after DeleteObject.
+    // Recreated only when Size changes.
+    private Bitmap? _canvas;
+    private Graphics? _canvasGfx;
+    private IntPtr _hBitmap;
+    private IntPtr _hMemDc;
+    private IntPtr _hOldBitmap;
+    private Size _canvasSize;
+
     protected virtual void PerformPaint(PaintEventArgs e) { }
 
     protected internal void Invalidate() => UpdateLayeredWindow();
@@ -20,15 +32,15 @@ public class OSDNativeForm : NativeWindow, IDisposable
         if (!Monitor.TryEnter(_paintLock)) return;
         try
         {
-            using Bitmap bitmap = new(Size.Width, Size.Height, PixelFormat.Format32bppArgb);
-            using Graphics graphics = Graphics.FromImage(bitmap);
+            EnsureCanvas();
+            if (_canvas == null) return;
 
-            PerformPaint(new PaintEventArgs(graphics, new Rectangle(0, 0, Size.Width, Size.Height)));
+            // Clear before paint — Graphics.FillRectangle composites over existing
+            // pixels, so reusing the bitmap would otherwise build up alpha and
+            // ghost old text.
+            _canvasGfx!.Clear(Color.FromArgb(0, 0, 0, 0));
 
-            nint screenDc = User32.GetDC(IntPtr.Zero);
-            nint memDc = Gdi32.CreateCompatibleDC(screenDc);
-            nint hBitmap = bitmap.GetHbitmap(Color.FromArgb(0));
-            nint oldBitmap = Gdi32.SelectObject(memDc, hBitmap);
+            PerformPaint(new PaintEventArgs(_canvasGfx, new Rectangle(0, 0, Size.Width, Size.Height)));
 
             SIZE size = new() { cx = Size.Width, cy = Size.Height };
             POINT topLeft = new() { x = Location.X, y = Location.Y };
@@ -41,14 +53,60 @@ public class OSDNativeForm : NativeWindow, IDisposable
                 AlphaFormat = 1,
             };
 
-            User32.UpdateLayeredWindow(Handle, screenDc, ref topLeft, ref size, memDc, ref srcOrigin, 0, ref blend, 2);
-
-            Gdi32.SelectObject(memDc, oldBitmap);
+            IntPtr screenDc = User32.GetDC(IntPtr.Zero);
+            User32.UpdateLayeredWindow(Handle, screenDc, ref topLeft, ref size, _hMemDc, ref srcOrigin, 0, ref blend, 2);
             User32.ReleaseDC(IntPtr.Zero, screenDc);
-            Gdi32.DeleteObject(hBitmap);
-            Gdi32.DeleteDC(memDc);
         }
         finally { Monitor.Exit(_paintLock); }
+    }
+
+    private void EnsureCanvas()
+    {
+        if (_canvas != null && _canvasSize == Size) return;
+        ReleaseCanvas();
+
+        int w = Size.Width, h = Size.Height;
+        if (w <= 0 || h <= 0) return;
+
+        IntPtr screenDc = User32.GetDC(IntPtr.Zero);
+        _hMemDc = Gdi32.CreateCompatibleDC(screenDc);
+        User32.ReleaseDC(IntPtr.Zero, screenDc);
+
+        var bmi = new BITMAPINFOHEADER
+        {
+            biSize = Marshal.SizeOf<BITMAPINFOHEADER>(),
+            biWidth = w,
+            biHeight = -h,   // negative = top-down
+            biPlanes = 1,
+            biBitCount = 32,
+            biCompression = 0, // BI_RGB
+        };
+        _hBitmap = Gdi32.CreateDIBSection(_hMemDc, ref bmi, 0, out IntPtr pixels, IntPtr.Zero, 0);
+        if (_hBitmap == IntPtr.Zero) { ReleaseCanvas(); return; }
+        _hOldBitmap = Gdi32.SelectObject(_hMemDc, _hBitmap);
+
+        // PArgb: GDI+ writes premultiplied alpha directly into the shared buffer,
+        // matching UpdateLayeredWindow + AC_SRC_ALPHA's expected format.
+        _canvas = new Bitmap(w, h, w * 4, PixelFormat.Format32bppPArgb, pixels);
+        _canvasGfx = Graphics.FromImage(_canvas);
+        _canvasSize = Size;
+    }
+
+    private void ReleaseCanvas()
+    {
+        _canvasGfx?.Dispose();
+        _canvas?.Dispose();
+        _canvasGfx = null;
+        _canvas = null;
+        if (_hMemDc != IntPtr.Zero)
+        {
+            if (_hOldBitmap != IntPtr.Zero) Gdi32.SelectObject(_hMemDc, _hOldBitmap);
+            if (_hBitmap != IntPtr.Zero) Gdi32.DeleteObject(_hBitmap);
+            Gdi32.DeleteDC(_hMemDc);
+        }
+        _hMemDc = IntPtr.Zero;
+        _hBitmap = IntPtr.Zero;
+        _hOldBitmap = IntPtr.Zero;
     }
 
     public virtual void Show()
@@ -182,9 +240,26 @@ public class OSDNativeForm : NativeWindow, IDisposable
     private void Dispose(bool _)
     {
         if (_disposed) return;
+        ReleaseCanvas();
         DestroyHandle();
         _disposed = true;
     }
+}
+
+[StructLayout(LayoutKind.Sequential)]
+internal struct BITMAPINFOHEADER
+{
+    public int biSize;
+    public int biWidth;
+    public int biHeight;
+    public short biPlanes;
+    public short biBitCount;
+    public int biCompression;
+    public int biSizeImage;
+    public int biXPelsPerMeter;
+    public int biYPelsPerMeter;
+    public int biClrUsed;
+    public int biClrImportant;
 }
 
 [StructLayout(LayoutKind.Sequential)]
@@ -217,8 +292,9 @@ internal static class User32
 
 internal static class Gdi32
 {
-    [DllImport("gdi32.dll")] public static extern nint CreateCompatibleDC(nint hDC);
-    [DllImport("gdi32.dll")] public static extern bool DeleteDC(nint hDC);
-    [DllImport("gdi32.dll")] public static extern nint DeleteObject(nint hObject);
-    [DllImport("gdi32.dll")] public static extern nint SelectObject(nint hDC, nint hObject);
+    [DllImport("gdi32.dll")] public static extern IntPtr CreateCompatibleDC(IntPtr hDC);
+    [DllImport("gdi32.dll")] public static extern bool DeleteDC(IntPtr hDC);
+    [DllImport("gdi32.dll")] public static extern IntPtr DeleteObject(IntPtr hObject);
+    [DllImport("gdi32.dll")] public static extern IntPtr SelectObject(IntPtr hDC, IntPtr hObject);
+    [DllImport("gdi32.dll")] public static extern IntPtr CreateDIBSection(IntPtr hdc, ref BITMAPINFOHEADER pbmi, uint iUsage, out IntPtr ppvBits, IntPtr hSection, uint dwOffset);
 }
