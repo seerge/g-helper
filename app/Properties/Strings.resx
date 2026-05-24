@@ -324,6 +324,9 @@
   <data name="Calibrate" xml:space="preserve">
     <value>Calibrate</value>
   </data>
+  <data name="EqualizeFans" xml:space="preserve">
+    <value>Sync Fan Speeds</value>
+  </data>
   <data name="Charging" xml:space="preserve">
     <value>Charging</value>
   </data>
