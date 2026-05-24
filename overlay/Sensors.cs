@@ -28,6 +28,7 @@ public static class Sensors
 
     private static PerformanceCounter? _cpuTempCounter;
     private static int _cpuPowerNullTicks;
+    private static bool _trimmed;
 
     public static void ReadAll()
     {
@@ -50,6 +51,12 @@ public static class Sensors
         {
             CpuPower = newCpuP;
             _cpuPowerNullTicks = 0;
+
+            if (!_trimmed)
+            {
+                _trimmed = true;
+                MemoryHelper.TrimAfter();
+            }
         }
         else if (++_cpuPowerNullTicks >= 5)
         {
