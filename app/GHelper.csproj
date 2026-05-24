@@ -7,8 +7,7 @@
     <UseWindowsForms>True</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <IsPublishable>True</IsPublishable>
-    <ApplicationManifest Condition="'$(EnableUIAccess)'!='true'">app.manifest</ApplicationManifest>
-    <ApplicationManifest Condition="'$(EnableUIAccess)'=='true'">app.uia.manifest</ApplicationManifest>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
     <StartupObject>GHelper.Program</StartupObject>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
     <Platforms>AnyCPU;x64</Platforms>
