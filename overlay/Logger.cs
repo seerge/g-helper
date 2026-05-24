@@ -4,9 +4,11 @@ namespace GHelperOverlay;
 
 public static class Logger
 {
+    // Shared %AppData%\GHelper directory, with an overlay-specific filename so
+    // we never overwrite g-helper's log.txt.
     public static string appPath = Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "GHelperOverlay");
-    public static string logFile = Path.Combine(appPath, "log.txt");
+        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "GHelper");
+    public static string logFile = Path.Combine(appPath, "overlay-log.txt");
 
     private static readonly Random _random = new();
 

@@ -25,7 +25,7 @@ public class OSDNativeForm : NativeWindow, IDisposable
 
             PerformPaint(new PaintEventArgs(graphics, new Rectangle(0, 0, Size.Width, Size.Height)));
 
-            nint screenDc = User32.GetDC(nint.Zero);
+            nint screenDc = User32.GetDC(IntPtr.Zero);
             nint memDc = Gdi32.CreateCompatibleDC(screenDc);
             nint hBitmap = bitmap.GetHbitmap(Color.FromArgb(0));
             nint oldBitmap = Gdi32.SelectObject(memDc, hBitmap);
@@ -44,7 +44,7 @@ public class OSDNativeForm : NativeWindow, IDisposable
             User32.UpdateLayeredWindow(Handle, screenDc, ref topLeft, ref size, memDc, ref srcOrigin, 0, ref blend, 2);
 
             Gdi32.SelectObject(memDc, oldBitmap);
-            User32.ReleaseDC(nint.Zero, screenDc);
+            User32.ReleaseDC(IntPtr.Zero, screenDc);
             Gdi32.DeleteObject(hBitmap);
             Gdi32.DeleteDC(memDc);
         }
@@ -53,13 +53,13 @@ public class OSDNativeForm : NativeWindow, IDisposable
 
     public virtual void Show()
     {
-        if (Handle == nint.Zero) CreateWindowOnly();
+        if (Handle == IntPtr.Zero) CreateWindowOnly();
         User32.ShowWindow(Handle, User32.SW_SHOWNOACTIVATE);
     }
 
     public virtual void Hide()
     {
-        if (Handle == nint.Zero) return;
+        if (Handle == IntPtr.Zero) return;
         User32.ShowWindow(Handle, User32.SW_HIDE);
         DestroyHandle();
     }
@@ -79,7 +79,7 @@ public class OSDNativeForm : NativeWindow, IDisposable
             Y = _location.Y,
             Width = _size.Width,
             Height = _size.Height,
-            Parent = nint.Zero,
+            Parent = IntPtr.Zero,
             Style = unchecked((int)User32.WS_POPUP),
             ExStyle = User32.WS_EX_TOPMOST | User32.WS_EX_TOOLWINDOW | User32.WS_EX_LAYERED | User32.WS_EX_NOACTIVATE | User32.WS_EX_TRANSPARENT,
         };
@@ -90,7 +90,7 @@ public class OSDNativeForm : NativeWindow, IDisposable
     protected virtual void SetBoundsCore(int x, int y, int width, int height)
     {
         if (X == x && Y == y && Width == width && Height == height) return;
-        if (Handle == nint.Zero)
+        if (Handle == IntPtr.Zero)
         {
             Location = new Point(x, y);
             Size = new Size(width, height);
@@ -99,7 +99,7 @@ public class OSDNativeForm : NativeWindow, IDisposable
         int flags = 20;
         if (X == x && Y == y) flags |= 2;
         if (Width == width && Height == height) flags |= 1;
-        User32.SetWindowPos(Handle, nint.Zero, x, y, width, height, (uint)flags);
+        User32.SetWindowPos(Handle, IntPtr.Zero, x, y, width, height, (uint)flags);
     }
 
     public virtual Point Location
@@ -107,7 +107,7 @@ public class OSDNativeForm : NativeWindow, IDisposable
         get => _location;
         set
         {
-            if (Handle != nint.Zero)
+            if (Handle != IntPtr.Zero)
             {
                 SetBoundsCore(value.X, value.Y, _size.Width, _size.Height);
                 RECT r = new();
@@ -124,7 +124,7 @@ public class OSDNativeForm : NativeWindow, IDisposable
         get => _size;
         set
         {
-            if (Handle != nint.Zero)
+            if (Handle != IntPtr.Zero)
             {
                 SetBoundsCore(_location.X, _location.Y, value.Width, value.Height);
                 RECT r = new();

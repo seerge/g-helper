@@ -1,76 +1,54 @@
-using System.Text.Json;
-
 namespace GHelperOverlay;
 
-// Minimal config store for the standalone overlay.
-// Lives at %AppData%\GHelperOverlay\config.json so it does not collide with
-// the main g-helper config — the overlay is fully self-contained.
+// Flat key=value text at %AppData%\GHelper\overlay-config.txt.
+// Read once at startup; written synchronously on every Set.
 public static class AppConfig
 {
-    private static readonly string configFile = Path.Combine(
+    private static readonly string file = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-        "GHelperOverlay", "config.json");
+        "GHelper", "overlay-config.txt");
 
-    private static Dictionary<string, object> config = new();
-    private static readonly object configLock = new();
-    private static readonly System.Timers.Timer writeTimer = new(2000) { AutoReset = false };
+    private static readonly Dictionary<string, string> values = Load();
 
-    static AppConfig()
+    private static Dictionary<string, string> Load()
+    {
+        var d = new Dictionary<string, string>();
+        try
+        {
+            if (File.Exists(file))
+                foreach (var line in File.ReadAllLines(file))
+                {
+                    int eq = line.IndexOf('=');
+                    if (eq > 0) d[line.Substring(0, eq).Trim()] = line.Substring(eq + 1).Trim();
+                }
+        }
+        catch { }
+        return d;
+    }
+
+    private static void Save()
     {
         try
         {
-            Directory.CreateDirectory(Path.GetDirectoryName(configFile)!);
-            if (File.Exists(configFile))
-                config = JsonSerializer.Deserialize<Dictionary<string, object>>(
-                    File.ReadAllText(configFile)) ?? new();
+            Directory.CreateDirectory(Path.GetDirectoryName(file));
+            var lines = new List<string>(values.Count);
+            foreach (var kv in values) lines.Add(kv.Key + "=" + kv.Value);
+            File.WriteAllLines(file, lines);
         }
-        catch (Exception ex) { Logger.WriteLine($"AppConfig load failed: {ex.Message}"); }
-
-        writeTimer.Elapsed += (_, _) => Flush();
+        catch { }
     }
 
-    public static bool Exists(string name)
-    {
-        lock (configLock) return config.ContainsKey(name);
-    }
+    public static bool Exists(string name) => values.ContainsKey(name);
 
     public static int Get(string name, int empty = -1)
-    {
-        lock (configLock)
-            return config.TryGetValue(name, out var v) && int.TryParse(v?.ToString(), out int r) ? r : empty;
-    }
+        => values.TryGetValue(name, out var v) && int.TryParse(v, out int r) ? r : empty;
 
     public static string? GetString(string name, string? empty = null)
-    {
-        lock (configLock)
-            return config.TryGetValue(name, out var v) ? v?.ToString() : empty;
-    }
+        => values.TryGetValue(name, out var v) ? v : empty;
 
     public static bool Is(string name) => Get(name) == 1;
 
-    public static void Set(string name, int value)
-    {
-        lock (configLock) config[name] = value;
-        Schedule();
-    }
+    public static void Set(string name, int value) { values[name] = value.ToString(); Save(); }
 
-    public static void Set(string name, string value)
-    {
-        lock (configLock) config[name] = value;
-        Schedule();
-    }
-
-    private static void Schedule()
-    {
-        writeTimer.Stop();
-        writeTimer.Start();
-    }
-
-    private static void Flush()
-    {
-        string json;
-        lock (configLock) json = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
-        try { File.WriteAllText(configFile, json); }
-        catch (Exception ex) { Logger.WriteLine($"AppConfig write failed: {ex.Message}"); }
-    }
+    public static void Set(string name, string value) { values[name] = value; Save(); }
 }

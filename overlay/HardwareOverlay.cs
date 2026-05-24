@@ -133,6 +133,10 @@ public class HardwareOverlay : OSDNativeForm
     private volatile int _currentFps;
     private int _lastFgPid;
     private bool _active;
+    private static readonly int _ownPid = System.Diagnostics.Process.GetCurrentProcess().Id;
+
+    // Math.Clamp is .NET Core 2.0+; net48 doesn't have it. Inline replacement.
+    private static int Clamp(int v, int min, int max) => v < min ? min : v > max ? max : v;
 
     // Cross-thread marshalling target — used by SystemEvents.DisplaySettingsChanged
     // (raised on a background thread) and the WM_NCDESTROY restart path.
@@ -189,8 +193,8 @@ public class HardwareOverlay : OSDNativeForm
             int newY = _dragWindowStart.Y + cursor.Y - _dragCursorStart.Y;
             Screen screen = Screen.FromPoint(cursor);
             const int margin = 5;
-            newX = Math.Clamp(newX, screen.Bounds.Left + margin, screen.Bounds.Right  - Width  - margin);
-            newY = Math.Clamp(newY, screen.Bounds.Top  + margin, screen.Bounds.Bottom - Height - margin);
+            newX = Clamp(newX, screen.Bounds.Left + margin, screen.Bounds.Right  - Width  - margin);
+            newY = Clamp(newY, screen.Bounds.Top  + margin, screen.Bounds.Bottom - Height - margin);
             Location = new Point(newX, newY);
             m.Result = IntPtr.Zero;
             return;
@@ -280,7 +284,7 @@ public class HardwareOverlay : OSDNativeForm
             Cursor.Current = keysDown ? Cursors.Hand : Cursors.Default;
         }
 
-        if (Handle != nint.Zero && GetWindow(Handle, GW_HWNDPREV) != IntPtr.Zero)
+        if (Handle != IntPtr.Zero && GetWindow(Handle, GW_HWNDPREV) != IntPtr.Zero)
             SetWindowPos(Handle, HWND_TOPMOST, 0, 0, 0, 0,
                 SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
 
@@ -288,7 +292,7 @@ public class HardwareOverlay : OSDNativeForm
         {
             GetWindowThreadProcessId(GetForegroundWindow(), out uint fgPid);
             int pid = (int)fgPid;
-            if (pid != Environment.ProcessId && pid != _lastFgPid)
+            if (pid != _ownPid && pid != _lastFgPid)
             {
                 _lastFgPid = pid;
                 _currentFps = 0;
@@ -429,7 +433,7 @@ public class HardwareOverlay : OSDNativeForm
         var prevSmoothing = g.SmoothingMode;
         g.SmoothingMode = SmoothingMode.None;
 
-        int lit = Math.Clamp((int)Math.Round(usage * numCells / 100f), 0, numCells);
+        int lit = Clamp((int)Math.Round(usage * numCells / 100f), 0, numCells);
         int pitch = cellH + sepH;
 
         for (int i = 0; i < numCells; i++)
@@ -515,7 +519,7 @@ public class HardwareOverlay : OSDNativeForm
 
     private void SetTransparentStyle(bool transparent)
     {
-        if (Handle == nint.Zero) return;
+        if (Handle == IntPtr.Zero) return;
         int style = GetWindowLong(Handle, GWL_EXSTYLE);
         style = transparent ? (style | WS_EX_TRANSPARENT_FLAG) : (style & ~WS_EX_TRANSPARENT_FLAG);
         SetWindowLong(Handle, GWL_EXSTYLE, style);
@@ -559,8 +563,8 @@ public class HardwareOverlay : OSDNativeForm
         int x = isRight  ? screen.Bounds.Right  - Width  - offsetX : screen.Bounds.X + offsetX;
         int y = isBottom ? screen.Bounds.Bottom - Height - offsetY : screen.Bounds.Y + offsetY;
         const int margin = 5;
-        x = Math.Clamp(x, screen.Bounds.Left + margin, screen.Bounds.Right  - Width  - margin);
-        y = Math.Clamp(y, screen.Bounds.Top  + margin, screen.Bounds.Bottom - Height - margin);
+        x = Clamp(x, screen.Bounds.Left + margin, screen.Bounds.Right  - Width  - margin);
+        y = Clamp(y, screen.Bounds.Top  + margin, screen.Bounds.Bottom - Height - margin);
         Location = new Point(x, y);
     }
 

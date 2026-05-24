@@ -36,7 +36,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: GHelperOverlay-unsigned
-        path: overlay/bin/x64/Release/net8.0-windows/win-x64/publish/GHelperOverlay.exe
+        path: overlay/bin/x64/Release/net48/win-x64/GHelperOverlay.exe
 
     - id: sign-exe
       uses: signpath/github-action-submit-signing-request@v1.1

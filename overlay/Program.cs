@@ -14,9 +14,11 @@ internal static class Program
         using var mutex = new Mutex(true, @"Global\GHelperOverlaySingleton", out bool created);
         if (!created) return;
 
-        // Source-generated; respects ApplicationHighDpiMode/ApplicationDefaultFont
-        // from the csproj. Without this call, ApplicationHighDpiMode is ignored.
-        ApplicationConfiguration.Initialize();
+        // .NET Framework 4.8 doesn't have ApplicationConfiguration.Initialize() —
+        // the DPI awareness comes from app.manifest (PerMonitorV2). Just enable
+        // visual styles and the classic GDI text rendering for layered windows.
+        Application.EnableVisualStyles();
+        Application.SetCompatibleTextRenderingDefault(false);
 
         AppDomain.CurrentDomain.UnhandledException += (_, e) =>
             Logger.WriteLine("FATAL: " + (e.ExceptionObject as Exception)?.ToString());

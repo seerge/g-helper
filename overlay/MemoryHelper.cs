@@ -13,7 +13,9 @@ public static class MemoryHelper
         {
             if (prerequisite != null)
             {
-                try { await prerequisite.WaitAsync(timeout ?? TimeSpan.FromSeconds(3)); }
+                // Task.WaitAsync isn't on net48 — race the task against a delay instead.
+                var t = timeout ?? TimeSpan.FromSeconds(3);
+                try { await Task.WhenAny(prerequisite, Task.Delay(t)); }
                 catch { }
             }
             Trim();

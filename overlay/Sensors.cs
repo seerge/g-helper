@@ -202,7 +202,7 @@ internal static class CpuUsageReader
     public static int? Read()
     {
         if (!GetSystemTimes(out long idle, out long kernel, out long user)) return null;
-        long now = Environment.TickCount64;
+        long now = Environment.TickCount;
 
         if (!_baseline || now - _lastTick > 2000)
         {
@@ -217,6 +217,7 @@ internal static class CpuUsageReader
         _lastIdle = idle; _lastKernel = kernel; _lastUser = user; _lastTick = now;
 
         if (dTotal <= 0) return 0;
-        return Math.Clamp((int)Math.Round((1.0 - (double)dIdle / dTotal) * 100), 0, 100);
+        int pct = (int)Math.Round((1.0 - (double)dIdle / dTotal) * 100);
+        return pct < 0 ? 0 : pct > 100 ? 100 : pct;
     }
 }
