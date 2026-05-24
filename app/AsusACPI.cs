@@ -505,11 +505,19 @@ public class AsusACPI
                 fan = Program.acpi.DeviceGet(GPU_Fan);
                 break;
             case AsusFan.Mid:
-                fan = Program.acpi.DeviceGet(Mid_Fan);
+                fan = Program.acpi.DeviceGet(_midFanReadId);
                 break;
             default:
                 fan = Program.acpi.DeviceGet(CPU_Fan);
                 break;
+        }
+
+        // Some firmware (e.g. Snapdragon Zenbook UX3607) packs a status/mode field in
+        // the high word and the fan speed (hundreds of RPM) in the low word. Real fan
+        // readings never exceed 0xFFFF, so an out-of-range value means it's packed.
+        if (fan > 0xFFFF)
+        {
+            fan = fan & 0xFFFF;
         }
 
         if (fan < 0)
@@ -520,6 +528,11 @@ public class AsusACPI
 
         return fan;
     }
+
+    // UX3607 (Snapdragon) has a real second fan whose tach lives at a non-standard
+    // ID; the stock Mid_Fan (0x00110031) returns nothing on this model. Route the
+    // Mid slot to the working ID so the second fan's RPM is displayed.
+    static readonly uint _midFanReadId = AppConfig.ContainsModel("UX3607") ? 0x00110035u : Mid_Fan;
 
     public bool IsMidFanSupported()
     {
