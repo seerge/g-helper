@@ -1,4 +1,4 @@
-﻿using GHelper.UI;
+using GHelper.UI;
 using System.Windows.Forms.DataVisualization.Charting;
 
 namespace GHelper
@@ -65,7 +65,9 @@ namespace GHelper
             labelHysteresisUpValue = new Label();
             labelHysteresisDownValue = new Label();
             panelApplyFans = new Panel();
+            panelEqualize = new Panel();
             buttonCalibrate = new RButton();
+            checkEqualize = new RCheckBox();
             labelFansResult = new Label();
             checkApplyFans = new RCheckBox();
             buttonReset = new RButton();
@@ -178,6 +180,7 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)trackHysteresisUp).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackHysteresisDown).BeginInit();
             panelApplyFans.SuspendLayout();
+            panelEqualize.SuspendLayout();
             panelSliders.SuspendLayout();
             panelAdvanced.SuspendLayout();
             panelAdvancedAlways.SuspendLayout();
@@ -241,6 +244,7 @@ namespace GHelper
             panelFans.Controls.Add(tableFanCharts);
             panelFans.Controls.Add(panelTitleFans);
             panelFans.Controls.Add(panelHysteresis);
+            panelFans.Controls.Add(panelEqualize);
             panelFans.Controls.Add(panelApplyFans);
             panelFans.Dock = DockStyle.Fill;
             panelFans.Location = new Point(530, 0);
@@ -614,6 +618,30 @@ namespace GHelper
             buttonCalibrate.TabIndex = 43;
             buttonCalibrate.Text = "Calibrate";
             buttonCalibrate.UseVisualStyleBackColor = false;
+            // 
+            // panelEqualize
+            // 
+            panelEqualize.Controls.Add(checkEqualize);
+            panelEqualize.Dock = DockStyle.Bottom;
+            panelEqualize.Margin = new Padding(4);
+            panelEqualize.Padding = new Padding(15, 6, 15, 6);
+            panelEqualize.Name = "panelEqualize";
+            panelEqualize.Size = new Size(810, 40);
+            panelEqualize.TabIndex = 46;
+            panelEqualize.Visible = false;
+            // 
+            // checkEqualize
+            // 
+            checkEqualize.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+            checkEqualize.AutoSize = true;
+            checkEqualize.BackColor = Color.Transparent;
+            checkEqualize.Location = new Point(15, 8);
+            checkEqualize.Margin = new Padding(0);
+            checkEqualize.Name = "checkEqualize";
+            checkEqualize.Padding = new Padding(0);
+            checkEqualize.TabIndex = 44;
+            checkEqualize.Text = "Sync Fan Speeds";
+            checkEqualize.UseVisualStyleBackColor = false;
             // 
             // labelFansResult
             // 
@@ -1911,6 +1939,8 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)trackHysteresisDown).EndInit();
             panelApplyFans.ResumeLayout(false);
             panelApplyFans.PerformLayout();
+            panelEqualize.ResumeLayout(false);
+            panelEqualize.PerformLayout();
             panelSliders.ResumeLayout(false);
             panelSliders.PerformLayout();
             panelAdvanced.ResumeLayout(false);
@@ -2036,6 +2066,7 @@ namespace GHelper
         private RTrackBar trackGPUTemp;
         private Panel panelTitleFans;
         private Panel panelApplyFans;
+        private Panel panelEqualize;
         private Label labelFansResult;
         private RCheckBox checkApplyFans;
         private RButton buttonReset;
@@ -2097,7 +2128,7 @@ namespace GHelper
         private RTrackBar trackGPUClockLimit;
         private Label labelGPUClockLimitTitle;
         private RButton buttonCalibrate;
-        private Panel panelSlow;
+        private RCheckBox checkEqualize;        private Panel panelSlow;
         private Label labelSlow;
         private Label labelLeftSlow;
         private RTrackBar trackSlow;
