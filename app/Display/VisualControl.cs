@@ -1,3 +1,4 @@
+using GHelper.Gpu;
 using GHelper.Helpers;
 using Microsoft.Win32;
 using PawnIO;
@@ -406,16 +407,79 @@ namespace GHelper.Display
             var dimmingLevel = (int)(40 + _brightness * 0.6);
 
             if (AppConfig.IsDUO()) RunSplendid(SplendidCommand.DimmingDuo, 0, dimmingLevel);
-            if (RunSplendid(dimmingCommand, 0, dimmingLevel) == 0) return;
+            if (RunSplendid(dimmingCommand, 0, dimmingLevel) == 0) { ApplyDimmerForDGpu(); return; }
 
             if (_init)
             {
                 _init = false;
                 RunSplendid(SplendidCommand.Init);
                 RunSplendid(SplendidCommand.Init, 4);
-                if (RunSplendid(dimmingCommand, 0, dimmingLevel) == 0) return;
+                if (RunSplendid(dimmingCommand, 0, dimmingLevel) == 0) { ApplyDimmerForDGpu(); return; }
             }
 
+            ApplyDimmerForDGpu();
+        }
+
+        /// <summary>
+        /// In Ultimate (dGPU) mode, apply a per-display GDI gamma ramp on
+        /// the laptop panel with a slider remap of 0..100 -> dimLevel
+        /// 52..100 (slider 0 -> 52, slider 100 -> 100).
+        ///
+        /// Opt-in via the AppConfig key <see cref="GdiDimmer.CFG_ENABLED"/>
+        /// (defaults to off).  Users on the broken NVIDIA driver branch
+        /// (591.44+) where AsusSplendid's CSC silently fails should
+        /// enable this; users on older drivers where Splendid's CSC still
+        /// works should leave it off, because applying both Splendid's
+        /// scale and this GDI ramp compounds (effective gain = g*g) and
+        /// over-dims the panel.
+        ///
+        /// The 52 floor is chosen empirically: Windows' ICM clamp silently
+        /// rejects linear gamma ramps whose values deviate more than
+        /// ~32768 from identity, i.e. a linear gain floor of ~0.50.  The
+        /// documented GdiICMGammaRange=256 registry tweak that should
+        /// disable this clamp does NOT take effect on Win11 25H2
+        /// (verified by SetDeviceGammaRamp round-trip test), so we stay
+        /// above ~0.50.  This costs roughly the bottom 20% of Splendid's
+        /// brightness range (slider 0 = scale 0.52 vs Splendid's 0.40;
+        /// gap 0.12 / span 0.60 = 20%) in exchange for the slider
+        /// responding at every position.
+        ///
+        /// The GDI ramp is applied at the GPU's LUT stage (downstream of
+        /// DWM composition and the hardware cursor), so it dims the
+        /// cursor and fullscreen-exclusive games, and only the laptop
+        /// panel (other monitors keep identity).
+        ///
+        /// In iGPU / Standard / Eco mode this method only clears any
+        /// previously-active dim - AsusSplendid's AMD/Intel paths handle
+        /// dimming natively there.  The Splendid dimmingLevel sent above
+        /// (40..100) is unchanged regardless of whether the workaround
+        /// is enabled.
+        /// </summary>
+        private static void ApplyDimmerForDGpu()
+        {
+            try
+            {
+                // Opt-in gate.  When disabled, ensure no leftover dim is
+                // active (covers the case where the user toggled the
+                // workaround off mid-session).
+                if (!GdiDimmer.Enabled)
+                {
+                    if (GdiDimmer.IsActive) GdiDimmer.Reset();
+                    return;
+                }
+                if (GPUModeControl.gpuMode != AsusACPI.GPUModeUltimate ||
+                    !AppConfig.IsOLED() || _brightness >= 100)
+                {
+                    if (GdiDimmer.IsActive) GdiDimmer.Reset();
+                    return;
+                }
+                // slider 0..100 -> dimLevel 52..100 (linear, ICM-clamp-safe)
+                GdiDimmer.Apply((int)Math.Round(52 + _brightness * 0.48));
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine("Dimmer error: " + ex.Message);
+            }
         }
 
         public static void InitBrightness()
