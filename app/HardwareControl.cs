@@ -449,6 +449,17 @@ public static class HardwareControl
             //Debug.WriteLine("Failed reading CPU temp :" + ex.Message);
         }
 
+        // Firmware on some ARM/Snapdragon models (e.g. Zenbook A16 UX3607) does not
+        // expose CPU temp via ACPI (returns 0) nor via the \_TZ.THRM counter.
+        // Fall back to the hottest ACPI thermal zone read over WMI.
+        if (cpuTemp <= 0)
+        {
+            double wmiTemp = GetMaxThermalZoneTempWMI();
+            if (wmiTemp > 0)
+            {
+                cpuTemp = (float)wmiTemp;
+            }
+        }
 
         return cpuTemp;
     }
@@ -477,6 +488,63 @@ public static class HardwareControl
         }
         return -1;
     }
+
+    // Reads every ACPI thermal zone exposed over WMI and returns the hottest valid
+    // reading in Celsius (-1 if none). Used as a CPU-temp fallback on firmware that
+    // doesn't publish a dedicated CPU sensor (e.g. Snapdragon Zenbook UX3607).
+    static double GetMaxThermalZoneTempWMI()
+    {
+        double maxTemp = -1;
+        double tz33Temp = -1;
+        try
+        {
+            string wmiNamespace = @"root\WMI";
+            string wmiQuery = @"SELECT CurrentTemperature, InstanceName FROM MSAcpi_ThermalZoneTemperature";
+            using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(wmiNamespace, wmiQuery))
+            {
+                foreach (ManagementObject obj in searcher.Get())
+                {
+                    using (obj)
+                    {
+                        double tempKelvin = Convert.ToDouble(obj["CurrentTemperature"]);
+                        double tempC = (tempKelvin / 10) - 273.15;
+                        if (tempC > 0 && tempC < 150)
+                        {
+                            if (tempC > maxTemp) maxTemp = tempC;
+                            string zone = ShortZone(obj["InstanceName"]?.ToString());
+                            if (zone == "TZ33") tz33Temp = tempC;
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            //Logger.WriteLine("Error retrieving thermal zone temperature: " + ex.Message);
+        }
+        // On UX3607 (Snapdragon) the QCOM* thermal zones report static, baked-in values
+        // that never change under load (~41C frozen). TZ33 is the only zone that tracks
+        // real SoC temperature — verified by load test: ~34C idle, 43C under GPU load,
+        // 48C under CPU load. Prefer it; max-of-zones would pin to the fake QCOM reading.
+        if (_preferTZ33 && tz33Temp > 0) return tz33Temp;
+        return maxTemp;
+    }
+
+    // ACPI\QCOM0F58\1_0 -> QCOM0F58 ; ACPI\ThermalZone\TZ33_0 -> TZ33
+    static string ShortZone(string instance)
+    {
+        if (string.IsNullOrEmpty(instance)) return "?";
+        var parts = instance.Split('\\');
+        if (parts.Length >= 2)
+        {
+            string mid = parts[parts.Length - 2];
+            if (mid.StartsWith("QCOM")) return mid;
+            return parts[parts.Length - 1].Replace("_0", "");
+        }
+        return instance;
+    }
+
+    static readonly bool _preferTZ33 = AppConfig.ContainsModel("UX3607");
 
     public static float? GetGPUTemp()
     {
