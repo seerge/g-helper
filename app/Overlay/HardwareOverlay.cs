@@ -85,11 +85,11 @@ namespace GHelper.Overlay
         private const int BaseLeftColWidth = 128;
         private const int BaseChartColWidth = 120;
         private const int BasePowerGap = 4;
-        private const int BasePowerColWidth = 50;
+        private const int BasePowerColWidth = 46; // fits "120.9W" (6 chars, F1 + "W") right-aligned, no extra slack
         private const int BaseColGap = 8;
         private const int CornerRadius = 3;
         private const int MarginFromEdge = 10;
-        private const int BaseLightLeftColWidth = 76; // fits "GPU: 82° " (9 Consolas chars) with a little breathing room
+        private const int BaseLightLeftColWidth = 64; // fits "GPU: 82° " (9 Consolas chars); trailing space is the gap to the power column
         private const int BaseUsageBarGap = 11;       // gap between W letter and bar (full mode)
         private const int BaseUsageBarWidth = 5;
         private const int BaseUsageNumGap = 4;        // gap between bar and usage % text
