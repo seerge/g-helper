@@ -45,6 +45,7 @@ namespace GHelper.Overlay
         private const int WM_MOUSEMOVE       = 0x0200;
         private const int WM_LBUTTONUP       = 0x0202;
         private const int WM_MOUSEWHEEL      = 0x020A;
+        private const int WM_MBUTTONDOWN     = 0x0207;
         private const int VK_CONTROL         = 0x11;
         private const int VK_SHIFT           = 0x10;
         private const int VK_MENU            = 0x12; // ALT
@@ -181,27 +182,14 @@ namespace GHelper.Overlay
             if (m.Msg == WM_MOUSEWHEEL && AreDragKeysDown())
             {
                 int delta = (short)((m.WParam.ToInt64() >> 16) & 0xFFFF);
-                int next = Math.Clamp(_scalePercent + (delta > 0 ? ScaleStepPercent : -ScaleStepPercent),
-                                      MinScalePercent, MaxScalePercent);
-                if (next != _scalePercent)
-                {
-                    Point center = new Point(Location.X + Width / 2, Location.Y + Height / 2);
-                    Screen screen = Screen.FromPoint(center);
-                    bool isRight  = center.X > screen.Bounds.X + screen.Bounds.Width  / 2;
-                    bool isBottom = center.Y > screen.Bounds.Y + screen.Bounds.Height / 2;
-                    int rightEdge  = Location.X + Width;
-                    int bottomEdge = Location.Y + Height;
+                ApplyScale(_scalePercent + (delta > 0 ? ScaleStepPercent : -ScaleStepPercent));
+                m.Result = IntPtr.Zero;
+                return;
+            }
 
-                    _scalePercent = next;
-                    AppConfig.Set("overlay_scale_percent", _scalePercent);
-                    Invalidate(); // resizes synchronously via PerformPaint → Size.set
-
-                    int newX = isRight  ? rightEdge  - Width  : Location.X;
-                    int newY = isBottom ? bottomEdge - Height : Location.Y;
-                    if (newX != Location.X || newY != Location.Y)
-                        Location = new Point(newX, newY);
-                    SavePosition();
-                }
+            if (m.Msg == WM_MBUTTONDOWN && AreDragKeysDown())
+            {
+                ApplyScale(100);
                 m.Result = IntPtr.Zero;
                 return;
             }
@@ -391,6 +379,7 @@ namespace GHelper.Overlay
 
             var g = e.Graphics;
             g.SmoothingMode = SmoothingMode.AntiAlias;
+            g.PixelOffsetMode = PixelOffsetMode.HighQuality;
             g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
 
             g.FillRoundedRectangle(_bgBrush, Bound, radius);
@@ -573,6 +562,29 @@ namespace GHelper.Overlay
             int style = GetWindowLong(Handle, GWL_EXSTYLE);
             style = transparent ? (style | WS_EX_TRANSPARENT_FLAG) : (style & ~WS_EX_TRANSPARENT_FLAG);
             SetWindowLong(Handle, GWL_EXSTYLE, style);
+        }
+
+        private void ApplyScale(int next)
+        {
+            next = Math.Clamp(next, MinScalePercent, MaxScalePercent);
+            if (next == _scalePercent) return;
+
+            Point center = new Point(Location.X + Width / 2, Location.Y + Height / 2);
+            Screen screen = Screen.FromPoint(center);
+            bool isRight  = center.X > screen.Bounds.X + screen.Bounds.Width  / 2;
+            bool isBottom = center.Y > screen.Bounds.Y + screen.Bounds.Height / 2;
+            int rightEdge  = Location.X + Width;
+            int bottomEdge = Location.Y + Height;
+
+            _scalePercent = next;
+            AppConfig.Set("overlay_scale_percent", _scalePercent);
+            Invalidate(); // resizes synchronously via PerformPaint → Size.set
+
+            int newX = isRight  ? rightEdge  - Width  : Location.X;
+            int newY = isBottom ? bottomEdge - Height : Location.Y;
+            if (newX != Location.X || newY != Location.Y)
+                Location = new Point(newX, newY);
+            SavePosition();
         }
 
         private void SavePosition()
