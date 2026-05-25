@@ -594,7 +594,7 @@ public static class AppConfig
 
     public static bool IsStandardModeFix()
     {
-        return Is("shutdown_gpu") || ContainsModel("FX506HCB");
+        return Is("shutdown_gpu") || (ContainsModel("FX506HCB") && IsNotFalse("shutdown_gpu"));
     }
 
     public static bool IsShutdownReset()
