@@ -1,12 +1,14 @@
 namespace GHelperOverlay;
 
-// Flat key=value text at %AppData%\GHelper\overlay-config.txt.
+// INI-format config at %AppData%\GHelper\overlay.ini.
 // Read once at startup; written synchronously on every Set.
 public static class AppConfig
 {
+    private const string Section = "Overlay";
+
     private static readonly string file = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-        "GHelper", "overlay-config.txt");
+        "GHelper", "overlay.ini");
 
     private static readonly Dictionary<string, string> values = Load();
 
@@ -15,12 +17,14 @@ public static class AppConfig
         var d = new Dictionary<string, string>();
         try
         {
-            if (File.Exists(file))
-                foreach (var line in File.ReadAllLines(file))
-                {
-                    int eq = line.IndexOf('=');
-                    if (eq > 0) d[line.Substring(0, eq).Trim()] = line.Substring(eq + 1).Trim();
-                }
+            if (!File.Exists(file)) return d;
+            foreach (var raw in File.ReadAllLines(file))
+            {
+                var line = raw.Trim();
+                if (line.Length == 0 || line[0] == ';' || line[0] == '#' || line[0] == '[') continue;
+                int eq = line.IndexOf('=');
+                if (eq > 0) d[line.Substring(0, eq).Trim()] = line.Substring(eq + 1).Trim();
+            }
         }
         catch { }
         return d;
@@ -31,7 +35,7 @@ public static class AppConfig
         try
         {
             Directory.CreateDirectory(Path.GetDirectoryName(file));
-            var lines = new List<string>(values.Count);
+            var lines = new List<string>(values.Count + 1) { "[" + Section + "]" };
             foreach (var kv in values) lines.Add(kv.Key + "=" + kv.Value);
             File.WriteAllLines(file, lines);
         }
