@@ -43,9 +43,16 @@ public class HardwareOverlay : OSDNativeForm
     private const int WM_LBUTTONDOWN     = 0x0201;
     private const int WM_MOUSEMOVE       = 0x0200;
     private const int WM_LBUTTONUP       = 0x0202;
+    private const int WM_MOUSEWHEEL      = 0x020A;
+    private const int WM_MBUTTONDOWN     = 0x0207;
     private const int VK_CONTROL         = 0x11;
     private const int VK_SHIFT           = 0x10;
     private const int VK_MENU            = 0x12;
+
+    private const int MinScalePercent  = 50;
+    private const int MaxScalePercent  = 300;
+    private const int ScaleStepPercent = 10;
+    private int _scalePercent = 100;
 
     private bool _dragging;
     private Point _dragCursorStart;
@@ -78,11 +85,11 @@ public class HardwareOverlay : OSDNativeForm
     private const int BaseLeftColWidth = 128;
     private const int BaseChartColWidth = 120;
     private const int BasePowerGap = 4;
-    private const int BasePowerColWidth = 50;
+    private const int BasePowerColWidth = 46;
     private const int BaseColGap = 8;
     private const int CornerRadius = 3;
     private const int MarginFromEdge = 10;
-    private const int BaseLightLeftColWidth = 76;
+    private const int BaseLightLeftColWidth = 64;
     private const int BaseUsageBarGap = 11;
     private const int BaseUsageBarWidth = 5;
     private const int BaseUsageNumGap = 4;
@@ -176,6 +183,21 @@ public class HardwareOverlay : OSDNativeForm
             return;
         }
 
+        if (m.Msg == WM_MOUSEWHEEL && AreDragKeysDown())
+        {
+            int delta = (short)((m.WParam.ToInt64() >> 16) & 0xFFFF);
+            ApplyScale(_scalePercent + (delta > 0 ? ScaleStepPercent : -ScaleStepPercent));
+            m.Result = IntPtr.Zero;
+            return;
+        }
+
+        if (m.Msg == WM_MBUTTONDOWN && AreDragKeysDown())
+        {
+            ApplyScale(100);
+            m.Result = IntPtr.Zero;
+            return;
+        }
+
         if (m.Msg == WM_LBUTTONDOWN && _dragModeActive)
         {
             _dragging = true;
@@ -253,9 +275,10 @@ public class HardwareOverlay : OSDNativeForm
         Screen screen = Screen.PrimaryScreen ?? Screen.AllScreens[0];
         POINT pt = new() { x = screen.Bounds.X + 1, y = screen.Bounds.Y + 1 };
         IntPtr monitor = MonitorFromPoint(pt, MONITOR_DEFAULTTOPRIMARY);
+        float dpi = 1f;
         if (GetDpiForMonitor(monitor, MDT_EFFECTIVE_DPI, out uint dpiX, out _) == 0)
-            return dpiX / (float)BaseDpi;
-        return 1f;
+            dpi = dpiX / (float)BaseDpi;
+        return dpi * (_scalePercent / 100f);
     }
 
     private static int S(float sc, int v) => (int)(v * sc);
@@ -352,6 +375,7 @@ public class HardwareOverlay : OSDNativeForm
 
         var g = e.Graphics;
         g.SmoothingMode = SmoothingMode.AntiAlias;
+        g.PixelOffsetMode = PixelOffsetMode.HighQuality;
         g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
 
         g.FillRoundedRectangle(_bgBrush, Bound, radius);
@@ -525,6 +549,29 @@ public class HardwareOverlay : OSDNativeForm
         SetWindowLong(Handle, GWL_EXSTYLE, style);
     }
 
+    private void ApplyScale(int next)
+    {
+        next = Clamp(next, MinScalePercent, MaxScalePercent);
+        if (next == _scalePercent) return;
+
+        Point center = new(Location.X + Width / 2, Location.Y + Height / 2);
+        Screen screen = Screen.FromPoint(center);
+        bool isRight  = center.X > screen.Bounds.X + screen.Bounds.Width  / 2;
+        bool isBottom = center.Y > screen.Bounds.Y + screen.Bounds.Height / 2;
+        int rightEdge  = Location.X + Width;
+        int bottomEdge = Location.Y + Height;
+
+        _scalePercent = next;
+        AppConfig.Set("overlay_scale_percent", _scalePercent);
+        Invalidate();
+
+        int newX = isRight  ? rightEdge  - Width  : Location.X;
+        int newY = isBottom ? bottomEdge - Height : Location.Y;
+        if (newX != Location.X || newY != Location.Y)
+            Location = new Point(newX, newY);
+        SavePosition();
+    }
+
     private void SavePosition()
     {
         Point center = new(Location.X + Width / 2, Location.Y + Height / 2);
@@ -578,6 +625,7 @@ public class HardwareOverlay : OSDNativeForm
         _mode = storedMode == (int)OverlayMode.Light ? OverlayMode.Light
               : storedMode == (int)OverlayMode.Full  ? OverlayMode.Full
               : OverlayMode.Default;
+        _scalePercent = Clamp(AppConfig.Get("overlay_scale_percent", 100), MinScalePercent, MaxScalePercent);
         ApplyModeReadFlags();
         SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
         Sensors.ResetCpuPowerCounter();
