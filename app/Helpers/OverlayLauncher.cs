@@ -16,7 +16,7 @@ public static class OverlayLauncher
     {
         if (!HasEmbedded())
         {
-            Program.hardwareOverlay?.StartOverlay();
+            Logger.WriteLine("OverlayLauncher: no embedded overlay in this build");
             return;
         }
 
@@ -33,7 +33,6 @@ public static class OverlayLauncher
             }
         }
 
-        try { Program.hardwareOverlay?.StopOverlay(); } catch { }
         if (!IsExternalRunning())
             try { Process.Start(new ProcessStartInfo(InstalledPath) { UseShellExecute = true }); }
             catch (Exception ex) { Logger.WriteLine("OverlayLauncher external start failed: " + ex.Message); }
@@ -47,7 +46,6 @@ public static class OverlayLauncher
             catch (Exception ex) { Logger.WriteLine("OverlayLauncher kill failed: " + ex.Message); }
             finally { p.Dispose(); }
         }
-        try { Program.hardwareOverlay?.StopOverlay(); } catch { }
     }
 
     public static void InstallEmbedded()
