@@ -165,6 +165,7 @@ namespace GHelper
 
             SystemEvents.SessionSwitch += SystemEvents_SessionSwitch;
             SystemEvents.SessionEnding += SystemEvents_SessionEnding;
+            Application.ApplicationExit += OnExit;
 
             clamshellControl.RegisterDisplayEvents();
             clamshellControl.ToggleLidAction();
