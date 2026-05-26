@@ -510,16 +510,15 @@ namespace GHelper
 
         private void InitACPITesting()
         {
+            pictureScan.Visible = true;
+            pictureScan.Click += PictureScan_Click;
+
             if (!AppConfig.Is("debug")) return;
 
-            pictureScan.Visible = true;
             panelACPI.Visible = true;
-
             textACPICommand.Text = "110034";
             textACPIParam.Text = "0x0303";
-
             buttonACPISend.Click += ButtonACPISend_Click;
-            pictureScan.Click += PictureScan_Click;
         }
 
         private void ButtonACPISend_Click(object? sender, EventArgs e)
