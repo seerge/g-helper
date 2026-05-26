@@ -224,7 +224,7 @@ namespace GHelper
             });
 
             if (AppConfig.Is("overlay"))
-                hardwareOverlay?.StartOverlay();
+                GHelper.Helpers.OverlayLauncher.Start();
 
             Application.Run();
         }
@@ -460,6 +460,8 @@ namespace GHelper
                 trayIcon.Visible = false;
                 trayIcon.Dispose();
             }
+
+            GHelper.Helpers.OverlayLauncher.Stop();
 
             PeripheralsProvider.UnregisterForDeviceEvents();
             clamshellControl.UnregisterDisplayEvents();
