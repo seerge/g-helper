@@ -371,7 +371,12 @@ public class HardwareOverlay : OSDNativeForm
         int totalH = padY * 2 + innerH;
 
         if (Size.Width != width || Size.Height != totalH)
+        {
+            // Size setter triggers a recursive UpdateLayeredWindow that disposes
+            // and recreates _canvasGfx; e.Graphics here is the now-stale one.
             Size = new Size(width, totalH);
+            return;
+        }
 
         var g = e.Graphics;
         g.SmoothingMode = SmoothingMode.AntiAlias;
