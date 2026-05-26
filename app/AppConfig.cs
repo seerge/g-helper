@@ -594,7 +594,7 @@ public static class AppConfig
 
     public static bool IsStandardModeFix()
     {
-        return Is("shutdown_gpu") || ContainsModel("FX506HCB");
+        return Is("shutdown_gpu") || ((ContainsModel("FX506HCB") || ContainsModel("FA808U")) && IsNotFalse("shutdown_gpu"));
     }
 
     public static bool IsShutdownReset()
@@ -702,7 +702,7 @@ public static class AppConfig
 
     public static bool IsSleepReset()
     {
-        return ContainsModel("GU605MI") || ContainsModel("GU605MV");
+        return Is("sleep_reset") || ContainsModel("GU605MI") || ContainsModel("GU605MV");
     }
 
     public static bool SaveDimming()
