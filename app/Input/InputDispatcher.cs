@@ -1,6 +1,8 @@
 using GHelper.Display;
 using GHelper.Helpers;
 using GHelper.Mode;
+using GHelper.Peripherals;
+using GHelper.Peripherals.Mouse;
 using GHelper.USB;
 using Microsoft.Win32;
 using System.Diagnostics;
@@ -110,7 +112,9 @@ namespace GHelper.Input
 
         public static void InitFNLock()
         {
-            if (IsHardwareFnLock()) HardwareFnLock(AppConfig.Is("fn_lock"));
+            if (!IsHardwareFnLock()) return;
+            AsusHid.InitInput();
+            HardwareFnLock(AppConfig.Is("fn_lock"));
         }
 
         public void InitBacklightTimer()
@@ -177,6 +181,7 @@ namespace GHelper.Input
                 hook.RegisterHotKey(ModifierKeys.Shift, Keys.VolumeDown);
                 hook.RegisterHotKey(ModifierKeys.Shift, Keys.VolumeUp);
                 hook.RegisterHotKey(keyModifier, Keys.F20);
+                hook.RegisterHotKey(keyModifierAlt, Keys.O);
             }
 
             if (!AppConfig.IsZ13() && !AppConfig.IsAlly() && !AppConfig.IsVivoZenPro())
@@ -209,6 +214,21 @@ namespace GHelper.Input
                 hook.RegisterHotKey(ModifierKeys.None, Keys.Down);
             }
 
+            foreach (ushort code in GetActiveMouseComboCarriers())
+                hook.RegisterHotKey(ModifierKeys.None, Keys.F13 + (code - 0x0068));
+
+        }
+
+        private static IEnumerable<ushort> GetActiveMouseComboCarriers()
+        {
+            var seen = new HashSet<ushort>();
+            foreach (var m in PeripheralsProvider.SnapshotMice())
+            {
+                if (!m.HasButtonBindings() || m.ButtonBindings is null) continue;
+                foreach (ushort code in m.ButtonBindings)
+                    if (AsusMouse.CombosByCode.ContainsKey(code) && seen.Add(code))
+                        yield return code;
+            }
         }
 
 
@@ -236,18 +256,10 @@ namespace GHelper.Input
         }
 
 
-        static void CustomKey(string configKey = "m3")
+        static void RunKeyCommand(string command, bool launchOnNoKeys = true)
         {
-            string command = AppConfig.GetString(configKey + "_custom");
             int[] hexKeys = new int[0];
-
-            try
-            {
-                hexKeys = ParseHexValues(command);
-            }
-            catch
-            {
-            }
+            try { hexKeys = ParseHexValues(command); } catch { }
 
             switch (hexKeys.Length)
             {
@@ -264,10 +276,14 @@ namespace GHelper.Input
                     KeyboardHook.KeyKeyKeyKeyPress((Keys)hexKeys[0], (Keys)hexKeys[1], (Keys)hexKeys[2], (Keys)hexKeys[3]);
                     break;
                 default:
-                    LaunchProcess(command);
+                    if (launchOnNoKeys && !string.IsNullOrWhiteSpace(command)) LaunchProcess(command);
                     break;
             }
+        }
 
+        static void CustomKey(string configKey = "m3")
+        {
+            RunKeyCommand(AppConfig.GetString(configKey + "_custom"));
         }
 
 
@@ -314,6 +330,16 @@ namespace GHelper.Input
 
             if (e.Modifier == ModifierKeys.None)
             {
+                if (e.Key >= Keys.F13 && e.Key <= Keys.F24)
+                {
+                    ushort code = (ushort)(0x68 + (e.Key - Keys.F13));
+                    if (AsusMouse.CombosByCode.TryGetValue(code, out var combo))
+                    {
+                        RunKeyCommand(combo.ResolveCommand(), launchOnNoKeys: false);
+                        return;
+                    }
+                }
+
                 if (AppConfig.NoMKeys())
                 {
                     switch (e.Key)
@@ -510,9 +536,11 @@ namespace GHelper.Input
                         Program.toast.RunToast(Properties.Strings.StandardMode);
                         Program.settingsForm.gpuControl.SetGPUMode(AsusACPI.GPUModeStandard);
                         break;
+                    case Keys.O:
+                        Program.settingsForm.BeginInvoke(Program.settingsForm.ToggleOverlay);
+                        break;
                 }
             }
-
 
             if (e.Modifier == (ModifierKeys.Control))
             {
@@ -616,6 +644,9 @@ namespace GHelper.Input
                     break;
                 case "fnlock":
                     ToggleFnLock();
+                    break;
+                case "overlay":
+                    Program.settingsForm.BeginInvoke(Program.settingsForm.ToggleOverlay);
                     break;
                 case "micmute":
                     ToggleMic();
@@ -1033,20 +1064,19 @@ namespace GHelper.Input
             {
                 Aura.Init();
                 Aura.ApplyPower();
+                SetBacklightAuto();
                 Aura.ApplyAura();
             } else
             {
                 Logger.WriteLine("Skipping Aura");
             }
-
-            SetBacklightAuto(true);
         }
 
 
-        public static void SetBacklightAuto(bool init = false)
+        public static void SetBacklightAuto()
         {
             if (lidClose || tentMode) return;
-            Aura.ApplyBrightness(GetBacklight(), "Auto", init);
+            Aura.ApplyBrightness(GetBacklight(), "Auto");
             backlightActivity = true;
         }
 
@@ -1138,37 +1168,29 @@ namespace GHelper.Input
             int cameraShutter = Program.acpi.DeviceGet(AsusACPI.CameraShutter);
             Logger.WriteLine("Camera Shutter status: " + cameraShutter);
 
-            if (cameraShutter == 0)
+            int state = cameraShutter & 1;
+            int feature = cameraShutter & ~1;
+
+            switch (feature)
             {
-                Program.acpi.DeviceSet(AsusACPI.CameraShutter, 1, "CameraShutterOn");
-                Program.toast.RunToast($"Camera Off");
-            }
-            else if (cameraShutter == 1)
-            {
-                Program.acpi.DeviceSet(AsusACPI.CameraShutter, 0, "CameraShutterOff");
-                Program.toast.RunToast($"Camera On");
-            }
-            else if (cameraShutter == 1048577)
-            {
-                Program.acpi.DeviceSet(AsusACPI.CameraShutter, 5, "CameraShutter");
-                Program.toast.RunToast($"Camera Off");
-            }
-            else if (cameraShutter == 1048576)
-            {
-                Program.acpi.DeviceSet(AsusACPI.CameraShutter, 4, "CameraShutter");
-                Program.toast.RunToast($"Camera On");
-            }
-            else if (cameraShutter == 262144)
-            {
-                Program.toast.RunToast($"Camera Off");
-            }
-            else if (cameraShutter == 262145)
-            {
-                Program.toast.RunToast($"Camera On");
-            }
-            else
-            {
-                SetCamera(2);
+                case 0x00000:
+                    Program.acpi.DeviceSet(AsusACPI.CameraShutter, state ^ 1,
+                        state == 0 ? "CameraShutterOn" : "CameraShutterOff");
+                    Program.toast.RunToast(state == 0 ? "Camera Off" : "Camera On");
+                    break;
+                case 0x40000:
+                    Program.toast.RunToast(state == 0 ? "Camera Off" : "Camera On");
+                    break;
+                case 0xC0000:
+                    SetCamera(state ^ 1);
+                    break;
+                case 0x100000:
+                    Program.acpi.DeviceSet(AsusACPI.CameraShutter, 4 | state, "CameraShutter");
+                    Program.toast.RunToast(state == 0 ? "Camera On" : "Camera Off");
+                    break;
+                default:
+                    SetCamera(2);
+                    break;
             }
         }
 

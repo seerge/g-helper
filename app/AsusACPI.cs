@@ -497,27 +497,16 @@ public class AsusACPI
 
     public int GetFan(AsusFan device)
     {
-        int fan = -1;
-
-        switch (device)
+        uint endpoint = device switch
         {
-            case AsusFan.GPU:
-                fan = Program.acpi.DeviceGet(GPU_Fan);
-                break;
-            case AsusFan.Mid:
-                fan = Program.acpi.DeviceGet(Mid_Fan);
-                break;
-            default:
-                fan = Program.acpi.DeviceGet(CPU_Fan);
-                break;
-        }
+            AsusFan.GPU => GPU_Fan,
+            AsusFan.Mid => Mid_Fan,
+            _ => CPU_Fan,
+        };
 
-        if (fan < 0)
-        {
-            fan += 65536;
-            if (fan <= 0 || fan > 100) fan = -1;
-        }
-
+        int raw = Program.acpi.DeviceGet(endpoint);
+        int fan = raw & 0xFFFF;
+        if (fan > 120 || (fan == 0 && raw < 0)) fan = -1;
         return fan;
     }
 
@@ -837,7 +826,6 @@ public class AsusACPI
 
     public string ScanRange()
     {
-        int value;
         string appPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\GHelper";
         string logFile = appPath + "\\scan.txt";
         using (StreamWriter w = File.AppendText(logFile))
@@ -848,9 +836,21 @@ public class AsusACPI
                 for (uint j = 0x00; j <= 0xFF; j++)
                 {
                     uint id = i + j;
-                    value = DeviceGet(id);
-                    if (value >= 0)
+                    byte[] buf = DeviceGetLarge(id);
+                    uint head = BitConverter.ToUInt32(buf, 0);
+                    if ((head & 0x10000) == 0) continue;
+
+                    bool extra = false;
+                    for (int k = 4; k < buf.Length; k++)
+                        if (buf[k] != 0) { extra = true; break; }
+
+                    if (extra)
                     {
+                        w.WriteLine(id.ToString("X8") + ": BUF " + BitConverter.ToString(buf));
+                    }
+                    else
+                    {
+                        int value = (int)(head - 0x10000);
                         w.WriteLine(id.ToString("X8") + ": " + value.ToString("X4") + " (" + value + ")");
                     }
                 }
@@ -861,6 +861,19 @@ public class AsusACPI
 
         return logFile;
 
+    }
+
+    private byte[] DeviceGetLarge(uint DeviceID, int extraIn = 8, int outSize = 40)
+    {
+        byte[] acpiBuf = new byte[8 + 4 + extraIn];
+        byte[] outBuffer = new byte[outSize];
+
+        BitConverter.GetBytes((uint)DSTS).CopyTo(acpiBuf, 0);
+        BitConverter.GetBytes((uint)(4 + extraIn)).CopyTo(acpiBuf, 4);
+        BitConverter.GetBytes((uint)DeviceID).CopyTo(acpiBuf, 8);
+
+        Control(CONTROL_CODE, acpiBuf, outBuffer);
+        return outBuffer;
     }
 
     public void TUFKeyboardBrightness(int brightness, string log = "TUF Backlight")

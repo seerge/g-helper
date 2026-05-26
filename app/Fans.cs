@@ -1,5 +1,6 @@
 using GHelper.Fan;
 using GHelper.Gpu.NVidia;
+using GHelper.Helpers;
 using GHelper.Mode;
 using GHelper.UI;
 using GHelper.USB;
@@ -69,10 +70,15 @@ namespace GHelper
 
             labelRisky.Text = Properties.Strings.UndervoltingRisky;
             buttonApplyAdvanced.Text = Properties.Strings.Apply;
-            buttonReadLimits.Text = "Read Limits";
             checkApplyUV.Text = Properties.Strings.AutoApply;
 
             buttonCalibrate.Text = Properties.Strings.Calibrate;
+
+            checkFanClamp.Text = Properties.Strings.ClampToGrid;
+            labelHysteresisUp.Text = Properties.Strings.HysteresisUp;
+            labelHysteresisDown.Text = Properties.Strings.HysteresisDown;
+            buttonReadLimits.Text = Properties.Strings.ReadLimits;
+            buttonDownload.Text = Properties.Strings.InstallPawnIODriver;
 
             InitTheme(true);
 
@@ -425,7 +431,7 @@ namespace GHelper
             labelUV.Text     = trackUV.Value.ToString();
             labelUViGPU.Text = trackUViGPU.Value.ToString();
 
-            labelTemp.Text = (trackTemp.Value < CpuInfo.DefaultTemp) ? trackTemp.Value.ToString() + "\u00b0C" : "Default";
+            labelTemp.Text = (trackTemp.Value < CpuInfo.DefaultTemp) ? TempHelper.FormatTemp(trackTemp.Value) : "Default";
         }
 
         private void AdvancedScroll()
@@ -656,7 +662,7 @@ namespace GHelper
             labelGPUMemory.Text = $"{trackGPUMemory.Value} MHz";
 
             labelGPUBoost.Text = $"{trackGPUBoost.Value}W";
-            labelGPUTemp.Text = $"{trackGPUTemp.Value}°C";
+            labelGPUTemp.Text = TempHelper.FormatTemp(trackGPUTemp.Value);
 
             if (trackGPUClockLimit.Value >= NvidiaGpuControl.MaxClockLimit)
                 labelGPUClockLimit.Text = "Default";
@@ -667,7 +673,7 @@ namespace GHelper
 
         }
 
-        private static readonly string[] HysteresisLabels = { "Very Low", "Low", "Medium", "High", "Very High" };
+        private static readonly string[] HysteresisLabels = { Properties.Strings.VeryLow, Properties.Strings.Low, Properties.Strings.Medium, Properties.Strings.High, Properties.Strings.VeryHigh };
 
         private void VisualiseHysteresis()
         {
@@ -769,13 +775,22 @@ namespace GHelper
 
             //chart.ChartAreas[0].AxisY.CustomLabels.Add(fansMax -2, fansMax + 2, Properties.Strings.RPM);
             chart.ChartAreas[0].AxisY.Interval = 10;
+
+            chart.ChartAreas[0].AxisX.CustomLabels.Clear();
+            for (int i = tempMin; i <= tempMax; i += 10)
+            {
+                string xLabel = TempHelper.IsFahrenheit
+                    ? Math.Round(TempHelper.CelsiusToFahrenheit(i)).ToString()
+                    : i.ToString();
+                chart.ChartAreas[0].AxisX.CustomLabels.Add(i - 4.5, i + 4.5, xLabel);
+            }
         }
 
         void SetChart(Chart chart, AsusFan device)
         {
 
             string title = "";
-            string scale = ", RPM/°C";
+            string scale = TempHelper.IsFahrenheit ? ", RPM/°F" : ", RPM/°C";
 
             switch (device)
             {
@@ -803,6 +818,8 @@ namespace GHelper
             chart.ChartAreas[0].AxisY.Maximum = fansMax;
 
             chart.ChartAreas[0].AxisY.LabelStyle.Font = _axisFont;
+            chart.ChartAreas[0].AxisX.LabelStyle.Font = _axisFont;
+            chart.ChartAreas[0].AxisX.LabelStyle.Angle = 0;
 
             chart.ChartAreas[0].AxisX.MajorGrid.LineColor = chartGrid;
             chart.ChartAreas[0].AxisY.MajorGrid.LineColor = chartGrid;
@@ -1374,7 +1391,7 @@ namespace GHelper
                         tip = true;
                     }
 
-                    labelTip.Text = Math.Floor(curPoint.XValue) + "C, " + ChartYLabel((int)curPoint.YValues[0], device, " " + Properties.Strings.RPM);
+                    labelTip.Text = TempHelper.FormatTemp(curPoint.XValue) + ", " + ChartYLabel((int)curPoint.YValues[0], device, " " + Properties.Strings.RPM);
                     labelTip.Top = e.Y + ((Control)sender).Top;
                     labelTip.Left = Math.Min(chart.Width - labelTip.Width - 20, e.X - 50);
 

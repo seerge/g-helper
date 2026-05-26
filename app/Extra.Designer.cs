@@ -44,26 +44,26 @@ namespace GHelper
             tableBindings = new TableLayoutPanel();
             labelFNE = new Label();
             comboFNE = new RComboBox();
-            textFNE = new TextBox();
+            textFNE = new RTextBox();
             labelFNV = new Label();
             comboFNV = new RComboBox();
-            textFNV = new TextBox();
+            textFNV = new RTextBox();
             labelFNC = new Label();
             comboFNC = new RComboBox();
-            textFNC = new TextBox();
+            textFNC = new RTextBox();
             labelFNF4 = new Label();
             comboFNF4 = new RComboBox();
-            textFNF4 = new TextBox();
+            textFNF4 = new RTextBox();
             comboM4 = new RComboBox();
-            textM4 = new TextBox();
+            textM4 = new RTextBox();
             labelM4 = new Label();
             comboM3 = new RComboBox();
-            textM3 = new TextBox();
+            textM3 = new RTextBox();
             labelM3 = new Label();
-            textM2 = new TextBox();
+            textM2 = new RTextBox();
             labelM2 = new Label();
             comboM2 = new RComboBox();
-            textM1 = new TextBox();
+            textM1 = new RTextBox();
             comboM1 = new RComboBox();
             labelM1 = new Label();
             tableKeys = new TableLayoutPanel();
@@ -135,10 +135,10 @@ namespace GHelper
             comboCoresP = new RComboBox();
             comboCoresE = new RComboBox();
             pictureCores = new PictureBox();
-            label1 = new Label();
+            labelCores = new Label();
             panelACPI = new Panel();
-            textACPIParam = new TextBox();
-            textACPICommand = new TextBox();
+            textACPIParam = new RTextBox();
+            textACPICommand = new RTextBox();
             buttonACPISend = new RButton();
             pictureDebug = new PictureBox();
             labelACPITitle = new Label();
@@ -1445,7 +1445,7 @@ namespace GHelper
             panelCores.Controls.Add(comboCoresP);
             panelCores.Controls.Add(comboCoresE);
             panelCores.Controls.Add(pictureCores);
-            panelCores.Controls.Add(label1);
+            panelCores.Controls.Add(labelCores);
             panelCores.Dock = DockStyle.Top;
             panelCores.Location = new Point(15, 1076);
             panelCores.Name = "panelCores";
@@ -1512,16 +1512,16 @@ namespace GHelper
             pictureCores.Size = new Size(32, 32);
             pictureCores.TabIndex = 1;
             pictureCores.TabStop = false;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            label1.Location = new Point(64, 14);
-            label1.Name = "label1";
-            label1.Size = new Size(299, 32);
-            label1.TabIndex = 0;
-            label1.Text = "CPU Cores Configuration";
+            //
+            // labelCores
+            //
+            labelCores.AutoSize = true;
+            labelCores.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            labelCores.Location = new Point(64, 14);
+            labelCores.Name = "labelCores";
+            labelCores.Size = new Size(299, 32);
+            labelCores.TabIndex = 0;
+            labelCores.Text = "CPU Cores Configuration";
             // 
             // panelACPI
             // 
@@ -1736,25 +1736,25 @@ namespace GHelper
         private TableLayoutPanel tableBindings;
         private Label labelFNC;
         private Label labelFNV;
-        private TextBox textM2;
-        private TextBox textM1;
+        private RTextBox textM2;
+        private RTextBox textM1;
         private RComboBox comboM1;
         private Label labelM1;
         private RComboBox comboM4;
         private RComboBox comboM3;
-        private TextBox textM4;
-        private TextBox textM3;
+        private RTextBox textM4;
+        private RTextBox textM3;
         private Label labelM4;
         private Label labelM3;
         private Label labelM2;
         private RComboBox comboM2;
         private Label labelFNF4;
         private RComboBox comboFNF4;
-        private TextBox textFNF4;
+        private RTextBox textFNF4;
         private RComboBox comboFNC;
         private RComboBox comboFNV;
-        private TextBox textFNC;
-        private TextBox textFNV;
+        private RTextBox textFNC;
+        private RTextBox textFNV;
         private PictureBox pictureHelp;
         private TableLayoutPanel tableKeys;
         private PictureBox pictureBindings;
@@ -1806,7 +1806,7 @@ namespace GHelper
         private CheckBox checkAutoToggleClamshellMode;
         private Label labelFNE;
         private RComboBox comboFNE;
-        private TextBox textFNE;
+        private RTextBox textFNE;
         private Slider slider1;
         private Panel panelPower;
         private PictureBox pictureHibernate;
@@ -1823,12 +1823,12 @@ namespace GHelper
         private Panel panelCores;
         private RComboBox comboCoresE;
         private PictureBox pictureCores;
-        private Label label1;
+        private Label labelCores;
         private RComboBox comboCoresP;
         private RButton buttonCores;
         private Panel panelACPI;
-        private TextBox textACPIParam;
-        private TextBox textACPICommand;
+        private RTextBox textACPIParam;
+        private RTextBox textACPICommand;
         private RButton buttonACPISend;
         private PictureBox pictureDebug;
         private Label labelACPITitle;

@@ -4,7 +4,6 @@ using GHelper.Input;
 using GHelper.Mode;
 using GHelper.USB;
 using HidSharp;
-using System.Text;
 
 
 
@@ -367,7 +366,7 @@ namespace GHelper.Ally
 
             if (autoTDP && fpsLimit > 0 && fpsLimit <= 120)
             {
-                int power = (int)amdControl.GetGpuPower();
+                int power = amdControl.GetiGpuPower();
                 //Debug.WriteLine($"{power}: {fps}");
 
                 if (fps <= Math.Min(fpsLimit * 0.9, fpsLimit - 4)) _upCount++;
@@ -642,7 +641,7 @@ namespace GHelper.Ally
 
         static void WakeUp()
         {
-            AsusHid.WriteInput(Encoding.ASCII.GetBytes("ZASUS Tech.Inc."), "Init");
+            AsusHid.InitInput();
         }
 
         static public void SetDeadzones()

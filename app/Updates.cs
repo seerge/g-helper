@@ -1,4 +1,5 @@
 ﻿using GHelper.UI;
+using GHelper.Helpers;
 using System.Diagnostics;
 using System.Management;
 using System.Net;
@@ -129,7 +130,6 @@ namespace GHelper
             {
                 _cts.Cancel();
                 _cts.Dispose();
-                // Dispose fonts when form closes
                 _boldUnderlineFont.Dispose();
                 _font.Dispose();
             };
@@ -142,7 +142,7 @@ namespace GHelper
 
         private void AlignLabelUpdates()
         {
-            int dateColumnLeft = panelBios.Padding.Left + (int)(0.63 * (tableBios.Width - 28)) + 10;
+            int dateColumnLeft = panelBios.Padding.Left + (int)(0.63 * (tableBios.Width - 44)) + 10;
             labelUpdates.Left = dateColumnLeft;
         }
 
