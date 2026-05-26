@@ -33,6 +33,13 @@ namespace GHelper.Gpu
             Logger.WriteLine("Eco flag : " + eco);
             Logger.WriteLine("Mux flag : " + mux);
 
+            if (eco == 1
+                && AppConfig.IsEcoBootFix()
+                && HardwareControl.GpuControl?.IsValid == true)
+            {
+                Program.acpi.DeviceSet(AsusACPI.GPUEco, eco, "GPUEco Force Fix");
+            }
+
             settings.VisualiseGPUButtons(eco >= 0, mux >= 0);
 
             if (mux == 0)

@@ -456,6 +456,11 @@ public static class AppConfig
         return ContainsModel("Strix") || ContainsModel("Scar") || ContainsModel("G703G");
     }
 
+    public static bool IsEcoBootFix()
+    {
+        return ContainsModel("G635L") || ContainsModel("G615L") || ContainsModel("G835L") || ContainsModel("G815L");
+    }
+
     public static bool IsBacklightZones()
     {
         return IsStrix() || IsZ13();
