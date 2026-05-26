@@ -1,3 +1,4 @@
+using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
 
 namespace GHelperOverlay;
@@ -20,6 +21,9 @@ public static class GpuSensors
 {
     // NvAPI status codes
     private const int NVAPI_OK = 0;
+    private const int NVAPI_GPU_NOT_POWERED = -220;
+
+    public enum State { Active, Sleeping, Off }
 
     // NvAPI enums we care about
     private const int NV_SYSTEM_TYPE_LAPTOP = 1;
@@ -114,9 +118,6 @@ public static class GpuSensors
         IntPtr[] handles = new IntPtr[64];
         if (enumGpus(handles, out uint count) != NVAPI_OK || count == 0) return;
 
-        // Pick the first laptop dGPU (matches g-helper's GetInternalDiscreteGpu).
-        // On desktops SystemType returns Desktop and we end up with _gpu == 0,
-        // which is fine — the overlay simply reports no GPU sensors.
         var getSystemType = Resolve<GetSystemType_t>(ID_GetSystemType);
         for (int i = 0; i < count; i++)
         {
@@ -149,22 +150,24 @@ public static class GpuSensors
     private static uint VersionOf<T>(int v) where T : struct =>
         (uint)(Marshal.SizeOf<T>() | (v << 16));
 
-    // Single gate. Any error code from GetCurrentPstate (including
-    // NVAPI_GPU_NOT_POWERED) counts as "not available" — we don't try to read
-    // sensors. The pstate query itself does not wake a sleeping GPU.
-    public static bool IsAvailable()
+    // Active = GPU is on and responding (sensors readable).
+    // Sleeping = GPU is in D3, handle is valid, will wake on demand (show 0W).
+    // Off = GPU is firmware-disabled or absent (show "--").
+    public static State GetState()
     {
-        if (_gpu == IntPtr.Zero || _getPstate is null) return false;
-        return _getPstate(_gpu, out _) == NVAPI_OK;
+        if (_getPstate is null || _gpu == IntPtr.Zero) return State.Off;
+        int rc = _getPstate(_gpu, out _);
+        if (rc == NVAPI_OK) return State.Active;
+        if (rc == NVAPI_GPU_NOT_POWERED) return State.Sleeping;
+        return State.Off;
     }
 
     public static int? GetTemperature()
     {
-        if (_gpu == IntPtr.Zero) return null;       // no NVIDIA dGPU on this machine
-        if (!IsAvailable()) return _lastTemp;       // GPU asleep — keep showing the cached value
+        var state = GetState();
+        if (state == State.Off) return null;
+        if (state == State.Sleeping) return _lastTemp;
 
-        // Async refresh so a slow NvAPI call never stalls the overlay timer;
-        // fall back to the previous reading while the new one is in flight.
         if (_tempTask?.IsCompleted ?? true)
         {
             _tempTask = Task.Run(() =>
@@ -199,15 +202,18 @@ public static class GpuSensors
 
     public static float? GetPower()
     {
-        if (_gpu == IntPtr.Zero) return null;       // no NVIDIA dGPU on this machine
-        if (!IsAvailable()) return 0f;              // GPU asleep — report 0 W rather than blanking
+        var state = GetState();
+        if (state == State.Off) { Nvml.Shutdown(); return null; }
+        if (state == State.Sleeping) return 0f;
         return Nvml.GetPower() ?? 0f;
     }
 
     public static int? GetUsage()
     {
-        if (_gpu == IntPtr.Zero || _getDynPstates is null) return null;
-        if (!IsAvailable()) return 0;                // GPU asleep — 0 % matches "no work in flight"
+        if (_getDynPstates is null) return null;
+        var state = GetState();
+        if (state == State.Off) return null;
+        if (state == State.Sleeping) return 0;
         try
         {
             var info = new NV_GPU_DYNAMIC_PSTATES_INFO_EX
@@ -241,7 +247,6 @@ internal static class Nvml
 
     private static readonly object _lock = new();
     private static bool _init;
-    private static IntPtr _device;
 
     private static bool Init()
     {
@@ -249,7 +254,6 @@ internal static class Nvml
         try
         {
             if (nvmlInit_v2() != NVML_SUCCESS) return false;
-            if (nvmlDeviceGetHandleByIndex_v2(0, out _device) != NVML_SUCCESS) return false;
             _init = true;
             Logger.WriteLine("NVML initialised");
             return true;
@@ -264,11 +268,14 @@ internal static class Nvml
             if (!_init) return;
             try { nvmlShutdown(); } catch { }
             _init = false;
-            _device = IntPtr.Zero;
             Logger.WriteLine("NVML shutdown");
         }
     }
 
+    // Re-acquire device handle on every call. Caching it leaves a dangling
+    // pointer after a firmware GPU toggle and faults inside nvmlDeviceGetPowerUsage.
+    // Matches g-helper's NvmlHelper pattern, which isn't affected by toggles.
+    [HandleProcessCorruptedStateExceptions, System.Security.SecurityCritical]
     public static float? GetPower()
     {
         lock (_lock)
@@ -276,12 +283,18 @@ internal static class Nvml
             if (!Init()) return null;
             try
             {
-                if (nvmlDeviceGetPowerUsage(_device, out uint mW) != NVML_SUCCESS) return null;
-                // Mirror g-helper: occasional garbage values when the GPU is parking.
+                if (nvmlDeviceGetHandleByIndex_v2(0, out IntPtr device) != NVML_SUCCESS) return null;
+                if (nvmlDeviceGetPowerUsage(device, out uint mW) != NVML_SUCCESS) return null;
                 if (mW > 200_000) return null;
                 return mW / 1000f;
             }
-            catch { return null; }
+            catch (Exception ex)
+            {
+                Logger.WriteLine("NVML GetPower exception: " + ex.GetType().Name);
+                try { nvmlShutdown(); } catch { }
+                _init = false;
+                return null;
+            }
         }
     }
 }
