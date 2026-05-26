@@ -50,12 +50,19 @@ namespace GHelper.Mode
 
         public ModeControl()
         {
-            int reapplyTime = AppConfig.Get("reapply_time", AppConfig.IsReapplyTempRequired() ? 30 : 0);
+            int reapplyTime = AppConfig.Get("reapply_time", IsReapplyTempRequired() ? 30 : 0);
             if (reapplyTime > 0)
             {
                 reapplyTimer = new System.Timers.Timer(reapplyTime * 1000);
                 reapplyTimer.Elapsed += ReapplyTimer_Elapsed;
             }
+        }
+
+        // Cezanne/Rembrandt (Renoir) + Phoenix/HawkPoint (Mobile) silently reset temp limit under load.
+        private static bool IsReapplyTempRequired()
+        {
+            var smu = GetSmu();
+            return smu != null && smu.Family is CpuFamily.Renoir or CpuFamily.Mobile;
         }
 
         private static void SetReapplyEnabled(bool enabled)
@@ -401,7 +408,7 @@ namespace GHelper.Mode
                 if (HardwareControl.GpuControl is null) { Logger.WriteLine("Clocks: NoGPUControl"); return; }
                 if (!HardwareControl.GpuControl!.IsNvidia) { Logger.WriteLine("Clocks: NotNvidia"); return; }
 
-                using NvidiaGpuControl nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
+                NvidiaGpuControl nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
                 try
                 {
                     int statusClocks = nvControl.SetClocks(core, memory);

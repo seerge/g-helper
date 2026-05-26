@@ -456,6 +456,11 @@ public static class AppConfig
         return ContainsModel("Strix") || ContainsModel("Scar") || ContainsModel("G703G");
     }
 
+    public static bool IsEcoBootFix()
+    {
+        return ContainsModel("G635L") || ContainsModel("G615L") || ContainsModel("G835L") || ContainsModel("G815L");
+    }
+
     public static bool IsBacklightZones()
     {
         return IsStrix() || IsZ13();
@@ -567,11 +572,6 @@ public static class AppConfig
         return ContainsModel("GA403UI") || ContainsModel("GA403UU") || ContainsModel("GA403UV") || ContainsModel("FA507XV");
     }
 
-    public static bool IsReapplyTempRequired()
-    {
-        return ContainsModel("GA402") || ContainsModel("GV601");
-    }
-
     public static bool IsReapplyRyzen()
     {
         return ContainsModel("G614F") || ContainsModel("G814F") || ContainsModel("G733P");
@@ -599,7 +599,7 @@ public static class AppConfig
 
     public static bool IsStandardModeFix()
     {
-        return Is("shutdown_gpu") || ContainsModel("FX506HCB");
+        return Is("shutdown_gpu") || ((ContainsModel("FX506HCB") || ContainsModel("FA808U")) && IsNotFalse("shutdown_gpu"));
     }
 
     public static bool IsShutdownReset()
@@ -707,7 +707,7 @@ public static class AppConfig
 
     public static bool IsSleepReset()
     {
-        return ContainsModel("GU605MI") || ContainsModel("GU605MV");
+        return Is("sleep_reset") || ContainsModel("GU605MI") || ContainsModel("GU605MV");
     }
 
     public static bool SaveDimming()
