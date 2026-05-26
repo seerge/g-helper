@@ -208,6 +208,10 @@ namespace GHelper.Gpu
                         }
 
                         HardwareControl.RecreateGpuControl();
+                        if (HardwareControl.GpuControl?.IsValid != true)
+                        {
+                            Program.acpi.DeviceSet(AsusACPI.GPUEco, eco, "Trying to enable GPU again");
+                        }
                         Program.modeControl.SetGPUClocks(false);
                     }
 
