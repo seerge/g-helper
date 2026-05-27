@@ -7,11 +7,13 @@ namespace GHelper.Helpers
 {
     internal class ClamshellModeControl
     {
+        private readonly System.Timers.Timer lidSettleTimer = new() { AutoReset = false };
 
         public ClamshellModeControl()
         {
             //Save current setting if hibernate or shutdown to prevent reverting the user set option.
             CheckAndSaveLidAction();
+            lidSettleTimer.Elapsed += OnLidSettled;
         }
 
 
@@ -46,6 +48,19 @@ namespace GHelper.Helpers
                 DisableClamshellMode();
             }
         }
+
+        public void ScheduleLidToggle()
+        {
+            if (!IsClamshellEnabled()) return;
+            lidSettleTimer.Interval = Math.Max(AppConfig.Get("clamshell_delay"), 2000);
+            lidSettleTimer.Stop();
+            lidSettleTimer.Start();
+        }
+
+        private void OnLidSettled(object? sender, System.Timers.ElapsedEventArgs e)
+        {
+            ToggleLidAction();
+        }
         public static void DisableClamshellMode()
         {
             if (PowerNative.GetLidAction(true) == GetDefaultLidAction()) return;
@@ -75,7 +90,7 @@ namespace GHelper.Helpers
             Logger.WriteLine("Display configuration changed.");
 
             if (IsClamshellEnabled())
-                ToggleLidAction();
+                ScheduleLidToggle();
 
             if (AppConfig.Is("screen_force"))
                 ScreenControl.AutoScreen();
