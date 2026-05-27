@@ -335,7 +335,7 @@ namespace GHelper
             if (!switched)
             {
                 gpuControl.InitGPUMode();
-                ScreenControl.AutoScreen();
+                Task.Delay(AppConfig.Get("refresh_delay", 500)).ContinueWith(_ => ScreenControl.AutoScreen());
             }
 
             ScreenControl.InitMiniled();
