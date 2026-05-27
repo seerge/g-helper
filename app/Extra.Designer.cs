@@ -136,7 +136,7 @@ namespace GHelper
             comboCoresP = new RComboBox();
             comboCoresE = new RComboBox();
             pictureCores = new PictureBox();
-            label1 = new Label();
+            labelCores = new Label();
             panelACPI = new Panel();
             textACPIParam = new RTextBox();
             textACPICommand = new RTextBox();
@@ -1460,7 +1460,7 @@ namespace GHelper
             panelCores.Controls.Add(comboCoresP);
             panelCores.Controls.Add(comboCoresE);
             panelCores.Controls.Add(pictureCores);
-            panelCores.Controls.Add(label1);
+            panelCores.Controls.Add(labelCores);
             panelCores.Dock = DockStyle.Top;
             panelCores.Location = new Point(15, 1076);
             panelCores.Name = "panelCores";
@@ -1527,16 +1527,16 @@ namespace GHelper
             pictureCores.Size = new Size(32, 32);
             pictureCores.TabIndex = 1;
             pictureCores.TabStop = false;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            label1.Location = new Point(64, 14);
-            label1.Name = "label1";
-            label1.Size = new Size(299, 32);
-            label1.TabIndex = 0;
-            label1.Text = "CPU Cores Configuration";
+            //
+            // labelCores
+            //
+            labelCores.AutoSize = true;
+            labelCores.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            labelCores.Location = new Point(64, 14);
+            labelCores.Name = "labelCores";
+            labelCores.Size = new Size(299, 32);
+            labelCores.TabIndex = 0;
+            labelCores.Text = "CPU Cores Configuration";
             // 
             // panelACPI
             // 
@@ -1839,7 +1839,7 @@ namespace GHelper
         private Panel panelCores;
         private RComboBox comboCoresE;
         private PictureBox pictureCores;
-        private Label label1;
+        private Label labelCores;
         private RComboBox comboCoresP;
         private RButton buttonCores;
         private Panel panelACPI;

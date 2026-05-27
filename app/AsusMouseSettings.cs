@@ -63,6 +63,10 @@ namespace GHelper
             buttonExport.Text = Properties.Strings.Export;
             buttonImport.Text = Properties.Strings.Import;
 
+            labelAnimationSpeed.Text = Properties.Strings.AnimationSpeed;
+            labelAnimationDirection.Text = Properties.Strings.AnimationDirection;
+            labelBindingsTitle.Text = Properties.Strings.KeyBindings;
+
             InitTheme(true);
 
             this.Text = mouse.GetDisplayName();
@@ -924,7 +928,7 @@ namespace GHelper
             int btnY = startY + row * rowHeight + (int)(8 * s);
             var btnReset = new UI.RButton
             {
-                Text = "Reset Bindings",
+                Text = Properties.Strings.Reset,
                 Location = new Point((int)(14 * s), btnY),
                 Size = new Size((int)(466 * s), (int)(50 * s)),
                 FlatStyle = FlatStyle.Flat,

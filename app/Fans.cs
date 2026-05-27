@@ -70,10 +70,15 @@ namespace GHelper
 
             labelRisky.Text = Properties.Strings.UndervoltingRisky;
             buttonApplyAdvanced.Text = Properties.Strings.Apply;
-            buttonReadLimits.Text = "Read Limits";
             checkApplyUV.Text = Properties.Strings.AutoApply;
 
             buttonCalibrate.Text = Properties.Strings.Calibrate;
+
+            checkFanClamp.Text = Properties.Strings.ClampToGrid;
+            labelHysteresisUp.Text = Properties.Strings.HysteresisUp;
+            labelHysteresisDown.Text = Properties.Strings.HysteresisDown;
+            buttonReadLimits.Text = Properties.Strings.ReadLimits;
+            buttonDownload.Text = Properties.Strings.InstallPawnIODriver;
 
             InitTheme(true);
 
@@ -668,7 +673,7 @@ namespace GHelper
 
         }
 
-        private static readonly string[] HysteresisLabels = { "Very Low", "Low", "Medium", "High", "Very High" };
+        private static readonly string[] HysteresisLabels = { Properties.Strings.VeryLow, Properties.Strings.Low, Properties.Strings.Medium, Properties.Strings.High, Properties.Strings.VeryHigh };
 
         private void VisualiseHysteresis()
         {

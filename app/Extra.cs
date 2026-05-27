@@ -131,7 +131,9 @@ namespace GHelper
             checkSleep.Text = Properties.Strings.Sleep;
             checkBoot.Text = Properties.Strings.Boot;
             checkShutdown.Text = Properties.Strings.Shutdown;
+            checkBattery.Text = checkBatteryLogo.Text = checkBatteryBar.Text = checkBatteryLid.Text = Properties.Strings.Battery;
             checkBootSound.Text = Properties.Strings.BootSound;
+            checkKeystoneSound.Text = Properties.Strings.KeystoneSound;
             checkStatusLed.Text = Properties.Strings.LEDStatusIndicators;
 
             labelSpeed.Text = Properties.Strings.AnimationSpeed;
@@ -157,6 +159,12 @@ namespace GHelper
             labelHibernateAfter.Text = Properties.Strings.HibernateAfter;
 
             labelAPUMem.Text = Properties.Strings.APUMemory;
+            labelCores.Text = Properties.Strings.CPUCoresConfiguration;
+
+            labelOptimalBrightness.Text = Properties.Strings.OptimalDisplayBrightness;
+            comboOptimalBrightness.Items[0] = Properties.Strings.Off;
+            comboOptimalBrightness.Items[1] = Properties.Strings.OnAlways;
+            comboOptimalBrightness.Items[2] = Properties.Strings.OnBattery;
 
             Text = Properties.Strings.ExtraSettings;
 
@@ -509,16 +517,15 @@ namespace GHelper
 
         private void InitACPITesting()
         {
+            pictureScan.Visible = true;
+            pictureScan.Click += PictureScan_Click;
+
             if (!AppConfig.Is("debug")) return;
 
-            pictureScan.Visible = true;
             panelACPI.Visible = true;
-
             textACPICommand.Text = "110034";
             textACPIParam.Text = "0x0303";
-
             buttonACPISend.Click += ButtonACPISend_Click;
-            pictureScan.Click += PictureScan_Click;
         }
 
         private void ButtonACPISend_Click(object? sender, EventArgs e)

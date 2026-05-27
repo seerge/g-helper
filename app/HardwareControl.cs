@@ -754,9 +754,25 @@ public static class HardwareControl
 
     public static void DisposeGpuControl()
     {
+        bool wasNvidia = GpuControl is NvidiaGpuControl;
         GpuControl?.Dispose();
         GpuControl = null;
-        NvmlHelper.Shutdown();
+        if (wasNvidia)
+        {
+            NvmlHelper.Shutdown();
+            UnloadNvAPI();
+        }
+    }
+
+    public static void UnloadNvAPI()
+    {
+        int count = 0;
+        for (int i = 0; i < 32; i++)
+        {
+            try { NvAPIWrapper.Native.GeneralApi.Unload(); count++; }
+            catch { break; }
+        }
+        if (count > 0) Logger.WriteLine($"NvAPI Unload: {count}");
     }
 
     public static void RecreateGpuControlWithDelay(int delay = 5)
