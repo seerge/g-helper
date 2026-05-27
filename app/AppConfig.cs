@@ -458,7 +458,7 @@ public static class AppConfig
 
     public static bool IsEcoBootFix()
     {
-        return ContainsModel("G635L") || ContainsModel("G615L") || ContainsModel("G835L") || ContainsModel("G815L");
+        return ContainsModel("G635L") || ContainsModel("G615L") || ContainsModel("G835L") || ContainsModel("G815L") || ContainsModel("FA506");
     }
 
     public static bool IsBacklightZones()
