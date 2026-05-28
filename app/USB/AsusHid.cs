@@ -17,6 +17,7 @@ public static class AsusHid
     static HidStream? auraStream;
     static int auraFeatLen;
     static byte[]? auraScratch;
+    static string? auraResponderPath;
 
     static void EnsureAuraStream()
     {
@@ -105,6 +106,16 @@ public static class AsusHid
 
             foreach (var device in devices)
                 Logger.WriteLine($"Input available: {device.DevicePath} {device.ProductID.ToString("X")} {device.GetMaxFeatureReportLength()}");
+
+            if (reportId == AURA_ID && auraResponderPath is not null)
+            {
+                var responder = devices.FirstOrDefault(device => device.DevicePath == auraResponderPath);
+                if (responder is not null)
+                {
+                    Logger.WriteLine($"Aura responder: {responder.DevicePath}");
+                    return responder.Open();
+                }
+            }
 
             return devices.FirstOrDefault()?.Open();
         }
@@ -274,6 +285,8 @@ public static class AsusHid
 
             for (int i = 0; i < 4; i++)
                 if (response[i] != queryBytes[i]) return null;
+
+            auraResponderPath = device.DevicePath;
 
             Logger.WriteLine($"{log}: {BitConverter.ToString(response)}");
             return response;
