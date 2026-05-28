@@ -265,7 +265,7 @@
     <value>關閉</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>閒置幾秒後關閉燈光：插電時 / 使用電池 (0 = 不關閉)</value>
+    <value>鍵盤背光關閉時間：插電 / 使用電池</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>閒置時關閉燈光(電池模式)</value>
@@ -477,7 +477,7 @@
     <value>GPU溫度上限</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>使用電池下何時進入休眠(0=關閉此功能)</value>
+    <value>使用電池時進入休眠的時間</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>高</value>

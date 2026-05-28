@@ -265,7 +265,7 @@
     <value>オフ</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>バッテリー / 接続時間 (0 - ON)</value>
+    <value>バックライトのタイムアウト 接続時 / バッテリー</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>バッテリー時のバックライトタイムアウト</value>
@@ -477,7 +477,7 @@
     <value>温度ターゲット</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>スリープ時にバッテリーを停止するまでの時間 (0 - OFF)</value>
+    <value>スリープ時にバッテリーで休止状態になるまでの時間</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>High</value>
