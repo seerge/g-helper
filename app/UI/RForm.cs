@@ -49,12 +49,12 @@ namespace GHelper.UI
         {
             if (darkTheme)
             {
-                buttonMain = Color.FromArgb(255, 50, 50, 50);
+                buttonMain = Color.FromArgb(255, 46, 46, 46);
                 buttonSecond = Color.FromArgb(255, 36, 36, 36);
 
                 formBack = Color.FromArgb(255, 28, 28, 28);
                 foreMain = Color.FromArgb(255, 240, 240, 240);
-                borderMain = Color.FromArgb(255, 50, 50, 50);
+                borderMain = Color.FromArgb(255, 70, 70, 70);
 
                 chartMain = Color.FromArgb(255, 35, 35, 35);
                 chartGrid = Color.FromArgb(255, 70, 70, 70);

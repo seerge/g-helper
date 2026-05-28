@@ -87,6 +87,9 @@ namespace GHelper.UI
             Rectangle rectBorder = Rectangle.Inflate(rectSurface, -border, -border);
 
             Color borderDrawColor = activated ? borderColor : Color.Transparent;
+            Color restBorderColor = (!activated && FlatAppearance.BorderColor.A > 0)
+                ? FlatAppearance.BorderColor
+                : Color.Transparent;
 
             using (GraphicsPath pathSurface = GetFigurePath(rectSurface, radius + border))
             using (GraphicsPath pathBorder = GetFigurePath(rectBorder, radius))
@@ -98,6 +101,44 @@ namespace GHelper.UI
                 Region = new Region(pathSurface);
                 pevent.Graphics.DrawPath(penSurface, pathSurface);
                 pevent.Graphics.DrawPath(penBorder, pathBorder);
+
+                if (restBorderColor.A > 0)
+                {
+                    float halfF = border / 2f;
+                    float edgeRadius = radius + halfF;
+                    float edgeCurve = edgeRadius * 2f;
+                    float ex = rectSurface.X + halfF;
+                    float ey = rectSurface.Y + halfF;
+                    float ew = rectSurface.Width - border;
+                    float eh = rectSurface.Height - border;
+
+                    Color halfAlpha = Color.FromArgb(restBorderColor.A / 2, restBorderColor);
+
+                    using (GraphicsPath pathRest = new GraphicsPath())
+                    using (Pen penHalf = new Pen(halfAlpha, 1f))
+                    using (Pen penTop = new Pen(restBorderColor, 1f))
+                    {
+                        pathRest.AddLine(ex + ew, ey + edgeRadius, ex + ew, ey + eh - edgeRadius);
+                        pathRest.AddArc(ex + ew - edgeCurve, ey + eh - edgeCurve, edgeCurve, edgeCurve, 0, 90);
+                        pathRest.AddArc(ex, ey + eh - edgeCurve, edgeCurve, edgeCurve, 90, 90);
+                        pathRest.AddLine(ex, ey + eh - edgeRadius, ex, ey + edgeRadius);
+
+                        pevent.Graphics.DrawPath(penHalf, pathRest);
+                        pevent.Graphics.DrawLine(penTop, ex + edgeRadius, ey, ex + ew - edgeRadius, ey);
+                    }
+
+                    using (LinearGradientBrush brushTL = new LinearGradientBrush(
+                        new PointF(ex + edgeRadius, ey), new PointF(ex, ey + edgeRadius),
+                        restBorderColor, halfAlpha))
+                    using (Pen penTL = new Pen(brushTL, 1f))
+                        pevent.Graphics.DrawArc(penTL, ex, ey, edgeCurve, edgeCurve, 180, 90);
+
+                    using (LinearGradientBrush brushTR = new LinearGradientBrush(
+                        new PointF(ex + ew - edgeRadius, ey), new PointF(ex + ew, ey + edgeRadius),
+                        restBorderColor, halfAlpha))
+                    using (Pen penTR = new Pen(brushTR, 1f))
+                        pevent.Graphics.DrawArc(penTR, ex + ew - edgeCurve, ey, edgeCurve, edgeCurve, 270, 90);
+                }
             }
 
             if (!Enabled && ForeColor != SystemColors.ControlText)
