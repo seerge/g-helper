@@ -51,7 +51,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: GHelper-unsigned
-        path: app/bin/x64/Release/net8.0-windows/win-x64/publish/GHelper.exe
+        path: app/bin/Release/net8.0-windows/win-x64/publish/GHelper.exe
 
     - id: sign-main
       uses: signpath/github-action-submit-signing-request@v1.1
@@ -67,13 +67,23 @@ jobs:
     - name: Create ZIP from signed main
       run: powershell Compress-Archive ./signed/GHelper.exe ./signed/GHelper.zip
 
+    - name: Upload signed artifacts (downloadable from workflow run)
+      uses: actions/upload-artifact@v4
+      with:
+        name: GHelper-signed
+        path: |
+          ./signed/GHelper.exe
+          ./signed/GHelper.zip
+
     - name: Upload signed main + ZIP to release
+      if: github.event_name == 'release'
       env:
         GH_TOKEN: ${{ github.token }}
       run: |
         gh release upload "${{ github.event.release.tag_name }}" ./signed/GHelper.exe ./signed/GHelper.zip --clobber
 
     - name: Generate SLSA build provenance attestation
+      if: github.event_name == 'release'
       uses: actions/attest-build-provenance@v2
       with:
         subject-path: |
