@@ -265,7 +265,7 @@
     <value>背光关闭</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>插电/电池时熄灭时间（0表示长亮）</value>
+    <value>背光熄灭时间：插电 / 电池</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>充电模式下的背光超时</value>
@@ -477,7 +477,7 @@
     <value>温度目标</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>在使用电池时几分钟后进入休眠状态 (0 - 关闭)</value>
+    <value>使用电池时进入休眠的时间</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>高</value>
