@@ -157,6 +157,9 @@ namespace GHelper
             checkAspm.Text = Properties.Strings.DisablePCIeASPM;
             checkNVPlatform.Text = Properties.Strings.StopStartNVServices;
             labelHibernateAfter.Text = Properties.Strings.HibernateAfter;
+            numericHibernateAfter.OffText = Properties.Strings.Off;
+            numericBacklightTime.OffText = Properties.Strings.Off;
+            numericBacklightPluggedTime.OffText = Properties.Strings.Off;
 
             labelAPUMem.Text = Properties.Strings.APUMemory;
             labelCores.Text = Properties.Strings.CPUCoresConfiguration;

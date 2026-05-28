@@ -265,7 +265,7 @@
     <value>إيقاف</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>مهلة الإضاءة عند التوصيل/على البطارية (0 - تشغيل)</value>
+    <value>مهلة الإضاءة الخلفية عند التوصيل / على البطارية</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>مهلة إضاءة الخلفية عند استخدام البطارية</value>
@@ -477,7 +477,7 @@
     <value>هدف درجة الحرارة</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>دقائق حتى السبات أثناء النوم على البطارية (0 - إيقاف)</value>
+    <value>زمن الانتقال إلى السبات أثناء النوم على البطارية</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>مرتفع</value>
