@@ -765,14 +765,14 @@ namespace GHelper.USB
                 Thread.Sleep(50);
             }
 
-            byte[] buffer = new byte[12];
+            byte[] buffer = new byte[9];
             buffer[0] = AsusHid.AURA_ID;
-            buffer[1] = 0xbc;
-            buffer[2] = 1;
-            buffer[3] = 1;
-            buffer[9] = color.R;
-            buffer[10] = color.G;
-            buffer[11] = color.B;
+            buffer[1] = 0xbd;
+            buffer[2] = 0x01;
+            buffer[3] = color.R;
+            buffer[4] = color.G;
+            buffer[5] = color.B;
+            buffer[8] = 0xff;
 
             AsusHid.SetFeatureAura(buffer);
 
