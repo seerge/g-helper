@@ -265,7 +265,7 @@
     <value>Slukket</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Timeout tilsluttet / på batteri (0 - TIL)</value>
+    <value>Baggrundslys timeout tilsluttet / på batteri</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Baggrundslys timeout på batteri</value>
@@ -477,7 +477,7 @@ Vil du stadig fortsætte?</value>
     <value>Temperaturmål</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Minutter til dvale i standby på batteriet (0 - OFF)</value>
+    <value>Tid til dvale i standby på batteriet</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>Høj</value>
