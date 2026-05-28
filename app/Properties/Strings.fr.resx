@@ -265,7 +265,7 @@
     <value>Désactivé</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Délai branché / sur batterie (0 - ON)</value>
+    <value>Délai d'extinction du rétroéclairage branché / sur batterie</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Délai de rétro-éclairage sur batterie</value>
@@ -477,7 +477,7 @@ Voulez-vous continuer ?</value>
     <value>Température cible</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Minutes avant mise en veille prolongée sur batterie (0 - OFF)</value>
+    <value>Délai avant mise en veille prolongée sur batterie</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>Élevé</value>
