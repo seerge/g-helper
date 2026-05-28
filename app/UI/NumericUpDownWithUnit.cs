@@ -8,6 +8,7 @@ public class NumericUpDownWithUnit : RNumericUpDown
 
     private string unit = null;
     private bool unitFirst = false;
+    private string offText = null;
 
     #endregion
 
@@ -35,6 +36,17 @@ public class NumericUpDownWithUnit : RNumericUpDown
         }
     }
 
+    public string OffText
+    {
+        get => offText;
+        set
+        {
+            offText = value;
+
+            UpdateEditText();
+        }
+    }
+
     #endregion
 
     #region| Methods |
@@ -50,8 +62,11 @@ public class NumericUpDownWithUnit : RNumericUpDown
     /// </summary>
     protected override void UpdateEditText()
     {
-        // If there is a unit we handle it ourselfs, if there is not we leave it to the base class.
-        if (Unit != null && Unit != string.Empty)
+        if (Value == 0 && !string.IsNullOrEmpty(OffText))
+        {
+            Text = OffText;
+        }
+        else if (Unit != null && Unit != string.Empty)
         {
             if (UnitFirst)
             {

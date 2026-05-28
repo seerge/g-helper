@@ -265,7 +265,7 @@
     <value>Spento</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Timeout in carica / a batteria (0 - ACCESO)</value>
+    <value>Timeout retroilluminazione in carica / a batteria</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Timeout retroilluminazione quando in batteria</value>
@@ -477,7 +477,7 @@ Sei sicuro di voler continuare?</value>
     <value>Temperatura Target</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Iberna dopo X minuti se alimentato a batteria (0 - ACCESO)</value>
+    <value>Tempo prima dell'ibernazione in sospensione (batteria)</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>Elevato</value>

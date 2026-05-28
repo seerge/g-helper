@@ -156,6 +156,9 @@ namespace GHelper
             checkAspm.Text = Properties.Strings.DisablePCIeASPM;
             checkNVPlatform.Text = Properties.Strings.StopStartNVServices;
             labelHibernateAfter.Text = Properties.Strings.HibernateAfter;
+            numericHibernateAfter.OffText = Properties.Strings.Off;
+            numericBacklightTime.OffText = Properties.Strings.Off;
+            numericBacklightPluggedTime.OffText = Properties.Strings.Off;
 
             labelAPUMem.Text = Properties.Strings.APUMemory;
             labelCores.Text = Properties.Strings.CPUCoresConfiguration;
@@ -510,16 +513,15 @@ namespace GHelper
 
         private void InitACPITesting()
         {
+            pictureScan.Visible = true;
+            pictureScan.Click += PictureScan_Click;
+
             if (!AppConfig.Is("debug")) return;
 
-            pictureScan.Visible = true;
             panelACPI.Visible = true;
-
             textACPICommand.Text = "110034";
             textACPIParam.Text = "0x0303";
-
             buttonACPISend.Click += ButtonACPISend_Click;
-            pictureScan.Click += PictureScan_Click;
         }
 
         private void ButtonACPISend_Click(object? sender, EventArgs e)
