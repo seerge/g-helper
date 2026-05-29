@@ -194,6 +194,7 @@ public static class ControlHelper
 
     public static void DrawGradientBorder(Graphics g, Rectangle bounds, Color sideColor, int radius, float strokeWidth = 1f, PenAlignment alignment = PenAlignment.Center, float topLighten = 0.1f)
     {
+        if (!_darkMode && strokeWidth <= 1f) topLighten *= 2;
         Color topColor = Color.FromArgb(sideColor.A,
             (int)(sideColor.R + (255 - sideColor.R) * topLighten),
             (int)(sideColor.G + (255 - sideColor.G) * topLighten),
