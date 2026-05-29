@@ -270,6 +270,8 @@ namespace GHelper
                     bool changed = settingsForm.InitTheme();
                     settingsForm.InitContextMenuTheme();
                     settingsForm.VisualiseIcon();
+                    settingsForm.VisualiseFnLock();
+                    settingsForm.VisualiseBatteryFull();
 
                     if (changed)
                     {

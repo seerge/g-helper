@@ -5,6 +5,13 @@ namespace GHelper.UI
     public class RButton : Button
     {
 
+        // Design tokens
+        private const float HoverShiftAmount = 0.06f;
+        private const float ActiveTopLighten = 0.25f;
+        private const float RestTopLighten = 0.1f;
+        private const int ActiveBgTopAlpha = 48;
+        private const float ActiveBgEndFraction = 0.30f;
+
         //Fields
         private int borderSize = 5;
 
@@ -67,11 +74,10 @@ namespace GHelper.UI
         {
             int lum = (BackColor.R * 30 + BackColor.G * 59 + BackColor.B * 11) / 100;
             Color target = lum > 128 ? Color.Black : Color.White;
-            const float amount = 0.06f;
             FlatAppearance.MouseOverBackColor = Color.FromArgb(BackColor.A,
-                (int)(BackColor.R + (target.R - BackColor.R) * amount),
-                (int)(BackColor.G + (target.G - BackColor.G) * amount),
-                (int)(BackColor.B + (target.B - BackColor.B) * amount));
+                (int)(BackColor.R + (target.R - BackColor.R) * HoverShiftAmount),
+                (int)(BackColor.G + (target.G - BackColor.G) * HoverShiftAmount),
+                (int)(BackColor.B + (target.B - BackColor.B) * HoverShiftAmount));
         }
 
         private GraphicsPath GetFigurePath(Rectangle rect, int radius)
@@ -100,10 +106,6 @@ namespace GHelper.UI
 
             Rectangle rectSurface = ClientRectangle;
 
-            Color restBorderColor = (!activated && FlatAppearance.BorderColor.A > 0)
-                ? FlatAppearance.BorderColor
-                : Color.Transparent;
-
             using (GraphicsPath pathSurface = GetFigurePath(rectSurface, radius + border))
             using (Pen penSurface = new Pen(Parent.BackColor, border))
             {
@@ -112,15 +114,15 @@ namespace GHelper.UI
                 pevent.Graphics.DrawPath(penSurface, pathSurface);
 
                 bool drawActive = !Borderless && activated && borderColor.A > 0;
-                bool drawRest = !Borderless && !activated && restBorderColor.A > 0;
+                bool drawRest = !Borderless && !activated && FlatAppearance.BorderColor.A > 0;
 
                 if (drawActive)
                 {
                     Rectangle borderRect = new Rectangle(border, border, rectSurface.Width - 2 * border, rectSurface.Height - 2 * border);
 
-                    Color bgTop = Color.FromArgb(48, borderColor);
+                    Color bgTop = Color.FromArgb(ActiveBgTopAlpha, borderColor);
                     Color bgTransparent = Color.FromArgb(0, borderColor);
-                    float bgEndPos = 0.30f;
+                    float bgEndPos = ActiveBgEndFraction;
 
                     using (GraphicsPath bgPath = GetFigurePath(borderRect, radius))
                     using (LinearGradientBrush bgBrush = new LinearGradientBrush(
@@ -135,13 +137,13 @@ namespace GHelper.UI
                         pevent.Graphics.FillPath(bgBrush, bgPath);
                     }
 
-                    ControlHelper.DrawGradientBorder(pevent.Graphics, borderRect, borderColor, radius, border, PenAlignment.Outset, 0.25f);
+                    ControlHelper.DrawGradientBorder(pevent.Graphics, borderRect, borderColor, radius, border, PenAlignment.Outset, ActiveTopLighten);
                 }
                 else if (drawRest)
                 {
                     int halfBorder = border / 2;
                     Rectangle borderRect = new Rectangle(halfBorder, halfBorder, rectSurface.Width - 2 * halfBorder, rectSurface.Height - 2 * halfBorder);
-                    ControlHelper.DrawGradientBorder(pevent.Graphics, borderRect, restBorderColor, radius + border - halfBorder, 1f, PenAlignment.Inset, 0.1f);
+                    ControlHelper.DrawGradientBorder(pevent.Graphics, borderRect, FlatAppearance.BorderColor, radius + border - halfBorder, 1f, PenAlignment.Inset, RestTopLighten);
                 }
             }
 

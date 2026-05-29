@@ -192,16 +192,21 @@ public static class ControlHelper
         return pic;
     }
 
+    // Design tokens
+    private const float GradientHeightFraction = 0.3f;
+    private const float LightThemeLightenBoost = 2f;
+    private const float ThinStrokeThreshold = 1f;
+
     public static void DrawGradientBorder(Graphics g, Rectangle bounds, Color sideColor, int radius, float strokeWidth = 1f, PenAlignment alignment = PenAlignment.Center, float topLighten = 0.1f)
     {
-        if (!_darkMode && strokeWidth <= 1f) topLighten *= 2;
+        if (!_darkMode && strokeWidth <= ThinStrokeThreshold) topLighten *= LightThemeLightenBoost;
         Color topColor = Color.FromArgb(sideColor.A,
             (int)(sideColor.R + (255 - sideColor.R) * topLighten),
             (int)(sideColor.G + (255 - sideColor.G) * topLighten),
             (int)(sideColor.B + (255 - sideColor.B) * topLighten));
 
         float flatHeight = Math.Max(1f, strokeWidth);
-        float gradHeight = bounds.Height * 0.3f;
+        float gradHeight = bounds.Height * GradientHeightFraction;
         float pad = strokeWidth;
         float axisStart = bounds.Y - pad;
         float axisEnd = bounds.Y + bounds.Height + pad;
@@ -232,21 +237,13 @@ public static class ControlHelper
     private static Image AdjustImage(Image image)
     {
         var pic = new Bitmap(image);
-
-        if (_invert)
-        {
-            for (int y = 0; (y <= (pic.Height - 1)); y++)
+        for (int y = 0; y < pic.Height; y++)
+            for (int x = 0; x < pic.Width; x++)
             {
-                for (int x = 0; (x <= (pic.Width - 1)); x++)
-                {
-                    Color col = pic.GetPixel(x, y);
-                    pic.SetPixel(x, y, Color.FromArgb(col.A, (255 - col.R), (255 - col.G), (255 - col.B)));
-                }
+                Color col = pic.GetPixel(x, y);
+                pic.SetPixel(x, y, Color.FromArgb(col.A, 255 - col.R, 255 - col.G, 255 - col.B));
             }
-        }
-
         return pic;
-
     }
 
     public static Image TintImage(Image image, Color tintColor)
