@@ -116,49 +116,8 @@ namespace GHelper.UI
 
                 if (drawActive)
                 {
-                    const float topLighten = 0.25f;
-                    Color sideColor = borderColor;
-                    Color topColor = Color.FromArgb(sideColor.A,
-                        (int)(sideColor.R + (255 - sideColor.R) * topLighten),
-                        (int)(sideColor.G + (255 - sideColor.G) * topLighten),
-                        (int)(sideColor.B + (255 - sideColor.B) * topLighten));
-
-                    float rectX = rectSurface.X + border;
-                    float rectY = rectSurface.Y + border;
-                    float rectW = rectSurface.Width - 2 * border;
-                    float rectH = rectSurface.Height - 2 * border;
-                    float curveSize = radius * 2f;
-
-                    float flatHeight = 2f * ratio;
-                    float gradHeight = 20f * ratio;
-                    float h = rectSurface.Height;
-                    float pad = border;
-                    float axisStart = -pad;
-                    float axisEnd = h + pad;
-                    float axisLen = axisEnd - axisStart;
-                    float p1 = Math.Max(0f, Math.Min(0.98f, (pad + border + radius + flatHeight) / axisLen));
-                    float p2 = Math.Max(p1 + 0.01f, Math.Min(1f, (pad + border + radius + flatHeight + gradHeight) / axisLen));
-
-                    using (GraphicsPath pathStroke = new GraphicsPath())
-                    using (LinearGradientBrush brush = new LinearGradientBrush(
-                        new PointF(0, axisStart), new PointF(0, axisEnd),
-                        topColor, sideColor))
-                    {
-                        pathStroke.AddArc(rectX, rectY, curveSize, curveSize, 180, 90);
-                        pathStroke.AddArc(rectX + rectW - curveSize, rectY, curveSize, curveSize, 270, 90);
-                        pathStroke.AddArc(rectX + rectW - curveSize, rectY + rectH - curveSize, curveSize, curveSize, 0, 90);
-                        pathStroke.AddArc(rectX, rectY + rectH - curveSize, curveSize, curveSize, 90, 90);
-                        pathStroke.CloseFigure();
-
-                        brush.InterpolationColors = new ColorBlend(4)
-                        {
-                            Colors = new[] { topColor, topColor, sideColor, sideColor },
-                            Positions = new[] { 0f, p1, p2, 1f }
-                        };
-
-                        using (Pen pen = new Pen(brush, border) { Alignment = PenAlignment.Outset })
-                            pevent.Graphics.DrawPath(pen, pathStroke);
-                    }
+                    Rectangle borderRect = new Rectangle(border, border, rectSurface.Width - 2 * border, rectSurface.Height - 2 * border);
+                    ControlHelper.DrawGradientBorder(pevent.Graphics, borderRect, borderColor, radius, border, PenAlignment.Outset, 0.25f);
                 }
                 else if (drawRest)
                 {

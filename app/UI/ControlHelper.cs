@@ -85,7 +85,7 @@ public static class ControlHelper
             {
                 combo.BackColor = RForm.buttonMain;
                 combo.ForeColor = RForm.foreMain;
-                combo.BorderColor = RForm.buttonMain;
+                combo.BorderColor = RForm.borderMain;
                 combo.ButtonColor = RForm.buttonMain;
                 combo.ArrowColor = RForm.foreMain;
             }
@@ -192,7 +192,7 @@ public static class ControlHelper
         return pic;
     }
 
-    public static void DrawGradientBorder(Graphics g, Rectangle bounds, Color sideColor, int radius, float strokeWidth = 1f, PenAlignment alignment = PenAlignment.Center, float topLighten = 0.15f)
+    public static void DrawGradientBorder(Graphics g, Rectangle bounds, Color sideColor, int radius, float strokeWidth = 1f, PenAlignment alignment = PenAlignment.Center, float topLighten = 0.1f)
     {
         Color topColor = Color.FromArgb(sideColor.A,
             (int)(sideColor.R + (255 - sideColor.R) * topLighten),

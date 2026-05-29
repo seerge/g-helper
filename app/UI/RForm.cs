@@ -69,8 +69,8 @@ namespace GHelper.UI
 
                 formBack = SystemColors.Control;
                 foreMain = SystemColors.ControlText;
-                borderMain = Color.LightGray;
-                borderSecond = Color.FromArgb(255, 210, 210, 210);
+                borderMain = Color.FromArgb(255, 220, 220, 220);
+                borderSecond = Color.FromArgb(255, 200, 200, 200);
 
                 chartMain = SystemColors.ControlLightLight;
                 chartGrid = Color.LightGray;
