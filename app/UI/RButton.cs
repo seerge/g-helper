@@ -117,6 +117,24 @@ namespace GHelper.UI
                 if (drawActive)
                 {
                     Rectangle borderRect = new Rectangle(border, border, rectSurface.Width - 2 * border, rectSurface.Height - 2 * border);
+
+                    Color bgTop = Color.FromArgb(48, borderColor);
+                    Color bgTransparent = Color.FromArgb(0, borderColor);
+                    float bgEndPos = Math.Min(0.98f, 30f * ratio / borderRect.Height);
+
+                    using (GraphicsPath bgPath = GetFigurePath(borderRect, radius))
+                    using (LinearGradientBrush bgBrush = new LinearGradientBrush(
+                        new PointF(0, borderRect.Y), new PointF(0, borderRect.Bottom),
+                        bgTop, bgTransparent))
+                    {
+                        bgBrush.InterpolationColors = new ColorBlend
+                        {
+                            Colors = new[] { bgTop, bgTransparent, bgTransparent },
+                            Positions = new[] { 0f, bgEndPos, 1f }
+                        };
+                        pevent.Graphics.FillPath(bgBrush, bgPath);
+                    }
+
                     ControlHelper.DrawGradientBorder(pevent.Graphics, borderRect, borderColor, radius, border, PenAlignment.Outset, 0.25f);
                 }
                 else if (drawRest)
