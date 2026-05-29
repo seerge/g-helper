@@ -74,10 +74,16 @@ namespace GHelper.UI
         {
             int lum = (BackColor.R * 30 + BackColor.G * 59 + BackColor.B * 11) / 100;
             Color target = lum > 128 ? Color.Black : Color.White;
-            FlatAppearance.MouseOverBackColor = Color.FromArgb(BackColor.A,
-                (int)(BackColor.R + (target.R - BackColor.R) * HoverShiftAmount),
-                (int)(BackColor.G + (target.G - BackColor.G) * HoverShiftAmount),
-                (int)(BackColor.B + (target.B - BackColor.B) * HoverShiftAmount));
+            FlatAppearance.MouseOverBackColor = Shift(BackColor, target, HoverShiftAmount);
+            FlatAppearance.MouseDownBackColor = Shift(BackColor, target, HoverShiftAmount * 2f);
+        }
+
+        private static Color Shift(Color from, Color target, float amount)
+        {
+            return Color.FromArgb(from.A,
+                (int)(from.R + (target.R - from.R) * amount),
+                (int)(from.G + (target.G - from.G) * amount),
+                (int)(from.B + (target.B - from.B) * amount));
         }
 
         private GraphicsPath GetFigurePath(Rectangle rect, int radius)
