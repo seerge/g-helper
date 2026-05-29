@@ -68,14 +68,15 @@ public static class ControlHelper
                 button.ForeColor = RForm.foreMain;
 
                 button.FlatStyle = FlatStyle.Flat;
-                button.FlatAppearance.BorderColor = RForm.borderMain;
+                if (!button.Borderless)
+                    button.FlatAppearance.BorderColor = button.Secondary ? RForm.borderSecond : RForm.borderMain;
 
-                if (button.Image is not null)
+                if (button.Image is not null && _invert)
                     button.Image = AdjustImage(button.Image);
             }
 
             var pictureBox = control as PictureBox;
-            if (pictureBox != null && pictureBox.BackgroundImage is not null)
+            if (pictureBox != null && pictureBox.BackgroundImage is not null && _invert)
                 pictureBox.BackgroundImage = AdjustImage(pictureBox.BackgroundImage);
 
 

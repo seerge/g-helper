@@ -19,6 +19,7 @@ namespace GHelper.UI
         public static Color formBack;
         public static Color foreMain;
         public static Color borderMain;
+        public static Color borderSecond;
         public static Color chartMain;
         public static Color chartGrid;
 
@@ -35,6 +36,7 @@ namespace GHelper.UI
         private static extern int DwmSetWindowAttribute(nint hwnd, int attr, int[] attrValue, int attrSize);
 
         public bool darkTheme = false;
+        private bool themeInitialized = false;
         protected override CreateParams CreateParams
         {
             get
@@ -54,7 +56,8 @@ namespace GHelper.UI
 
                 formBack = Color.FromArgb(255, 28, 28, 28);
                 foreMain = Color.FromArgb(255, 240, 240, 240);
-                borderMain = Color.FromArgb(255, 70, 70, 70);
+                borderMain = Color.FromArgb(255, 55, 55, 55);
+                borderSecond = Color.FromArgb(255, 45, 45, 45);
 
                 chartMain = Color.FromArgb(255, 35, 35, 35);
                 chartGrid = Color.FromArgb(255, 70, 70, 70);
@@ -67,6 +70,7 @@ namespace GHelper.UI
                 formBack = SystemColors.Control;
                 foreMain = SystemColors.ControlText;
                 borderMain = Color.LightGray;
+                borderSecond = Color.FromArgb(255, 210, 210, 210);
 
                 chartMain = SystemColors.ControlLightLight;
                 chartGrid = Color.LightGray;
@@ -103,14 +107,16 @@ namespace GHelper.UI
         {
             bool newDarkTheme = IsDarkTheme();
             bool changed = darkTheme != newDarkTheme;
+            bool firstInit = !themeInitialized;
             darkTheme = newDarkTheme;
+            themeInitialized = true;
 
             InitColors(darkTheme);
 
             if (setDPI)
                 ControlHelper.Resize(this);
 
-            if (changed)
+            if (changed || firstInit)
             {
                 DwmSetWindowAttribute(Handle, 20, new[] { darkTheme ? 1 : 0 }, 4);
                 SetPreferredAppMode(darkTheme ? 1 : 0); 

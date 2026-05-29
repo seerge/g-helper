@@ -52,11 +52,26 @@ namespace GHelper.UI
             }
         }
 
+        public bool Borderless { get; set; } = false;
+
         public RButton()
         {
             DoubleBuffered = true;
             FlatStyle = FlatStyle.Flat;
             FlatAppearance.BorderSize = 0;
+            BackColorChanged += (s, e) => UpdateHoverColor();
+            UpdateHoverColor();
+        }
+
+        private void UpdateHoverColor()
+        {
+            int lum = (BackColor.R * 30 + BackColor.G * 59 + BackColor.B * 11) / 100;
+            Color target = lum > 128 ? Color.Black : Color.White;
+            const float amount = 0.06f;
+            FlatAppearance.MouseOverBackColor = Color.FromArgb(BackColor.A,
+                (int)(BackColor.R + (target.R - BackColor.R) * amount),
+                (int)(BackColor.G + (target.G - BackColor.G) * amount),
+                (int)(BackColor.B + (target.B - BackColor.B) * amount));
         }
 
         private GraphicsPath GetFigurePath(Rectangle rect, int radius)
@@ -84,60 +99,95 @@ namespace GHelper.UI
             int radius = (int)Math.Round(ratio * borderRadius, MidpointRounding.AwayFromZero);
 
             Rectangle rectSurface = ClientRectangle;
-            Rectangle rectBorder = Rectangle.Inflate(rectSurface, -border, -border);
 
-            Color borderDrawColor = activated ? borderColor : Color.Transparent;
             Color restBorderColor = (!activated && FlatAppearance.BorderColor.A > 0)
                 ? FlatAppearance.BorderColor
                 : Color.Transparent;
 
             using (GraphicsPath pathSurface = GetFigurePath(rectSurface, radius + border))
-            using (GraphicsPath pathBorder = GetFigurePath(rectBorder, radius))
             using (Pen penSurface = new Pen(Parent.BackColor, border))
-            using (Pen penBorder = new Pen(borderDrawColor, border))
             {
-                penBorder.Alignment = PenAlignment.Outset;
                 pevent.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
                 Region = new Region(pathSurface);
                 pevent.Graphics.DrawPath(penSurface, pathSurface);
-                pevent.Graphics.DrawPath(penBorder, pathBorder);
 
-                if (restBorderColor.A > 0)
+                bool drawActive = !Borderless && activated && borderColor.A > 0;
+                bool drawRest = !Borderless && !activated && restBorderColor.A > 0;
+
+                if (drawActive || drawRest)
                 {
-                    float halfF = border / 2f;
-                    float edgeRadius = radius + halfF;
-                    float edgeCurve = edgeRadius * 2f;
-                    float ex = rectSurface.X + halfF;
-                    float ey = rectSurface.Y + halfF;
-                    float ew = rectSurface.Width - border;
-                    float eh = rectSurface.Height - border;
+                    const float topLighten = 0.15f;
 
-                    Color halfAlpha = Color.FromArgb(restBorderColor.A / 2, restBorderColor);
-
-                    using (GraphicsPath pathRest = new GraphicsPath())
-                    using (Pen penHalf = new Pen(halfAlpha, 1f))
-                    using (Pen penTop = new Pen(restBorderColor, 1f))
+                    Color topColor, sideColor;
+                    float strokeWidth;
+                    if (drawActive)
                     {
-                        pathRest.AddLine(ex + ew, ey + edgeRadius, ex + ew, ey + eh - edgeRadius);
-                        pathRest.AddArc(ex + ew - edgeCurve, ey + eh - edgeCurve, edgeCurve, edgeCurve, 0, 90);
-                        pathRest.AddArc(ex, ey + eh - edgeCurve, edgeCurve, edgeCurve, 90, 90);
-                        pathRest.AddLine(ex, ey + eh - edgeRadius, ex, ey + edgeRadius);
-
-                        pevent.Graphics.DrawPath(penHalf, pathRest);
-                        pevent.Graphics.DrawLine(penTop, ex + edgeRadius, ey, ex + ew - edgeRadius, ey);
+                        sideColor = borderColor;
+                        strokeWidth = border;
                     }
+                    else
+                    {
+                        sideColor = restBorderColor;
+                        strokeWidth = 1f;
+                    }
+                    topColor = Color.FromArgb(sideColor.A,
+                        (int)(sideColor.R + (255 - sideColor.R) * topLighten),
+                        (int)(sideColor.G + (255 - sideColor.G) * topLighten),
+                        (int)(sideColor.B + (255 - sideColor.B) * topLighten));
 
-                    using (LinearGradientBrush brushTL = new LinearGradientBrush(
-                        new PointF(ex + edgeRadius, ey), new PointF(ex, ey + edgeRadius),
-                        restBorderColor, halfAlpha))
-                    using (Pen penTL = new Pen(brushTL, 1f))
-                        pevent.Graphics.DrawArc(penTL, ex, ey, edgeCurve, edgeCurve, 180, 90);
+                    float rectX, rectY, rectW, rectH, strokeRadiusF;
+                    PenAlignment alignment;
+                    if (drawActive)
+                    {
+                        rectX = rectSurface.X + border;
+                        rectY = rectSurface.Y + border;
+                        rectW = rectSurface.Width - 2 * border;
+                        rectH = rectSurface.Height - 2 * border;
+                        strokeRadiusF = radius;
+                        alignment = PenAlignment.Outset;
+                    }
+                    else
+                    {
+                        float halfF = border / 2f;
+                        rectX = rectSurface.X + halfF;
+                        rectY = rectSurface.Y + halfF;
+                        rectW = rectSurface.Width - border;
+                        rectH = rectSurface.Height - border;
+                        strokeRadiusF = radius + halfF;
+                        alignment = PenAlignment.Center;
+                    }
+                    float curveSize = strokeRadiusF * 2f;
 
-                    using (LinearGradientBrush brushTR = new LinearGradientBrush(
-                        new PointF(ex + ew - edgeRadius, ey), new PointF(ex + ew, ey + edgeRadius),
-                        restBorderColor, halfAlpha))
-                    using (Pen penTR = new Pen(brushTR, 1f))
-                        pevent.Graphics.DrawArc(penTR, ex + ew - edgeCurve, ey, edgeCurve, edgeCurve, 270, 90);
+                    float flatHeight = drawActive ? 2f * ratio : 1f;
+                    float gradHeight = drawActive ? 20f * ratio : 20f * ratio;
+                    float h = rectSurface.Height;
+                    float pad = strokeWidth;
+                    float axisStart = -pad;
+                    float axisEnd = h + pad;
+                    float axisLen = axisEnd - axisStart;
+                    float p1 = Math.Max(0f, Math.Min(0.98f, (pad + border + radius + flatHeight) / axisLen));
+                    float p2 = Math.Max(p1 + 0.01f, Math.Min(1f, (pad + border + radius + flatHeight + gradHeight) / axisLen));
+
+                    using (GraphicsPath pathStroke = new GraphicsPath())
+                    using (LinearGradientBrush brush = new LinearGradientBrush(
+                        new PointF(0, axisStart), new PointF(0, axisEnd),
+                        topColor, sideColor))
+                    {
+                        pathStroke.AddArc(rectX, rectY, curveSize, curveSize, 180, 90);
+                        pathStroke.AddArc(rectX + rectW - curveSize, rectY, curveSize, curveSize, 270, 90);
+                        pathStroke.AddArc(rectX + rectW - curveSize, rectY + rectH - curveSize, curveSize, curveSize, 0, 90);
+                        pathStroke.AddArc(rectX, rectY + rectH - curveSize, curveSize, curveSize, 90, 90);
+                        pathStroke.CloseFigure();
+
+                        brush.InterpolationColors = new ColorBlend(4)
+                        {
+                            Colors = new[] { topColor, topColor, sideColor, sideColor },
+                            Positions = new[] { 0f, p1, p2, 1f }
+                        };
+
+                        using (Pen pen = new Pen(brush, strokeWidth) { Alignment = alignment })
+                            pevent.Graphics.DrawPath(pen, pathStroke);
+                    }
                 }
             }
 
