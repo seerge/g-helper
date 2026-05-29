@@ -114,54 +114,25 @@ namespace GHelper.UI
                 bool drawActive = !Borderless && activated && borderColor.A > 0;
                 bool drawRest = !Borderless && !activated && restBorderColor.A > 0;
 
-                if (drawActive || drawRest)
+                if (drawActive)
                 {
-                    const float topLighten = 0.15f;
-
-                    Color topColor, sideColor;
-                    float strokeWidth;
-                    if (drawActive)
-                    {
-                        sideColor = borderColor;
-                        strokeWidth = border;
-                    }
-                    else
-                    {
-                        sideColor = restBorderColor;
-                        strokeWidth = 1f;
-                    }
-                    topColor = Color.FromArgb(sideColor.A,
+                    const float topLighten = 0.25f;
+                    Color sideColor = borderColor;
+                    Color topColor = Color.FromArgb(sideColor.A,
                         (int)(sideColor.R + (255 - sideColor.R) * topLighten),
                         (int)(sideColor.G + (255 - sideColor.G) * topLighten),
                         (int)(sideColor.B + (255 - sideColor.B) * topLighten));
 
-                    float rectX, rectY, rectW, rectH, strokeRadiusF;
-                    PenAlignment alignment;
-                    if (drawActive)
-                    {
-                        rectX = rectSurface.X + border;
-                        rectY = rectSurface.Y + border;
-                        rectW = rectSurface.Width - 2 * border;
-                        rectH = rectSurface.Height - 2 * border;
-                        strokeRadiusF = radius;
-                        alignment = PenAlignment.Outset;
-                    }
-                    else
-                    {
-                        float halfF = border / 2f;
-                        rectX = rectSurface.X + halfF;
-                        rectY = rectSurface.Y + halfF;
-                        rectW = rectSurface.Width - border;
-                        rectH = rectSurface.Height - border;
-                        strokeRadiusF = radius + halfF;
-                        alignment = PenAlignment.Center;
-                    }
-                    float curveSize = strokeRadiusF * 2f;
+                    float rectX = rectSurface.X + border;
+                    float rectY = rectSurface.Y + border;
+                    float rectW = rectSurface.Width - 2 * border;
+                    float rectH = rectSurface.Height - 2 * border;
+                    float curveSize = radius * 2f;
 
-                    float flatHeight = drawActive ? 2f * ratio : 1f;
-                    float gradHeight = drawActive ? 20f * ratio : 20f * ratio;
+                    float flatHeight = 2f * ratio;
+                    float gradHeight = 20f * ratio;
                     float h = rectSurface.Height;
-                    float pad = strokeWidth;
+                    float pad = border;
                     float axisStart = -pad;
                     float axisEnd = h + pad;
                     float axisLen = axisEnd - axisStart;
@@ -185,9 +156,15 @@ namespace GHelper.UI
                             Positions = new[] { 0f, p1, p2, 1f }
                         };
 
-                        using (Pen pen = new Pen(brush, strokeWidth) { Alignment = alignment })
+                        using (Pen pen = new Pen(brush, border) { Alignment = PenAlignment.Outset })
                             pevent.Graphics.DrawPath(pen, pathStroke);
                     }
+                }
+                else if (drawRest)
+                {
+                    int halfBorder = border / 2;
+                    Rectangle borderRect = new Rectangle(halfBorder, halfBorder, rectSurface.Width - 2 * halfBorder, rectSurface.Height - 2 * halfBorder);
+                    ControlHelper.DrawGradientBorder(pevent.Graphics, borderRect, restBorderColor, radius + border - halfBorder, 1f, PenAlignment.Inset, 0.1f);
                 }
             }
 
