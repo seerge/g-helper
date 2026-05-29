@@ -1,5 +1,6 @@
 ﻿using GHelper.UI;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Windows.Forms.DataVisualization.Charting;
 
@@ -234,15 +235,33 @@ public static class ControlHelper
         }
     }
 
+    private static readonly ImageAttributes _invertAttributes = CreateInvertAttributes();
+
+    private static ImageAttributes CreateInvertAttributes()
+    {
+        var matrix = new ColorMatrix(new[]
+        {
+            new float[] { -1,  0,  0, 0, 0 },
+            new float[] {  0, -1,  0, 0, 0 },
+            new float[] {  0,  0, -1, 0, 0 },
+            new float[] {  0,  0,  0, 1, 0 },
+            new float[] {  1,  1,  1, 0, 1 }
+        });
+        var attr = new ImageAttributes();
+        attr.SetColorMatrix(matrix);
+        return attr;
+    }
+
     private static Image AdjustImage(Image image)
     {
-        var pic = new Bitmap(image);
-        for (int y = 0; y < pic.Height; y++)
-            for (int x = 0; x < pic.Width; x++)
-            {
-                Color col = pic.GetPixel(x, y);
-                pic.SetPixel(x, y, Color.FromArgb(col.A, 255 - col.R, 255 - col.G, 255 - col.B));
-            }
+        var pic = new Bitmap(image.Width, image.Height);
+        using (var g = Graphics.FromImage(pic))
+        {
+            g.DrawImage(image,
+                new Rectangle(0, 0, image.Width, image.Height),
+                0, 0, image.Width, image.Height,
+                GraphicsUnit.Pixel, _invertAttributes);
+        }
         return pic;
     }
 
