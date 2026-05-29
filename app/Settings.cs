@@ -693,11 +693,14 @@ namespace GHelper
             sensorTimer.Enabled = this.Visible || sensorsAlways;
             if (this.Visible)
             {
-                ScreenControl.InitScreen();
-                VisualizeXGM();
-                buttonEnergySaver.Visible = PowerNative.GetBatterySaverStatus();
                 Task.Run((Action)RefreshPeripheralsBattery);
                 updateControl.CheckForUpdates();
+                BeginInvoke(new Action(() =>
+                {
+                    ScreenControl.InitScreen();
+                    VisualizeXGM();
+                    buttonEnergySaver.Visible = PowerNative.GetBatterySaverStatus();
+                }));
             }
         }
 
