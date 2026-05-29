@@ -120,7 +120,7 @@ namespace GHelper.UI
 
                     Color bgTop = Color.FromArgb(48, borderColor);
                     Color bgTransparent = Color.FromArgb(0, borderColor);
-                    float bgEndPos = Math.Min(0.98f, 30f * ratio / borderRect.Height);
+                    float bgEndPos = 0.30f;
 
                     using (GraphicsPath bgPath = GetFigurePath(borderRect, radius))
                     using (LinearGradientBrush bgBrush = new LinearGradientBrush(

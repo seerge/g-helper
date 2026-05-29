@@ -200,9 +200,8 @@ public static class ControlHelper
             (int)(sideColor.G + (255 - sideColor.G) * topLighten),
             (int)(sideColor.B + (255 - sideColor.B) * topLighten));
 
-        float ratio = g.DpiX / 192.0f;
         float flatHeight = Math.Max(1f, strokeWidth);
-        float gradHeight = 20f * ratio;
+        float gradHeight = bounds.Height * 0.3f;
         float pad = strokeWidth;
         float axisStart = bounds.Y - pad;
         float axisEnd = bounds.Y + bounds.Height + pad;
