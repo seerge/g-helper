@@ -407,6 +407,9 @@
   <data name="FanCurves" xml:space="preserve">
     <value>Curvas de ventiladores</value>
   </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>Mantén SHIFT para arrastrar todos los puntos a la vez</value>
+  </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>Perfil ventilador CPU</value>
   </data>

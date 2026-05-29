@@ -407,6 +407,9 @@ Trotzdem fortfahren?</value>
   <data name="FanCurves" xml:space="preserve">
     <value>Lüfterkurven</value>
   </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>SHIFT halten, um alle Punkte gemeinsam zu ziehen</value>
+  </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>CPU Lüfterprofil</value>
   </data>

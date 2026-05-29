@@ -407,6 +407,9 @@
   <data name="FanCurves" xml:space="preserve">
     <value>风扇曲线</value>
   </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>按住 SHIFT 可同时拖动所有点</value>
+  </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>CPU 风扇配置文件</value>
   </data>

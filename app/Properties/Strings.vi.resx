@@ -407,6 +407,9 @@ Bạn có muốn tiếp tục không?</value>
   <data name="FanCurves" xml:space="preserve">
     <value>Chế độ Quạt</value>
   </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>Giữ SHIFT để kéo tất cả các điểm cùng lúc</value>
+  </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>Cấu hình Quạt CPU</value>
   </data>

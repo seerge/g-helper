@@ -407,6 +407,9 @@ Apakah Anda masih ingin melanjutkan?</value>
   <data name="FanCurves" xml:space="preserve">
     <value>Kurva Kipas</value>
   </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>Tahan SHIFT untuk menyeret semua titik bersamaan</value>
+  </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>Profil Kipas CPU</value>
   </data>
