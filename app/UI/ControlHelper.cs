@@ -206,7 +206,7 @@ public static class ControlHelper
             (int)(sideColor.B + (255 - sideColor.B) * topLighten));
 
         float flatHeight = Math.Max(1f, strokeWidth);
-        float gradHeight = bounds.Height * GradientHeightFraction;
+        float gradHeight = (float)Math.Round(bounds.Height * GradientHeightFraction);
         float pad = strokeWidth;
         float axisStart = bounds.Y - pad;
         float axisEnd = bounds.Y + bounds.Height + pad;

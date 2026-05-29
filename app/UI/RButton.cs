@@ -9,8 +9,8 @@ namespace GHelper.UI
         private const float HoverShiftAmount = 0.06f;
         private const float ActiveTopLighten = 0.25f;
         private const float RestTopLighten = 0.1f;
-        private const int ActiveBgTopAlpha = 48;
-        private const float ActiveBgEndFraction = 0.30f;
+        private const int ActiveBgTopAlpha = 32;
+        private const float ActiveBgEndFraction = 0.20f;
 
         //Fields
         private int borderSize = 5;
@@ -101,8 +101,8 @@ namespace GHelper.UI
             base.OnPaint(pevent);
 
             float ratio = pevent.Graphics.DpiX / 192.0f;
-            int border = (int)Math.Round(ratio * borderSize, MidpointRounding.AwayFromZero);
-            int radius = (int)Math.Round(ratio * borderRadius, MidpointRounding.AwayFromZero);
+            int border = (int)(ratio * borderSize);
+            int radius = (int)(ratio * borderRadius);
 
             Rectangle rectSurface = ClientRectangle;
 
