@@ -197,11 +197,7 @@ namespace GHelper.UI
                         //g.DrawRectangle(p, innerBorder);
                         //g.DrawRectangle(p, innerInnerBorder);
                     }
-                    using (var p = new Pen(outerBorderColor))
-                    {
-                        DrawRoundedRectangle(g, p, outerBorder, 4, 4);
-                        //g.DrawRectangle(p, outerBorder);
-                    }
+                    ControlHelper.DrawGradientBorder(g, outerBorder, outerBorderColor, 4);
                 }
                 if (shoulEndPaint)
                     EndPaint(Handle, ref ps);

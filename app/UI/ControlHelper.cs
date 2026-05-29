@@ -128,7 +128,11 @@ public static class ControlHelper
             if (chk != null)
             {
                 if (chk.BackColor != RForm.formBack)
+                {
                     chk.BackColor = RForm.buttonSecond;
+                    if (chk is RCheckBox)
+                        chk.FlatAppearance.BorderColor = RForm.borderSecond;
+                }
                 SetWindowTheme(chk.Handle, _darkMode ? "DarkMode_Explorer" : "Explorer", null);
             }
 
@@ -186,6 +190,44 @@ public static class ControlHelper
             g.DrawImage(image, new Rectangle(new Point(), newSize));
         }
         return pic;
+    }
+
+    public static void DrawGradientBorder(Graphics g, Rectangle bounds, Color sideColor, int radius, float strokeWidth = 1f, PenAlignment alignment = PenAlignment.Center)
+    {
+        const float topLighten = 0.15f;
+        Color topColor = Color.FromArgb(sideColor.A,
+            (int)(sideColor.R + (255 - sideColor.R) * topLighten),
+            (int)(sideColor.G + (255 - sideColor.G) * topLighten),
+            (int)(sideColor.B + (255 - sideColor.B) * topLighten));
+
+        float ratio = g.DpiX / 192.0f;
+        float flatHeight = Math.Max(1f, strokeWidth);
+        float gradHeight = 20f * ratio;
+        float pad = strokeWidth;
+        float axisStart = bounds.Y - pad;
+        float axisEnd = bounds.Y + bounds.Height + pad;
+        float axisLen = axisEnd - axisStart;
+        float p1 = Math.Max(0f, Math.Min(0.98f, (pad + flatHeight) / axisLen));
+        float p2 = Math.Max(p1 + 0.01f, Math.Min(1f, (pad + flatHeight + gradHeight) / axisLen));
+
+        using (GraphicsPath path = RComboBox.RoundedRect(bounds, radius, radius))
+        using (LinearGradientBrush brush = new LinearGradientBrush(
+            new PointF(0, axisStart), new PointF(0, axisEnd),
+            topColor, sideColor))
+        {
+            brush.InterpolationColors = new ColorBlend(4)
+            {
+                Colors = new[] { topColor, topColor, sideColor, sideColor },
+                Positions = new[] { 0f, p1, p2, 1f }
+            };
+            using (Pen pen = new Pen(brush, strokeWidth) { Alignment = alignment })
+            {
+                SmoothingMode prev = g.SmoothingMode;
+                g.SmoothingMode = SmoothingMode.AntiAlias;
+                g.DrawPath(pen, path);
+                g.SmoothingMode = prev;
+            }
+        }
     }
 
     private static Image AdjustImage(Image image)
