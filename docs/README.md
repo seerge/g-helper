@@ -162,6 +162,13 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 - ``Ctrl + Shift + Alt + F20`` - Custom 2 (if exists)
 - [Custom keybindings / hotkeys](https://github.com/seerge/g-helper/wiki/Power-user-settings#custom-hotkey-actions)
 
+### 🎮 Metrics Overlay
+- ``Ctrl + Shift + Alt + O`` - Toggle in-game overlay ON / OFF
+- ``Ctrl + Shift + Alt + Mouse Drag`` - Move overlay
+- ``Ctrl + Shift + Alt + Mouse Click`` - Switch mode (Light / Default / Full)
+- ``Ctrl + Shift + Alt + Wheel`` - Resize overlay
+- ``Ctrl + Shift + Alt + Wheel Click`` - Reset overlay size
+
 ### 🎮ROG Ally Bindings
 - ``M + DPad Left / Right`` - Display Brightness
 - ``M + DPad Up`` - Touch keyboard
