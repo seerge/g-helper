@@ -79,9 +79,7 @@ namespace GHelper.Mode
 
         public void AutoPerformance(bool powerChanged = false)
         {
-            var Plugged = SystemInformation.PowerStatus.PowerLineStatus;
-
-            int mode = AppConfig.Get("performance_" + (int)Plugged);
+            int mode = AppConfig.Get("performance_" + Program.PerformanceKey());
 
             if (mode != -1)
                 SetPerformanceMode(mode, powerChanged);
