@@ -861,22 +861,11 @@ namespace GHelper.Peripherals.Mouse
             return Wireless && HasBattery();
         }
 
-        // HID usage (page<<16 | id) of the collection the device pushes connect/alive/battery on.
-        // OMNI receiver pushes on mi_03&col05 (0xFFC1), not the control collection commands go to.
-        // 0 = listen on the device's own control path.
-        public virtual uint ListenerUsage()
+        // Collection the device pushes connect/alive/battery on. The OMNI receiver pushes on
+        // mi_03&col05, not the control collection commands go to. null = the device's own path.
+        protected virtual string? ListenerPath()
         {
-            return ProductID() == 0x1ACE ? 0xFFC10001u : 0u;
-        }
-
-        private static bool HasUsage(HidSharp.HidDevice dev, uint usage)
-        {
-            try
-            {
-                return dev.GetReportDescriptor().DeviceItems
-                    .SelectMany(di => di.Usages.GetAllValues()).Contains(usage);
-            }
-            catch { return false; }
+            return ProductID() == 0x1ACE ? "mi_03&col05" : null;
         }
 
         protected void StartBatteryListener()
@@ -885,10 +874,9 @@ namespace GHelper.Peripherals.Mouse
 
             try
             {
-                uint usage = ListenerUsage();
-                var device = usage != 0
-                    ? HidSharp.DeviceList.Local.GetHidDevices(VendorID(), ProductID()).FirstOrDefault(x => HasUsage(x, usage))
-                    : HidSharp.DeviceList.Local.GetHidDevices(VendorID(), ProductID()).FirstOrDefault(x => x.DevicePath.Contains(path));
+                string listenPath = ListenerPath() ?? path;
+                var device = HidSharp.DeviceList.Local.GetHidDevices(VendorID(), ProductID())
+                    .FirstOrDefault(x => x.DevicePath.Contains(listenPath));
                 if (device is null) return;
 
                 var config = new HidSharp.OpenConfiguration();
@@ -946,11 +934,7 @@ namespace GHelper.Peripherals.Mouse
                     break;
                 }
 
-                if (read > 0)
-                {
-                    Logger.WriteLine(GetDisplayName() + ": Listener RAW: " + BitConverter.ToString(buffer, 0, Math.Min(16, buffer.Length)));
-                    DispatchListenerPacket(buffer);
-                }
+                if (read > 0) DispatchListenerPacket(buffer);
             }
         }
 
