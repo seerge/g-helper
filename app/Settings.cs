@@ -740,6 +740,13 @@ namespace GHelper
                 m.Result = (IntPtr)1;
             }
 
+            if (m.Msg == NativeMethods.WM_POWERBROADCAST && m.WParam == (IntPtr)NativeMethods.PBT_APMRESUMEAUTOMATIC)
+            {
+                Logger.WriteLine("System Resume");
+                BatteryControl.AutoBattery();
+                m.Result = (IntPtr)1;
+            }
+
             if (m.Msg == NativeMethods.WM_POWERBROADCAST && m.WParam == (IntPtr)NativeMethods.PBT_POWERSETTINGCHANGE)
             {
                 var settings = (NativeMethods.POWERBROADCAST_SETTING)m.GetLParam(typeof(NativeMethods.POWERBROADCAST_SETTING));
@@ -749,6 +756,7 @@ namespace GHelper
                     {
                         case 0:
                             Logger.WriteLine("Lid Closed");
+                            BatteryControl.AutoBattery();
                             InputDispatcher.lidClose = AniMatrixControl.lidClose = true;
                             Aura.ApplyBrightness(0, "Lid");
                             matrixControl.SetLidMode();
