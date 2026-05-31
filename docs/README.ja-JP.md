@@ -102,6 +102,18 @@ Asus ノートパソコン向けの小型・軽量な Armoury Crate 代替ツー
 本アプリには、お使いのモデル向けに Asus 公式サイトから直接取得する BIOS / ドライバの自動更新チェッカーが含まれており、新しいダウンロードが利用可能になるとハイライト表示します。`Updates` セクションのすべてのリンクは Asus 公式のダウンロードを指しています。
 <img width="2302" alt="Driver Updates" src="https://github.com/user-attachments/assets/303dfce9-fbbd-4d15-b6d7-f21e7c2c59a4" />
 
+### 🎮 メトリクスオーバーレイ
+ゲーム画面の上に **FPS、CPU / GPU の温度・使用率・電力** をリアルタイムで表示する内蔵のゲーム内オーバーレイ（OSD）です。RTSS などの追加ツールは不要です。DX10 以降のゲームに対応します。排他的フルスクリーンを使用する古いタイトルでは表示されない場合があるため、ゲームをウィンドウ / ボーダーレスフルスクリーンモードに設定してください。
+
+- ``Ctrl + Shift + Alt + O`` - ゲーム内オーバーレイの ON / OFF を切り替え
+- ``Ctrl + Shift + Alt + マウスドラッグ`` - オーバーレイを移動
+- ``Ctrl + Shift + Alt + マウスクリック`` - モード切り替え（ライト / デフォルト / フル）
+- ``Ctrl + Shift + Alt + ホイール`` - オーバーレイのサイズ変更
+- ``Ctrl + Shift + Alt + ホイールクリック`` - オーバーレイのサイズをリセット
+
+<img width="1690" alt="メトリクスオーバーレイ" src="https://github.com/user-attachments/assets/0752a704-e9a7-4e27-8587-39967f625fae" />
+<img width="3840" alt="ゲーム中のメトリクスオーバーレイ" src="https://github.com/user-attachments/assets/8b063f80-d508-41e0-9978-154bc936d451" />
+
 ### :mouse: Asus マウスおよびその他の周辺機器のサポート
 
 <details>
@@ -163,13 +175,6 @@ Asus ノートパソコン向けの小型・軽量な Armoury Crate 代替ツー
 - ``Ctrl + Shift + Alt + F19`` - カスタム 1（存在する場合）
 - ``Ctrl + Shift + Alt + F20`` - カスタム 2（存在する場合）
 - [カスタムキーバインド / ホットキー](https://g-helper.com/ja/power-user-settings/)
-
-### 🎮 メトリクスオーバーレイ
-- ``Ctrl + Shift + Alt + O`` - ゲーム内オーバーレイの ON / OFF を切り替え
-- ``Ctrl + Shift + Alt + マウスドラッグ`` - オーバーレイを移動
-- ``Ctrl + Shift + Alt + マウスクリック`` - モード切り替え（ライト / デフォルト / フル）
-- ``Ctrl + Shift + Alt + ホイール`` - オーバーレイのサイズ変更
-- ``Ctrl + Shift + Alt + ホイールクリック`` - オーバーレイのサイズをリセット
 
 ### 🎮 ROG Ally のキー割り当て
 - ``M + DPad Left / Right`` - 画面の明るさ

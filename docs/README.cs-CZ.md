@@ -102,6 +102,18 @@ V každém režimu lze vyhrazenou GPU vyladit podle konkrétních potřeb, včet
 Aplikace obsahuje automatickou kontrolu aktualizací BIOSu a ovladačů, která je stahuje přímo z oficiálních stránek Asus pro váš konkrétní model a zvýrazňuje nové soubory ke stažení, jakmile jsou k dispozici. Všechny odkazy v sekci `Updates` vedou na oficiální soubory ke stažení od společnosti Asus.
 <img width="2302" alt="Driver Updates" src="https://github.com/user-attachments/assets/303dfce9-fbbd-4d15-b6d7-f21e7c2c59a4" />
 
+### 🎮 Překryvné okno s metrikami
+Vestavěný herní překryv (OSD), který přímo přes hru zobrazuje v reálném čase **FPS, teploty CPU / GPU, využití a příkon** – bez dalších nástrojů jako RTSS. Funguje ve hrách DX10+. U starších titulů využívajících exkluzivní režim celé obrazovky nemusí být vidět, proto hru nastavte do okenního / bezrámečkového režimu celé obrazovky.
+
+- ``Ctrl + Shift + Alt + O`` - Zapnutí / vypnutí překryvného okna ve hře
+- ``Ctrl + Shift + Alt + Tažení myší`` - Přesunutí překryvného okna
+- ``Ctrl + Shift + Alt + Kliknutí myší`` - Přepnutí režimu (Light / Default / Full)
+- ``Ctrl + Shift + Alt + Kolečko`` - Změna velikosti překryvného okna
+- ``Ctrl + Shift + Alt + Kliknutí kolečkem`` - Obnovení velikosti překryvného okna
+
+<img width="1690" alt="Překryvné okno s metrikami" src="https://github.com/user-attachments/assets/0752a704-e9a7-4e27-8587-39967f625fae" />
+<img width="3840" alt="Překryvné okno s metrikami ve hře" src="https://github.com/user-attachments/assets/8b063f80-d508-41e0-9978-154bc936d451" />
+
 ### :mouse: Podpora myší a dalších periferních zařízení značky Asus
 
 <details>
@@ -163,13 +175,6 @@ Velké poděkování [@IceStormNG](https://github.com/IceStormNG) 👑 za jeho p
 - ``Ctrl + Shift + Alt + F19`` - Vlastní 1 (pokud existuje)
 - ``Ctrl + Shift + Alt + F20`` - Vlastní 2 (pokud existuje)
 - [Vlastní klávesové zkratky](https://github.com/seerge/g-helper/wiki/Power-user-settings#custom-hotkey-actions)
-
-### 🎮 Překryvné okno s metrikami
-- ``Ctrl + Shift + Alt + O`` - Zapnutí / vypnutí překryvného okna ve hře
-- ``Ctrl + Shift + Alt + Tažení myší`` - Přesunutí překryvného okna
-- ``Ctrl + Shift + Alt + Kliknutí myší`` - Přepnutí režimu (Light / Default / Full)
-- ``Ctrl + Shift + Alt + Kolečko`` - Změna velikosti překryvného okna
-- ``Ctrl + Shift + Alt + Kliknutí kolečkem`` - Obnovení velikosti překryvného okna
 
 ### 🎮 ROG Ally – klávesové zkratky
 - ``M + DPad Vlevo / Vpravo`` - Jas displeje

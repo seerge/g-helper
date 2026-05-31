@@ -102,6 +102,18 @@ Asus 노트북을 위한 작고 가벼운 Armoury Crate 대체 도구로, 훨씬
 이 앱에는 사용 중인 모델에 맞춰 Asus 공식 웹사이트에서 직접 가져오는 BIOS 및 드라이버 자동 업데이트 검사기가 포함되어 있으며, 새 다운로드가 제공되면 강조 표시합니다. `Updates` 섹션의 모든 링크는 Asus 공식 다운로드를 가리킵니다.
 <img width="2302" alt="Driver Updates" src="https://github.com/user-attachments/assets/303dfce9-fbbd-4d15-b6d7-f21e7c2c59a4" />
 
+### 🎮 메트릭 오버레이
+게임 화면 위에 실시간 **FPS, CPU / GPU 온도, 사용률, 전력**을 표시하는 내장 게임 내 오버레이(OSD)입니다. RTSS 같은 별도 도구가 필요 없습니다. DX10 이상 게임에서 작동합니다. 전체 화면 독점 모드를 사용하는 구형 게임에서는 보이지 않을 수 있으므로 게임을 창 / 테두리 없는 전체 화면 모드로 설정하세요.
+
+- ``Ctrl + Shift + Alt + O`` - 게임 내 오버레이 켜기 / 끄기
+- ``Ctrl + Shift + Alt + 마우스 드래그`` - 오버레이 이동
+- ``Ctrl + Shift + Alt + 마우스 클릭`` - 모드 전환 (Light / Default / Full)
+- ``Ctrl + Shift + Alt + 휠`` - 오버레이 크기 조정
+- ``Ctrl + Shift + Alt + 휠 클릭`` - 오버레이 크기 초기화
+
+<img width="1690" alt="메트릭 오버레이" src="https://github.com/user-attachments/assets/0752a704-e9a7-4e27-8587-39967f625fae" />
+<img width="3840" alt="게임 내 메트릭 오버레이" src="https://github.com/user-attachments/assets/8b063f80-d508-41e0-9978-154bc936d451" />
+
 ### :mouse: Asus 마우스 및 기타 주변기기 지원
 
 <details>
@@ -163,13 +175,6 @@ Asus 노트북을 위한 작고 가벼운 Armoury Crate 대체 도구로, 훨씬
 - ``Ctrl + Shift + Alt + F19`` - 사용자 지정 1 (있는 경우)
 - ``Ctrl + Shift + Alt + F20`` - 사용자 지정 2 (있는 경우)
 - [사용자 지정 키 바인딩 / 단축키](https://g-helper.com/ko/power-user-settings/)
-
-### 🎮 메트릭 오버레이
-- ``Ctrl + Shift + Alt + O`` - 게임 내 오버레이 켜기 / 끄기
-- ``Ctrl + Shift + Alt + 마우스 드래그`` - 오버레이 이동
-- ``Ctrl + Shift + Alt + 마우스 클릭`` - 모드 전환 (Light / Default / Full)
-- ``Ctrl + Shift + Alt + 휠`` - 오버레이 크기 조정
-- ``Ctrl + Shift + Alt + 휠 클릭`` - 오버레이 크기 초기화
 
 ### 🎮 ROG Ally 키 매핑
 - ``M + DPad Left / Right`` - 화면 밝기

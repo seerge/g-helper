@@ -101,6 +101,18 @@
 本应用内置自动 BIOS 和驱动更新检查器，直接从华硕官网针对你的具体型号拉取更新，并在有新下载可用时予以提示。`更新` 部分中的所有链接均指向华硕官方下载。
 <img width="2302" alt="Driver Updates" src="https://github.com/user-attachments/assets/303dfce9-fbbd-4d15-b6d7-f21e7c2c59a4" />
 
+### 🎮 性能指标叠加层（Overlay）
+内置的游戏内叠加层（OSD），可在游戏画面上直接显示实时 **FPS、CPU / GPU 温度、占用率和功耗** —— 无需 RTSS 等额外工具。支持 DX10+ 游戏。在使用独占全屏模式的旧游戏上可能不显示，请将游戏设置为窗口化 / 无边框全屏模式。
+
+- ``Ctrl + Shift + Alt + O`` - 开启 / 关闭游戏内叠加层
+- ``Ctrl + Shift + Alt + 拖动鼠标`` - 移动叠加层
+- ``Ctrl + Shift + Alt + 单击鼠标`` - 切换模式（精简 / 默认 / 完整）
+- ``Ctrl + Shift + Alt + 滚轮`` - 调整叠加层大小
+- ``Ctrl + Shift + Alt + 滚轮单击`` - 重置叠加层大小
+
+<img width="1690" alt="性能指标叠加层" src="https://github.com/user-attachments/assets/0752a704-e9a7-4e27-8587-39967f625fae" />
+<img width="3840" alt="游戏中的性能指标叠加层" src="https://github.com/user-attachments/assets/8b063f80-d508-41e0-9978-154bc936d451" />
+
 ### :mouse: 华硕鼠标及其他外设支持
 
 <details>
@@ -162,13 +174,6 @@
 - ``Ctrl + Shift + Alt + F19`` - 自定义 1（如果存在）
 - ``Ctrl + Shift + Alt + F20`` - 自定义 2（如果存在）
 - [自定义键位 / 热键](https://g-helper.com/zh/power-user-settings/)
-
-### 🎮 性能指标叠加层（Overlay）
-- ``Ctrl + Shift + Alt + O`` - 开启 / 关闭游戏内叠加层
-- ``Ctrl + Shift + Alt + 拖动鼠标`` - 移动叠加层
-- ``Ctrl + Shift + Alt + 单击鼠标`` - 切换模式（精简 / 默认 / 完整）
-- ``Ctrl + Shift + Alt + 滚轮`` - 调整叠加层大小
-- ``Ctrl + Shift + Alt + 滚轮单击`` - 重置叠加层大小
 
 ### 🎮 ROG Ally 按键
 - ``M + DPad Left / Right`` - 显示亮度

@@ -102,6 +102,18 @@ En cada modo, la GPU dedicada se puede ajustar a necesidades concretas, incluyen
 La aplicación incluye un comprobador automático de actualizaciones de BIOS y controladores que las obtiene directamente del sitio web oficial de Asus para tu modelo concreto, destacando las nuevas descargas a medida que están disponibles. Todos los enlaces de la sección `Updates` apuntan a descargas oficiales de Asus.
 <img width="2302" alt="Driver Updates" src="https://github.com/user-attachments/assets/303dfce9-fbbd-4d15-b6d7-f21e7c2c59a4" />
 
+### 🎮 Superposición de métricas
+Una superposición integrada en el juego (OSD) que muestra en tiempo real los **FPS, las temperaturas de CPU / GPU, el uso y el consumo** directamente sobre tu juego, sin herramientas adicionales como RTSS. Funciona en juegos DX10+. Puede no verse en títulos antiguos que usan el modo de pantalla completa exclusiva, así que configura el juego en modo de pantalla completa en ventana / sin bordes.
+
+- ``Ctrl + Shift + Alt + O`` - Activar / desactivar la superposición en el juego
+- ``Ctrl + Shift + Alt + Arrastrar ratón`` - Mover la superposición
+- ``Ctrl + Shift + Alt + Clic de ratón`` - Cambiar de modo (Light / Default / Full)
+- ``Ctrl + Shift + Alt + Rueda`` - Cambiar el tamaño de la superposición
+- ``Ctrl + Shift + Alt + Clic de rueda`` - Restablecer el tamaño de la superposición
+
+<img width="1690" alt="Superposición de métricas" src="https://github.com/user-attachments/assets/0752a704-e9a7-4e27-8587-39967f625fae" />
+<img width="3840" alt="Superposición de métricas en un juego" src="https://github.com/user-attachments/assets/8b063f80-d508-41e0-9978-154bc936d451" />
+
 ### :mouse: Compatibilidad con ratones Asus y otros periféricos
 
 <details>
@@ -163,13 +175,6 @@ Un enorme agradecimiento a [@IceStormNG](https://github.com/IceStormNG) 👑 por
 - ``Ctrl + Shift + Alt + F19`` - Personalizado 1 (si existe)
 - ``Ctrl + Shift + Alt + F20`` - Personalizado 2 (si existe)
 - [Atajos / teclas personalizadas](https://g-helper.com/es/power-user-settings/)
-
-### 🎮 Superposición de métricas
-- ``Ctrl + Shift + Alt + O`` - Activar / desactivar la superposición en el juego
-- ``Ctrl + Shift + Alt + Arrastrar ratón`` - Mover la superposición
-- ``Ctrl + Shift + Alt + Clic de ratón`` - Cambiar de modo (Light / Default / Full)
-- ``Ctrl + Shift + Alt + Rueda`` - Cambiar el tamaño de la superposición
-- ``Ctrl + Shift + Alt + Clic de rueda`` - Restablecer el tamaño de la superposición
 
 ### 🎮 Controles de ROG Ally
 - ``M + DPad Left / Right`` - Brillo de la pantalla
