@@ -25,17 +25,16 @@
 
 [![United24](https://github.com/user-attachments/assets/aa9444e3-9daa-4b88-a473-7a7f855e3a07)](https://u24.gov.ua/)
 
-## :loudspeaker: YouTube 评测与指南
-| [![Youtube review Josh Cravey](https://i.ytimg.com/vi/hqe-PjuE-K8/hqdefault.jpg)](https://www.youtube.com/watch?v=hqe-PjuE-K8) | [![Youtube review Crimson Tech](https://i.ytimg.com/vi/5XUIMUzgHU0/hqdefault.jpg)](https://www.youtube.com/watch?v=5XUIMUzgHU0) | [![Youtube review cbutters Tech](https://i.ytimg.com/vi/6aVdwJKZSSc/hqdefault.jpg)](https://www.youtube.com/watch?v=6aVdwJKZSSc) |
+## :loudspeaker: 视频测评与指南
+| [![测无止境](https://g-helper.com/images/reviews/bili-BV1cQbBzPE6x.jpg)](https://www.bilibili.com/video/BV1cQbBzPE6x/) | [![叠甲者抗揍也](https://g-helper.com/images/reviews/bili-BV15h4y127ub.jpg)](https://www.bilibili.com/video/BV15h4y127ub/) | [![方氺](https://g-helper.com/images/reviews/bili-BV1uFHpeZEY4.jpg)](https://www.bilibili.com/video/BV1uFHpeZEY4/) |
 | ----------------- | ---------------- | ---------------- | 
-| [Josh Cravey](https://www.youtube.com/watch?v=hqe-PjuE-K8) | [Crimson Tech](https://www.youtube.com/watch?v=5XUIMUzgHU0) | [cbutters Tech](https://www.youtube.com/watch?v=6aVdwJKZSSc) | 
+| [测无止境](https://www.bilibili.com/video/BV1cQbBzPE6x/) | [叠甲者抗揍也](https://www.bilibili.com/video/BV15h4y127ub/) | [方氺](https://www.bilibili.com/video/BV1uFHpeZEY4/) | 
 
-## 📰 相关报道
+## 📰 媒体报道
 1. [Digital Trends](https://www.digitaltrends.com/computing/g-helper-armoury-crate-alternative/)
-2. [BinaryFork](https://binaryfork.com/ghelper-armoury-crate-alternative-10216/)
-3. [Ultrabookreview](https://www.ultrabookreview.com/71392-optimized-quiet-gaming-5080-5090/)
-4. [Notebookcheck](https://www.notebookcheck.net/Unbloated-G-Helper-The-best-open-source-alternative-to-Asus-Armoury-Crate-Part-2.1213486.0.html)
-5. [Les Numériques](https://www.lesnumeriques.com/appli-logiciel/marre-des-lenteurs-d-armoury-crate-sur-votre-pc-portable-asus-decouvrez-g-helper-l-alternative-ultra-legere-n240111.html)
+2. [Notebookcheck](https://www.notebookcheck.net/Unbloated-G-Helper-The-best-open-source-alternative-to-Asus-Armoury-Crate-Part-2.1213486.0.html)
+3. [知乎](https://zhuanlan.zhihu.com/p/663917638)
+4. [Chiphell](https://www.chiphell.com/thread-2719738-1-1.html)
 
 ## :gift: 主要优点 
 
