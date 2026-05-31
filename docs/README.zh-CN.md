@@ -8,6 +8,8 @@
 [![English](https://g-helper.com/badge/lang-en.svg)](https://github.com/seerge/g-helper#readme)
 [![日本語](https://g-helper.com/badge/lang-ja.svg)](https://github.com/seerge/g-helper/blob/main/docs/README.ja-JP.md)
 [![Čeština](https://g-helper.com/badge/lang-cs.svg)](https://github.com/seerge/g-helper/blob/main/docs/README.cs-CZ.md)
+[![Español](https://g-helper.com/badge/lang-es.svg)](https://github.com/seerge/g-helper/blob/main/docs/README.es-ES.md)
+[![한국어](https://g-helper.com/badge/lang-ko.svg)](https://github.com/seerge/g-helper/blob/main/docs/README.ko-KR.md)
 <a href="https://github.com/seerge/g-helper/releases/latest/download/GHelper.exe" alt="G-Helper - 华硕笔记本的轻量级控制工具"><img width="1280" alt="G-Helper - 华硕笔记本的轻量级控制工具" src="https://g-helper.com/hero/zh.png" /></a>
 
 
@@ -15,10 +17,10 @@
 
 **⭐ 喜欢这个应用？欢迎帮忙宣传推广。**
 
-- [常见问题（FAQ）](https://github.com/seerge/g-helper/wiki/FAQ)
-- [安装与要求](https://github.com/seerge/g-helper/wiki/Requirements)
-- [故障排除](https://github.com/seerge/g-helper/wiki/Troubleshooting)
-- [高级用户设置](https://github.com/seerge/g-helper/wiki/Power-user-settings)
+- [常见问题（FAQ）](https://g-helper.com/zh/faq/)
+- [安装与要求](https://g-helper.com/zh/requirements/)
+- [故障排除](https://g-helper.com/zh/troubleshooting/)
+- [高级用户设置](https://g-helper.com/zh/power-user-settings/)
 
 
 [![United24](https://github.com/user-attachments/assets/aa9444e3-9daa-4b88-a473-7a7f855e3a07)](https://u24.gov.ua/)
@@ -160,7 +162,7 @@
 - ``Ctrl + Shift + Alt + F18`` - 增强
 - ``Ctrl + Shift + Alt + F19`` - 自定义 1（如果存在）
 - ``Ctrl + Shift + Alt + F20`` - 自定义 2（如果存在）
-- [自定义键位 / 热键](https://github.com/seerge/g-helper/wiki/Power-user-settings#custom-hotkey-actions)
+- [自定义键位 / 热键](https://g-helper.com/zh/power-user-settings/)
 
 ### 🎮 性能指标叠加层（Overlay）
 - ``Ctrl + Shift + Alt + O`` - 开启 / 关闭游戏内叠加层

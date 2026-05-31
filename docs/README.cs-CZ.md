@@ -8,6 +8,8 @@ Malá a nenáročná alternativa k Armoury Crate pro notebooky Asus, která nab�
 [![English](https://g-helper.com/badge/lang-en.svg)](https://github.com/seerge/g-helper#readme)
 [![中文](https://g-helper.com/badge/lang-zh.svg)](https://github.com/seerge/g-helper/blob/main/docs/README.zh-CN.md)
 [![日本語](https://g-helper.com/badge/lang-ja.svg)](https://github.com/seerge/g-helper/blob/main/docs/README.ja-JP.md)
+[![Español](https://g-helper.com/badge/lang-es.svg)](https://github.com/seerge/g-helper/blob/main/docs/README.es-ES.md)
+[![한국어](https://g-helper.com/badge/lang-ko.svg)](https://github.com/seerge/g-helper/blob/main/docs/README.ko-KR.md)
 <a href="https://github.com/seerge/g-helper/releases/latest/download/GHelper.exe" alt="G-Helper - Nenáročný nástroj pro správu notebooků ASUS"><img width="1280" alt="G-Helper - Nenáročný nástroj pro správu notebooků ASUS" src="https://g-helper.com/hero/cs.png" /></a>
 
 

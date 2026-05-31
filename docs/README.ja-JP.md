@@ -8,6 +8,8 @@ Asus ノートパソコン向けの小型・軽量な Armoury Crate 代替ツー
 [![English](https://g-helper.com/badge/lang-en.svg)](https://github.com/seerge/g-helper#readme)
 [![中文](https://g-helper.com/badge/lang-zh.svg)](https://github.com/seerge/g-helper/blob/main/docs/README.zh-CN.md)
 [![Čeština](https://g-helper.com/badge/lang-cs.svg)](https://github.com/seerge/g-helper/blob/main/docs/README.cs-CZ.md)
+[![Español](https://g-helper.com/badge/lang-es.svg)](https://github.com/seerge/g-helper/blob/main/docs/README.es-ES.md)
+[![한국어](https://g-helper.com/badge/lang-ko.svg)](https://github.com/seerge/g-helper/blob/main/docs/README.ko-KR.md)
 <a href="https://github.com/seerge/g-helper/releases/latest/download/GHelper.exe" alt="G-Helper - Asus ノートパソコン用の軽量コントロールツール"><img width="1280" alt="G-Helper - Asus ノートパソコン用の軽量コントロールツール" src="https://g-helper.com/hero/ja.png" /></a>
 
 
@@ -15,10 +17,10 @@ Asus ノートパソコン向けの小型・軽量な Armoury Crate 代替ツー
 
 **⭐ アプリが気に入ったら、ぜひ広めてください。**
 
-- [よくある質問 (FAQ)](https://github.com/seerge/g-helper/wiki/FAQ)
-- [セットアップと要件](https://github.com/seerge/g-helper/wiki/Requirements)
-- [トラブルシューティング](https://github.com/seerge/g-helper/wiki/Troubleshooting)
-- [パワーユーザー設定](https://github.com/seerge/g-helper/wiki/Power-user-settings)
+- [よくある質問 (FAQ)](https://g-helper.com/ja/faq/)
+- [セットアップと要件](https://g-helper.com/ja/requirements/)
+- [トラブルシューティング](https://g-helper.com/ja/troubleshooting/)
+- [パワーユーザー設定](https://g-helper.com/ja/power-user-settings/)
 
 
 [![United24](https://github.com/user-attachments/assets/aa9444e3-9daa-4b88-a473-7a7f855e3a07)](https://u24.gov.ua/)
@@ -160,7 +162,7 @@ Asus ノートパソコン向けの小型・軽量な Armoury Crate 代替ツー
 - ``Ctrl + Shift + Alt + F18`` - ターボ
 - ``Ctrl + Shift + Alt + F19`` - カスタム 1（存在する場合）
 - ``Ctrl + Shift + Alt + F20`` - カスタム 2（存在する場合）
-- [カスタムキーバインド / ホットキー](https://github.com/seerge/g-helper/wiki/Power-user-settings#custom-hotkey-actions)
+- [カスタムキーバインド / ホットキー](https://g-helper.com/ja/power-user-settings/)
 
 ### 🎮 メトリクスオーバーレイ
 - ``Ctrl + Shift + Alt + O`` - ゲーム内オーバーレイの ON / OFF を切り替え
