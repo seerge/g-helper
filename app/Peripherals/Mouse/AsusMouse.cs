@@ -945,22 +945,18 @@ namespace GHelper.Peripherals.Mouse
             // connect / disconnect
             if (p[2] == 0x00 && p[3] == 0x03)
             {
-                bool wasAlive = _mouseAlive;
                 _mouseAlive = p[5] == 0x01;
                 Logger.WriteLine(GetDisplayName() + ": Listener - mouse " + (_mouseAlive ? "connected" : "disconnected"));
-                if (!_mouseAlive) SetDeviceReady(false);
-                else if (!wasAlive) ReadBattery();
+                SetDeviceReady(_mouseAlive);
                 return;
             }
 
             // alive / sleep
             if (p[2] == 0x08 && p[3] == 0x02)
             {
-                bool wasAlive = _mouseAlive;
                 _mouseAlive = p[5] == 0x01;
                 Logger.WriteLine(GetDisplayName() + ": Listener - mouse " + (_mouseAlive ? "awake" : "asleep"));
-                if (!_mouseAlive) SetDeviceReady(false);
-                else if (!wasAlive) ReadBattery();
+                SetDeviceReady(_mouseAlive);
                 return;
             }
 
