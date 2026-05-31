@@ -1616,7 +1616,7 @@ namespace GHelper
             string charge = "";
 
             await Task.Run(() => HardwareControl.ReadSensors());
-            Task.Run((Action)PeripheralsProvider.RefreshBatteryForAllDevices);
+            if (Visible) Task.Run((Action)PeripheralsProvider.RefreshBatteryForAllDevices);
 
             if (HardwareControl.cpuTemp > 0)
                 cpuTemp = ": " + TempHelper.FormatTemp((double)HardwareControl.cpuTemp);
