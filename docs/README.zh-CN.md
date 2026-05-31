@@ -1,6 +1,6 @@
 # G-Helper - 华硕笔记本的轻量级控制工具
 
-小巧轻量的 Armoury Crate（奥创控制中心）替代品，为华硕笔记本提供几乎相同的功能，却拥有小得多的资源占用。兼容所有主流型号，例如 ROG Zephyrus G14、G15、G16、M16、Flow X13、Flow X16、Flow Z13、DUO、TUF 系列、Strix 或 Scar 系列、ProArt、Vivobook、Zenbook、Expertbook、ROG Ally 或 Ally X 等众多机型！
+小巧轻量的 Armoury Crate（奥创控制中心）替代品，为华硕笔记本提供几乎相同的功能，却拥有小得多的资源占用。兼容所有主流型号，例如 ROG 幻14 / 幻15 / 幻16、幻X（Flow 翻转系列）、幻16 Duo 双屏、天选（飞行堡垒）系列、枪神 / 魔霸系列、ProArt 创、无畏（Vivobook）、灵耀（Zenbook）、ExpertBook、ROG Ally 与 Ally X 等众多机型！
 
 [![GitHub release](https://g-helper.com/badge/release.svg)](https://GitHub.com/seerge/g-helper/releases/)
 [![Downloads](https://g-helper.com/badge/downloads.svg)](https://GitHub.com/seerge/g-helper/releases/)
@@ -8,10 +8,10 @@
 [![English](https://g-helper.com/badge/lang-en.svg)](https://github.com/seerge/g-helper#readme)
 [![日本語](https://g-helper.com/badge/lang-ja.svg)](https://github.com/seerge/g-helper/blob/main/docs/README.ja-JP.md)
 [![Čeština](https://g-helper.com/badge/lang-cs.svg)](https://github.com/seerge/g-helper/blob/main/docs/README.cs-CZ.md)
-<a href="https://github.com/seerge/g-helper/releases/latest/download/GHelper.exe" alt="G-Helper - 华硕笔记本的轻量级控制工具"><img width="1280" alt="G-Helper - 华硕笔记本的轻量级控制工具" src="https://raw.githubusercontent.com/seerge/g-helper/refs/heads/main/docs/app-hero.jpg" /></a>
+<a href="https://github.com/seerge/g-helper/releases/latest/download/GHelper.exe" alt="G-Helper - 华硕笔记本的轻量级控制工具"><img width="1280" alt="G-Helper - 华硕笔记本的轻量级控制工具" src="https://g-helper.com/hero/zh.png" /></a>
 
 
-<a href="https://github.com/seerge/g-helper/releases/latest/download/GHelper.exe"><img width="250" alt="Download" src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/Download.png" /></a> &nbsp; <a href="https://g-helper.com/support"><img width="250" alt="Support" src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/Support.png" /></a>
+<a href="https://github.com/seerge/g-helper/releases/latest/download/GHelper.exe"><img width="250" alt="下载" src="https://g-helper.com/button/download.svg?lang=zh" /></a> &nbsp; <a href="https://g-helper.com/support"><img width="250" alt="支持项目" src="https://g-helper.com/button/donate.svg?lang=zh" /></a>
 
 **⭐ 喜欢这个应用？欢迎帮忙宣传推广。**
 
