@@ -481,12 +481,14 @@ namespace GHelper.Peripherals.Mouse
         {
             SetProvider();
             HidSharp.DeviceList.Local.Changed += Device_Changed;
+            StartBatteryListener();
         }
 
         public override void Dispose()
         {
             Logger.WriteLine(GetDisplayName() + ": Disposing");
             HidSharp.DeviceList.Local.Changed -= Device_Changed;
+            StopBatteryListener();
             base.Dispose();
         }
 
@@ -501,6 +503,14 @@ namespace GHelper.Peripherals.Mouse
         //This function should automatically disconnect the device in GHelper if the device is no longer there or the pipe is broken.
         public virtual void CheckConnection()
         {
+            // Listener mice gate ReadBattery on the alive flag (and may just be asleep), so
+            // detect removal by USB presence instead of a failed battery read.
+            if (HasBatteryListener())
+            {
+                if (!IsDeviceConnected()) OnDisconnect();
+                return;
+            }
+
             ReadBattery();
         }
 
@@ -663,6 +673,12 @@ namespace GHelper.Peripherals.Mouse
 
         public virtual void SynchronizeDevice()
         {
+            if (HasBatteryListener() && !_mouseAlive)
+            {
+                SetDeviceReady(false);
+                return;
+            }
+
             DpiSettings = new AsusMouseDPI[DPIProfileCount()];
             ReadBattery();
             if (HasBattery() && Battery <= 0 && Charging == false)
@@ -784,6 +800,11 @@ namespace GHelper.Peripherals.Mouse
                 return;
             }
 
+            if (HasBatteryListener() && !_mouseAlive)
+            {
+                return;
+            }
+
             byte[]? response = WriteForResponse(GetBatteryReportPacket());
             if (response is null) return;
 
@@ -827,6 +848,152 @@ namespace GHelper.Peripherals.Mouse
                 Logger.WriteLine(GetDisplayName() + ": Got Auto Power Off: " + pos + " - Low Battery Warnning at: " + lbw + "%");
             }
 
+        }
+
+        // Battery push listener
+        private HidSharp.HidStream? _listenerStream;
+        private Thread? _listenerThread;
+        private volatile bool _listening;
+        private volatile bool _mouseAlive = true;
+
+        public virtual bool HasBatteryListener()
+        {
+            return Wireless && HasBattery();
+        }
+
+        // HID usage (page<<16 | id) of the collection the device pushes connect/alive/battery on.
+        // OMNI receiver pushes on mi_03&col05 (0xFFC1), not the control collection commands go to.
+        // 0 = listen on the device's own control path.
+        public virtual uint ListenerUsage()
+        {
+            return ProductID() == 0x1ACE ? 0xFFC10001u : 0u;
+        }
+
+        private static bool HasUsage(HidSharp.HidDevice dev, uint usage)
+        {
+            try
+            {
+                return dev.GetReportDescriptor().DeviceItems
+                    .SelectMany(di => di.Usages.GetAllValues()).Contains(usage);
+            }
+            catch { return false; }
+        }
+
+        protected void StartBatteryListener()
+        {
+            if (!HasBatteryListener() || _listening) return;
+
+            try
+            {
+                uint usage = ListenerUsage();
+                var device = usage != 0
+                    ? HidSharp.DeviceList.Local.GetHidDevices(VendorID(), ProductID()).FirstOrDefault(x => HasUsage(x, usage))
+                    : HidSharp.DeviceList.Local.GetHidDevices(VendorID(), ProductID()).FirstOrDefault(x => x.DevicePath.Contains(path));
+                if (device is null) return;
+
+                var config = new HidSharp.OpenConfiguration();
+                config.SetOption(HidSharp.OpenOption.Interruptible, true);
+                config.SetOption(HidSharp.OpenOption.Exclusive, false);
+                config.SetOption(HidSharp.OpenOption.Priority, 10);
+
+                _listenerStream = device.Open(config);
+                _listenerStream.ReadTimeout = Timeout.Infinite;
+            }
+            catch (Exception e)
+            {
+                Logger.WriteLine(GetDisplayName() + ": Failed to start battery listener: " + e.Message);
+                _listenerStream = null;
+                return;
+            }
+
+            _listening = true;
+            _listenerThread = new Thread(ListenerLoop)
+            {
+                IsBackground = true,
+                Name = GetDisplayName() + " battery listener"
+            };
+            _listenerThread.Start();
+            Logger.WriteLine(GetDisplayName() + ": Battery listener started");
+        }
+
+        protected void StopBatteryListener()
+        {
+            if (!_listening && _listenerStream is null) return;
+
+            _listening = false;
+            try { _listenerStream?.Dispose(); } catch { }
+            _listenerStream = null;
+            try { _listenerThread?.Join(500); } catch { }
+            _listenerThread = null;
+        }
+
+        private void ListenerLoop()
+        {
+            byte[] buffer = new byte[USBPacketSize()];
+            while (_listening)
+            {
+                int read;
+                try
+                {
+                    read = _listenerStream!.Read(buffer);
+                }
+                catch (TimeoutException)
+                {
+                    continue;
+                }
+                catch
+                {
+                    break;
+                }
+
+                if (read > 0)
+                {
+                    Logger.WriteLine(GetDisplayName() + ": Listener RAW: " + BitConverter.ToString(buffer, 0, Math.Min(16, buffer.Length)));
+                    DispatchListenerPacket(buffer);
+                }
+            }
+        }
+
+        private void DispatchListenerPacket(byte[] p)
+        {
+            if (p.Length < 6 || p[1] != 0x12) return;
+
+            // connect / disconnect
+            if (p[2] == 0x00 && p[3] == 0x03)
+            {
+                bool wasAlive = _mouseAlive;
+                _mouseAlive = p[5] == 0x01;
+                Logger.WriteLine(GetDisplayName() + ": Listener - mouse " + (_mouseAlive ? "connected" : "disconnected"));
+                if (!_mouseAlive) SetDeviceReady(false);
+                else if (!wasAlive) ReadBattery();
+                return;
+            }
+
+            // alive / sleep
+            if (p[2] == 0x08 && p[3] == 0x02)
+            {
+                bool wasAlive = _mouseAlive;
+                _mouseAlive = p[5] == 0x01;
+                Logger.WriteLine(GetDisplayName() + ": Listener - mouse " + (_mouseAlive ? "awake" : "asleep"));
+                if (!_mouseAlive) SetDeviceReady(false);
+                else if (!wasAlive) ReadBattery();
+                return;
+            }
+
+            // firmware-pushed battery
+            if (p[2] == 0x07)
+            {
+                int battery = ParseBattery(p);
+                if (battery < 0) return;
+
+                _mouseAlive = true;
+                Battery = battery;
+                Charging = ParseChargingState(p);
+                SetDeviceReady(Battery > 0);
+
+                Logger.WriteLine(GetDisplayName() + ": Listener - Battery " + Battery + "% Charging:" + Charging);
+                BatteryUpdated?.Invoke(this, EventArgs.Empty);
+            }
         }
 
         // ------------------------------------------------------------------------------

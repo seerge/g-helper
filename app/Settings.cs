@@ -703,7 +703,7 @@ namespace GHelper
 
         private void RefreshPeripheralsBattery()
         {
-            PeripheralsProvider.RefreshBatteryForAllDevices(true);
+            PeripheralsProvider.RefreshBatteryForAllDevices();
         }
 
         private void ButtonUpdates_Click(object? sender, EventArgs e)
@@ -1616,7 +1616,6 @@ namespace GHelper
             string charge = "";
 
             await Task.Run(() => HardwareControl.ReadSensors());
-            if (Visible) Task.Run((Action)PeripheralsProvider.RefreshBatteryForAllDevices);
 
             if (HardwareControl.cpuTemp > 0)
                 cpuTemp = ": " + TempHelper.FormatTemp((double)HardwareControl.cpuTemp);

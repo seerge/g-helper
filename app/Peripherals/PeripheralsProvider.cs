@@ -29,8 +29,6 @@ namespace GHelper.Peripherals
         }
 
 
-        private static long lastRefresh;
-
         public static bool IsMouseConnected()
         {
             lock (_LOCK)
@@ -66,11 +64,6 @@ namespace GHelper.Peripherals
             {
                 return new List<AsusMouse>(ConnectedMice);
             }
-        }
-
-        public static void RefreshBatteryForAllDevices()
-        {
-            RefreshBatteryForAllDevices(false);
         }
 
         public static void StreamMouseColor(Color color)
@@ -112,12 +105,8 @@ namespace GHelper.Peripherals
             }
         }
 
-        public static void RefreshBatteryForAllDevices(bool force)
+        public static void RefreshBatteryForAllDevices()
         {
-            //Polling the battery every 20s should be enough
-            if (!force && Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastRefresh) < 20_000) return;
-            lastRefresh = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-
             List<IPeripheral> l = AllPeripherals();
 
             foreach (IPeripheral m in l)
@@ -316,6 +305,78 @@ namespace GHelper.Peripherals
             DetectMouse(new MD200());
         }
 
+        // TEMP DIAGNOSTIC: open a raw reader on every 0x1ACE collection to find which one
+        // delivers unsolicited 12-prefix pushes (connect/disconnect/alive/battery).
+        private static bool _diagStarted;
+        private static readonly List<HidStream> _diagStreams = new();
+
+        private static string ShortTag(string path)
+        {
+            int i = path.IndexOf("mi_", StringComparison.OrdinalIgnoreCase);
+            if (i < 0) return path;
+            int j = path.IndexOf('#', i);
+            return j < 0 ? path.Substring(i) : path.Substring(i, j - i);
+        }
+
+        public static void DumpOmniCollections()
+        {
+            if (_diagStarted) return;
+            _diagStarted = true;
+
+            var config = new OpenConfiguration();
+            config.SetOption(OpenOption.Interruptible, true);
+            config.SetOption(OpenOption.Exclusive, false);
+            config.SetOption(OpenOption.Priority, 10);
+
+            foreach (var dev in DeviceList.Local.GetHidDevices(0x0B05, 0x1ACE))
+            {
+                string tag = ShortTag(dev.DevicePath);
+
+                int inLen = 0, outLen = 0, featLen = 0;
+                try { inLen = dev.GetMaxInputReportLength(); } catch { }
+                try { outLen = dev.GetMaxOutputReportLength(); } catch { }
+                try { featLen = dev.GetMaxFeatureReportLength(); } catch { }
+
+                string usages = "";
+                try
+                {
+                    var rd = dev.GetReportDescriptor();
+                    usages = string.Join(",", rd.DeviceItems.SelectMany(di => di.Usages.GetAllValues()).Select(u => $"0x{u:X8}"));
+                }
+                catch { }
+
+                Logger.WriteLine($"[OmniDiag] {tag} in={inLen} out={outLen} feat={featLen} usages=[{usages}]");
+
+                try
+                {
+                    var stream = dev.Open(config);
+                    stream.ReadTimeout = Timeout.Infinite;
+                    _diagStreams.Add(stream);
+
+                    int bufLen = Math.Max(inLen, 64);
+                    var t = new Thread(() =>
+                    {
+                        byte[] buf = new byte[bufLen];
+                        while (true)
+                        {
+                            int read;
+                            try { read = stream.Read(buf); }
+                            catch (TimeoutException) { continue; }
+                            catch { break; }
+                            if (read > 1 && (buf[0] == 0x12 || buf[1] == 0x12))
+                                Logger.WriteLine($"[OmniDiag] {tag} RAW: " + BitConverter.ToString(buf, 0, Math.Min(20, buf.Length)));
+                        }
+                    })
+                    { IsBackground = true, Name = "OmniDiag " + tag };
+                    t.Start();
+                }
+                catch (Exception e)
+                {
+                    Logger.WriteLine($"[OmniDiag] open failed {tag}: {e.Message}");
+                }
+            }
+        }
+
         public static void DedectOmniMouse()
         {
             try
@@ -324,6 +385,8 @@ namespace GHelper.Peripherals
                 var omni = DeviceList.Local.GetHidDevices(0x0B05, 0x1ACE).FirstOrDefault(x => x.DevicePath.Contains("mi_02&col01"));
                 var device = DeviceList.Local.GetHidDevices(0x0B05, 0x1ACE).FirstOrDefault(x => x.DevicePath.Contains("mi_02&col03"));
                 if (omni is null || device is null) return;
+
+                DumpOmniCollections();
 
                 var config = new OpenConfiguration();
                 config.SetOption(OpenOption.Interruptible, true);
