@@ -146,6 +146,7 @@ public class AsusACPI
     public const int StatusLed = 0x000600C2;
 
     public const int BootSound = 0x00130022;
+    public const int HibernateHelper = 0x0012007E;
 
     public const int Tablet_Notebook = 0;
     public const int Tablet_Tablet = 1;
@@ -453,6 +454,22 @@ public class AsusACPI
         BitConverter.GetBytes((uint)Status).CopyTo(args, 4);
 
         return CallMethod(DSTS, args);
+    }
+
+    public int GetHibernateHelper()
+    {
+        return DeviceGet(HibernateHelper);
+    }
+
+    public int SetHibernateHelper(bool enabled)
+    {
+        if (DeviceGet(HibernateHelper) < 0) return -1;
+
+        byte[] args = enabled
+            ? new byte[] { 0x02, 0x02, 0x00, 0x00, 0x01 }
+            : new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 };
+
+        return DeviceSet(HibernateHelper, args, "HibernateHelper");
     }
 
 
