@@ -3,6 +3,7 @@ using GHelper.Mode;
 using Microsoft.Win32;
 using System.Management;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 
 public static class AppConfig
 {
@@ -13,6 +14,15 @@ public static class AppConfig
     private static Dictionary<string, object> config = new Dictionary<string, object>();
     private static System.Timers.Timer timer = new System.Timers.Timer(2000) { AutoReset = false };
     private static readonly object configLock = new();
+
+    private static readonly JsonSerializerOptions LenientOptions = new()
+    {
+        AllowTrailingCommas = true,
+        ReadCommentHandling = JsonCommentHandling.Skip
+    };
+
+    private static readonly Regex KeyValueRegex = new(
+        @"""((?:\\.|[^""\\])*)""\s*:\s*(""(?:\\.|[^""\\])*""|-?\d+(?:\.\d+)?|true|false|null)");
 
     static AppConfig()
     {
@@ -28,7 +38,7 @@ public static class AppConfig
 
         Directory.CreateDirectory(appPath);
 
-        if (!TryLoadConfig(configFile) && !TryLoadConfig(configFile + ".bak") && !TryLoadConfig(fallbackConfigFile)) Init();
+        if (!TryLoadConfig(configFile) && !TryRecoverConfig(configFile) && !TryLoadConfig(configFile + ".bak") && !TryLoadConfig(fallbackConfigFile)) Init();
 
         timer.Elapsed += Timer_Elapsed;
     }
@@ -38,13 +48,36 @@ public static class AppConfig
         if (!File.Exists(path)) return false;
         try
         {
-            config = JsonSerializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(path));
+            config = JsonSerializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(path), LenientOptions);
             Logger.WriteLine($"Config loaded from {path}");
             return true;
         }
         catch (Exception ex)
         {
             Logger.WriteLine($"Broken config {path}: {ex.Message}");
+            return false;
+        }
+    }
+
+    private static bool TryRecoverConfig(string path)
+    {
+        if (!File.Exists(path)) return false;
+        try
+        {
+            var pairs = new Dictionary<string, string>();
+            foreach (Match m in KeyValueRegex.Matches(File.ReadAllText(path)))
+                pairs["\"" + m.Groups[1].Value + "\""] = m.Groups[2].Value;
+
+            if (pairs.Count == 0) return false;
+
+            string rebuilt = "{" + string.Join(",", pairs.Select(p => p.Key + ":" + p.Value)) + "}";
+            config = JsonSerializer.Deserialize<Dictionary<string, object>>(rebuilt, LenientOptions);
+            Logger.WriteLine($"Recovered {pairs.Count} values from broken config {path}");
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine($"Config recovery failed {path}: {ex.Message}");
             return false;
         }
     }
@@ -456,6 +489,11 @@ public static class AppConfig
         return ContainsModel("Strix") || ContainsModel("Scar") || ContainsModel("G703G");
     }
 
+    public static bool IsEcoBootFix()
+    {
+        return ContainsModel("G635L") || ContainsModel("G615L") || ContainsModel("G835L") || ContainsModel("G815L") || ContainsModel("FA506");
+    }
+
     public static bool IsBacklightZones()
     {
         return IsStrix() || IsZ13();
@@ -567,11 +605,6 @@ public static class AppConfig
         return ContainsModel("GA403UI") || ContainsModel("GA403UU") || ContainsModel("GA403UV") || ContainsModel("FA507XV");
     }
 
-    public static bool IsReapplyTempRequired()
-    {
-        return ContainsModel("GA402") || ContainsModel("GV601");
-    }
-
     public static bool IsReapplyRyzen()
     {
         return ContainsModel("G614F") || ContainsModel("G814F") || ContainsModel("G733P");
@@ -599,7 +632,7 @@ public static class AppConfig
 
     public static bool IsStandardModeFix()
     {
-        return Is("shutdown_gpu") || ContainsModel("FX506HCB");
+        return Is("shutdown_gpu") || ((ContainsModel("FX506HC") || ContainsModel("FA808U")) && IsNotFalse("shutdown_gpu"));
     }
 
     public static bool IsShutdownReset()
@@ -707,7 +740,7 @@ public static class AppConfig
 
     public static bool IsSleepReset()
     {
-        return ContainsModel("GU605MI") || ContainsModel("GU605MV");
+        return Is("sleep_reset") || ContainsModel("GU605MI") || ContainsModel("GU605MV");
     }
 
     public static bool SaveDimming()

@@ -650,7 +650,7 @@ namespace GHelper.USB
             if (init || initDirect)
             {
                 initDirect = false;
-                AsusHid.SetFeatureAura(new byte[] { AsusHid.AURA_ID, 0xBC });
+                AsusHid.WriteAura(new byte[] { AsusHid.AURA_ID, 0xBC });
                 Thread.Sleep(50);
             }
 
@@ -679,7 +679,7 @@ namespace GHelper.USB
 
                     buffer[6] = (byte)i;
                     Buffer.BlockCopy(keyBuf, 3 * i, buffer, 9, 3 * buffer[7]);
-                    AsusHid.SetFeatureAura(buffer);
+                    AsusHid.WriteAura(buffer);
                     Thread.Sleep(1);
                 }
             }
@@ -701,13 +701,13 @@ namespace GHelper.USB
                     keyBuf[ledIndex * 3 + 2] = color[zone].B;
                 }
                 Buffer.BlockCopy(keyBuf, 0, buffer, 9, 3 * leds_4_zone);
-                AsusHid.SetFeatureAura(buffer);
+                AsusHid.WriteAura(buffer);
                 Thread.Sleep(1);
                 return;
             }
 
             Buffer.BlockCopy(keyBuf, 3 * keySet, buffer, 9, 3 * (ledCount - keySet));
-            AsusHid.SetFeatureAura(buffer);
+            AsusHid.WriteAura(buffer);
         }
 
         public static void ApplyDirectLightbar(Color[] color)
@@ -729,7 +729,7 @@ namespace GHelper.USB
                 buffer[o + 2] = color[zone].B;
             }
 
-            AsusHid.SetFeatureAura(buffer);
+            AsusHid.WriteAura(buffer);
         }
 
 
@@ -761,7 +761,7 @@ namespace GHelper.USB
             {
                 initDirect = false;
                 //Init();
-                AsusHid.SetFeatureAura(new byte[] { AsusHid.AURA_ID, 0xBC });
+                AsusHid.WriteAura(new byte[] { AsusHid.AURA_ID, 0xBC });
                 Thread.Sleep(50);
             }
 
@@ -774,7 +774,7 @@ namespace GHelper.USB
             buffer[10] = color.G;
             buffer[11] = color.B;
 
-            AsusHid.SetFeatureAura(buffer);
+            AsusHid.WriteAura(buffer);
 
         }
 

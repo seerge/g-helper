@@ -425,6 +425,16 @@ namespace GHelper.Overlay
             if (targetPid == 0) return;                                    // no foreground target yet
             if ((int)record.EventHeader.ProcessId != targetPid) return;    // wrong process
 
+            // DXGI_PRESENT_TEST presents probe swapchain state without displaying a frame.
+            // S.T.A.L.K.E.R. Anomaly's X-Ray engine fires one between every real Present,
+            // which would otherwise double the reported FPS. Skip them — by definition
+            // they never produce a displayed frame, so this is safe for any game.
+            if (isDxgiPresent && record.UserDataLength >= 12)
+            {
+                uint dxgiFlags = (uint)Marshal.ReadInt32(record.UserData, 8);
+                if ((dxgiFlags & 0x1 /*DXGI_PRESENT_TEST*/) != 0) return;
+            }
+
             // Prefer DXGI when available — if DXGI event 42 has been seen for this PID,
             // ignore DxgKrnl events to avoid double-counting frames on games that emit both.
             if (isDxgiPresent)

@@ -60,6 +60,14 @@ namespace GHelper.Peripherals
             return l;
         }
 
+        public static List<AsusMouse> SnapshotMice()
+        {
+            lock (_LOCK)
+            {
+                return new List<AsusMouse>(ConnectedMice);
+            }
+        }
+
         public static void RefreshBatteryForAllDevices()
         {
             RefreshBatteryForAllDevices(false);
@@ -133,12 +141,14 @@ namespace GHelper.Peripherals
                 am.Disconnect -= Mouse_Disconnect;
                 am.MouseReadyChanged -= MouseReadyChanged;
                 am.BatteryUpdated -= BatteryUpdated;
+                am.ButtonBindingsChanged -= ButtonBindingsChanged;
                 ConnectedMice.Remove(am);
             }
             if (DeviceChanged is not null)
             {
                 DeviceChanged(am, EventArgs.Empty);
             }
+            RefreshHotkeys();
         }
 
         public static void Connect(AsusMouse am)
@@ -182,11 +192,13 @@ namespace GHelper.Peripherals
             am.Disconnect += Mouse_Disconnect;
             am.MouseReadyChanged += MouseReadyChanged;
             am.BatteryUpdated += BatteryUpdated;
+            am.ButtonBindingsChanged += ButtonBindingsChanged;
             if (DeviceChanged is not null)
             {
                 DeviceChanged(am, EventArgs.Empty);
             }
             UpdateSettingsView();
+            RefreshHotkeys();
         }
 
         private static void BatteryUpdated(object? sender, EventArgs e)
@@ -197,6 +209,11 @@ namespace GHelper.Peripherals
         private static void MouseReadyChanged(object? sender, EventArgs e)
         {
             UpdateSettingsView();
+        }
+
+        private static void ButtonBindingsChanged(object? sender, EventArgs e)
+        {
+            RefreshHotkeys();
         }
 
         private static void Mouse_Disconnect(object? sender, EventArgs e)
@@ -216,8 +233,21 @@ namespace GHelper.Peripherals
             am.Dispose();
 
             UpdateSettingsView();
+            RefreshHotkeys();
         }
 
+
+        // RegisterHotKey is thread-affine: hotkeys registered by a Task-pool thread are torn down
+        // when that thread is released, and UnregisterHotKey only frees the calling thread's
+        // registrations. Always run RegisterKeys on the UI thread.
+        private static void RefreshHotkeys()
+        {
+            if (Program.inputDispatcher is null || Program.settingsForm is null) return;
+            if (Program.settingsForm.InvokeRequired)
+                Program.settingsForm.BeginInvoke((Action)Program.inputDispatcher.RegisterKeys);
+            else
+                Program.inputDispatcher.RegisterKeys();
+        }
 
         private static void UpdateSettingsView()
         {
@@ -300,7 +330,7 @@ namespace GHelper.Peripherals
                 config.SetOption(OpenOption.Exclusive, false);
                 config.SetOption(OpenOption.Priority, 10);
 
-                AsusMouse omniMouse;
+                AsusMouse? omniMouse;
 
                 using (var stream = omni.Open(config))
                 {
@@ -315,6 +345,8 @@ namespace GHelper.Peripherals
 
                     omniMouse = ResolveOmniMouse(response);
                 }
+
+                if (omniMouse is null) return;
 
                 using (var stream = device.Open(config))
                 {
@@ -350,7 +382,7 @@ namespace GHelper.Peripherals
             0x1B06, // Falchion RX Low Profile
         };
 
-        private static AsusMouse ResolveOmniMouse(byte[] response)
+        private static AsusMouse? ResolveOmniMouse(byte[] response)
         {
             for (int offset = 5; offset + 3 < response.Length; offset += 4)
             {
@@ -367,7 +399,7 @@ namespace GHelper.Peripherals
                 Logger.WriteLine($"Omni slot @{offset}: {pid:X4} ({(KnownOmniKeyboards.Contains(pid) ? "keyboard, skipped" : "unknown, skipped")})");
             }
 
-            return new HarpeAceAimLabEditionOmni();
+            return null;
         }
 
         private static AsusMouse? MouseFromOmniPid(int pid) => pid switch

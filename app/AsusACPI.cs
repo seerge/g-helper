@@ -497,27 +497,16 @@ public class AsusACPI
 
     public int GetFan(AsusFan device)
     {
-        int fan = -1;
-
-        switch (device)
+        uint endpoint = device switch
         {
-            case AsusFan.GPU:
-                fan = Program.acpi.DeviceGet(GPU_Fan);
-                break;
-            case AsusFan.Mid:
-                fan = Program.acpi.DeviceGet(Mid_Fan);
-                break;
-            default:
-                fan = Program.acpi.DeviceGet(CPU_Fan);
-                break;
-        }
+            AsusFan.GPU => GPU_Fan,
+            AsusFan.Mid => Mid_Fan,
+            _ => CPU_Fan,
+        };
 
-        if (fan < 0)
-        {
-            fan += 65536;
-            if (fan <= 0 || fan > 100) fan = -1;
-        }
-
+        int raw = Program.acpi.DeviceGet(endpoint);
+        int fan = raw & 0xFFFF;
+        if (fan > 120 || (fan == 0 && raw < 0)) fan = -1;
         return fan;
     }
 

@@ -138,6 +138,7 @@ public class NvidiaGpuControl : IGpuControl
 
     public void Dispose()
     {
+        _internalGpu = null;
     }
 
     private static readonly HashSet<string> _systemProcessNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
@@ -275,7 +276,7 @@ public class NvidiaGpuControl : IGpuControl
         if (!ProcessHelper.IsUserAdministrator()) return;
         if (NvBootState.DGpuArrivedAfterBoot())
         {
-            RunPowershellCommand(@"Restart-Service -Name 'NvContainerLocalSystem' -Force", 15000);
+            RunPowershellCommand(@"Restart-Service -Name 'NvContainerLocalSystem' -Force", 30000);
             NvBootState.MarkHandled();
         }
     }
@@ -283,15 +284,15 @@ public class NvidiaGpuControl : IGpuControl
     public static void RestartNVService()
     {
         if (!ProcessHelper.IsUserAdministrator()) return;
-        RunPowershellCommand(@"Restart-Service -Name 'NVDisplay.ContainerLocalSystem' -Force", 15000);
-        RunPowershellCommand(@"Restart-Service -Name 'NvContainerLocalSystem' -Force", 15000);
+        RunPowershellCommand(@"Restart-Service -Name 'NVDisplay.ContainerLocalSystem' -Force", 30000);
+        RunPowershellCommand(@"Restart-Service -Name 'NvContainerLocalSystem' -Force", 30000);
     }
 
     public static void StopNVService()
     {
         if (!ProcessHelper.IsUserAdministrator()) return;
-        RunPowershellCommand(@"Stop-Service -Name 'NvContainerLocalSystem' -Force", 15000);
-        RunPowershellCommand(@"Stop-Service -Name 'NVDisplay.ContainerLocalSystem' -Force", 15000);
+        RunPowershellCommand(@"Stop-Service -Name 'NvContainerLocalSystem' -Force", 30000);
+        RunPowershellCommand(@"Stop-Service -Name 'NVDisplay.ContainerLocalSystem' -Force", 30000);
     }
 
     public int SetClocks(int core, int memory)

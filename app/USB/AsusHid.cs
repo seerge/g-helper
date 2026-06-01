@@ -15,24 +15,17 @@ public static class AsusHid
     public static int[] ALL_PIDS = MAIN_AURA_PIDS.Concat(REAR_LIGHT_PIDS).ToArray();
 
     static HidStream? auraStream;
-    static int auraFeatLen;
-    static byte[]? auraScratch;
 
     static void EnsureAuraStream()
     {
         if (auraStream != null) return;
         auraStream = FindHidStream(AURA_ID);
-        if (auraStream == null) return;
-        auraFeatLen = auraStream.Device.GetMaxFeatureReportLength();
-        auraScratch = auraFeatLen > 0 ? new byte[auraFeatLen] : null;
     }
 
     static void DisposeAuraStream()
     {
         auraStream?.Dispose();
         auraStream = null;
-        auraFeatLen = 0;
-        auraScratch = null;
     }
 
     public static IEnumerable<HidDevice>? FindDevices(byte reportId, int[]? pids = null)
@@ -174,7 +167,7 @@ public static class AsusHid
             }
     }
 
-    public static void SetFeatureAura(byte[] data, bool retry = true)
+    public static void WriteAura(byte[] data, bool retry = true)
     {
         EnsureAuraStream();
         if (auraStream == null)
@@ -185,20 +178,13 @@ public static class AsusHid
 
         try
         {
-            byte[] payload = data;
-            if (auraScratch != null && data.Length < auraFeatLen)
-            {
-                Array.Clear(auraScratch, 0, auraFeatLen);
-                Array.Copy(data, auraScratch, data.Length);
-                payload = auraScratch;
-            }
-            auraStream.SetFeature(payload);
+            auraStream.Write(data);
         }
         catch (Exception ex)
         {
-            Logger.WriteLine($"Error setting feature on HID device: {ex.Message} {BitConverter.ToString(data, 0, Math.Min(16, data.Length))}");
+            Logger.WriteLine($"Error writing to HID device: {ex.Message} {BitConverter.ToString(data, 0, Math.Min(16, data.Length))}");
             DisposeAuraStream();
-            if (retry) SetFeatureAura(data, false);
+            if (retry) WriteAura(data, false);
         }
     }
 
