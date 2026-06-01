@@ -807,7 +807,7 @@
     <value>独显直连</value>
   </data>
   <data name="UndervoltingRisky" xml:space="preserve">
-    <value>降低电压是实验性的危险功能。 如果对硬件应用的值太低，可能会产生不稳定、关闭现象或造成数据损坏问题。 如果你想要尝试，应先从小值开始，点击应用并测试合适的值。</value>
+    <value>降压是一项具有风险的实验性功能。如果设定的电压过低，可能会导致系统不稳定、意外关机甚至数据损坏。若您打算尝试，请务必从极小的幅度开始微调，并在每次应用后进行稳定性压力测试。在确认找到最合适的稳定数值后，您可以开启“自动应用”功能，以实现每次开机时自动执行降压设置。</value>
   </data>
   <data name="Unmuted" xml:space="preserve">
     <value>麦克风开启</value>
@@ -858,7 +858,7 @@
     <value>谢谢</value>
   </data>
   <data name="Legend" xml:space="preserve">
-    <value>Legend</value>
+    <value>说明</value>
   </data>
   <data name="LegendGray" xml:space="preserve">
     <value>无法检查本地版本</value>
@@ -873,40 +873,40 @@
     <comment>Updated</comment>
   </data>
   <data name="SlashBounce" xml:space="preserve">
-    <value>Bounce</value>
+    <value>弹跳</value>
   </data>
   <data name="SlashMode" xml:space="preserve">
-    <value>Slash</value>
+    <value>Slash 模式</value>
   </data>
   <data name="SlashLoading" xml:space="preserve">
     <value>加载中</value>
   </data>
   <data name="SlashBitStream" xml:space="preserve">
-    <value>Bit Stream</value>
+    <value>比特流</value>
   </data>
   <data name="SlashTransmission" xml:space="preserve">
-    <value>Transmission</value>
+    <value>传输</value>
   </data>
   <data name="SlashFlow" xml:space="preserve">
-    <value>Flow</value>
+    <value>流光</value>
   </data>
   <data name="SlashFlux" xml:space="preserve">
-    <value>Flux</value>
+    <value>通量</value>
   </data>
   <data name="SlashPhantom" xml:space="preserve">
-    <value>Phantom</value>
+    <value>幻影</value>
   </data>
   <data name="SlashSpectrum" xml:space="preserve">
-    <value>Spectrum</value>
+    <value>律动</value>
   </data>
   <data name="SlashHazard" xml:space="preserve">
-    <value>Hazard</value>
+    <value>提示</value>
   </data>
   <data name="SlashInterfacing" xml:space="preserve">
-    <value>Interfacing</value>
+    <value>接口</value>
   </data>
   <data name="SlashRamp" xml:space="preserve">
-    <value>Ramp</value>
+    <value>渐变</value>
   </data>
   <data name="SlashGameOver" xml:space="preserve">
     <value>游戏结束</value>
@@ -915,7 +915,7 @@
     <value>启动</value>
   </data>
   <data name="SlashBuzzer" xml:space="preserve">
-    <value>Buzzer</value>
+    <value>蜂鸣器</value>
   </data>
   <data name="SlashStatic" xml:space="preserve">
     <value>恒亮(静态)</value>
@@ -924,7 +924,7 @@
     <value>电池电量</value>
   </data>
   <data name="IntervalOff" xml:space="preserve">
-    <value>Interval Off</value>
+    <value>间隔关闭</value>
   </data>
   <data name="IntervalSeconds" xml:space="preserve">
     <value>间隔 {0}秒</value>
