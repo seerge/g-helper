@@ -997,7 +997,16 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("FanCurves", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Hold SHIFT to drag all points together.
+        /// </summary>
+        internal static string FanDragAll {
+            get {
+                return ResourceManager.GetString("FanDragAll", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to CPU Fan Profile.
         /// </summary>

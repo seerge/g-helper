@@ -407,6 +407,9 @@ Nadal chcesz kontynuować?</value>
   <data name="FanCurves" xml:space="preserve">
     <value>Krzywe wentylatorów</value>
   </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>Przytrzymaj SHIFT, aby przeciągnąć wszystkie punkty razem</value>
+  </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>Krzywa wentylatora CPU</value>
   </data>

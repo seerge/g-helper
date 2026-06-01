@@ -1301,6 +1301,7 @@ namespace GHelper
             curPoint = null;
             curIndex = -1;
             labelTip.Visible = false;
+            FanDragHint(false);
         }
 
         private void ChartCPU_MouseMove(object? sender, MouseEventArgs e, AsusFan device)
@@ -1406,7 +1407,15 @@ namespace GHelper
 
             labelTip.Visible = tip;
 
+            FanDragHint(curPoint != null);
 
+        }
+
+        private void FanDragHint(bool show)
+        {
+            labelFansResult.Text = show ? Properties.Strings.FanDragAll : "";
+            labelFansResult.ForeColor = show ? colorGray : colorTurbo;
+            labelFansResult.Visible = show;
         }
 
         private void AdjustAll(double deltaX, double deltaY, Series series)

@@ -71,6 +71,7 @@ public static class NativeMethods
     internal const int PBT_POWERSETTINGCHANGE = 0x8013;
     internal const int PBT_APMSUSPEND = 0x0004;
     internal const int PBT_APMRESUMESUSPEND = 0x0007;
+    internal const int PBT_APMRESUMEAUTOMATIC = 0x0012;
 
     [DllImport("User32.dll", SetLastError = true)]
     internal static extern IntPtr RegisterPowerSettingNotification(IntPtr hWnd, [In] Guid PowerSettingGuid, uint Flags);

@@ -407,6 +407,9 @@ Folytatni szeretnéd?</value>
   <data name="FanCurves" xml:space="preserve">
     <value>Ventilátorgörbe</value>
   </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>Tartsa lenyomva a SHIFT-et az összes pont együttes mozgatásához</value>
+  </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>CPU ventilátor profil</value>
   </data>

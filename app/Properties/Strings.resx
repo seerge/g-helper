@@ -407,6 +407,9 @@ Do you still want to continue?</value>
   <data name="FanCurves" xml:space="preserve">
     <value>Fan Curves</value>
   </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>Hold SHIFT to drag all points together</value>
+  </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>CPU Fan Profile</value>
   </data>
