@@ -183,14 +183,18 @@ namespace GHelper.Gpu
 
                     if (eco == 0)
                     {
-                        await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("nv_delay", 5000)));
-
                         if (AppConfig.IsNVPlatform())
                         {
+                            settings.LockGPUModes(Properties.Strings.GPUMode +": Restarting NV Services...");
+                            await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("nv_delay", 5000)));
                             NvidiaGpuControl.RestartNVService();
+                            settings.Invoke(delegate { InitGPUMode(); });
                             await Task.Delay(TimeSpan.FromMilliseconds(1000));
                         } else {
+                            settings.LockGPUModes(Properties.Strings.GPUMode +": Restarting NV Service...");
+                            await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("nv_delay", 5000)));
                             NvidiaGpuControl.FixNvContainer();
+                            settings.Invoke(delegate { InitGPUMode(); });
                         }
 
                         HardwareControl.RecreateGpuControl();
