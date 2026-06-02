@@ -50,7 +50,7 @@ namespace GHelper.UI
             // Setup animation timer at the highest possible refresh rate from screen
             _animationTimer = new System.Windows.Forms.Timer();
             int refreshRate = GetCurrentRefreshRate();
-            _animationTimer.Interval = refreshRate > 0 ? Math.Max(1, 1000 / refreshRate) : 4;  // Cap at 240Hz (4.17ms), default to 4ms
+            _animationTimer.Interval = refreshRate > 0 ? Math.Max(1, 1000 / refreshRate) : 16;  // Cap at 240Hz (4.17ms), default to 60Hz (16ms)
             _animationTimer.Tick += AnimationTimer_Tick;
         }
 
