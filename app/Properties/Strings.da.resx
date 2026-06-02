@@ -407,6 +407,9 @@ Vil du stadig fortsætte?</value>
   <data name="FanCurves" xml:space="preserve">
     <value>Blæserkurver</value>
   </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>Hold SHIFT nede for at trække alle punkter samtidig</value>
+  </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>CPU blæserkurveprofil</value>
   </data>

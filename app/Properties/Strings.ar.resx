@@ -407,6 +407,9 @@
   <data name="FanCurves" xml:space="preserve">
     <value>منحنيات المروحة</value>
   </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>اضغط مع الاستمرار على SHIFT لسحب جميع النقاط معًا</value>
+  </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>ملف تعريف مروحة وحدة المعالجة المركزية</value>
   </data>

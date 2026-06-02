@@ -38,6 +38,7 @@ jobs:
         organization-id: ${{ secrets.SIGNPATH_ORG_ID }}
         project-slug: ${{ secrets.SIGNPATH_PROJECT }}
         signing-policy-slug: ${{ secrets.SIGNPATH_POLICY }}
+        artifact-configuration-slug: overlay
         github-artifact-id: ${{ steps.upload-unsigned-overlay.outputs.artifact-id }}
         wait-for-completion: true
         output-artifact-directory: 'overlay/bin/Release/net48/publish'
@@ -60,6 +61,7 @@ jobs:
         organization-id: ${{ secrets.SIGNPATH_ORG_ID }}
         project-slug: ${{ secrets.SIGNPATH_PROJECT }}
         signing-policy-slug: ${{ secrets.SIGNPATH_POLICY }}
+        artifact-configuration-slug: initial
         github-artifact-id: ${{ steps.upload-unsigned-main.outputs.artifact-id }}
         wait-for-completion: true
         output-artifact-directory: './signed'

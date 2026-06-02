@@ -407,6 +407,9 @@ Yine de devam etmek istiyor musunuz?</value>
   <data name="FanCurves" xml:space="preserve">
     <value>Fan Eğrileri</value>
   </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>Tüm noktaları birlikte sürüklemek için SHIFT tuşunu basılı tutun</value>
+  </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>CPU Fan Profili</value>
   </data>
