@@ -407,6 +407,9 @@
   <data name="FanCurves" xml:space="preserve">
     <value>ファンカーブ</value>
   </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>SHIFTキーを押しながらドラッグするとすべてのポイントを一緒に移動できます</value>
+  </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>CPUファンプロファイル</value>
   </data>

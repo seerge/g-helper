@@ -407,6 +407,9 @@ Quer prosseguir?</value>
   <data name="FanCurves" xml:space="preserve">
     <value>Curvas das Ventoinhas</value>
   </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>Mantenha SHIFT premido para arrastar todos os pontos em conjunto</value>
+  </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>Perfil da Ventoinha do CPU</value>
   </data>

@@ -407,6 +407,9 @@
   <data name="FanCurves" xml:space="preserve">
     <value>Профілі кулерів</value>
   </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>Утримуйте SHIFT, щоб перетягнути всі точки разом</value>
+  </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>Профіль кулеру CPU</value>
   </data>

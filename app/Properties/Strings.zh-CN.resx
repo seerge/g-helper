@@ -407,6 +407,9 @@
   <data name="FanCurves" xml:space="preserve">
     <value>风扇曲线</value>
   </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>按住 SHIFT 可同时拖动所有点</value>
+  </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>CPU 风扇配置文件</value>
   </data>
@@ -441,7 +444,7 @@
     <value>Fn锁定开</value>
   </data>
   <data name="WinLockToggle" xml:space="preserve">
-    <value>Win-Lock Toggle</value>
+    <value>Win 键锁定切换</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>动态加速</value>

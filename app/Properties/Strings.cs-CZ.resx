@@ -407,6 +407,9 @@ Chcete přesto pokračovat?</value>
   <data name="FanCurves" xml:space="preserve">
     <value>Křivky ventilátorů</value>
   </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>Podržením klávesy SHIFT přesunete všechny body najednou</value>
+  </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>Profil CPU ventilátoru</value>
   </data>

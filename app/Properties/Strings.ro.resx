@@ -407,6 +407,9 @@
   <data name="FanCurves" xml:space="preserve">
     <value>Curbe ventilator</value>
   </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>Țineți apăsat SHIFT pentru a trage toate punctele împreună</value>
+  </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>Profil ventilator CPU</value>
   </data>

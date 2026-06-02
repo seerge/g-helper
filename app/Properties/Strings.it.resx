@@ -407,6 +407,9 @@ Sei sicuro di voler continuare?</value>
   <data name="FanCurves" xml:space="preserve">
     <value>Curve Ventola</value>
   </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>Tieni premuto SHIFT per trascinare tutti i punti insieme</value>
+  </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>Profilo Ventola CPU</value>
   </data>
