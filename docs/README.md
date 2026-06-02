@@ -2,17 +2,18 @@
 
 Small and lightweight Armoury Crate alternative for Asus laptops offering almost same functionality with a much smaller footprint. Works with all popular models, such as ROG Zephyrus G14, G15, G16, M16, Flow X13, Flow X16, Flow Z13, DUO, TUF Series, Strix or Scar Series, ProArt, Vivobook, Zenbook, Expertbook, ROG Ally or Ally X and many more!
 
-[![GitHub release](https://img.shields.io/github/release/seerge/g-helper?color=%234493f8)](https://GitHub.com/seerge/g-helper/releases/)
-[![Github all releases](https://img.shields.io/github/downloads/seerge/g-helper/total?logo=download&color=%234493f8)](https://GitHub.com/seerge/g-helper/releases/)
-[![SLSA3](https://img.shields.io/badge/SLSA-level%203-blue?color=%234493f8)](https://github.com/seerge/g-helper/attestations)
-[![GitHub stars](https://img.shields.io/github/stars/seerge/g-helper?style=flat&color=4493f8&logo=github)](https://GitHub.com/seerge/g-helper/stargazers/)
-[![中文](https://img.shields.io/badge/-中文-555555)](https://github.com/seerge/g-helper/blob/main/docs/README.zh-CN.md)
-[![日本語](https://img.shields.io/badge/-日本語-555555)](https://github.com/seerge/g-helper/blob/main/docs/README.ja-JP.md)
-[![Čeština](https://img.shields.io/badge/-Čeština-555555)](https://github.com/seerge/g-helper/blob/main/docs/README.cs-CZ.md)
+[![GitHub release](https://g-helper.com/badge/release.svg)](https://GitHub.com/seerge/g-helper/releases/)
+[![Downloads](https://g-helper.com/badge/downloads.svg)](https://GitHub.com/seerge/g-helper/releases/)
+[![SLSA3](https://g-helper.com/badge/slsa.svg)](https://github.com/seerge/g-helper/attestations)
+[![中文](https://g-helper.com/badge/lang-zh.svg)](https://github.com/seerge/g-helper/blob/main/docs/README.zh-CN.md)
+[![日本語](https://g-helper.com/badge/lang-ja.svg)](https://github.com/seerge/g-helper/blob/main/docs/README.ja-JP.md)
+[![Čeština](https://g-helper.com/badge/lang-cs.svg)](https://github.com/seerge/g-helper/blob/main/docs/README.cs-CZ.md)
+[![Español](https://g-helper.com/badge/lang-es.svg)](https://github.com/seerge/g-helper/blob/main/docs/README.es-ES.md)
+[![한국어](https://g-helper.com/badge/lang-ko.svg)](https://github.com/seerge/g-helper/blob/main/docs/README.ko-KR.md)
 <a href="https://github.com/seerge/g-helper/releases/latest/download/GHelper.exe" alt="G-Helper - Lightweight control tool for Asus laptops"><img width="1280" alt="G-Helper - Lightweight control tool for Asus laptops" src="https://raw.githubusercontent.com/seerge/g-helper/refs/heads/main/docs/app-hero.jpg" /></a>
 
 
-<a href="https://github.com/seerge/g-helper/releases/latest/download/GHelper.exe"><img width="250" alt="Download" src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/Download.png" /></a> &nbsp; <a href="https://g-helper.com/support"><img width="250" alt="Support" src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/Support.png" /></a>
+<a href="https://github.com/seerge/g-helper/releases/latest/download/GHelper.exe"><img width="250" alt="Download" src="https://g-helper.com/button/download.svg?lang=en" /></a> &nbsp; <a href="https://g-helper.com/support"><img width="250" alt="Donate" src="https://g-helper.com/button/donate.svg?lang=en" /></a>
 
 **⭐ Like the app? Help spread the word.**
 
@@ -100,6 +101,18 @@ In each mode dedicated GPU can be tweaked to specific needs, including Core and 
 ### 💿Driver Updates
 The app includes an automatic BIOS and driver update checker that pulls directly from the official Asus website for your specific model, highlighting new downloads as they become available. All links in the `Updates` section point to official Asus downloads.
 <img width="2302" alt="Driver Updates" src="https://github.com/user-attachments/assets/303dfce9-fbbd-4d15-b6d7-f21e7c2c59a4" />
+
+### 🎮 Metrics Overlay
+A built-in in-game overlay (OSD) that shows live **FPS, CPU / GPU temperatures, usage and power** right on top of your game - no extra tools like RTSS needed. Works in DX10+ games. May not be visible over old titles that use exclusive full-screen mode, so set the game to windowed / borderless full-screen mode.
+
+- ``Ctrl + Shift + Alt + O`` - Toggle in-game overlay ON / OFF
+- ``Ctrl + Shift + Alt + Mouse Drag`` - Move overlay
+- ``Ctrl + Shift + Alt + Mouse Click`` - Switch mode (Light / Default / Full)
+- ``Ctrl + Shift + Alt + Wheel`` - Resize overlay
+- ``Ctrl + Shift + Alt + Wheel Click`` - Reset overlay size
+
+<img width="1690" alt="Metrics Overlay" src="https://github.com/user-attachments/assets/0752a704-e9a7-4e27-8587-39967f625fae" />
+<img width="3840" alt="Metrics Overlay in a game" src="https://github.com/user-attachments/assets/8b063f80-d508-41e0-9978-154bc936d451" />
 
 ### :mouse: Asus Mouse and other peripherals support
 

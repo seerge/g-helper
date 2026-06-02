@@ -330,7 +330,7 @@ namespace GHelper.Peripherals
                 config.SetOption(OpenOption.Exclusive, false);
                 config.SetOption(OpenOption.Priority, 10);
 
-                AsusMouse omniMouse;
+                AsusMouse? omniMouse;
 
                 using (var stream = omni.Open(config))
                 {
@@ -345,6 +345,8 @@ namespace GHelper.Peripherals
 
                     omniMouse = ResolveOmniMouse(response);
                 }
+
+                if (omniMouse is null) return;
 
                 using (var stream = device.Open(config))
                 {
@@ -380,7 +382,7 @@ namespace GHelper.Peripherals
             0x1B06, // Falchion RX Low Profile
         };
 
-        private static AsusMouse ResolveOmniMouse(byte[] response)
+        private static AsusMouse? ResolveOmniMouse(byte[] response)
         {
             for (int offset = 5; offset + 3 < response.Length; offset += 4)
             {
@@ -397,7 +399,7 @@ namespace GHelper.Peripherals
                 Logger.WriteLine($"Omni slot @{offset}: {pid:X4} ({(KnownOmniKeyboards.Contains(pid) ? "keyboard, skipped" : "unknown, skipped")})");
             }
 
-            return new HarpeAceAimLabEditionOmni();
+            return null;
         }
 
         private static AsusMouse? MouseFromOmniPid(int pid) => pid switch

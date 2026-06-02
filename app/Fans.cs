@@ -72,10 +72,15 @@ namespace GHelper
 
             labelRisky.Text = Properties.Strings.UndervoltingRisky;
             buttonApplyAdvanced.Text = Properties.Strings.Apply;
-            buttonReadLimits.Text = "Read Limits";
             checkApplyUV.Text = Properties.Strings.AutoApply;
 
             buttonCalibrate.Text = Properties.Strings.Calibrate;
+
+            checkFanClamp.Text = Properties.Strings.ClampToGrid;
+            labelHysteresisUp.Text = Properties.Strings.HysteresisUp;
+            labelHysteresisDown.Text = Properties.Strings.HysteresisDown;
+            buttonReadLimits.Text = Properties.Strings.ReadLimits;
+            buttonDownload.Text = Properties.Strings.InstallPawnIODriver;
 
             InitTheme(true);
 
@@ -711,7 +716,7 @@ namespace GHelper
 
         }
 
-        private static readonly string[] HysteresisLabels = { "Very Low", "Low", "Medium", "High", "Very High" };
+        private static readonly string[] HysteresisLabels = { Properties.Strings.VeryLow, Properties.Strings.Low, Properties.Strings.Medium, Properties.Strings.High, Properties.Strings.VeryHigh };
 
         private void VisualiseHysteresis()
         {
@@ -1344,6 +1349,7 @@ namespace GHelper
             curPoint = null;
             curIndex = -1;
             labelTip.Visible = false;
+            FanDragHint(false);
         }
 
         private void Chart_PreviewKeyDown(object? sender, PreviewKeyDownEventArgs e)
@@ -1590,7 +1596,15 @@ namespace GHelper
 
             labelTip.Visible = tip;
 
+            FanDragHint(curPoint != null);
 
+        }
+
+        private void FanDragHint(bool show)
+        {
+            labelFansResult.Text = show ? Properties.Strings.FanDragAll : "";
+            labelFansResult.ForeColor = show ? colorGray : colorTurbo;
+            labelFansResult.Visible = show;
         }
 
         private void AdjustAll(double deltaX, double deltaY, Series series)

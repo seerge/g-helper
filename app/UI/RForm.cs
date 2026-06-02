@@ -49,8 +49,8 @@ namespace GHelper.UI
         {
             if (darkTheme)
             {
-                buttonMain = Color.FromArgb(255, 55, 55, 55);
-                buttonSecond = Color.FromArgb(255, 38, 38, 38);
+                buttonMain = Color.FromArgb(255, 50, 50, 50);
+                buttonSecond = Color.FromArgb(255, 36, 36, 36);
 
                 formBack = Color.FromArgb(255, 28, 28, 28);
                 foreMain = Color.FromArgb(255, 240, 240, 240);
