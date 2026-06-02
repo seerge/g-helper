@@ -1,4 +1,5 @@
 ﻿using System.Drawing.Drawing2D;
+using GHelper.Display;
 
 namespace GHelper.UI
 {
@@ -25,18 +26,52 @@ namespace GHelper.UI
         private PointF _thumbPos;
         private SizeF _barSize;
         private PointF _barPos;
+        private float _visualThumbX;  // Smooth thumb position for visual feedback
+
+        // Animation fields
+        private System.Windows.Forms.Timer _animationTimer;
+        private float _animationStartX;
+        private float _animationTargetX;
+        private long _animationStartTime;
+        private const int ANIMATION_DURATION_MS = 300;
 
 
         public Color accentColor = Color.FromArgb(255, 58, 174, 239);
         public Color borderColor = Color.White;
 
-        public event EventHandler ValueChanged;
+        public event EventHandler? ValueChanged;
 
         public Slider()
         {
             // This reduces flicker
             DoubleBuffered = true;
             TabStop = true;
+
+            // Setup animation timer at the highest possible refresh rate from screen
+            _animationTimer = new System.Windows.Forms.Timer();
+            int refreshRate = GetCurrentRefreshRate();
+            _animationTimer.Interval = refreshRate > 0 ? Math.Max(1, 1000 / refreshRate) : 4;  // Cap at 240Hz (4.17ms), default to 4ms
+            _animationTimer.Tick += AnimationTimer_Tick;
+        }
+
+        private int GetCurrentRefreshRate()
+        {
+            try
+            {
+                var laptopScreen = ScreenNative.FindLaptopScreen();
+                int currentRefreshRate = ScreenNative.GetRefreshRate(laptopScreen);
+
+                // If we have a current refresh rate, use it as baseline
+                if (currentRefreshRate > 0)
+                {
+                    // Cap at 240 FPS maximum for timer efficiency
+                    return Math.Min(currentRefreshRate, 240);
+                }
+            }
+            catch { }
+
+            // Fallback to 60 FPS if detection fails
+            return 60;
         }
 
 
@@ -154,8 +189,13 @@ namespace GHelper.UI
             _radius = 0.4F * ClientSize.Height;
             _barSize = new SizeF(ClientSize.Width - 2 * _radius, ClientSize.Height * 0.15F);
             _barPos = new PointF(_radius, (ClientSize.Height - _barSize.Height) / 2);
+
+            // Calculate thumb position from the stepped value
+            float thumbX = _barSize.Width / (Max - Min) * (Value - Min) + _barPos.X;
+            _visualThumbX = thumbX;
+
             _thumbPos = new PointF(
-                _barSize.Width / (Max - Min) * (Value - Min) + _barPos.X,
+                _visualThumbX,
                 _barPos.Y + 0.5f * _barSize.Height);
             Invalidate();
         }
@@ -183,7 +223,7 @@ namespace GHelper.UI
 
         private void _calculateValue(MouseEventArgs e)
         {
-            float thumbX = e.Location.X; // - _delta.Width;
+            float thumbX = e.Location.X;
             if (thumbX < _barPos.X)
             {
                 thumbX = _barPos.X;
@@ -192,8 +232,27 @@ namespace GHelper.UI
             {
                 thumbX = _barPos.X + _barSize.Width;
             }
-            Value = (int)Math.Round(Min + (thumbX - _barPos.X) * (Max - Min) / _barSize.Width);
 
+            // Store smooth visual position
+            _visualThumbX = thumbX;
+
+            // Calculate value with step rounding (for ValueChanged event)
+            int newValue = (int)Math.Round(Min + (thumbX - _barPos.X) * (Max - Min) / _barSize.Width);
+
+            // Apply stepping
+            newValue = (int)Math.Round(newValue / (float)_step) * _step;
+
+            // Clamp to min/max
+            newValue = Math.Max(Min, Math.Min(Max, newValue));
+
+            // Only trigger ValueChanged if the stepped value actually changed
+            if (_value != newValue)
+            {
+                _value = newValue;
+                ValueChanged?.Invoke(this, EventArgs.Empty);
+            }
+
+            Invalidate();
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
@@ -202,6 +261,10 @@ namespace GHelper.UI
             if (_moving)
             {
                 _calculateValue(e);
+                // Update visual thumb position
+                _thumbPos = new PointF(
+                    _visualThumbX,
+                    _barPos.Y + 0.5f * _barSize.Height);
             }
         }
 
@@ -209,6 +272,54 @@ namespace GHelper.UI
         {
             base.OnMouseUp(e);
             _moving = false;
+
+            // Snap to nearest step with animation
+            int snappedValue = (int)Math.Round(Min + (_visualThumbX - _barPos.X) * (Max - Min) / _barSize.Width);
+            snappedValue = (int)Math.Round(snappedValue / (float)_step) * _step;
+            snappedValue = Math.Max(Min, Math.Min(Max, snappedValue));
+
+            if (_value != snappedValue)
+            {
+                _value = snappedValue;
+                ValueChanged?.Invoke(this, EventArgs.Empty);
+            }
+
+            // Start snap animation
+            float targetX = _barSize.Width / (Max - Min) * (snappedValue - Min) + _barPos.X;
+            StartSnapAnimation(_visualThumbX, targetX);
+        }
+
+        private void StartSnapAnimation(float startX, float targetX)
+        {
+            _animationStartX = startX;
+            _animationTargetX = targetX;
+            _animationStartTime = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+            _animationTimer.Start();
+        }
+
+        private void AnimationTimer_Tick(object? sender, EventArgs e)
+        {
+            long currentTime = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+            long elapsedTime = currentTime - _animationStartTime;
+
+            if (elapsedTime >= ANIMATION_DURATION_MS)
+            {
+                // Animation complete
+                _visualThumbX = _animationTargetX;
+                _animationTimer.Stop();
+            }
+            else
+            {
+                // Smooth easing (easeOutQuint)
+                float progress = (float)elapsedTime / ANIMATION_DURATION_MS;
+                progress = 1 - (float)Math.Pow(1 - progress, 5);  // Ease out quint
+                _visualThumbX = _animationStartX + (_animationTargetX - _animationStartX) * progress;
+            }
+
+            _thumbPos = new PointF(
+                _visualThumbX,
+                _barPos.Y + 0.5f * _barSize.Height);
+            Invalidate();
         }
 
     }
