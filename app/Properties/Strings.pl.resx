@@ -265,7 +265,7 @@
     <value>Wyłączone</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Limit czasu podłączonego / na baterii (0 - Włączony)</value>
+    <value>Limit czasu podświetlenia (zasilacz / bateria)</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Czas podświetlenia na baterii</value>
@@ -407,6 +407,9 @@ Nadal chcesz kontynuować?</value>
   <data name="FanCurves" xml:space="preserve">
     <value>Krzywe wentylatorów</value>
   </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>Przytrzymaj SHIFT, aby przeciągnąć wszystkie punkty razem</value>
+  </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>Krzywa wentylatora CPU</value>
   </data>
@@ -477,7 +480,7 @@ Nadal chcesz kontynuować?</value>
     <value>Temperatura docelowa</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Czas przejścia w hibernację na baterii (0 - wcale)</value>
+    <value>Czas przejścia w hibernację na baterii</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>Wysoka</value>

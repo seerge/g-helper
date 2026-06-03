@@ -265,7 +265,7 @@
     <value>Aus</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Timeout angeschlossen / bei Akku (0 = An)</value>
+    <value>Hintergrundbeleuchtung Timeout angeschlossen / bei Akku</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Backlight Timeout when on battery</value>
@@ -407,6 +407,9 @@ Trotzdem fortfahren?</value>
   <data name="FanCurves" xml:space="preserve">
     <value>Lüfterkurven</value>
   </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>SHIFT halten, um alle Punkte gemeinsam zu ziehen</value>
+  </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>CPU Lüfterprofil</value>
   </data>
@@ -477,7 +480,7 @@ Trotzdem fortfahren?</value>
     <value>Maximale GPU Temperatur</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Minuten bis zum Ruhezustand im Standby (0 = Aus)</value>
+    <value>Zeit bis zum Ruhezustand im Standby (Akku)</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>Hoch</value>

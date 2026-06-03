@@ -265,7 +265,7 @@
     <value>꺼짐</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>전원 / 배터리 사용 중 자동 꺼짐 시간 (0 - 항상 켜짐)</value>
+    <value>백라이트 자동 꺼짐 시간 - 전원 / 배터리</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>배터리 사용 중 백라이트 자동 꺼짐</value>
@@ -407,6 +407,9 @@
   <data name="FanCurves" xml:space="preserve">
     <value>팬 커브</value>
   </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>SHIFT를 누른 채 드래그하면 모든 점을 함께 이동합니다</value>
+  </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>CPU 팬 프로필</value>
   </data>
@@ -477,7 +480,7 @@
     <value>목표 온도</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>최대 절전 모드 전환 시간 (0 - 꺼짐)</value>
+    <value>절전 모드에서 최대 절전 모드 전환 시간 (배터리)</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>높게</value>

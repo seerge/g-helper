@@ -265,7 +265,7 @@
     <value>背光关闭</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>插电/电池时熄灭时间（0表示长亮）</value>
+    <value>背光熄灭时间：插电 / 电池</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>充电模式下的背光超时</value>
@@ -407,6 +407,9 @@
   <data name="FanCurves" xml:space="preserve">
     <value>风扇曲线</value>
   </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>按住 SHIFT 可同时拖动所有点</value>
+  </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>CPU 风扇配置文件</value>
   </data>
@@ -441,7 +444,7 @@
     <value>Fn锁定开</value>
   </data>
   <data name="WinLockToggle" xml:space="preserve">
-    <value>Win-Lock Toggle</value>
+    <value>Win 键锁定切换</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>动态加速</value>
@@ -477,7 +480,7 @@
     <value>温度目标</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>在使用电池时几分钟后进入休眠状态 (0 - 关闭)</value>
+    <value>使用电池时进入休眠的时间</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>高</value>

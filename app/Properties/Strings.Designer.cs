@@ -511,7 +511,7 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Timeout plugged / on battery (0 - ON).
+        ///   Looks up a localized string similar to Backlight timeout plugged / on battery.
         /// </summary>
         internal static string BacklightTimeout {
             get {
@@ -997,7 +997,16 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("FanCurves", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Hold SHIFT to drag all points together.
+        /// </summary>
+        internal static string FanDragAll {
+            get {
+                return ResourceManager.GetString("FanDragAll", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to CPU Fan Profile.
         /// </summary>
@@ -1206,7 +1215,7 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Minutes till Hibernation in sleep on battery (0 - OFF).
+        ///   Looks up a localized string similar to Time to hibernate in sleep on battery.
         /// </summary>
         internal static string HibernateAfter {
             get {

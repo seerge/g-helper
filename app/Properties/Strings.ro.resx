@@ -265,7 +265,7 @@
     <value>Off</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Timeout conectat / folosind bateria (0 - ON)</value>
+    <value>Timeout iluminare conectat / folosind bateria</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Timp oprire iluminare pe baterie</value>
@@ -407,6 +407,9 @@
   <data name="FanCurves" xml:space="preserve">
     <value>Curbe ventilator</value>
   </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>Țineți apăsat SHIFT pentru a trage toate punctele împreună</value>
+  </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>Profil ventilator CPU</value>
   </data>
@@ -477,7 +480,7 @@
     <value>Temperatura țintă</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Minute până la Hibernare în mod repaus pe baterie (0 - Oprit)</value>
+    <value>Timp până la Hibernare în mod repaus pe baterie</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>Ridicat</value>

@@ -265,7 +265,7 @@
     <value>Mati</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Waktu tunggu dicolokan / menggunakan baterai (0 - Hidup)</value>
+    <value>Waktu tunggu lampu latar dicolokan / menggunakan baterai</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Backlight Timeout when on battery</value>
@@ -407,6 +407,9 @@ Apakah Anda masih ingin melanjutkan?</value>
   <data name="FanCurves" xml:space="preserve">
     <value>Kurva Kipas</value>
   </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>Tahan SHIFT untuk menyeret semua titik bersamaan</value>
+  </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>Profil Kipas CPU</value>
   </data>
@@ -477,7 +480,7 @@ Apakah Anda masih ingin melanjutkan?</value>
     <value>Target Suhu</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Menit hingga Hibernasi dalam mode tidur saat menggunakan baterai (0 - Mati)</value>
+    <value>Waktu hingga Hibernasi dalam mode tidur saat menggunakan baterai</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>Tinggi</value>

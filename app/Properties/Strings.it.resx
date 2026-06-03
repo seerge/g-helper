@@ -265,7 +265,7 @@
     <value>Spento</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Timeout in carica / a batteria (0 - ACCESO)</value>
+    <value>Timeout retroilluminazione in carica / a batteria</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Timeout retroilluminazione quando in batteria</value>
@@ -407,6 +407,9 @@ Sei sicuro di voler continuare?</value>
   <data name="FanCurves" xml:space="preserve">
     <value>Curve Ventola</value>
   </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>Tieni premuto SHIFT per trascinare tutti i punti insieme</value>
+  </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>Profilo Ventola CPU</value>
   </data>
@@ -477,7 +480,7 @@ Sei sicuro di voler continuare?</value>
     <value>Temperatura Target</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Iberna dopo X minuti se alimentato a batteria (0 - ACCESO)</value>
+    <value>Tempo prima dell'ibernazione in sospensione (batteria)</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>Elevato</value>

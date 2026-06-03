@@ -265,7 +265,7 @@
     <value>Tắt</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Số giây để tắt đèn nền bàn phím(khi dùng pin)</value>
+    <value>Backlight timeout plugged / on battery</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Số giây để tắt đèn nền bàn phím(khi dùng pin)</value>
@@ -407,6 +407,9 @@ Bạn có muốn tiếp tục không?</value>
   <data name="FanCurves" xml:space="preserve">
     <value>Chế độ Quạt</value>
   </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>Giữ SHIFT để kéo tất cả các điểm cùng lúc</value>
+  </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>Cấu hình Quạt CPU</value>
   </data>
@@ -477,7 +480,7 @@ Bạn có muốn tiếp tục không?</value>
     <value>Nhiệt độ đích</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Minutes till Hibernation in sleep on battery (0 - OFF)</value>
+    <value>Time to hibernate in sleep on battery</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>Cao</value>

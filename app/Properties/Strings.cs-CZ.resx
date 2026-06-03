@@ -265,7 +265,7 @@
     <value>Vypnuto</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Časový limit - v síti / na baterii (0 = Nevypínat)</value>
+    <value>Časový limit podsvícení v síti / na baterii</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Časový limit podsvícení na baterii</value>
@@ -407,6 +407,9 @@ Chcete přesto pokračovat?</value>
   <data name="FanCurves" xml:space="preserve">
     <value>Křivky ventilátorů</value>
   </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>Podržením klávesy SHIFT přesunete všechny body najednou</value>
+  </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>Profil CPU ventilátoru</value>
   </data>
@@ -474,7 +477,7 @@ Chcete přesto pokračovat?</value>
     <value>Cílová teplota</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Čas přepnutí ze Spánku do Hibernace na baterii (0 = Vypnuto)</value>
+    <value>Čas přepnutí ze Spánku do Hibernace na baterii</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>Vysoký</value>

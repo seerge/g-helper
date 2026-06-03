@@ -265,7 +265,7 @@
     <value>Off</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Timeout plugged / on battery (0 - ON)</value>
+    <value>Backlight timeout plugged / on battery</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Backlight Timeout when on battery</value>
@@ -407,6 +407,9 @@ Do you still want to continue?</value>
   <data name="FanCurves" xml:space="preserve">
     <value>Fan Curves</value>
   </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>Hold SHIFT to drag all points together</value>
+  </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>CPU Fan Profile</value>
   </data>
@@ -477,7 +480,7 @@ Do you still want to continue?</value>
     <value>Temperature Target</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Minutes till Hibernation in sleep on battery (0 - OFF)</value>
+    <value>Time to hibernate in sleep on battery</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>High</value>

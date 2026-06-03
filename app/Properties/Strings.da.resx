@@ -265,7 +265,7 @@
     <value>Slukket</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Timeout tilsluttet / på batteri (0 - TIL)</value>
+    <value>Baggrundslys timeout tilsluttet / på batteri</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Baggrundslys timeout på batteri</value>
@@ -407,6 +407,9 @@ Vil du stadig fortsætte?</value>
   <data name="FanCurves" xml:space="preserve">
     <value>Blæserkurver</value>
   </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>Hold SHIFT nede for at trække alle punkter samtidig</value>
+  </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>CPU blæserkurveprofil</value>
   </data>
@@ -477,7 +480,7 @@ Vil du stadig fortsætte?</value>
     <value>Temperaturmål</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Minutter til dvale i standby på batteriet (0 - OFF)</value>
+    <value>Tid til dvale i standby på batteriet</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>Høj</value>

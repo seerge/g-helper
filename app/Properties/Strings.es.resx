@@ -265,7 +265,7 @@
     <value>Apagado</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Tiempo de espera conectado / con batería (0 - ON)</value>
+    <value>Tiempo de espera de retroiluminación conectado / con batería</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Tiempo de retroiluminación con batería</value>
@@ -407,6 +407,9 @@
   <data name="FanCurves" xml:space="preserve">
     <value>Curvas de ventiladores</value>
   </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>Mantén SHIFT para arrastrar todos los puntos a la vez</value>
+  </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>Perfil ventilador CPU</value>
   </data>
@@ -477,7 +480,7 @@
     <value>Temperatura objetivo</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Minutos hasta hibernación en suspensión con batería (0 - OFF)</value>
+    <value>Tiempo hasta hibernación en suspensión con batería</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>Alto</value>

@@ -265,7 +265,7 @@
     <value>إيقاف</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>مهلة الإضاءة عند التوصيل/على البطارية (0 - تشغيل)</value>
+    <value>مهلة الإضاءة الخلفية عند التوصيل / على البطارية</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>مهلة إضاءة الخلفية عند استخدام البطارية</value>
@@ -407,6 +407,9 @@
   <data name="FanCurves" xml:space="preserve">
     <value>منحنيات المروحة</value>
   </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>اضغط مع الاستمرار على SHIFT لسحب جميع النقاط معًا</value>
+  </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>ملف تعريف مروحة وحدة المعالجة المركزية</value>
   </data>
@@ -477,7 +480,7 @@
     <value>هدف درجة الحرارة</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>دقائق حتى السبات أثناء النوم على البطارية (0 - إيقاف)</value>
+    <value>زمن الانتقال إلى السبات أثناء النوم على البطارية</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>مرتفع</value>
