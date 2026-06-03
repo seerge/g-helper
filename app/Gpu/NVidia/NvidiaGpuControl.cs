@@ -1,4 +1,4 @@
-﻿using GHelper.Helpers;
+using GHelper.Helpers;
 using NvAPIWrapper.GPU;
 using NvAPIWrapper.Native;
 using NvAPIWrapper.Native.GPU;
@@ -55,20 +55,39 @@ public class NvidiaGpuControl : IGpuControl
 
     private enum GpuState { Active, Asleep, Off }
 
+    private GpuState? _cachedState;
+    private long _lastStateTime;
+
+    private int? _cachedGpuUse;
+    private long _lastGpuUseTime;
+
+    private float? _cachedGpuPower;
+    private long _lastGpuPowerTime;
+
     private GpuState GetGpuState()
     {
         if (!IsValid) return GpuState.Off;
+
+        long now = Environment.TickCount64;
+        if (_cachedState.HasValue && Math.Abs(now - _lastStateTime) < 500)
+        {
+            return _cachedState.Value;
+        }
+
         try
         {
             var perfState = GPUApi.GetCurrentPerformanceState(_internalGpu!.Handle);
             if (verboseLog) Logger.WriteLine($"GPU: {perfState}");
-            return GpuState.Active;
+            _cachedState = GpuState.Active;
         }
         catch (Exception ex)
         {
             if (verboseLog) Logger.WriteLine($"GPU: {ex.Message}");
-            return ex.Message == "NVAPI_GPU_NOT_POWERED" ? GpuState.Asleep : GpuState.Off;
+            _cachedState = ex.Message == "NVAPI_GPU_NOT_POWERED" ? GpuState.Asleep : GpuState.Off;
         }
+
+        _lastStateTime = now;
+        return _cachedState.Value;
     }
 
     public int? ReadCurrentTemperature(bool log = false)
@@ -352,27 +371,64 @@ public class NvidiaGpuControl : IGpuControl
     public int? GetGpuUse()
     {
         if (!IsValid) return null;
-         if (GetGpuState() != GpuState.Active) return null;
 
-        PhysicalGPU internalGpu = _internalGpu!;
-        IUtilizationDomainInfo? gpuUsage = GPUApi.GetUsages(internalGpu.Handle).GPU;
+        long now = Environment.TickCount64;
+        if (_cachedGpuUse != null && Math.Abs(now - _lastGpuUseTime) < 500)
+        {
+            return _cachedGpuUse;
+        }
 
-        return (int?)gpuUsage?.Percentage;
+        if (GetGpuState() != GpuState.Active)
+        {
+            _cachedGpuUse = null;
+            _lastGpuUseTime = now;
+            return null;
+        }
 
+        try
+        {
+            PhysicalGPU internalGpu = _internalGpu!;
+            IUtilizationDomainInfo? gpuUsage = GPUApi.GetUsages(internalGpu.Handle).GPU;
+            _cachedGpuUse = (int?)gpuUsage?.Percentage;
+        }
+        catch
+        {
+            _cachedGpuUse = null;
+        }
+
+        _lastGpuUseTime = now;
+        return _cachedGpuUse;
     }
 
 
     public float? GetGpuPower()
     {
         if (!IsValid) return null;
+
+        long now = Environment.TickCount64;
+        if (_cachedGpuPower != null && Math.Abs(now - _lastGpuPowerTime) < 500)
+        {
+            return _cachedGpuPower;
+        }
+
         var state = GetGpuState();
         if (state == GpuState.Off)
         {
             NvmlHelper.Shutdown();
+            _cachedGpuPower = null;
+            _lastGpuPowerTime = now;
             return null;
         }
-        if (state != GpuState.Active) return 0f;
-        return NvmlHelper.GetGpuPower() ?? 0f;
+        if (state != GpuState.Active)
+        {
+            _cachedGpuPower = 0f;
+            _lastGpuPowerTime = now;
+            return 0f;
+        }
+
+        _cachedGpuPower = NvmlHelper.GetGpuPower() ?? 0f;
+        _lastGpuPowerTime = now;
+        return _cachedGpuPower;
     }
 
 }
