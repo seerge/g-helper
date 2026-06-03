@@ -566,11 +566,29 @@ namespace GHelper.Peripherals.Mouse
             return watch.ElapsedMilliseconds;
         }
 
+        private int _otherIoBusy;
+        private long _otherIoEndedMs;
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         protected virtual byte[]? WriteForResponse(byte[] packet, int matchLength = 3)
         {
+            Interlocked.Increment(ref _otherIoBusy);
+            try
+            {
+                return WriteForResponseImpl(packet, matchLength);
+            }
+            finally
+            {
+                _otherIoEndedMs = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                Interlocked.Decrement(ref _otherIoBusy);
+            }
+        }
+
+        private byte[]? WriteForResponseImpl(byte[] packet, int matchLength)
+        {
             Array.Resize(ref packet, USBPacketSize());
 
+            try { Drain(USBPacketSize()); } catch { }
 
             byte[] response = new byte[USBPacketSize()];
             response[0] = reportId;
@@ -2126,6 +2144,8 @@ namespace GHelper.Peripherals.Mouse
         public void WriteColorDirect(Color color)
         {
             if (!HasRGB() || !IsDeviceReady) return;
+            if (_otherIoBusy > 0) return;
+            if (DateTimeOffset.Now.ToUnixTimeMilliseconds() - _otherIoEndedMs < 200) return;
             if (Interlocked.CompareExchange(ref _streamingBusy, 1, 0) != 0) return;
 
             try

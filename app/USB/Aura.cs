@@ -57,6 +57,7 @@ namespace GHelper.USB
         GRADIENT = 24,
         ZONETEST = 25,
         AUDIO = 26,
+        AUDIOPULSE = 27,
     }
 
     public enum AuraSpeed : int
@@ -122,6 +123,9 @@ namespace GHelper.USB
 
         static readonly List<double> audioMaxes = new List<double>();
         static long lastAudioPresent;
+        static double envBrightness;
+        static double smoothedHue;
+        const double audioDecay = 0.7;
 
         static Aura()
         {
@@ -197,7 +201,8 @@ namespace GHelper.USB
             modes[AuraMode.GPUMODE] = "GPU Mode";
             modes[AuraMode.AMBIENT] = "Ambient";
             modes[AuraMode.BATTERY] = "Battery";
-            modes[AuraMode.AUDIO] = "Audio";
+            modes[AuraMode.AUDIO] = "Audio Spectrum";
+            modes[AuraMode.AUDIOPULSE] = "Audio Pulse";
 
             if (isStrixKb)
             {
@@ -257,7 +262,7 @@ namespace GHelper.USB
 
         public static bool HasSecondColor()
         {
-            return (mode == AuraMode.AuraBreathe || mode == AuraMode.GRADIENT || mode == AuraMode.AUDIO) && !isACPI;
+            return (mode == AuraMode.AuraBreathe || mode == AuraMode.GRADIENT) && !isACPI;
         }
 
         private static void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
@@ -822,11 +827,11 @@ namespace GHelper.USB
             }
 
             timer.Stop();
-            if (Mode != AuraMode.AUDIO) StopAudio();
+            if (Mode != AuraMode.AUDIO && Mode != AuraMode.AUDIOPULSE) StopAudio();
 
             Logger.WriteLine($"AuraMode: {Mode}");
 
-            if (Mode == AuraMode.AUDIO)
+            if (Mode == AuraMode.AUDIO || Mode == AuraMode.AUDIOPULSE)
             {
                 StartAudio();
                 return;
@@ -940,13 +945,16 @@ namespace GHelper.USB
             initDirect = true;
             audioMaxes.Clear();
             lastAudioPresent = 0;
+            envBrightness = 0;
+            smoothedHue = 0;
 
             AudioVisualizer.Shared.Subscribe(OnAudioSpectrum);
         }
 
         private static void OnAudioSpectrum(double[] fftMag)
         {
-            if (!backlight || sessionLock || Mode != AuraMode.AUDIO) return;
+            if (!backlight || sessionLock) return;
+            if (Mode != AuraMode.AUDIO && Mode != AuraMode.AUDIOPULSE) return;
 
             long now = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             if (Math.Abs(now - lastAudioPresent) < 50) return;
@@ -956,7 +964,7 @@ namespace GHelper.USB
             if (fftMag.Length < bands) return;
 
             double[] bars = new double[bands];
-            double max = 2;
+            double max = 0;
             for (int i = 0; i < bands; i++)
             {
                 bars[i] = Math.Sqrt(fftMag[i] * 10000);
@@ -968,28 +976,55 @@ namespace GHelper.USB
             double maxAvg = audioMaxes.Average();
             if (maxAvg < 1) maxAvg = 1;
 
-            Color c1 = Color1, c2 = Color2;
+            envBrightness = Math.Max(envBrightness * audioDecay, max);
+            double brightness = Math.Min(1.0, envBrightness / maxAvg);
+
+            Color c1 = Color1;
+            double curvedBrightness = brightness * brightness * brightness;
 
             try
             {
+                if (Mode == AuraMode.AUDIOPULSE)
+                {
+                    Color dimmed = Color.FromArgb(
+                        (byte)(c1.R * curvedBrightness),
+                        (byte)(c1.G * curvedBrightness),
+                        (byte)(c1.B * curvedBrightness));
+                    if (isStrix) ApplyDirect(Enumerable.Repeat(dimmed, AURA_ZONES).ToArray());
+                    else ApplyDirect(dimmed);
+                    return;
+                }
+
+                double baseHue = ColorUtils.HSV.ToHSV(c1).Hue;
+
                 if (isStrix)
                 {
                     Color[] colors = new Color[AURA_ZONES];
                     for (int i = 0; i < AURA_ZONES; i++)
                     {
-                        float t = (float)Math.Min(1.0, bars[i] / maxAvg);
-                        colors[i] = ColorUtils.GetWeightedAverage(c2, c1, t);
+                        double hue = (baseHue + (double)i / (AURA_ZONES - 1) * (2.0 / 3.0)) % 1.0;
+                        double ratio = Math.Min(1.0, bars[i] / maxAvg);
+                        double v = ratio * ratio * ratio;
+                        colors[i] = new ColorUtils.HSV { Hue = hue, Saturation = 1.0, Value = v }.ToRGB();
                     }
                     ApplyDirect(colors);
                 }
                 else
                 {
-                    double energy = 0;
-                    for (int i = 0; i < bands; i++) energy += bars[i];
-                    energy /= bands;
+                    int dominant = 1;
+                    double dominantWeighted = bars[1];
+                    for (int i = 2; i < bands; i++)
+                    {
+                        double w = bars[i] * (1 + (i - 1) * 0.15);
+                        if (w > dominantWeighted) { dominantWeighted = w; dominant = i; }
+                    }
+                    if (max > maxAvg * 0.3)
+                    {
+                        double targetHue = (baseHue + (dominant - 1) / (double)(bands - 2) * (2.0 / 3.0)) % 1.0;
+                        smoothedHue = smoothedHue * 0.6 + targetHue * 0.4;
+                    }
 
-                    float t = (float)Math.Min(1.0, energy / maxAvg);
-                    ApplyDirect(ColorUtils.GetWeightedAverage(c2, c1, t));
+                    ApplyDirect(new ColorUtils.HSV { Hue = smoothedHue, Saturation = 1.0, Value = curvedBrightness }.ToRGB());
                 }
             }
             catch (Exception ex)
