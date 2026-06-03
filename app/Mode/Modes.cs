@@ -116,7 +116,7 @@
 
         public static void SetCurrent(int mode)
         {
-            AppConfig.Set("performance_" + (int)SystemInformation.PowerStatus.PowerLineStatus, mode);
+            AppConfig.Set("performance_" + Program.PerformanceKey(), mode);
             AppConfig.Set("performance_mode", mode);
         }
 
