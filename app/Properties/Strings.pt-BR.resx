@@ -265,7 +265,7 @@
     <value>Desligado</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Tempo limite da iluminação plugado / na bateria</value>
+    <value>Tempo da iluminação plugado / bateria</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Tempo de retroiluminação com bateria</value>
