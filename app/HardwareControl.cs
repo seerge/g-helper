@@ -507,6 +507,7 @@ public static class HardwareControl
     private static int _cpuPowerReadErrors;
     private const int CpuPowerMaxReadErrors = 3;
     private static readonly string[] _powerCounterInstances = { "Apu Power", "RAPL_Package0_PKG", "CPU Power", "Socket Power", "Current Socket Power" };
+    private static PawnIO.IntelMsr? _intelMsr;
 
     public static void InitCPUPowerAsync()
     {
@@ -553,17 +554,39 @@ public static class HardwareControl
                 }
 
                 _cpuPowerCounterFailed = true;
+                TryInitIntelMsr();
             }
             catch
             {
                 _cpuPowerCounterFailed = true;
+                TryInitIntelMsr();
             }
         });
     }
 
+    private static void TryInitIntelMsr()
+    {
+        if (_intelMsr != null || PawnIO.CpuInfo.IsAMD) return;
+        try
+        {
+            var msr = new PawnIO.IntelMsr();
+            if (msr.Initialize(typeof(HardwareControl).Assembly))
+            {
+                _intelMsr = msr;
+                Logger.WriteLine("CPU Power source: Intel RAPL MSR (PawnIO)");
+            }
+            else
+            {
+                msr.Dispose();
+                Logger.WriteLine("Intel MSR: PawnIO/IntelMSR module unavailable (not installed?)");
+            }
+        }
+        catch (Exception ex) { Logger.WriteLine("Intel MSR power init failed: " + ex.Message); }
+    }
+
     public static float? GetCPUPower()
     {
-        if (_cpuPowerCounterFailed || _cpuPowerCounter == null) return null;
+        if (_cpuPowerCounterFailed || _cpuPowerCounter == null) return _intelMsr?.GetPackagePower();
 
         try
         {
