@@ -265,7 +265,7 @@
     <value>Вимкнена</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Тайм-аут підсвічування на зарядці / на батареї</value>
+    <value>Тайм-аут підсвічування: зарядка / батарея</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Тайм-аут підсвітки на батареї</value>
