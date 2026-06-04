@@ -220,9 +220,7 @@ namespace GHelper.Overlay
         private long _traceHandle;
 
         // The kernel batches real-time delivery to consumers on a ~1 s timer (measured), making
-        // the reading ~1-2 s stale. Flushing the session ourselves this often forces near-
-        // immediate delivery — the technique PresentMon uses to reach ~30 ms latency.
-        private const int FlushIntervalMs = 30;
+        private const int FlushIntervalMs = 100;
         private System.Threading.Timer? _flushTimer;
         private volatile int _targetPid;  // written by overlay timer thread, read by ETW callback thread
         private int _lastTargetPid;       // detects PID switches so the window can be reset
