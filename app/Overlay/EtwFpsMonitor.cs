@@ -567,9 +567,8 @@ namespace GHelper.Overlay
             LogFileNameOffset = 0,
             LoggerNameOffset = (uint)Marshal.OffsetOf<EVENT_TRACE_PROPERTIES>(
                 nameof(EVENT_TRACE_PROPERTIES.LoggerName)),
-            // Sized for bursty real-time delivery — the original 16 KB total budget
-            // (4 KB × 2-4) is enough to drop frames under heavy GPU activity.
-            BufferSize = 16,          // KB per buffer
+            // Flush drains buffers, so 64 KB base only needs to cover the ~1 s idle→game transition.
+            BufferSize = 8,           // KB per buffer
             MinimumBuffers = 8,
             MaximumBuffers = 16,
         };
