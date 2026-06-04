@@ -475,7 +475,11 @@ public static class AppConfig
 
     private static readonly Lazy<bool> _oledFromRegistry = new(() =>
     {
-        try { return Registry.LocalMachine.OpenSubKey(@"SOFTWARE\ASUS\OLEDCare") is not null; }
+        try
+        {
+            var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\ASUS\OLEDCare");
+            return key is not null && Convert.ToInt32(key.GetValue("EnablePixelRefresh", 0)) != 0;
+        }
         catch { return false; }
     });
 
