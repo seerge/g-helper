@@ -123,7 +123,7 @@ namespace GHelper
                 return;
             }
 
-            ProcessHelper.KillByName("ASUSSmartDisplayControl");
+            ProcessHelper.KillSmartDisplayControl();
 
             Application.EnableVisualStyles();
 
@@ -243,6 +243,7 @@ namespace GHelper
             if (e.Reason == SessionSwitchReason.SessionLogon || e.Reason == SessionSwitchReason.SessionUnlock)
             {
                 Logger.WriteLine("Session:" + e.Reason.ToString());
+                ProcessHelper.KillSmartDisplayControl();
                 bool wasLocked = Aura.sessionLock;
                 Aura.sessionLock = false;
                 ScreenControl.AutoScreen();
