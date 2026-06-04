@@ -41,11 +41,14 @@ public static class HardwareControl
 
     public static int? cpuUsage;
     public static int? gpuUsage;
+    public static int? vramUsage;
+    public static int? ramUsage;
 
     // Set by the overlay so ReadSensorsOverlay skips sensors that won't be
     // displayed in the current mode (fan ACPI calls and CPU usage counter).
     public static bool readFans;
     public static bool readUsage;
+    public static bool readMemory;
 
     static long lastUpdate;
 
@@ -631,6 +634,31 @@ public static class HardwareControl
         return Math.Clamp((int)Math.Round((1.0 - (double)deltaIdle / deltaTotal) * 100), 0, 100);
     }
 
+    [StructLayout(LayoutKind.Sequential)]
+    private struct MEMORYSTATUSEX
+    {
+        public uint dwLength;
+        public uint dwMemoryLoad;
+        public ulong ullTotalPhys;
+        public ulong ullAvailPhys;
+        public ulong ullTotalPageFile;
+        public ulong ullAvailPageFile;
+        public ulong ullTotalVirtual;
+        public ulong ullAvailVirtual;
+        public ulong ullAvailExtendedVirtual;
+    }
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool GlobalMemoryStatusEx(ref MEMORYSTATUSEX lpBuffer);
+
+    public static int? GetRAMUsage()
+    {
+        var status = new MEMORYSTATUSEX { dwLength = (uint)Marshal.SizeOf<MEMORYSTATUSEX>() };
+        if (!GlobalMemoryStatusEx(ref status)) return null;
+        return (int)status.dwMemoryLoad;
+    }
+
 
     public static float? GetGPUPower()
     {
@@ -695,6 +723,17 @@ public static class HardwareControl
         {
             cpuUsage = null;
             gpuUsage = null;
+        }
+
+        if (readMemory)
+        {
+            ramUsage = GetRAMUsage();
+            try { vramUsage = GpuControl?.GetVramUsage(); } catch { vramUsage = null; }
+        }
+        else
+        {
+            ramUsage = null;
+            vramUsage = null;
         }
 
         // Only overwrite with a new reading when the counter returns a valid value.
