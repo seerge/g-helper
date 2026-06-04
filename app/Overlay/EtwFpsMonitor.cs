@@ -193,8 +193,7 @@ namespace GHelper.Overlay
         private static extern uint StopTrace(long sessionHandle,
             string sessionName, ref EVENT_TRACE_PROPERTIES properties);
 
-        // ControlTrace with EVENT_TRACE_CONTROL_FLUSH forces the kernel to hand its buffered
-        // events to our real-time consumer now, instead of on its internal ~1 s delivery timer.
+        // EVENT_TRACE_CONTROL_FLUSH → deliver buffered events now, not on the kernel's ~1 s timer.
         [DllImport("advapi32.dll", CharSet = CharSet.Unicode)]
         private static extern uint ControlTrace(long sessionHandle,
             string? sessionName, ref EVENT_TRACE_PROPERTIES properties, uint controlCode);
@@ -219,9 +218,10 @@ namespace GHelper.Overlay
         private long _sessionHandle;
         private long _traceHandle;
 
-        // The kernel batches real-time delivery to consumers on a ~1 s timer (measured), making
-        private const int FlushIntervalMs = 100;
+        private const int FlushIntervalMs = 200; // flush cadence while a game renders
+        private const int MinFlushFps = 10;      // below this fps = idle/browsing, flush only 1×/s
         private System.Threading.Timer? _flushTimer;
+        private long _lastFlushTick;             // ≥1 s flush floor
         private volatile int _targetPid;  // written by overlay timer thread, read by ETW callback thread
         private int _lastTargetPid;       // detects PID switches so the window can be reset
 
@@ -240,8 +240,7 @@ namespace GHelper.Overlay
         private volatile int _frameHead = 0;    // next write slot — read by overlay tick thread
         private volatile int _framesFilled = 0; // valid entries (capped at RollingWindowSize)
 
-        // ── FPS diagnostics — verify ETW delivery has no delay. Flip to true to log delivery
-        //    latency + the longest gap between deliveries once per second (see LogFpsDiagnostics).
+        // Flip true to log ETW delivery latency once per second (see LogFpsDiagnostics).
         private static readonly bool FpsDiagLogging = false;
         private long _diagStart, _diagLastEvent;
         private int _diagFrames;
@@ -405,8 +404,7 @@ namespace GHelper.Overlay
                 Marshal.FreeHGlobal(loggerNamePtr);
             }
 
-            // 4. Force fast real-time delivery. Without this the kernel hands buffers to our
-            //    consumer only ~once per second, so the reading runs ~1-2 s behind reality.
+            // 4. Force prompt delivery — kernel otherwise batches events to ~1×/s.
             _flushTimer = new System.Threading.Timer(_ => FlushSession(), null, FlushIntervalMs, FlushIntervalMs);
 
             // 5. Blocking pump — returns when CloseTrace() is called from Stop()/Dispose()
@@ -422,10 +420,16 @@ namespace GHelper.Overlay
             StopTrace(_sessionHandle, SessionName, ref props);
         }
 
-        // Pushes the kernel's buffered events to our consumer now rather than on its ~1 s timer.
+        // Flush fast while a game renders, else once a second (the floor keeps the gate unstuck).
         private void FlushSession()
         {
             if (_sessionHandle == 0) return;
+
+            long now = Stopwatch.GetTimestamp();
+            bool idleFlushDue = now - _lastFlushTick >= Stopwatch.Frequency; // ≥1 s since last flush
+            if (SampleFps() < MinFlushFps && !idleFlushDue) return;
+
+            _lastFlushTick = now;
             var props = BuildSessionProperties();
             ControlTrace(_sessionHandle, null, ref props, EVENT_TRACE_CONTROL_FLUSH);
         }
@@ -489,12 +493,7 @@ namespace GHelper.Overlay
             if (FpsDiagLogging) LogFpsDiagnostics(record.EventHeader.TimeStamp);
         }
 
-        /// <summary>
-        /// Averages FPS over the last second of frames (matching FurMark and other 1 s counters),
-        /// pulled by the overlay tick. The manual flush keeps the window current to ~30 ms.
-        /// Returns 0 when no frame arrived in the last second so the overlay blanks instead of
-        /// freezing on a stale value.
-        /// </summary>
+        // FPS averaged over the last second of frames; 0 when nothing rendered in the last second.
         public double SampleFps()
         {
             int filled = _framesFilled;
@@ -524,10 +523,7 @@ namespace GHelper.Overlay
             return (count - 1) / elapsed;
         }
 
-        // Diagnostic (gated by FpsDiagLogging): logs how stale each frame is when ETW hands it to
-        // us (now − Present, both QPC) plus the longest gap between deliveries, once per second.
-        // Confirms the flush keeps delivery latency low. Comment out the call / set the flag false
-        // for release.
+        // Logs ETW delivery latency (now − Present) and the max delivery gap, once per second.
         private void LogFpsDiagnostics(long presentTick)
         {
             long freq = Stopwatch.Frequency;
