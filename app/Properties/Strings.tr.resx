@@ -265,7 +265,7 @@
     <value>Kapalı</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Klavye arka ışığı kapanma süresi (Şarj / Pil)</value>
+    <value>Arka ışığı kapanma süresi (Şarj / Pil)</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Pildeyken Arka Işık Zaman Aşımı</value>

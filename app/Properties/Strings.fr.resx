@@ -265,7 +265,7 @@
     <value>Désactivé</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Délai d'extinction du rétroéclairage branché / sur batterie</value>
+    <value>Délai rétroéclairage branché / batterie</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Délai de rétro-éclairage sur batterie</value>

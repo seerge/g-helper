@@ -265,7 +265,7 @@
     <value>Ki</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Háttérvilágítás késleltetése töltés / akku módban</value>
+    <value>Háttérvilágítás késleltetése töltés / akku</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Háttérvilágítás időkorlátja akkumulátoros üzemmódban</value>

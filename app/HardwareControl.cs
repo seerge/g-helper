@@ -655,6 +655,25 @@ public static class HardwareControl
     }
 
 
+    private static AmdGpuControl? _amdApuControl;
+    private static bool _amdApuPowerFailed;
+
+    private static float? GetAmdApuPower()
+    {
+        if (_amdApuPowerFailed || !PawnIO.CpuInfo.IsAMD) return null;
+        try
+        {
+            AmdGpuControl amd = GpuControl as AmdGpuControl ?? (_amdApuControl ??= new AmdGpuControl());
+            int power = amd.GetiGpuPower();
+            return power > 0 ? power : null;
+        }
+        catch
+        {
+            _amdApuPowerFailed = true;
+            return null;
+        }
+    }
+
     public static float? GetGPUPower()
     {
         try
@@ -724,7 +743,7 @@ public static class HardwareControl
         // If the counter is absent or returns 0 for several consecutive ticks (e.g. after
         // a game exits and invalidates the Intel Energy Meter counter), clear the stale
         // value so the overlay shows "--" rather than the last-seen wattage.
-        float? newCpu = GetCPUPower();
+        float? newCpu = GetCPUPower() ?? GetAmdApuPower();
         if (newCpu > 0)
         {
             cpuPower = newCpu;
