@@ -121,6 +121,7 @@ namespace GHelper
             checkNVPlatform = new CheckBox();
             checkStatusLed = new CheckBox();
             checkAspm = new CheckBox();
+            checkNumLockOSD = new CheckBox();
             panelPower = new Panel();
             numericHibernateAfter = new NumericUpDownWithUnit();
             labelHibernateAfter = new Label();
@@ -1203,6 +1204,7 @@ namespace GHelper
             panelSettings.Controls.Add(checkNVPlatform);
             panelSettings.Controls.Add(checkStatusLed);
             panelSettings.Controls.Add(checkAspm);
+            panelSettings.Controls.Add(checkNumLockOSD);
             panelSettings.Dock = DockStyle.Top;
             panelSettings.Location = new Point(15, 1252);
             panelSettings.Name = "panelSettings";
@@ -1341,6 +1343,20 @@ namespace GHelper
             checkAspm.Text = "Disable PCIe Link State Management (plugged in)";
             checkAspm.UseVisualStyleBackColor = true;
             checkAspm.Visible = true;
+            // 
+            // checkNumLockOSD
+            // 
+            checkNumLockOSD.AutoSize = true;
+            checkNumLockOSD.Dock = DockStyle.Top;
+            checkNumLockOSD.Location = new Point(21, 5);
+            checkNumLockOSD.Margin = new Padding(5, 3, 5, 3);
+            checkNumLockOSD.Name = "checkNumLockOSD";
+            checkNumLockOSD.Padding = new Padding(3);
+            checkNumLockOSD.Size = new Size(917, 42);
+            checkNumLockOSD.TabIndex = 14;
+            checkNumLockOSD.Text = Strings.NumLockOSD;
+            checkNumLockOSD.UseVisualStyleBackColor = true;
+            checkNumLockOSD.Visible = true;
             // 
             // panelPower
             // 
@@ -1834,6 +1850,7 @@ namespace GHelper
         private Label labelACPITitle;
         private CheckBox checkStatusLed;
         private CheckBox checkAspm;
+        private CheckBox checkNumLockOSD;
         private CheckBox checkBatteryLogo;
         private CheckBox checkBattery;
         private CheckBox checkBatteryLid;

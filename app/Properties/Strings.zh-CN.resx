@@ -443,6 +443,15 @@
   <data name="FnLockOn" xml:space="preserve">
     <value>Fn锁定开</value>
   </data>
+  <data name="NumLockOff" xml:space="preserve">
+    <value>数字锁定关</value>
+  </data>
+  <data name="NumLockOn" xml:space="preserve">
+    <value>数字锁定开</value>
+  </data>
+  <data name="NumLockOSD" xml:space="preserve">
+    <value>启用数字锁定OSD</value>
+  </data>
   <data name="WinLockToggle" xml:space="preserve">
     <value>Win 键锁定切换</value>
   </data>

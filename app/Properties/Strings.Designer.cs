@@ -1107,6 +1107,33 @@ namespace GHelper.Properties {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Num Lock : OFF.
+        /// </summary>
+        internal static string NumLockOff {
+            get {
+                return ResourceManager.GetString("NumLockOff", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Num Lock : ON.
+        /// </summary>
+        internal static string NumLockOn {
+            get {
+                return ResourceManager.GetString("NumLockOn", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Enable NumLock OSD (Keyboard Hook).
+        /// </summary>
+        internal static string NumLockOSD {
+            get {
+                return ResourceManager.GetString("NumLockOSD", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Win-Lock Toggle.
         /// </summary>
         internal static string WinLockToggle {
