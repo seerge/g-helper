@@ -651,6 +651,38 @@ public static class HardwareControl
         }
     }
 
+    private static PawnIO.IntelMsr? _intelMsr;
+    private static bool _intelMsrPowerFailed;
+
+    private static float? GetIntelMsrPower()
+    {
+        if (_intelMsrPowerFailed || PawnIO.CpuInfo.IsAMD) return null;
+        try
+        {
+            if (_intelMsr == null)
+            {
+                var msr = new PawnIO.IntelMsr();
+                if (!msr.Initialize(typeof(HardwareControl).Assembly))
+                {
+                    msr.Dispose();
+                    _intelMsrPowerFailed = true;
+                    Logger.WriteLine("Intel MSR: PawnIO/IntelMSR module unavailable (not installed?)");
+                    return null;
+                }
+                _intelMsr = msr;
+                Logger.WriteLine("CPU Power source: Intel RAPL MSR (PawnIO)");
+            }
+            float? power = _intelMsr.GetPackagePower();
+            return power > 0 ? power : null;
+        }
+        catch (Exception ex)
+        {
+            _intelMsrPowerFailed = true;
+            Logger.WriteLine("Intel MSR power read failed: " + ex.Message);
+            return null;
+        }
+    }
+
     public static float? GetGPUPower()
     {
         try
@@ -720,7 +752,7 @@ public static class HardwareControl
         // If the counter is absent or returns 0 for several consecutive ticks (e.g. after
         // a game exits and invalidates the Intel Energy Meter counter), clear the stale
         // value so the overlay shows "--" rather than the last-seen wattage.
-        float? newCpu = GetCPUPower() ?? GetAmdApuPower();
+        float? newCpu = GetCPUPower() ?? GetIntelMsrPower() ?? GetAmdApuPower();
         if (newCpu > 0)
         {
             cpuPower = newCpu;
