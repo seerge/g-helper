@@ -8,6 +8,7 @@ namespace GHelper.Overlay
         // ── ETW Constants ────────────────────────────────────────────────────────
         private const uint ERROR_SUCCESS = 0;
         private const uint EVENT_CONTROL_CODE_ENABLE_PROVIDER = 1;
+        private const uint EVENT_TRACE_CONTROL_FLUSH = 3; // ControlTrace code — deliver buffers now
         private const byte TRACE_LEVEL_INFORMATION = 4;
         private const uint PROCESS_TRACE_MODE_REAL_TIME = 0x00000100;
         private const uint PROCESS_TRACE_MODE_EVENT_RECORD = 0x10000000;
@@ -192,6 +193,11 @@ namespace GHelper.Overlay
         private static extern uint StopTrace(long sessionHandle,
             string sessionName, ref EVENT_TRACE_PROPERTIES properties);
 
+        // EVENT_TRACE_CONTROL_FLUSH → deliver buffered events now, not on the kernel's ~1 s timer.
+        [DllImport("advapi32.dll", CharSet = CharSet.Unicode)]
+        private static extern uint ControlTrace(long sessionHandle,
+            string? sessionName, ref EVENT_TRACE_PROPERTIES properties, uint controlCode);
+
         [DllImport("advapi32.dll")]
         private static extern uint EnableTraceEx2(long sessionHandle,
             in Guid providerId, uint controlCode, byte level,
@@ -211,6 +217,11 @@ namespace GHelper.Overlay
         // ── State ────────────────────────────────────────────────────────────────
         private long _sessionHandle;
         private long _traceHandle;
+
+        private const int FlushIntervalMs = 200; // flush cadence while a game renders
+        private const int MinFlushFps = 10;      // below this fps = idle/browsing, flush only 1×/s
+        private System.Threading.Timer? _flushTimer;
+        private long _lastFlushTick;             // ≥1 s flush floor
         private volatile int _targetPid;  // written by overlay timer thread, read by ETW callback thread
         private int _lastTargetPid;       // detects PID switches so the window can be reset
 
@@ -224,16 +235,18 @@ namespace GHelper.Overlay
         // at callback time is nearly identical for every frame in the batch — causing fps = N/~0.
         // EventHeader.TimeStamp is stamped by the kernel when Present() actually fired, so it
         // correctly reflects the real inter-frame spacing regardless of delivery batching.
-        private const int RollingWindowSize = 120; // frames — ~0.7 s at 170 fps
+        private const int RollingWindowSize = 360; // frames — holds a full 1 s window up to 360 fps
         private readonly long[] _frameTimes = new long[RollingWindowSize];
-        private int _frameHead = 0;    // next write slot
-        private int _framesFilled = 0; // valid entries (capped at RollingWindowSize)
-        private long _lastEventTick = 0; // throttle FpsUpdated to ~5× per second
+        private volatile int _frameHead = 0;    // next write slot — read by overlay tick thread
+        private volatile int _framesFilled = 0; // valid entries (capped at RollingWindowSize)
+
+        // Flip true to log ETW delivery latency once per second (see LogFpsDiagnostics).
+        private static readonly bool FpsDiagLogging = false;
+        private long _diagStart, _diagLastEvent;
+        private int _diagFrames;
+        private double _diagLatMin, _diagLatMax, _diagLatSum, _diagGapMax;
 
         private EventRecordCallback? _callbackRef; // keep delegate alive — prevents GC collection
-
-        /// Fires approximately 5× per second with the rolling-window FPS value.
-        public event Action<double>? FpsUpdated;
 
         /// Set to the foreground process PID to filter events.
         /// 0 = no target, no events counted (overlay shows "--").
@@ -391,15 +404,34 @@ namespace GHelper.Overlay
                 Marshal.FreeHGlobal(loggerNamePtr);
             }
 
-            // 4. Blocking pump — returns when CloseTrace() is called from Stop()/Dispose()
+            // 4. Force prompt delivery — kernel otherwise batches events to ~1×/s.
+            _flushTimer = new System.Threading.Timer(_ => FlushSession(), null, FlushIntervalMs, FlushIntervalMs);
+
+            // 5. Blocking pump — returns when CloseTrace() is called from Stop()/Dispose()
             ProcessTrace(new[] { _traceHandle }, 1, IntPtr.Zero, IntPtr.Zero);
         }
 
         public void Stop()
         {
+            _flushTimer?.Dispose();
+            _flushTimer = null;
             CloseTrace(_traceHandle);
             var props = BuildSessionProperties();
             StopTrace(_sessionHandle, SessionName, ref props);
+        }
+
+        // Flush fast while a game renders, else once a second (the floor keeps the gate unstuck).
+        private void FlushSession()
+        {
+            if (_sessionHandle == 0) return;
+
+            long now = Stopwatch.GetTimestamp();
+            bool idleFlushDue = now - _lastFlushTick >= Stopwatch.Frequency; // ≥1 s since last flush
+            if (SampleFps() < MinFlushFps && !idleFlushDue) return;
+
+            _lastFlushTick = now;
+            var props = BuildSessionProperties();
+            ControlTrace(_sessionHandle, null, ref props, EVENT_TRACE_CONTROL_FLUSH);
         }
 
         public void Dispose() => Stop();
@@ -448,31 +480,79 @@ namespace GHelper.Overlay
                 _lastTargetPid = targetPid;
                 _frameHead = 0;
                 _framesFilled = 0;
-                _lastEventTick = 0;
                 _dxgiActiveForCurrentPid = false;
                 return;
             }
 
             // EventHeader.TimeStamp = kernel QPC tick at the moment Present() was called.
             // This is NOT affected by ETW delivery batching, giving accurate inter-frame timing.
-            long now = record.EventHeader.TimeStamp;
-            _frameTimes[_frameHead] = now;
+            _frameTimes[_frameHead] = record.EventHeader.TimeStamp;
             _frameHead = (_frameHead + 1) % RollingWindowSize;
             if (_framesFilled < RollingWindowSize) _framesFilled++;
 
-            if (_framesFilled < 2) return;
+            if (FpsDiagLogging) LogFpsDiagnostics(record.EventHeader.TimeStamp);
+        }
 
-            // Throttle FpsUpdated to ~5× per second
+        // FPS averaged over the last second of frames; 0 when nothing rendered in the last second.
+        public double SampleFps()
+        {
+            int filled = _framesFilled;
+            if (filled < 2) return 0;
+
             long freq = Stopwatch.Frequency; // same units as raw QPC ticks
-            if (_lastEventTick != 0 && (now - _lastEventTick) < freq / 5) return;
-            _lastEventTick = now;
+            int head = _frameHead;
+            long newest = _frameTimes[(head - 1 + RollingWindowSize) % RollingWindowSize];
 
-            int oldestIdx = (_frameHead - _framesFilled + RollingWindowSize) % RollingWindowSize;
-            double elapsed = (double)(now - _frameTimes[oldestIdx]) / freq;
-            if (elapsed <= 0) return;
+            // No frame in the last second → not rendering; blank instead of showing a stale value.
+            if (Stopwatch.GetTimestamp() - newest > freq) return 0;
 
-            double fps = (_framesFilled - 1) / elapsed;
-            FpsUpdated?.Invoke(fps);
+            // Average over the last second of frames only.
+            long cutoff = newest - freq;
+            int count = 1;
+            long oldest = newest;
+            for (int i = 2; i <= filled; i++)
+            {
+                long t = _frameTimes[(head - i + RollingWindowSize) % RollingWindowSize];
+                if (t < cutoff) break;
+                oldest = t;
+                count++;
+            }
+
+            double elapsed = (double)(newest - oldest) / freq;
+            if (elapsed <= 0) return 0;
+            return (count - 1) / elapsed;
+        }
+
+        // Logs ETW delivery latency (now − Present) and the max delivery gap, once per second.
+        private void LogFpsDiagnostics(long presentTick)
+        {
+            long freq = Stopwatch.Frequency;
+            long nowTick = Stopwatch.GetTimestamp();
+            double latMs = (double)(nowTick - presentTick) / freq * 1000.0;
+            if (_diagFrames == 0) { _diagLatMin = _diagLatMax = latMs; }
+            else
+            {
+                if (latMs < _diagLatMin) _diagLatMin = latMs;
+                if (latMs > _diagLatMax) _diagLatMax = latMs;
+            }
+            _diagLatSum += latMs;
+            if (_diagLastEvent != 0)
+            {
+                double gapMs = (double)(nowTick - _diagLastEvent) / freq * 1000.0;
+                if (gapMs > _diagGapMax) _diagGapMax = gapMs;
+            }
+            _diagLastEvent = nowTick;
+            _diagFrames++;
+            if (_diagStart == 0) _diagStart = nowTick;
+            else if (nowTick - _diagStart >= freq)
+            {
+                double secs = (double)(nowTick - _diagStart) / freq;
+                Logger.WriteLine(
+                    $"FPS diag: fps={SampleFps():F0} frames={_diagFrames} rate={_diagFrames / secs:F0}/s | " +
+                    $"ETW latency ms: min={_diagLatMin:F0} avg={_diagLatSum / _diagFrames:F0} max={_diagLatMax:F0} | " +
+                    $"maxgap={_diagGapMax:F0}ms");
+                _diagStart = nowTick; _diagFrames = 0; _diagLatSum = 0; _diagGapMax = 0;
+            }
         }
 
         private static EVENT_TRACE_PROPERTIES BuildSessionProperties() => new()
@@ -487,9 +567,8 @@ namespace GHelper.Overlay
             LogFileNameOffset = 0,
             LoggerNameOffset = (uint)Marshal.OffsetOf<EVENT_TRACE_PROPERTIES>(
                 nameof(EVENT_TRACE_PROPERTIES.LoggerName)),
-            // Sized for bursty real-time delivery — the original 16 KB total budget
-            // (4 KB × 2-4) is enough to drop frames under heavy GPU activity.
-            BufferSize = 16,          // KB per buffer
+            // Flush drains buffers, so 64 KB base only needs to cover the ~1 s idle→game transition.
+            BufferSize = 8,           // KB per buffer
             MinimumBuffers = 8,
             MaximumBuffers = 16,
         };

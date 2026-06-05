@@ -322,6 +322,10 @@ namespace GHelper.Overlay
                     _currentFps = 0;
                     _fps.TargetPid = pid;
                 }
+                else
+                {
+                    _currentFps = (int)Math.Round(_fps.SampleFps());
+                }
             }
 
             HardwareControl.ReadSensorsOverlay();
@@ -653,10 +657,6 @@ namespace GHelper.Overlay
             _fps?.Dispose();
             _currentFps = 0;
             _fps = new EtwFpsMonitor();
-            _fps.FpsUpdated += d =>
-            {
-                _currentFps = (int)Math.Round(d);
-            };
             _fpsTask = Task.Run(() => _fps.Start());
 
             float sc = GetDpiScale();
