@@ -57,7 +57,7 @@ namespace GHelper.UI
                 formBack = Color.FromArgb(255, 28, 28, 28);
                 foreMain = Color.FromArgb(255, 240, 240, 240);
                 borderMain = Color.FromArgb(255, 55, 55, 55);
-                borderSecond = Color.FromArgb(255, 45, 45, 45);
+                borderSecond = Color.FromArgb(255, 42, 42, 42);
 
                 chartMain = Color.FromArgb(255, 35, 35, 35);
                 chartGrid = Color.FromArgb(255, 70, 70, 70);

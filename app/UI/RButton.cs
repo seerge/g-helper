@@ -119,8 +119,8 @@ namespace GHelper.UI
                 Region = new Region(pathSurface);
                 pevent.Graphics.DrawPath(penSurface, pathSurface);
 
-                bool drawActive = !Borderless && activated && borderColor.A > 0;
-                bool drawRest = !Borderless && !activated && FlatAppearance.BorderColor.A > 0;
+                bool drawActive = Enabled && !Borderless && activated && borderColor.A > 0;
+                bool drawRest = Enabled && !Borderless && !activated && FlatAppearance.BorderColor.A > 0;
 
                 if (drawActive)
                 {
