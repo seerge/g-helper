@@ -37,6 +37,12 @@
     <DebugSymbols>false</DebugSymbols>
   </PropertyGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Include="Pawn\IntelMSR.bin">
+      <LogicalName>GHelperOverlay.IntelMSR.bin</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+
   <Target Name="KillRunningGHelperOverlay" BeforeTargets="Build" Condition="'$(GITHUB_ACTIONS)'!='true' AND '$(PublishProtocol)'!=''">
     <Exec Command="powershell -NoProfile -Command &quot;Get-Process -Name GHelperOverlay -ErrorAction SilentlyContinue | Stop-Process -Force; Start-Sleep -Milliseconds 500&quot;" />
   </Target>

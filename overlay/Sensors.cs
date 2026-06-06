@@ -46,7 +46,7 @@ public static class Sensors
         CpuTemp = ReadCpuTemp();
         GpuTemp = ReadGpuTemp();
 
-        float? newCpuP = CpuPowerCounter.Read();
+        float? newCpuP = CpuPowerCounter.Read() ?? IntelMsrCpuPower.Read();
         if (newCpuP > 0)
         {
             CpuPower = newCpuP;
@@ -193,6 +193,43 @@ internal static class CpuPowerCounter
     {
         _readErrors = 0;
         _failed = false;
+    }
+}
+
+// Intel RAPL MSR via PawnIO — accurate CPU package power on Intel systems where
+// the Energy Meter PerfCounter is unreliable or absent. Returns null on AMD or
+// when the PawnIO driver isn't installed.
+internal static class IntelMsrCpuPower
+{
+    private static PawnIO.IntelMsr? _msr;
+    private static bool _failed;
+
+    public static float? Read()
+    {
+        if (_failed || PawnIO.CpuInfo.IsAMD) return null;
+        try
+        {
+            if (_msr == null)
+            {
+                var m = new PawnIO.IntelMsr();
+                if (!m.Initialize(System.Reflection.Assembly.GetExecutingAssembly()))
+                {
+                    m.Dispose();
+                    _failed = true;
+                    Logger.WriteLine("Intel MSR: PawnIO driver unavailable (not installed?)");
+                    return null;
+                }
+                _msr = m;
+                Logger.WriteLine("CPU Power source: Intel RAPL MSR (PawnIO)");
+            }
+            return _msr.GetPackagePower();
+        }
+        catch (Exception ex)
+        {
+            _failed = true;
+            Logger.WriteLine("Intel MSR read failed: " + ex.Message);
+            return null;
+        }
     }
 }
 
