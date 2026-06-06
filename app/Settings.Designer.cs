@@ -1683,7 +1683,7 @@ namespace GHelper
             buttonPeripheral3.Location = new Point(528, 4);
             buttonPeripheral3.Margin = new Padding(4);
             buttonPeripheral3.Name = "buttonPeripheral3";
-            buttonPeripheral3.Secondary = false;
+            buttonPeripheral3.Secondary = true;
             buttonPeripheral3.Size = new Size(255, 120);
             buttonPeripheral3.TabIndex = 22;
             buttonPeripheral3.Text = "Mouse 3";
@@ -1707,7 +1707,7 @@ namespace GHelper
             buttonPeripheral2.Location = new Point(266, 4);
             buttonPeripheral2.Margin = new Padding(4);
             buttonPeripheral2.Name = "buttonPeripheral2";
-            buttonPeripheral2.Secondary = false;
+            buttonPeripheral2.Secondary = true;
             buttonPeripheral2.Size = new Size(254, 120);
             buttonPeripheral2.TabIndex = 19;
             buttonPeripheral2.Text = "Mouse 2";
@@ -1731,7 +1731,7 @@ namespace GHelper
             buttonPeripheral1.Location = new Point(4, 4);
             buttonPeripheral1.Margin = new Padding(4);
             buttonPeripheral1.Name = "buttonPeripheral1";
-            buttonPeripheral1.Secondary = false;
+            buttonPeripheral1.Secondary = true;
             buttonPeripheral1.Size = new Size(254, 120);
             buttonPeripheral1.TabIndex = 20;
             buttonPeripheral1.Text = "Mouse 1";
