@@ -181,8 +181,9 @@ namespace GHelper.Input
                 hook.RegisterHotKey(ModifierKeys.Shift, Keys.VolumeDown);
                 hook.RegisterHotKey(ModifierKeys.Shift, Keys.VolumeUp);
                 hook.RegisterHotKey(keyModifier, Keys.F20);
-                hook.RegisterHotKey(keyModifierAlt, Keys.O);
             }
+
+            hook.RegisterHotKey(keyModifierAlt, Keys.O);
 
             if (!AppConfig.IsZ13() && !AppConfig.IsAlly() && !AppConfig.IsVivoZenPro())
             {

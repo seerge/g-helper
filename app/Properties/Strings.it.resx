@@ -265,7 +265,7 @@
     <value>Spento</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Timeout retroilluminazione in carica / a batteria</value>
+    <value>Timeout retroilluminazione carica / batteria</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Timeout retroilluminazione quando in batteria</value>
