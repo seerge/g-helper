@@ -46,7 +46,7 @@ public static class Sensors
         CpuTemp = ReadCpuTemp();
         GpuTemp = ReadGpuTemp();
 
-        float? newCpuP = CpuPowerCounter.Read() ?? IntelMsrCpuPower.Read();
+        float? newCpuP = CpuPowerCounter.Read() ?? IntelMsrCpuPower.Read() ?? GHelperOverlay.Gpu.AmdAdl.ApuPower();
         if (newCpuP > 0)
         {
             CpuPower = newCpuP;
@@ -65,12 +65,12 @@ public static class Sensors
 
         // GpuSensors gates each read on IsAvailable() internally — returns null
         // when the dGPU is asleep or absent, so no extra guard needed here.
-        GpuPower = GpuSensors.GetPower();
+        GpuPower = GpuSensors.GetPower() ?? GHelperOverlay.Gpu.AmdAdl.DGpuPower();
 
         if (ReadUsage)
         {
             CpuUsage = CpuUsageReader.Read();
-            GpuUsage = GpuSensors.GetUsage();
+            GpuUsage = GpuSensors.GetUsage() ?? GHelperOverlay.Gpu.AmdAdl.DGpuUsage();
         }
         else
         {
@@ -105,7 +105,8 @@ public static class Sensors
 
         int acpi = _acpi.DeviceGet(AsusACPI.Temp_GPU);
         if (acpi > 0 && acpi < 125) return acpi;
-        return null;
+
+        return GHelperOverlay.Gpu.AmdAdl.DGpuTemperature();
     }
 
     public static void Dispose()
