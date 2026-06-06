@@ -972,7 +972,7 @@ namespace GHelper.USB
             }
 
             audioMaxes.Add(max);
-            if (audioMaxes.Count > 20) audioMaxes.RemoveAt(0);
+            if (audioMaxes.Count > 100) audioMaxes.RemoveAt(0);
             double maxAvg = audioMaxes.Average();
             if (maxAvg < 1) maxAvg = 1;
 
