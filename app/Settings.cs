@@ -887,6 +887,12 @@ namespace GHelper
             menuOverlay.Checked = AppConfig.Is("overlay");
             contextMenuStrip.Items.Add(menuOverlay);
 
+            var menuMcp = new ToolStripMenuItem("MCP Server");
+            menuMcp.Margin = padding;
+            menuMcp.Checked = GHelper.Mcp.McpServer.Enabled;
+            menuMcp.Click += (sender, args) => ToggleMcpServer(menuMcp);
+            contextMenuStrip.Items.Add(menuMcp);
+
             var quit = new ToolStripMenuItem(Properties.Strings.Quit);
             quit.Click += ButtonQuit_Click;
             quit.Margin = padding;
@@ -1679,6 +1685,26 @@ namespace GHelper
             else
                 Program.hardwareOverlay?.StopOverlay();
             SetContextMenu();
+        }
+
+        public void ToggleMcpServer(ToolStripMenuItem menuItem)
+        {
+            bool enable = !GHelper.Mcp.McpServer.Enabled;
+            GHelper.Mcp.McpServer.Enabled = enable;
+            GHelper.Mcp.McpServer.ApplyState();
+            menuItem.Checked = enable;
+
+            if (enable)
+            {
+                // Show the connection details once so the user can configure their MCP client.
+                string message =
+                    "MCP server enabled.\n\n" +
+                    "URL: " + GHelper.Mcp.McpServer.Url + "\n" +
+                    "Authorization: Bearer " + GHelper.Mcp.McpServer.Token + "\n\n" +
+                    "It accepts connections from this machine only. Anyone with the token above can " +
+                    "read sensors and change laptop settings, so keep it private.";
+                MessageBox.Show(message, "G-Helper MCP Server", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
         public void ShowMode(int mode)

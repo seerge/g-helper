@@ -4,6 +4,7 @@ using GHelper.Display;
 using GHelper.Gpu;
 using GHelper.Helpers;
 using GHelper.Input;
+using GHelper.Mcp;
 using GHelper.Mode;
 using GHelper.Overlay;
 using GHelper.Peripherals;
@@ -225,6 +226,9 @@ namespace GHelper
 
             if (AppConfig.Is("overlay"))
                 hardwareOverlay?.StartOverlay();
+
+            // Start the MCP server if the user has opted in (disabled by default).
+            McpServer.ApplyState();
 
             Application.Run();
         }
@@ -467,6 +471,7 @@ namespace GHelper
                 trayIcon.Dispose();
             }
 
+            McpServer.Stop();
             PeripheralsProvider.UnregisterForDeviceEvents();
             clamshellControl.UnregisterDisplayEvents();
             NativeMethods.UnregisterPowerSettingNotification(unRegPowerNotify);
