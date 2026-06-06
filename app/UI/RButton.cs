@@ -147,9 +147,9 @@ namespace GHelper.UI
                 }
                 else if (drawRest)
                 {
-                    int halfBorder = border / 2;
-                    Rectangle borderRect = new Rectangle(halfBorder, halfBorder, rectSurface.Width - 2 * halfBorder, rectSurface.Height - 2 * halfBorder);
-                    ControlHelper.DrawGradientBorder(pevent.Graphics, borderRect, FlatAppearance.BorderColor, radius + border - halfBorder, 1f, PenAlignment.Inset, RestTopLighten);
+                    int inset = border / 2 + 1;
+                    Rectangle borderRect = new Rectangle(inset, inset, rectSurface.Width - 2 * inset, rectSurface.Height - 2 * inset);
+                    ControlHelper.DrawGradientBorder(pevent.Graphics, borderRect, FlatAppearance.BorderColor, radius + border - inset, 1f, PenAlignment.Inset, RestTopLighten);
                 }
             }
 
