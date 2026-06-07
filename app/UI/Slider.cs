@@ -31,6 +31,7 @@ namespace GHelper.UI
         public Color borderColor = Color.White;
 
         public event EventHandler ValueChanged;
+        public event KeyEventHandler KeyReleased;
 
         public Slider()
         {
@@ -123,6 +124,21 @@ namespace GHelper.UI
             AccessibilityNotifyClients(AccessibleEvents.Focus, 0);
 
             base.OnKeyDown(e);
+        }
+
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Right:
+                case Keys.Up:
+                case Keys.Left:
+                case Keys.Down:
+                    KeyReleased?.Invoke(this, e);
+                    break;
+            }
+
+            base.OnKeyUp(e);
         }
 
         protected override void OnPaint(PaintEventArgs e)
