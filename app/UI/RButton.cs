@@ -38,7 +38,7 @@ namespace GHelper.UI
                 if (activated != value)
                     Invalidate();
                 activated = value;
-
+                AccessibleDescription = activated ? "Active" : null;
             }
         }
 
