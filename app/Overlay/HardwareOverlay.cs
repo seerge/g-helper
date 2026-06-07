@@ -145,6 +145,10 @@ namespace GHelper.Overlay
         private volatile int _currentFps;
         private int _lastFgPid;
         private bool _active;
+        private bool _gameOnly;
+        private bool _hidden;
+        private int _idleTicks;
+        private const int HideGraceTicks = 2;
 
         [DllImport("user32.dll")]
         private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter,
@@ -328,6 +332,12 @@ namespace GHelper.Overlay
                 }
             }
 
+            if (_gameOnly)
+            {
+                UpdateGameVisibility();
+                if (_hidden) return; // auto-hidden on desktop — skip sensor reads and repaint
+            }
+
             HardwareControl.ReadSensorsOverlay();
 
             // gpuActive gates power, fan and chart history — when the GPU is disabled
@@ -352,6 +362,17 @@ namespace GHelper.Overlay
             _gpuUsage = gpuActive ? (HardwareControl.gpuUsage ?? 0) : null;
 
             Invalidate();
+        }
+
+        // A couple of seconds of grace rides out brief fps drops (loading screens) before hiding.
+        private void UpdateGameVisibility()
+        {
+            _idleTicks = _currentFps > 0 ? 0 : _idleTicks + 1;
+            bool show = _idleTicks < HideGraceTicks;
+            if (show != _hidden) return;
+            _hidden = !show;
+            if (Handle != nint.Zero)
+                User32.ShowWindow(Handle, (short)(_hidden ? User32.SW_HIDE : User32.SW_SHOWNOACTIVATE));
         }
 
         protected override void PerformPaint(PaintEventArgs e)
@@ -641,6 +662,9 @@ namespace GHelper.Overlay
         {
             _active = true;
             _lastFgPid = 0;
+            _gameOnly = AppConfig.Is("overlay_game_only");
+            _hidden = false;
+            _idleTicks = HideGraceTicks; // start hidden until a game presents frames
             // overlay_mode is the new key. Migrate from legacy overlay_light_mode (0/1)
             // when the new one isn't set yet so existing users keep their preference.
             int storedMode = AppConfig.Exists("overlay_mode")
