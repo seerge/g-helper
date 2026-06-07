@@ -147,8 +147,8 @@ namespace GHelper.Overlay
         private bool _active;
         private bool _gameOnly;
         private bool _hidden;
-        private int _idleTicks;
-        private const int HideGraceTicks = 2;
+        private int _shownPid;
+        private const int MinGameFps = 6;
 
         [DllImport("user32.dll")]
         private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter,
@@ -316,15 +316,17 @@ namespace GHelper.Overlay
 
             // Pin FPS counter to foreground process — queried every second so
             // switching games is handled automatically without manual configuration.
+            GetWindowThreadProcessId(GetForegroundWindow(), out uint fgPidRaw);
+            int fgPid = (int)fgPidRaw;
+            bool ownWindow = fgPid == 0 || fgPid == Environment.ProcessId;
+
             if (_fps != null)
             {
-                GetWindowThreadProcessId(GetForegroundWindow(), out uint fgPid);
-                int pid = (int)fgPid;
-                if (pid != Environment.ProcessId && pid != _lastFgPid)
+                if (!ownWindow && fgPid != _lastFgPid)
                 {
-                    _lastFgPid = pid;
+                    _lastFgPid = fgPid;
                     _currentFps = 0;
-                    _fps.TargetPid = pid;
+                    _fps.TargetPid = fgPid;
                 }
                 else
                 {
@@ -334,8 +336,8 @@ namespace GHelper.Overlay
 
             if (_gameOnly)
             {
-                UpdateGameVisibility();
-                if (_hidden) return; // auto-hidden on desktop — skip sensor reads and repaint
+                if (!ownWindow) UpdateGameVisibility(fgPid);
+                if (_hidden) return;
             }
 
             HardwareControl.ReadSensorsOverlay();
@@ -364,11 +366,10 @@ namespace GHelper.Overlay
             Invalidate();
         }
 
-        // A couple of seconds of grace rides out brief fps drops (loading screens) before hiding.
-        private void UpdateGameVisibility()
+        private void UpdateGameVisibility(int fgPid)
         {
-            _idleTicks = _currentFps > 0 ? 0 : _idleTicks + 1;
-            bool show = _idleTicks < HideGraceTicks;
+            if (_currentFps >= MinGameFps) _shownPid = fgPid;
+            bool show = fgPid == _shownPid;
             if (show != _hidden) return;
             _hidden = !show;
             if (Handle != nint.Zero)
@@ -664,7 +665,7 @@ namespace GHelper.Overlay
             _lastFgPid = 0;
             _gameOnly = AppConfig.Is("overlay_game_only");
             _hidden = false;
-            _idleTicks = HideGraceTicks; // start hidden until a game presents frames
+            _shownPid = 0;
             // overlay_mode is the new key. Migrate from legacy overlay_light_mode (0/1)
             // when the new one isn't set yet so existing users keep their preference.
             int storedMode = AppConfig.Exists("overlay_mode")
@@ -695,6 +696,7 @@ namespace GHelper.Overlay
 
             RestorePosition();
             base.Show();
+            if (_gameOnly) { _hidden = true; User32.ShowWindow(Handle, User32.SW_HIDE); }
             Tick();
             _timer.Start();
         }
