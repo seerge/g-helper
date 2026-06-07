@@ -103,7 +103,7 @@ Aplikace obsahuje automatickou kontrolu aktualizací BIOSu a ovladačů, která 
 <img width="2302" alt="Driver Updates" src="https://github.com/user-attachments/assets/303dfce9-fbbd-4d15-b6d7-f21e7c2c59a4" />
 
 ### 🎮 Překryvné okno s metrikami
-Vestavěný herní překryv (OSD), který přímo přes hru zobrazuje v reálném čase **FPS, teploty CPU / GPU, využití a příkon** – bez dalších nástrojů jako RTSS. Funguje ve hrách DX10+. U starších titulů využívajících exkluzivní režim celé obrazovky nemusí být vidět, proto hru nastavte do okenního / bezrámečkového režimu celé obrazovky.
+Vestavěný herní překryv (OSD), který přímo přes hru zobrazuje v reálném čase **FPS, teploty CPU / GPU, využití a příkon** – bez dalších nástrojů. Funguje ve hrách DX10+. U starších titulů využívajících exkluzivní režim celé obrazovky nemusí být vidět, proto hru nastavte do okenního / bezrámečkového režimu celé obrazovky.
 
 - ``Ctrl + Shift + Alt + O`` - Zapnutí / vypnutí překryvného okna ve hře
 - ``Ctrl + Shift + Alt + Tažení myší`` - Přesunutí překryvného okna

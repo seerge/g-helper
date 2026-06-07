@@ -103,7 +103,7 @@ The app includes an automatic BIOS and driver update checker that pulls directly
 <img width="2302" alt="Driver Updates" src="https://github.com/user-attachments/assets/303dfce9-fbbd-4d15-b6d7-f21e7c2c59a4" />
 
 ### 🎮 Metrics Overlay
-A built-in in-game overlay (OSD) that shows live **FPS, CPU / GPU temperatures, usage and power** right on top of your game - no extra tools like RTSS needed. Works in DX10+ games. May not be visible over old titles that use exclusive full-screen mode, so set the game to windowed / borderless full-screen mode.
+A built-in in-game overlay (OSD) that shows live **FPS, CPU / GPU temperatures, usage and power** right on top of your game - no extra tools needed. Works in DX10+ games. May not be visible over old titles that use exclusive full-screen mode, so set the game to windowed / borderless full-screen mode.
 
 - ``Ctrl + Shift + Alt + O`` - Toggle in-game overlay ON / OFF
 - ``Ctrl + Shift + Alt + Mouse Drag`` - Move overlay

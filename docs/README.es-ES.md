@@ -103,7 +103,7 @@ La aplicación incluye un comprobador automático de actualizaciones de BIOS y c
 <img width="2302" alt="Driver Updates" src="https://github.com/user-attachments/assets/303dfce9-fbbd-4d15-b6d7-f21e7c2c59a4" />
 
 ### 🎮 Superposición de métricas
-Una superposición integrada en el juego (OSD) que muestra en tiempo real los **FPS, las temperaturas de CPU / GPU, el uso y el consumo** directamente sobre tu juego, sin herramientas adicionales como RTSS. Funciona en juegos DX10+. Puede no verse en títulos antiguos que usan el modo de pantalla completa exclusiva, así que configura el juego en modo de pantalla completa en ventana / sin bordes.
+Una superposición integrada en el juego (OSD) que muestra en tiempo real los **FPS, las temperaturas de CPU / GPU, el uso y el consumo** directamente sobre tu juego, sin herramientas adicionales. Funciona en juegos DX10+. Puede no verse en títulos antiguos que usan el modo de pantalla completa exclusiva, así que configura el juego en modo de pantalla completa en ventana / sin bordes.
 
 - ``Ctrl + Shift + Alt + O`` - Activar / desactivar la superposición en el juego
 - ``Ctrl + Shift + Alt + Arrastrar ratón`` - Mover la superposición

@@ -102,7 +102,7 @@
 <img width="2302" alt="Driver Updates" src="https://github.com/user-attachments/assets/303dfce9-fbbd-4d15-b6d7-f21e7c2c59a4" />
 
 ### 🎮 性能指标叠加层（Overlay）
-内置的游戏内叠加层（OSD），可在游戏画面上直接显示实时 **FPS、CPU / GPU 温度、占用率和功耗** —— 无需 RTSS 等额外工具。支持 DX10+ 游戏。在使用独占全屏模式的旧游戏上可能不显示，请将游戏设置为窗口化 / 无边框全屏模式。
+内置的游戏内叠加层（OSD），可在游戏画面上直接显示实时 **FPS、CPU / GPU 温度、占用率和功耗** —— 无需额外工具。支持 DX10+ 游戏。在使用独占全屏模式的旧游戏上可能不显示，请将游戏设置为窗口化 / 无边框全屏模式。
 
 - ``Ctrl + Shift + Alt + O`` - 开启 / 关闭游戏内叠加层
 - ``Ctrl + Shift + Alt + 拖动鼠标`` - 移动叠加层
