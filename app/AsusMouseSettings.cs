@@ -906,6 +906,7 @@ namespace GHelper
                     Margin = new Padding(0, (int)(6 * s), (int)(6 * s), (int)(6 * s)),
                     DropDownStyle = ComboBoxStyle.DropDownList,
                     FlatStyle = FlatStyle.Flat,
+                    UseCustomTextPadding = false,
                     DrawMode = DrawMode.OwnerDrawFixed,
                     ItemHeight = comboProfile.ItemHeight,
                     BackColor = RForm.buttonMain,

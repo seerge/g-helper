@@ -96,14 +96,14 @@ In each mode dedicated GPU can be tweaked to specific needs, including Core and 
 3. **Ultimate**: iGPU and dGPU enabled, but dGPU drives built in display (supported on 2022+ models)
 4. **Optimized**: disables dGPU on battery (Eco) and enables when plugged in (Standard)
 
-<img width="1134" alt="GPU Modes" src="https://github.com/user-attachments/assets/c273baa1-dbe7-4361-88aa-ec670128f956" />
+<img width="1134" alt="GPU Modes" src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/gpu-modes-en.svg" />
 
 ### 💿Driver Updates
 The app includes an automatic BIOS and driver update checker that pulls directly from the official Asus website for your specific model, highlighting new downloads as they become available. All links in the `Updates` section point to official Asus downloads.
 <img width="2302" alt="Driver Updates" src="https://github.com/user-attachments/assets/303dfce9-fbbd-4d15-b6d7-f21e7c2c59a4" />
 
 ### 🎮 Metrics Overlay
-A built-in in-game overlay (OSD) that shows live **FPS, CPU / GPU temperatures, usage and power** right on top of your game - no extra tools like RTSS needed. Works in DX10+ games. May not be visible over old titles that use exclusive full-screen mode, so set the game to windowed / borderless full-screen mode.
+A built-in in-game overlay (OSD) that shows live **FPS, CPU / GPU temperatures, usage and power** right on top of your game - no extra tools needed. Works in DX10+ games. May not be visible over old titles that use exclusive full-screen mode, so set the game to windowed / borderless full-screen mode.
 
 - ``Ctrl + Shift + Alt + O`` - Toggle in-game overlay ON / OFF
 - ``Ctrl + Shift + Alt + Mouse Drag`` - Move overlay

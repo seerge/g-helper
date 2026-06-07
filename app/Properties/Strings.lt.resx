@@ -265,7 +265,7 @@
     <value>Išjungta</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Apšvietimo laikas įkraunant / akumuliatoriaus režimu</value>
+    <value>Apšvietimo laikas: įkraunant / baterijoje</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Foninio apšvietimo laikas akumuliatoriaus režimu</value>

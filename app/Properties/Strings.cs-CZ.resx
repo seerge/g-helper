@@ -265,7 +265,7 @@
     <value>Vypnuto</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Časový limit podsvícení v síti / na baterii</value>
+    <value>Časový limit podsvícení: síť / baterie</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Časový limit podsvícení na baterii</value>
