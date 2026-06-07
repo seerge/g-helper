@@ -96,7 +96,7 @@ Asus 노트북을 위한 작고 가벼운 Armoury Crate 대체 도구로, 훨씬
 3. **얼티밋**: iGPU와 dGPU가 활성화되지만, dGPU가 내장 디스플레이를 구동합니다 (2022년 이후 모델 지원)
 4. **최적화**: 배터리 사용 시 dGPU를 비활성화(에코)하고, 전원 연결 시 활성화(표준)합니다
 
-<img width="1134" alt="GPU 모드" src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/gpu-modes-ko.png" />
+<img width="1134" alt="GPU 모드" src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/gpu-modes-ko.svg" />
 
 ### 💿 드라이버 업데이트
 이 앱에는 사용 중인 모델에 맞춰 Asus 공식 웹사이트에서 직접 가져오는 BIOS 및 드라이버 자동 업데이트 검사기가 포함되어 있으며, 새 다운로드가 제공되면 강조 표시합니다. `Updates` 섹션의 모든 링크는 Asus 공식 다운로드를 가리킵니다.

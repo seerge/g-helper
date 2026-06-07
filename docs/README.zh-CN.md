@@ -95,7 +95,7 @@
 3. **独显直连（Ultimate）**：同时启用核显和独显，但由独显驱动内置屏幕（2022 年及以后的机型支持）
 4. **自动优化（Optimized）**：电池供电时禁用独显（集显），接入电源时启用（标准）
 
-<img width="1134" alt="显卡模式" src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/gpu-modes-zh.png" />
+<img width="1134" alt="显卡模式" src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/gpu-modes-zh.svg" />
 
 ### 💿 驱动更新
 本应用内置自动 BIOS 和驱动更新检查器，直接从华硕官网针对你的具体型号拉取更新，并在有新下载可用时予以提示。`更新` 部分中的所有链接均指向华硕官方下载。

@@ -96,7 +96,7 @@ In each mode dedicated GPU can be tweaked to specific needs, including Core and 
 3. **Ultimate**: iGPU and dGPU enabled, but dGPU drives built in display (supported on 2022+ models)
 4. **Optimized**: disables dGPU on battery (Eco) and enables when plugged in (Standard)
 
-<img width="1134" alt="GPU Modes" src="https://github.com/user-attachments/assets/c273baa1-dbe7-4361-88aa-ec670128f956" />
+<img width="1134" alt="GPU Modes" src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/gpu-modes-en.svg" />
 
 ### 💿Driver Updates
 The app includes an automatic BIOS and driver update checker that pulls directly from the official Asus website for your specific model, highlighting new downloads as they become available. All links in the `Updates` section point to official Asus downloads.

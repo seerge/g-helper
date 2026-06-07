@@ -96,7 +96,7 @@ V každém režimu lze vyhrazenou GPU vyladit podle konkrétních potřeb, včet
 3. **Ultimátní**: povolena iGPU i dGPU, ale vestavěný displej je řízen dGPU (podporováno u modelů z roku 2022 a novějších)
 4. **Optimalizovaný**: deaktivuje dGPU při provozu na baterii (Eco) a aktivuje ji při připojení k napájení (Standardní)
 
-<img width="1134" alt="Režimy GPU" src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/gpu-modes-cs.png" />
+<img width="1134" alt="Režimy GPU" src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/gpu-modes-cs.svg" />
 
 ### 💿 Aktualizace ovladačů
 Aplikace obsahuje automatickou kontrolu aktualizací BIOSu a ovladačů, která je stahuje přímo z oficiálních stránek Asus pro váš konkrétní model a zvýrazňuje nové soubory ke stažení, jakmile jsou k dispozici. Všechny odkazy v sekci `Updates` vedou na oficiální soubory ke stažení od společnosti Asus.

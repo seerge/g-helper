@@ -96,7 +96,7 @@ En cada modo, la GPU dedicada se puede ajustar a necesidades concretas, incluyen
 3. **Ultimate**: se habilitan la iGPU y la dGPU, pero la dGPU controla la pantalla integrada (compatible con modelos de 2022 en adelante)
 4. **Optimizado**: desactiva la dGPU con batería (Eco) y la activa al conectar a la corriente (Estándar)
 
-<img width="1134" alt="Modos de GPU" src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/gpu-modes-es.png" />
+<img width="1134" alt="Modos de GPU" src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/gpu-modes-es.svg" />
 
 ### 💿 Actualizaciones de controladores
 La aplicación incluye un comprobador automático de actualizaciones de BIOS y controladores que las obtiene directamente del sitio web oficial de Asus para tu modelo concreto, destacando las nuevas descargas a medida que están disponibles. Todos los enlaces de la sección `Updates` apuntan a descargas oficiales de Asus.

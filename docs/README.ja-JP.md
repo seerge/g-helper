@@ -96,7 +96,7 @@ Asus ノートパソコン向けの小型・軽量な Armoury Crate 代替ツー
 3. **アルティメット**：iGPU と dGPU が有効で、dGPU が内蔵ディスプレイを駆動します（2022 年以降のモデルで対応）
 4. **オプティマイズド**：バッテリー駆動時は dGPU を無効化（エコ）、電源接続時に有効化（スタンダード）
 
-<img width="1134" alt="GPU モード" src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/gpu-modes-ja.png" />
+<img width="1134" alt="GPU モード" src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/gpu-modes-ja.svg" />
 
 ### 💿 ドライバ更新
 本アプリには、お使いのモデル向けに Asus 公式サイトから直接取得する BIOS / ドライバの自動更新チェッカーが含まれており、新しいダウンロードが利用可能になるとハイライト表示します。`Updates` セクションのすべてのリンクは Asus 公式のダウンロードを指しています。
