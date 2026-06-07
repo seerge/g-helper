@@ -303,6 +303,8 @@ namespace GHelper
         {
             int skipDelay = wakeup ? 10000 : 3000;
 
+            if (init) gpuControl.CaptureNvBootState();
+
             if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < skipDelay) return false;
             lastAuto = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 

@@ -13,6 +13,9 @@ namespace GHelper.Gpu
         public static int gpuMode;
         public static bool? gpuExists = null;
 
+        // dGPU was disabled (eco) at boot, so NvContainerLocalSystem needs one restart when next enabled
+        static bool nvRestartPending;
+
 
         public GPUModeControl(SettingsForm settingsForm)
         {
@@ -190,10 +193,11 @@ namespace GHelper.Gpu
                             NvidiaGpuControl.RestartNVService();
                             settings.Invoke(delegate { InitGPUMode(); });
                             await Task.Delay(TimeSpan.FromMilliseconds(1000));
-                        } else {
+                        } else if (nvRestartPending) {
+                            nvRestartPending = false;
                             settings.LockGPUModes(Properties.Strings.GPUMode +": Restarting NV Service...");
                             await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("nv_delay", 5000)));
-                            NvidiaGpuControl.FixNvContainer();
+                            NvidiaGpuControl.RestartNvContainer();
                             settings.Invoke(delegate { InitGPUMode(); });
                         }
 
@@ -335,6 +339,11 @@ namespace GHelper.Gpu
             {
                 HardwareControl.GpuControl.KillGPUApps();
             }
+        }
+
+        public void CaptureNvBootState()
+        {
+            nvRestartPending = Program.acpi.DeviceGet(AsusACPI.GPUEco) == 1;
         }
 
         public void StandardModeFix()
