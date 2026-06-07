@@ -1681,9 +1681,9 @@ namespace GHelper
             bool enable = !AppConfig.Is("overlay");
             AppConfig.Set("overlay", enable ? 1 : 0);
             if (enable)
-                Program.hardwareOverlay?.StartOverlay();
+                GHelper.Helpers.OverlayLauncher.Start();
             else
-                Program.hardwareOverlay?.StopOverlay();
+                GHelper.Helpers.OverlayLauncher.Stop();
             SetContextMenu();
         }
 

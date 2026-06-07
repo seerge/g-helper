@@ -17,9 +17,6 @@ public static class HardwareControl
     public static float? cpuTemp = -1;
     public static float? gpuTemp = -1;
 
-    public static float? cpuPower;
-    public static float? gpuPower;
-
     public static decimal? batteryRate = 0;
     public static decimal batteryHealth = -1;
     public static decimal batteryCapacity = -1;
@@ -33,19 +30,6 @@ public static class HardwareControl
     public static string? cpuFan;
     public static string? gpuFan;
     public static string? midFan;
-
-    public static int? cpuFanRPM;
-    public static int? gpuFanRPM;
-
-    public static int? gpuUse;
-
-    public static int? cpuUsage;
-    public static int? gpuUsage;
-
-    // Set by the overlay so ReadSensorsOverlay skips sensors that won't be
-    // displayed in the current mode (fan ACPI calls and CPU usage counter).
-    public static bool readFans;
-    public static bool readUsage;
 
     static long lastUpdate;
 
@@ -500,208 +484,8 @@ public static class HardwareControl
         return gpuTemp;
     }
 
-    private static PerformanceCounter? _cpuPowerCounter;
-    private static bool _cpuPowerCounterFailed;
-    private static bool _cpuPowerInitStarted;
-    private static int _cpuPowerNullTicks;
-    private static int _cpuPowerReadErrors;
-    private const int CpuPowerMaxReadErrors = 3;
-    private static readonly string[] _powerCounterInstances = { "Apu Power", "RAPL_Package0_PKG", "CPU Power", "Socket Power", "Current Socket Power" };
-
-    public static void InitCPUPowerAsync()
-    {
-        if (_cpuPowerInitStarted) return;
-        _cpuPowerInitStarted = true;
-
-        Task.Run(() =>
-        {
-            // Try cached instance name first — skips the PerformanceCounterCategory
-            // enumeration which costs ~1–2 s on a cold perflib cache.
-            var cached = AppConfig.GetString("cpu_power_counter");
-            if (!string.IsNullOrEmpty(cached))
-            {
-                try
-                {
-                    var counter = new PerformanceCounter("Energy Meter", "Power", cached, true);
-                    counter.NextValue();
-                    _cpuPowerCounter = counter;
-                    Logger.WriteLine("CPU Power source (cached): " + cached);
-                    return;
-                }
-                catch
-                {
-                    AppConfig.Set("cpu_power_counter", "");
-                }
-            }
-
-            try
-            {
-                var category = new PerformanceCounterCategory("Energy Meter");
-                var instances = category.GetInstanceNames();
-
-                foreach (var name in _powerCounterInstances)
-                {
-                    if (instances.Contains(name, StringComparer.OrdinalIgnoreCase))
-                    {
-                        var counter = new PerformanceCounter("Energy Meter", "Power", name, true);
-                        counter.NextValue();
-                        _cpuPowerCounter = counter;
-                        AppConfig.Set("cpu_power_counter", name);
-                        Logger.WriteLine("CPU Power source: " + name);
-                        return;
-                    }
-                }
-
-                _cpuPowerCounterFailed = true;
-            }
-            catch
-            {
-                _cpuPowerCounterFailed = true;
-            }
-        });
-    }
-
-    public static float? GetCPUPower()
-    {
-        if (_cpuPowerCounterFailed || _cpuPowerCounter == null) return null;
-
-        try
-        {
-            float mW = _cpuPowerCounter.NextValue();
-            if (mW > 0) return mW / 1000f;
-        }
-        catch
-        {
-            // Counter became invalid (e.g. after a fullscreen game exits on Intel).
-            // Allow a few re-init attempts, then give up so we don't spawn a Task.Run
-            // every second forever on machines where the counter is permanently broken.
-            // ResetCPUPowerCounter() on overlay toggle gives it another fresh chance.
-            _cpuPowerCounter?.Dispose();
-            _cpuPowerCounter = null;
-            if (++_cpuPowerReadErrors >= CpuPowerMaxReadErrors)
-            {
-                _cpuPowerCounterFailed = true;
-            }
-            else
-            {
-                _cpuPowerCounterFailed = false;
-                _cpuPowerInitStarted = false;
-            }
-        }
-
-        return null;
-    }
-
-    public static void ResetCPUPowerCounter()
-    {
-        _cpuPowerReadErrors = 0;
-        _cpuPowerCounterFailed = false;
-    }
-
-    // Direct Win32 API — same source Task Manager uses, avoids PerformanceCounter
-    // sampling artifacts and the ~1 s warm-up delay of `% Processor Time \ _Total`.
-    [DllImport("kernel32.dll", SetLastError = true)]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    private static extern bool GetSystemTimes(out long lpIdleTime, out long lpKernelTime, out long lpUserTime);
-
-    private static long _cpuLastIdle, _cpuLastKernel, _cpuLastUser, _cpuLastTick;
-    private static bool _cpuUsageBaseline;
-
-    public static int? GetCPUUsage()
-    {
-        if (!GetSystemTimes(out long idle, out long kernel, out long user)) return null;
-
-        long now = Environment.TickCount64;
-
-        // First read, or resumed after a long pause (mode switch, overlay restart) —
-        // capture baseline and skip this tick so the next delta covers a clean ~1 s window.
-        if (!_cpuUsageBaseline || now - _cpuLastTick > 2000)
-        {
-            _cpuLastIdle = idle; _cpuLastKernel = kernel; _cpuLastUser = user; _cpuLastTick = now;
-            _cpuUsageBaseline = true;
-            return null;
-        }
-
-        long deltaIdle = idle - _cpuLastIdle;
-        long deltaTotal = (kernel - _cpuLastKernel) + (user - _cpuLastUser); // kernel includes idle
-
-        _cpuLastIdle = idle; _cpuLastKernel = kernel; _cpuLastUser = user; _cpuLastTick = now;
-
-        if (deltaTotal <= 0) return 0;
-        return Math.Clamp((int)Math.Round((1.0 - (double)deltaIdle / deltaTotal) * 100), 0, 100);
-    }
-
-
-    private static AmdGpuControl? _amdApuControl;
-    private static bool _amdApuPowerFailed;
-
-    private static float? GetAmdApuPower()
-    {
-        if (_amdApuPowerFailed || !PawnIO.CpuInfo.IsAMD) return null;
-        try
-        {
-            AmdGpuControl amd = GpuControl as AmdGpuControl ?? (_amdApuControl ??= new AmdGpuControl());
-            int power = amd.GetiGpuPower();
-            return power > 0 ? power : null;
-        }
-        catch
-        {
-            _amdApuPowerFailed = true;
-            return null;
-        }
-    }
-
-    private static PawnIO.IntelMsr? _intelMsr;
-    private static bool _intelMsrPowerFailed;
-
-    private static float? GetIntelMsrPower()
-    {
-        if (_intelMsrPowerFailed || PawnIO.CpuInfo.IsAMD) return null;
-        try
-        {
-            if (_intelMsr == null)
-            {
-                var msr = new PawnIO.IntelMsr();
-                if (!msr.Initialize(typeof(HardwareControl).Assembly))
-                {
-                    msr.Dispose();
-                    _intelMsrPowerFailed = true;
-                    Logger.WriteLine("Intel MSR: PawnIO/IntelMSR module unavailable (not installed?)");
-                    return null;
-                }
-                _intelMsr = msr;
-                Logger.WriteLine("CPU Power source: Intel RAPL MSR (PawnIO)");
-            }
-            float? power = _intelMsr.GetPackagePower();
-            return power > 0 ? power : null;
-        }
-        catch (Exception ex)
-        {
-            _intelMsrPowerFailed = true;
-            Logger.WriteLine("Intel MSR power read failed: " + ex.Message);
-            return null;
-        }
-    }
-
-    public static float? GetGPUPower()
-    {
-        try
-        {
-            float? power = GpuControl?.GetGpuPower();
-            if (power is not null) return power.Value;
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine("Failed reading GPU power: " + ex.Message);
-        }
-
-        return null;
-    }
-
     public static void ReadSensors(bool log = false)
     {
-        gpuUse = -1;
-
         if (Program.acpi is null) return;
 
         cpuFan = FanSensorControl.FormatFan(AsusFan.CPU, Program.acpi.GetFan(AsusFan.CPU));
@@ -714,57 +498,6 @@ public static class HardwareControl
         if (log) Logger.WriteLine($"Temps: {cpuTemp} {gpuTemp} {cpuFan} {gpuFan} {midFan}");
 
         ReadBatteryState();
-    }
-
-    // Lightweight sensor read used by the overlay timer - skips battery health, WMI and design capacity
-    public static void ReadSensorsOverlay()
-    {
-        if (Program.acpi is null) return;
-
-        InitCPUPowerAsync();
-
-        if (readFans)
-        {
-            cpuFanRPM = Program.acpi.GetFan(AsusFan.CPU) * 100;
-            gpuFanRPM = Program.acpi.GetFan(AsusFan.GPU) * 100;
-        }
-        else
-        {
-            cpuFanRPM = null;
-            gpuFanRPM = null;
-        }
-
-        cpuTemp = GetCPUTemp();
-        gpuTemp = GetGPUTemp();
-
-        if (readUsage)
-        {
-            cpuUsage = GetCPUUsage();
-            try { gpuUsage = GpuControl?.GetGpuUse(); } catch { gpuUsage = null; }
-        }
-        else
-        {
-            cpuUsage = null;
-            gpuUsage = null;
-        }
-
-        // Only overwrite with a new reading when the counter returns a valid value.
-        // If the counter is absent or returns 0 for several consecutive ticks (e.g. after
-        // a game exits and invalidates the Intel Energy Meter counter), clear the stale
-        // value so the overlay shows "--" rather than the last-seen wattage.
-        float? newCpu = GetCPUPower() ?? GetIntelMsrPower() ?? GetAmdApuPower();
-        if (newCpu > 0)
-        {
-            cpuPower = newCpu;
-            _cpuPowerNullTicks = 0;
-        }
-        else
-        {
-            if (++_cpuPowerNullTicks >= 5)
-                cpuPower = null;
-        }
-
-        gpuPower = GetGPUPower();
     }
 
     public static double GetBatteryChargePercentage()
