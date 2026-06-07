@@ -1,5 +1,6 @@
 using GHelper.Helpers;
 using Microsoft.Win32;
+using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Runtime.InteropServices;
@@ -148,7 +149,19 @@ namespace GHelper.Overlay
         private bool _gameOnly;
         private bool _hidden;
         private int _shownPid;
+        private bool _fgDesktop;
         private const int MinGameFps = 6;
+
+        private static readonly HashSet<string> DesktopApps = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "chrome", "msedge", "firefox", "opera", "brave", "vivaldi", "iexplore", "chromium", "librewolf",
+            "WindowsTerminal", "conhost", "cmd", "powershell", "pwsh", "alacritty", "wezterm-gui", "mintty",
+            "discord", "slack", "Teams", "ms-teams", "Spotify", "WhatsApp", "Signal", "Telegram", "Code", "Notion", "obsidian", "zoom", "Skype",
+            "steam", "steamwebhelper", "EpicGamesLauncher", "Battle.net", "GalaxyClient", "EADesktop", "UbisoftConnect",
+            "vlc", "mpv", "mpc-hc64", "mpc-be64", "PotPlayerMini64", "wmplayer", "smplayer",
+            "WINWORD", "EXCEL", "POWERPNT", "OUTLOOK", "Acrobat", "AcroRd32", "SumatraPDF",
+            "explorer", "ShellExperienceHost", "SearchHost", "StartMenuExperienceHost", "ApplicationFrameHost", "SystemSettings", "Taskmgr",
+        };
 
         [DllImport("user32.dll")]
         private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter,
@@ -327,6 +340,7 @@ namespace GHelper.Overlay
                     _lastFgPid = fgPid;
                     _currentFps = 0;
                     _fps.TargetPid = fgPid;
+                    _fgDesktop = IsDesktopApp(fgPid);
                 }
                 else
                 {
@@ -368,12 +382,22 @@ namespace GHelper.Overlay
 
         private void UpdateGameVisibility(int fgPid)
         {
-            if (_currentFps >= MinGameFps) _shownPid = fgPid;
+            if (_currentFps >= MinGameFps && !_fgDesktop) _shownPid = fgPid;
             bool show = fgPid == _shownPid;
             if (show != _hidden) return;
             _hidden = !show;
             if (Handle != nint.Zero)
                 User32.ShowWindow(Handle, (short)(_hidden ? User32.SW_HIDE : User32.SW_SHOWNOACTIVATE));
+        }
+
+        private static bool IsDesktopApp(int pid)
+        {
+            try
+            {
+                using var p = Process.GetProcessById(pid);
+                return DesktopApps.Contains(p.ProcessName);
+            }
+            catch { return false; }
         }
 
         protected override void PerformPaint(PaintEventArgs e)
