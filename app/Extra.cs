@@ -694,11 +694,11 @@ namespace GHelper
                 Task.Run(() =>
                 {
                     AsusService.StopAsusServices();
+                    Program.inputDispatcher.Init();
                     BeginInvoke(delegate
                     {
                         InitServices();
                     });
-                    Program.inputDispatcher.Init();
                 });
             }
             else
