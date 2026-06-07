@@ -6,6 +6,14 @@ namespace GHelper.UI
 {
     public class RComboBox : ComboBox
     {
+        private const int TextLeftPad = 1;
+        public bool UseCustomTextPadding = true;
+
+        public RComboBox()
+        {
+            DrawMode = UseCustomTextPadding ? DrawMode.OwnerDrawFixed : DrawMode.Normal;
+        }
+
         protected override void OnMouseWheel(MouseEventArgs e)
         {
             var args = (HandledMouseEventArgs)e;
@@ -13,6 +21,31 @@ namespace GHelper.UI
                 args.Handled = true;
             else
                 base.OnMouseWheel(e);
+        }
+
+        protected override void OnDrawItem(DrawItemEventArgs e)
+        {
+            if (!UseCustomTextPadding || e.Index < 0)
+            {
+                base.OnDrawItem(e);
+                return;
+            }
+
+            bool selected = (e.State & DrawItemState.Selected) != 0;
+            Color bg = selected ? RForm.colorStandard : BackColor;
+            Color fg = selected ? Color.White : ForeColor;
+
+            using (var bgBrush = new SolidBrush(bg))
+                e.Graphics.FillRectangle(bgBrush, e.Bounds);
+
+            int pad = (int)Math.Round(TextLeftPad * e.Graphics.DpiX / 96f);
+            var textRect = new Rectangle(e.Bounds.X + pad, e.Bounds.Y,
+                e.Bounds.Width - pad, e.Bounds.Height);
+
+            TextRenderer.DrawText(e.Graphics, GetItemText(Items[e.Index]), e.Font, textRect, fg,
+                TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis | TextFormatFlags.NoPrefix);
+
+            e.DrawFocusRectangle();
         }
 
         private Color borderColor = Color.Gray;
@@ -197,11 +230,7 @@ namespace GHelper.UI
                         //g.DrawRectangle(p, innerBorder);
                         //g.DrawRectangle(p, innerInnerBorder);
                     }
-                    using (var p = new Pen(outerBorderColor))
-                    {
-                        DrawRoundedRectangle(g, p, outerBorder, 4, 4);
-                        //g.DrawRectangle(p, outerBorder);
-                    }
+                    ControlHelper.DrawGradientBorder(g, outerBorder, outerBorderColor, 4);
                 }
                 if (shoulEndPaint)
                     EndPaint(Handle, ref ps);
