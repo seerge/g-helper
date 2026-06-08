@@ -287,7 +287,6 @@ namespace GHelper
             comboMatrix.Dock = DockStyle.Top;
             comboMatrix.Font = new Font("Segoe UI", 9F);
             comboMatrix.FormattingEnabled = true;
-            comboMatrix.ItemHeight = 32;
             comboMatrix.Items.AddRange(new object[] { Properties.Strings.MatrixOff, Properties.Strings.MatrixDim, Properties.Strings.MatrixMedium, Properties.Strings.MatrixBright });
             comboMatrix.Location = new Point(10, 8);
             comboMatrix.Margin = new Padding(7, 8, 7, 4);
@@ -302,7 +301,6 @@ namespace GHelper
             comboMatrixRunning.Dock = DockStyle.Top;
             comboMatrixRunning.Font = new Font("Segoe UI", 9F);
             comboMatrixRunning.FormattingEnabled = true;
-            comboMatrixRunning.ItemHeight = 32;
             comboMatrixRunning.Items.AddRange(new object[] { Properties.Strings.MatrixBanner, Properties.Strings.MatrixLogo, Properties.Strings.MatrixPicture, Properties.Strings.MatrixClock, Properties.Strings.MatrixAudio });
             comboMatrixRunning.Location = new Point(270, 8);
             comboMatrixRunning.Margin = new Padding(7, 8, 7, 4);
@@ -317,7 +315,6 @@ namespace GHelper
             comboInterval.Dock = DockStyle.Top;
             comboInterval.Font = new Font("Segoe UI", 9F);
             comboInterval.FormattingEnabled = true;
-            comboInterval.ItemHeight = 32;
             comboInterval.Location = new Point(10, 60);
             comboInterval.Margin = new Padding(7, 8, 7, 4);
             comboInterval.Name = "comboInterval";
@@ -1413,7 +1410,6 @@ namespace GHelper
             comboKeyboard.FlatStyle = FlatStyle.Flat;
             comboKeyboard.Font = new Font("Segoe UI", 9F);
             comboKeyboard.FormattingEnabled = true;
-            comboKeyboard.ItemHeight = 32;
             comboKeyboard.Items.AddRange(new object[] { "Static", "Breathe", "Rainbow", "Strobe" });
             comboKeyboard.Location = new Point(7, 7);
             comboKeyboard.Margin = new Padding(7, 7, 7, 4);
@@ -1565,7 +1561,6 @@ namespace GHelper
             comboRearLight.FlatStyle = FlatStyle.Flat;
             comboRearLight.Font = new Font("Segoe UI", 9F);
             comboRearLight.FormattingEnabled = true;
-            comboRearLight.ItemHeight = 32;
             comboRearLight.Items.AddRange(new object[] { "Static", "Breathe", "Color Cycle", "Strobe" });
             comboRearLight.Location = new Point(7, 7);
             comboRearLight.Margin = new Padding(7, 7, 7, 4);
@@ -1958,7 +1953,6 @@ namespace GHelper
             comboVisual.FlatStyle = FlatStyle.Flat;
             comboVisual.Font = new Font("Segoe UI", 9F);
             comboVisual.FormattingEnabled = true;
-            comboVisual.ItemHeight = 32;
             comboVisual.Location = new Point(10, 8);
             comboVisual.Margin = new Padding(7, 8, 7, 4);
             comboVisual.Name = "comboVisual";
@@ -1974,7 +1968,6 @@ namespace GHelper
             comboColorTemp.FlatStyle = FlatStyle.Flat;
             comboColorTemp.Font = new Font("Segoe UI", 9F);
             comboColorTemp.FormattingEnabled = true;
-            comboColorTemp.ItemHeight = 32;
             comboColorTemp.Location = new Point(530, 8);
             comboColorTemp.Margin = new Padding(7, 8, 7, 4);
             comboColorTemp.Name = "comboColorTemp";
@@ -1990,7 +1983,6 @@ namespace GHelper
             comboGamut.FlatStyle = FlatStyle.Flat;
             comboGamut.Font = new Font("Segoe UI", 9F);
             comboGamut.FormattingEnabled = true;
-            comboGamut.ItemHeight = 32;
             comboGamut.Location = new Point(10, 67);
             comboGamut.Margin = new Padding(7, 8, 7, 4);
             comboGamut.Name = "comboGamut";
