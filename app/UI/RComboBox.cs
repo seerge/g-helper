@@ -23,6 +23,26 @@ namespace GHelper.UI
                 base.OnMouseWheel(e);
         }
 
+        protected override void OnHandleCreated(EventArgs e)
+        {
+            base.OnHandleCreated(e);
+            CalibrateItemHeight();
+        }
+
+        protected override void OnDpiChangedAfterParent(EventArgs e)
+        {
+            base.OnDpiChangedAfterParent(e);
+            CalibrateItemHeight();
+        }
+
+        private void CalibrateItemHeight()
+        {
+            if (DrawMode != DrawMode.OwnerDrawFixed) return;
+            int chrome = PreferredHeight - ItemHeight;
+            int target = (int)Math.Round(44 * (DeviceDpi / 192f));
+            ItemHeight = Math.Max(1, target - chrome);
+        }
+
         protected override void OnDrawItem(DrawItemEventArgs e)
         {
             if (!UseCustomTextPadding || e.Index < 0)

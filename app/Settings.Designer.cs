@@ -1325,7 +1325,6 @@ namespace GHelper
             // buttonKeyboard
             // 
             buttonKeyboard.Activated = false;
-            buttonKeyboard.AutoSize = true;
             buttonKeyboard.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonKeyboard.BackColor = SystemColors.ControlLight;
             buttonKeyboard.BorderColor = Color.Transparent;
@@ -1337,11 +1336,9 @@ namespace GHelper
             buttonKeyboard.ImageAlign = ContentAlignment.MiddleRight;
             buttonKeyboard.Location = new Point(528, 4);
             buttonKeyboard.Margin = new Padding(4);
-            buttonKeyboard.MaximumSize = new Size(0, 48);
-            buttonKeyboard.MinimumSize = new Size(0, 44);
             buttonKeyboard.Name = "buttonKeyboard";
             buttonKeyboard.Secondary = true;
-            buttonKeyboard.Size = new Size(255, 44);
+            buttonKeyboard.Size = new Size(255, 48);
             buttonKeyboard.TabIndex = 37;
             buttonKeyboard.Text = "&Extra";
             buttonKeyboard.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -1383,7 +1380,6 @@ namespace GHelper
             // buttonKeyboardColor
             // 
             buttonKeyboardColor.Activated = false;
-            buttonKeyboardColor.AutoSize = true;
             buttonKeyboardColor.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonKeyboardColor.BackColor = SystemColors.ButtonHighlight;
             buttonKeyboardColor.BorderColor = Color.Transparent;
@@ -1393,11 +1389,9 @@ namespace GHelper
             buttonKeyboardColor.ForeColor = SystemColors.ControlText;
             buttonKeyboardColor.Location = new Point(0, 0);
             buttonKeyboardColor.Margin = new Padding(4);
-            buttonKeyboardColor.MaximumSize = new Size(0, 48);
-            buttonKeyboardColor.MinimumSize = new Size(0, 44);
             buttonKeyboardColor.Name = "buttonKeyboardColor";
             buttonKeyboardColor.Secondary = false;
-            buttonKeyboardColor.Size = new Size(254, 44);
+            buttonKeyboardColor.Size = new Size(254, 48);
             buttonKeyboardColor.TabIndex = 14;
             buttonKeyboardColor.Text = Properties.Strings.Color;
             buttonKeyboardColor.UseVisualStyleBackColor = false;
