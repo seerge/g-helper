@@ -9,11 +9,6 @@ namespace GHelper.Overlay
 {
     public class HardwareOverlay : OSDNativeForm
     {
-        [DllImport("user32.dll")]
-        private static extern IntPtr MonitorFromPoint(POINT pt, uint dwFlags);
-        [DllImport("shcore.dll")]
-        private static extern int GetDpiForMonitor(IntPtr hMonitor, int dpiType, out uint dpiX, out uint dpiY);
-
         // Foreground window — used to pin FPS measurement to the active process
         [DllImport("user32.dll")]
         private static extern IntPtr GetForegroundWindow();
@@ -36,10 +31,6 @@ namespace GHelper.Overlay
         private static extern IntPtr GetWindow(IntPtr hWnd, uint uCmd);
         private const uint GW_HWNDPREV = 3;
 
-        private const uint MONITOR_DEFAULTTOPRIMARY = 1;
-        private const int MDT_EFFECTIVE_DPI = 0;
-        private const int BaseDpi = 96;
-
         private const int GWL_EXSTYLE        = -20;
         private const int WS_EX_TRANSPARENT_FLAG = 0x00000020;
         private const int WM_LBUTTONDOWN     = 0x0201;
@@ -55,6 +46,10 @@ namespace GHelper.Overlay
         private const int MaxScalePercent  = 300;
         private const int ScaleStepPercent = 10;
         private int _scalePercent = 100;
+
+        // Fixed base scale, deliberately independent of Windows DPI. 2.0 reproduces
+        // the size the overlay had at 200% display scaling — the desired default.
+        private const float BaseScale = 2.0f;
 
         private bool _dragging;
         private Point _dragCursorStart;
@@ -111,8 +106,8 @@ namespace GHelper.Overlay
         private static readonly SolidBrush _gpuFillBrush = new(Color.FromArgb(128, 0, 85, 27));
         private static readonly SolidBrush _cpuFillBrush = new(Color.FromArgb(128, 20, 73, 85));
 
-        // Cached per-DPI drawing resources — recreated only when DPI scale changes
-        private float _lastDpiScale = 0f;
+        // Cached drawing resources — recreated only when the scale changes
+        private float _lastScale = 0f;
         private Font? _font;
         private Font? _rpmFont;
         private Font? _fpsBold;
@@ -284,16 +279,7 @@ namespace GHelper.Overlay
             base.WndProc(ref m);
         }
 
-        private float GetDpiScale()
-        {
-            Screen screen = Screen.PrimaryScreen ?? Screen.AllScreens[0];
-            POINT pt = new POINT { x = screen.Bounds.X + 1, y = screen.Bounds.Y + 1 };
-            IntPtr monitor = MonitorFromPoint(pt, MONITOR_DEFAULTTOPRIMARY);
-            float dpi = 1f;
-            if (GetDpiForMonitor(monitor, MDT_EFFECTIVE_DPI, out uint dpiX, out _) == 0)
-                dpi = dpiX / (float)BaseDpi;
-            return dpi * (_scalePercent / 100f);
-        }
+        private float GetScale() => BaseScale * (_scalePercent / 100f);
 
         private static int S(float sc, int v) => (int)(v * sc);
         private static double D(object? v) { try { return v is null ? 0.0 : Convert.ToDouble(v); } catch { return 0.0; } }
@@ -402,7 +388,7 @@ namespace GHelper.Overlay
 
         protected override void PerformPaint(PaintEventArgs e)
         {
-            float sc = GetDpiScale();
+            float sc = GetScale();
 
             int padX = S(sc, BasePadX);
             int padY = S(sc, BasePadY);
@@ -430,13 +416,13 @@ namespace GHelper.Overlay
             var g = e.Graphics;
             g.SmoothingMode = SmoothingMode.AntiAlias;
             g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-            g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
+            g.TextRenderingHint = _scalePercent <= 75 ? TextRenderingHint.ClearTypeGridFit : TextRenderingHint.AntiAliasGridFit;
 
             g.FillRoundedRectangle(_bgBrush, Bound, radius);
 
-            if (sc != _lastDpiScale)
+            if (sc != _lastScale)
             {
-                _lastDpiScale = sc;
+                _lastScale = sc;
                 _font?.Dispose();    _font    = new Font("Consolas", BaseFontSize * sc, FontStyle.Regular, GraphicsUnit.Pixel);
                 _rpmFont?.Dispose(); _rpmFont = new Font("Consolas", BaseRpmFontSize * sc, FontStyle.Regular, GraphicsUnit.Pixel);
                 _fpsBold?.Dispose(); _fpsBold = new Font("Consolas", innerH / 1.15f, FontStyle.Bold, GraphicsUnit.Pixel);
@@ -709,7 +695,7 @@ namespace GHelper.Overlay
             _fps = new EtwFpsMonitor();
             _fpsTask = Task.Run(() => _fps.Start());
 
-            float sc = GetDpiScale();
+            float sc = GetScale();
             int innerH = S(sc, BaseLineHeight) * 2 + S(sc, BaseLineSpacing);
             int initialBaseW = _mode switch
             {
@@ -753,7 +739,7 @@ namespace GHelper.Overlay
             _fpsBold?.Dispose();  _fpsBold  = null;
             _totalPen?.Dispose(); _totalPen = null;
             _axPen?.Dispose();    _axPen    = null;
-            _lastDpiScale = 0f;
+            _lastScale = 0f;
             base.Hide();
         }
     }
