@@ -894,6 +894,7 @@ namespace GHelper
             menuOverlayGameOnly.Click += (sender, args) => ToggleOverlayGameOnly();
             menuOverlayGameOnly.Margin = padding;
             menuOverlayGameOnly.Checked = AppConfig.Is("overlay_game_only");
+            menuOverlayGameOnly.Enabled = AppConfig.Is("overlay");
             contextMenuStrip.Items.Add(menuOverlayGameOnly);
 
             var quit = new ToolStripMenuItem(Properties.Strings.Quit);
@@ -1686,6 +1687,7 @@ namespace GHelper
         {
             bool enable = !AppConfig.Is("overlay");
             AppConfig.Set("overlay", enable ? 1 : 0);
+            Logger.WriteLine("Overlay " + (enable ? "On" : "Off") + (AppConfig.Is("overlay_game_only") ? " (game only)" : ""));
             if (enable)
                 Program.hardwareOverlay?.StartOverlay();
             else

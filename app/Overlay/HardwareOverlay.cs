@@ -340,7 +340,7 @@ namespace GHelper.Overlay
                     _lastFgPid = fgPid;
                     _currentFps = 0;
                     _fps.TargetPid = fgPid;
-                    _fgDesktop = IsDesktopApp(fgPid);
+                    _fgDesktop = _gameOnly && IsDesktopApp(fgPid);
                 }
                 else
                 {
@@ -690,6 +690,7 @@ namespace GHelper.Overlay
             _gameOnly = AppConfig.Is("overlay_game_only");
             _hidden = false;
             _shownPid = 0;
+            _fgDesktop = false;
             // overlay_mode is the new key. Migrate from legacy overlay_light_mode (0/1)
             // when the new one isn't set yet so existing users keep their preference.
             int storedMode = AppConfig.Exists("overlay_mode")
