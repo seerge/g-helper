@@ -231,11 +231,15 @@ namespace GHelper.UI
                 rgn = CreateRectRgn(clientRect.Left, clientRect.Top,
                     clientRect.Right, clientRect.Bottom);
                 SelectClipRgn(dc, rgn);
+                float ratio = DeviceDpi / 192f;
+                int innerRadiusL = Math.Max(1, (int)Math.Round(3 * ratio));
+                int innerRadiusR = Math.Max(1, (int)Math.Round(1 * ratio));
+                int outerRadius = Math.Max(1, (int)Math.Round(4 * ratio));
+
                 using (var g = Graphics.FromHdc(dc))
                 {
                     using (var b = new SolidBrush(buttonColor))
                     {
-                        //FillRoundedRectangle(g, b, dropDownRect, 1, 3);
                         g.FillRectangle(b, dropDownRect);
                     }
                     using (var b = new SolidBrush(arrowColor))
@@ -244,13 +248,9 @@ namespace GHelper.UI
                     }
                     using (var p = new Pen(innerBorderColor, 2))
                     {
-                        DrawRoundedRectangle(g, p, innerBorder, 3, 1);
-                        //DrawRoundedRectangle(g, p, innerInnerBorder, 3, 1);
-
-                        //g.DrawRectangle(p, innerBorder);
-                        //g.DrawRectangle(p, innerInnerBorder);
+                        DrawRoundedRectangle(g, p, innerBorder, innerRadiusL, innerRadiusR);
                     }
-                    ControlHelper.DrawGradientBorder(g, outerBorder, outerBorderColor, 4);
+                    ControlHelper.DrawGradientBorder(g, outerBorder, outerBorderColor, outerRadius);
                 }
                 if (shoulEndPaint)
                     EndPaint(Handle, ref ps);

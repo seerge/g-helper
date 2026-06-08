@@ -224,7 +224,7 @@ namespace GHelper
             panelMatrixAuto.Location = new Point(20, 132);
             panelMatrixAuto.Margin = new Padding(4);
             panelMatrixAuto.Name = "panelMatrixAuto";
-            panelMatrixAuto.Padding = new Padding(8, 0, 0, 0);
+            panelMatrixAuto.Padding = new Padding(10, 4, 0, 0);
             panelMatrixAuto.Size = new Size(787, 40);
             panelMatrixAuto.TabIndex = 47;
             // 
@@ -1360,7 +1360,7 @@ namespace GHelper
             // pictureColor2
             // 
             pictureColor2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            pictureColor2.Location = new Point(187, 13);
+            pictureColor2.Location = new Point(187, 15);
             pictureColor2.Margin = new Padding(8);
             pictureColor2.Name = "pictureColor2";
             pictureColor2.Size = new Size(20, 20);
@@ -1370,7 +1370,7 @@ namespace GHelper
             // pictureColor
             // 
             pictureColor.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            pictureColor.Location = new Point(218, 13);
+            pictureColor.Location = new Point(218, 15);
             pictureColor.Margin = new Padding(8);
             pictureColor.Name = "pictureColor";
             pictureColor.Size = new Size(20, 20);
