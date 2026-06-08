@@ -224,8 +224,8 @@ namespace GHelper
             panelMatrixAuto.Location = new Point(20, 132);
             panelMatrixAuto.Margin = new Padding(4);
             panelMatrixAuto.Name = "panelMatrixAuto";
-            panelMatrixAuto.Padding = new Padding(10, 4, 0, 0);
-            panelMatrixAuto.Size = new Size(787, 40);
+            panelMatrixAuto.Padding = new Padding(10, 10, 0, 0);
+            panelMatrixAuto.Size = new Size(787, 42);
             panelMatrixAuto.TabIndex = 47;
             // 
             // checkMatrixLid
@@ -250,7 +250,7 @@ namespace GHelper
             checkMatrix.Location = new Point(8, 0);
             checkMatrix.Margin = new Padding(8, 4, 8, 4);
             checkMatrix.Name = "checkMatrix";
-            checkMatrix.Padding = new Padding(0, 0, 5, 0);
+            checkMatrix.Padding = new Padding(0, 0, 4, 0);
             checkMatrix.Size = new Size(252, 40);
             checkMatrix.TabIndex = 19;
             checkMatrix.Text = Properties.Strings.TurnOffOnBattery;
