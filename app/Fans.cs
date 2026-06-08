@@ -75,6 +75,8 @@ namespace GHelper
             checkApplyUV.Text = Properties.Strings.AutoApply;
 
             buttonCalibrate.Text = Properties.Strings.Calibrate;
+            checkEqualize.Text = Properties.Strings.EqualizeFans;
+            checkEqualize.Checked = AppConfig.IsMode("equalize_fans");
 
             checkFanClamp.Text = Properties.Strings.ClampToGrid;
             labelHysteresisUp.Text = Properties.Strings.HysteresisUp;
@@ -271,6 +273,13 @@ namespace GHelper
             checkApplyUV.Click += CheckApplyUV_Click;
 
             buttonCalibrate.Click += ButtonCalibrate_Click;
+            checkEqualize.CheckedChanged += CheckEqualize_CheckedChanged;
+
+            equalizeTimer = new System.Windows.Forms.Timer { Interval = 2000 };
+            equalizeTimer.Tick += EqualizeTimer_Tick;
+
+            panelEqualize.Visible = AppConfig.IsApplyFans();
+            if (checkEqualize.Checked && AppConfig.IsApplyFans()) StartEqualize();
 
             buttonDownload.Click += ButtonDownload_Click;
 
@@ -418,6 +427,147 @@ namespace GHelper
             string result = modeControl.SetRyzen(true);
             checkApplyUV.Enabled = true;
             ShowLabelRisky(result);
+        }
+
+        private System.Windows.Forms.Timer equalizeTimer = default!;
+        private Dictionary<AsusFan, byte[]> equalizedCurves = new();
+        private Dictionary<AsusFan, int> lastPushedPct = new();
+
+        private void CheckEqualize_CheckedChanged(object? sender, EventArgs e)
+        {
+            AppConfig.SetMode("equalize_fans", checkEqualize.Checked ? 1 : 0);
+
+            if (checkEqualize.Checked && AppConfig.IsApplyFans()) StartEqualize();
+            else StopEqualize();
+        }
+
+        private List<AsusFan> ActiveFans()
+        {
+            var list = new List<AsusFan> { AsusFan.CPU, AsusFan.GPU };
+            if (AppConfig.Is("mid_fan")) list.Add(AsusFan.Mid);
+            return list;
+        }
+
+        private Series? SeriesFor(AsusFan f) => f switch
+        {
+            AsusFan.CPU => seriesCPU,
+            AsusFan.GPU => seriesGPU,
+            AsusFan.Mid => seriesMid,
+            AsusFan.XGM => seriesXGM,
+            _ => null
+        };
+
+        private System.Windows.Forms.DataVisualization.Charting.Chart? ChartFor(AsusFan f) => f switch
+        {
+            AsusFan.CPU => chartCPU,
+            AsusFan.GPU => chartGPU,
+            AsusFan.Mid => chartMid,
+            AsusFan.XGM => chartXGM,
+            _ => null
+        };
+
+        private void ApplyEqualizeColors(bool syncing)
+        {
+            seriesCPU.Color = colorStandard;
+            seriesGPU.Color = syncing ? Color.Gray : colorTurbo;
+            seriesMid.Color = syncing ? Color.Gray : colorEco;
+            seriesXGM.Color = syncing ? Color.Gray : Color.Orange;
+            chartCPU.Invalidate();
+            chartGPU.Invalidate();
+            chartMid.Invalidate();
+            chartXGM.Invalidate();
+        }
+
+        private void FlattenSeriesAt(AsusFan f, int pct)
+        {
+            var s = SeriesFor(f);
+            if (s == null || s.Points.Count == 0) return;
+            foreach (DataPoint p in s.Points) p.YValues[0] = pct;
+            ChartFor(f)?.Invalidate();
+        }
+
+        // Interpolate the user's universal curve (CPU series) at a given temp.
+        private int UniversalPctAt(double tempC)
+        {
+            if (seriesCPU.Points.Count == 0) return 0;
+            var pts = seriesCPU.Points
+                .Select(p => (X: p.XValue, Y: p.YValues[0]))
+                .OrderBy(p => p.X)
+                .ToArray();
+            if (tempC <= pts[0].X) return (int)Math.Round(pts[0].Y);
+            if (tempC >= pts[^1].X) return (int)Math.Round(pts[^1].Y);
+            for (int i = 1; i < pts.Length; i++)
+            {
+                if (tempC <= pts[i].X)
+                {
+                    var a = pts[i - 1];
+                    var b = pts[i];
+                    double span = b.X - a.X;
+                    if (span <= 0) return (int)Math.Round(Math.Max(a.Y, b.Y));
+                    double t = (tempC - a.X) / span;
+                    return (int)Math.Round(a.Y + t * (b.Y - a.Y));
+                }
+            }
+            return (int)Math.Round(pts[^1].Y);
+        }
+
+        private static byte[] FlatCurve(byte[] templateCurve, int pct)
+        {
+            var c = (byte[])templateCurve.Clone();
+            if (c.Length != 16) return c;
+            byte v = (byte)Math.Max(0, Math.Min(100, pct));
+            for (int i = 8; i < 16; i++) c[i] = v;
+            return c;
+        }
+
+        private void StartEqualize()
+        {
+            equalizedCurves.Clear();
+            lastPushedPct.Clear();
+            foreach (var f in ActiveFans())
+            {
+                var saved = AppConfig.GetFanConfig(f);
+                if (saved != null && saved.Length == 16) equalizedCurves[f] = (byte[])saved.Clone();
+            }
+            ApplyEqualizeColors(true);
+            equalizeTimer.Start();
+        }
+
+        private void StopEqualize()
+        {
+            equalizeTimer.Stop();
+            equalizedCurves.Clear();
+            lastPushedPct.Clear();
+            ApplyEqualizeColors(false);
+            LoadProfile(seriesGPU, AsusFan.GPU);
+            if (AppConfig.Is("mid_fan")) LoadProfile(seriesMid, AsusFan.Mid);
+            modeControl.AutoFans(true);
+        }
+
+        private void EqualizeTimer_Tick(object? sender, EventArgs e)
+        {
+            if (!checkEqualize.Checked || !AppConfig.IsApplyFans()) { StopEqualize(); return; }
+
+            double cpuT = HardwareControl.cpuTemp ?? 0;
+            double gpuT = HardwareControl.gpuTemp ?? 0;
+            double hottest = Math.Max(cpuT, gpuT);
+            if (hottest <= 0) return;
+
+            int targetPct = UniversalPctAt(hottest);
+
+            foreach (var f in ActiveFans())
+            {
+                if (!equalizedCurves.TryGetValue(f, out var baseCurve)) continue;
+                if (lastPushedPct.TryGetValue(f, out var prev) && prev == targetPct)
+                {
+                    if (f != AsusFan.CPU) FlattenSeriesAt(f, targetPct);
+                    continue;
+                }
+                var flat = FlatCurve(baseCurve, targetPct);
+                Program.acpi.SetFanCurve(f, (byte[])flat.Clone());
+                lastPushedPct[f] = targetPct;
+                if (f != AsusFan.CPU) FlattenSeriesAt(f, targetPct);
+            }
         }
 
         private void ButtonReadLimits_Click(object? sender, EventArgs e)
@@ -972,6 +1122,13 @@ namespace GHelper
             AppConfig.SetMode("auto_apply", chk.Checked ? 1 : 0);
             modeControl.SetPerformanceMode();
 
+            panelEqualize.Visible = chk.Checked;
+            if (!chk.Checked)
+            {
+                if (checkEqualize.Checked) checkEqualize.Checked = false;
+                else StopEqualize();
+            }
+            else if (checkEqualize.Checked) StartEqualize();
         }
 
         public void InitAxis()
@@ -1175,6 +1332,7 @@ namespace GHelper
             bool applyFans = AppConfig.IsApplyFans();
 
             checkApplyFans.Checked = applyFans;
+            checkEqualize.Checked = AppConfig.IsMode("equalize_fans");
 
             if (autoFans || applyFans)
             {
