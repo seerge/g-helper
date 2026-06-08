@@ -383,7 +383,7 @@ namespace GHelper
             tableLayoutModes.Location = new Point(330, 0);
             tableLayoutModes.Margin = new Padding(0);
             tableLayoutModes.Name = "tableLayoutModes";
-            tableLayoutModes.Padding = new Padding(0, 10, 4, 10);
+            tableLayoutModes.Padding = new Padding(0, 8, 4, 10);
             tableLayoutModes.RowCount = 1;
             tableLayoutModes.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutModes.Size = new Size(480, 66);
@@ -448,7 +448,7 @@ namespace GHelper
             comboModes.FlatStyle = FlatStyle.Flat;
             comboModes.FormattingEnabled = true;
             comboModes.Location = new Point(120, 14);
-            comboModes.Margin = new Padding(0, 4, 6, 4);
+            comboModes.Margin = new Padding(0, 3, 6, 4);
             comboModes.Name = "comboModes";
             comboModes.Size = new Size(290, 40);
             comboModes.TabIndex = 2;

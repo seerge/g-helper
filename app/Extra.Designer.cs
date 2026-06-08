@@ -1464,7 +1464,7 @@ namespace GHelper
             buttonCores.Margin = new Padding(5, 3, 5, 3);
             buttonCores.Name = "buttonCores";
             buttonCores.Secondary = false;
-            buttonCores.Size = new Size(106, 44);
+            buttonCores.Size = new Size(106, 48);
             buttonCores.TabIndex = 20;
             buttonCores.Text = "Apply";
             buttonCores.UseVisualStyleBackColor = false;
