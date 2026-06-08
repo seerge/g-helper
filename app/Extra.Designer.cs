@@ -761,7 +761,6 @@ namespace GHelper
             comboKeyboardSpeed.FlatStyle = FlatStyle.Flat;
             comboKeyboardSpeed.Font = new Font("Segoe UI", 9F);
             comboKeyboardSpeed.FormattingEnabled = true;
-            comboKeyboardSpeed.ItemHeight = 32;
             comboKeyboardSpeed.Items.AddRange(new object[] { "Slow", "Normal", "Fast" });
             comboKeyboardSpeed.Location = new Point(634, 13);
             comboKeyboardSpeed.Margin = new Padding(5, 11, 5, 9);
@@ -1409,7 +1408,6 @@ namespace GHelper
             comboAPU.FlatStyle = FlatStyle.Flat;
             comboAPU.Font = new Font("Segoe UI", 9F);
             comboAPU.FormattingEnabled = true;
-            comboAPU.ItemHeight = 32;
             comboAPU.Items.AddRange(new object[] { "Auto", "1G", "2G", "3G", "4G", "5G", "6G", "7G", "8G" });
             comboAPU.Location = new Point(618, 8);
             comboAPU.Margin = new Padding(5, 11, 5, 9);
@@ -1479,7 +1477,6 @@ namespace GHelper
             comboCoresP.FlatStyle = FlatStyle.Flat;
             comboCoresP.Font = new Font("Segoe UI", 9F);
             comboCoresP.FormattingEnabled = true;
-            comboCoresP.ItemHeight = 32;
             comboCoresP.Location = new Point(513, 10);
             comboCoresP.Margin = new Padding(5, 11, 5, 9);
             comboCoresP.Name = "comboCoresP";
@@ -1495,7 +1492,6 @@ namespace GHelper
             comboCoresE.FlatStyle = FlatStyle.Flat;
             comboCoresE.Font = new Font("Segoe UI", 9F);
             comboCoresE.FormattingEnabled = true;
-            comboCoresE.ItemHeight = 32;
             comboCoresE.Location = new Point(674, 10);
             comboCoresE.Margin = new Padding(5, 11, 5, 9);
             comboCoresE.Name = "comboCoresE";
@@ -1618,7 +1614,6 @@ namespace GHelper
             comboOptimalBrightness.FlatStyle = FlatStyle.Flat;
             comboOptimalBrightness.Font = new Font("Segoe UI", 9F);
             comboOptimalBrightness.FormattingEnabled = true;
-            comboOptimalBrightness.ItemHeight = 32;
             comboOptimalBrightness.Items.AddRange(new object[] { "Off", "On Always", "On Battery" });
             comboOptimalBrightness.Location = new Point(618, 11);
             comboOptimalBrightness.Margin = new Padding(5, 11, 5, 9);
