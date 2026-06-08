@@ -1,5 +1,6 @@
 using GHelper.Helpers;
 using Microsoft.Win32;
+using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Runtime.InteropServices;
@@ -145,6 +146,22 @@ namespace GHelper.Overlay
         private volatile int _currentFps;
         private int _lastFgPid;
         private bool _active;
+        private bool _gameOnly;
+        private bool _hidden;
+        private int _shownPid;
+        private bool _fgDesktop;
+        private const int MinGameFps = 6;
+
+        private static readonly HashSet<string> DesktopApps = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "chrome", "msedge", "firefox", "opera", "brave", "vivaldi", "iexplore", "chromium", "librewolf",
+            "WindowsTerminal", "conhost", "cmd", "powershell", "pwsh", "alacritty", "wezterm-gui", "mintty",
+            "discord", "slack", "Teams", "ms-teams", "Spotify", "WhatsApp", "Signal", "Telegram", "Code", "Notion", "obsidian", "zoom", "Skype",
+            "steam", "steamwebhelper", "EpicGamesLauncher", "Battle.net", "GalaxyClient", "EADesktop", "UbisoftConnect",
+            "vlc", "mpv", "mpc-hc64", "mpc-be64", "PotPlayerMini64", "wmplayer", "smplayer",
+            "WINWORD", "EXCEL", "POWERPNT", "OUTLOOK", "Acrobat", "AcroRd32", "SumatraPDF",
+            "explorer", "ShellExperienceHost", "SearchHost", "StartMenuExperienceHost", "ApplicationFrameHost", "SystemSettings", "Taskmgr",
+        };
 
         [DllImport("user32.dll")]
         private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter,
@@ -312,20 +329,29 @@ namespace GHelper.Overlay
 
             // Pin FPS counter to foreground process — queried every second so
             // switching games is handled automatically without manual configuration.
+            GetWindowThreadProcessId(GetForegroundWindow(), out uint fgPidRaw);
+            int fgPid = (int)fgPidRaw;
+            bool ownWindow = fgPid == 0 || fgPid == Environment.ProcessId;
+
             if (_fps != null)
             {
-                GetWindowThreadProcessId(GetForegroundWindow(), out uint fgPid);
-                int pid = (int)fgPid;
-                if (pid != Environment.ProcessId && pid != _lastFgPid)
+                if (!ownWindow && fgPid != _lastFgPid)
                 {
-                    _lastFgPid = pid;
+                    _lastFgPid = fgPid;
                     _currentFps = 0;
-                    _fps.TargetPid = pid;
+                    _fps.TargetPid = fgPid;
+                    _fgDesktop = _gameOnly && IsDesktopApp(fgPid);
                 }
                 else
                 {
                     _currentFps = (int)Math.Round(_fps.SampleFps());
                 }
+            }
+
+            if (_gameOnly)
+            {
+                if (!ownWindow) UpdateGameVisibility(fgPid);
+                if (_hidden) return;
             }
 
             HardwareControl.ReadSensorsOverlay();
@@ -352,6 +378,26 @@ namespace GHelper.Overlay
             _gpuUsage = gpuActive ? (HardwareControl.gpuUsage ?? 0) : null;
 
             Invalidate();
+        }
+
+        private void UpdateGameVisibility(int fgPid)
+        {
+            if (_currentFps >= MinGameFps && !_fgDesktop) _shownPid = fgPid;
+            bool show = fgPid == _shownPid;
+            if (show != _hidden) return;
+            _hidden = !show;
+            if (Handle != nint.Zero)
+                User32.ShowWindow(Handle, (short)(_hidden ? User32.SW_HIDE : User32.SW_SHOWNOACTIVATE));
+        }
+
+        private static bool IsDesktopApp(int pid)
+        {
+            try
+            {
+                using var p = Process.GetProcessById(pid);
+                return DesktopApps.Contains(p.ProcessName);
+            }
+            catch { return false; }
         }
 
         protected override void PerformPaint(PaintEventArgs e)
@@ -641,6 +687,10 @@ namespace GHelper.Overlay
         {
             _active = true;
             _lastFgPid = 0;
+            _gameOnly = AppConfig.Is("overlay_game_only");
+            _hidden = false;
+            _shownPid = 0;
+            _fgDesktop = false;
             // overlay_mode is the new key. Migrate from legacy overlay_light_mode (0/1)
             // when the new one isn't set yet so existing users keep their preference.
             int storedMode = AppConfig.Exists("overlay_mode")
@@ -671,6 +721,7 @@ namespace GHelper.Overlay
 
             RestorePosition();
             base.Show();
+            if (_gameOnly) { _hidden = true; User32.ShowWindow(Handle, User32.SW_HIDE); }
             Tick();
             _timer.Start();
         }

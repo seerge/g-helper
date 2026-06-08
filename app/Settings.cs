@@ -890,6 +890,13 @@ namespace GHelper
             menuOverlay.Checked = AppConfig.Is("overlay");
             contextMenuStrip.Items.Add(menuOverlay);
 
+            var menuOverlayGameOnly = new ToolStripMenuItem("Overlay only in games");
+            menuOverlayGameOnly.Click += (sender, args) => ToggleOverlayGameOnly();
+            menuOverlayGameOnly.Margin = padding;
+            menuOverlayGameOnly.Checked = AppConfig.Is("overlay_game_only");
+            menuOverlayGameOnly.Enabled = AppConfig.Is("overlay");
+            contextMenuStrip.Items.Add(menuOverlayGameOnly);
+
             var quit = new ToolStripMenuItem(Properties.Strings.Quit);
             quit.Click += ButtonQuit_Click;
             quit.Margin = padding;
@@ -1680,10 +1687,22 @@ namespace GHelper
         {
             bool enable = !AppConfig.Is("overlay");
             AppConfig.Set("overlay", enable ? 1 : 0);
+            Logger.WriteLine("Overlay " + (enable ? "On" : "Off") + (AppConfig.Is("overlay_game_only") ? " (game only)" : ""));
             if (enable)
                 Program.hardwareOverlay?.StartOverlay();
             else
                 Program.hardwareOverlay?.StopOverlay();
+            SetContextMenu();
+        }
+
+        public void ToggleOverlayGameOnly()
+        {
+            AppConfig.Set("overlay_game_only", AppConfig.Is("overlay_game_only") ? 0 : 1);
+            if (AppConfig.Is("overlay"))
+            {
+                Program.hardwareOverlay?.StopOverlay();
+                Program.hardwareOverlay?.StartOverlay();
+            }
             SetContextMenu();
         }
 
