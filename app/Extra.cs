@@ -38,7 +38,7 @@ namespace GHelper
               {"touchscreen", Properties.Strings.ToggleTouchscreen },
               {"micmute", Properties.Strings.MuteMic},
               {"ghelper", Properties.Strings.OpenGHelper},
-              {"overlay", "Hardware Overlay"},
+              {"overlay", Properties.Strings.Overlay},
               {"custom", Properties.Strings.Custom}
             };
 
@@ -421,6 +421,7 @@ namespace GHelper
             checkUSBC.CheckedChanged += CheckUSBC_CheckedChanged;
 
             sliderBrightness.Value = InputDispatcher.GetBacklight();
+            sliderBrightness.AccessibleName = Properties.Strings.LaptopBacklight + ": " + sliderBrightness.Value;
             sliderBrightness.ValueChanged += SliderBrightness_ValueChanged;
 
             panelXGM.Visible = XGM.IsConnected();
@@ -661,6 +662,7 @@ namespace GHelper
                 AppConfig.Set("keyboard_brightness", sliderBrightness.Value);
 
             Aura.ApplyBrightness(sliderBrightness.Value, "Slider");
+            sliderBrightness.AccessibleName = Properties.Strings.LaptopBacklight + ": " + sliderBrightness.Value;
         }
 
         private void InitServices()
@@ -694,11 +696,11 @@ namespace GHelper
                 Task.Run(() =>
                 {
                     AsusService.StopAsusServices();
+                    Program.inputDispatcher.Init();
                     BeginInvoke(delegate
                     {
                         InitServices();
                     });
-                    Program.inputDispatcher.Init();
                 });
             }
             else

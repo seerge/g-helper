@@ -20,6 +20,30 @@ namespace GHelper.UI
             DoubleBuffered = true;
         }
 
+        protected override void OnGotFocus(EventArgs e)
+        {
+            base.OnGotFocus(e);
+            Announce($"{AccessibleName}, slider, {Value}");
+        }
+
+        protected override void OnValueChanged(EventArgs e)
+        {
+            base.OnValueChanged(e);
+            if (Focused) Announce(Value.ToString());
+        }
+
+        private void Announce(string text)
+        {
+            try
+            {
+                AccessibilityObject.RaiseAutomationNotification(
+                    System.Windows.Forms.Automation.AutomationNotificationKind.Other,
+                    System.Windows.Forms.Automation.AutomationNotificationProcessing.MostRecent,
+                    text);
+            }
+            catch { }
+        }
+
         protected override void WndProc(ref Message m)
         {
             base.WndProc(ref m);

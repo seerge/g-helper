@@ -567,7 +567,6 @@ namespace GHelper
             comboSecondary.FlatStyle = FlatStyle.Flat;
             comboSecondary.Font = new Font("Segoe UI", 9F);
             comboSecondary.FormattingEnabled = true;
-            comboSecondary.ItemHeight = 32;
             comboSecondary.Location = new Point(138, 121);
             comboSecondary.Margin = new Padding(4, 11, 4, 8);
             comboSecondary.Name = "comboSecondary";
@@ -581,7 +580,6 @@ namespace GHelper
             comboPrimary.FlatStyle = FlatStyle.Flat;
             comboPrimary.Font = new Font("Segoe UI", 9F);
             comboPrimary.FormattingEnabled = true;
-            comboPrimary.ItemHeight = 32;
             comboPrimary.Location = new Point(138, 60);
             comboPrimary.Margin = new Padding(4, 11, 4, 8);
             comboPrimary.Name = "comboPrimary";
@@ -607,7 +605,6 @@ namespace GHelper
             comboTurboPrimary.FlatStyle = FlatStyle.Flat;
             comboTurboPrimary.Font = new Font("Segoe UI", 9F);
             comboTurboPrimary.FormattingEnabled = true;
-            comboTurboPrimary.ItemHeight = 32;
             comboTurboPrimary.Location = new Point(381, 60);
             comboTurboPrimary.Margin = new Padding(4, 11, 4, 8);
             comboTurboPrimary.Name = "comboTurboPrimary";
@@ -621,7 +618,6 @@ namespace GHelper
             comboTurboSecondary.FlatStyle = FlatStyle.Flat;
             comboTurboSecondary.Font = new Font("Segoe UI", 9F);
             comboTurboSecondary.FormattingEnabled = true;
-            comboTurboSecondary.ItemHeight = 32;
             comboTurboSecondary.Location = new Point(381, 121);
             comboTurboSecondary.Margin = new Padding(4, 11, 4, 8);
             comboTurboSecondary.Name = "comboTurboSecondary";

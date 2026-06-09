@@ -32,6 +32,7 @@ namespace GHelper.Input
         public static Keys keyProfile3 = (Keys)AppConfig.Get("keybind_profile_3", (int)Keys.F19);
         public static Keys keyProfile4 = (Keys)AppConfig.Get("keybind_profile_4", (int)Keys.F20);
         public static Keys keyXGM = (Keys)AppConfig.Get("keybind_xgm", (int)Keys.F21);
+        public static Keys keyOverlay = (Keys)AppConfig.Get("keybind_overlay", (int)Keys.O);
 
         public static ModifierKeys keyModifier = GetModifierKeys("modifier_keybind", ModifierKeys.Shift | ModifierKeys.Control);
         public static ModifierKeys keyModifierAlt = GetModifierKeys("modifier_keybind_alt", ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt);
@@ -183,7 +184,7 @@ namespace GHelper.Input
                 hook.RegisterHotKey(keyModifier, Keys.F20);
             }
 
-            hook.RegisterHotKey(keyModifierAlt, Keys.O);
+            if (keyOverlay != Keys.None) hook.RegisterHotKey(keyModifierAlt, keyOverlay);
 
             if (!AppConfig.IsZ13() && !AppConfig.IsAlly() && !AppConfig.IsVivoZenPro())
             {
@@ -497,6 +498,7 @@ namespace GHelper.Input
                 if (e.Key == keyProfile3) modeControl.SetPerformanceMode(3, true);
                 if (e.Key == keyProfile4) modeControl.SetPerformanceMode(4, true);
                 if (e.Key == keyXGM) Program.settingsForm.gpuControl.ToggleXGM(true);
+                if (e.Key == keyOverlay) Program.settingsForm.BeginInvoke(() => Program.settingsForm.ToggleOverlay(true));
 
                 switch (e.Key)
                 {
@@ -536,9 +538,6 @@ namespace GHelper.Input
                     case Keys.F15:
                         Program.toast.RunToast(Properties.Strings.StandardMode);
                         Program.settingsForm.gpuControl.SetGPUMode(AsusACPI.GPUModeStandard);
-                        break;
-                    case Keys.O:
-                        Program.settingsForm.BeginInvoke(Program.settingsForm.ToggleOverlay);
                         break;
                 }
             }
@@ -647,7 +646,7 @@ namespace GHelper.Input
                     ToggleFnLock();
                     break;
                 case "overlay":
-                    Program.settingsForm.BeginInvoke(Program.settingsForm.ToggleOverlay);
+                    Program.settingsForm.BeginInvoke(() => Program.settingsForm.ToggleOverlay(true));
                     break;
                 case "micmute":
                     ToggleMic();

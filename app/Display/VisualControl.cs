@@ -284,7 +284,7 @@ namespace GHelper.Display
 
             Task.Run(async () =>
             {
-                if (!forceVisual && ScreenCCD.GetHDRStatus(true)) return;
+                if (!forceVisual && (ScreenCCD.GetHDRStatus(out bool acm, true) || acm)) return;
                 if (!forceVisual && ScreenNative.GetRefreshRate(ScreenNative.FindLaptopScreen(true)) < 0) return;
 
                 if (!init && mode == SplendidCommand.EReading && !ProcessHelper.IsUserAdministrator() && !IsEReading()) ProcessHelper.RunAsAdmin();

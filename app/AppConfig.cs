@@ -609,11 +609,6 @@ public static class AppConfig
         return ContainsModel("GA403UI") || ContainsModel("GA403UU") || ContainsModel("GA403UV") || ContainsModel("FA507XV");
     }
 
-    public static bool IsReapplyRyzen()
-    {
-        return ContainsModel("G614F") || ContainsModel("G814F") || ContainsModel("G733P");
-    }
-
     public static bool IsFanRequired()
     {
         return ContainsModel("GA402X") || ContainsModel("GU604") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("G634J") || ContainsModel("G834J") || ContainsModel("G614J") || ContainsModel("G814J") || ContainsModel("FX507V") || ContainsModel("FX507ZV") || ContainsModel("FX608") || ContainsModel("FA608P") || ContainsModel("G614F") || ContainsModel("G614R") || ContainsModel("G733") || ContainsModel("H7606");
@@ -701,6 +696,16 @@ public static class AppConfig
     public static bool IsBWIcon()
     {
         return Is("bw_icon");
+    }
+
+    public static bool IsOverlay()
+    {
+        return Is("overlay");
+    }
+
+    public static bool IsOverlayGameOnly()
+    {
+        return Is("overlay_game_only");
     }
 
     public static bool IsStopAC()

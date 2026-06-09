@@ -1,4 +1,4 @@
-using GHelper.Fan;
+﻿using GHelper.Fan;
 using GHelper.Gpu.NVidia;
 using GHelper.Helpers;
 using GHelper.Mode;
@@ -15,6 +15,8 @@ namespace GHelper
 
         int curIndex = -1;
         DataPoint? curPoint = null;
+        int _kbIndex = 0;
+        int _chartTabDirection = 0;
 
         Series seriesCPU;
         Series seriesGPU;
@@ -115,6 +117,31 @@ namespace GHelper
             chartGPU.MouseClick += ChartCPU_MouseClick;
             chartMid.MouseClick += ChartCPU_MouseClick;
             chartXGM.MouseClick += ChartCPU_MouseClick;
+
+            chartCPU.TabStop = true;
+            chartGPU.TabStop = true;
+            chartMid.TabStop = true;
+            chartXGM.TabStop = true;
+
+            chartCPU.PreviewKeyDown += Chart_PreviewKeyDown;
+            chartGPU.PreviewKeyDown += Chart_PreviewKeyDown;
+            chartMid.PreviewKeyDown += Chart_PreviewKeyDown;
+            chartXGM.PreviewKeyDown += Chart_PreviewKeyDown;
+
+            chartCPU.KeyDown += (s, e) => Chart_KeyDown(s, e, AsusFan.CPU);
+            chartGPU.KeyDown += (s, e) => Chart_KeyDown(s, e, AsusFan.GPU);
+            chartMid.KeyDown += (s, e) => Chart_KeyDown(s, e, AsusFan.Mid);
+            chartXGM.KeyDown += (s, e) => Chart_KeyDown(s, e, AsusFan.XGM);
+
+            chartCPU.GotFocus += (s, e) => Chart_GotFocus(s, AsusFan.CPU);
+            chartGPU.GotFocus += (s, e) => Chart_GotFocus(s, AsusFan.GPU);
+            chartMid.GotFocus += (s, e) => Chart_GotFocus(s, AsusFan.Mid);
+            chartXGM.GotFocus += (s, e) => Chart_GotFocus(s, AsusFan.XGM);
+
+            chartCPU.LostFocus += Chart_LostFocus;
+            chartGPU.LostFocus += Chart_LostFocus;
+            chartMid.LostFocus += Chart_LostFocus;
+            chartXGM.LostFocus += Chart_LostFocus;
 
             buttonReset.Click += ButtonReset_Click;
 
@@ -257,6 +284,22 @@ namespace GHelper
             FormClosed += Fans_FormClosed;
             Activated  += (_, _) => VisualiseAdvanced();
 
+            trackUV.AccessibleName = labelLeftUV.Text;
+            trackUViGPU.AccessibleName = labelLeftUViGPU.Text;
+            trackTemp.AccessibleName = labelLeftTemp.Text;
+            trackGPUCore.AccessibleName = labelGPUCoreTitle.Text;
+            trackGPUMemory.AccessibleName = labelGPUMemoryTitle.Text;
+            trackGPUBoost.AccessibleName = labelGPUBoostTitle.Text;
+            trackGPUTemp.AccessibleName = labelGPUTempTitle.Text;
+            trackGPUPower.AccessibleName = labelGPUPowerTitle.Text;
+            trackGPUClockLimit.AccessibleName = labelGPUClockLimitTitle.Text;
+            trackHysteresisUp.AccessibleName = labelHysteresisUp.Text;
+            trackHysteresisDown.AccessibleName = labelHysteresisDown.Text;
+
+            chartCPU.AccessibleName = "CPU fan curve";
+            chartGPU.AccessibleName = "GPU fan curve";
+            chartMid.AccessibleName = "Mid fan curve";
+            chartXGM.AccessibleName = "XG Mobile fan curve";
         }
 
         private void CheckFanClamp_Click(object? sender, EventArgs e)
@@ -1027,6 +1070,11 @@ namespace GHelper
             trackCPU.Value = limit_cpu;
             trackFast.Value = limit_fast;
 
+            trackTotal.AccessibleName = labelLeftTotal.Text;
+            trackSlow.AccessibleName = labelLeftSlow.Text;
+            trackFast.AccessibleName = labelLeftFast.Text;
+            trackCPU.AccessibleName = labelLeftCPU.Text;
+
             SavePower();
 
         }
@@ -1302,6 +1350,147 @@ namespace GHelper
             curIndex = -1;
             labelTip.Visible = false;
             FanDragHint(false);
+        }
+
+        private void Chart_PreviewKeyDown(object? sender, PreviewKeyDownEventArgs e)
+        {
+            Chart chart = (Chart)sender!;
+            int count = chart.Series[0].Points.Count;
+
+            switch (e.KeyCode)
+            {
+                case Keys.Up:
+                case Keys.Down:
+                case Keys.Left:
+                case Keys.Right:
+                case Keys.Home:
+                case Keys.End:
+                    e.IsInputKey = true;
+                    break;
+                case Keys.Tab:
+                    bool back = e.Modifiers.HasFlag(Keys.Shift);
+                    if (back ? _kbIndex > 0 : _kbIndex < count - 1)
+                        e.IsInputKey = true;
+                    else
+                        _chartTabDirection = back ? -1 : 1;
+                    break;
+            }
+        }
+
+        private void Chart_GotFocus(object? sender, AsusFan device)
+        {
+            Chart chart = (Chart)sender!;
+            int count = chart.Series[0].Points.Count;
+            if (count == 0) return;
+
+            if (_chartTabDirection > 0) _kbIndex = 0;
+            else if (_chartTabDirection < 0) _kbIndex = count - 1;
+            else if (_kbIndex < 0 || _kbIndex >= count) _kbIndex = 0;
+            _chartTabDirection = 0;
+
+            UpdateChartTip(chart, device);
+        }
+
+        private void Chart_LostFocus(object? sender, EventArgs e)
+        {
+            labelTip.Visible = false;
+        }
+
+        private void Chart_KeyDown(object? sender, KeyEventArgs e, AsusFan device)
+        {
+            Chart chart = (Chart)sender!;
+            Series series = chart.Series[0];
+            int count = series.Points.Count;
+            if (count == 0) return;
+
+            if (_kbIndex < 0 || _kbIndex >= count) _kbIndex = 0;
+
+            int step = e.Shift ? 5 : 1;
+
+            switch (e.KeyCode)
+            {
+                case Keys.Tab:
+                    _kbIndex = Math.Max(0, Math.Min(count - 1, e.Shift ? _kbIndex - 1 : _kbIndex + 1));
+                    break;
+                case Keys.Home:
+                    _kbIndex = 0;
+                    break;
+                case Keys.End:
+                    _kbIndex = count - 1;
+                    break;
+                case Keys.Left:
+                    Chart_AdjustPoint(-step, 0, series, device);
+                    break;
+                case Keys.Right:
+                    Chart_AdjustPoint(step, 0, series, device);
+                    break;
+                case Keys.Down:
+                    Chart_AdjustPoint(0, -step, series, device);
+                    break;
+                case Keys.Up:
+                    Chart_AdjustPoint(0, step, series, device);
+                    break;
+                default:
+                    return;
+            }
+
+            UpdateChartTip(chart, device);
+            e.Handled = true;
+        }
+
+        private void Chart_AdjustPoint(int dx, int dy, Series series, AsusFan device)
+        {
+            DataPoint point = series.Points[_kbIndex];
+
+            double newX = point.XValue + dx;
+            double newY = point.YValues[0] + dy;
+
+            newX = Math.Max(tempMin, Math.Min(tempMax, newX));
+            if (clampFanDots)
+            {
+                double minX = 30 + (_kbIndex * 10);
+                double maxX = minX + 9;
+                newX = Math.Max(minX, Math.Min(maxX, newX));
+            }
+
+            newY = Math.Max(0, Math.Min(fansMax, newY));
+            double dymin = (newX - 70) * 1.2;
+            if (newY < dymin) newY = dymin;
+
+            point.XValue = newX;
+            point.YValues[0] = newY;
+
+            AdjustAllLevels(_kbIndex, newX, newY, series);
+            SaveProfile(series, device);
+        }
+
+        private void UpdateChartTip(Chart chart, AsusFan device)
+        {
+            DataPoint point = chart.Series[0].Points[_kbIndex];
+            labelTip.Text = TempHelper.FormatTemp(point.XValue) + ", " + ChartYLabel((int)point.YValues[0], device, " " + Properties.Strings.RPM);
+
+            try
+            {
+                ChartArea ca = chart.ChartAreas[0];
+                double pixX = ca.AxisX.ValueToPixelPosition(point.XValue);
+                double pixY = ca.AxisY.ValueToPixelPosition(point.YValues[0]);
+                labelTip.Top = (int)pixY + chart.Top;
+                labelTip.Left = Math.Min(chart.Width - labelTip.Width - 20, (int)pixX - 50);
+                labelTip.Visible = true;
+            }
+            catch { }
+
+            if (chart.Focused)
+            {
+                try
+                {
+                    chart.AccessibilityObject.RaiseAutomationNotification(
+                        System.Windows.Forms.Automation.AutomationNotificationKind.Other,
+                        System.Windows.Forms.Automation.AutomationNotificationProcessing.MostRecent,
+                        $"{device} point {_kbIndex + 1}, {labelTip.Text}");
+                }
+                catch { }
+            }
         }
 
         private void ChartCPU_MouseMove(object? sender, MouseEventArgs e, AsusFan device)

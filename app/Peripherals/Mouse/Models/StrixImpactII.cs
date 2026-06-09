@@ -193,4 +193,19 @@
             return "ROG Strix Impact II Electro Punk";
         }
     }
+
+    public class StrixImpactIIMoonlightWhite : StrixImpactII
+    {
+
+        public StrixImpactIIMoonlightWhite() : base(0x19D2)
+        {
+
+        }
+
+
+        public override string GetDisplayName()
+        {
+            return "ROG Strix Impact II Moonlight White";
+        }
+    }
 }

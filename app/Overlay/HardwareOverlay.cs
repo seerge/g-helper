@@ -1,5 +1,6 @@
 using GHelper.Helpers;
 using Microsoft.Win32;
+using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Runtime.InteropServices;
@@ -8,11 +9,6 @@ namespace GHelper.Overlay
 {
     public class HardwareOverlay : OSDNativeForm
     {
-        [DllImport("user32.dll")]
-        private static extern IntPtr MonitorFromPoint(POINT pt, uint dwFlags);
-        [DllImport("shcore.dll")]
-        private static extern int GetDpiForMonitor(IntPtr hMonitor, int dpiType, out uint dpiX, out uint dpiY);
-
         // Foreground window — used to pin FPS measurement to the active process
         [DllImport("user32.dll")]
         private static extern IntPtr GetForegroundWindow();
@@ -35,10 +31,6 @@ namespace GHelper.Overlay
         private static extern IntPtr GetWindow(IntPtr hWnd, uint uCmd);
         private const uint GW_HWNDPREV = 3;
 
-        private const uint MONITOR_DEFAULTTOPRIMARY = 1;
-        private const int MDT_EFFECTIVE_DPI = 0;
-        private const int BaseDpi = 96;
-
         private const int GWL_EXSTYLE        = -20;
         private const int WS_EX_TRANSPARENT_FLAG = 0x00000020;
         private const int WM_LBUTTONDOWN     = 0x0201;
@@ -54,6 +46,10 @@ namespace GHelper.Overlay
         private const int MaxScalePercent  = 300;
         private const int ScaleStepPercent = 10;
         private int _scalePercent = 100;
+
+        // Fixed base scale, deliberately independent of Windows DPI. 2.0 reproduces
+        // the size the overlay had at 200% display scaling — the desired default.
+        private const float BaseScale = 2.0f;
 
         private bool _dragging;
         private Point _dragCursorStart;
@@ -110,8 +106,8 @@ namespace GHelper.Overlay
         private static readonly SolidBrush _gpuFillBrush = new(Color.FromArgb(128, 0, 85, 27));
         private static readonly SolidBrush _cpuFillBrush = new(Color.FromArgb(128, 20, 73, 85));
 
-        // Cached per-DPI drawing resources — recreated only when DPI scale changes
-        private float _lastDpiScale = 0f;
+        // Cached drawing resources — recreated only when the scale changes
+        private float _lastScale = 0f;
         private Font? _font;
         private Font? _rpmFont;
         private Font? _fpsBold;
@@ -145,6 +141,22 @@ namespace GHelper.Overlay
         private volatile int _currentFps;
         private int _lastFgPid;
         private bool _active;
+        private bool _gameOnly;
+        private bool _hidden;
+        private int _shownPid;
+        private bool _fgDesktop;
+        private const int MinGameFps = 6;
+
+        private static readonly HashSet<string> DesktopApps = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "chrome", "msedge", "firefox", "opera", "brave", "vivaldi", "iexplore", "chromium", "librewolf",
+            "WindowsTerminal", "conhost", "cmd", "powershell", "pwsh", "alacritty", "wezterm-gui", "mintty",
+            "discord", "slack", "Teams", "ms-teams", "Spotify", "WhatsApp", "Signal", "Telegram", "Code", "Notion", "obsidian", "zoom", "Skype",
+            "steam", "steamwebhelper", "EpicGamesLauncher", "Battle.net", "GalaxyClient", "EADesktop", "UbisoftConnect",
+            "vlc", "mpv", "mpc-hc64", "mpc-be64", "PotPlayerMini64", "wmplayer", "smplayer",
+            "WINWORD", "EXCEL", "POWERPNT", "OUTLOOK", "Acrobat", "AcroRd32", "SumatraPDF",
+            "explorer", "ShellExperienceHost", "SearchHost", "StartMenuExperienceHost", "ApplicationFrameHost", "SystemSettings", "Taskmgr",
+        };
 
         [DllImport("user32.dll")]
         private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter,
@@ -267,16 +279,7 @@ namespace GHelper.Overlay
             base.WndProc(ref m);
         }
 
-        private float GetDpiScale()
-        {
-            Screen screen = Screen.PrimaryScreen ?? Screen.AllScreens[0];
-            POINT pt = new POINT { x = screen.Bounds.X + 1, y = screen.Bounds.Y + 1 };
-            IntPtr monitor = MonitorFromPoint(pt, MONITOR_DEFAULTTOPRIMARY);
-            float dpi = 1f;
-            if (GetDpiForMonitor(monitor, MDT_EFFECTIVE_DPI, out uint dpiX, out _) == 0)
-                dpi = dpiX / (float)BaseDpi;
-            return dpi * (_scalePercent / 100f);
-        }
+        private float GetScale() => BaseScale * (_scalePercent / 100f);
 
         private static int S(float sc, int v) => (int)(v * sc);
         private static double D(object? v) { try { return v is null ? 0.0 : Convert.ToDouble(v); } catch { return 0.0; } }
@@ -312,20 +315,29 @@ namespace GHelper.Overlay
 
             // Pin FPS counter to foreground process — queried every second so
             // switching games is handled automatically without manual configuration.
+            GetWindowThreadProcessId(GetForegroundWindow(), out uint fgPidRaw);
+            int fgPid = (int)fgPidRaw;
+            bool ownWindow = fgPid == 0 || fgPid == Environment.ProcessId;
+
             if (_fps != null)
             {
-                GetWindowThreadProcessId(GetForegroundWindow(), out uint fgPid);
-                int pid = (int)fgPid;
-                if (pid != Environment.ProcessId && pid != _lastFgPid)
+                if (!ownWindow && fgPid != _lastFgPid)
                 {
-                    _lastFgPid = pid;
+                    _lastFgPid = fgPid;
                     _currentFps = 0;
-                    _fps.TargetPid = pid;
+                    _fps.TargetPid = fgPid;
+                    _fgDesktop = _gameOnly && IsDesktopApp(fgPid);
                 }
                 else
                 {
                     _currentFps = (int)Math.Round(_fps.SampleFps());
                 }
+            }
+
+            if (_gameOnly)
+            {
+                if (!ownWindow) UpdateGameVisibility(fgPid);
+                if (_hidden) return;
             }
 
             HardwareControl.ReadSensorsOverlay();
@@ -354,9 +366,29 @@ namespace GHelper.Overlay
             Invalidate();
         }
 
+        private void UpdateGameVisibility(int fgPid)
+        {
+            if (_currentFps >= MinGameFps && !_fgDesktop) _shownPid = fgPid;
+            bool show = fgPid == _shownPid;
+            if (show != _hidden) return;
+            _hidden = !show;
+            if (Handle != nint.Zero)
+                User32.ShowWindow(Handle, (short)(_hidden ? User32.SW_HIDE : User32.SW_SHOWNOACTIVATE));
+        }
+
+        private static bool IsDesktopApp(int pid)
+        {
+            try
+            {
+                using var p = Process.GetProcessById(pid);
+                return DesktopApps.Contains(p.ProcessName);
+            }
+            catch { return false; }
+        }
+
         protected override void PerformPaint(PaintEventArgs e)
         {
-            float sc = GetDpiScale();
+            float sc = GetScale();
 
             int padX = S(sc, BasePadX);
             int padY = S(sc, BasePadY);
@@ -384,13 +416,13 @@ namespace GHelper.Overlay
             var g = e.Graphics;
             g.SmoothingMode = SmoothingMode.AntiAlias;
             g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-            g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
+            g.TextRenderingHint = _scalePercent <= 75 ? TextRenderingHint.ClearTypeGridFit : TextRenderingHint.AntiAliasGridFit;
 
             g.FillRoundedRectangle(_bgBrush, Bound, radius);
 
-            if (sc != _lastDpiScale)
+            if (sc != _lastScale)
             {
-                _lastDpiScale = sc;
+                _lastScale = sc;
                 _font?.Dispose();    _font    = new Font("Consolas", BaseFontSize * sc, FontStyle.Regular, GraphicsUnit.Pixel);
                 _rpmFont?.Dispose(); _rpmFont = new Font("Consolas", BaseRpmFontSize * sc, FontStyle.Regular, GraphicsUnit.Pixel);
                 _fpsBold?.Dispose(); _fpsBold = new Font("Consolas", innerH / 1.15f, FontStyle.Bold, GraphicsUnit.Pixel);
@@ -641,6 +673,10 @@ namespace GHelper.Overlay
         {
             _active = true;
             _lastFgPid = 0;
+            _gameOnly = AppConfig.IsOverlayGameOnly();
+            _hidden = false;
+            _shownPid = 0;
+            _fgDesktop = false;
             // overlay_mode is the new key. Migrate from legacy overlay_light_mode (0/1)
             // when the new one isn't set yet so existing users keep their preference.
             int storedMode = AppConfig.Exists("overlay_mode")
@@ -659,7 +695,7 @@ namespace GHelper.Overlay
             _fps = new EtwFpsMonitor();
             _fpsTask = Task.Run(() => _fps.Start());
 
-            float sc = GetDpiScale();
+            float sc = GetScale();
             int innerH = S(sc, BaseLineHeight) * 2 + S(sc, BaseLineSpacing);
             int initialBaseW = _mode switch
             {
@@ -671,6 +707,7 @@ namespace GHelper.Overlay
 
             RestorePosition();
             base.Show();
+            if (_gameOnly) { _hidden = true; User32.ShowWindow(Handle, User32.SW_HIDE); }
             Tick();
             _timer.Start();
         }
@@ -702,7 +739,7 @@ namespace GHelper.Overlay
             _fpsBold?.Dispose();  _fpsBold  = null;
             _totalPen?.Dispose(); _totalPen = null;
             _axPen?.Dispose();    _axPen    = null;
-            _lastDpiScale = 0f;
+            _lastScale = 0f;
             base.Hide();
         }
     }

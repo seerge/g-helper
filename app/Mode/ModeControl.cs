@@ -65,6 +65,12 @@ namespace GHelper.Mode
             return smu != null && smu.Family is CpuFamily.Renoir or CpuFamily.Mobile;
         }
 
+        private static bool IsReapplyRyzenRequired()
+        {
+            var smu = GetSmu();
+            return smu != null && smu.Family is CpuFamily.Raphael;
+        }
+
         private static void SetReapplyEnabled(bool enabled)
         {
             if (reapplyTimer != null) reapplyTimer.Enabled = enabled;
@@ -298,7 +304,7 @@ namespace GHelper.Mode
             SetGPUPower();
             AutoRyzen();
 
-            if (AppConfig.IsReapplyRyzen())
+            if (IsReapplyRyzenRequired())
                 Task.Delay(5000).ContinueWith(_ => { AutoRyzen(); ReadRyzenLimits(); });
 
         }
