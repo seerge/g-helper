@@ -884,17 +884,17 @@ namespace GHelper
 
             contextMenuStrip.Items.Add("-");
 
-            var menuOverlay = new ToolStripMenuItem("Hardware Overlay");
+            var menuOverlay = new ToolStripMenuItem(Properties.Strings.Overlay);
             menuOverlay.Click += (sender, args) => ToggleOverlay();
             menuOverlay.Margin = padding;
-            menuOverlay.Checked = AppConfig.Is("overlay");
+            menuOverlay.Checked = AppConfig.IsOverlay();
             contextMenuStrip.Items.Add(menuOverlay);
 
-            var menuOverlayGameOnly = new ToolStripMenuItem("Overlay only in games");
+            var menuOverlayGameOnly = new ToolStripMenuItem(Properties.Strings.OverlayOnlyInGames);
             menuOverlayGameOnly.Click += (sender, args) => ToggleOverlayGameOnly();
             menuOverlayGameOnly.Margin = padding;
-            menuOverlayGameOnly.Checked = AppConfig.Is("overlay_game_only");
-            menuOverlayGameOnly.Enabled = AppConfig.Is("overlay");
+            menuOverlayGameOnly.Checked = AppConfig.IsOverlayGameOnly();
+            menuOverlayGameOnly.Enabled = AppConfig.IsOverlay();
             contextMenuStrip.Items.Add(menuOverlayGameOnly);
 
             var quit = new ToolStripMenuItem(Properties.Strings.Quit);
@@ -1683,22 +1683,26 @@ namespace GHelper
                 fansForm.LabelFansResult(text);
         }
 
-        public void ToggleOverlay()
+        public void ToggleOverlay(bool fromHotkey = false)
         {
-            bool enable = !AppConfig.Is("overlay");
+            bool enable = !AppConfig.IsOverlay();
             AppConfig.Set("overlay", enable ? 1 : 0);
-            Logger.WriteLine("Overlay " + (enable ? "On" : "Off") + (AppConfig.Is("overlay_game_only") ? " (game only)" : ""));
+            Logger.WriteLine("Overlay " + (enable ? "On" : "Off") + (AppConfig.IsOverlayGameOnly() ? " (game only)" : ""));
             if (enable)
                 Program.hardwareOverlay?.StartOverlay();
             else
                 Program.hardwareOverlay?.StopOverlay();
+
+            if (fromHotkey && AppConfig.IsOverlayGameOnly())
+                Program.toast.RunToast(Properties.Strings.Overlay + " " + (enable ? Properties.Strings.On : Properties.Strings.Off));
+
             SetContextMenu();
         }
 
         public void ToggleOverlayGameOnly()
         {
-            AppConfig.Set("overlay_game_only", AppConfig.Is("overlay_game_only") ? 0 : 1);
-            if (AppConfig.Is("overlay"))
+            AppConfig.Set("overlay_game_only", AppConfig.IsOverlayGameOnly() ? 0 : 1);
+            if (AppConfig.IsOverlay())
             {
                 Program.hardwareOverlay?.StopOverlay();
                 Program.hardwareOverlay?.StartOverlay();

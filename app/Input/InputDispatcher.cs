@@ -498,7 +498,7 @@ namespace GHelper.Input
                 if (e.Key == keyProfile3) modeControl.SetPerformanceMode(3, true);
                 if (e.Key == keyProfile4) modeControl.SetPerformanceMode(4, true);
                 if (e.Key == keyXGM) Program.settingsForm.gpuControl.ToggleXGM(true);
-                if (e.Key == keyOverlay) Program.settingsForm.BeginInvoke(Program.settingsForm.ToggleOverlay);
+                if (e.Key == keyOverlay) Program.settingsForm.BeginInvoke(() => Program.settingsForm.ToggleOverlay(true));
 
                 switch (e.Key)
                 {
@@ -646,7 +646,7 @@ namespace GHelper.Input
                     ToggleFnLock();
                     break;
                 case "overlay":
-                    Program.settingsForm.BeginInvoke(Program.settingsForm.ToggleOverlay);
+                    Program.settingsForm.BeginInvoke(() => Program.settingsForm.ToggleOverlay(true));
                     break;
                 case "micmute":
                     ToggleMic();

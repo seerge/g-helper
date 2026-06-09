@@ -38,7 +38,7 @@ namespace GHelper
               {"touchscreen", Properties.Strings.ToggleTouchscreen },
               {"micmute", Properties.Strings.MuteMic},
               {"ghelper", Properties.Strings.OpenGHelper},
-              {"overlay", "Hardware Overlay"},
+              {"overlay", Properties.Strings.Overlay},
               {"custom", Properties.Strings.Custom}
             };
 

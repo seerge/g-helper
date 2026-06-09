@@ -698,6 +698,16 @@ public static class AppConfig
         return Is("bw_icon");
     }
 
+    public static bool IsOverlay()
+    {
+        return Is("overlay");
+    }
+
+    public static bool IsOverlayGameOnly()
+    {
+        return Is("overlay_game_only");
+    }
+
     public static bool IsStopAC()
     {
         return IsAlly() || Is("stop_ac");

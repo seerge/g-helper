@@ -673,7 +673,7 @@ namespace GHelper.Overlay
         {
             _active = true;
             _lastFgPid = 0;
-            _gameOnly = AppConfig.Is("overlay_game_only");
+            _gameOnly = AppConfig.IsOverlayGameOnly();
             _hidden = false;
             _shownPid = 0;
             _fgDesktop = false;

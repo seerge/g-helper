@@ -223,7 +223,7 @@ namespace GHelper
                 settingsForm.VisualiseArmoury(AsusService.IsArmouryRunning());
             });
 
-            if (AppConfig.Is("overlay"))
+            if (AppConfig.IsOverlay())
                 hardwareOverlay?.StartOverlay();
 
             Application.Run();
