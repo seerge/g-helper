@@ -130,7 +130,7 @@ namespace GHelper.UI
             base.OnPaint(e);
 
             Brush brushAccent = new SolidBrush(accentColor);
-            Brush brushEmpty = new SolidBrush(Color.Gray);
+            Brush brushEmpty = new SolidBrush(RForm.chartGrid);
             Brush brushBorder = new SolidBrush(borderColor);
 
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
