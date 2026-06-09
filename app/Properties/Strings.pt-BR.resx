@@ -958,4 +958,10 @@ e os reinicia automaticamente quando a GPU é ativada</value>
     <value>Impede que dispositivos PCIe entrem em estados de inatividade de baixa energia.
 Recomendado se você sofrer travamentos aleatórios ou hardware sem resposta.</value>
   </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
+  </data>
 </root>
