@@ -958,4 +958,10 @@ y los reinicia automáticamente cuando se activa</value>
     <value>Evita que los dispositivos PCIe entren en estados de inactividad de bajo consumo.
 Recomendado si experimenta cuelgues aleatorios o hardware que no responde.</value>
   </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
+  </data>
 </root>
