@@ -959,9 +959,9 @@ Folytatni szeretnéd?</value>
 Ajánlott, ha véletlenszerű lefagyásokat vagy nem reagáló hardvert tapasztal.</value>
   </data>
   <data name="Overlay" xml:space="preserve">
-    <value>Overlay</value>
+    <value>Átfedés</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
-    <value>Overlay only in games</value>
+    <value>Csak a játékokban jelenítse meg</value>
   </data>
 </root>
