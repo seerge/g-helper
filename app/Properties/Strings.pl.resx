@@ -958,4 +958,10 @@ i automatycznie je uruchamia, gdy GPU jest włączony</value>
     <value>Zapobiega przechodzeniu urządzeń PCIe w stany niskiego poboru mocy.
 Zalecane, jeśli występują losowe zawieszenia lub niereagujący sprzęt.</value>
   </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
+  </data>
 </root>

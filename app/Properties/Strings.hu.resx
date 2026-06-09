@@ -958,4 +958,10 @@ Folytatni szeretnéd?</value>
     <value>Megakadályozza, hogy a PCIe eszközök alacsony fogyasztású tétlen állapotba lépjenek.
 Ajánlott, ha véletlenszerű lefagyásokat vagy nem reagáló hardvert tapasztal.</value>
   </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Átfedés</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Csak a játékokban jelenítse meg</value>
+  </data>
 </root>
