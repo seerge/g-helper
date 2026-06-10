@@ -43,7 +43,7 @@ namespace GHelper
 
         public static InputDispatcher? inputDispatcher;
 
-        public static CompanionService companionService = new EmptyService();
+        public static CompanionService companionService;
 
         // The main entry point for the application
         public static void Main(string[] args)
@@ -94,6 +94,7 @@ namespace GHelper
             Logger.WriteLine("----------------------");
             Logger.WriteLine("App launched: " + AppConfig.GetModel() + " :" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + CultureInfo.CurrentUICulture + (ProcessHelper.IsUserAdministrator() ? "." : ""));
 
+            companionService = new EmptyService();
             settingsForm = new SettingsForm();
             modeControl = new ModeControl();
             gpuControl = new GPUModeControl(settingsForm);

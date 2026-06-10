@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             labelIpAddress = new Label();
-            buttonStart = new UI.RButton();
+            buttonStart = new GHelper.UI.RButton();
             rbWiFi = new RadioButton();
             rbBLE = new RadioButton();
             SuspendLayout();
@@ -92,7 +92,7 @@
             Controls.Add(buttonStart);
             Controls.Add(labelIpAddress);
             Name = "CompanionAppScreen";
-            Text = "CompanionAppScreen";
+            Text = "Companion";
             FormClosed += CompanionAppScreen_FormClosed;
             ResumeLayout(false);
             PerformLayout();
