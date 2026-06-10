@@ -1,5 +1,6 @@
 using GHelper.Ally;
 using GHelper.Battery;
+using GHelper.CompanionApp;
 using GHelper.Display;
 using GHelper.Gpu;
 using GHelper.Helpers;
@@ -41,6 +42,8 @@ namespace GHelper
         private static long lastTheme;
 
         public static InputDispatcher? inputDispatcher;
+
+        public static CompanionService companionService;
 
         // The main entry point for the application
         public static void Main(string[] args)
@@ -91,6 +94,7 @@ namespace GHelper
             Logger.WriteLine("----------------------");
             Logger.WriteLine("App launched: " + AppConfig.GetModel() + " :" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + CultureInfo.CurrentUICulture + (ProcessHelper.IsUserAdministrator() ? "." : ""));
 
+            companionService = new EmptyService();
             settingsForm = new SettingsForm();
             modeControl = new ModeControl();
             gpuControl = new GPUModeControl(settingsForm);

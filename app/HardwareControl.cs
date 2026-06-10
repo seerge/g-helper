@@ -293,7 +293,7 @@ public static class HardwareControl
         }
     }
 
-    private static int GetGpuUse()
+    public static int GetGpuUse()
     {
         try
         {
@@ -303,7 +303,7 @@ public static class HardwareControl
         }
         catch (Exception ex)
         {
-            Debug.WriteLine(ex.ToString());
+            //Debug.WriteLine(ex.ToString());
         }
 
         return 0;
