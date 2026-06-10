@@ -121,6 +121,16 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap cross_23 {
+            get {
+                object obj = ResourceManager.GetObject("cross_23", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon dark_eco {
@@ -259,6 +269,26 @@ namespace GHelper.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_cancel_48 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-cancel-48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_flash_48 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-flash-48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
@@ -393,6 +423,16 @@ namespace GHelper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_heart_32 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-heart-32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_heartbeat_32 {
             get {
                 object obj = ResourceManager.GetObject("icons8-heartbeat-32", resourceCulture);
@@ -439,7 +479,17 @@ namespace GHelper.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_show_right_side_panel_48 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-show-right-side-panel-48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
@@ -546,6 +596,16 @@ namespace GHelper.Properties {
         internal static System.Drawing.Bitmap icons8_mute_unmute_96 {
             get {
                 object obj = ResourceManager.GetObject("icons8_mute_unmute_96", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_natural_user_interface_48 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-natural-user-interface-48", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -843,9 +903,9 @@ namespace GHelper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap phone {
+        internal static System.Drawing.Bitmap mouse_layout {
             get {
-                object obj = ResourceManager.GetObject("phone", resourceCulture);
+                object obj = ResourceManager.GetObject("mouse-layout", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

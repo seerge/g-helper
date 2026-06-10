@@ -1,195 +1,186 @@
+using GHelper.Helpers;
 using GHelper.Mode;
-using System.Diagnostics;
+using Microsoft.Win32;
 using System.Management;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 
 public static class AppConfig
 {
 
     private static string configFile;
-
-    private static string? _model;
-    private static string? _modelShort;
-    private static string? _bios;
+    private static string fallbackConfigFile;
 
     private static Dictionary<string, object> config = new Dictionary<string, object>();
-    private static System.Timers.Timer timer = new System.Timers.Timer(2000);
-    private static long lastWrite;
+    private static System.Timers.Timer timer = new System.Timers.Timer(2000) { AutoReset = false };
+    private static readonly object configLock = new();
+
+    private static readonly JsonSerializerOptions LenientOptions = new()
+    {
+        AllowTrailingCommas = true,
+        ReadCommentHandling = JsonCommentHandling.Skip
+    };
+
+    private static readonly Regex KeyValueRegex = new(
+        @"""((?:\\.|[^""\\])*)""\s*:\s*(""(?:\\.|[^""\\])*""|-?\d+(?:\.\d+)?|true|false|null)");
 
     static AppConfig()
     {
+        string configName = "config.json";
+        string appPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "GHelper");
+        string startupConfig = Path.Combine(Application.StartupPath.Trim('\\'), configName);
 
-        string startupPath = Application.StartupPath.Trim('\\');
-        string appPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\GHelper";
-        string configName = "\\config.json";
+        fallbackConfigFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "GHelper", configName);
 
-        if (File.Exists(startupPath + configName))
-        {
-            configFile = startupPath + configName;
-        }
-        else
-        {
-            configFile = appPath + configName;
-        }
+        configFile = File.Exists(startupConfig) ? startupConfig
+        : ProcessHelper.IsRunningAsSystem() && File.Exists(fallbackConfigFile) ? fallbackConfigFile
+        : Path.Combine(appPath, configName);
 
+        Directory.CreateDirectory(appPath);
 
-        if (!System.IO.Directory.Exists(appPath))
-            System.IO.Directory.CreateDirectory(appPath);
-
-        if (File.Exists(configFile))
-        {
-            string text = File.ReadAllText(configFile);
-            try
-            {
-                config = JsonSerializer.Deserialize<Dictionary<string, object>>(text);
-            }
-            catch (Exception ex)
-            {
-                Logger.WriteLine($"Broken config: {ex.Message} {text}");
-                try
-                {
-                    text = File.ReadAllText(configFile + ".bak");
-                    config = JsonSerializer.Deserialize<Dictionary<string, object>>(text);
-                }
-                catch (Exception exb)
-                {
-                    Logger.WriteLine($"Broken backup config: {exb.Message} {text}");
-                    File.Copy(configFile, configFile + ".old", true);
-                    File.Copy(configFile + ".bak", configFile + ".bak.old", true);
-                    Init();
-                }
-            }
-        }
-        else
-        {
-            Init();
-        }
+        if (!TryLoadConfig(configFile) && !TryRecoverConfig(configFile) && !TryLoadConfig(configFile + ".bak") && !TryLoadConfig(fallbackConfigFile)) Init();
 
         timer.Elapsed += Timer_Elapsed;
+    }
 
+    private static bool TryLoadConfig(string path)
+    {
+        if (!File.Exists(path)) return false;
+        try
+        {
+            config = JsonSerializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(path), LenientOptions);
+            Logger.WriteLine($"Config loaded from {path}");
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine($"Broken config {path}: {ex.Message}");
+            return false;
+        }
+    }
+
+    private static bool TryRecoverConfig(string path)
+    {
+        if (!File.Exists(path)) return false;
+        try
+        {
+            var pairs = new Dictionary<string, string>();
+            foreach (Match m in KeyValueRegex.Matches(File.ReadAllText(path)))
+                pairs["\"" + m.Groups[1].Value + "\""] = m.Groups[2].Value;
+
+            if (pairs.Count == 0) return false;
+
+            string rebuilt = "{" + string.Join(",", pairs.Select(p => p.Key + ":" + p.Value)) + "}";
+            config = JsonSerializer.Deserialize<Dictionary<string, object>>(rebuilt, LenientOptions);
+            Logger.WriteLine($"Recovered {pairs.Count} values from broken config {path}");
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine($"Config recovery failed {path}: {ex.Message}");
+            return false;
+        }
     }
 
     private static void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
     {
-
         timer.Stop();
-        string jsonString = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
-        var backup = configFile + ".bak";
-
+        string jsonString;
+        lock (configLock) jsonString = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
         try
         {
-            File.WriteAllText(configFile, jsonString);
-            //Debug.WriteLine($"{DateTime.Now}: Config write");
+            WriteAtomic(configFile, jsonString);
+            SyncFallbackConfig();
         }
-        catch (Exception)
-        {
-            Thread.Sleep(1000);
-            try
-            {
-                File.WriteAllText(configFile, jsonString);
-            }
-            catch (Exception ex)
-            {
-                Logger.WriteLine(ex.Message);
-            }
-            return;
-        }
-
-        lastWrite = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-
-        Thread.Sleep(5000);
-
-        if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastWrite) < 4000) return;
-
-        var backupText = File.ReadAllText(configFile);
-        bool isValid =
-            !string.IsNullOrWhiteSpace(backupText) &&
-            backupText.IndexOf('\0') == -1 &&                     
-            backupText.StartsWith("{") &&
-            backupText.Trim().EndsWith("}") &&
-            backupText.Length >= 10;
-
-        if (isValid)
-        {
-            File.Copy(configFile, backup, true);
-            //Debug.WriteLine($"{DateTime.Now}: Config backup");
-        }
-        else
-        {
-            Logger.WriteLine("Error writing config");
-        }
-
+        catch (Exception ex) { Logger.WriteLine("Config write failed: " + ex.Message); }
     }
 
-    public static string GetModel()
+    private static void WriteAtomic(string path, string content)
     {
-        if (_model is null)
+        string tmp = path + ".tmp";
+        File.WriteAllText(tmp, content);
+        using (var fs = new FileStream(tmp, FileMode.Open, FileAccess.Write))
+            fs.Flush(flushToDisk: true);
+        if (File.Exists(path))
+            File.Replace(tmp, path, path + ".bak");
+        else
+            File.Move(tmp, path);
+    }
+
+    private static void SyncFallbackConfig()
+    {
+        if (fallbackConfigFile is null || fallbackConfigFile == configFile) return;
+        try
         {
-            _model = "";
-            try
+            Directory.CreateDirectory(Path.GetDirectoryName(fallbackConfigFile));
+            File.Copy(configFile, fallbackConfigFile, overwrite: true);
+        }
+        catch (Exception ex)
+        {
+            //Logger.WriteLine("Can't sync fallback config: " + ex.Message);
+        }
+    }
+
+    // Model Detection Routine
+
+    private static readonly Lazy<string> _model =
+        new Lazy<string>(LoadModel, LazyThreadSafetyMode.ExecutionAndPublication);
+
+    private static readonly Lazy<(string Bios, string ModelShort)> _biosData =
+        new Lazy<(string, string)>(LoadBios, LazyThreadSafetyMode.ExecutionAndPublication);
+
+    private static string LoadModel()
+    {
+        try
+        {
+            using var searcher = new ManagementObjectSearcher("Select * from Win32_ComputerSystem");
+            foreach (var obj in searcher.Get())
             {
-                using (var searcher = new ManagementObjectSearcher(@"Select * from Win32_ComputerSystem"))
+                using (obj) return obj["Model"]?.ToString() ?? string.Empty;
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine(ex.Message);
+        }
+        return string.Empty;
+    }
+
+    private static (string Bios, string ModelShort) LoadBios()
+    {
+        try
+        {
+            using var searcher = new ManagementObjectSearcher("SELECT * FROM Win32_BIOS");
+            foreach (var obj in searcher.Get())
+            {
+                using (obj)
                 {
-                    foreach (var process in searcher.Get())
-                    {
-                        _model = process["Model"].ToString();
-                        break;
-                    }
+                    string raw = obj["SMBIOSBIOSVersion"]?.ToString() ?? string.Empty;
+                    string[] parts = raw.Split('.');
+                    return parts.Length > 1 ? (parts[1], parts[0]) : (string.Empty, raw);
                 }
             }
-            catch (Exception ex)
-            {
-                Logger.WriteLine(ex.Message);
-            }
         }
-
-        //if (_model.Contains("GA402RK")) _model = "ROG Flow Z13 GZ302EA"; // Debug Purposes
-
-        return _model;
-    }
-
-    public static (string, string) GetBiosAndModel()
-    {
-        if (_bios is not null && _modelShort is not null) return (_bios, _modelShort);
-
-        using (ManagementObjectSearcher objSearcher = new ManagementObjectSearcher(@"SELECT * FROM Win32_BIOS"))
+        catch (Exception ex)
         {
-            using (ManagementObjectCollection objCollection = objSearcher.Get())
-            {
-                foreach (ManagementObject obj in objCollection)
-                    if (obj["SMBIOSBIOSVersion"] is not null)
-                    {
-                        string[] results = obj["SMBIOSBIOSVersion"].ToString().Split(".");
-                        if (results.Length > 1)
-                        {
-                            _modelShort = results[0];
-                            _bios = results[1];
-                        }
-                        else
-                        {
-                            _modelShort = obj["SMBIOSBIOSVersion"].ToString();
-                        }
-                    }
-
-                return (_bios, _modelShort);
-            }
+            Logger.WriteLine(ex.Message);
         }
+        return (string.Empty, string.Empty);
     }
+
+    public static string GetModel() => _model.Value;
+
+    public static (string, string) GetBiosAndModel() => (_biosData.Value.Bios, _biosData.Value.ModelShort);
 
     public static string GetModelShort()
     {
         string model = GetModel();
-        int trim = model.LastIndexOf("_");
-        if (trim > 0) model = model.Substring(0, trim);
-        return model;
+        int trim = model.LastIndexOf('_');
+        return trim > 0 ? model[..trim] : model;
     }
 
     public static bool ContainsModel(string contains)
-    {
-        GetModel();
-        return (_model is not null && _model.ToLower().Contains(contains.ToLower()));
-    }
-
+        => _model.Value.Contains(contains, StringComparison.OrdinalIgnoreCase);
 
     private static void Init()
     {
@@ -201,21 +192,14 @@ public static class AppConfig
 
     public static bool Exists(string name)
     {
-        return config.ContainsKey(name);
+        lock (configLock) return config.ContainsKey(name);
     }
 
     public static int Get(string name, int empty = -1)
     {
-        if (config.ContainsKey(name))
-        {
-            //Debug.WriteLine(name);
-            return int.Parse(config[name].ToString());
-        }
-        else
-        {
-            //Debug.WriteLine(name + "E");
-            return empty;
-        }
+        lock (configLock)
+            return config.TryGetValue(name, out var val) && int.TryParse(val?.ToString(), out int result)
+            ? result : empty;
     }
 
     public static bool Is(string name)
@@ -235,9 +219,8 @@ public static class AppConfig
 
     public static string GetString(string name, string empty = null)
     {
-        if (config.ContainsKey(name))
-            return config[name].ToString();
-        else return empty;
+        lock (configLock)
+            return config.TryGetValue(name, out var val) ? val?.ToString() : empty;
     }
 
     private static void Write()
@@ -248,18 +231,19 @@ public static class AppConfig
 
     public static void Set(string name, int value)
     {
-        config[name] = value;
+        lock (configLock) config[name] = value;
         Write();
     }
 
     public static void Set(string name, string value)
     {
-        config[name] = value;
+        lock (configLock) config[name] = value;
         Write();
     }
+
     public static void Remove(string name)
     {
-        config.Remove(name);
+        lock (configLock) config.Remove(name);
         Write();
     }
 
@@ -287,7 +271,6 @@ public static class AppConfig
             default:
                 name = "cpu";
                 break;
-
         }
 
         return paramName + "_" + name + "_" + mode;
@@ -309,7 +292,6 @@ public static class AppConfig
         string bitCurve = BitConverter.ToString(curve);
         Set(GgetParamName(device), bitCurve);
     }
-
 
     public static byte[] StringToBytes(string str)
     {
@@ -351,7 +333,6 @@ public static class AppConfig
                         return StringToBytes("3A-3D-40-44-48-4D-51-62-08-11-16-1A-22-29-30-45");
                 }
         }
-
     }
 
     public static string GetModeString(string name)
@@ -384,15 +365,20 @@ public static class AppConfig
         return ContainsModel("RC7");
     }
 
+    public static bool IsAuraSync()
+    {
+        return Is("mouse_aura_sync");
+    }
+
     public static bool NoMKeys()
     {
         return (ContainsModel("Z13") && !IsARCNM()) ||
-               ContainsModel("FX706") ||
-               ContainsModel("FA706") ||
-               ContainsModel("FA506") ||
-               ContainsModel("FX506") ||
-               ContainsModel("Duo") ||
-               ContainsModel("FX505");
+        ContainsModel("FX706") ||
+        ContainsModel("FA706") ||
+        ContainsModel("FA506") ||
+        ContainsModel("FX506") ||
+        ContainsModel("Duo") ||
+        ContainsModel("FX505");
     }
 
     public static bool IsARCNM()
@@ -412,12 +398,12 @@ public static class AppConfig
 
     public static bool IsVivoZenbook()
     {
-        return ContainsModel("Vivobook") || ContainsModel("Zenbook") || ContainsModel("EXPERTBOOK");
+        return ContainsModel("Vivobook") || ContainsModel("Zenbook") || ContainsModel("EXPERTBOOK") || ContainsModel(" V16") || ContainsModel("ASUSLaptop");
     }
 
     public static bool IsVivoZenPro()
     {
-        return ContainsModel("Vivobook") || ContainsModel("Zenbook") || ContainsModel("ProArt") || ContainsModel("EXPERTBOOK");
+        return ContainsModel("Vivobook") || ContainsModel("Zenbook") || ContainsModel("ProArt") || ContainsModel("EXPERTBOOK") || ContainsModel(" V16") || ContainsModel("ASUSLaptop");
     }
 
     public static bool IsHardwareFnLock()
@@ -430,7 +416,6 @@ public static class AppConfig
     {
         return ContainsModel("FA506IEB") || ContainsModel("FA506IH") || ContainsModel("FA506IC") || ContainsModel("FA506II") || ContainsModel("FX506LU") || ContainsModel("FX506IC") || ContainsModel("FX506LH") || ContainsModel("FA506IV") || ContainsModel("FA706IC") || ContainsModel("FA706IH");
     }
-
 
     public static bool IsDUO()
     {
@@ -445,7 +430,7 @@ public static class AppConfig
     // G14 2020 has no aura, but media keys instead
     public static bool NoAura()
     {
-        return (ContainsModel("GA401I") && !ContainsModel("GA401IHR")) || ContainsModel("GA502IU") || ContainsModel("HN7306");
+        return (ContainsModel("GA401I") && !ContainsModel("GA401IHR")) || ContainsModel("GA502IU") || ContainsModel("HN7306") || ContainsModel("M6500X");
     }
 
     public static bool MediaKeys()
@@ -453,54 +438,54 @@ public static class AppConfig
         return (ContainsModel("GA401I") && !ContainsModel("GA401IHR")) || ContainsModel("G712L") || ContainsModel("GX502L");
     }
 
-    public static bool IsSingleColor()
+    public static bool IsWhite()
     {
         return ContainsModel("GA401") || ContainsModel("FX517Z") || ContainsModel("FX516P") || ContainsModel("X13") || IsARCNM() || ContainsModel("FA617N") || ContainsModel("FA617X") || NoAura() || Is("no_rgb");
     }
 
     public static bool IsSleepBacklight()
     {
-        return ContainsModel("FA617") || ContainsModel("FX507");
+        return ContainsModel("FA617") || ContainsModel("FX507") || ContainsModel("FA507");
     }
 
     public static bool IsAnimeMatrix()
     {
         return ContainsModel("GA401") || ContainsModel("GA402") || ContainsModel("GU604V") || ContainsModel("GU604V") || ContainsModel("G835") || ContainsModel("G815") || ContainsModel("G635") || ContainsModel("G615");
     }
-    
+
     public static bool IsSlash()
     {
-        return ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605");
+        return ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605") || IsSlashLong();
     }
 
-    public static bool IsSlashAura()
+    public static bool IsSlashLong()
     {
-        return ContainsModel("GA605") || ContainsModel("GU605C") || ContainsModel("GA403W") || ContainsModel("GA403UM") || ContainsModel("GA403UP") || ContainsModel("GA403UH");
-    }
-
-    public static bool IsInputBacklight()
-    {
-        return ContainsModel("GA503") || IsSlash() || IsVivoZenPro();
+        return ContainsModel("GA405") || ContainsModel("GU405") || ContainsModel("GU606") || ContainsModel("GX651");
     }
 
     public static bool IsInvertedFNLock()
     {
-        return ContainsModel("M140") || ContainsModel("S550") || ContainsModel("P540") || ContainsModel("FA401KM");
+        return ContainsModel("M140") || ContainsModel("S550") || ContainsModel("K650") || ContainsModel("P540") || IsTUF();
     }
 
     public static bool IsOLED()
     {
-        return ContainsModel("OLED") || IsSlash() || ContainsModel("M7600") || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M340") || ContainsModel("M350") || ContainsModel("K650") || ContainsModel("UM53") || ContainsModel("K660") || ContainsModel("UX84") || ContainsModel("M650") || ContainsModel("M550") || ContainsModel("M540") || ContainsModel("K340") || ContainsModel("K350") || ContainsModel("M140") || ContainsModel("S540") || ContainsModel("S550") || ContainsModel("M7400") || ContainsModel("N650") || ContainsModel("HN7306") || ContainsModel("H760") || ContainsModel("UX5406") || ContainsModel("M5606") || ContainsModel("X513") || ContainsModel("N7400") || ContainsModel("UX760");
+        return ContainsModel("OLED") || IsSlash() || ContainsModel("M7600") || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M340") || ContainsModel("M350") || ContainsModel("K650") || ContainsModel("UM53") || ContainsModel("K660") || ContainsModel("UX84") || ContainsModel("M650") || ContainsModel("M550") || ContainsModel("M540") || ContainsModel("K340") || ContainsModel("K350") || ContainsModel("M140") || ContainsModel("S540") || ContainsModel("S550") || ContainsModel("M7400") || ContainsModel("N650") || ContainsModel("HN7306") || ContainsModel("H760") || ContainsModel("UX5406") || ContainsModel("M5606") || ContainsModel("X513") || ContainsModel("N7400") || ContainsModel("UX760") || ContainsModel("Q530VJ") || _oledFromRegistry.Value;
     }
+
+    private static readonly Lazy<bool> _oledFromRegistry = new(() =>
+    {
+        try
+        {
+            var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\ASUS\OLEDCare");
+            return key is not null && Convert.ToInt32(key.GetValue("EnablePixelRefresh", 0)) != 0;
+        }
+        catch { return false; }
+    });
 
     public static bool IsNoOverdrive()
     {
         return Is("no_overdrive");
-    }
-
-    public static bool IsNoSleepEvent()
-    {
-        return ContainsModel("FX505");
     }
 
     public static bool IsStrix()
@@ -508,29 +493,14 @@ public static class AppConfig
         return ContainsModel("Strix") || ContainsModel("Scar") || ContainsModel("G703G");
     }
 
-    public static bool IsAdvancedRGB()
+    public static bool IsEcoBootFix()
     {
-        return IsStrix() || ContainsModel("GX650");
+        return ContainsModel("G635L") || ContainsModel("G615L") || ContainsModel("G835L") || ContainsModel("G815L") || ContainsModel("FA506");
     }
 
     public static bool IsBacklightZones()
     {
         return IsStrix() || IsZ13();
-    }
-
-    public static bool IsStrixLimitedRGB()
-    {
-        return ContainsModel("G614PM") ||  ContainsModel("G614PR") || ContainsModel("G512LI") || ContainsModel("G513R") || ContainsModel("G713QM") || ContainsModel("G713PV") || ContainsModel("G513IE") || ContainsModel("G713RC") || ContainsModel("G713IC") || ContainsModel("G713PU") || ContainsModel("G513QM") || ContainsModel("G513QC") || ContainsModel("G531G") || ContainsModel("G615JMR") || ContainsModel("G815LR");
-    }
-
-    public static bool IsPossible4ZoneRGB()
-    {
-        return ContainsModel("G614JI_") || ContainsModel("G614JV_") || ContainsModel("G614JZ") || ContainsModel("G614JU") || IsStrixLimitedRGB();
-    }
-
-    public static bool Is4ZoneRGB()
-    {
-        return IsPossible4ZoneRGB() && !Is("per_key_rgb");
     }
 
     public static bool IsHardwareHotkeys()
@@ -545,12 +515,17 @@ public static class AppConfig
 
     public static bool IsNoDirectRGB()
     {
-        return ContainsModel("GA503") || ContainsModel("G533Q") || ContainsModel("GU502") || ContainsModel("GU603") || IsSlash();
+        return ContainsModel("GA503") || ContainsModel("G533Q") || ContainsModel("GU502") || IsSlash();
     }
 
     public static bool IsStrixNumpad()
     {
         return ContainsModel("G713R");
+    }
+
+    public static bool IsStrix4ZoneFlipped()
+    {
+        return ContainsModel("G513");
     }
 
     public static bool IsZ1325()
@@ -561,6 +536,11 @@ public static class AppConfig
     public static bool IsZ13()
     {
         return ContainsModel("Z13");
+    }
+
+    public static bool HasRearLight()
+    {
+        return IsZ13();
     }
 
     public static bool IsPZ13()
@@ -595,8 +575,8 @@ public static class AppConfig
 
     public static bool DynamicBoost15()
     {
-        return ContainsModel("FX507ZC4") || ContainsModel("GA403UM") || ContainsModel("GU605CP") || ContainsModel("FX608J") || ContainsModel("FX608L") || ContainsModel("FA608U") || ContainsModel("FA608P") || ContainsModel("FA608W") ||
-               ContainsModel("FA401K") || ContainsModel("FA401UM") || ContainsModel("FA401UH");
+        return ContainsModel("FX507ZC4") || ContainsModel("GA403UM") || ContainsModel("GU605CP") || ContainsModel("FX608J") || ContainsModel("FX608L") || ContainsModel("FA608U") || ContainsModel("FA608P") ||
+        ContainsModel("FA401K") || ContainsModel("FA401UM") || ContainsModel("FA401UH");
     }
 
     public static bool DynamicBoost20()
@@ -609,45 +589,49 @@ public static class AppConfig
         return ContainsModel("13QY");
     }
 
-    public static bool NoAutoUltimate()
-    {
-        return ContainsModel("G614") || ContainsModel("GU604") || ContainsModel("FX507") || ContainsModel("G513") || ContainsModel("FA617") || ContainsModel("G834") || ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("GU603VV");
-    }
-
     public static bool IsAlwaysUltimate()
     {
         return ContainsModel("FA507NUR") || ContainsModel("FA506NCR") || ContainsModel("FA507NVR");
     }
 
+    public static bool IsApplyPower() => IsMode("auto_apply_power");
+    public static bool IsApplyFans() => IsMode("auto_apply");
+    public static bool IsApplyUV() => IsMode("auto_uv");
+
     public static bool IsManualModeRequired()
     {
-        if (!IsMode("auto_apply_power")) return false;
+        if (!IsApplyPower()) return false;
         return Is("manual_mode") || ContainsModel("G733");
     }
 
     public static bool IsResetRequired()
     {
-        return ContainsModel("GA403") || ContainsModel("FA507XV");
+        return ContainsModel("GA403UI") || ContainsModel("GA403UU") || ContainsModel("GA403UV") || ContainsModel("FA507XV");
     }
 
     public static bool IsFanRequired()
     {
-        return ContainsModel("GA402X") || ContainsModel("GU604") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("G634J") || ContainsModel("G834J") || ContainsModel("G614J") || ContainsModel("G814J") || ContainsModel("FX507V") || ContainsModel("G614F") || ContainsModel("G614R") || ContainsModel("G733");
+        return ContainsModel("GA402X") || ContainsModel("GU604") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("G634J") || ContainsModel("G834J") || ContainsModel("G614J") || ContainsModel("G814J") || ContainsModel("FX507V") || ContainsModel("FX507ZV") || ContainsModel("FX608") || ContainsModel("FA608P") || ContainsModel("G614F") || ContainsModel("G614R") || ContainsModel("G733") || ContainsModel("H7606");
     }
 
-    public static bool IsAMDLight()
+    public static bool IsCPULight()
     {
-        return ContainsModel("GA402X") || ContainsModel("GA605") || ContainsModel("GA403") || ContainsModel("FA507N") || ContainsModel("FA507X") || ContainsModel("FA707N") || ContainsModel("FA707X") || ContainsModel("GZ302");
+        return ContainsModel("GA402X") || ContainsModel("GA605") || ContainsModel("GA403") || ContainsModel("FA507N") || ContainsModel("FA507X") || ContainsModel("FA707N") || ContainsModel("FA707X") || ContainsModel("GZ302") || ContainsModel("GU405") || ContainsModel("GX651");
     }
 
     public static bool IsPowerRequired()
     {
-        return ContainsModel("FX507") || ContainsModel("FX517") || ContainsModel("FX707");
+        return ContainsModel("GU605M") || ContainsModel("FX507") || ContainsModel("FX517") || ContainsModel("FX707");
     }
 
-    public static bool IsGPUFix()
+    public static bool IsModeReapplyRequired()
     {
-        return Is("gpu_fix") || (ContainsModel("GA402X") && IsNotFalse("gpu_fix"));
+        return Is("mode_reapply") || ContainsModel("FA401");
+    }
+
+    public static bool IsStandardModeFix()
+    {
+        return Is("shutdown_gpu") || ((ContainsModel("FX506HC") || ContainsModel("FA808U")) && IsNotFalse("shutdown_gpu"));
     }
 
     public static bool IsShutdownReset()
@@ -667,12 +651,17 @@ public static class AppConfig
 
     public static bool IsAMDiGPU()
     {
-        return ContainsModel("GV301RA") || ContainsModel("GV302XA") || ContainsModel("GZ302") || IsAlly();
+        return ContainsModel("GV301RA") || ContainsModel("GV302XA") || ContainsModel("GZ302") || IsOnlyAIMAX() || IsAlly();
     }
 
     public static bool NoGpu()
     {
-        return Is("no_gpu") || ContainsModel("UX540") || ContainsModel("UM560") || ContainsModel("GZ302");
+        return Is("no_gpu") || ContainsModel("UX540") || ContainsModel("M560") || ContainsModel("GZ302") || IsOnlyAIMAX();
+    }
+
+    public static bool IsOnlyAIMAX()
+    {
+        return ContainsModel("FA401EA") || ContainsModel("HN7306EA");
     }
 
     public static bool IsHardwareTouchpadToggle()
@@ -687,7 +676,7 @@ public static class AppConfig
 
     public static bool Is8Ecores()
     {
-        return ContainsModel("FX507Z");
+        return ContainsModel("FX507Z") || ContainsModel("GU603ZV");
     }
 
     public static bool IsNoFNV()
@@ -709,6 +698,16 @@ public static class AppConfig
         return Is("bw_icon");
     }
 
+    public static bool IsOverlay()
+    {
+        return Is("overlay");
+    }
+
+    public static bool IsOverlayGameOnly()
+    {
+        return Is("overlay_game_only");
+    }
+
     public static bool IsStopAC()
     {
         return IsAlly() || Is("stop_ac");
@@ -716,7 +715,7 @@ public static class AppConfig
 
     public static bool IsChargeLimit6080()
     {
-        return ContainsModel("H760") || ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("GA503R") || (IsTUF() && !(ContainsModel("FX507Z") || ContainsModel("FA617") || ContainsModel("FA607")));
+        return ContainsModel("GU405") || ContainsModel("GU606") || ContainsModel("H760") || ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("GA503R") || (IsTUF() && !(ContainsModel("FX507Z") || ContainsModel("FA617") || ContainsModel("FA607")));
 
     }
 
@@ -726,6 +725,11 @@ public static class AppConfig
         return IsSlash() || IsIntelHX() || IsTUF() || IsZ13();
     }
 
+    public static bool IsDynamicLightingOnly()
+    {
+        return ContainsModel("S560") || ContainsModel("M540") || ContainsModel("UX760");
+    }
+
     public static bool IsDynamicLightingInit()
     {
         return ContainsModel("FA608") || Is("lighting_init");
@@ -733,8 +737,21 @@ public static class AppConfig
 
     public static bool IsForceMiniled()
     {
-        return ContainsModel("G834JYR") || ContainsModel("G834JZR") || ContainsModel("G634JZR") || ContainsModel("G835LW") || ContainsModel("G635LW") || Is("force_miniled");
+        return ContainsModel("G834JYR") || ContainsModel("G834JZR") || ContainsModel("G634JZR") || ContainsModel("G835LW") || ContainsModel("G835LX") || ContainsModel("G635LW") || ContainsModel("G635LX") || Is("force_miniled");
     }
+
+    public static bool IsKeystone()
+    {
+        return ContainsModel("G531") || ContainsModel("G731") ||
+               ContainsModel("G532") || ContainsModel("G732") ||
+               ContainsModel("G533") || ContainsModel("G733");
+    }
+
+    public static bool IsSleepReset()
+    {
+        return Is("sleep_reset") || ContainsModel("GU605MI") || ContainsModel("GU605MV");
+    }
+
     public static bool SaveDimming()
     {
         return Is("save_dimming");
@@ -747,7 +764,12 @@ public static class AppConfig
 
     public static bool IsClampFanDots()
     {
-        return Is("fan_clamp") || (IsTUF() && IsNotFalse("fan_clamp"));
+        return IsNotFalse("fan_clamp");
+    }
+
+    public static bool IsAutoASPM()
+    {
+        return IsNotFalse("aspm");
     }
 
 

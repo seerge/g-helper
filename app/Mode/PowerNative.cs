@@ -163,7 +163,9 @@ namespace GHelper.Mode
             else
             {
                 // Power plan from config or defaulting to balanced
-                SetPowerPlan(AppConfig.GetModeString("scheme"));
+                string plan = AppConfig.GetModeString("scheme");
+                if (Program.currentSource == Program.PowerSource.USBC && AppConfig.GetModeString("scheme_usbc") is string usbc) plan = usbc;
+                SetPowerPlan(plan);            
             }
 
             if (!overlays.Contains(scheme)) return;
@@ -233,6 +235,8 @@ namespace GHelper.Mode
         public static void SetASPM(int status = 0)
         {
             Guid activeSchemeGuid = GetActiveScheme();
+            var currentASPM = GetASPM();
+            if (currentASPM == status) return;
 
             var hrAC = PowerWriteACValueIndex(
                 IntPtr.Zero,
@@ -242,7 +246,13 @@ namespace GHelper.Mode
                 status);
 
             PowerSetActiveScheme(IntPtr.Zero, activeSchemeGuid);
-            Logger.WriteLine("Changed ASPM to " + status);
+            Logger.WriteLine($"Changed AC ASPM {currentASPM} -> {status}");
+        }
+
+        public static void SetBalancedASPM(int status = 0)
+        {
+            if (GetActiveScheme().ToString() != PLAN_BALANCED) return;
+            SetASPM(status);
         }
 
         public static int GetLidAction(bool ac)

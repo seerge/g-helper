@@ -1,4 +1,5 @@
-﻿namespace GHelper
+using GHelper.UI;
+namespace GHelper
 {
     partial class Matrix
     {
@@ -29,7 +30,7 @@
         private void InitializeComponent()
         {
             pictureMatrix = new PictureBox();
-            trackZoom = new TrackBar();
+            trackZoom = new RTrackBar();
             buttonPicture = new UI.RButton();
             panelPicture = new Panel();
             panelMain = new Panel();
@@ -38,11 +39,11 @@
             panelGamma = new Panel();
             labelGamma = new Label();
             labelGammaTitle = new Label();
-            trackGamma = new TrackBar();
+            trackGamma = new RTrackBar();
             panelContrast = new Panel();
             labelContrast = new Label();
             labelContrastTitle = new Label();
-            trackContrast = new TrackBar();
+            trackContrast = new RTrackBar();
             panelRotation = new Panel();
             comboRotation = new UI.RComboBox();
             labelRotation = new Label();
@@ -273,7 +274,6 @@
             comboRotation.ButtonColor = Color.FromArgb(255, 255, 255);
             comboRotation.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             comboRotation.FormattingEnabled = true;
-            comboRotation.ItemHeight = 32;
             comboRotation.Items.AddRange(new object[] { "Straight", "Diagonal" });
             comboRotation.Location = new Point(279, 17);
             comboRotation.Margin = new Padding(4, 11, 4, 8);
@@ -307,7 +307,6 @@
             comboScaling.ButtonColor = Color.FromArgb(255, 255, 255);
             comboScaling.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             comboScaling.FormattingEnabled = true;
-            comboScaling.ItemHeight = 32;
             comboScaling.Items.AddRange(new object[] { "Default", "Low", "High", "Bilinear", "Bicubic", "NearestNeighbor", "HighQualityBilinear", "HighQualityBicubic" });
             comboScaling.Location = new Point(279, 17);
             comboScaling.Margin = new Padding(4, 11, 4, 8);
@@ -398,7 +397,7 @@
         #endregion
 
         private PictureBox pictureMatrix;
-        private TrackBar trackZoom;
+        private RTrackBar trackZoom;
         private UI.RButton buttonPicture;
         private Panel panelPicture;
         private Panel panelMain;
@@ -416,10 +415,10 @@
         private Panel panelContrast;
         private Label labelContrast;
         private Label labelContrastTitle;
-        private TrackBar trackContrast;
+        private RTrackBar trackContrast;
         private Panel panelGamma;
         private Label labelGamma;
         private Label labelGammaTitle;
-        private TrackBar trackGamma;
+        private RTrackBar trackGamma;
     }
 }

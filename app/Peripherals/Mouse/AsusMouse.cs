@@ -1,5 +1,6 @@
 ﻿using GHelper.AnimeMatrix.Communication;
 using GHelper.AnimeMatrix.Communication.Platform;
+using GHelper.USB;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -17,7 +18,8 @@ namespace GHelper.Peripherals.Mouse
 
     public enum DebounceTime
     {
-        Disabled = 0x00, //?? not sure because mice with this setting have no "disabled". But the mouse accepts and stores 0x00 just fine
+        OFF = 0x00, //?? not sure because mice with this setting have no "disabled". But the mouse accepts and stores 0x00 just fine
+        MS8 = 0x01,
         MS12 = 0x02,
         MS16 = 0x03,
         MS20 = 0x04,
@@ -239,6 +241,7 @@ namespace GHelper.Peripherals.Mouse
         public PowerOffSetting PowerOffSetting { get; protected set; }
         public LiftOffDistance LiftOffDistance { get; protected set; }
         public int DpiProfile { get; protected set; }
+        public int CurrentDPIProfileCount { get; protected set; }
         public AsusMouseDPI[] DpiSettings { get; protected set; }
         public int Profile { get; protected set; }
         public PollingRate PollingRate { get; protected set; }
@@ -247,13 +250,33 @@ namespace GHelper.Peripherals.Mouse
         public DebounceTime Debounce { get; protected set; }
         public int Acceleration { get; protected set; }
         public int Deceleration { get; protected set; }
+        public bool MotionSync { get; protected set; }
+        public bool ZoneMode { get; protected set; }
+        public int ZoneModeDPI { get; set; } = 1600;
+        public PollingRate ZoneModePollingRate { get; set; } = PollingRate.PR4000Hz;
+        public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
 
+        private bool _buttonBindingsReady;
+        public bool ButtonBindingsReady
+        {
+            get => _buttonBindingsReady;
+            protected set
+            {
+                _buttonBindingsReady = value;
+                if (value) ButtonBindingsChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        public event EventHandler? ButtonBindingsChanged;
+
+        public bool Booster = false;
 
         public AsusMouse(ushort vendorId, ushort productId, string path, bool wireless) : base(vendorId, productId)
         {
             this.path = path;
             this.Wireless = wireless;
             DpiSettings = new AsusMouseDPI[1];
+            CurrentDPIProfileCount = DPIProfileCount();
             if (SupportedLightingZones().Length == 0)
             {
                 LightingSetting = new LightingSetting[1];
@@ -354,6 +377,7 @@ namespace GHelper.Peripherals.Mouse
                 }
             }
 
+
             LowBatteryWarning = BitConverter.ToInt32(blob, offset);
             offset += 4;
 
@@ -387,6 +411,7 @@ namespace GHelper.Peripherals.Mouse
             offset += 4;
 
 
+
             //Apply Settings to the mouse
             if (HasBattery())
                 SetEnergySettings(LowBatteryWarning, PowerOffSetting);
@@ -407,6 +432,8 @@ namespace GHelper.Peripherals.Mouse
 
             if (HasDeceleration())
                 SetDeceleration(Deceleration);
+
+
 
             if (HasRGB())
             {
@@ -540,7 +567,7 @@ namespace GHelper.Peripherals.Mouse
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        protected virtual byte[]? WriteForResponse(byte[] packet)
+        protected virtual byte[]? WriteForResponse(byte[] packet, int matchLength = 3)
         {
             Array.Resize(ref packet, USBPacketSize());
 
@@ -572,7 +599,8 @@ namespace GHelper.Peripherals.Mouse
                         if (IsPacketLoggerEnabled())
                             Logger.WriteLine(GetDisplayName() + ": Read packet: " + ByteArrayToString(response));
 
-                        Logger.WriteLine(GetDisplayName() + ": Mouse returned error (FF AA). Packet probably not supported by mouse firmware.");
+                        if (!(packet[1] == 0x12 && packet[2] == 0x07))
+                            Logger.WriteLine(GetDisplayName() + ": Mouse returned error (FF AA). Packet probably not supported by mouse firmware.");
                         //Error. Mouse could not understand or process the sent packet
                         return response;
                     }
@@ -586,8 +614,9 @@ namespace GHelper.Peripherals.Mouse
                         return null;
                     }
 
-                    //Not the response we were looking for, continue reading
-                    while (response[0] != packet[0] || response[1] != packet[1] || response[2] != packet[2])
+                    // ↓ only change from original: added matchLength >= 4 guard
+                    while (response[0] != packet[0] || response[1] != packet[1] || response[2] != packet[2]
+                           || (matchLength >= 4 && response[3] != packet[3]))
                     {
                         if (IsPacketLoggerEnabled())
                             Logger.WriteLine(GetDisplayName() + ": Read wrong packet left in buffer: " + ByteArrayToString(response) + ". Retrying...");
@@ -624,6 +653,7 @@ namespace GHelper.Peripherals.Mouse
             }
             return null;
         }
+
         public abstract string GetDisplayName();
 
         public PeripheralType DeviceType()
@@ -651,6 +681,9 @@ namespace GHelper.Peripherals.Mouse
             ReadDebounce();
             ReadAcceleration();
             ReadLightingSetting();
+            ReadMotionSync();
+            ReadZoneMode();
+            ReadAndLogButtonBindings();
         }
 
         // ------------------------------------------------------------------------------
@@ -760,11 +793,12 @@ namespace GHelper.Peripherals.Mouse
                 Charging = ParseChargingState(response);
 
                 //If the device goes to standby it will not report battery state anymore.
+                bool wasReady = IsDeviceReady;
                 SetDeviceReady(Battery > 0);
 
                 if (!IsDeviceReady)
                 {
-                    Logger.WriteLine(GetDisplayName() + ": Device gone");
+                    if (wasReady) Logger.WriteLine(GetDisplayName() + ": Device gone");
                     return;
                 }
 
@@ -811,6 +845,7 @@ namespace GHelper.Peripherals.Mouse
             {
                 return packet[11];
             }
+            Logger.WriteLine(GetDisplayName() + ": " + BitConverter.ToString(packet));
             Logger.WriteLine(GetDisplayName() + ": Failed to decode active profile");
             return 0;
         }
@@ -821,7 +856,8 @@ namespace GHelper.Peripherals.Mouse
             {
                 return packet[12];
             }
-            Logger.WriteLine(GetDisplayName() + ": Failed to decode active profile");
+            Logger.WriteLine(GetDisplayName() + ": " + BitConverter.ToString(packet));
+            Logger.WriteLine(GetDisplayName() + ": Failed to decode active DPI profile");
             return 1;
         }
 
@@ -842,17 +878,25 @@ namespace GHelper.Peripherals.Mouse
                 return;
             }
 
-            byte[]? response = WriteForResponse(GetReadProfilePacket());
+            byte[]? response = WriteForResponse(GetReadProfilePacket(), matchLength: 4);
             if (response is null) return;
 
             Profile = ParseProfile(response);
             if (DPIProfileCount() > 1)
             {
-
                 DpiProfile = ParseDPIProfile(response);
+                if (CanChangeDPICount())
+                {
+                    int count = response[19];
+                    if (count >= 2 && count <= 4)
+                    {
+                        CurrentDPIProfileCount = count;
+                    }
+                }
             }
             Logger.WriteLine(GetDisplayName() + ": Active Profile " + (Profile + 1)
-                + ((DPIProfileCount() > 1 ? ", Active DPI Profile: " + DpiProfile : "")));
+                + ((DPIProfileCount() > 1 ? ", Active DPI Profile: " + DpiProfile : ""))
+                + ((CanChangeDPICount() ? ", DPI Count: " + CurrentDPIProfileCount : "")));
         }
 
         public void SetProfile(int profile)
@@ -934,6 +978,19 @@ namespace GHelper.Peripherals.Mouse
 
         public abstract PollingRate[] SupportedPollingrates();
 
+        protected PollingRate[] BoosterPollingrates()
+        {
+            return new PollingRate[] {
+                PollingRate.PR125Hz,
+                PollingRate.PR250Hz,
+                PollingRate.PR500Hz,
+                PollingRate.PR1000Hz,
+                PollingRate.PR2000Hz,
+                PollingRate.PR4000Hz,
+                PollingRate.PR8000Hz
+            };
+        }
+
         public virtual bool CanSetPollingRate()
         {
             return true;
@@ -959,13 +1016,37 @@ namespace GHelper.Peripherals.Mouse
 
         protected virtual PollingRate ParsePollingRate(byte[] packet)
         {
+            PollingRate result;
+
+            Logger.WriteLine(GetDisplayName() + ": Raw Polling Rate " + BitConverter.ToString(packet));
             if (packet[1] == 0x12 && packet[2] == 0x04 && packet[3] == 0x00)
             {
-                return (PollingRate)(packet[13] & 0x07);
+                byte raw = packet[13];
+                if (Booster)
+                {
+                    byte highNibble = (byte)((raw >> 4) & 0x0F);
+                    result = highNibble > 0 ? (PollingRate)highNibble : (PollingRate)(raw & 0x07);
+                }
+                else
+                {
+                    result = (PollingRate)(raw & 0x07);
+                }
+            }
+            else
+            {
+                result = PollingRate.PR125Hz;
             }
 
-            return PollingRate.PR125Hz;
+            if (!SupportedPollingrates().Contains(result))
+            {
+                PollingRate maxSupported = SupportedPollingrates().Max();
+                Logger.WriteLine(GetDisplayName() + ": Parsed polling rate " + result + " is not supported. Falling back to max supported: " + maxSupported);
+                return maxSupported;
+            }
+
+            return result;
         }
+
 
         protected virtual bool ParseAngleSnapping(byte[] packet)
         {
@@ -994,11 +1075,15 @@ namespace GHelper.Peripherals.Mouse
                 return;
             }
 
-            byte[]? response = WriteForResponse(GetReadPollingRatePacket());
+            byte[]? response = WriteForResponse(GetReadPollingRatePacket(), matchLength: 4);
             if (response is null) return;
 
             PollingRate = ParsePollingRate(response);
+
+
             Logger.WriteLine(GetDisplayName() + ": Pollingrate: " + PollingRateDisplayString(PollingRate) + " (" + PollingRate + ")");
+
+
 
             if (HasAngleSnapping())
             {
@@ -1204,6 +1289,11 @@ namespace GHelper.Peripherals.Mouse
             return DPIProfileCount() > 1;
         }
 
+        public virtual bool CanChangeDPICount()
+        {
+            return false;
+        }
+
         public virtual int MaxDPI()
         {
             return 2000;
@@ -1220,7 +1310,13 @@ namespace GHelper.Peripherals.Mouse
 
         protected virtual byte[] GetChangeDPIProfilePacket(int profile)
         {
+            //legacy function kept for TUFM3
             return new byte[] { reportId, 0x51, 0x31, 0x0A, 0x00, (byte)profile };
+        }
+
+        protected virtual byte[] GetSetDPIProfileCountPacket(int count)
+        {
+            return new byte[] { reportId, 0x51, 0x31, 0x0A, 0x00, (byte)count };
         }
 
         protected virtual byte[] GetChangeDPIProfilePacket2(int profile)
@@ -1237,15 +1333,13 @@ namespace GHelper.Peripherals.Mouse
                 return;
             }
 
-            if (profile > DPIProfileCount() || profile < 1)
+            if (profile > CurrentDPIProfileCount || profile < 1)
             {
                 Logger.WriteLine(GetDisplayName() + ": DPI Profile:" + profile + " is invalid.");
                 return;
             }
 
             //The first DPI profile is 1
-            WriteForResponse(GetChangeDPIProfilePacket(profile));
-            //For whatever reason that is required or the mouse will not store the change and reverts once you power it off.
             WriteForResponse(GetChangeDPIProfilePacket2(profile));
             FlushSettings();
 
@@ -1288,10 +1382,9 @@ namespace GHelper.Peripherals.Mouse
 
         protected virtual void ParseDPI(byte[] packet)
         {
-            if (packet[1] != 0x12 || packet[2] != 0x04 || (packet[3] != 0x02 && HasXYDPI()))
-            {
-                return;
-            }
+            if (packet[1] != 0x12 || packet[2] != 0x04) return;
+            byte expectedByte3 = HasXYDPI() ? (byte)0x02 : (byte)0x00;
+            if (packet[3] != expectedByte3) return;
 
             for (int i = 0; i < DPIProfileCount(); ++i)
             {
@@ -1337,19 +1430,20 @@ namespace GHelper.Peripherals.Mouse
 
         public void ReadDPI()
         {
-            byte[]? response = WriteForResponse(GetReadDPIPacket());
+            byte[]? response = WriteForResponse(GetReadDPIPacket(), matchLength: 4);
             if (response is null) return;
             ParseDPI(response);
 
             if (HasDPIColors())
             {
-                response = WriteForResponse(GetReadDPIColorsPacket());
+                response = WriteForResponse(GetReadDPIColorsPacket(), matchLength: 4);
                 if (response is null) return;
                 ParseDPIColors(response);
             }
 
             for (int i = 0; i < DPIProfileCount(); ++i)
             {
+                DpiSettings[i] ??= new AsusMouseDPI();
                 Logger.WriteLine(GetDisplayName() + ": Read DPI Setting " + (i + 1) + ": " + DpiSettings[i].ToString());
             }
 
@@ -1375,6 +1469,78 @@ namespace GHelper.Peripherals.Mouse
             Logger.WriteLine(GetDisplayName() + ": DPI for profile " + profile + " set to " + DpiSettings[profile - 1].DPI);
             //this.DpiProfile = profile;
             this.DpiSettings[profile - 1] = dpi;
+        }
+
+        public void SetDPIProfileCount(int count)
+        {
+            if (count < 2 || count > 4) return;
+
+            WriteForResponse(GetSetDPIProfileCountPacket(count));
+
+            // Resync settings for all profiles
+            for (int i = 0; i < count; i++)
+            {
+                if (DpiSettings[i] != null)
+                {
+                    WriteForResponse(GetUpdateDPIPacket(DpiSettings[i], i + 1));
+                }
+            }
+
+            FlushSettings();
+
+            CurrentDPIProfileCount = count;
+            Logger.WriteLine(GetDisplayName() + ": DPI Profile Count set to " + count);
+        }
+
+        public void AddDPIProfile()
+        {
+            if (CurrentDPIProfileCount >= 4) return;
+
+            int newIndex = CurrentDPIProfileCount;
+
+            // Set defaults for new slot
+            if (DpiSettings[newIndex] == null) DpiSettings[newIndex] = new AsusMouseDPI();
+
+            if (newIndex == 2) // Slot 3
+            {
+                DpiSettings[newIndex].DPI = 1600;
+                DpiSettings[newIndex].Color = Color.Blue;
+            }
+            else if (newIndex == 3) // Slot 4
+            {
+                DpiSettings[newIndex].DPI = 3200;
+                DpiSettings[newIndex].Color = Color.Green;
+            }
+
+            SetDPIProfileCount(CurrentDPIProfileCount + 1);
+        }
+
+        public void DeleteDPIProfile(int index)
+        {
+            if (CurrentDPIProfileCount <= 2) return;
+            if (index < 0 || index >= CurrentDPIProfileCount) return;
+
+            // Shift Logic
+            for (int i = index; i < CurrentDPIProfileCount - 1; i++)
+            {
+                // Create new object to avoid reference copy
+                if (DpiSettings[i + 1] != null)
+                {
+                    DpiSettings[i] = new AsusMouseDPI
+                    {
+                        DPI = DpiSettings[i + 1].DPI,
+                        Color = DpiSettings[i + 1].Color
+                    };
+                }
+            }
+
+            // Cleanup last element
+            DpiSettings[CurrentDPIProfileCount - 1] = null;
+
+            SetDPIProfileCount(CurrentDPIProfileCount - 1);
+
+            if (DpiProfile > CurrentDPIProfileCount) DpiProfile = CurrentDPIProfileCount;
+
         }
 
 
@@ -1451,6 +1617,7 @@ namespace GHelper.Peripherals.Mouse
         {
             switch (dbt)
             {
+                case DebounceTime.MS8: return 8;
                 case DebounceTime.MS12: return 12;
                 case DebounceTime.MS16: return 16;
                 case DebounceTime.MS20: return 20;
@@ -1461,6 +1628,15 @@ namespace GHelper.Peripherals.Mouse
 
                 default: return 0;
             }
+        }
+
+        public virtual DebounceTime MinDebounce()
+        {
+            return DebounceTime.MS12;
+        }
+        public virtual DebounceTime MaxDebounce()
+        {
+            return DebounceTime.MS32;
         }
 
         protected virtual byte[] GetReadDebouncePacket()
@@ -1478,17 +1654,17 @@ namespace GHelper.Peripherals.Mouse
         {
             if (packet[1] != 0x12 || packet[2] != 0x04 || packet[3] != 0x00)
             {
-                return DebounceTime.MS12;
+                return MinDebounce();
             }
 
-            if (packet[15] < 0x02)
+            if (packet[15] < (int)MinDebounce())
             {
-                return DebounceTime.MS12;
+                return MinDebounce();
             }
 
-            if (packet[15] > 0x07)
+            if (packet[15] > (int)MaxDebounce())
             {
-                return DebounceTime.MS32;
+                return MaxDebounce();
             }
 
             return (DebounceTime)packet[15];
@@ -1521,6 +1697,172 @@ namespace GHelper.Peripherals.Mouse
 
             Logger.WriteLine(GetDisplayName() + ": Set Debouce to " + debounce);
             this.Debounce = debounce;
+        }
+
+        // ------------------------------------------------------------------------------
+        // Motion Sync
+        // ------------------------------------------------------------------------------
+
+        public virtual bool HasMotionSync()
+        {
+            return false;
+        }
+
+        protected virtual byte[] GetUpdateMotionSyncPacket(bool enabled)
+        {
+            return new byte[] { reportId, 0x51, 0x31, 0x12, 0x00, (byte)(enabled ? 0x01 : 0x00) };
+        }
+
+        public void SetMotionSync(bool enabled)
+        {
+            if (!HasMotionSync())
+            {
+                return;
+            }
+
+            // Motion Sync cannot be enabled at 8000Hz polling rate
+            if (PollingRate == PollingRate.PR8000Hz && enabled)
+            {
+                Logger.WriteLine(GetDisplayName() + ": Motion Sync cannot be enabled at 8000Hz polling rate.");
+                return;
+            }
+
+            WriteForResponse(GetUpdateMotionSyncPacket(enabled));
+            FlushSettings();
+
+            Logger.WriteLine(GetDisplayName() + ": Motion Sync set to " + enabled);
+            this.MotionSync = enabled;
+        }
+
+        protected virtual byte[] GetReadMotionSyncPacket()
+        {
+            return new byte[] { reportId, 0x12, 0x04, 0x04 };
+        }
+
+        protected virtual bool ParseMotionSync(byte[] packet)
+        {
+            if (packet[1] == 0x12 && packet[2] == 0x04 && packet[3] == 0x04)
+            {
+                return packet[5] == 0x01;
+            }
+
+            return false;
+        }
+
+        public void ReadMotionSync()
+        {
+            if (!HasMotionSync())
+            {
+                return;
+            }
+
+            byte[]? response = WriteForResponse(GetReadMotionSyncPacket());
+            if (response is null) return;
+
+            MotionSync = ParseMotionSync(response);
+            Logger.WriteLine(GetDisplayName() + ": Motion Sync: " + MotionSync);
+        }
+
+        // ------------------------------------------------------------------------------
+        // Zone Mode
+        // ------------------------------------------------------------------------------
+
+        public virtual bool HasZoneMode()
+        {
+            return false;
+        }
+
+        protected virtual byte[] GetUpdateZoneModePacket(bool enabled)
+        {
+            // DPI formula: ((DPI - 50) / 50) - using 2 bytes
+            int dpiVal = (ZoneModeDPI - 50) / 50;
+            byte dpiLow = (byte)(dpiVal & 0xFF);
+            byte dpiHigh = (byte)((dpiVal >> 8) & 0xFF);
+
+            return new byte[] { reportId, 0x51, 0x44, 0x00, 0x00,
+                (byte)(enabled ? 0x01 : 0x00),
+                (byte)ZoneModePollingRate,
+                dpiLow, dpiHigh };
+        }
+
+        public void SetZoneMode(bool enabled)
+        {
+            if (!HasZoneMode())
+            {
+                return;
+            }
+
+            WriteForResponse(GetUpdateZoneModePacket(enabled));
+            FlushSettings();
+
+            Logger.WriteLine(GetDisplayName() + ": Zone Mode set to " + enabled);
+            this.ZoneMode = enabled;
+        }
+
+        public void UpdateZoneModeDPI(int dpi)
+        {
+            if (!HasZoneMode() || !ZoneMode)
+            {
+                return;
+            }
+
+            ZoneModeDPI = dpi;
+            WriteForResponse(GetUpdateZoneModePacket(true));
+            FlushSettings();
+
+            Logger.WriteLine(GetDisplayName() + ": Zone Mode DPI set to " + dpi);
+        }
+
+        public void UpdateZoneModePollingRate(PollingRate pollingRate)
+        {
+            if (!HasZoneMode() || !ZoneMode)
+            {
+                return;
+            }
+
+            ZoneModePollingRate = pollingRate;
+            WriteForResponse(GetUpdateZoneModePacket(true));
+            FlushSettings();
+
+            Logger.WriteLine(GetDisplayName() + ": Zone Mode Polling Rate set to " + pollingRate);
+        }
+
+        protected virtual byte[] GetReadZoneModePacket()
+        {
+            return new byte[] { reportId, 0x12, 0x14 };
+        }
+
+        protected virtual void ParseZoneMode(byte[] packet)
+        {
+            if (packet[1] == 0x12 && packet[2] == 0x14)
+            {
+                ZoneMode = packet[5] == 0x01;
+                ZoneModePollingRate = (PollingRate)packet[6];
+                // DPI formula: (byteL + byteH * 256) * 50 + 50
+                if (packet.Length > 8)
+                {
+                    int dpiVal = packet[7] | (packet[8] << 8);
+                    ZoneModeDPI = dpiVal * 50 + 50;
+                }
+                else
+                {
+                    ZoneModeDPI = packet[7] * 50 + 50;
+                }
+            }
+        }
+
+        public void ReadZoneMode()
+        {
+            if (!HasZoneMode())
+            {
+                return;
+            }
+
+            byte[]? response = WriteForResponse(GetReadZoneModePacket());
+            if (response is null) return;
+
+            ParseZoneMode(response);
+            Logger.WriteLine(GetDisplayName() + ": Zone Mode: " + ZoneMode + ", DPI: " + ZoneModeDPI + ", PollingRate: " + ZoneModePollingRate);
         }
 
         // ------------------------------------------------------------------------------
@@ -1767,6 +2109,77 @@ namespace GHelper.Peripherals.Mouse
             }
         }
 
+        public static LightingMode MapAuraToLightingMode(AuraMode auraMode)
+        {
+            switch (auraMode)
+            {
+                case AuraMode.AuraBreathe: return LightingMode.Breathing;
+                case AuraMode.AuraColorCycle: return LightingMode.ColorCycle;
+                case AuraMode.AuraRainbow: return LightingMode.Rainbow;
+                case AuraMode.Comet: return LightingMode.Comet;
+                default: return LightingMode.Static;
+            }
+        }
+
+        private int _streamingBusy;
+
+        public void WriteColorDirect(Color color)
+        {
+            if (!HasRGB() || !IsDeviceReady) return;
+            if (Interlocked.CompareExchange(ref _streamingBusy, 1, 0) != 0) return;
+
+            try
+            {
+                LightingSetting cached = LightingSettingForZone(LightingZone.All);
+                LightingSetting tmp = new LightingSetting
+                {
+                    LightingMode = LightingMode.Static,
+                    RGBColor = color,
+                    Brightness = cached?.Brightness ?? 25,
+                };
+
+                byte[] packet = GetUpdateLightingModePacket(tmp, LightingZone.All);
+                Array.Resize(ref packet, USBPacketSize());
+
+                Write(packet);
+            }
+            catch { }
+            finally
+            {
+                Interlocked.Exchange(ref _streamingBusy, 0);
+            }
+        }
+
+        public bool SyncFromKeyboardAura()
+        {
+            if (!HasRGB() || !IsDeviceReady) return false;
+
+            LightingMode lm = MapAuraToLightingMode((AuraMode)AppConfig.Get("aura_mode"));
+
+            if (lm == LightingMode.Rainbow && !IsLightingModeSupported(LightingMode.Rainbow))
+                lm = LightingMode.ColorCycle;
+
+            if (!IsLightingModeSupported(lm)) return false;
+
+            Color color = Color.FromArgb(AppConfig.Get("aura_color"));
+            AnimationSpeed mappedSpeed = (AuraSpeed)AppConfig.Get("aura_speed") switch
+            {
+                AuraSpeed.Fast => AnimationSpeed.Fast,
+                AuraSpeed.Slow => AnimationSpeed.Slow,
+                _ => AnimationSpeed.Medium,
+            };
+
+            LightingSetting ls = LightingSettingForZone(LightingZone.All);
+            if (ls is null) return false;
+
+            ls.LightingMode = lm;
+            if (SupportsColorSetting(lm)) ls.RGBColor = color;
+            if (SupportsAnimationSpeed(lm)) ls.AnimationSpeed = mappedSpeed;
+
+            SetLightingSetting(ls, LightingZone.All);
+            return true;
+        }
+
         protected virtual byte[] GetSaveProfilePacket()
         {
             return new byte[] { reportId, 0x50, 0x03 };
@@ -1793,5 +2206,268 @@ namespace GHelper.Peripherals.Mouse
                 hex.AppendFormat("{0:x2} ", b);
             return hex.ToString();
         }
+
+        // Shared across all protocols
+        public static readonly IReadOnlyList<(ushort, string)> MultimediaBindings = new List<(ushort, string)>
+        {
+            (0x00F6, "Volume Up"     ),
+            (0x00F5, "Volume Down"   ),
+            (0x00F2, "Next Track"    ),
+            (0x00F3, "Previous Track"),
+            (0x00F4, "Mute"          ),
+            (0x00F0, "Play/Pause"    ),
+            (0x00F1, "Stop"          ),
+        };
+
+        public static readonly IReadOnlyList<(ushort, string)> KeyboardBindings = new List<(ushort, string)>
+        {
+            // letters
+            (0x0004, "A"), (0x0005, "B"), (0x0006, "C"), (0x0007, "D"),
+            (0x0008, "E"), (0x0009, "F"), (0x000A, "G"), (0x000B, "H"),
+            (0x000C, "I"), (0x000D, "J"), (0x000E, "K"), (0x000F, "L"),
+            (0x0010, "M"), (0x0011, "N"), (0x0012, "O"), (0x0013, "P"),
+            (0x0014, "Q"), (0x0015, "R"), (0x0016, "S"), (0x0017, "T"),
+            (0x0018, "U"), (0x0019, "V"), (0x001A, "W"), (0x001B, "X"),
+            (0x001C, "Y"), (0x001D, "Z"),
+            // number row
+            (0x001E, "1"), (0x001F, "2"), (0x0020, "3"), (0x0021, "4"),
+            (0x0022, "5"), (0x0023, "6"), (0x0024, "7"), (0x0025, "8"),
+            (0x0026, "9"), (0x0027, "0"),
+            // common
+            (0x0028, "Enter"    ), (0x0029, "Escape"   ), (0x002A, "Backspace"),
+            (0x002B, "Tab"      ), (0x002C, "Space"    ), (0x002D, "-"        ),
+            (0x002E, "="        ), (0x002F, "["        ), (0x0030, "]"        ),
+            (0x0033, ";"        ), (0x0034, "'"        ), (0x0036, ","        ),
+            (0x0037, "."        ), (0x0038, "/"        ),
+            // function keys
+            (0x003A, "F1" ), (0x003B, "F2" ), (0x003C, "F3" ), (0x003D, "F4" ),
+            (0x003E, "F5" ), (0x003F, "F6" ), (0x0040, "F7" ), (0x0041, "F8" ),
+            (0x0042, "F9" ), (0x0043, "F10"), (0x0044, "F11"), (0x0045, "F12"),
+            (0x0068, "F13"), (0x0069, "F14"), (0x006A, "F15"), (0x006B, "F16"),
+            (0x006C, "F17"), (0x006D, "F18"), (0x006E, "F19"), (0x006F, "F20"),
+            (0x0070, "F21"), (0x0071, "F22"), (0x0072, "F23"), (0x0073, "F24"),
+            // navigation
+            (0x0049, "Insert"   ), (0x004A, "Home"     ), (0x004B, "Page Up"  ),
+            (0x004C, "Delete"   ), (0x004D, "End"      ), (0x004E, "Page Down"),
+            (0x004F, "Right"    ), (0x0050, "Left"     ),
+            (0x0051, "Down"     ), (0x0052, "Up"       ),
+            // numpad
+            (0x0059, "Num 1"), (0x005A, "Num 2"), (0x005B, "Num 3"),
+            (0x005C, "Num 4"), (0x005D, "Num 5"), (0x005E, "Num 6"),
+            (0x005F, "Num 7"), (0x0060, "Num 8"), (0x0061, "Num 9"),
+            (0x0062, "Num 0"), (0x0063, "Num ." ),
+            // modifiers
+            (0x00E0, "Left Ctrl" ), (0x00E1, "Left Shift" ),
+            (0x00E2, "Left Alt"  ), (0x00E3, "Left Win"   ),
+            (0x00E4, "Right Ctrl"), (0x00E5, "Right Shift"),
+            (0x00E6, "Right Alt" ), (0x00E7, "Right Win"  ),
+        };
+
+        public static readonly IReadOnlyList<(ushort, string)> MouseBindings = new List<(ushort, string)>
+        {
+            (0x01F0, "Mouse Left"   ),
+            (0x01F1, "Mouse Right"  ),
+            (0x01F2, "Mouse Middle" ),
+            (0x01E3, "Double Click" ),
+            (0x01E4, "Mouse Back"   ),
+            (0x01E5, "Mouse Forward"),
+            (0x01E6, "DPI Switch"   ),
+            (0x01E7, "Target Focus" ),
+            (0x01E8, "Scroll Up"    ),
+            (0x01E9, "Scroll Down"  ),
+            (0x0000, "Disabled"     ),
+        };
+
+        public sealed record ComboDef(ushort PassthroughCode, string Label, string DefaultCommand)
+        {
+            public string ConfigKey => $"mouse_combo_F{13 + (PassthroughCode - 0x0068)}";
+            public string ResolveCommand() => AppConfig.GetString(ConfigKey) ?? DefaultCommand;
+        }
+
+        private static string Hex(params Keys[] keys) =>
+            string.Join(" ", keys.Select(k => $"0x{(int)k:X2}"));
+
+        public static readonly IReadOnlyList<ComboDef> MouseCombos = new List<ComboDef>
+        {
+            new(0x0068, "Alt + Tab",          Hex(Keys.LMenu,       Keys.Tab)),
+            new(0x0069, "Alt + F4",           Hex(Keys.LMenu,       Keys.F4)),
+            new(0x006A, "Win + D",            Hex(Keys.LWin,        Keys.D)),
+            new(0x006B, "Win + E",            Hex(Keys.LWin,        Keys.E)),
+            new(0x006C, "Win + L",            Hex(Keys.LWin,        Keys.L)),
+            new(0x006D, "Win + Tab",          Hex(Keys.LWin,        Keys.Tab)),
+            new(0x006E, "Win + V",            Hex(Keys.LWin,        Keys.V)),
+            new(0x006F, "Copy",               Hex(Keys.LControlKey, Keys.C)),
+            new(0x0070, "Paste",              Hex(Keys.LControlKey, Keys.V)),
+            new(0x0071, "Undo",               Hex(Keys.LControlKey, Keys.Z)),
+            new(0x0072, "Task Manager",       Hex(Keys.LControlKey, Keys.LShiftKey, Keys.Escape)),
+            new(0x0073, "Minimize All",       Hex(Keys.LWin,        Keys.M)),
+        };
+
+        public static readonly Dictionary<ushort, ComboDef> CombosByCode =
+            MouseCombos.ToDictionary(c => c.PassthroughCode);
+
+        public static readonly IReadOnlyList<(string GroupLabel, IReadOnlyList<(ushort Code, string Name)> Items)>
+        DefaultBindingGroups = new List<(string, IReadOnlyList<(ushort, string)>)>
+        {
+            ("Mouse",      MouseBindings),
+            ("Combos",     MouseCombos.Select(c => (c.PassthroughCode, c.Label)).ToList()),
+            ("Multimedia", MultimediaBindings),
+            ("Keyboard",   KeyboardBindings),
+        };
+
+        public static readonly Dictionary<ushort, string> BindingCodes =
+            DefaultBindingGroups.SelectMany(g => g.Items)
+                .DistinctBy(e => e.Code)
+                .ToDictionary(e => e.Code, e => e.Name);
+
+        public static string LabelForActionCode(ushort code)
+            => BindingCodes.TryGetValue(code, out var n) ? n : $"Unknown (0x{code:X4})";
+
+        public virtual IReadOnlyList<(string GroupLabel, IReadOnlyList<(ushort Code, string Name)> Items)>
+            BindingGroups => DefaultBindingGroups;
+
+        public virtual Dictionary<int, (ushort SourceCode, string Name)> ButtonSlots => new()
+        {
+            { 0, (0x01F0, "Left Click"  ) },
+            { 1, (0x01F1, "Right Click" ) },
+            { 2, (0x01F2, "Scroll Click") },
+            { 3, (0x01E4, "Side Back"   ) },
+            { 4, (0x01E5, "Side Forward") },
+            { 5, (0x01E6, "DPI Button"  ) },
+            { 6, (0x01E8, "Scroll Up"   ) },
+            { 7, (0x01E9, "Scroll Down" ) },
+        };
+
+        public virtual bool HasButtonBindings() => true;
+
+        // Slots whose bindings cannot be read back from device — always written, never reliably read.
+        public virtual HashSet<int> WriteOnlySlots => [];
+
+        private string WriteOnlySlotConfigKey(int slot) =>
+            $"mouse_binding_{_productId:X4}_{slot}";
+
+        protected void SaveWriteOnlySlot(int slot, ushort code) =>
+            AppConfig.Set(WriteOnlySlotConfigKey(slot), (int)code);
+
+        protected ushort LoadWriteOnlySlot(int slot, ushort fallback) =>
+            (ushort)AppConfig.Get(WriteOnlySlotConfigKey(slot), fallback);
+
+        public virtual void ReadAndLogButtonBindings()
+        {
+            if (!HasButtonBindings()) return;
+
+            ButtonBindingsReady = false;
+            Logger.WriteLine(GetDisplayName() + ": ── Reading Button Bindings ──");
+
+            byte[]? response = QueryAllButtonBindings();
+            if (response is null)
+            {
+                Logger.WriteLine(GetDisplayName() + ": No response reading button bindings");
+                return;
+            }
+
+            string rawHex = BitConverter.ToString(response, 0, Math.Min(21, response.Length))
+                                        .Replace("-", " ");
+            Logger.WriteLine(GetDisplayName() + $": RAW: {rawHex}");
+
+            // Validate packet structure: expect 0x12 0x05 header
+            if (response.Length < 6 || response[1] != 0x12 || response[2] != 0x05)
+            {
+                Logger.WriteLine(GetDisplayName() + ": Button bindings packet header mismatch — hiding bindings panel");
+                return;
+            }
+
+            var slots = ButtonSlots;
+            int slotCount = Math.Min(ButtonBindings.Length, slots.Count);
+            for (int slot = 0; slot < slotCount; slot++)
+            {
+                int offset = 5 + slot * 2;
+                string slotName = slots.TryGetValue(slot, out var def) ? def.Name : $"Slot {slot}";
+                if (offset + 1 >= response.Length)
+                {
+                    Logger.WriteLine(GetDisplayName() + $": Slot {slot} ({slotName}): out of range");
+                    continue;
+                }
+
+                // Deserialise 2-byte little-endian destination action code
+                ushort actionCode = (ushort)(response[offset] | (response[offset + 1] << 8));
+                ButtonBindings[slot] = actionCode;
+
+                Logger.WriteLine(GetDisplayName()
+                    + $": Slot {slot} ({slotName}): {LabelForActionCode(actionCode)} (0x{actionCode:X4})");
+            }
+
+            ButtonBindingsReady = true;
+            Logger.WriteLine(GetDisplayName() + ": ── End Button Bindings ──");
+        }
+
+        protected virtual byte[]? QueryAllButtonBindings(int group = 0)
+        {
+            return WriteForResponse(new byte[]
+            {
+                reportId,
+                0x12,
+                0x05,
+                (byte)group,
+                0x00,
+                0x00,
+            });
+        }
+
+        public void ResetButtonBindings()
+        {
+            if (!HasButtonBindings()) return;
+            Logger.WriteLine(GetDisplayName() + ": Resetting all button bindings to defaults");
+            foreach (var (slot, slotDef) in ButtonSlots)
+            {
+                WriteForResponse(GetSetButtonBindingPacket(slotDef.SourceCode, slotDef.SourceCode));
+                ButtonBindings[slot] = slotDef.SourceCode;
+                Logger.WriteLine(GetDisplayName()
+                    + $": Slot {slot} ({slotDef.Name}) → default (0x{slotDef.SourceCode:X4})");
+            }
+            FlushSettings();
+        }
+
+        public virtual void SetButtonBinding(int slot, ushort actionCode)
+        {
+            if (!HasButtonBindings()) return;
+
+            var slots = ButtonSlots;
+            if (slot < 0 || !slots.TryGetValue(slot, out var slotDef))
+            {
+                Logger.WriteLine(GetDisplayName()
+                    + $": SetButtonBinding: slot {slot} out of range (0–{slots.Count - 1}).");
+                return;
+            }
+
+            ushort sourceCode = slotDef.SourceCode;
+
+            WriteForResponse(GetSetButtonBindingPacket(sourceCode, actionCode));
+            FlushSettings();
+
+            Logger.WriteLine(GetDisplayName()
+                + $": Slot {slot} ({slotDef.Name}) → {LabelForActionCode(actionCode)}"
+                + $" (src=0x{sourceCode:X4}, dst=0x{actionCode:X4})");
+
+            ButtonBindings[slot] = actionCode;
+            if (WriteOnlySlots.Contains(slot)) SaveWriteOnlySlot(slot, actionCode);
+        }
+
+        protected virtual byte[] GetSetButtonBindingPacket(ushort sourceCode, ushort destCode)
+        {
+            return new byte[]
+            {
+                reportId,
+                0x51,                              // command: Set Binding
+                0x21,                              // sub-command (constant 0x21)
+                0x00,                              // profile / flags (always 0)
+                0x00,
+                (byte)( sourceCode        & 0xFF), // src low  byte
+                (byte)((sourceCode >> 8)  & 0xFF), // src high byte
+                (byte)( destCode          & 0xFF), // dst low  byte
+                (byte)((destCode   >> 8)  & 0xFF), // dst high byte
+            };
+        }
+
     }
 }

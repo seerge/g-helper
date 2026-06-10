@@ -1,12 +1,14 @@
-﻿using System.Globalization;
+﻿using GHelper.UI;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
-public class NumericUpDownWithUnit : NumericUpDown
+public class NumericUpDownWithUnit : RNumericUpDown
 {
     #region| Fields |
 
     private string unit = null;
     private bool unitFirst = false;
+    private string offText = null;
 
     #endregion
 
@@ -34,17 +36,37 @@ public class NumericUpDownWithUnit : NumericUpDown
         }
     }
 
+    public string OffText
+    {
+        get => offText;
+        set
+        {
+            offText = value;
+
+            UpdateEditText();
+        }
+    }
+
     #endregion
 
     #region| Methods |
+
+    protected override void OnMouseWheel(MouseEventArgs e)
+    {
+        if (ContainsFocus)
+            base.OnMouseWheel(e);
+    }
 
     /// <summary>
     /// Method called when updating the numeric updown text.
     /// </summary>
     protected override void UpdateEditText()
     {
-        // If there is a unit we handle it ourselfs, if there is not we leave it to the base class.
-        if (Unit != null && Unit != string.Empty)
+        if (Value == 0 && !string.IsNullOrEmpty(OffText))
+        {
+            Text = OffText;
+        }
+        else if (Unit != null && Unit != string.Empty)
         {
             if (UnitFirst)
             {

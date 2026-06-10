@@ -1,4 +1,5 @@
-﻿using GHelper.Peripherals.Mouse;
+﻿using GHelper.Peripherals;
+using GHelper.Peripherals.Mouse;
 using GHelper.UI;
 
 namespace GHelper
@@ -23,6 +24,7 @@ namespace GHelper
         private LightingZone visibleZone = LightingZone.All;
 
         private bool updateMouseDPI = true;
+        private bool loadingSettings = true;
 
         public AsusMouseSettings(AsusMouse mouse)
         {
@@ -38,6 +40,7 @@ namespace GHelper
             labelEnergy.Text = Properties.Strings.EnergySettings;
             labelPerformance.Text = Properties.Strings.MousePerformance;
             checkBoxRandomColor.Text = Properties.Strings.AuraRandomColor;
+            checkBoxSyncAura.Text = Properties.Strings.MouseSyncWithAura;
             labelLowBatteryWarning.Text = Properties.Strings.MouseLowBatteryWarning;
             labelAutoPowerOff.Text = Properties.Strings.MouseAutoPowerOff;
             buttonSync.Text = Properties.Strings.MouseSynchronize;
@@ -48,6 +51,8 @@ namespace GHelper
             labelButtonDebounce.Text = Properties.Strings.MouseButtonResponse;
             labelAcceleration.Text = Properties.Strings.Acceleration;
             labelDeceleration.Text = Properties.Strings.Deceleration;
+            checkBoxMotionSync.Text = Properties.Strings.MouseMotionSync;
+            checkBoxZoneMode.Text = Properties.Strings.MouseZoneMode;
 
             buttonLightingZoneLogo.Text = Properties.Strings.AuraZoneLogo;
             buttonLightingZoneScroll.Text = Properties.Strings.AuraZoneScroll;
@@ -58,7 +63,11 @@ namespace GHelper
             buttonExport.Text = Properties.Strings.Export;
             buttonImport.Text = Properties.Strings.Import;
 
-            InitTheme();
+            labelAnimationSpeed.Text = Properties.Strings.AnimationSpeed;
+            labelAnimationDirection.Text = Properties.Strings.AnimationDirection;
+            labelBindingsTitle.Text = Properties.Strings.KeyBindings;
+
+            InitTheme(true);
 
             this.Text = mouse.GetDisplayName();
 
@@ -77,6 +86,14 @@ namespace GHelper
             buttonDPI3.Click += ButtonDPI_Click;
             buttonDPI4.Click += ButtonDPI_Click;
 
+            // Subscribe to Paint and MouseMove for Delete logic
+            foreach (var btn in dpiButtons)
+            {
+                btn.Paint += DpiButton_Paint;
+                btn.MouseMove += DpiButton_MouseMove;
+                btn.MouseLeave += (s, e) => { (s as Control)?.Invalidate(); }; 
+            }
+
             comboBoxPollingRate.DropDownClosed += ComboBoxPollingRate_DropDownClosed;
             checkBoxAngleSnapping.CheckedChanged += CheckAngleSnapping_CheckedChanged;
             sliderAngleAdjustment.ValueChanged += SliderAngleAdjustment_ValueChanged;
@@ -84,6 +101,13 @@ namespace GHelper
             comboBoxLiftOffDistance.DropDownClosed += ComboBoxLiftOffDistance_DropDownClosed;
             sliderButtonDebounce.ValueChanged += SliderButtonDebounce_ValueChanged;
             sliderButtonDebounce.MouseUp += SliderButtonDebounce_MouseUp;
+
+            checkBoxMotionSync.CheckedChanged += CheckBoxMotionSync_CheckedChanged;
+            checkBoxZoneMode.CheckedChanged += CheckBoxZoneMode_CheckedChanged;
+            sliderZoneModeDPI.ValueChanged += SliderZoneModeDPI_ValueChanged;
+            sliderZoneModeDPI.MouseUp += SliderZoneModeDPI_MouseUp;
+            numericUpDownZoneModeDPI.ValueChanged += NumericUpDownZoneModeDPI_ValueChanged;
+            comboBoxZoneModePollingRate.DropDownClosed += ComboBoxZoneModePollingRate_DropDownClosed;
 
             sliderAcceleration.MouseUp += SliderAcceleration_MouseUp;
             sliderAcceleration.ValueChanged += SliderAcceleration_ValueChanged;
@@ -97,6 +121,7 @@ namespace GHelper
             comboBoxAnimationSpeed.DropDownClosed += ComboBoxAnimationSpeed_DropDownClosed;
             comboBoxAnimationDirection.DropDownClosed += ComboBoxAnimationDirection_DropDownClosed;
             checkBoxRandomColor.CheckedChanged += CheckBoxRandomColor_CheckedChanged;
+            checkBoxSyncAura.CheckedChanged += CheckBoxSyncAura_CheckedChanged;
 
             sliderLowBatteryWarning.ValueChanged += SliderLowBatteryWarning_ValueChanged;
             sliderLowBatteryWarning.MouseUp += SliderLowBatteryWarning_MouseUp;
@@ -112,6 +137,17 @@ namespace GHelper
             InitMouseCapabilities();
             Logger.WriteLine(mouse.GetDisplayName() + " (GUI): Initialized capabilities. Synchronizing mouse data");
             RefreshMouseData();
+
+            loadingSettings = false;
+        }
+
+        public void ToggleBindingsPanel(bool show)
+        {
+            if (!mouse.HasButtonBindings()) show = false;
+            tableRoot.ColumnStyles[0] = show
+                ? new ColumnStyle(SizeType.AutoSize)
+                : new ColumnStyle(SizeType.Absolute, 0);
+            panelLeft.Visible = show;
         }
 
         private void SliderAcceleration_MouseUp(object? sender, MouseEventArgs e)
@@ -233,6 +269,7 @@ namespace GHelper
         private void ComboBoxPollingRate_DropDownClosed(object? sender, EventArgs e)
         {
             mouse.SetPollingRate(mouse.SupportedPollingrates()[comboBoxPollingRate.SelectedIndex]);
+            UpdateMotionSyncState();
         }
 
         private void ButtonDPIColor_Click(object? sender, EventArgs e)
@@ -255,6 +292,44 @@ namespace GHelper
             }
         }
 
+        // Logic for Delete Area
+        bool IsOverDeleteArea(Control btn, Point p)
+        {
+             // Top Right corner
+             float size = 16 * ControlHelper.Scale;
+             if (p.X > btn.Width - size - 5 && p.Y < size + 5) return true;
+             return false;
+        }
+
+        private void DpiButton_MouseMove(object? sender, MouseEventArgs e)
+        {
+            if (sender is RButton btn)
+            {
+                // Trigger repaint to show/hide X
+                btn.Invalidate();
+            }
+        }
+
+        private void DpiButton_Paint(object? sender, PaintEventArgs e)
+        {
+            if (sender is not RButton btn) return;
+            
+            int index = Array.IndexOf(dpiButtons, btn);
+            if (index == -1 || index >= mouse.CurrentDPIProfileCount) return;
+            if (!mouse.CanChangeDPICount()) return;
+            if (mouse.CurrentDPIProfileCount <= 2) return;
+
+            // Check if mouse is within client area to draw hover effect
+            Point clientPoint = btn.PointToClient(Cursor.Position);
+            if (!btn.ClientRectangle.Contains(clientPoint)) return;
+
+            // Draw X in top right (gray-white color)
+            Image img = ControlHelper.ResizeImage(
+                ControlHelper.TintImage(Properties.Resources.cross_23, Color.FromArgb(170, 170, 170)),
+                ControlHelper.Scale);
+            e.Graphics.DrawImage(img, new Point(btn.Width - img.Width - 5, 5));
+        }
+
         private void ButtonDPI_Click(object? sender, EventArgs e)
         {
             int index = -1;
@@ -268,13 +343,38 @@ namespace GHelper
                 }
             }
 
-            if (index == -1)
+            if (index == -1) return;
+            
+            // Check for Delete Click
+            if (mouse.CanChangeDPICount() && index < mouse.CurrentDPIProfileCount && mouse.CurrentDPIProfileCount > 2)
             {
-                //huh?
+                Point p = dpiButtons[index].PointToClient(Cursor.Position);
+                if (IsOverDeleteArea(dpiButtons[index], p))
+                {
+                    mouse.DeleteDPIProfile(index);
+                    VisualizeDPIButtons();
+                    VisualizeCurrentDPIProfile();
+                    return;
+                }
+            }
+
+            // Logic:
+            // If index < CurrentCount -> Switch Profile
+            // If index == CurrentCount -> Add Profile
+
+            if (index < mouse.CurrentDPIProfileCount)
+            {
+                mouse.SetDPIProfile(index + 1);
+            }
+            else if (index == mouse.CurrentDPIProfileCount)
+            {
+                mouse.AddDPIProfile();
+                // Ensure UI re-renders to show new profile
+                VisualizeDPIButtons();
+                VisualizeCurrentDPIProfile();
                 return;
             }
 
-            mouse.SetDPIProfile(index + 1);
             VisualizeDPIButtons();
             VisualizeCurrentDPIProfile();
         }
@@ -291,6 +391,31 @@ namespace GHelper
             ls.RandomColor = checkBoxRandomColor.Checked;
 
             UpdateLightingSettings(ls, visibleZone);
+        }
+
+        private void CheckBoxSyncAura_CheckedChanged(object? sender, EventArgs e)
+        {
+            ApplyAuraSyncUIState();
+            if (loadingSettings) return;
+
+            PeripheralsProvider.SetAuraSync(checkBoxSyncAura.Checked);
+            Program.settingsForm.UpdateKeyboardLabel();
+
+            if (checkBoxSyncAura.Checked)
+            {
+                mouse.SyncFromKeyboardAura();
+                VisusalizeLightingSettings();
+            }
+        }
+
+        private void ApplyAuraSyncUIState()
+        {
+            bool syncOn = checkBoxSyncAura.Checked;
+            comboBoxLightingMode.Enabled = !syncOn;
+            buttonLightingColor.Enabled = !syncOn;
+            checkBoxRandomColor.Enabled = !syncOn;
+            comboBoxAnimationSpeed.Enabled = !syncOn;
+            comboBoxAnimationDirection.Enabled = !syncOn;
         }
 
         private void ComboBoxAnimationDirection_DropDownClosed(object? sender, EventArgs e)
@@ -327,7 +452,7 @@ namespace GHelper
             }
 
             var index = comboBoxLightingMode.SelectedIndex;
-            LightingMode lm = supportedLightingModes[(index >= 0 && index < supportedLightingModes.Count) ? index : 0 ];
+            LightingMode lm = supportedLightingModes[(index >= 0 && index < supportedLightingModes.Count) ? index : 0];
 
             LightingSetting? ls = mouse.LightingSettingForZone(visibleZone);
             if (ls.LightingMode == lm)
@@ -403,6 +528,54 @@ namespace GHelper
             mouse.SetAngleAdjustment((short)sliderAngleAdjustment.Value);
         }
 
+        private void CheckBoxMotionSync_CheckedChanged(object? sender, EventArgs e)
+        {
+            mouse.SetMotionSync(checkBoxMotionSync.Checked);
+        }
+
+        private void CheckBoxZoneMode_CheckedChanged(object? sender, EventArgs e)
+        {
+            mouse.SetZoneMode(checkBoxZoneMode.Checked);
+            UpdateZoneModeUIState();
+        }
+
+        private void SliderZoneModeDPI_ValueChanged(object? sender, EventArgs e)
+        {
+            numericUpDownZoneModeDPI.Value = sliderZoneModeDPI.Value;
+        }
+
+        private void SliderZoneModeDPI_MouseUp(object? sender, MouseEventArgs e)
+        {
+            mouse.ZoneModeDPI = sliderZoneModeDPI.Value;
+            if (mouse.ZoneMode)
+            {
+                mouse.UpdateZoneModeDPI(sliderZoneModeDPI.Value);
+            }
+        }
+
+        private void NumericUpDownZoneModeDPI_ValueChanged(object? sender, EventArgs e)
+        {
+            sliderZoneModeDPI.Value = (int)numericUpDownZoneModeDPI.Value;
+            if (mouse.ZoneMode && mouse.ZoneModeDPI != sliderZoneModeDPI.Value)
+            {
+                mouse.ZoneModeDPI = sliderZoneModeDPI.Value;
+                mouse.UpdateZoneModeDPI(sliderZoneModeDPI.Value);
+            }
+        }
+
+        private void ComboBoxZoneModePollingRate_DropDownClosed(object? sender, EventArgs e)
+        {
+            PollingRate[] zoneModePollingRates = { PollingRate.PR1000Hz, PollingRate.PR2000Hz, PollingRate.PR4000Hz, PollingRate.PR8000Hz };
+            if (comboBoxZoneModePollingRate.SelectedIndex >= 0 && comboBoxZoneModePollingRate.SelectedIndex < zoneModePollingRates.Length)
+            {
+                mouse.ZoneModePollingRate = zoneModePollingRates[comboBoxZoneModePollingRate.SelectedIndex];
+                if (mouse.ZoneMode)
+                {
+                    mouse.UpdateZoneModePollingRate(mouse.ZoneModePollingRate);
+                }
+            }
+        }
+
         private void SliderDPI_ValueChanged(object? sender, EventArgs e)
         {
             numericUpDownCurrentDPI.Value = sliderDPI.Value;
@@ -473,6 +646,7 @@ namespace GHelper
 
             VisualizeMouseSettings();
             VisualizeBatteryState();
+            ToggleBindingsPanel(mouse.ButtonBindingsReady);
         }
 
         private void InitMouseCapabilities()
@@ -504,10 +678,10 @@ namespace GHelper
             {
                 buttonDPIColor.Visible = false;
                 pictureDPIColor.Visible = false;
-                buttonDPI1.Image = ControlHelper.TintImage(Properties.Resources.lighting_dot_24, Color.Red);
-                buttonDPI2.Image = ControlHelper.TintImage(Properties.Resources.lighting_dot_24, Color.Purple);
-                buttonDPI3.Image = ControlHelper.TintImage(Properties.Resources.lighting_dot_24, Color.Blue);
-                buttonDPI4.Image = ControlHelper.TintImage(Properties.Resources.lighting_dot_24, Color.Green);
+                buttonDPI1.Image = ControlHelper.ResizeImage(ControlHelper.TintImage(Properties.Resources.lighting_dot_32, Color.Red), ControlHelper.Scale);
+                buttonDPI2.Image = ControlHelper.ResizeImage(ControlHelper.TintImage(Properties.Resources.lighting_dot_32, Color.Purple), ControlHelper.Scale);
+                buttonDPI3.Image = ControlHelper.ResizeImage(ControlHelper.TintImage(Properties.Resources.lighting_dot_32, Color.Blue), ControlHelper.Scale);
+                buttonDPI4.Image = ControlHelper.ResizeImage(ControlHelper.TintImage(Properties.Resources.lighting_dot_32, Color.Green), ControlHelper.Scale);
 
                 buttonDPI1.BorderColor = Color.Red;
                 buttonDPI2.BorderColor = Color.Purple;
@@ -545,6 +719,26 @@ namespace GHelper
             if (!mouse.HasAngleTuning() && !mouse.HasAngleSnapping())
             {
                 panelAngleSnapping.Visible = false;
+            }
+
+            if (!mouse.HasMotionSync())
+            {
+                panelMotionSync.Visible = false;
+            }
+
+            if (!mouse.HasZoneMode())
+            {
+                panelZoneMode.Visible = false;
+            }
+            else
+            {
+                // Initialize Zone Mode Polling Rate combobox with limited options
+                comboBoxZoneModePollingRate.Items.Clear();
+                comboBoxZoneModePollingRate.Items.Add("1000 Hz");
+                comboBoxZoneModePollingRate.Items.Add("2000 Hz");
+                comboBoxZoneModePollingRate.Items.Add("4000 Hz");
+                comboBoxZoneModePollingRate.Items.Add("8000 Hz");
+                comboBoxZoneModePollingRate.SelectedIndex = 2; // Default to 4000Hz
             }
 
             if (mouse.HasAcceleration())
@@ -637,6 +831,9 @@ namespace GHelper
                     buttonLightingZoneDock.Visible = false;
                 }
 
+                checkBoxSyncAura.Checked = AppConfig.IsAuraSync();
+                ApplyAuraSyncUIState();
+
                 sliderBrightness.Max = mouse.MaxBrightness();
 
                 InitLightingModes();
@@ -656,6 +853,190 @@ namespace GHelper
             {
                 panelLighting.Visible = false;
             }
+
+            if (mouse.HasButtonBindings())
+            {
+                InitBindingCombos();
+                ControlHelper.Adjust(this);
+            }
+        }
+
+        private bool _updatingBindings;
+        private readonly List<UI.RComboBox> _bindingCombos = new();
+        private object[] _bindingComboItems = [];
+
+        private object[] BuildBindingComboItems()
+        {
+            var list = new List<object>();
+            foreach (var (groupLabel, items) in mouse.BindingGroups)
+            {
+                list.Add(new BindingSeparator(groupLabel));
+                foreach (var (code, name) in items)
+                    list.Add(new BindingItem(code, name));
+            }
+            return list.ToArray();
+        }
+
+        private void InitBindingCombos()
+        {
+            var slots = mouse.ButtonSlots;
+            _bindingComboItems = BuildBindingComboItems();
+
+            float s = DeviceDpi / 192f;
+
+            // Start below whichever is lower: the header or the mouse layout picture
+            int startY = Math.Max(panelBindingsHeader.Bottom, pictureMouseLayout.Bottom) + (int)(12 * s);
+            int rowHeight = (int)(52 * s);
+            int row = 0;
+            foreach (var (slot, (_, name)) in slots)
+            {
+                int y = startY + row * rowHeight;
+                var lbl = new Label
+                {
+                    Text = name,
+                    Location = new Point((int)(14 * s), y + (int)(14 * s)),
+                    Size = new Size((int)(200 * s), (int)(32 * s)),
+                    TextAlign = ContentAlignment.MiddleLeft,
+                    ForeColor = RForm.foreMain,
+                };
+                var cmb = new UI.RComboBox
+                {
+                    Location = new Point((int)(220 * s), y + (int)(10 * s)),
+                    Size = new Size((int)(260 * s), (int)(40 * s)),
+                    Margin = new Padding(0, (int)(6 * s), (int)(6 * s), (int)(6 * s)),
+                    DropDownStyle = ComboBoxStyle.DropDownList,
+                    FlatStyle = FlatStyle.Flat,
+                    UseCustomTextPadding = false,
+                    DrawMode = DrawMode.OwnerDrawFixed,
+                    ItemHeight = comboProfile.ItemHeight,
+                    BackColor = RForm.buttonMain,
+                    ForeColor = RForm.foreMain,
+                    BorderColor = RForm.buttonMain,
+                    ButtonColor = RForm.buttonMain,
+                    ArrowColor = RForm.foreMain,
+                };
+                cmb.Items.AddRange(_bindingComboItems);
+                cmb.Tag = slot;
+                cmb.DrawItem += BindingCombo_DrawItem;
+                cmb.SelectedIndexChanged += BindingCombo_Changed;
+                panelLeft.Controls.Add(lbl);
+                panelLeft.Controls.Add(cmb);
+                _bindingCombos.Add(cmb);
+                row++;
+            }
+
+            // Reset Bindings button below all rows
+            int btnY = startY + row * rowHeight + (int)(8 * s);
+            var btnReset = new UI.RButton
+            {
+                Text = Properties.Strings.Reset,
+                Location = new Point((int)(14 * s), btnY),
+                Size = new Size((int)(466 * s), (int)(50 * s)),
+                FlatStyle = FlatStyle.Flat,
+                Margin = new Padding((int)(4 * s), (int)(8 * s), (int)(4 * s), (int)(8 * s)),
+                BackColor = SystemColors.ButtonHighlight,
+                ForeColor = SystemColors.ControlText,
+                BorderColor = Color.Transparent,
+                BorderRadius = 2,
+                Activated = false,
+                Secondary = false,
+                UseVisualStyleBackColor = false,
+            };
+            btnReset.Click += ButtonResetBindings_Click;
+            panelLeft.Controls.Add(btnReset);
+        }
+
+        private static void BindingCombo_DrawItem(object? sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0 || sender is not ComboBox cmb) return;
+
+            object obj = cmb.Items[e.Index];
+            bool isSep = obj is BindingSeparator;
+
+            Color back = isSep ? RForm.buttonSecond : RForm.buttonMain;
+            Color fore = isSep ? RForm.foreMain     : RForm.foreMain;
+
+            if (!isSep && (e.State & DrawItemState.Selected) != 0)
+                back = RForm.borderMain;
+
+            using var backBrush = new SolidBrush(back);
+            e.Graphics.FillRectangle(backBrush, e.Bounds);
+
+            string text = obj.ToString() ?? string.Empty;
+            Font font = isSep
+                ? new Font(e.Font ?? SystemFonts.DefaultFont, FontStyle.Bold)
+                : (e.Font ?? SystemFonts.DefaultFont);
+
+            int indent = isSep ? 6 : 14;
+            var textRect = new Rectangle(e.Bounds.X + indent, e.Bounds.Y,
+                                         e.Bounds.Width - indent, e.Bounds.Height);
+
+            using var foreBrush = new SolidBrush(fore);
+            e.Graphics.DrawString(text, font, foreBrush, textRect,
+                new StringFormat { LineAlignment = StringAlignment.Center });
+
+            if (isSep) font.Dispose();
+        }
+
+        private void ButtonResetBindings_Click(object? sender, EventArgs e)
+        {
+            mouse.ResetButtonBindings();
+            VisualizeButtonBindings();
+            Program.inputDispatcher?.RegisterKeys();
+        }
+
+        private void BindingCombo_Changed(object? sender, EventArgs e)
+        {
+            if (_updatingBindings || sender is not UI.RComboBox cmb || cmb.Tag is not int slot) return;
+            if (cmb.SelectedItem is BindingSeparator)
+            {
+                // Separator selected — step forward to first real item in group
+                int next = cmb.SelectedIndex + 1;
+                if (next < cmb.Items.Count && cmb.Items[next] is BindingItem)
+                    cmb.SelectedIndex = next;
+                return;
+            }
+            if (cmb.SelectedItem is BindingItem item)
+            {
+                mouse.SetButtonBinding(slot, item.Code);
+                Program.inputDispatcher?.RegisterKeys();
+            }
+        }
+
+        private void VisualizeButtonBindings()
+        {
+            if (!mouse.HasButtonBindings()) return;
+            var slots = mouse.ButtonSlots;
+            _updatingBindings = true;
+            int row = 0;
+            foreach (var slot in slots.Keys)
+            {
+                if (row >= _bindingCombos.Count) break;
+                var cmb = _bindingCombos[row];
+                ushort code = mouse.ButtonBindings[slot];
+                for (int j = 0; j < cmb.Items.Count; j++)
+                {
+                    if (cmb.Items[j] is BindingItem item && item.Code == code)
+                    { cmb.SelectedIndex = j; break; }
+                }
+                row++;
+            }
+            _updatingBindings = false;
+        }
+
+        private sealed class BindingItem
+        {
+            public ushort Code        { get; }
+            public string DisplayName { get; }
+            public BindingItem(ushort code, string name) { Code = code; DisplayName = name; }
+            public override string ToString() => DisplayName;
+        }
+
+        private sealed class BindingSeparator
+        {
+            public string Label { get; }
+            public BindingSeparator(string label) { Label = label; }
+            public override string ToString() => Label;
         }
 
         private void InitLightingModes()
@@ -738,6 +1119,8 @@ namespace GHelper
 
             if (mouse.HasDebounceSetting())
             {
+                sliderButtonDebounce.Min = (int)mouse.MinDebounce();
+                sliderButtonDebounce.Max = (int)mouse.MaxDebounce();
                 sliderButtonDebounce.Value = (int)mouse.Debounce;
             }
 
@@ -750,6 +1133,60 @@ namespace GHelper
             {
                 sliderDeceleration.Value = mouse.Deceleration;
             }
+
+            if (mouse.HasMotionSync())
+            {
+                UpdateMotionSyncState();
+            }
+
+            if (mouse.HasZoneMode())
+            {
+                checkBoxZoneMode.Checked = mouse.ZoneMode;
+                sliderZoneModeDPI.Value = mouse.ZoneModeDPI;
+                numericUpDownZoneModeDPI.Value = mouse.ZoneModeDPI;
+
+                // Set Zone Mode Polling Rate combobox
+                PollingRate[] zoneModePollingRates = { PollingRate.PR1000Hz, PollingRate.PR2000Hz, PollingRate.PR4000Hz, PollingRate.PR8000Hz };
+                int prIndex = Array.IndexOf(zoneModePollingRates, mouse.ZoneModePollingRate);
+                if (prIndex >= 0) comboBoxZoneModePollingRate.SelectedIndex = prIndex;
+
+                UpdateZoneModeUIState();
+            }
+
+            if (mouse.HasButtonBindings())
+                VisualizeButtonBindings();
+        }
+
+        private void UpdateMotionSyncState()
+        {
+            if (!mouse.HasMotionSync())
+            {
+                return;
+            }
+
+            bool is8000Hz = mouse.PollingRate == PollingRate.PR8000Hz;
+            checkBoxMotionSync.Enabled = !is8000Hz;
+            checkBoxMotionSync.Checked = is8000Hz ? false : mouse.MotionSync;
+        }
+
+        private void UpdateZoneModeUIState()
+        {
+            if (!mouse.HasZoneMode())
+            {
+                return;
+            }
+
+            bool zoneModeEnabled = mouse.ZoneMode;
+
+            // Zone Mode controls: enabled when Zone Mode is ON
+            sliderZoneModeDPI.Enabled = zoneModeEnabled;
+            comboBoxZoneModePollingRate.Enabled = zoneModeEnabled;
+            numericUpDownZoneModeDPI.Enabled = zoneModeEnabled;
+
+            // Normal controls: disabled when Zone Mode is ON
+            panelDPISettings.Enabled = !zoneModeEnabled;
+            tableDPI.Enabled = !zoneModeEnabled;
+            comboBoxPollingRate.Enabled = !zoneModeEnabled;
         }
 
         private void VisualizeBatteryState()
@@ -841,26 +1278,66 @@ namespace GHelper
             //0x07 => 1
             //0x05 => 2
             comboBoxAnimationSpeed.SelectedIndex = 2 - ((((int)ls.AnimationSpeed) - 5) / 2);
-            comboBoxAnimationDirection.SelectedIndex = (int)ls.AnimationDirection;
+            
+            int directionIndex = (int)ls.AnimationDirection;
+            if (directionIndex >= 0 && directionIndex < comboBoxAnimationDirection.Items.Count)
+            {
+                comboBoxAnimationDirection.SelectedIndex = directionIndex;
+            }
+            else
+            {
+                comboBoxAnimationDirection.SelectedIndex = 0; // Default to first item
+            }
         }
 
 
         private void VisualizeDPIButtons()
         {
-            for (int i = 0; i < mouse.DPIProfileCount() && i < 4; ++i)
+            // Update to use CurrentDPIProfileCount
+            for (int i = 0; i < 4; ++i)
             {
-                AsusMouseDPI dpi = mouse.DpiSettings[i];
-                if (dpi is null)
+                // Slot logic: 0..Count-1 are normal profiles
+                // Slot Count is "Add" button (if Count < 4)
+
+                if (i < mouse.CurrentDPIProfileCount)
                 {
-                    continue;
+                    AsusMouseDPI dpi = mouse.DpiSettings[i];
+                    if (dpi is null) continue;
+
+                    dpiButtons[i].Visible = true;
+                    if (mouse.HasDPIColors())
+                    {
+                        dpiButtons[i].Image = ControlHelper.ResizeImage(
+                        ControlHelper.TintImage(Properties.Resources.lighting_dot_32, dpi.Color),
+                        ControlHelper.Scale);
+                        dpiButtons[i].BorderColor = dpi.Color;
+                    }
+                    else
+                    {
+                        // Fallback icon if no color support? Usually kept simple
+                    }
+
+                    dpiButtons[i].Activated = (mouse.DpiProfile - 1) == i;
+                    dpiButtons[i].Text = "DPI " + (i + 1) + "\n" + dpi.DPI;
+
+                    // Clear secondary style (used for Add button)
+                    dpiButtons[i].Secondary = false;
                 }
-                if (mouse.HasDPIColors())
+                else if (mouse.CanChangeDPICount() && i == mouse.CurrentDPIProfileCount)
                 {
-                    dpiButtons[i].Image = ControlHelper.TintImage(Properties.Resources.lighting_dot_24, dpi.Color);
-                    dpiButtons[i].BorderColor = dpi.Color;
+                    // This is the "Add" slot
+                    dpiButtons[i].Visible = true;
+                    dpiButtons[i].Image = null;
+                    dpiButtons[i].Text = "+";
+                    dpiButtons[i].Activated = false;
+                    dpiButtons[i].Secondary = true;
+                    dpiButtons[i].BorderColor = Color.Transparent;
                 }
-                dpiButtons[i].Activated = (mouse.DpiProfile - 1) == i;
-                dpiButtons[i].Text = "DPI " + (i + 1) + "\n" + dpi.DPI;
+                else
+                {
+                    // Hidden slots
+                    dpiButtons[i].Visible = false;
+                }
             }
         }
 
@@ -878,7 +1355,8 @@ namespace GHelper
             try
             {
                 dpi = mouse.DpiSettings[mouse.DpiProfile - 1];
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Logger.WriteLine($"Wrong mouse DPI: {mouse.DpiProfile} {mouse.DpiSettings.Length} {ex.Message}");
                 return;

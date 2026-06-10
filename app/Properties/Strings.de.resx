@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -147,6 +147,9 @@
   <data name="AllyController" xml:space="preserve">
     <value>Ally Controller</value>
   </data>
+  <data name="AnimationDirection" xml:space="preserve">
+    <value>Animationsrichtung</value>
+  </data>
   <data name="AnimationSpeed" xml:space="preserve">
     <value>Animationsgeschwindigkeit</value>
   </data>
@@ -262,7 +265,7 @@
     <value>Aus</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Timeout angeschlossen / bei Akku (0 = An)</value>
+    <value>Beleuchtungs-Timeout Netz / Akku</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Backlight Timeout when on battery</value>
@@ -272,6 +275,9 @@
   </data>
   <data name="Balanced" xml:space="preserve">
     <value>Ausbalanciert</value>
+  </data>
+  <data name="Battery" xml:space="preserve">
+    <value>Akku</value>
   </data>
   <data name="BatteryCharge" xml:space="preserve">
     <value>Akkustand</value>
@@ -321,6 +327,9 @@
   <data name="Charging" xml:space="preserve">
     <value>Lädt</value>
   </data>
+  <data name="ClampToGrid" xml:space="preserve">
+    <value>Einrasten</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>Farbe</value>
   </data>
@@ -332,6 +341,9 @@
   </data>
   <data name="CPUBoost" xml:space="preserve">
     <value>CPU-Boost</value>
+  </data>
+  <data name="CPUCoresConfiguration" xml:space="preserve">
+    <value>CPU-Kern-Konfiguration</value>
   </data>
   <data name="Custom" xml:space="preserve">
     <value>Benutzerdefiniert</value>
@@ -346,7 +358,7 @@
     <value>Controller deaktivieren</value>
   </data>
   <data name="DisableOnLidClose" xml:space="preserve">
-    <value>Beim Schließen des Deckels deaktivieren</value>
+    <value>Abschalten, wenn zugeklappt</value>
   </data>
   <data name="DisableOverdrive" xml:space="preserve">
     <value>Bildschirm: Overdrive abschalten</value>
@@ -368,9 +380,6 @@
   </data>
   <data name="EcoMode" xml:space="preserve">
     <value>Eco</value>
-  </data>
-  <data name="EnableGPUOnShutdown" xml:space="preserve">
-    <value>Aktiviere GPU beim Herunterfahren (verhindert Problem im Eco-Modus)</value>
   </data>
   <data name="EnableOptimusText" xml:space="preserve">
     <value>Die dGPU zu deaktivieren, indem Sie in den Eco-Modus wechseln während der Anzeigemodus nicht auf Optimus eingestellt ist, kann zu Problemen mit der Helligkeitseinstellung führen.
@@ -397,6 +406,9 @@ Trotzdem fortfahren?</value>
   </data>
   <data name="FanCurves" xml:space="preserve">
     <value>Lüfterkurven</value>
+  </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>SHIFT halten, um alle Punkte gemeinsam zu ziehen</value>
   </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>CPU Lüfterprofil</value>
@@ -430,6 +442,9 @@ Trotzdem fortfahren?</value>
   </data>
   <data name="FnLockOn" xml:space="preserve">
     <value>Fn-Sperre an</value>
+  </data>
+  <data name="WinLockToggle" xml:space="preserve">
+    <value>Win-Lock Toggle</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Dynamic Boost</value>
@@ -465,10 +480,16 @@ Trotzdem fortfahren?</value>
     <value>Maximale GPU Temperatur</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Minuten bis zum Ruhezustand im Standby (0 = Aus)</value>
+    <value>Zeit bis zum Ruhezustand im Standby (Akku)</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>Hoch</value>
+  </data>
+  <data name="HysteresisDown" xml:space="preserve">
+    <value>Hysterese runter</value>
+  </data>
+  <data name="HysteresisUp" xml:space="preserve">
+    <value>Hysterese hoch</value>
   </data>
   <data name="ImageRotation" xml:space="preserve">
     <value>Bilddrehung</value>
@@ -476,11 +497,17 @@ Trotzdem fortfahren?</value>
   <data name="Import" xml:space="preserve">
     <value>Profil importieren</value>
   </data>
+  <data name="InstallPawnIODriver" xml:space="preserve">
+    <value>PawnIO-Treiber installieren (pawnio.eu)</value>
+  </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Tastenbelegung</value>
   </data>
   <data name="Keyboard" xml:space="preserve">
     <value>Tastatur</value>
+  </data>
+  <data name="KeystoneSound" xml:space="preserve">
+    <value>Keystone-Sound</value>
   </data>
   <data name="KillGpuApps" xml:space="preserve">
     <value>Alle Anwendungen auf der dGPU beim Wechsel in den Eco Modus beenden.</value>
@@ -551,6 +578,9 @@ Trotzdem fortfahren?</value>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Maximale Wiederholrate für niedrigste Latenz</value>
   </data>
+  <data name="Medium" xml:space="preserve">
+    <value>Mittel</value>
+  </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
     <value>60Hz um Strom zu sparen</value>
   </data>
@@ -561,7 +591,7 @@ Trotzdem fortfahren?</value>
     <value>Minuten</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Mausglättung</value>
+    <value>Winkelausrichtung / Feineinstellung</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>Automatisch abschalten nach</value>
@@ -583,6 +613,9 @@ Trotzdem fortfahren?</value>
   </data>
   <data name="MouseSynchronize" xml:space="preserve">
     <value>Maus synchronisieren</value>
+  </data>
+  <data name="MouseSyncWithAura" xml:space="preserve">
+    <value>Mit Laptop synchronisieren</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Multi Zone</value>
@@ -614,11 +647,20 @@ Trotzdem fortfahren?</value>
   <data name="On" xml:space="preserve">
     <value>An</value>
   </data>
+  <data name="OnAlways" xml:space="preserve">
+    <value>Immer an</value>
+  </data>
+  <data name="OnBattery" xml:space="preserve">
+    <value>Im Akkubetrieb</value>
+  </data>
   <data name="OneZone" xml:space="preserve">
     <value>One Zone</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>G-Helper Fenster öffnen</value>
+  </data>
+  <data name="OptimalDisplayBrightness" xml:space="preserve">
+    <value>Optimale Bildschirmhelligkeit</value>
   </data>
   <data name="Optimized" xml:space="preserve">
     <value>Optimiert</value>
@@ -664,6 +706,9 @@ Trotzdem fortfahren?</value>
   </data>
   <data name="Quit" xml:space="preserve">
     <value>Schließen</value>
+  </data>
+  <data name="ReadLimits" xml:space="preserve">
+    <value>Limits lesen</value>
   </data>
   <data name="Reset" xml:space="preserve">
     <value>Zurücksetzen</value>
@@ -773,6 +818,12 @@ Trotzdem fortfahren?</value>
   <data name="VersionLabel" xml:space="preserve">
     <value>Version</value>
   </data>
+  <data name="VeryHigh" xml:space="preserve">
+    <value>Hoch+</value>
+  </data>
+  <data name="VeryLow" xml:space="preserve">
+    <value>Niedrig-</value>
+  </data>
   <data name="VibrationStrength" xml:space="preserve">
     <value>Vibrationsstärke</value>
   </data>
@@ -802,6 +853,9 @@ Trotzdem fortfahren?</value>
   </data>
   <data name="Donate" xml:space="preserve">
     <value>Spenden</value>
+  </data>
+  <data name="ThankYou" xml:space="preserve">
+    <value>Danke</value>
   </data>
   <data name="Legend" xml:space="preserve">
     <value>Legende</value>
@@ -876,9 +930,38 @@ Trotzdem fortfahren?</value>
     <value>Interval {0}s</value>
   </data>
   <data name="DisableDynamicLighting" xml:space="preserve">
-    <value>Please disable Windows &gt; Dynamic Lighting</value>
+    <value>Bitte deaktivieren Sie Windows Dynamische Beleuchtung</value>
   </data>
   <data name="AmbientModeResources" xml:space="preserve">
-    <value>Ambient mode may increase resource usage</value>
+    <value>Ambient-Modus kann die Ressourcennutzung erhöhen</value>
+  </data>
+  <data name="MouseMotionSync" xml:space="preserve">
+    <value>Motion Sync</value>
+  </data>
+  <data name="MouseZoneMode" xml:space="preserve">
+    <value>Zone Mode</value>
+  </data>
+  <data name="DisablePCIeASPM" xml:space="preserve">
+    <value>PCIe-Link State Management deaktivieren (im Netzbetrieb)</value>
+  </data>
+  <data name="StopStartNVServices" xml:space="preserve">
+    <value>NVIDIA-Dienste je nach dGPU-Status stoppen/starten</value>
+  </data>
+  <data name="ClamshellModeTooltip" xml:space="preserve">
+    <value>Ruhezustand beim Schließen des Deckels deaktivieren, wenn am Netz und ein externer Monitor angeschlossen ist</value>
+  </data>
+  <data name="NVPlatformTooltip" xml:space="preserve">
+    <value>Stoppt NVIDIA-Dienste, wenn die dedizierte GPU deaktiviert ist,
+und startet sie automatisch neu, wenn die GPU aktiviert wird</value>
+  </data>
+  <data name="DisablePCIeASPMTooltip" xml:space="preserve">
+    <value>Verhindert, dass PCIe-Geräte in energiesparende Leerlaufzustände wechseln.
+Empfohlen, wenn zufällige Hänger oder nicht reagierende Hardware auftreten.</value>
+  </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
   </data>
 </root>

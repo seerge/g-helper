@@ -1,4 +1,5 @@
 ﻿using GHelper.Display;
+using GHelper.Display;
 using GHelper.Mode;
 using Microsoft.Win32;
 
@@ -6,42 +7,15 @@ namespace GHelper.Helpers
 {
     internal class ClamshellModeControl
     {
+        private readonly System.Timers.Timer lidSettleTimer = new() { AutoReset = false };
 
         public ClamshellModeControl()
         {
             //Save current setting if hibernate or shutdown to prevent reverting the user set option.
             CheckAndSaveLidAction();
+            lidSettleTimer.Elapsed += OnLidSettled;
         }
 
-        public bool IsExternalDisplayConnected()
-        {
-            try
-            {
-                var devicesList = ScreenInterrogatory.GetAllDevices();
-                var devices = devicesList.ToArray();
-
-                string internalName = AppConfig.GetString("internal_display");
-
-                foreach (var device in devices)
-                {
-                    if (device.outputTechnology != ScreenInterrogatory.DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY.DISPLAYCONFIG_OUTPUT_TECHNOLOGY_INTERNAL &&
-                        device.outputTechnology != ScreenInterrogatory.DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY.DISPLAYCONFIG_OUTPUT_TECHNOLOGY_DISPLAYPORT_EMBEDDED
-                        && device.monitorFriendlyDeviceName != internalName)
-                    {
-                        Logger.WriteLine("Found external screen: " + device.monitorFriendlyDeviceName + ":" + device.outputTechnology.ToString());
-
-                        //Already found one, we do not have to check whether there are more
-                        return true;
-                    }
-
-                }
-            } catch (Exception ex)
-            {
-                Logger.WriteLine(ex.ToString());
-            }
-
-            return false;
-        }
 
         public bool IsClamshellEnabled()
         {
@@ -55,7 +29,7 @@ namespace GHelper.Helpers
 
         public bool IsClamshellReady()
         {
-            return IsExternalDisplayConnected() && (IsChargerConnected() || AppConfig.Is("clamshell_battery"));
+            return ScreenNative.IsExternalDisplayConnected(true) && (IsChargerConnected() || AppConfig.Is("clamshell_battery"));
         }
 
         public void ToggleLidAction()
@@ -73,6 +47,19 @@ namespace GHelper.Helpers
             {
                 DisableClamshellMode();
             }
+        }
+
+        public void ScheduleLidToggle()
+        {
+            if (!IsClamshellEnabled()) return;
+            lidSettleTimer.Interval = Math.Max(AppConfig.Get("clamshell_delay"), 2000);
+            lidSettleTimer.Stop();
+            lidSettleTimer.Start();
+        }
+
+        private void OnLidSettled(object? sender, System.Timers.ElapsedEventArgs e)
+        {
+            ToggleLidAction();
         }
         public static void DisableClamshellMode()
         {
@@ -103,9 +90,11 @@ namespace GHelper.Helpers
             Logger.WriteLine("Display configuration changed.");
 
             if (IsClamshellEnabled())
-                ToggleLidAction();
+                ScheduleLidToggle();
 
-            if (Program.settingsForm.Visible)
+            if (AppConfig.Is("screen_force"))
+                ScreenControl.AutoScreen();
+            else if (Program.settingsForm.Visible)
                 ScreenControl.InitScreen();
 
             if (AppConfig.IsForceMiniled())
@@ -121,14 +110,20 @@ namespace GHelper.Helpers
                 return AppConfig.Get("clamshell_default_lid_action", -1);
             }
 
-            int val = PowerNative.GetLidAction(true);
-            //If it is 0 then it is likely already set by clamshell mdoe
-            //If 0 was set by the user, then why do they even use clamshell mode?
-            //We only care about hibernate or shutdown setting here
-            if (val == 2 || val == 3)
+            try
             {
-                AppConfig.Set("clamshell_default_lid_action", val);
-                return val;
+                int val = PowerNative.GetLidAction(true);
+                //If it is 0 then it is likely already set by clamshell mdoe
+                //If 0 was set by the user, then why do they even use clamshell mode?
+                //We only care about hibernate or shutdown setting here
+                if (val == 2 || val == 3)
+                {
+                    AppConfig.Set("clamshell_default_lid_action", val);
+                    return val;
+                }
+            } catch (Exception ex)
+            {
+                Logger.WriteLine("Can't get Lid Action: " + ex.ToString());
             }
 
             return 1;

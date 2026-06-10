@@ -1,361 +1,222 @@
-# G-Helper——轻量级的华硕笔记本控制中心
-[![United24](https://raw.githubusercontent.com/seerge/g-helper/main/docs/ua.png)](https://u24.gov.ua/)
-[![GitHub release](https://img.shields.io/github/release/seerge/g-helper)](https://GitHub.com/seerge/g-helper/releases/) 
-[![Github all releases](https://img.shields.io/github/downloads/seerge/g-helper/total)](https://GitHub.com/seerge/g-helper/releases/) [![GitHub stars](https://img.shields.io/github/stars/seerge/g-helper.svg?style=social)](https://GitHub.com/seerge/g-helper/stargazers/) 
+# G-Helper - 华硕笔记本的轻量级控制工具
+
+小巧轻量的 Armoury Crate（奥创控制中心）替代品，为华硕笔记本提供几乎相同的功能，却拥有小得多的资源占用。兼容所有主流型号，例如 ROG 幻14 / 幻15 / 幻16、幻X（Flow 翻转系列）、幻16 Duo 双屏、天选（飞行堡垒）系列、枪神 / 魔霸系列、ProArt 创、无畏（Vivobook）、灵耀（Zenbook）、ExpertBook、ROG Ally 与 Ally X 等众多机型！
+
+[![GitHub release](https://g-helper.com/badge/release.svg)](https://GitHub.com/seerge/g-helper/releases/)
+[![Downloads](https://g-helper.com/badge/downloads.svg)](https://GitHub.com/seerge/g-helper/releases/)
+[![SLSA3](https://g-helper.com/badge/slsa.svg)](https://github.com/seerge/g-helper/attestations)
+[![English](https://g-helper.com/badge/lang-en.svg)](https://github.com/seerge/g-helper#readme)
+[![日本語](https://g-helper.com/badge/lang-ja.svg)](https://github.com/seerge/g-helper/blob/main/docs/README.ja-JP.md)
+[![Čeština](https://g-helper.com/badge/lang-cs.svg)](https://github.com/seerge/g-helper/blob/main/docs/README.cs-CZ.md)
+[![Español](https://g-helper.com/badge/lang-es.svg)](https://github.com/seerge/g-helper/blob/main/docs/README.es-ES.md)
+[![한국어](https://g-helper.com/badge/lang-ko.svg)](https://github.com/seerge/g-helper/blob/main/docs/README.ko-KR.md)
+<a href="https://github.com/seerge/g-helper/releases/latest/download/GHelper.exe" alt="G-Helper - 华硕笔记本的轻量级控制工具"><img width="1280" alt="G-Helper - 华硕笔记本的轻量级控制工具" src="https://g-helper.com/hero/zh.png" /></a>
 
 
-语言: [English](https://github.com/seerge/g-helper#readme) | 中文 | [日本語](https://github.com/seerge/g-helper/blob/main/docs/README.ja-JP.md)
+<a href="https://github.com/seerge/g-helper/releases/latest/download/GHelper.exe"><img width="250" alt="下载" src="https://g-helper.com/button/download.svg?lang=zh" /></a> &nbsp; <a href="https://g-helper.com/support"><img width="250" alt="支持项目" src="https://g-helper.com/button/donate.svg?lang=zh" /></a>
 
-适用于华硕（Asus）笔记本电脑的轻量级 Armoury Crate (奥创控制中心)替代品，在功能几乎相同的同时减少不必要的服务以减轻负载。
-G-helper兼容所有主流型号，例如 ROG 幻14、幻15、幻16、幻13、幻X、天选（飞行堡垒）系列、枪神/魔霸系列、创系列、灵耀系列、无畏系列、ROG Ally 等！
+**⭐ 喜欢这个应用？欢迎帮忙宣传推广。**
+
+- [常见问题（FAQ）](https://g-helper.com/zh/faq/)
+- [安装与要求](https://g-helper.com/zh/requirements/)
+- [故障排除](https://g-helper.com/zh/troubleshooting/)
+- [高级用户设置](https://g-helper.com/zh/power-user-settings/)
 
 
-# [:floppy_disk:下载应用](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
+[![United24](https://github.com/user-attachments/assets/aa9444e3-9daa-4b88-a473-7a7f855e3a07)](https://u24.gov.ua/)
 
-<table>
-<tr>
-   <td><b>支持此项目</b></td>
-   <td >
-      <a href="https://www.paypal.com/donate/?hosted_button_id=Y7UNMPRNLB5X2"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/paypal-eur.png" height="36" alt="PayPal EUR"></a>&nbsp;
-      <a href="https://www.paypal.com/donate/?hosted_button_id=JSMU7DFHFSJMW"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/paypal-usd.png" height="36" alt="PayPal USD"></a>&nbsp;
-      <a href="https://buy.stripe.com/8wM6pt8HbgK50tWbIK"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/stripe.png" height="36" alt="Stripe"></a>&nbsp;
-      <a href="https://buy.stripe.com/6oE29dg9D3Xj7Wo28b"><img src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/alipay.png" height="36" alt="Alipay"></a>
-   </td>
-</tr>
-</table>
+## :loudspeaker: 视频测评与指南
+| [![测无止境](https://g-helper.com/images/reviews/bili-BV1cQbBzPE6x.jpg)](https://www.bilibili.com/video/BV1cQbBzPE6x/) | [![叠甲者抗揍也](https://g-helper.com/images/reviews/bili-BV15h4y127ub.jpg)](https://www.bilibili.com/video/BV15h4y127ub/) | [![方氺](https://g-helper.com/images/reviews/bili-BV1uFHpeZEY4.jpg)](https://www.bilibili.com/video/BV1uFHpeZEY4/) |
+| ----------------- | ---------------- | ---------------- | 
+| [测无止境](https://www.bilibili.com/video/BV1cQbBzPE6x/) | [叠甲者抗揍也](https://www.bilibili.com/video/BV15h4y127ub/) | [方氺](https://www.bilibili.com/video/BV1uFHpeZEY4/) | 
 
-如果你喜欢这个应用，请[给这个项目⭐️](https://github.com/seerge/g-helper) 或者向别人推荐它！
+## 📰 媒体报道
+1. [Digital Trends](https://www.digitaltrends.com/computing/g-helper-armoury-crate-alternative/)
+2. [Notebookcheck](https://www.notebookcheck.net/Unbloated-G-Helper-The-best-open-source-alternative-to-Asus-Armoury-Crate-Part-2.1213486.0.html)
+3. [知乎](https://zhuanlan.zhihu.com/p/663917638)
+4. [Chiphell](https://www.chiphell.com/thread-2719738-1-1.html)
 
-[常见问题解答(FAQ)](#常见问题解答)
+## :gift: 主要优点 
 
-[安装指南](#安装指南)
-
-[高级用户设置](#高级用户设置)
-
-[![G-Helper Download](https://github.com/pasical/g-helper/assets/112304778/03f442b9-29e8-4e99-a095-8eaa533c995b)](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
-
-_如果你在别的地方提到这个软件-请记得加上这个项目的网址。十分感谢。_
-
-## 🎁 主要优点
-
-1. 自动且无缝的独立显卡模式切换(不需要关闭所有应用或执行其他操作)
-2. 可以手动调整所有的性能模式(包括自定义风扇曲线以及PPTs(Platform Power Threshold,即CPU总功耗,下文简称PPTs--译注))
-3. 极致的轻量化，几乎不消耗任何资源，也不需要安装系统服务。只需要下载一个exe文件就可以运行。
-4. 简洁的界面设计，可以轻松调整所有设置。
+1. 无缝且自动的 GPU 切换
+2. 所有性能模式均可通过功耗限制和风扇曲线完全自定义
+3. 轻量化。只需运行单个 exe 文件，不会在系统中安装任何东西。
+4. 简洁清爽的原生界面，可轻松访问所有设置
 5. FN 锁定和自定义热键
 
-![image](https://github.com/pasical/g-helper/assets/112304778/ee221865-cf36-4246-95f0-47313e647230)
+<img width="1960" alt="G-Helper Screenshot" src="https://github.com/user-attachments/assets/9376fe90-fbb6-420a-abbd-0186189665e1" />
 
+### :zap: 功能
 
-
-### ⚡️ 主要功能
-
-1. **性能模式**: 静音模式 - 平衡模式 - 增强模式 (笔电bios内置的性能模式，附带默认的风扇曲线)
-2. **显卡模式**: 集显模式 - 标准模式 - 独显直连 - 自动切换
-3. 笔记本屏幕刷新率 60hz 或 120hz 自动调节(或者 144hz 等刷新率)，包括屏幕Overdrive(OD,即ROG系列的屏幕快速响应/快显功能--译注)功能
-4. 可调节的风扇曲线、电源功耗设置(PPTs)(_注:请谨慎调节!_)和CPU超频选项
-5. ROG Anime matrix 光显矩阵屏控制， 感谢项目 [Starlight](https://github.com/vddCore/Starlight) + 应用侧的一些调整，包括动画GIF图片
-6. 键盘灯光效果和颜色设置 (包括睡眠模式下的灯光效果和对飞行堡垒/天选系列的键盘支持)
-7. 对M按键的自定义设置和 FN+X 快捷键的自定义
-8. CPU/GPU温度、风扇转速和电池充放电功率显示
-9. 电池充电上限设置，保护电池健康度
-10. Nvidia GPU 超频和降压
+1. 性能模式：静音 - 平衡 - 增强（内置，附带默认风扇曲线）
+2. 显卡模式：集显 - 标准 - 独显直连 - 自动优化
+3. 屏幕刷新率控制，支持显示 Overdrive（屏幕过驱）
+4. 为每个性能模式提供自定义风扇曲线编辑器、功耗限制和睿频（Turbo Boost）选择
+5. Anime Matrix 光显矩阵或 Slash Lighting 光效控制，包括动画 GIF、时钟和音频可视化
+6. RGB 背光动画模式与颜色
+7. 热键处理
+8. 监控 CPU 和 GPU 温度、风扇转速及电池状态
+9. 电池充电上限设置，保护电池健康
+10. NVIDIA GPU 超频与降压
 11. XG Mobile 控制
-12. AMD CPU 的降压
-13. BIOS和驱动的升级
-14. 华硕鼠标的配置修改
-15. Mini-LED 屏幕的多区调光
-16. 低亮度防闪烁功能和显示风格的修改
+12. AMD CPU 降压与温度限制
+13. BIOS 与驱动更新
+14. 华硕鼠标控制
+15. Mini-LED 多区域调光开关
+16. 无闪烁调光与显示风格（Visual Modes）
 
-### ⚙️ 当使用电池供电或插上电源时，自动切换：
+### :gear: 自动化
+- 使用电池或接入电源时自动切换性能模式
+- 自动优化 GPU 模式 - 电池供电时禁用独显，接入电源时启用
+- 自动屏幕刷新率（电池供电时 60Hz，接入电源时为最高刷新率）
+- 电池供电或接入电源时的键盘背光超时
 
-- 性能模式 (软件会记住上一次使用电池或插上电源时的电源模式)
-- 自动切换独立显卡模式 - 使用电池时停用独显，并在插上电源时重新启用
-- 自动切换屏幕刷新率 (使用电池时切换为 60hz,插入电源后切换为 120+ hz)
-- 使用电池时键盘背光可自动关闭
+### :rocket: 性能模式
+>[!NOTE]
+>所有模式连同默认风扇曲线和功耗限制都**内置于 BIOS** 中，并且与 Armoury Crate 中的**完全相同**。
 
-为了保证自动切换功能和按键绑定功能的正常工作，软件需要在后台运行并显示一个托盘图标。这并不会消耗其他资源。
+每个默认 BIOS 模式都与对应的 [Windows 电源模式](https://support.microsoft.com/en-us/windows/change-the-power-mode-for-your-windows-pc-c2aff038-22c9-f46d-5ca0-78696fdf2de8) 配对。你可以在 ``风扇 + 电源`` 中调整该设置。
 
-### 🚀 性能模式
+1. BIOS 中的 `静音` + `最佳能效` 电源模式
+2. BIOS 中的 `平衡`（接入电源时为 Performance）+ `平衡` 电源模式
+3. BIOS 中的 `增强` + `最佳性能` 电源模式
 
-性能模式与 Armoury Crate(奥创控制中心)中的 **保持一致**，因为这些设置与其对应的风扇曲线都被保存在bios中
+<img width="2330" alt="Performance Modes" src="https://github.com/user-attachments/assets/254d33eb-2af1-4715-a097-ed8678c7e9db" />
 
-1. 静音 (风扇转速最小或完全停转, 70W 总PPT, 其中 CPU 最高 45W PPT) + windows电源模式设置为最长续航/省电模式
-2. 平衡/性能 (平衡模式的风扇曲线设置, 100W 总PPT, 其中 CPU 最高 45W PPT) + windows电源模式设置为平衡
-3. 增强 (激进的风扇曲线设置, 125W 总PPT, 其中 CPU 最高 80W PPT) + windows电源模式设置为高性能/最佳性能
+### :video_game: GPU 调校
 
-_PPTs 默认在 幻14 2022版上显示, 对于其他型号 PPTs 的显示将会有所变化，因为它们在bios中的设置不同。_
+在每个模式下，都可以根据具体需求调校独立显卡，包括核心和显存频率偏移、GPU 功耗、Dynamic Boost、温度限制等
+<img width="2354" alt="GPU Tweaking" src="https://github.com/user-attachments/assets/48ce19a6-d149-40ed-9145-23f974c513f7" />
 
-![Screenshot 2023-04-06 142234](https://user-images.githubusercontent.com/5920850/230377635-7032a480-3a94-4e35-9468-d8911e3e55ec.png)
+### 💻 显卡模式
 
-### 🎮 显卡模式
+1. **集显（Eco）**：仅启用低功耗的集成显卡，由核显驱动内置屏幕
+2. **标准（Standard，MS Hybrid）**：同时启用核显和独显，由核显驱动内置屏幕
+3. **独显直连（Ultimate）**：同时启用核显和独显，但由独显驱动内置屏幕（2022 年及以后的机型支持）
+4. **自动优化（Optimized）**：电池供电时禁用独显（集显），接入电源时启用（标准）
 
-1. 集显模式 : 只启用低功耗的内置显卡, 核显连接笔电内置屏幕
-2. 标准模式 (MS Hybrid) : 同时启用核显与独显, 核显连接笔电内置屏幕
-3. 独显直连: 同时启用核显与独显, 但独显直连笔电屏幕 (仅在幻14 2022版等机型上支持)
-4. 自动切换: 使用电池时关闭独显(集显模式)，并在插上电源后重新启用独显(混合输出)
+<img width="1134" alt="显卡模式" src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/gpu-modes-zh.svg" />
 
-![Screenshot 2024-03-11 111818](https://github.com/seerge/g-helper/assets/5920850/fd69a81e-978d-4d5c-a0a8-26da51f90a5b)
+### 💿 驱动更新
+本应用内置自动 BIOS 和驱动更新检查器，直接从华硕官网针对你的具体型号拉取更新，并在有新下载可用时予以提示。`更新` 部分中的所有链接均指向华硕官方下载。
+<img width="2302" alt="Driver Updates" src="https://github.com/user-attachments/assets/303dfce9-fbbd-4d15-b6d7-f21e7c2c59a4" />
 
-![GPU Modes](https://github.com/seerge/g-helper/assets/5920850/65c6bdd5-728c-4965-b544-fcf5a85ed6a2)
+### 🎮 性能指标叠加层（Overlay）
+内置的游戏内叠加层（OSD），可在游戏画面上直接显示实时 **FPS、CPU / GPU 温度、占用率和功耗** —— 无需额外工具。支持 DX10+ 游戏。在使用独占全屏模式的旧游戏上可能不显示，请将游戏设置为窗口化 / 无边框全屏模式。
 
-### :mouse: 华硕鼠标和其他外设的支持
+- ``Ctrl + Shift + Alt + O`` - 开启 / 关闭游戏内叠加层
+- ``Ctrl + Shift + Alt + 拖动鼠标`` - 移动叠加层
+- ``Ctrl + Shift + Alt + 单击鼠标`` - 切换模式（精简 / 默认 / 完整）
+- ``Ctrl + Shift + Alt + 滚轮`` - 调整叠加层大小
+- ``Ctrl + Shift + Alt + 滚轮单击`` - 重置叠加层大小
 
-[目前支持的型号](https://github.com/seerge/g-helper/discussions/900)
+<img width="1690" alt="性能指标叠加层" src="https://github.com/user-attachments/assets/0752a704-e9a7-4e27-8587-39967f625fae" />
+<img width="3840" alt="游戏中的性能指标叠加层" src="https://github.com/user-attachments/assets/8b063f80-d508-41e0-9978-154bc936d451" />
 
-*对于中国大陆发行的版本请自行参考
-- ROG Chakram X (P708)
-- ROG Chakram Core (P511)
-- ROG Gladius II and Gladius II Origin (P502 and P504)
+### :mouse: 华硕鼠标及其他外设支持
+
+<details>
+<summary><a href="https://github.com/seerge/g-helper/discussions/900">目前支持的型号</a>（点击展开）</summary>
+
+- ROG Chakram X
+- ROG Chakram Core
+- ROG Gladius II and Gladius II Origin
+- ROG Gladius II Wireless
 - ROG Gladius III
 - ROG Gladius III Wireless
+- ROG Harpe Ace Extreme
 - ROG Harpe Ace Aim Lab Edition
+- ROG Harpe Ace Mini
+- ROG Harpe II Ace
 - ROG Keris Wireless
-- ROG Strix Carry (P508)
-- ROG Strix III Gladius III Aimpoint Wireless (P711)
-- ROG Strix Impact III (P518)
-- ROG Spatha
+- ROG Keris II Ace
+- ROG Keris Wireless Aimpoint
+- ROG Strix Carry
+- ROG Strix III Gladius III Aimpoint Wireless
+- ROG Strix Impact III
+- ROG Strix Impact III Wireless
+- ROG Spatha X
 - ROG Strix Impact II Wireless
-- TUF Gaming M4 Wireless (P306)
+- ROG Pugio
+- ROG Pugio II
+- TUF Gaming M4 Wireless
 - TUF Gaming M3
 - TUF Gaming M3 Gen II
+- TUF Gaming M4 AIR
+- TUF Gaming M5
+- TX Gaming Mini
 
-特别感谢 [@IceStormNG](https://github.com/IceStormNG) 👑 的贡献和研究！
+</details>
+
+特别感谢 [@IceStormNG](https://github.com/IceStormNG) 👑 的贡献与研究（！）。
+
+<img width="2448" alt="Mouse and other peripherals" src="https://github.com/user-attachments/assets/fe2a766b-f514-42e9-8dff-4bcc915364d4" />
 
 ### ⌨️ 按键绑定
 
-- ``Fn + F5 / Fn + Shift + F5`` - 向前/向后切换性能模式
-- ``Ctrl + Shift + F5 / Ctrl + Shift + Alt + F5`` - 向前/向后切换性能模式
-- ``Ctrl + Shift + F12`` - 打开G-Helper窗口
-- ``Ctrl + M1 / M2`` - 屏幕亮度调低/调高
-- ``Shift + M1 / M2`` - 键盘背光亮度调低/调高
-- ``Fn + C`` - Fn锁定
-- ``Fn + Shift + F7 / F8`` - 光显矩阵/光线矩阵亮度调低/调高
-- ``Fn + Shift + F7 / F8`` - 屏幕亮度调低/调高
+- ``Fn + F5 / Fn + Shift + F5`` - 向前 / 向后切换性能模式
+- ``Ctrl + Shift + F5 / Ctrl + Shift + Alt + F5`` - 向前 / 向后切换性能模式
+- ``Ctrl + Shift + F12`` - 打开 G-Helper 窗口
+- ``Ctrl + M1 / M2`` - 屏幕亮度 调低 / 调高
+- ``Shift + M1 / M2`` - 背光亮度 调低 / 调高
+- ``Fn + V`` - 显示风格（Visual Modes）
+- ``Fn + C`` / ``Fn + Esc`` - Fn 锁定
+- ``Fn + Ctrl +  F7 / F8`` / ``Ctrl + Shift + Alt +  F7 / F8`` - 无闪烁调光 调低 / 调高
+- ``Fn + Shift + F7 / F8`` - 光显矩阵 / Slash 光效亮度 调低 / 调高
+- ``Fn + Shift + F7 / F8`` / ``Ctrl + Shift + Alt +  F7 / F8`` - 触控屏（Screenpad）亮度 调低 / 调高
 - ``Ctrl + Shift + F20`` - 麦克风静音
+- ``Ctrl + Shift + Alt + F13`` - 切换屏幕刷新率
 - ``Ctrl + Shift + Alt + F14`` - 集显模式
 - ``Ctrl + Shift + Alt + F15`` - 标准模式
-- ``Ctrl + Shift + Alt + F16`` - 静音模式
-- ``Ctrl + Shift + Alt + F17`` - 平衡模式
-- ``Ctrl + Shift + Alt + F18`` - 增强模式
+- ``Ctrl + Shift + Alt + F16`` - 静音
+- ``Ctrl + Shift + Alt + F17`` - 平衡
+- ``Ctrl + Shift + Alt + F18`` - 增强
 - ``Ctrl + Shift + Alt + F19`` - 自定义 1（如果存在）
 - ``Ctrl + Shift + Alt + F20`` - 自定义 2（如果存在）
-- [自定义键绑定/热键](https://github.com/seerge/g-helper/wiki/Power-user-settings#custom-hotkey-actions)
+- [自定义键位 / 热键](https://g-helper.com/zh/power-user-settings/)
 
-### 🎮ROG Ally 按键
+### 🎮 ROG Ally 按键
 - ``M + DPad Left / Right`` - 显示亮度
-- ``M + DPad Up`` - 屏幕键盘
+- ``M + DPad Up`` - 触摸键盘
 - ``M + DPad Down`` - 显示桌面
-- ``M + Y`` - 切换 AMD 覆盖
+- ``M + Y`` - 切换 AMD 叠加层
 - ``M + X`` - 截屏
-- ``M + Right Stick Click`` - 控制器模式
-
-------------------
-#### 如果您喜欢本项目，可以扫描以下二维码捐赠 
-
-| [Paypal in EUR](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA) | [Paypal in USD](https://www.paypal.com/donate/?hosted_button_id=SRM6QUX6ACXDY) |
-| ------------------------------------------ | ----------------------------------------------- |
-| [![QR Code](https://user-images.githubusercontent.com/5920850/233658717-0441494d-fede-4a2c-b4f2-4b16a184a69a.png)](https://www.paypal.com/donate/?hosted_button_id=4HMSHS4EBQWTA) | [![QR Code](https://github-production-user-asset-6210df.s3.amazonaws.com/5920850/239492811-b487e89a-3df6-42ea-bdb8-24c455ab2310.png)](https://www.paypal.com/donate/?hosted_button_id=SRM6QUX6ACXDY) |
+- ``M + Right Stick Click`` - 手柄模式
 
 ------------------
 
-
-# 常见问题解答
-
-#### 当我按下 M4 / Rog键的时候总是弹出安装Armoury Crate的弹窗提示，我该如何关闭它?
-
-删除下列文件或者把它移动(注:剪切+粘贴)到别的目录 ``C:\Windows\System32\ASUSACCI\ArmouryCrateKeyControl.exe``.
-
-如果还是出现弹窗 - 进入 BIOS (开机时按住 F2), 按照屏幕下方的快捷键提示进入 Advanced Settings,然后关闭 "Armoury Crate Control Interface" (注:把它设置为disabled)。
-
-#### 电池充电限制不起作用
-
-这有可能是因为ASUS服务在你设置后又覆写了对应的设置。你可以通过在G-helper中点击"更多"，然后在"正在运行的Asus服务项"右侧点击"停止"来停止ASUS服务。
-
-#### 我没看到显卡模式
-
-在一些旧型号中(比如幻14 2020)从硬件层上不支持禁用显卡，在这些机型中并不需要显卡模式，因此没有显示。
-
-#### 为什么我的电脑上没有独显直连
-
-独显直连(在硬件层面上)只对2022年之后的机型中生效。
-
-#### 我是否应该自行调整功耗设置(PPTs)和风扇曲线?
-
-你可以不那么做，这些操作是可选的。按照经验(bios)内置的性能模式工作的很好。请只在遇到问题的时候限制功耗或者手动设置风扇模式。当你在风扇与功率设置中按下“应用”时，bios将会认为风扇配置文件为“自定义”! (无论你是否真的修改了风扇曲线)
-
-#### G-helper是如何控制我的风扇转速的?
-
-软件并不会修改风扇转速。这个设置实际上由bios控制(与Armoury Crate的情况相同)。G-helper 所能做的 - 就是将一个自定义的风扇配置(可选地)应用到正在使用的性能模式，其中包括8组温度+风扇速度的百分比数值%。软件通过与Armoury Crate看起来相同的WMI endpoint来应用这一设置，
-
-#### 我如何把风扇转速显示从百分比%切换到RPM(每分钟转速)?
-
-点击一下百分比即可切换。
-
-#### 当我修改自定义风扇曲线时，我得到了"BIOS拒绝修改风扇曲线"("BIOS rejected fan curve")提示
-
-2021之后的TUF机型不支持自定义风扇曲线。很可能在Armory Crate中也没有这个选项。
-
-#### 我没有在G-helper中看到独显温度
-
-很可能要么你正在使用核显模式/自动切换模式，这种情况下独显只是关闭了；或者你的windows系统为独显设置了睡眠模式(为了省电)。这种情况下，G-helper无法识别到独显，也不能获得温度读数。
-
-#### 打开应用后没有看到应用启动/弹窗提示"G-Helper已经在运行"
-
-请在系统托盘里找到 (G) 图标。windows会默认隐藏所有图标，所以你可能需要点击 ^ 来看见它们。建议任务栏右键进入任务栏设置 -> 其他系统图标 -> 将 G-Helper 设置为始终在任务栏上显示。
-
-#### 应用不能启动或者崩溃了，我该怎么做?
-
-从开始菜单里打开“事件管理器”， 进入 Windows日志 -> 应用，然后在最近的错误日志里寻找包含G-helper的日志。如果你找到一个 - 请提出一个 [新的 issue](https://github.com/seerge/g-helper/issues) ，其中包含来自这次错误的所有的详细信息。
-
-#### 我可以在用G-Helper的时候同时用myASUS吗?
-
-当然可以! 唯一的问题是myASUS可能会重置你之前在g-helper里设置的电池充电上限。在这种情况下，建议你在这两个应用(myASUS和g-helper)里设置相同的充电上限(60%/80%/100%)以避免冲突。
-
-#### 我如何将M3键设置为将麦克风静音?
-
-这个功能由 Asus Optimization Service 管理(所以 G-helper 没有这项设置，也不管理这个功能)。请确认这个系统服务是否正常运行
-
-#### 我如何设置不同的视觉风格(即 Armoury Crate 内的gamevisual功能)?
-
-因为这个功能让颜色显示不正确，我个人(注:作者 :) )并不喜欢这些。但是如果你需要这个功能 - 你可以使用 Nvidia 控制面板/GefoeceExperirence滤镜或者AMD控制面板(Radeon Software/AMD Software: Adrenalin Edition)来修改显示颜色(因显示器和配置而异)。如果你真的非常需要这个功能，你也可以使用 [微软商店中ASUS自己的工具](https://apps.microsoft.com/store/detail/gamevisual/9P4K1LFTXSH8?hl=nl-nl&gl=nl&rtc=1)
-
-#### 我能超频 Nvidia GPU 核心或显存吗?
-
-首先确保你的独立显卡是启用的，之后打开"风扇 + 电源"选项，在这里即可调整核心和显存频率。这个和Armoury Crate中的设置一样。注意，使用这项功能需要管理员权限，应用也会弹出需要管理员权限的提示。(*)
-
-#### Windows Defender将该应用标记为恶意软件/病毒
-
-这是Windows Defender的误报(其他使用机器学习来检测病毒的杀毒软件可能也出现同样的结果)，这可能是因为本应用没有数字签名和证书。如果你不放心的话，你可以自己编译安装本项目，本项目是完全开源的。
-
-#### 我该在哪找到应用的配置文件和日志文件
-
-你可以在 `%AppData%\GHelper` 文件夹找到他们，当你在issue中提交bug的时候，请务必附上应用日志。
-
-#### 应用无法在开机时启动或者启动的时候在任务栏没有提示
-
-打开应用，取消再重新勾选"开机自启"项目。如果还是不行的话，你可以手动在Windows 任务计划程序(Task Scheduler)中为G-helper应用增加几秒延迟后再启动。
-
-#### 我该如何卸载G-helper?
-
-G-helper是一个单文件的exe文件, 而且它不会向系统中安装任何东西。如果要“卸载”它 - 你可以直接删除exe文件 :) 如果你已经设置了自定义的风扇配置或者功耗设置(PPTs) - 在删除软件之前建议你选择你最喜欢的配置模式(比如"平衡")，然后在“风扇与电源设置”里点击“恢复默认设置”。
-
-#### 我如何给我的CPU降压？
-
-目前你只能给AMD CPU降压。如果你的机型支持这个功能 - 你会在“风扇 + 电源”项中看到对应的设置。如果你看不到该项设置，说明你的CPU不支持降压。所有支持的型号可以[点此查询](https://github.com/seerge/g-helper/discussions/736)。
-
-#### 我的机型是幻14 2023并且我无法关闭/开启我的独立显卡
-
-这应该是旧版本的BIOS的问题。根据[用户反馈](https://github.com/seerge/g-helper/issues/680)，更新最近的BIOS 312版本即可解决问题(可以通过MyASUS或者G-helper "更新" 项进行安装)。
-
-#### 我的机型是幻15 2022并且我无法关闭/开启我的独立显卡或者风扇出问题
-
-幻15 2022款在BIOS 313以上版本会有很多小问题。许多用户反馈可以通过[将BIOS版本降级到311版本来解决](https://rog.asus.com/nl/laptops/rog-zephyrus/rog-zephyrus-g15-2022-series/helpdesk_bios/)。
-
-#### 我删除了Armoury之后我的GPU性能降低了
-
-检查你的 Nvidia Experience 设置，确保Whisper Mode项是关闭的。你还可以尝试重置所有设置。`Nvidia 控制面板 -> 管理 3D  设置 -> 恢复`
-
-#### 我如何从硬件层面重启我的笔记本？
-
-所有的华硕笔记本都支持方便的硬重启。它不会影响你的数据，但是会重置所有硬件相关的东西(例如启动独立显卡，唤醒wifi/蓝牙模块等)
-关闭你的电脑，长按“电源”按钮30-40秒。之后正常启动你的电脑(会比正常情况下花更长时间启动)。
-
-#### G-helper 是什么?
-
-这是一个轻量化的Armoury Crate(奥创控制中心)替代工具，而且不需要任何多余的功能或安装不必要的系统服务的。在ROG G14, G15, G16, M16, X13, Z13, X16, TUF, Scar, Vivobook, ProArt等热门笔记本中都适用。
-
----
-
-### 如何开始
-
-1.下载[**最新版本**](https://github.com/seerge/g-helper/releases/latest/download/GHelper.zip)
-2. 解压到您选择的文件夹_（不要直接从zip运行exe，因为Windows会将其放入临时文件夹并在之后删除）_
-3.运行**GHelper.exe**
-
-- 如果您在启动时收到来自 Windows Defender 的警告（Windows 保护了您的电脑）。
-单击“更多信息”->“仍然运行”。
-- 如果出现“在商店中搜索应用程序”对话框，则这是 Windows Defender 的一个错误。
-右键单击 GHelper.exe -> 选择“属性” -> 选择“取消阻止复选框”
-
-### 要求（强制）
-
-- [Microsoft .NET 7](https://download.visualstudio.microsoft.com/download/pr/8091a826-e1c4-424a-b17b-5c10776cd3de/8957f21a279322d8fac9b542c6aba12e/dotnet-sdk-7.0.408-win-x64.exe)
-- [华硕系统控制界面](https://dlcdnets.asus.com/pub/ASUS/nb/Image/CustomComponent/ASUSSystemControlInterfaceV3/ASUSSystemControlInterfaceV3.exe)
-
-### 建议（可选）
-
-- **不建议**将该应用程序与 Armoury Crate 服务结合使用，因为它们调整相同的设置。 您可以[使用AC自带的卸载工具卸载](https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip?model=armoury%20crate)。 以防万一，您可以稍后再安装它。
-- **不建议**运行“ASUS Smart Display Control”应用程序，因为它会尝试更改刷新率并与 g-helper 争夺相同的功能。 您可以安全地卸载它。
-- 如果您不打算使用 MyASUS，您可以停止/禁用不必要的服务：转到应用程序中的 **Extra**，然后按 Asus 服务部分中的“停止”。 要重新启动/启用服务 - 单击“开始”。
-
-
----
-
-精简你的windows可以帮助延长电池的使用时间，同时让笔电的温度更低一些
-
-![Helps to save your battery](https://raw.githubusercontent.com/seerge/g-helper/main/docs/screenshots/screen-5w.png)
-
----
-
-# 高级用户设置
-
-### 为每一个模式自定义用户计划
-
-在 config.json (位于 %appdata/GHelper) 中你可以手动添加自定义电源设置的GUID (它既可以是"真正的"可被选择的电源计划，也可以是"覆盖式(overlay)"的电源计划，就像g-helper默认设置的那样)
-
-格式如下 : "scheme_`<mode>`" : "GUID"
-
-Where ``mode = 0 (balanced), 1 (turbo), 2 (silent)``
-
-```
-"scheme_0": "2ac1d0e0-17a7-44ed-8091-d88ef75a4eb0",
-"scheme_1": "381b4222-f694-41f0-9685-ff5bb260df2e"
-```
-
-确保修改时保证json文件的结构不被打乱 (例如不要增减或缺失逗号、括号等操作) - 否则应用会读取失败，并将重新创建一个新的配置文件来替代它。
-
-### 自定义热键行为
-
-软件支持热键自定义配置。如要设置，在按键旁的选项框中选择"自定义设置"，然后执行下面的操作(任选其一):
-
-1. 要想运行任意应用 - 向 "action" 文本框中粘贴应用文件exe的完整路径，例如:
-   ``C:\Program Files\EA Games\Battlefield 2042\BF2042.exe``
-2. 要想模拟任意windows按键 - 向"action"文本框中粘贴相对应的 keycode，例如 ``0x2C`` 为屏幕截图键。
-   Keycodes的完整列表: https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
-
-![image](https://github.com/pasical/g-helper/assets/112304778/1280b7c9-f0c1-4b91-b502-2b9dd79b12d8)
-
-
-
----
-
-### 使用的库和项目
-- [Linux Kernel](https://github.com/torvalds/linux/blob/master/drivers/platform/x86/asus-wmi.c)华硕 ACPI/WMI 接口中一些基本端点的 Linux 内核 
+> [!NOTE]
+> ### 🔖 重要提示
+> G-Helper **不是**操作系统、固件或驱动程序。它**不会**以任何方式实时“运行”你的硬件。
+> 
+> 它只是一个应用程序，让你选择制造商预先创建（并存储在 BIOS 中）的某个运行模式，并可选地（！）设置一些你设备上本就存在的设置，这与 Armoury Crate 的做法相同。它通过使用 Armoury Crate 所用的华硕系统控制接口（Asus System Control Interface）“驱动”来实现这一切。
+> 
+> 如果你使用与 Armoury Crate 相同的模式 / 设置 —— 你设备的性能或行为不会有任何差异。
+> 
+> G-Helper 对你笔记本的作用，类似于遥控器对你电视的作用。
+
+### 使用的库与项目
+- [Linux Kernel](https://github.com/torvalds/linux/blob/master/include/linux/platform_data/x86/asus-wmi.h) 用于华硕 ACPI/WMI 接口中的一些基础端点
 - [NvAPIWrapper](https://github.com/falahati/NvAPIWrapper) 用于访问 Nvidia API
-- [Starlight](https://github.com/vddCore/Starlight) 光显矩阵通信协议
-- [UXTU](https://github.com/JamesCJ60/Universal-x86-Tuning-Utility) 使用 Ryzen 系统管理单元进行降压
-- [AsusCtl](https://gitlab.com/asus-linux/asusctl) 提供灵感和一些逆向工程
+- [Starlight](https://github.com/vddCore/Starlight) 用于光显矩阵通信协议
+- [UXTU](https://github.com/JamesCJ60/Universal-x86-Tuning-Utility) 用于使用 Ryzen SMU 进行降压的端点
+- [PawnIO](https://github.com/namazso/PawnIO) 用于访问 RyzenSMU
+- [AsusCtl](https://gitlab.com/asus-linux/asusctl) 提供灵感与部分逆向工程
 
-### 🔖 注意事项
+### 代码签名政策
+免费的代码签名由 [SignPath.io](https://about.signpath.io/) 提供，证书由 [SignPath Foundation](https://signpath.org/) 提供
 
-G-Helper 不是操作系统、固件或驱动程序。它无论如何都不会实时“运行”您的硬件。
-
-这只是一个应用程序，允许您选择制造商创建的预定义操作模式之一（并存储在 BIOS 中），并可选地（！）设置一些已经存在于您的设备上的设置，与 Armoury Crate 的原理相同。它通过使用 Armoury Crate 所使用的 Asus System Control Interface “驱动程序”来实现所有功能。
-
-如果您使用的模式/设置与 Armoury Crate 中的相同 - 您设备的性能或行为不会有差异。
-
-G-Helper 对您笔记本电脑的作用，类似于遥控器对您电视的作用。
+### 隐私政策
+本程序不会向任何其他联网系统传输任何信息
 
 ### 免责声明
+“Asus”、“ROG”、“TUF” 和 “Armoury Crate” 是 AsusTek Computer, Inc. 的注册商标，归其所有。我对这些以及任何属于 AsusTek Computer 的资产不主张任何权利，仅出于信息传递目的使用它们。
 
-"ROG"、"TUF" 和 "Armoury Crate" 是 AsusTek Computer, Inc. 的注册商标。我对这些或任何属于 AsusTek Computer 的资产不提出任何主张，仅出于信息传递目的而使用它们。
+本软件按“现状”提供，不附带任何形式的明示或暗示保证，包括但不限于对适销性、特定用途适用性和非侵权的保证。滥用本软件可能导致系统不稳定或故障。
 
-软件按“现状”提供，不提供任何形式的明示或暗示保证，包括但不限于对适销性、特定用途的适用性和非侵权的保证。滥用此软件可能导致系统不稳定或故障。
-
-_注:请务必参考下方 **免责声明** 原文，以避免或减小错误或不恰当之翻译引起的负面影响。翻译仅为便于阅读之目的，并非专业翻译，可能存在错误，可能与最新版本有所差异。本文不具有法律效力，亦不作为发生争端时处理之依据。_
+_注：请务必以下方 **Disclaimers** 英文原文为准，以避免或减小因错误或不恰当之翻译引起的负面影响。翻译仅为便于阅读之目的，并非专业翻译，可能存在错误，亦可能与最新版本有所差异。本文不具有法律效力，亦不作为发生争端时处理之依据。_
 
 **Disclaimers**
-"ROG", "TUF", and "Armoury Crate" are trademarked by and belong to AsusTek Computer, Inc. I make no claims to these or any assets belonging to AsusTek Computer and use them purely for informational purposes only.
+"Asus", "ROG", "TUF", and "Armoury Crate" are trademarked by and belong to AsusTek Computer, Inc. I make no claims to these or any assets belonging to AsusTek Computer and use them purely for informational purposes only.
 
-THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. MISUSE OF THIS SOFTWARE COULD CAUSE SYSTEM INSTABILITY OR MALFUNCTION.
+THE SOFTWARE IS PROVIDED “AS IS” AND WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. MISUSE OF THIS SOFTWARE COULD CAUSE SYSTEM INSTABILITY OR MALFUNCTION.

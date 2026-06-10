@@ -36,9 +36,12 @@ namespace GHelper.AnimeMatrix.Communication
             return _productId;
         }
 
+        protected virtual string LogName => "Device";
+
         public virtual void SetProvider()
         {
-            _usbProvider = new WindowsUsbProvider(_vendorId, _productId, _maxFeatureReportLength);
+            if (_usbProvider is not null) return;
+            _usbProvider = new WindowsUsbProvider(_vendorId, _productId, _maxFeatureReportLength, LogName);
         }
 
         protected T Packet<T>(params byte[] command) where T : Packet

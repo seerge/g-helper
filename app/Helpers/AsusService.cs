@@ -2,7 +2,7 @@
 
 namespace GHelper.Helpers
 {
-    public static class OptimizationService
+    public static class AsusService
     {
 
         static List<string> services = new() {
@@ -18,6 +18,7 @@ namespace GHelper.Helpers
                 "ASUSSwitch",
                 "ASUSSystemAnalysis",
                 "ASUSSystemDiagnosis",
+                "ASUSXGMobileService",
                 "AsusCertService"
         };
 
@@ -35,15 +36,29 @@ namespace GHelper.Helpers
                 "LightingService",
         };
 
-        public static bool IsRunning()
+        private static bool IsRunning(string name)
         {
-            return Process.GetProcessesByName("AsusOptimization").Count() > 0;
+            var procs = Process.GetProcessesByName(name);
+            try { return procs.Length > 0; }
+            finally { foreach (var p in procs) p.Dispose(); }
         }
 
-        public static bool IsOSDRunning()
+        public static bool IsAsusOptimizationRunning() => IsRunning("AsusOptimization");
+
+        public static bool IsArmouryRunning()
         {
-            return Process.GetProcessesByName("AsusOSD").Count() > 0;
+            var acService = IsRunning("ArmouryCrate.Service");
+            var lightingService = IsRunning("LightingService");
+            Logger.WriteLine($"AC Service: {acService}, Lighting Service: {lightingService}");
+            return acService || lightingService;
         }
+
+        public static void RunArmouryUninstaller()
+        {
+            Process.Start(new ProcessStartInfo("https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip") { UseShellExecute = true });
+        }
+
+        public static bool IsOSDRunning() => IsRunning("AsusOSD");
 
 
         public static int GetRunningCount()
@@ -51,13 +66,13 @@ namespace GHelper.Helpers
             int count = 0;
             foreach (string service in services)
             {
-                if (Process.GetProcessesByName(service).Count() > 0) count++;
+                if (IsRunning(service)) count++;
             }
 
             if (AppConfig.IsStopAC())
                 foreach (string service in processesAC)
                 {
-                    if (Process.GetProcessesByName(service).Count() > 0)
+                    if (IsRunning(service))
                     {
                         count++;
                         Logger.WriteLine(service);

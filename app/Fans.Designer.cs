@@ -44,10 +44,10 @@ namespace GHelper
             checkFanClamp = new RCheckBox();
             labelTip = new Label();
             tableFanCharts = new TableLayoutPanel();
-            chartGPU = new Chart();
-            chartCPU = new Chart();
-            chartXGM = new Chart();
-            chartMid = new Chart();
+            chartGPU = new RChart();
+            chartCPU = new RChart();
+            chartXGM = new RChart();
+            chartMid = new RChart();
             panelTitleFans = new Panel();
             tableLayoutModes = new TableLayoutPanel();
             buttonRemove = new RButton();
@@ -56,6 +56,14 @@ namespace GHelper
             comboModes = new RComboBox();
             picturePerf = new PictureBox();
             labelFans = new Label();
+            panelHysteresis = new Panel();
+            tableHysteresis = new TableLayoutPanel();
+            labelHysteresisUp = new Label();
+            trackHysteresisUp = new RTrackBar();
+            labelHysteresisDown = new Label();
+            trackHysteresisDown = new RTrackBar();
+            labelHysteresisUpValue = new Label();
+            labelHysteresisDownValue = new Label();
             panelApplyFans = new Panel();
             buttonCalibrate = new RButton();
             labelFansResult = new Label();
@@ -68,46 +76,49 @@ namespace GHelper
             checkApplyUV = new RCheckBox();
             panelAdvancedApply = new Panel();
             buttonApplyAdvanced = new RButton();
+            panelAdvancedReadLimits = new Panel();
+            buttonReadLimits = new RButton();
             labelRisky = new Label();
             panelUViGPU = new Panel();
             labelUViGPU = new Label();
             labelLeftUViGPU = new Label();
-            trackUViGPU = new TrackBar();
+            trackUViGPU = new RTrackBar();
             panelUV = new Panel();
             labelUV = new Label();
             labelLeftUV = new Label();
-            trackUV = new TrackBar();
+            trackUV = new RTrackBar();
             panelTitleAdvanced = new Panel();
             pictureUV = new PictureBox();
             labelTitleUV = new Label();
             panelTemperature = new Panel();
             labelTemp = new Label();
             labelLeftTemp = new Label();
-            trackTemp = new TrackBar();
+            trackTemp = new RTrackBar();
             panelTitleTemp = new Panel();
             pictureTemp = new PictureBox();
             labelTempLimit = new Label();
             panelDownload = new Panel();
             buttonDownload = new RButton();
+            panelPawnIO = new Panel();
             panelPower = new Panel();
             panelApplyPower = new Panel();
             checkApplyPower = new RCheckBox();
             panelCPU = new Panel();
             labelCPU = new Label();
             labelLeftCPU = new Label();
-            trackCPU = new TrackBar();
+            trackCPU = new RTrackBar();
             panelFast = new Panel();
             labelFast = new Label();
             labelLeftFast = new Label();
-            trackFast = new TrackBar();
+            trackFast = new RTrackBar();
             panelSlow = new Panel();
             labelSlow = new Label();
             labelLeftSlow = new Label();
-            trackSlow = new TrackBar();
+            trackSlow = new RTrackBar();
             panelTotal = new Panel();
             labelTotal = new Label();
             labelLeftTotal = new Label();
-            trackTotal = new TrackBar();
+            trackTotal = new RTrackBar();
             panelTitleCPU = new Panel();
             pictureBoxCPU = new PictureBox();
             labelPowerLimits = new Label();
@@ -124,26 +135,26 @@ namespace GHelper
             panelGPUTemp = new Panel();
             labelGPUTemp = new Label();
             labelGPUTempTitle = new Label();
-            trackGPUTemp = new TrackBar();
+            trackGPUTemp = new RTrackBar();
             panelGPUBoost = new Panel();
             labelGPUBoost = new Label();
             labelGPUBoostTitle = new Label();
-            trackGPUBoost = new TrackBar();
+            trackGPUBoost = new RTrackBar();
             panelGPUPower = new Panel();
             labelGPUPower = new Label();
             labelGPUPowerTitle = new Label();
-            trackGPUPower = new TrackBar();
+            trackGPUPower = new RTrackBar();
             panelGPUMemory = new Panel();
             labelGPUMemory = new Label();
             labelGPUMemoryTitle = new Label();
-            trackGPUMemory = new TrackBar();
+            trackGPUMemory = new RTrackBar();
             panelGPUCore = new Panel();
             labelGPUCore = new Label();
-            trackGPUCore = new TrackBar();
+            trackGPUCore = new RTrackBar();
             labelGPUCoreTitle = new Label();
             panelGPUClockLimit = new Panel();
             labelGPUClockLimit = new Label();
-            trackGPUClockLimit = new TrackBar();
+            trackGPUClockLimit = new RTrackBar();
             labelGPUClockLimitTitle = new Label();
             panelTitleGPU = new Panel();
             pictureGPU = new PictureBox();
@@ -162,11 +173,16 @@ namespace GHelper
             panelTitleFans.SuspendLayout();
             tableLayoutModes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picturePerf).BeginInit();
+            panelHysteresis.SuspendLayout();
+            tableHysteresis.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackHysteresisUp).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)trackHysteresisDown).BeginInit();
             panelApplyFans.SuspendLayout();
             panelSliders.SuspendLayout();
             panelAdvanced.SuspendLayout();
             panelAdvancedAlways.SuspendLayout();
             panelAdvancedApply.SuspendLayout();
+            panelAdvancedReadLimits.SuspendLayout();
             panelUViGPU.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackUViGPU).BeginInit();
             panelUV.SuspendLayout();
@@ -178,6 +194,7 @@ namespace GHelper
             panelTitleTemp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureTemp).BeginInit();
             panelDownload.SuspendLayout();
+            panelPawnIO.SuspendLayout();
             panelPower.SuspendLayout();
             panelApplyPower.SuspendLayout();
             panelCPU.SuspendLayout();
@@ -223,6 +240,7 @@ namespace GHelper
             panelFans.Controls.Add(labelTip);
             panelFans.Controls.Add(tableFanCharts);
             panelFans.Controls.Add(panelTitleFans);
+            panelFans.Controls.Add(panelHysteresis);
             panelFans.Controls.Add(panelApplyFans);
             panelFans.Dock = DockStyle.Fill;
             panelFans.Location = new Point(530, 0);
@@ -241,7 +259,7 @@ namespace GHelper
             checkFanClamp.Name = "checkFanClamp";
             checkFanClamp.Padding = new Padding(8, 1, 2, 1);
             checkFanClamp.Size = new Size(193, 44);
-            checkFanClamp.TabIndex = 44;
+            checkFanClamp.TabIndex = 5;
             checkFanClamp.TabStop = false;
             checkFanClamp.Text = "Clamp to Grid";
             checkFanClamp.UseVisualStyleBackColor = false;
@@ -255,7 +273,7 @@ namespace GHelper
             labelTip.Name = "labelTip";
             labelTip.Padding = new Padding(4);
             labelTip.Size = new Size(105, 40);
-            labelTip.TabIndex = 40;
+            labelTip.TabIndex = 2;
             labelTip.Text = "500,300";
             // 
             // tableFanCharts
@@ -278,7 +296,7 @@ namespace GHelper
             tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
             tableFanCharts.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
             tableFanCharts.Size = new Size(810, 918);
-            tableFanCharts.TabIndex = 36;
+            tableFanCharts.TabIndex = 1;
             // 
             // chartGPU
             // 
@@ -289,7 +307,7 @@ namespace GHelper
             chartGPU.Margin = new Padding(2, 10, 2, 10);
             chartGPU.Name = "chartGPU";
             chartGPU.Size = new Size(786, 208);
-            chartGPU.TabIndex = 17;
+            chartGPU.TabIndex = 1;
             chartGPU.Text = "chartGPU";
             title1.Name = "Title1";
             chartGPU.Titles.Add(title1);
@@ -303,7 +321,7 @@ namespace GHelper
             chartCPU.Margin = new Padding(2, 10, 2, 10);
             chartCPU.Name = "chartCPU";
             chartCPU.Size = new Size(786, 208);
-            chartCPU.TabIndex = 14;
+            chartCPU.TabIndex = 0;
             chartCPU.Text = "chartCPU";
             title2.Name = "Title1";
             chartCPU.Titles.Add(title2);
@@ -317,7 +335,7 @@ namespace GHelper
             chartXGM.Margin = new Padding(2, 10, 2, 10);
             chartXGM.Name = "chartXGM";
             chartXGM.Size = new Size(786, 209);
-            chartXGM.TabIndex = 14;
+            chartXGM.TabIndex = 3;
             chartXGM.Text = "chartXGM";
             title3.Name = "Title4";
             chartXGM.Titles.Add(title3);
@@ -332,7 +350,7 @@ namespace GHelper
             chartMid.Margin = new Padding(2, 10, 2, 10);
             chartMid.Name = "chartMid";
             chartMid.Size = new Size(786, 208);
-            chartMid.TabIndex = 14;
+            chartMid.TabIndex = 2;
             chartMid.Text = "chartMid";
             title4.Name = "Title3";
             chartMid.Titles.Add(title4);
@@ -348,7 +366,7 @@ namespace GHelper
             panelTitleFans.Margin = new Padding(4);
             panelTitleFans.Name = "panelTitleFans";
             panelTitleFans.Size = new Size(810, 66);
-            panelTitleFans.TabIndex = 42;
+            panelTitleFans.TabIndex = 0;
             // 
             // tableLayoutModes
             // 
@@ -365,7 +383,7 @@ namespace GHelper
             tableLayoutModes.Location = new Point(330, 0);
             tableLayoutModes.Margin = new Padding(0);
             tableLayoutModes.Name = "tableLayoutModes";
-            tableLayoutModes.Padding = new Padding(0, 10, 4, 10);
+            tableLayoutModes.Padding = new Padding(0, 8, 4, 10);
             tableLayoutModes.RowCount = 1;
             tableLayoutModes.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutModes.Size = new Size(480, 66);
@@ -385,7 +403,7 @@ namespace GHelper
             buttonRemove.Name = "buttonRemove";
             buttonRemove.Secondary = true;
             buttonRemove.Size = new Size(54, 46);
-            buttonRemove.TabIndex = 44;
+            buttonRemove.TabIndex = 0;
             buttonRemove.UseVisualStyleBackColor = false;
             // 
             // buttonAdd
@@ -402,7 +420,7 @@ namespace GHelper
             buttonAdd.Name = "buttonAdd";
             buttonAdd.Secondary = true;
             buttonAdd.Size = new Size(54, 46);
-            buttonAdd.TabIndex = 43;
+            buttonAdd.TabIndex = 3;
             buttonAdd.UseVisualStyleBackColor = false;
             // 
             // buttonRename
@@ -419,7 +437,7 @@ namespace GHelper
             buttonRename.Name = "buttonRename";
             buttonRename.Secondary = true;
             buttonRename.Size = new Size(54, 46);
-            buttonRename.TabIndex = 45;
+            buttonRename.TabIndex = 1;
             buttonRename.UseVisualStyleBackColor = false;
             // 
             // comboModes
@@ -430,10 +448,10 @@ namespace GHelper
             comboModes.FlatStyle = FlatStyle.Flat;
             comboModes.FormattingEnabled = true;
             comboModes.Location = new Point(120, 14);
-            comboModes.Margin = new Padding(0, 4, 6, 4);
+            comboModes.Margin = new Padding(0, 3, 6, 4);
             comboModes.Name = "comboModes";
             comboModes.Size = new Size(290, 40);
-            comboModes.TabIndex = 42;
+            comboModes.TabIndex = 2;
             // 
             // picturePerf
             // 
@@ -458,6 +476,115 @@ namespace GHelper
             labelFans.TabIndex = 40;
             labelFans.Text = "Profile";
             // 
+            // panelHysteresis
+            // 
+            panelHysteresis.Controls.Add(tableHysteresis);
+            panelHysteresis.Dock = DockStyle.Bottom;
+            panelHysteresis.Location = new Point(0, 860);
+            panelHysteresis.Margin = new Padding(4);
+            panelHysteresis.Name = "panelHysteresis";
+            panelHysteresis.Padding = new Padding(10, 5, 10, 5);
+            panelHysteresis.Size = new Size(810, 130);
+            panelHysteresis.TabIndex = 3;
+            // 
+            // tableHysteresis
+            // 
+            tableHysteresis.ColumnCount = 3;
+            tableHysteresis.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+            tableHysteresis.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tableHysteresis.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 160F));
+            tableHysteresis.Controls.Add(labelHysteresisUp, 0, 0);
+            tableHysteresis.Controls.Add(trackHysteresisUp, 1, 0);
+            tableHysteresis.Controls.Add(labelHysteresisUpValue, 2, 0);
+            tableHysteresis.Controls.Add(labelHysteresisDown, 0, 1);
+            tableHysteresis.Controls.Add(trackHysteresisDown, 1, 1);
+            tableHysteresis.Controls.Add(labelHysteresisDownValue, 2, 1);
+            tableHysteresis.Dock = DockStyle.Fill;
+            tableHysteresis.Location = new Point(10, 5);
+            tableHysteresis.Margin = new Padding(0);
+            tableHysteresis.Name = "tableHysteresis";
+            tableHysteresis.RowCount = 2;
+            tableHysteresis.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableHysteresis.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableHysteresis.Size = new Size(790, 120);
+            tableHysteresis.TabIndex = 0;
+            // 
+            // labelHysteresisUp
+            // 
+            labelHysteresisUp.Anchor = AnchorStyles.Left;
+            labelHysteresisUp.AutoSize = true;
+            labelHysteresisUp.Location = new Point(4, 6);
+            labelHysteresisUp.Margin = new Padding(4, 0, 4, 0);
+            labelHysteresisUp.Name = "labelHysteresisUp";
+            labelHysteresisUp.Size = new Size(200, 32);
+            labelHysteresisUp.TabIndex = 0;
+            labelHysteresisUp.Text = "Hysteresis Up";
+            // 
+            // trackHysteresisUp
+            // 
+            trackHysteresisUp.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            trackHysteresisUp.LargeChange = 1;
+            trackHysteresisUp.Location = new Point(162, 2);
+            trackHysteresisUp.Margin = new Padding(4, 2, 4, 2);
+            trackHysteresisUp.Maximum = 5;
+            trackHysteresisUp.Minimum = 1;
+            trackHysteresisUp.Name = "trackHysteresisUp";
+            trackHysteresisUp.Size = new Size(500, 41);
+            trackHysteresisUp.TabIndex = 1;
+            trackHysteresisUp.TickFrequency = 1;
+            trackHysteresisUp.TickStyle = TickStyle.TopLeft;
+            trackHysteresisUp.Value = 1;
+            // 
+            // labelHysteresisDown
+            // 
+            labelHysteresisDown.Anchor = AnchorStyles.Left;
+            labelHysteresisDown.AutoSize = true;
+            labelHysteresisDown.Location = new Point(4, 51);
+            labelHysteresisDown.Margin = new Padding(4, 0, 4, 0);
+            labelHysteresisDown.Name = "labelHysteresisDown";
+            labelHysteresisDown.Size = new Size(200, 32);
+            labelHysteresisDown.TabIndex = 2;
+            labelHysteresisDown.Text = "Hysteresis Down";
+            // 
+            // trackHysteresisDown
+            // 
+            trackHysteresisDown.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            trackHysteresisDown.LargeChange = 1;
+            trackHysteresisDown.Location = new Point(162, 47);
+            trackHysteresisDown.Margin = new Padding(4, 2, 4, 2);
+            trackHysteresisDown.Maximum = 5;
+            trackHysteresisDown.Minimum = 1;
+            trackHysteresisDown.Name = "trackHysteresisDown";
+            trackHysteresisDown.Size = new Size(500, 41);
+            trackHysteresisDown.TabIndex = 3;
+            trackHysteresisDown.TickFrequency = 1;
+            trackHysteresisDown.TickStyle = TickStyle.TopLeft;
+            trackHysteresisDown.Value = 1;
+            // 
+            // labelHysteresisUpValue
+            // 
+            labelHysteresisUpValue.Anchor = AnchorStyles.Left;
+            labelHysteresisUpValue.AutoSize = false;
+            labelHysteresisUpValue.Location = new Point(670, 6);
+            labelHysteresisUpValue.Margin = new Padding(4, 0, 4, 0);
+            labelHysteresisUpValue.Name = "labelHysteresisUpValue";
+            labelHysteresisUpValue.Size = new Size(152, 32);
+            labelHysteresisUpValue.TabIndex = 4;
+            labelHysteresisUpValue.Text = "Very Low";
+            labelHysteresisUpValue.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // labelHysteresisDownValue
+            // 
+            labelHysteresisDownValue.Anchor = AnchorStyles.Left;
+            labelHysteresisDownValue.AutoSize = false;
+            labelHysteresisDownValue.Location = new Point(670, 51);
+            labelHysteresisDownValue.Margin = new Padding(4, 0, 4, 0);
+            labelHysteresisDownValue.Name = "labelHysteresisDownValue";
+            labelHysteresisDownValue.Size = new Size(152, 32);
+            labelHysteresisDownValue.TabIndex = 5;
+            labelHysteresisDownValue.Text = "Very Low";
+            labelHysteresisDownValue.TextAlign = ContentAlignment.MiddleRight;
+            // 
             // panelApplyFans
             // 
             panelApplyFans.Controls.Add(buttonCalibrate);
@@ -469,7 +596,7 @@ namespace GHelper
             panelApplyFans.Margin = new Padding(4);
             panelApplyFans.Name = "panelApplyFans";
             panelApplyFans.Size = new Size(810, 116);
-            panelApplyFans.TabIndex = 43;
+            panelApplyFans.TabIndex = 4;
             // 
             // buttonCalibrate
             // 
@@ -484,7 +611,7 @@ namespace GHelper
             buttonCalibrate.Name = "buttonCalibrate";
             buttonCalibrate.Secondary = true;
             buttonCalibrate.Size = new Size(141, 50);
-            buttonCalibrate.TabIndex = 43;
+            buttonCalibrate.TabIndex = 1;
             buttonCalibrate.Text = "Calibrate";
             buttonCalibrate.UseVisualStyleBackColor = false;
             // 
@@ -496,7 +623,7 @@ namespace GHelper
             labelFansResult.Margin = new Padding(4, 0, 4, 0);
             labelFansResult.Name = "labelFansResult";
             labelFansResult.Size = new Size(771, 32);
-            labelFansResult.TabIndex = 42;
+            labelFansResult.TabIndex = 3;
             labelFansResult.Visible = false;
             // 
             // checkApplyFans
@@ -509,7 +636,7 @@ namespace GHelper
             checkApplyFans.Name = "checkApplyFans";
             checkApplyFans.Padding = new Padding(16, 6, 16, 6);
             checkApplyFans.Size = new Size(341, 48);
-            checkApplyFans.TabIndex = 19;
+            checkApplyFans.TabIndex = 2;
             checkApplyFans.Text = Properties.Strings.ApplyFanCurve;
             checkApplyFans.UseVisualStyleBackColor = false;
             // 
@@ -526,7 +653,7 @@ namespace GHelper
             buttonReset.Name = "buttonReset";
             buttonReset.Secondary = true;
             buttonReset.Size = new Size(252, 50);
-            buttonReset.TabIndex = 18;
+            buttonReset.TabIndex = 0;
             buttonReset.Text = Properties.Strings.FactoryDefaults;
             buttonReset.UseVisualStyleBackColor = false;
             // 
@@ -563,20 +690,13 @@ namespace GHelper
             // 
             panelAdvanced.AutoSize = true;
             panelAdvanced.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            panelAdvanced.Controls.Add(panelAdvancedAlways);
-            panelAdvanced.Controls.Add(panelAdvancedApply);
-            panelAdvanced.Controls.Add(labelRisky);
-            panelAdvanced.Controls.Add(panelUViGPU);
-            panelAdvanced.Controls.Add(panelUV);
-            panelAdvanced.Controls.Add(panelTitleAdvanced);
-            panelAdvanced.Controls.Add(panelTemperature);
-            panelAdvanced.Controls.Add(panelTitleTemp);
+            panelAdvanced.Controls.Add(panelPawnIO);
             panelAdvanced.Controls.Add(panelDownload);
             panelAdvanced.Dock = DockStyle.Top;
             panelAdvanced.Location = new Point(10, 1768);
             panelAdvanced.Name = "panelAdvanced";
             panelAdvanced.Size = new Size(520, 992);
-            panelAdvanced.TabIndex = 14;
+            panelAdvanced.TabIndex = 3;
             panelAdvanced.Visible = false;
             // 
             // panelAdvancedAlways
@@ -588,7 +708,7 @@ namespace GHelper
             panelAdvancedAlways.Name = "panelAdvancedAlways";
             panelAdvancedAlways.Padding = new Padding(16, 0, 16, 15);
             panelAdvancedAlways.Size = new Size(520, 61);
-            panelAdvancedAlways.TabIndex = 46;
+            panelAdvancedAlways.TabIndex = 7;
             // 
             // checkApplyUV
             // 
@@ -614,7 +734,7 @@ namespace GHelper
             panelAdvancedApply.Name = "panelAdvancedApply";
             panelAdvancedApply.Padding = new Padding(15);
             panelAdvancedApply.Size = new Size(520, 80);
-            panelAdvancedApply.TabIndex = 47;
+            panelAdvancedApply.TabIndex = 6;
             // 
             // buttonApplyAdvanced
             // 
@@ -633,7 +753,35 @@ namespace GHelper
             buttonApplyAdvanced.Text = "Apply";
             buttonApplyAdvanced.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonApplyAdvanced.UseVisualStyleBackColor = false;
-            // 
+            //
+            // panelAdvancedReadLimits
+            //
+            panelAdvancedReadLimits.AutoSize = true;
+            panelAdvancedReadLimits.Controls.Add(buttonReadLimits);
+            panelAdvancedReadLimits.Dock = DockStyle.Top;
+            panelAdvancedReadLimits.Name = "panelAdvancedReadLimits";
+            panelAdvancedReadLimits.Padding = new Padding(15);
+            panelAdvancedReadLimits.Size = new Size(520, 80);
+            panelAdvancedReadLimits.TabIndex = 8;
+            //
+            // buttonReadLimits
+            //
+            buttonReadLimits.Activated = false;
+            buttonReadLimits.BackColor = SystemColors.ControlLight;
+            buttonReadLimits.BorderColor = Color.Transparent;
+            buttonReadLimits.BorderRadius = 2;
+            buttonReadLimits.Dock = DockStyle.Top;
+            buttonReadLimits.FlatStyle = FlatStyle.Flat;
+            buttonReadLimits.Location = new Point(15, 15);
+            buttonReadLimits.Margin = new Padding(4, 2, 15, 15);
+            buttonReadLimits.Name = "buttonReadLimits";
+            buttonReadLimits.Secondary = true;
+            buttonReadLimits.Size = new Size(490, 50);
+            buttonReadLimits.TabIndex = 53;
+            buttonReadLimits.Text = "Read Limits";
+            buttonReadLimits.TextImageRelation = TextImageRelation.ImageBeforeText;
+            buttonReadLimits.UseVisualStyleBackColor = false;
+            //
             // labelRisky
             // 
             labelRisky.BackColor = Color.IndianRed;
@@ -644,7 +792,7 @@ namespace GHelper
             labelRisky.Name = "labelRisky";
             labelRisky.Padding = new Padding(10, 10, 10, 5);
             labelRisky.Size = new Size(520, 243);
-            labelRisky.TabIndex = 46;
+            labelRisky.TabIndex = 5;
             labelRisky.Text = resources.GetString("labelRisky.Text");
             // 
             // panelUViGPU
@@ -660,7 +808,7 @@ namespace GHelper
             panelUViGPU.MaximumSize = new Size(0, 124);
             panelUViGPU.Name = "panelUViGPU";
             panelUViGPU.Size = new Size(520, 124);
-            panelUViGPU.TabIndex = 49;
+            panelUViGPU.TabIndex = 4;
             // 
             // labelUViGPU
             // 
@@ -708,7 +856,7 @@ namespace GHelper
             panelUV.MaximumSize = new Size(0, 124);
             panelUV.Name = "panelUV";
             panelUV.Size = new Size(520, 124);
-            panelUV.TabIndex = 46;
+            panelUV.TabIndex = 3;
             // 
             // labelUV
             // 
@@ -751,7 +899,7 @@ namespace GHelper
             panelTitleAdvanced.Location = new Point(0, 294);
             panelTitleAdvanced.Name = "panelTitleAdvanced";
             panelTitleAdvanced.Size = new Size(520, 66);
-            panelTitleAdvanced.TabIndex = 48;
+            panelTitleAdvanced.TabIndex = 2;
             // 
             // pictureUV
             // 
@@ -789,7 +937,7 @@ namespace GHelper
             panelTemperature.MaximumSize = new Size(0, 124);
             panelTemperature.Name = "panelTemperature";
             panelTemperature.Size = new Size(520, 124);
-            panelTemperature.TabIndex = 51;
+            panelTemperature.TabIndex = 1;
             // 
             // labelTemp
             // 
@@ -832,7 +980,7 @@ namespace GHelper
             panelTitleTemp.Location = new Point(0, 104);
             panelTitleTemp.Name = "panelTitleTemp";
             panelTitleTemp.Size = new Size(520, 66);
-            panelTitleTemp.TabIndex = 50;
+            panelTitleTemp.TabIndex = 0;
             // 
             // pictureTemp
             // 
@@ -859,6 +1007,24 @@ namespace GHelper
             // 
             // panelDownload
             // 
+            // 
+            // panelPawnIO
+            // 
+            panelPawnIO.AutoSize = true;
+            panelPawnIO.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelPawnIO.Controls.Add(panelAdvancedReadLimits);
+            panelPawnIO.Controls.Add(panelAdvancedAlways);
+            panelPawnIO.Controls.Add(panelAdvancedApply);
+            panelPawnIO.Controls.Add(labelRisky);
+            panelPawnIO.Controls.Add(panelUViGPU);
+            panelPawnIO.Controls.Add(panelUV);
+            panelPawnIO.Controls.Add(panelTitleAdvanced);
+            panelPawnIO.Controls.Add(panelTemperature);
+            panelPawnIO.Controls.Add(panelTitleTemp);
+            panelPawnIO.Dock = DockStyle.Top;
+            panelPawnIO.Name = "panelPawnIO";
+            panelPawnIO.TabIndex = 1;
+            // 
             panelDownload.AutoSize = true;
             panelDownload.Controls.Add(buttonDownload);
             panelDownload.Dock = DockStyle.Top;
@@ -866,7 +1032,7 @@ namespace GHelper
             panelDownload.Name = "panelDownload";
             panelDownload.Padding = new Padding(20);
             panelDownload.Size = new Size(520, 104);
-            panelDownload.TabIndex = 52;
+            panelDownload.TabIndex = 0;
             panelDownload.Visible = false;
             // 
             // buttonDownload
@@ -886,7 +1052,7 @@ namespace GHelper
             buttonDownload.Secondary = true;
             buttonDownload.Size = new Size(480, 64);
             buttonDownload.TabIndex = 19;
-            buttonDownload.Text = "Download Advanced Settings Plugin";
+            buttonDownload.Text = "Install PawnIO Driver (pawnio.eu)";
             buttonDownload.UseVisualStyleBackColor = false;
             // 
             // panelPower
@@ -908,7 +1074,7 @@ namespace GHelper
             panelPower.Margin = new Padding(4);
             panelPower.Name = "panelPower";
             panelPower.Size = new Size(520, 880);
-            panelPower.TabIndex = 43;
+            panelPower.TabIndex = 2;
             // 
             // panelApplyPower
             // 
@@ -919,7 +1085,7 @@ namespace GHelper
             panelApplyPower.Name = "panelApplyPower";
             panelApplyPower.Padding = new Padding(15);
             panelApplyPower.Size = new Size(520, 76);
-            panelApplyPower.TabIndex = 47;
+            panelApplyPower.TabIndex = 9;
             // 
             // checkApplyPower
             // 
@@ -947,7 +1113,7 @@ namespace GHelper
             panelCPU.MaximumSize = new Size(0, 124);
             panelCPU.Name = "panelCPU";
             panelCPU.Size = new Size(520, 124);
-            panelCPU.TabIndex = 41;
+            panelCPU.TabIndex = 8;
             // 
             // labelCPU
             // 
@@ -996,7 +1162,7 @@ namespace GHelper
             panelFast.MaximumSize = new Size(0, 124);
             panelFast.Name = "panelFast";
             panelFast.Size = new Size(520, 124);
-            panelFast.TabIndex = 45;
+            panelFast.TabIndex = 7;
             // 
             // labelFast
             // 
@@ -1045,7 +1211,7 @@ namespace GHelper
             panelSlow.MaximumSize = new Size(0, 124);
             panelSlow.Name = "panelSlow";
             panelSlow.Size = new Size(520, 124);
-            panelSlow.TabIndex = 51;
+            panelSlow.TabIndex = 6;
             // 
             // labelSlow
             // 
@@ -1094,7 +1260,7 @@ namespace GHelper
             panelTotal.MaximumSize = new Size(0, 124);
             panelTotal.Name = "panelTotal";
             panelTotal.Size = new Size(520, 124);
-            panelTotal.TabIndex = 40;
+            panelTotal.TabIndex = 5;
             // 
             // labelTotal
             // 
@@ -1141,7 +1307,7 @@ namespace GHelper
             panelTitleCPU.Margin = new Padding(4);
             panelTitleCPU.Name = "panelTitleCPU";
             panelTitleCPU.Size = new Size(520, 60);
-            panelTitleCPU.TabIndex = 42;
+            panelTitleCPU.TabIndex = 4;
             // 
             // pictureBoxCPU
             // 
@@ -1174,7 +1340,7 @@ namespace GHelper
             panelBoost.Margin = new Padding(4);
             panelBoost.Name = "panelBoost";
             panelBoost.Size = new Size(520, 64);
-            panelBoost.TabIndex = 13;
+            panelBoost.TabIndex = 3;
             // 
             // panelBoostTitle
             // 
@@ -1187,7 +1353,7 @@ namespace GHelper
             panelBoostTitle.Margin = new Padding(4);
             panelBoostTitle.Name = "panelBoostTitle";
             panelBoostTitle.Size = new Size(520, 60);
-            panelBoostTitle.TabIndex = 48;
+            panelBoostTitle.TabIndex = 2;
             // 
             // pictureBoost
             // 
@@ -1220,7 +1386,7 @@ namespace GHelper
             panelPowerMode.Margin = new Padding(4);
             panelPowerMode.Name = "panelPowerMode";
             panelPowerMode.Size = new Size(520, 64);
-            panelPowerMode.TabIndex = 49;
+            panelPowerMode.TabIndex = 1;
             // 
             // comboPowerMode
             // 
@@ -1247,7 +1413,7 @@ namespace GHelper
             panelPowerModeTItle.Margin = new Padding(4);
             panelPowerModeTItle.Name = "panelPowerModeTItle";
             panelPowerModeTItle.Size = new Size(520, 60);
-            panelPowerModeTItle.TabIndex = 50;
+            panelPowerModeTItle.TabIndex = 0;
             // 
             // picturePowerMode
             // 
@@ -1288,7 +1454,7 @@ namespace GHelper
             panelGPU.Name = "panelGPU";
             panelGPU.Padding = new Padding(0, 0, 0, 18);
             panelGPU.Size = new Size(520, 822);
-            panelGPU.TabIndex = 44;
+            panelGPU.TabIndex = 1;
             panelGPU.Visible = false;
             // 
             // panelGPUTemp
@@ -1304,7 +1470,7 @@ namespace GHelper
             panelGPUTemp.MaximumSize = new Size(0, 124);
             panelGPUTemp.Name = "panelGPUTemp";
             panelGPUTemp.Size = new Size(520, 124);
-            panelGPUTemp.TabIndex = 47;
+            panelGPUTemp.TabIndex = 6;
             // 
             // labelGPUTemp
             // 
@@ -1353,7 +1519,7 @@ namespace GHelper
             panelGPUBoost.MaximumSize = new Size(0, 124);
             panelGPUBoost.Name = "panelGPUBoost";
             panelGPUBoost.Size = new Size(520, 124);
-            panelGPUBoost.TabIndex = 46;
+            panelGPUBoost.TabIndex = 5;
             // 
             // labelGPUBoost
             // 
@@ -1402,7 +1568,7 @@ namespace GHelper
             panelGPUPower.MaximumSize = new Size(0, 124);
             panelGPUPower.Name = "panelGPUPower";
             panelGPUPower.Size = new Size(520, 124);
-            panelGPUPower.TabIndex = 49;
+            panelGPUPower.TabIndex = 4;
             // 
             // labelGPUPower
             // 
@@ -1451,7 +1617,7 @@ namespace GHelper
             panelGPUMemory.MaximumSize = new Size(0, 124);
             panelGPUMemory.Name = "panelGPUMemory";
             panelGPUMemory.Size = new Size(520, 124);
-            panelGPUMemory.TabIndex = 45;
+            panelGPUMemory.TabIndex = 3;
             // 
             // labelGPUMemory
             // 
@@ -1500,7 +1666,7 @@ namespace GHelper
             panelGPUCore.MaximumSize = new Size(0, 124);
             panelGPUCore.Name = "panelGPUCore";
             panelGPUCore.Size = new Size(520, 124);
-            panelGPUCore.TabIndex = 44;
+            panelGPUCore.TabIndex = 2;
             // 
             // labelGPUCore
             // 
@@ -1550,7 +1716,7 @@ namespace GHelper
             panelGPUClockLimit.MaximumSize = new Size(0, 124);
             panelGPUClockLimit.Name = "panelGPUClockLimit";
             panelGPUClockLimit.Size = new Size(520, 124);
-            panelGPUClockLimit.TabIndex = 48;
+            panelGPUClockLimit.TabIndex = 1;
             // 
             // labelGPUClockLimit
             // 
@@ -1598,7 +1764,7 @@ namespace GHelper
             panelTitleGPU.Margin = new Padding(4);
             panelTitleGPU.Name = "panelTitleGPU";
             panelTitleGPU.Size = new Size(520, 60);
-            panelTitleGPU.TabIndex = 43;
+            panelTitleGPU.TabIndex = 0;
             // 
             // pictureGPU
             // 
@@ -1634,7 +1800,7 @@ namespace GHelper
             panelNav.Margin = new Padding(4);
             panelNav.Name = "panelNav";
             panelNav.Size = new Size(520, 66);
-            panelNav.TabIndex = 45;
+            panelNav.TabIndex = 0;
             // 
             // tableNav
             // 
@@ -1668,7 +1834,7 @@ namespace GHelper
             buttonAdvanced.Name = "buttonAdvanced";
             buttonAdvanced.Secondary = true;
             buttonAdvanced.Size = new Size(166, 58);
-            buttonAdvanced.TabIndex = 51;
+            buttonAdvanced.TabIndex = 2;
             buttonAdvanced.Text = "Advanced";
             buttonAdvanced.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonAdvanced.UseVisualStyleBackColor = false;
@@ -1686,7 +1852,7 @@ namespace GHelper
             buttonGPU.Name = "buttonGPU";
             buttonGPU.Secondary = true;
             buttonGPU.Size = new Size(165, 58);
-            buttonGPU.TabIndex = 52;
+            buttonGPU.TabIndex = 1;
             buttonGPU.Text = "GPU";
             buttonGPU.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonGPU.UseVisualStyleBackColor = false;
@@ -1704,7 +1870,7 @@ namespace GHelper
             buttonCPU.Name = "buttonCPU";
             buttonCPU.Secondary = true;
             buttonCPU.Size = new Size(165, 58);
-            buttonCPU.TabIndex = 50;
+            buttonCPU.TabIndex = 0;
             buttonCPU.Text = "CPU";
             buttonCPU.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonCPU.UseVisualStyleBackColor = false;
@@ -1737,6 +1903,12 @@ namespace GHelper
             panelTitleFans.PerformLayout();
             tableLayoutModes.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)picturePerf).EndInit();
+            panelHysteresis.ResumeLayout(false);
+            panelHysteresis.PerformLayout();
+            tableHysteresis.ResumeLayout(false);
+            tableHysteresis.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackHysteresisUp).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trackHysteresisDown).EndInit();
             panelApplyFans.ResumeLayout(false);
             panelApplyFans.PerformLayout();
             panelSliders.ResumeLayout(false);
@@ -1745,6 +1917,7 @@ namespace GHelper
             panelAdvanced.PerformLayout();
             panelAdvancedAlways.ResumeLayout(false);
             panelAdvancedApply.ResumeLayout(false);
+            panelAdvancedReadLimits.ResumeLayout(false);
             panelUViGPU.ResumeLayout(false);
             panelUViGPU.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)trackUViGPU).EndInit();
@@ -1762,6 +1935,8 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)pictureTemp).EndInit();
             panelDownload.ResumeLayout(false);
             panelDownload.PerformLayout();
+            panelPawnIO.ResumeLayout(false);
+            panelPawnIO.PerformLayout();
             panelPower.ResumeLayout(false);
             panelPower.PerformLayout();
             panelApplyPower.ResumeLayout(false);
@@ -1821,20 +1996,20 @@ namespace GHelper
         private Panel panelFans;
         private Panel panelSliders;
         private TableLayoutPanel tableFanCharts;
-        private Chart chartGPU;
-        private Chart chartCPU;
-        private Chart chartMid;
-        private Chart chartXGM;
+        private RChart chartGPU;
+        private RChart chartCPU;
+        private RChart chartMid;
+        private RChart chartXGM;
         private Label labelTip;
         private Panel panelPower;
         private Panel panelCPU;
         private Label labelCPU;
         private Label labelLeftCPU;
-        private TrackBar trackCPU;
+        private RTrackBar trackCPU;
         private Panel panelTotal;
         private Label labelTotal;
         private Label labelLeftTotal;
-        private TrackBar trackTotal;
+        private RTrackBar trackTotal;
         private Panel panelTitleCPU;
         private PictureBox pictureBoxCPU;
         private Label labelPowerLimits;
@@ -1842,10 +2017,10 @@ namespace GHelper
         private Panel panelGPUMemory;
         private Label labelGPUMemory;
         private Label labelGPUMemoryTitle;
-        private TrackBar trackGPUMemory;
+        private RTrackBar trackGPUMemory;
         private Panel panelGPUCore;
         private Label labelGPUCore;
-        private TrackBar trackGPUCore;
+        private RTrackBar trackGPUCore;
         private Label labelGPUCoreTitle;
         private Panel panelTitleGPU;
         private PictureBox pictureGPU;
@@ -1854,11 +2029,11 @@ namespace GHelper
         private Panel panelGPUBoost;
         private Label labelGPUBoost;
         private Label labelGPUBoostTitle;
-        private TrackBar trackGPUBoost;
+        private RTrackBar trackGPUBoost;
         private Panel panelGPUTemp;
         private Label labelGPUTemp;
         private Label labelGPUTempTitle;
-        private TrackBar trackGPUTemp;
+        private RTrackBar trackGPUTemp;
         private Panel panelTitleFans;
         private Panel panelApplyFans;
         private Label labelFansResult;
@@ -1871,7 +2046,7 @@ namespace GHelper
         private Panel panelFast;
         private Label labelFast;
         private Label labelLeftFast;
-        private TrackBar trackFast;
+        private RTrackBar trackFast;
         private Panel panelBoost;
         private RComboBox comboModes;
         private RButton buttonAdd;
@@ -1880,10 +2055,12 @@ namespace GHelper
         private Panel panelUV;
         private Label labelUV;
         private Label labelLeftUV;
-        private TrackBar trackUV;
+        private RTrackBar trackUV;
         private PictureBox pictureUV;
         private Label labelTitleUV;
         private RButton buttonApplyAdvanced;
+        private Panel panelAdvancedReadLimits;
+        private RButton buttonReadLimits;
         private Panel panelApplyPower;
         private Panel panelAdvanced;
         private Panel panelAdvancedApply;
@@ -1891,7 +2068,7 @@ namespace GHelper
         private Panel panelUViGPU;
         private Label labelUViGPU;
         private Label labelLeftUViGPU;
-        private TrackBar trackUViGPU;
+        private RTrackBar trackUViGPU;
         private Panel panelNav;
         private TableLayoutPanel tableNav;
         private RButton buttonCPU;
@@ -1907,7 +2084,7 @@ namespace GHelper
         private Panel panelTemperature;
         private Label labelTemp;
         private Label labelLeftTemp;
-        private TrackBar trackTemp;
+        private RTrackBar trackTemp;
         private Panel panelAdvancedAlways;
         private RCheckBox checkApplyUV;
         private Panel panelPowerMode;
@@ -1917,20 +2094,29 @@ namespace GHelper
         private Label labelPowerModeTitle;
         private Panel panelGPUClockLimit;
         private Label labelGPUClockLimit;
-        private TrackBar trackGPUClockLimit;
+        private RTrackBar trackGPUClockLimit;
         private Label labelGPUClockLimitTitle;
         private RButton buttonCalibrate;
         private Panel panelSlow;
         private Label labelSlow;
         private Label labelLeftSlow;
-        private TrackBar trackSlow;
+        private RTrackBar trackSlow;
         private Panel panelDownload;
         private RButton buttonDownload;
+        private Panel panelPawnIO;
         private Panel panelGPUPower;
         private Label labelGPUPower;
         private Label labelGPUPowerTitle;
-        private TrackBar trackGPUPower;
+        private RTrackBar trackGPUPower;
         private TableLayoutPanel tableLayoutModes;
         private RCheckBox checkFanClamp;
+        private Panel panelHysteresis;
+        private TableLayoutPanel tableHysteresis;
+        private Label labelHysteresisUp;
+        private RTrackBar trackHysteresisUp;
+        private Label labelHysteresisDown;
+        private RTrackBar trackHysteresisDown;
+        private Label labelHysteresisUpValue;
+        private Label labelHysteresisDownValue;
     }
 }

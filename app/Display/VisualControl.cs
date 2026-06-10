@@ -1,6 +1,6 @@
-﻿using GHelper.Helpers;
+using GHelper.Helpers;
 using Microsoft.Win32;
-using Ryzen;
+using PawnIO;
 using System.Management;
 
 namespace GHelper.Display
@@ -41,12 +41,11 @@ namespace GHelper.Display
         Cinema = 25,
         Vivid = 13,
         Eyecare = 17,
+        EReading = 212,
         Disabled = 18,
     }
     public static class VisualControl
     {
-        public static DisplayGammaRamp? gammaRamp;
-
         private static int _brightness = 100;
         private static bool _init = true;
         private static bool _download = true;
@@ -77,6 +76,11 @@ namespace GHelper.Display
         public static SplendidGamut GetDefaultGamut()
         {
             return AppConfig.IsVivoZenPro() ? SplendidGamut.VivoNative : SplendidGamut.Native;
+        }
+
+        public static bool IsEReading()
+        {
+            return File.Exists(AppConfig.IsVivoZenPro() ? GetVivobookPath() : GetGameVisualPath() + "\\Asus_Monochrome.icm");
         }
 
         public static Dictionary<SplendidGamut, string> GetGamutModes()
@@ -168,6 +172,7 @@ namespace GHelper.Display
                     { SplendidCommand.VivoVivid, "Vivid" },
                     { SplendidCommand.VivoManual, "Manual" },
                     { SplendidCommand.VivoEycare, "Eyecare" },
+                    { SplendidCommand.EReading, "E-Reading"},
                 };
             }
 
@@ -181,6 +186,7 @@ namespace GHelper.Display
                 { SplendidCommand.Cinema, "Cinema"},
                 { SplendidCommand.Vivid, "Vivid" },
                 { SplendidCommand.Eyecare, "Eyecare"},
+                { SplendidCommand.EReading, "E-Reading"},
                 { SplendidCommand.Disabled, "Disabled"}
             };
         }
@@ -264,44 +270,54 @@ namespace GHelper.Display
 
         public static void SetVisual(SplendidCommand mode = SplendidCommand.Default, int whiteBalance = DefaultColorTemp, bool init = false)
         {
+            Task.Run(async () =>
+            {
+                if (AmdDisplay.IsOledPowerOptimization()) Program.settingsForm.VisualiseAmdOled(true);
+            });
+
             if (mode == SplendidCommand.None) return;
             if ((mode == SplendidCommand.Default || mode == SplendidCommand.VivoNormal) && whiteBalance == DefaultColorTemp && init) return; // Skip default setting on init
-            if (mode == SplendidCommand.Disabled && !RyzenControl.IsAMD() && init) return; // Skip disabled setting for Intel devices
+            if (mode == SplendidCommand.Disabled && !CpuInfo.IsAMD && init) return; // Skip disabled setting for Intel devices
 
             AppConfig.Set("visual", (int)mode);
             AppConfig.Set("color_temp", whiteBalance);
 
             Task.Run(async () =>
             {
-                if (!forceVisual && ScreenCCD.GetHDRStatus(true)) return;
+                if (!forceVisual && (ScreenCCD.GetHDRStatus(out bool acm, true) || acm)) return;
                 if (!forceVisual && ScreenNative.GetRefreshRate(ScreenNative.FindLaptopScreen(true)) < 0) return;
 
-                //if (whiteBalance != DefaultColorTemp && !init) ProcessHelper.RunAsAdmin();
+                if (!init && mode == SplendidCommand.EReading && !ProcessHelper.IsUserAdministrator() && !IsEReading()) ProcessHelper.RunAsAdmin();
 
-                int? balance = null;
-                int command = 0;
+                int param1 = 0;
+                int? param2 = null;
+                int? param3 = null;
 
                 switch (mode)
                 {
                     case SplendidCommand.Disabled:
-                        command = 2;
+                        param1 = 2;
                         break;
                     case SplendidCommand.Eyecare:
-                        balance = 4;
+                        param2 = 4;
                         break;
                     case SplendidCommand.VivoNormal:
                     case SplendidCommand.VivoVivid:
-                        balance = null;
+                        param2 = null;
                         break;
                     case SplendidCommand.VivoEycare:
-                        balance = Math.Abs(whiteBalance - 50) * 4 / 50;
+                        param2 = Math.Abs(whiteBalance - 50) * 4 / 50;
+                        break;
+                    case SplendidCommand.EReading:
+                        param2 = 2;            // Contrast
+                        param3 = whiteBalance; // Color Temp
                         break;
                     default:
-                        balance = whiteBalance;
+                        param2 = whiteBalance;
                         break;
                 }
 
-                int result = RunSplendid(mode, command, balance);
+                int result = RunSplendid(mode, param1, param2, param3);
                 if (result == 0) return;
                 if (result == -1)
                 {
@@ -317,7 +333,7 @@ namespace GHelper.Display
                 {
                     _init = false;
                     RunSplendid(SplendidCommand.Init);
-                    RunSplendid(mode, 0, balance);
+                    RunSplendid(mode, 0, param2, param3);
                 }
             });
         }
@@ -347,16 +363,29 @@ namespace GHelper.Display
             return _splendidPath;
         }
 
-        private static int RunSplendid(SplendidCommand command, int? param1 = null, int? param2 = null)
+        private static int RunSplendid(SplendidCommand command, int? param1 = null, int? param2 = null, int? param3 = null)
         {
             string splendidPath = GetSplendidPath();
             string splendidExe = $"{splendidPath}\\AsusSplendid.exe";
             bool isVivo = AppConfig.IsVivoZenPro();
             bool isSplenddid = File.Exists(splendidExe);
 
+            if (AmdDisplay.IsOledPowerOptimization())
+            {
+                Logger.WriteLine("Skipping command due to AMD OLED Power Optimization flag");
+                Program.settingsForm.VisualiseAmdOled(true);
+                return 0;
+            }
+
+            if (ScreenNative.FindLaptopScreen() == null && ScreenNative.IsExternalDisplayConnected())
+            {
+                Logger.WriteLine("Skipping Splendid: internal display is off with external display connected");
+                return 0;
+            }
+
             if (isSplenddid)
             {
-                var result = ProcessHelper.RunCMD(splendidExe, (int)command + " " + param1 + " " + param2, splendidPath);
+                var result = ProcessHelper.RunCMD(splendidExe, (int)command + " " + param1 + " " + param2 + " " + param3, splendidPath);
                 if (result.Contains("file not exist") || (result.Length == 0 && !isVivo)) return 1;
                 if (result.Contains("return code: -1")) return -1;
                 if (result.Contains("Visual is disabled"))
@@ -387,8 +416,6 @@ namespace GHelper.Display
                 if (RunSplendid(dimmingCommand, 0, dimmingLevel) == 0) return;
             }
 
-            // GammaRamp Fallback
-            SetGamma(_brightness);
         }
 
         public static void InitBrightness()
@@ -437,49 +464,6 @@ namespace GHelper.Display
                 Program.settingsForm.VisualiseGamut();
                 skipGamut = false;
             }
-        }
-
-
-        public static void SetGamma(int brightness = 100)
-        {
-            var bright = Math.Round((float)brightness / 200 + 0.5, 2);
-
-            var screenName = ScreenNative.FindLaptopScreen();
-            if (screenName is null) return;
-
-            try
-            {
-                var handle = ScreenNative.CreateDC(screenName, screenName, null, IntPtr.Zero);
-                if (gammaRamp is null)
-                {
-                    var gammaDump = new GammaRamp();
-                    if (ScreenNative.GetDeviceGammaRamp(handle, ref gammaDump))
-                    {
-                        gammaRamp = new DisplayGammaRamp(gammaDump);
-                        //Logger.WriteLine("Gamma R: " + string.Join("-", gammaRamp.Red));
-                        //Logger.WriteLine("Gamma G: " + string.Join("-", gammaRamp.Green));
-                        //Logger.WriteLine("Gamma B: " + string.Join("-", gammaRamp.Blue));
-                    }
-                }
-
-                if (gammaRamp is null || !gammaRamp.IsOriginal())
-                {
-                    Logger.WriteLine("Not default Gamma");
-                    gammaRamp = new DisplayGammaRamp();
-                }
-
-                var ramp = gammaRamp.AsBrightnessRamp(bright);
-                bool result = ScreenNative.SetDeviceGammaRamp(handle, ref ramp);
-
-                Logger.WriteLine("Gamma " + bright.ToString() + ": " + result);
-
-            }
-            catch (Exception ex)
-            {
-                Logger.WriteLine(ex.ToString());
-            }
-
-            //ScreenBrightness.Set(60 + (int)(40 * bright));
         }
 
     }
