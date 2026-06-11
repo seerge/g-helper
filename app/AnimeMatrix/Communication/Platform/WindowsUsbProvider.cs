@@ -34,9 +34,10 @@ namespace GHelper.AnimeMatrix.Communication.Platform
         {
             try
             {
-                HidDevice = DeviceList.Local
+HidDevice = DeviceList.Local
                     .GetHidDevices(vendorId, productId)
                     .First(x => x.GetMaxFeatureReportLength() >= maxFeatureReportLength);
+
                 Logger.WriteLine($"{name} Device: " + HidDevice.DevicePath + " " + HidDevice.GetMaxFeatureReportLength());
             }
             catch
