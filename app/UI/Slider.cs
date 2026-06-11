@@ -26,6 +26,16 @@ namespace GHelper.UI
         private SizeF _barSize;
         private PointF _barPos;
 
+        private float? _dragX;
+
+        private const float InnerNormal = 12f / 22f;
+        private const float InnerHover = 16f / 22f;
+        private const float InnerPressed = 10f / 22f;
+
+        private float _innerScale = InnerNormal;
+        private float _innerTarget = InnerNormal;
+        private readonly System.Windows.Forms.Timer _animTimer = new() { Interval = 15 };
+
 
         public Color accentColor = Color.FromArgb(255, 58, 174, 239);
         public Color borderColor = Color.White;
@@ -37,6 +47,23 @@ namespace GHelper.UI
             // This reduces flicker
             DoubleBuffered = true;
             TabStop = true;
+
+            _animTimer.Tick += delegate
+            {
+                _innerScale += (_innerTarget - _innerScale) * 0.3f;
+                if (Math.Abs(_innerTarget - _innerScale) < 0.01f)
+                {
+                    _innerScale = _innerTarget;
+                    _animTimer.Stop();
+                }
+                Invalidate();
+            };
+        }
+
+        private void AnimateInner(float target)
+        {
+            _innerTarget = target;
+            _animTimer.Start();
         }
 
 
@@ -133,14 +160,16 @@ namespace GHelper.UI
             Brush brushEmpty = new SolidBrush(RForm.chartGrid);
             Brush brushBorder = new SolidBrush(borderColor);
 
+            float thumbX = _dragX ?? _thumbPos.X;
+
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             e.Graphics.FillRectangle(brushEmpty,
                 _barPos.X, _barPos.Y, _barSize.Width, _barSize.Height);
             e.Graphics.FillRectangle(brushAccent,
-                _barPos.X, _barPos.Y, _thumbPos.X - _barPos.X, _barSize.Height);
+                _barPos.X, _barPos.Y, thumbX - _barPos.X, _barSize.Height);
 
-            e.Graphics.FillCircle(brushBorder, _thumbPos.X, _thumbPos.Y, _radius);
-            e.Graphics.FillCircle(brushAccent, _thumbPos.X, _thumbPos.Y, 0.7f * _radius);
+            e.Graphics.FillCircle(brushBorder, thumbX, _thumbPos.Y, _radius);
+            e.Graphics.FillCircle(brushAccent, thumbX, _thumbPos.Y, _innerScale * _radius);
         }
 
         protected override void OnResize(EventArgs e)
@@ -177,6 +206,7 @@ namespace GHelper.UI
                 _moving = true;
             }
 
+            AnimateInner(InnerPressed);
             _calculateValue(e);
 
         }
@@ -192,6 +222,13 @@ namespace GHelper.UI
             {
                 thumbX = _barPos.X + _barSize.Width;
             }
+
+            if (_moving)
+            {
+                _dragX = thumbX;
+                Invalidate();
+            }
+
             Value = (int)Math.Round(Min + (thumbX - _barPos.X) * (Max - Min) / _barSize.Width);
 
         }
@@ -209,6 +246,27 @@ namespace GHelper.UI
         {
             base.OnMouseUp(e);
             _moving = false;
+            _dragX = null;
+            AnimateInner(ClientRectangle.Contains(e.Location) ? InnerHover : InnerNormal);
+            Invalidate();
+        }
+
+        protected override void OnMouseEnter(EventArgs e)
+        {
+            base.OnMouseEnter(e);
+            if (!_moving) AnimateInner(InnerHover);
+        }
+
+        protected override void OnMouseLeave(EventArgs e)
+        {
+            base.OnMouseLeave(e);
+            if (!_moving) AnimateInner(InnerNormal);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing) _animTimer.Dispose();
+            base.Dispose(disposing);
         }
 
     }
