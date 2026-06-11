@@ -444,7 +444,7 @@
     <value>Fn鎖定</value>
   </data>
   <data name="WinLockToggle" xml:space="preserve">
-    <value>Win-Lock Toggle</value>
+    <value>Win鍵鎖定</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>動態加速 (Dynamic Boost)</value>
@@ -921,10 +921,10 @@
     <value>Static</value>
   </data>
   <data name="SlashBatteryLevel" xml:space="preserve">
-    <value>Battery Level</value>
+    <value>電池電量</value>
   </data>
   <data name="IntervalOff" xml:space="preserve">
-    <value>Interval Off</value>
+    <value>無間隔</value>
   </data>
   <data name="IntervalSeconds" xml:space="preserve">
     <value>間隔 {0}秒</value>
@@ -959,9 +959,9 @@
 若遇隨機當機或硬體無回應，建議啟用。</value>
   </data>
   <data name="Overlay" xml:space="preserve">
-    <value>Overlay</value>
+    <value>覆蓋</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
-    <value>Overlay only in games</value>
+    <value>僅在遊戲時覆蓋</value>
   </data>
 </root>
