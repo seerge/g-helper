@@ -958,4 +958,10 @@ dan menjalankannya kembali secara otomatis saat GPU diaktifkan</value>
     <value>Mencegah perangkat PCIe memasuki status idle hemat daya.
 Direkomendasikan jika Anda mengalami hang acak atau perangkat keras tidak responsif.</value>
   </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
+  </data>
 </root>

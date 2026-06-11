@@ -958,4 +958,10 @@
     <value>Не дозволяє пристроям PCIe переходити в режими низького енергоспоживання.
 Рекомендується, якщо ви стикаєтеся з випадковими зависаннями або відсутністю реакції апаратного забезпечення.</value>
   </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
+  </data>
 </root>

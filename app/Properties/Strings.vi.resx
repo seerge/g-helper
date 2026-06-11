@@ -958,4 +958,10 @@ và tự khởi động lại khi GPU được bật</value>
     <value>Ngăn các thiết bị PCIe vào trạng thái nhàn rỗi tiết kiệm điện.
 Khuyến nghị nếu bạn gặp tình trạng treo ngẫu nhiên hoặc phần cứng không phản hồi.</value>
   </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
+  </data>
 </root>

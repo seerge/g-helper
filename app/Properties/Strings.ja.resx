@@ -958,4 +958,10 @@ GPU が有効化されたときに自動的に再起動します</value>
     <value>PCIe デバイスが低電力アイドル状態に入るのを防ぎます。
 ランダムなフリーズやハードウェアの無応答が発生する場合に推奨されます。</value>
   </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
+  </data>
 </root>
