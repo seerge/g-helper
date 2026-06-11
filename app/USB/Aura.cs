@@ -362,7 +362,7 @@ namespace GHelper.USB
 
             isStrix4Zone = BacklightType == AuraBacklightType.MultiZone;
 
-            if ((feat2 & FEAT2_ONE_ZONE_RED_EFFECT) != 0) isWhite = true;
+            if (typeByte != 0x00 && (feat2 & FEAT2_ONE_ZONE_RED_EFFECT) != 0) isWhite = true;
         }
 
         public static void Init()
