@@ -34,11 +34,15 @@ namespace GHelper.UI
 
         private float _innerScale = InnerNormal;
         private float _innerTarget = InnerNormal;
-        private readonly System.Windows.Forms.Timer _animTimer = new() { Interval = 15 };
+        private float _tickAlpha;
+        private float _tickTarget;
+        private readonly System.Windows.Forms.Timer _animTimer = new() { Interval = 30 };
 
 
         public Color accentColor = Color.FromArgb(255, 58, 174, 239);
         public Color borderColor = Color.White;
+
+        public List<int> supportedValues = new();
 
         public event EventHandler ValueChanged;
 
@@ -51,9 +55,11 @@ namespace GHelper.UI
             _animTimer.Tick += delegate
             {
                 _innerScale += (_innerTarget - _innerScale) * 0.3f;
-                if (Math.Abs(_innerTarget - _innerScale) < 0.01f)
+                _tickAlpha += (_tickTarget - _tickAlpha) * 0.3f;
+                if (Math.Abs(_innerTarget - _innerScale) < 0.01f && Math.Abs(_tickTarget - _tickAlpha) < 1f)
                 {
                     _innerScale = _innerTarget;
+                    _tickAlpha = _tickTarget;
                     _animTimer.Stop();
                 }
                 Invalidate();
@@ -63,6 +69,7 @@ namespace GHelper.UI
         private void AnimateInner(float target)
         {
             _innerTarget = target;
+            _tickTarget = target == InnerNormal ? 0 : 120;
             _animTimer.Start();
         }
 
@@ -139,11 +146,17 @@ namespace GHelper.UI
             {
                 case Keys.Right:
                 case Keys.Up:
-                    Value = Math.Min(Max, Value + Step);
+                    if (supportedValues.Count > 0)
+                        Value = supportedValues.Where(v => v > Value).DefaultIfEmpty(Value).Min();
+                    else
+                        Value = Math.Min(Max, Value + Step);
                     break;
                 case Keys.Left:
                 case Keys.Down:
-                    Value = Math.Max(Min, Value - Step);
+                    if (supportedValues.Count > 0)
+                        Value = supportedValues.Where(v => v < Value).DefaultIfEmpty(Value).Max();
+                    else
+                        Value = Math.Max(Min, Value - Step);
                     break;
             }
 
@@ -168,6 +181,20 @@ namespace GHelper.UI
             e.Graphics.FillRectangle(brushAccent,
                 _barPos.X, _barPos.Y, thumbX - _barPos.X, _barSize.Height);
 
+            if (_tickAlpha >= 1 && supportedValues.Count > 0)
+            {
+                Brush brushMark = new SolidBrush(Color.FromArgb((int)_tickAlpha, RForm.foreMain));
+                float tickW = Math.Max(1f, _barSize.Height / 4);
+                float tickH = 0.75f * _barSize.Height;
+                float gap = 0.5f * _barSize.Height;
+                foreach (int value in supportedValues)
+                {
+                    float x = ValueToX(value) - tickW / 2;
+                    e.Graphics.FillRectangle(brushMark, x, _barPos.Y - gap - tickH, tickW, tickH);
+                    e.Graphics.FillRectangle(brushMark, x, _barPos.Y + _barSize.Height + gap, tickW, tickH);
+                }
+            }
+
             e.Graphics.FillCircle(brushBorder, thumbX, _thumbPos.Y, _radius);
             e.Graphics.FillCircle(brushAccent, thumbX, _thumbPos.Y, _innerScale * _radius);
         }
@@ -178,13 +205,18 @@ namespace GHelper.UI
             RecalculateParameters();
         }
 
+        private float ValueToX(int value)
+        {
+            return _barSize.Width / (Max - Min) * (value - Min) + _barPos.X;
+        }
+
         private void RecalculateParameters()
         {
             _radius = 0.4F * ClientSize.Height;
             _barSize = new SizeF(ClientSize.Width - 2 * _radius, ClientSize.Height * 0.15F);
             _barPos = new PointF(_radius, (ClientSize.Height - _barSize.Height) / 2);
             _thumbPos = new PointF(
-                _barSize.Width / (Max - Min) * (Value - Min) + _barPos.X,
+                ValueToX(Value),
                 _barPos.Y + 0.5f * _barSize.Height);
             Invalidate();
         }
