@@ -80,6 +80,8 @@ namespace GHelper
             numericUpDownCurrentDPI.ValueChanged += NumericUpDownCurrentDPI_ValueChanged;
             sliderDPI.MouseUp += SliderDPI_MouseUp;
             sliderDPI.MouseDown += SliderDPI_MouseDown;
+            sliderDPI.PreviewKeyDown += (_, _) => updateMouseDPI = false;
+            sliderDPI.KeyUp += (s, e) => SliderDPI_MouseUp(s, e);
             buttonDPIColor.Click += ButtonDPIColor_Click;
             buttonDPI1.Click += ButtonDPI_Click;
             buttonDPI2.Click += ButtonDPI_Click;
@@ -599,7 +601,7 @@ namespace GHelper
             updateMouseDPI = false;
         }
 
-        private void SliderDPI_MouseUp(object? sender, MouseEventArgs e)
+        private void SliderDPI_MouseUp(object? sender, EventArgs e)
         {
             updateMouseDPI = true;
             UpdateMouseDPISettings();
