@@ -207,13 +207,9 @@ namespace GHelper.UI
 
         public bool Exponential { get; set; }
 
-        private float ValueToX(int value)
-        {
-            float t = Exponential
-                ? (MathF.Log(value) - MathF.Log(Min)) / (MathF.Log(Max) - MathF.Log(Min))
-                : (float)(value - Min) / (Max - Min);
-            return _barPos.X + _barSize.Width * t;
-        }
+        private float ValueToX(int value) => _barPos.X + _barSize.Width *
+            (Exponential ? MathF.Log((float)value / Min) / MathF.Log((float)Max / Min)
+                         : (float)(value - Min) / (Max - Min));
 
         private void RecalculateParameters()
         {
@@ -268,7 +264,7 @@ namespace GHelper.UI
 
             float t = (thumbX - _barPos.X) / _barSize.Width;
             Value = (int)Math.Round(Exponential
-                ? MathF.Exp(MathF.Log(Min) + t * (MathF.Log(Max) - MathF.Log(Min)))
+                ? Min * MathF.Pow((float)Max / Min, t)
                 : Min + t * (Max - Min));
 
         }
