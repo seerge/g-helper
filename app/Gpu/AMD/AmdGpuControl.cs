@@ -127,7 +127,7 @@ public class AmdGpuControl : IGpuControl
 
     private long _totalVramMB; // total VRAM is static — cached on first successful query (0 = not yet)
 
-    public int? GetVramUsage()
+    public (long usedMb, long totalMb)? GetVramInfo()
     {
         if (!IsValid) return null;
 
@@ -142,7 +142,7 @@ public class AmdGpuControl : IGpuControl
         if (ADL2_Adapter_DedicatedVRAMUsage_Get(_adlContextHandle, _internalDiscreteAdapter.AdapterIndex, out int usedMB) != Adl2.ADL_SUCCESS)
             return null;
 
-        return (int)Math.Clamp(usedMB * 100L / _totalVramMB, 0, 100);
+        return (usedMB, _totalVramMB);
     }
 
     public int? GetiGpuUse()

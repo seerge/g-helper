@@ -68,7 +68,7 @@ public static class NvmlHelper
         }
     }
 
-    public static int? GetMemoryUsagePercent(uint gpuIndex = 0)
+    public static (long usedMb, long totalMb)? GetMemoryInfo(uint gpuIndex = 0)
     {
         lock (_lock)
         {
@@ -79,7 +79,8 @@ public static class NvmlHelper
                 if (nvmlDeviceGetHandleByIndex_v2(gpuIndex, out IntPtr device) != NVML_SUCCESS) return null;
                 if (nvmlDeviceGetMemoryInfo(device, out nvmlMemory_t mem) != NVML_SUCCESS) return null;
                 if (mem.total == 0) return null;
-                return (int)Math.Clamp(mem.used * 100 / mem.total, 0, 100);
+                const ulong MB = 1024 * 1024;
+                return ((long)(mem.used / MB), (long)(mem.total / MB));
             }
             catch { return null; }
         }

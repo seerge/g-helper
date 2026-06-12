@@ -6,7 +6,7 @@ public  interface IGpuControl : IDisposable {
     public string FullName { get; }
     int? GetCurrentTemperature();
     int? GetGpuUse();
-    int? GetVramUsage();
+    (long usedMb, long totalMb)? GetVramInfo();
     float? GetGpuPower();
     void KillGPUApps();
 

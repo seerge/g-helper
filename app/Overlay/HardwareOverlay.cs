@@ -65,10 +65,9 @@ namespace GHelper.Overlay
         // Light:    fps | temp                        | power
         // Default:  fps | temp + fan RPM              | chart | power
         // Full:     fps | temp + fan RPM              | chart | power | usage% | bar
-        // Complete: fps | name | temp + fan RPM       | chart | power | usage% | bar | VRAM/RAM | mem% | bar
+        // Complete: fps | name | temp + fan RPM       | chart | power | usage% | bar | mem GB | bar
         //
         // Click on the overlay cycles Light → Default → Full → Complete → Light.
-        // Complete adds a short GPU/CPU name column after FPS and a VRAM/RAM bar+% column at the right.
         //
         // Bar height is fixed per DPI (~BaseUsageBarHeight * sc) and cell pitch is
         // integer, so the number of cells varies with available pixels while every
@@ -96,13 +95,13 @@ namespace GHelper.Overlay
         private const int BaseFullPadRight = 4;       // tighter right margin in full mode (vs BasePadX)
         // Target bar height at base DPI; tuned so at 2x DPI numCells = 10.
         private const int BaseUsageBarHeight = 15;
-        private const int BaseNameColWidth = 90;     // fits "AMD RX 6850M" / "NV RTX 4070" (~12 Consolas chars)
-        private const int BaseMemBarGap = 8;          // gap between the usage bar and the VRAM/RAM label (complete mode)
-        private const int BaseMemLabelColWidth = 34;  // fits "VRAM" + a small gap before the bar
+        private const int BaseNameColWidth = 90;     // fits "Core Ultra 9" / "Ryzen AI 9"
+        private const int BaseMemBarGap = 8;
+        private const int BaseMemNumColWidth = 54;   // fits "127.9GB"
         private const int BaseLightWidth = BasePadX + BaseFpsColWidth + BaseColGap + BaseLightLeftColWidth + BasePowerGap + BasePowerColWidth + BasePadX;
         private const int BaseWidth = BasePadX + BaseFpsColWidth + BaseColGap + BaseLeftColWidth + BaseColGap + BaseChartColWidth + BasePowerGap + BasePowerColWidth + BasePadX;
         private const int BaseFullWidth = BaseWidth - BasePadX + BaseUsageBarGap + BaseUsageBarWidth + BaseUsageNumGap + BaseUsageNumColWidth + BaseFullPadRight;
-        private const int BaseCompleteWidth = BaseFullWidth + BaseNameColWidth + BaseColGap + BaseMemBarGap + BaseMemLabelColWidth + BaseUsageBarWidth + BaseUsageNumGap + BaseUsageNumColWidth;
+        private const int BaseCompleteWidth = BaseFullWidth + BaseNameColWidth + BaseColGap + BaseMemBarGap + BaseMemNumColWidth + BaseUsageNumGap + BaseUsageBarWidth;
 
         private static readonly SolidBrush _bgBrush = new(Color.FromArgb(128, 0, 0, 0));
         private static readonly SolidBrush _gpuBrush = new(Color.FromArgb(255, 0, 255, 80));
@@ -137,6 +136,8 @@ namespace GHelper.Overlay
         private int? _cpuUsage;
         private int? _vramUsage;
         private int? _ramUsage;
+        private int? _vramUsedMb;
+        private int? _ramUsedMb;
         private string _gpuShortName = "";
         private string _cpuShortName = "";
 
@@ -301,17 +302,16 @@ namespace GHelper.Overlay
         private static string FmtPow(double p) =>
         p > 0 ? Math.Round(p, 1).ToString("F1") + "W" : "";
 
-        // "NVIDIA GeForce RTX 4070 Laptop GPU" -> "NV RTX 4070", "AMD Radeon RX 6850M XT" -> "AMD RX 6850M"
-        private static string ShortGpuName(string? full, bool isNvidia)
+        // "NVIDIA GeForce RTX 4070 Laptop GPU" -> "RTX 4070", "AMD Radeon RX 6850M XT" -> "RX 6850M"
+        private static string ShortGpuName(string? full)
         {
             if (string.IsNullOrEmpty(full)) return "";
-            string prefix = isNvidia ? "NV " : "AMD ";
             foreach (string tag in new[] { "RTX", "GTX", "RX", "Arc" })
             {
                 int i = full.IndexOf(tag, StringComparison.OrdinalIgnoreCase);
                 if (i < 0) continue;
                 string[] p = full[i..].Split(' ', StringSplitOptions.RemoveEmptyEntries);
-                return prefix + (p.Length >= 2 ? p[0] + " " + p[1] : p[0]);
+                return p.Length >= 2 ? p[0] + " " + p[1] : p[0];
             }
             return full;
         }
@@ -413,19 +413,16 @@ namespace GHelper.Overlay
             _cpuUsage = HardwareControl.cpuUsage;
             _gpuUsage = gpuActive ? (HardwareControl.gpuUsage ?? 0) : null;
             _vramUsage = gpuActive ? (HardwareControl.vramUsage ?? 0) : null;
+            _vramUsedMb = gpuActive ? (HardwareControl.vramUsedMb ?? 0) : null;
             _ramUsage = HardwareControl.ramUsage;
+            _ramUsedMb = HardwareControl.ramUsedMb;
 
-            // Names are static — resolve each once and cache; retry only while still empty
-            // (GPU may not be ready yet when the overlay starts).
             if (_mode == OverlayMode.Complete)
             {
                 if (_cpuShortName.Length == 0)
                     _cpuShortName = ShortCpuName(PawnIO.CpuInfo.Name);
                 if (_gpuShortName.Length == 0)
-                {
-                    var gpu = HardwareControl.GpuControl;
-                    _gpuShortName = ShortGpuName(gpu?.FullName, gpu?.IsNvidia ?? false);
-                }
+                    _gpuShortName = ShortGpuName(HardwareControl.GpuControl?.FullName);
             }
 
             Invalidate();
@@ -509,7 +506,6 @@ namespace GHelper.Overlay
             bool isComplete = _mode == OverlayMode.Complete;
             bool showUsage = isFull || isComplete;
 
-            // Name column sits between FPS and the temp column, complete mode only.
             int nameX = padX + fpsColW + colGap;
             int nameColW = isComplete ? S(sc, BaseNameColWidth) : 0;
             int leftX = nameX + nameColW + (isComplete ? colGap : 0);
@@ -519,9 +515,9 @@ namespace GHelper.Overlay
             int usageNumColW = S(sc, BaseUsageNumColWidth);
             int barW = S(sc, BaseUsageBarWidth);
             int barX = usageNumX + usageNumColW + S(sc, BaseUsageNumGap);
-            int memLabelX = barX + barW + S(sc, BaseMemBarGap);
-            int memNumX = memLabelX + S(sc, BaseMemLabelColWidth);
-            int memBarX = memNumX + usageNumColW + S(sc, BaseUsageNumGap);
+            int memNumX = barX + barW + S(sc, BaseMemBarGap);
+            int memNumColW = S(sc, BaseMemNumColWidth);
+            int memBarX = memNumX + memNumColW + S(sc, BaseUsageNumGap);
             int topY = padY;
             // Nudge per-row text down so it lines up with the vertically centered usage bars.
             int textY = topY + (int)Math.Round(sc);
@@ -532,8 +528,6 @@ namespace GHelper.Overlay
             g.DrawString(fpsStr, fpsBold, _gpuBrush,
             new PointF(padX + (fpsColW - fpsW) / 2f, topY));
 
-            // Short GPU/CPU names — complete mode only; clipped to the column so a long
-            // name (e.g. "Core Ultra 9") can't bleed into the temp column.
             if (isComplete)
             {
                 var savedClip = g.Save();
@@ -580,14 +574,11 @@ namespace GHelper.Overlay
                 // VRAM (GPU row) / RAM (CPU row) — complete mode only
                 if (isComplete)
                 {
-                    g.DrawString("VRAM", font, _gpuBrush, new PointF(memLabelX, textY));
-                    g.DrawString("DRAM", font, _cpuBrush, new PointF(memLabelX, textY + row2Y));
+                    DrawMemGb(g, font, memNumX, memNumColW, textY,         _vramUsedMb, _gpuBrush);
+                    DrawMemGb(g, font, memNumX, memNumColW, textY + row2Y, _ramUsedMb, _cpuBrush);
 
                     DrawUsageBar(g, memBarX, topY + barYOff, barW, cellH, sepH, numCells, _vramUsage ?? 0, _gpuBrush, _gpuFillBrush);
                     DrawUsageBar(g, memBarX, topY + row2Y + barYOff, barW, cellH, sepH, numCells, _ramUsage ?? 0, _cpuBrush, _cpuFillBrush);
-
-                    DrawUsagePercent(g, font, memNumX, usageNumColW, textY,         _vramUsage, _gpuBrush);
-                    DrawUsagePercent(g, font, memNumX, usageNumColW, textY + row2Y, _ramUsage, _cpuBrush);
                 }
             }
         }
@@ -596,6 +587,13 @@ namespace GHelper.Overlay
         {
             if (!usage.HasValue) return; // mirror the power column — empty when unavailable
             string s = usage.Value + "%";
+            g.DrawString(s, font, brush, new PointF(x + colW - g.MeasureString(s, font).Width, y));
+        }
+
+        private static void DrawMemGb(Graphics g, Font font, int x, int colW, int y, int? usedMb, SolidBrush brush)
+        {
+            if (!usedMb.HasValue) return;
+            string s = (usedMb.Value / 1024.0).ToString("F1") + "GB";
             g.DrawString(s, font, brush, new PointF(x + colW - g.MeasureString(s, font).Width, y));
         }
 

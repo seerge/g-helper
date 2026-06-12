@@ -43,6 +43,8 @@ public static class HardwareControl
     public static int? gpuUsage;
     public static int? vramUsage;
     public static int? ramUsage;
+    public static int? vramUsedMb;
+    public static int? ramUsedMb;
 
     // Set by the overlay so ReadSensorsOverlay skips sensors that won't be
     // displayed in the current mode (fan ACPI calls and CPU usage counter).
@@ -652,11 +654,12 @@ public static class HardwareControl
     [return: MarshalAs(UnmanagedType.Bool)]
     private static extern bool GlobalMemoryStatusEx(ref MEMORYSTATUSEX lpBuffer);
 
-    public static int? GetRAMUsage()
+    public static (int percent, int usedMb)? GetRAMInfo()
     {
         var status = new MEMORYSTATUSEX { dwLength = (uint)Marshal.SizeOf<MEMORYSTATUSEX>() };
         if (!GlobalMemoryStatusEx(ref status)) return null;
-        return (int)status.dwMemoryLoad;
+        int usedMb = (int)((status.ullTotalPhys - status.ullAvailPhys) / (1024 * 1024));
+        return ((int)status.dwMemoryLoad, usedMb);
     }
 
 
@@ -778,13 +781,27 @@ public static class HardwareControl
 
         if (readMemory)
         {
-            ramUsage = GetRAMUsage();
-            try { vramUsage = GpuControl?.GetVramUsage(); } catch { vramUsage = null; }
+            var ram = GetRAMInfo();
+            ramUsage = ram?.percent;
+            ramUsedMb = ram?.usedMb;
+
+            try
+            {
+                if (GpuControl?.GetVramInfo() is { } v && v.totalMb > 0)
+                {
+                    vramUsedMb = (int)v.usedMb;
+                    vramUsage = (int)Math.Clamp(v.usedMb * 100 / v.totalMb, 0, 100);
+                }
+                else { vramUsedMb = null; vramUsage = null; }
+            }
+            catch { vramUsedMb = null; vramUsage = null; }
         }
         else
         {
             ramUsage = null;
+            ramUsedMb = null;
             vramUsage = null;
+            vramUsedMb = null;
         }
 
         // Only overwrite with a new reading when the counter returns a valid value.
