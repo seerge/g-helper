@@ -62,18 +62,38 @@ namespace GHelper.Battery
             }
         }
 
+        private static int ClampLimit(int limit)
+        {
+            if (AppConfig.IsChargeLimit6080())
+            {
+                if (limit > 85) return 100;
+                if (limit >= 80) return 80;
+                if (limit < 60) return 60;
+            }
+            return limit;
+        }
+
+        public static int[]? GetSupportedLimits(int step = 1)
+        {
+            if (step <= 0) step = 1;
+            var candidates = Enumerable.Range(0, (100 - 40) / step + 1)
+                .Select(i => 40 + i * step)
+                .ToArray();
+            var stops = candidates
+                .Select(ClampLimit)
+                .Distinct()
+                .OrderBy(x => x)
+                .ToArray();
+            return stops.Length < candidates.Length ? stops : null;
+        }
+
         public static void SetBatteryChargeLimit(int setLimit = -1)
         {
             int limit = setLimit;
             if (limit < 0) limit = AppConfig.Get("charge_limit");
             if (limit < 40 || limit > 100) return;
 
-            if (AppConfig.IsChargeLimit6080())
-            {
-                if (limit > 85) limit = 100;
-                else if (limit >= 80) limit = 80;
-                else if (limit < 60) limit = 60;
-            }
+            limit = ClampLimit(limit);
 
             if (setLimit > 0) SetAsusChargeLimit(limit);
 
