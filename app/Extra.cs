@@ -471,6 +471,10 @@ namespace GHelper
             checkAspm.Checked = AppConfig.IsAutoASPM();
             checkAspm.CheckedChanged += CheckAspm_CheckedChanged;
 
+            // Opt-in: defaults to 0 (off) when the key has never been set.
+            checkNumLockOSD.Checked = AppConfig.Is("numlock_osd");
+            checkNumLockOSD.CheckedChanged += CheckNumLockOSD_CheckedChanged;
+
             checkKeystoneSound.Visible = AppConfig.IsKeystone();
             checkKeystoneSound.Checked = Keystone.IsEnabled();
             checkKeystoneSound.CheckedChanged += CheckKeystoneSoundCheckedChanged;
@@ -496,6 +500,18 @@ namespace GHelper
         {
             AppConfig.Set("aspm", (checkAspm.Checked ? 1 : 0));
             PowerNative.SetBalancedASPM(checkAspm.Checked ? 0 : 2);
+        }
+
+        private void CheckNumLockOSD_CheckedChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("numlock_osd", (checkNumLockOSD.Checked ? 1 : 0));
+
+            // Install/remove the low-level keyboard hook live so the toggle takes
+            // effect immediately, without restarting the app.
+            if (checkNumLockOSD.Checked)
+                LockKeyOsd.Start();
+            else
+                LockKeyOsd.Stop();
         }
 
         private void CheckNVPlatform_CheckedChanged(object? sender, EventArgs e)
