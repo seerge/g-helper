@@ -958,4 +958,10 @@ ir automatiškai jas paleidžia, kai GPU yra įjungtas</value>
     <value>Neleidžia PCIe įrenginiams pereiti į mažo energijos suvartojimo budėjimo būsenas.
 Rekomenduojama, jei pastebėjote atsitiktinius užstrigimus ar nereaguojančią aparatinę įrangą.</value>
   </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
+  </data>
 </root>

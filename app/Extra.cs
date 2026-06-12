@@ -19,6 +19,7 @@ namespace GHelper
 
         private void SetKeyCombo(ComboBox combo, TextBox txbox, string name)
         {
+            if (combo is RComboBox rcombo) rcombo.NativeHeight = true;
 
             Dictionary<string, string> customActions = new Dictionary<string, string>
             {

@@ -694,6 +694,8 @@ namespace GHelper.Ally
                     return;
                 }
 
+                input.Dispose();
+
                 if (applyMode != ControllerMode.Auto) _applyMode = applyMode;
 
                 if (init)

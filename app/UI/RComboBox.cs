@@ -35,9 +35,11 @@ namespace GHelper.UI
             CalibrateItemHeight();
         }
 
+        public bool NativeHeight { get; set; }
+
         private void CalibrateItemHeight()
         {
-            if (DrawMode != DrawMode.OwnerDrawFixed) return;
+            if (DrawMode != DrawMode.OwnerDrawFixed || NativeHeight) return;
             int chrome = PreferredHeight - ItemHeight;
             int target = (int)Math.Round(44 * (DeviceDpi / 192f));
             ItemHeight = Math.Max(1, target - chrome);

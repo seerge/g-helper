@@ -958,4 +958,10 @@ ve GPU etkinleştirildiğinde otomatik olarak yeniden başlatır</value>
     <value>PCIe aygıtlarının düşük güçlü boşta durumlarına geçmesini engeller.
 Rastgele takılmalar veya yanıt vermeyen donanım yaşıyorsanız önerilir.</value>
   </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
+  </data>
 </root>

@@ -1219,13 +1219,13 @@ namespace GHelper
             // 
             // sliderBrightness
             // 
-            sliderBrightness.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
-            sliderBrightness.Location = new Point(488, 2);
+            sliderBrightness.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            sliderBrightness.Location = new Point(488, 0);
             sliderBrightness.Margin = new Padding(2);
             sliderBrightness.Max = 100;
             sliderBrightness.Min = 0;
             sliderBrightness.Name = "sliderBrightness";
-            sliderBrightness.Size = new Size(378, 36);
+            sliderBrightness.Size = new Size(378, 40);
             sliderBrightness.Step = 1;
             sliderBrightness.TabIndex = 51;
             sliderBrightness.Text = "sliderBrightness";
