@@ -330,7 +330,7 @@ namespace GHelper.Overlay
 
             if (name.Contains("Ryzen", StringComparison.OrdinalIgnoreCase))
             {
-                m = Regex.Match(name, @"\d{3,}\w*");
+                m = Regex.Match(name, @"(?:[A-Z]{2,}\s+)?\d{3,}\w*");
                 return m.Success ? "Ryzen " + m.Value : "Ryzen";
             }
 
