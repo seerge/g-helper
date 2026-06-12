@@ -99,7 +99,7 @@ public class AmdGpuControl : IGpuControl
         if (!IsValid)
             return null;
 
-        if (ADL2_New_QueryPMLogData_Get(_adlContextHandle, _internalDiscreteAdapter.AdapterIndex, out ADLPMLogDataOutput adlpmLogDataOutput) != Adl2.ADL_SUCCESS)
+        if (!GetPMLog(out ADLPMLogDataOutput adlpmLogDataOutput))
             return null;
 
         ADLSingleSensorData temperatureSensor = adlpmLogDataOutput.Sensors[(int)ADLSensorType.PMLOG_TEMPERATURE_EDGE];
@@ -110,11 +110,27 @@ public class AmdGpuControl : IGpuControl
     }
 
 
+    private ADLPMLogDataOutput _pmLog;
+    private bool _pmLogValid;
+    private long _pmLogTime = -PMLogCacheMs;
+    private const int PMLogCacheMs = 500;
+
+    private bool GetPMLog(out ADLPMLogDataOutput log)
+    {
+        if (Environment.TickCount64 - _pmLogTime >= PMLogCacheMs)
+        {
+            _pmLogValid = ADL2_New_QueryPMLogData_Get(_adlContextHandle, _internalDiscreteAdapter.AdapterIndex, out _pmLog) == Adl2.ADL_SUCCESS;
+            _pmLogTime = Environment.TickCount64;
+        }
+        log = _pmLog;
+        return _pmLogValid;
+    }
+
     public int? GetGpuUse()
     {
         if (!IsValid) return null;
 
-        if (ADL2_New_QueryPMLogData_Get(_adlContextHandle, _internalDiscreteAdapter.AdapterIndex, out ADLPMLogDataOutput adlpmLogDataOutput) != Adl2.ADL_SUCCESS)
+        if (!GetPMLog(out ADLPMLogDataOutput adlpmLogDataOutput))
             return null;
 
         ADLSingleSensorData gpuUsage = adlpmLogDataOutput.Sensors[(int)ADLSensorType.PMLOG_INFO_ACTIVITY_GFX];
@@ -160,7 +176,7 @@ public class AmdGpuControl : IGpuControl
     public float? GetGpuPower()
     {
         if (!IsValid) return null;
-        if (ADL2_New_QueryPMLogData_Get(_adlContextHandle, _internalDiscreteAdapter.AdapterIndex, out ADLPMLogDataOutput adlpmLogDataOutput) != Adl2.ADL_SUCCESS) return null;
+        if (!GetPMLog(out ADLPMLogDataOutput adlpmLogDataOutput)) return null;
 
         foreach (var sensorType in new[] { ADLSensorType.PMLOG_ASIC_POWER, ADLSensorType.PMLOG_GFX_POWER, ADLSensorType.PMLOG_BOARD_POWER })
         {
