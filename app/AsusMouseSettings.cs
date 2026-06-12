@@ -80,6 +80,7 @@ namespace GHelper
             numericUpDownCurrentDPI.ValueChanged += NumericUpDownCurrentDPI_ValueChanged;
             sliderDPI.MouseUp += SliderDPI_MouseUp;
             sliderDPI.MouseDown += SliderDPI_MouseDown;
+            sliderDPI.KeyReleased += SliderDPI_KeyReleased;
             buttonDPIColor.Click += ButtonDPIColor_Click;
             buttonDPI1.Click += ButtonDPI_Click;
             buttonDPI2.Click += ButtonDPI_Click;
@@ -100,7 +101,6 @@ namespace GHelper
             sliderAngleAdjustment.MouseUp += SliderAngleAdjustment_MouseUp;
             comboBoxLiftOffDistance.DropDownClosed += ComboBoxLiftOffDistance_DropDownClosed;
             sliderButtonDebounce.ValueChanged += SliderButtonDebounce_ValueChanged;
-            sliderButtonDebounce.MouseUp += SliderButtonDebounce_MouseUp;
 
             checkBoxMotionSync.CheckedChanged += CheckBoxMotionSync_CheckedChanged;
             checkBoxZoneMode.CheckedChanged += CheckBoxZoneMode_CheckedChanged;
@@ -117,7 +117,7 @@ namespace GHelper
 
             buttonLightingColor.Click += ButtonLightingColor_Click;
             comboBoxLightingMode.DropDownClosed += ComboBoxLightingMode_DropDownClosed;
-            sliderBrightness.MouseUp += SliderBrightness_MouseUp;
+            sliderBrightness.ValueChanged += SliderBrightness_ValueChanged;
             comboBoxAnimationSpeed.DropDownClosed += ComboBoxAnimationSpeed_DropDownClosed;
             comboBoxAnimationDirection.DropDownClosed += ComboBoxAnimationDirection_DropDownClosed;
             checkBoxRandomColor.CheckedChanged += CheckBoxRandomColor_CheckedChanged;
@@ -170,17 +170,11 @@ namespace GHelper
             labelDecelerationValue.Text = sliderDeceleration.Value.ToString();
         }
 
-        private void SliderButtonDebounce_MouseUp(object? sender, MouseEventArgs e)
-        {
-            DebounceTime dbt = (DebounceTime)sliderButtonDebounce.Value;
-            mouse.SetDebounce(dbt);
-        }
-
         private void SliderButtonDebounce_ValueChanged(object? sender, EventArgs e)
         {
             DebounceTime dbt = (DebounceTime)sliderButtonDebounce.Value;
             int time = mouse.DebounceTimeInMS(dbt);
-
+            mouse.SetDebounce(dbt);
             labelButtonDebounceValue.Text = time + "ms";
         }
 
@@ -436,7 +430,7 @@ namespace GHelper
             UpdateLightingSettings(ls, visibleZone);
         }
 
-        private void SliderBrightness_MouseUp(object? sender, MouseEventArgs e)
+        private void SliderBrightness_ValueChanged(object? sender, EventArgs e)
         {
             LightingSetting? ls = mouse.LightingSettingForZone(visibleZone);
             ls.Brightness = sliderBrightness.Value;
@@ -579,7 +573,6 @@ namespace GHelper
         private void SliderDPI_ValueChanged(object? sender, EventArgs e)
         {
             numericUpDownCurrentDPI.Value = sliderDPI.Value;
-            UpdateMouseDPISettings();
         }
 
         private void NumericUpDownCurrentDPI_ValueChanged(object? sender, EventArgs e)
@@ -595,6 +588,11 @@ namespace GHelper
         private void SliderDPI_MouseUp(object? sender, MouseEventArgs e)
         {
             updateMouseDPI = true;
+            UpdateMouseDPISettings();
+        }
+
+        private void SliderDPI_KeyReleased(object? sender, KeyEventArgs e)
+        {
             UpdateMouseDPISettings();
         }
 
