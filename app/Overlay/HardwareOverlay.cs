@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 
 namespace GHelper.Overlay
 {
@@ -316,25 +317,21 @@ namespace GHelper.Overlay
             return full;
         }
 
-        // "AMD Ryzen 9 7945HX..." -> "Ryzen 9", "...Core(TM) i9-13980HX" -> "Core i9"
+        // "...Core(TM) i9-13980HX" -> "i9-13980HX", "AMD Ryzen 9 7945HX..." -> "Ryzen 7945HX", "...Core(TM) Ultra 9 185H" -> "Ultra 185H"
         private static string ShortCpuName(string name)
         {
             if (string.IsNullOrEmpty(name)) return "";
 
-            int r = name.IndexOf("Ryzen", StringComparison.OrdinalIgnoreCase);
-            if (r >= 0)
-            {
-                string[] p = name[r..].Split(' ', StringSplitOptions.RemoveEmptyEntries);
-                if (p.Length >= 3 && p[1].Equals("AI", StringComparison.OrdinalIgnoreCase)) return "Ryzen AI " + p[2];
-                return p.Length >= 2 ? "Ryzen " + p[1] : "Ryzen";
-            }
+            var m = Regex.Match(name, @"i[3579]-\w+");
+            if (m.Success) return m.Value;
 
-            int c = name.IndexOf("Core", StringComparison.OrdinalIgnoreCase);
-            if (c >= 0)
+            m = Regex.Match(name, @"Ultra\s+\d+\s+(\w*\d\w*)");
+            if (m.Success) return "Ultra " + m.Groups[1].Value;
+
+            if (name.Contains("Ryzen", StringComparison.OrdinalIgnoreCase))
             {
-                string[] p = name[c..].Split(new[] { ' ', '-' }, StringSplitOptions.RemoveEmptyEntries);
-                if (p.Length >= 3 && p[1].Equals("Ultra", StringComparison.OrdinalIgnoreCase)) return "Core Ultra " + p[2];
-                return p.Length >= 2 ? "Core " + p[1] : "Core";
+                m = Regex.Match(name, @"\d{3,}\w*");
+                return m.Success ? "Ryzen " + m.Value : "Ryzen";
             }
 
             return name.Split(' ', StringSplitOptions.RemoveEmptyEntries) is { Length: > 0 } t ? t[0] : "";
