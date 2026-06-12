@@ -284,7 +284,7 @@ namespace GHelper.Display
 
             Task.Run(async () =>
             {
-                if (!forceVisual && ScreenCCD.GetHDRStatus(true)) return;
+                if (!forceVisual && (ScreenCCD.GetHDRStatus(out bool acm, true) || acm)) return;
                 if (!forceVisual && ScreenNative.GetRefreshRate(ScreenNative.FindLaptopScreen(true)) < 0) return;
 
                 if (!init && mode == SplendidCommand.EReading && !ProcessHelper.IsUserAdministrator() && !IsEReading()) ProcessHelper.RunAsAdmin();
@@ -445,6 +445,7 @@ namespace GHelper.Display
             _brightness = Math.Max(0, Math.Min(100, brightness + delta));
             AppConfig.Set(IsOnBattery() ? "brightness_battery" : "brightness", _brightness);
 
+            brightnessTimer.Stop();
             brightnessTimer.Start();
 
             Program.settingsForm.VisualiseBrightness();

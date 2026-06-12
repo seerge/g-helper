@@ -274,7 +274,6 @@ namespace GHelper
             comboRotation.ButtonColor = Color.FromArgb(255, 255, 255);
             comboRotation.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             comboRotation.FormattingEnabled = true;
-            comboRotation.ItemHeight = 32;
             comboRotation.Items.AddRange(new object[] { "Straight", "Diagonal" });
             comboRotation.Location = new Point(279, 17);
             comboRotation.Margin = new Padding(4, 11, 4, 8);
@@ -308,7 +307,6 @@ namespace GHelper
             comboScaling.ButtonColor = Color.FromArgb(255, 255, 255);
             comboScaling.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             comboScaling.FormattingEnabled = true;
-            comboScaling.ItemHeight = 32;
             comboScaling.Items.AddRange(new object[] { "Default", "Low", "High", "Bilinear", "Bicubic", "NearestNeighbor", "HighQualityBilinear", "HighQualityBicubic" });
             comboScaling.Location = new Point(279, 17);
             comboScaling.Margin = new Padding(4, 11, 4, 8);

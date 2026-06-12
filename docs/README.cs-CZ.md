@@ -96,14 +96,14 @@ V každém režimu lze vyhrazenou GPU vyladit podle konkrétních potřeb, včet
 3. **Ultimátní**: povolena iGPU i dGPU, ale vestavěný displej je řízen dGPU (podporováno u modelů z roku 2022 a novějších)
 4. **Optimalizovaný**: deaktivuje dGPU při provozu na baterii (Eco) a aktivuje ji při připojení k napájení (Standardní)
 
-<img width="1134" alt="Režimy GPU" src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/gpu-modes-cs.png" />
+<img width="1134" alt="Režimy GPU" src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/gpu-modes-cs.svg" />
 
 ### 💿 Aktualizace ovladačů
 Aplikace obsahuje automatickou kontrolu aktualizací BIOSu a ovladačů, která je stahuje přímo z oficiálních stránek Asus pro váš konkrétní model a zvýrazňuje nové soubory ke stažení, jakmile jsou k dispozici. Všechny odkazy v sekci `Updates` vedou na oficiální soubory ke stažení od společnosti Asus.
 <img width="2302" alt="Driver Updates" src="https://github.com/user-attachments/assets/303dfce9-fbbd-4d15-b6d7-f21e7c2c59a4" />
 
 ### 🎮 Překryvné okno s metrikami
-Vestavěný herní překryv (OSD), který přímo přes hru zobrazuje v reálném čase **FPS, teploty CPU / GPU, využití a příkon** – bez dalších nástrojů jako RTSS. Funguje ve hrách DX10+. U starších titulů využívajících exkluzivní režim celé obrazovky nemusí být vidět, proto hru nastavte do okenního / bezrámečkového režimu celé obrazovky.
+Vestavěný herní překryv (OSD), který přímo přes hru zobrazuje v reálném čase **FPS, teploty CPU / GPU, využití a příkon** – bez dalších nástrojů. Funguje ve hrách DX10+. U starších titulů využívajících exkluzivní režim celé obrazovky nemusí být vidět, proto hru nastavte do okenního / bezrámečkového režimu celé obrazovky.
 
 - ``Ctrl + Shift + Alt + O`` - Zapnutí / vypnutí překryvného okna ve hře
 - ``Ctrl + Shift + Alt + Tažení myší`` - Přesunutí překryvného okna

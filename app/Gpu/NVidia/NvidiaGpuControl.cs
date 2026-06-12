@@ -271,14 +271,10 @@ public class NvidiaGpuControl : IGpuControl
 
     }
 
-    public static void FixNvContainer()
+    public static void RestartNvContainer()
     {
         if (!ProcessHelper.IsUserAdministrator()) return;
-        if (NvBootState.DGpuArrivedAfterBoot())
-        {
-            RunPowershellCommand(@"Restart-Service -Name 'NvContainerLocalSystem' -Force", 30000);
-            NvBootState.MarkHandled();
-        }
+        RunPowershellCommand(@"Restart-Service -Name 'NvContainerLocalSystem' -Force", 30000);
     }
 
     public static void RestartNVService()

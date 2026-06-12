@@ -26,11 +26,18 @@ public class AmdGpuControl : IGpuControl
         ADLAdapterInfoArray osAdapterInfoData = new();
         int osAdapterInfoDataSize = Marshal.SizeOf(osAdapterInfoData);
         nint AdapterBuffer = Marshal.AllocCoTaskMem(osAdapterInfoDataSize);
-        Marshal.StructureToPtr(osAdapterInfoData, AdapterBuffer, false);
-        if (ADL2_Adapter_AdapterInfo_Get(_adlContextHandle, AdapterBuffer, osAdapterInfoDataSize) != Adl2.ADL_SUCCESS)
-            return null;
+        try
+        {
+            Marshal.StructureToPtr(osAdapterInfoData, AdapterBuffer, false);
+            if (ADL2_Adapter_AdapterInfo_Get(_adlContextHandle, AdapterBuffer, osAdapterInfoDataSize) != Adl2.ADL_SUCCESS)
+                return null;
 
-        osAdapterInfoData = (ADLAdapterInfoArray)Marshal.PtrToStructure(AdapterBuffer, osAdapterInfoData.GetType())!;
+            osAdapterInfoData = (ADLAdapterInfoArray)Marshal.PtrToStructure(AdapterBuffer, osAdapterInfoData.GetType())!;
+        }
+        finally
+        {
+            Marshal.FreeCoTaskMem(AdapterBuffer);
+        }
 
         const int amdVendorId = 1002;
 

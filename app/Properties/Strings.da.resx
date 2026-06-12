@@ -265,7 +265,7 @@
     <value>Slukket</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Baggrundslys timeout tilsluttet / på batteri</value>
+    <value>Baggrundslys timeout tilsluttet / batteri</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Baggrundslys timeout på batteri</value>
@@ -957,5 +957,11 @@ og genstarter dem automatisk, når GPU'en er aktiveret</value>
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>Forhindrer PCIe-enheder i at gå i lavenergi-inaktive tilstande.
 Anbefales, hvis du oplever tilfældige hængninger eller hardware, der ikke reagerer.</value>
+  </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
   </data>
 </root>

@@ -298,10 +298,12 @@ namespace GHelper.Peripherals
             DetectMouse(new KerisWirelssAimpointWired());
             DetectMouse(new KerisIIAceWired());
             DetectMouse(new KerisIIOriginWired());
+            DetectMouse(new KerisIIOriginKJPWired());
             DetectMouse(new PugioII());
             DetectMouse(new PugioIIWired());
             DetectMouse(new StrixImpactII());
             DetectMouse(new StrixImpactIIElectroPunk());
+            DetectMouse(new StrixImpactIIMoonlightWhite());
             DetectMouse(new Chakram());
             DetectMouse(new ChakramWired());
             DetectMouse(new ChakramCore());
@@ -406,6 +408,7 @@ namespace GHelper.Peripherals
         {
             0x1B65 => new HarpeAceMiniOmni(),
             0x1C0E => new KerisIIOriginOmni(),
+            0x1D4E => new KerisIIOriginKJPOmni(),
             0x1A94 => new HarpeAceAimLabEditionOmni(),
             0x1AD7 => new StrixImpactIIIWirelessOmni(),
             0x1A72 => new GladiusIIIAimpointOmni(),

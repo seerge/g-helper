@@ -19,6 +19,7 @@ namespace GHelper.UI
         public static Color formBack;
         public static Color foreMain;
         public static Color borderMain;
+        public static Color borderSecond;
         public static Color chartMain;
         public static Color chartGrid;
 
@@ -35,6 +36,7 @@ namespace GHelper.UI
         private static extern int DwmSetWindowAttribute(nint hwnd, int attr, int[] attrValue, int attrSize);
 
         public bool darkTheme = false;
+        private bool themeInitialized = false;
         protected override CreateParams CreateParams
         {
             get
@@ -49,12 +51,13 @@ namespace GHelper.UI
         {
             if (darkTheme)
             {
-                buttonMain = Color.FromArgb(255, 50, 50, 50);
+                buttonMain = Color.FromArgb(255, 46, 46, 46);
                 buttonSecond = Color.FromArgb(255, 36, 36, 36);
 
                 formBack = Color.FromArgb(255, 28, 28, 28);
                 foreMain = Color.FromArgb(255, 240, 240, 240);
-                borderMain = Color.FromArgb(255, 50, 50, 50);
+                borderMain = Color.FromArgb(255, 55, 55, 55);
+                borderSecond = Color.FromArgb(255, 42, 42, 42);
 
                 chartMain = Color.FromArgb(255, 35, 35, 35);
                 chartGrid = Color.FromArgb(255, 70, 70, 70);
@@ -66,7 +69,8 @@ namespace GHelper.UI
 
                 formBack = SystemColors.Control;
                 foreMain = SystemColors.ControlText;
-                borderMain = Color.LightGray;
+                borderMain = Color.FromArgb(255, 220, 220, 220);
+                borderSecond = Color.FromArgb(255, 220, 220, 220);
 
                 chartMain = SystemColors.ControlLightLight;
                 chartGrid = Color.LightGray;
@@ -103,14 +107,16 @@ namespace GHelper.UI
         {
             bool newDarkTheme = IsDarkTheme();
             bool changed = darkTheme != newDarkTheme;
+            bool firstInit = !themeInitialized;
             darkTheme = newDarkTheme;
+            themeInitialized = true;
 
             InitColors(darkTheme);
 
             if (setDPI)
                 ControlHelper.Resize(this);
 
-            if (changed)
+            if (changed || firstInit)
             {
                 DwmSetWindowAttribute(Handle, 20, new[] { darkTheme ? 1 : 0 }, 4);
                 SetPreferredAppMode(darkTheme ? 1 : 0); 

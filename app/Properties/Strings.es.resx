@@ -265,7 +265,7 @@
     <value>Apagado</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Tiempo de espera de retroiluminación conectado / con batería</value>
+    <value>Tiempo de retroiluminación conectado / batería</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Tiempo de retroiluminación con batería</value>
@@ -957,5 +957,11 @@ y los reinicia automáticamente cuando se activa</value>
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>Evita que los dispositivos PCIe entren en estados de inactividad de bajo consumo.
 Recomendado si experimenta cuelgues aleatorios o hardware que no responde.</value>
+  </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
   </data>
 </root>

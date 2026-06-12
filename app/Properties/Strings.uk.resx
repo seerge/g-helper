@@ -265,7 +265,7 @@
     <value>Вимкнена</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Тайм-аут підсвічування на зарядці / на батареї</value>
+    <value>Тайм-аут підсвічування: зарядка / батарея</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Тайм-аут підсвітки на батареї</value>
@@ -957,5 +957,11 @@
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>Не дозволяє пристроям PCIe переходити в режими низького енергоспоживання.
 Рекомендується, якщо ви стикаєтеся з випадковими зависаннями або відсутністю реакції апаратного забезпечення.</value>
+  </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
   </data>
 </root>
