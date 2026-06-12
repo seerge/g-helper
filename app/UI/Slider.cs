@@ -205,9 +205,14 @@ namespace GHelper.UI
             RecalculateParameters();
         }
 
+        public bool Exponential { get; set; }
+
         private float ValueToX(int value)
         {
-            return _barSize.Width / (Max - Min) * (value - Min) + _barPos.X;
+            float t = Exponential
+                ? (MathF.Log(value) - MathF.Log(Min)) / (MathF.Log(Max) - MathF.Log(Min))
+                : (float)(value - Min) / (Max - Min);
+            return _barPos.X + _barSize.Width * t;
         }
 
         private void RecalculateParameters()
@@ -261,7 +266,10 @@ namespace GHelper.UI
                 Invalidate();
             }
 
-            Value = (int)Math.Round(Min + (thumbX - _barPos.X) * (Max - Min) / _barSize.Width);
+            float t = (thumbX - _barPos.X) / _barSize.Width;
+            Value = (int)Math.Round(Exponential
+                ? MathF.Exp(MathF.Log(Min) + t * (MathF.Log(Max) - MathF.Log(Min)))
+                : Min + t * (Max - Min));
 
         }
 
