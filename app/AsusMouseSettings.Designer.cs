@@ -1225,7 +1225,7 @@ namespace GHelper
             sliderBrightness.Max = 100;
             sliderBrightness.Min = 0;
             sliderBrightness.Name = "sliderBrightness";
-            sliderBrightness.Size = new Size(378, 36);
+            sliderBrightness.Size = new Size(378, 40);
             sliderBrightness.Step = 1;
             sliderBrightness.TabIndex = 51;
             sliderBrightness.Text = "sliderBrightness";
