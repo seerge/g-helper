@@ -195,19 +195,20 @@ public static class ControlHelper
 
     // Design tokens
     private const float GradientHeightFraction = 0.3f;
-    private const float LightThemeLightenBoost = 2f;
-    private const float ThinStrokeThreshold = 1f;
+    private const float LightGradientHeightFraction = 0.9f;
+    private const int TopFadeAlpha = 64;
 
     public static void DrawGradientBorder(Graphics g, Rectangle bounds, Color sideColor, int radius, float strokeWidth = 1f, PenAlignment alignment = PenAlignment.Center, float topLighten = 0.1f)
     {
-        if (!_darkMode && strokeWidth <= ThinStrokeThreshold) topLighten *= LightThemeLightenBoost;
-        Color topColor = Color.FromArgb(sideColor.A,
-            (int)(sideColor.R + (255 - sideColor.R) * topLighten),
-            (int)(sideColor.G + (255 - sideColor.G) * topLighten),
-            (int)(sideColor.B + (255 - sideColor.B) * topLighten));
+        Color topColor = !_darkMode && strokeWidth <= 1f
+            ? Color.FromArgb(TopFadeAlpha, sideColor)
+            : Color.FromArgb(sideColor.A,
+                (int)(sideColor.R + (255 - sideColor.R) * topLighten),
+                (int)(sideColor.G + (255 - sideColor.G) * topLighten),
+                (int)(sideColor.B + (255 - sideColor.B) * topLighten));
 
         float flatHeight = Math.Max(1f, strokeWidth);
-        float gradHeight = (float)Math.Round(bounds.Height * GradientHeightFraction);
+        float gradHeight = (float)Math.Round(bounds.Height * (_darkMode ? GradientHeightFraction : LightGradientHeightFraction));
         float pad = strokeWidth;
         float axisStart = bounds.Y - pad;
         float axisEnd = bounds.Y + bounds.Height + pad;

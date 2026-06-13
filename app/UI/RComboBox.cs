@@ -54,8 +54,8 @@ namespace GHelper.UI
             }
 
             bool selected = (e.State & DrawItemState.Selected) != 0;
-            Color bg = selected ? RForm.colorStandard : BackColor;
-            Color fg = selected ? Color.White : ForeColor;
+            Color bg = selected ? RForm.borderMain : BackColor;
+            Color fg = ForeColor;
 
             using (var bgBrush = new SolidBrush(bg))
                 e.Graphics.FillRectangle(bgBrush, e.Bounds);
@@ -252,7 +252,8 @@ namespace GHelper.UI
                     {
                         DrawRoundedRectangle(g, p, innerBorder, innerRadiusL, innerRadiusR);
                     }
-                    ControlHelper.DrawGradientBorder(g, outerBorder, outerBorderColor, outerRadius);
+                    if (!RForm.flatTheme)
+                        ControlHelper.DrawGradientBorder(g, outerBorder, outerBorderColor, outerRadius);
                 }
                 if (shoulEndPaint)
                     EndPaint(Handle, ref ps);

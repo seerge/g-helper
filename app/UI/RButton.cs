@@ -6,7 +6,7 @@ namespace GHelper.UI
     {
 
         // Design tokens
-        private const float HoverShiftAmount = 0.06f;
+        private const float HoverShiftAmount = 0.04f;
         private const float ActiveTopLighten = 0.25f;
         private const float RestTopLighten = 0.1f;
         private const int ActiveBgTopAlpha = 32;
@@ -60,6 +60,8 @@ namespace GHelper.UI
         }
 
         public bool Borderless { get; set; } = false;
+
+        protected override bool ShowFocusCues => false;
 
         public RButton()
         {
@@ -120,7 +122,7 @@ namespace GHelper.UI
                 pevent.Graphics.DrawPath(penSurface, pathSurface);
 
                 bool drawActive = Enabled && !Borderless && activated && borderColor.A > 0;
-                bool drawRest = Enabled && !Borderless && !activated && FlatAppearance.BorderColor.A > 0;
+                bool drawRest = Enabled && !Borderless && !activated && FlatAppearance.BorderColor.A > 0 && !RForm.flatTheme;
 
                 if (drawActive)
                 {

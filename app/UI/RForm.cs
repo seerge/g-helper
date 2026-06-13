@@ -23,6 +23,8 @@ namespace GHelper.UI
         public static Color chartMain;
         public static Color chartGrid;
 
+        public static bool flatTheme = false;
+
         [DllImport("UXTheme.dll", SetLastError = true, EntryPoint = "#138")]
         public static extern bool CheckSystemDarkModeStatus();
 
@@ -49,6 +51,8 @@ namespace GHelper.UI
         }
         public static void InitColors(bool darkTheme)
         {
+            flatTheme = AppConfig.GetString("theme")?.ToLower() == "flat";
+
             if (darkTheme)
             {
                 buttonMain = Color.FromArgb(255, 46, 46, 46);
@@ -70,7 +74,7 @@ namespace GHelper.UI
                 formBack = SystemColors.Control;
                 foreMain = SystemColors.ControlText;
                 borderMain = Color.FromArgb(255, 220, 220, 220);
-                borderSecond = Color.FromArgb(255, 220, 220, 220);
+                borderSecond = Color.FromArgb(255, 210, 210, 210);
 
                 chartMain = SystemColors.ControlLightLight;
                 chartGrid = Color.LightGray;
