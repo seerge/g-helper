@@ -252,7 +252,8 @@ namespace GHelper.UI
                     {
                         DrawRoundedRectangle(g, p, innerBorder, innerRadiusL, innerRadiusR);
                     }
-                    ControlHelper.DrawGradientBorder(g, outerBorder, outerBorderColor, outerRadius);
+                    if (!RForm.flatTheme)
+                        ControlHelper.DrawGradientBorder(g, outerBorder, outerBorderColor, outerRadius);
                 }
                 if (shoulEndPaint)
                     EndPaint(Handle, ref ps);
