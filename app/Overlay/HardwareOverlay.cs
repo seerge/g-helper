@@ -841,5 +841,15 @@ namespace GHelper.Overlay
             _lastScale = 0f;
             base.Hide();
         }
+
+        public void SuspendForDisplayOff()
+        {
+            if (_active) StopOverlay();
+        }
+
+        public void ResumeForDisplayOn()
+        {
+            if (!_active && AppConfig.IsOverlay()) StartOverlay();
+        }
     }
 }
