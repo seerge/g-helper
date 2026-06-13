@@ -61,6 +61,8 @@ namespace GHelper.UI
 
         public bool Borderless { get; set; } = false;
 
+        protected override bool ShowFocusCues => false;
+
         public RButton()
         {
             DoubleBuffered = true;
