@@ -96,6 +96,7 @@ namespace GHelper.Overlay
         private const int BaseFullPadRight = 4;       // tighter right margin in full mode (vs BasePadX)
         // Target bar height at base DPI; tuned so at 2x DPI numCells = 10.
         private const int BaseUsageBarHeight = 15;
+        private const int BaseUsageBarYNudge = 1; // raise bars to align with the text baseline
         private const int BaseNameColWidth = 90;     // fits "Core Ultra 9" / "Ryzen AI 9"
         private const int BaseMemBarGap = 8;
         private const int BaseMemNumColWidth = 54;   // fits "127.9GB"
@@ -559,7 +560,7 @@ namespace GHelper.Overlay
                 int pitch = cellH + sepH;
                 int numCells = Math.Max(2, (targetBarH + sepH) / pitch);
                 int barH = numCells * cellH + (numCells - 1) * sepH;
-                int barYOff = (lineH - barH) / 2;
+                int barYOff = (lineH - barH) / 2 - S(sc, BaseUsageBarYNudge);
                 int row2Y = lineH + lineGap;
 
                 DrawUsageBar(g, barX, topY + barYOff, barW, cellH, sepH, numCells, _gpuUsage ?? 0, _gpuBrush, _gpuFillBrush);
@@ -599,7 +600,7 @@ namespace GHelper.Overlay
             var prevSmoothing = g.SmoothingMode;
             g.SmoothingMode = SmoothingMode.None;
 
-            int lit = Math.Clamp((int)Math.Round(usage * numCells / 100f), 0, numCells);
+            int lit = Math.Clamp((int)Math.Ceiling(usage * numCells / 100f), 0, numCells);
             int pitch = cellH + sepH;
 
             for (int i = 0; i < numCells; i++)
