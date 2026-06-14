@@ -51,7 +51,6 @@ namespace GHelper
 
             //float dpi = ControlHelper.GetDpiScale(this).Value;
             //comboModes.Size = new Size(comboModes.Width, (int)dpi * 18);
-            comboModes.NativeHeight = true;
             comboModes.ClientSize = new Size(comboModes.Width, comboModes.Height - 4);
 
             Text = Properties.Strings.FansAndPower;
