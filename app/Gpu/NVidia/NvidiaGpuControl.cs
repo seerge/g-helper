@@ -55,20 +55,27 @@ public class NvidiaGpuControl : IGpuControl
 
     private enum GpuState { Active, Asleep, Off }
 
+    private GpuState _lastState = GpuState.Off;
+    private long _lastStateTime = -StateCacheMs;
+    private const int StateCacheMs = 500; 
+
     private GpuState GetGpuState()
     {
         if (!IsValid) return GpuState.Off;
+        if (Environment.TickCount64 - _lastStateTime < StateCacheMs) return _lastState;
         try
         {
             var perfState = GPUApi.GetCurrentPerformanceState(_internalGpu!.Handle);
             if (verboseLog) Logger.WriteLine($"GPU: {perfState}");
-            return GpuState.Active;
+            _lastState = GpuState.Active;
         }
         catch (Exception ex)
         {
             if (verboseLog) Logger.WriteLine($"GPU: {ex.Message}");
-            return ex.Message == "NVAPI_GPU_NOT_POWERED" ? GpuState.Asleep : GpuState.Off;
+            _lastState = ex.Message == "NVAPI_GPU_NOT_POWERED" ? GpuState.Asleep : GpuState.Off;
         }
+        _lastStateTime = Environment.TickCount64;
+        return _lastState;
     }
 
     public int? ReadCurrentTemperature(bool log = false)
@@ -369,6 +376,13 @@ public class NvidiaGpuControl : IGpuControl
         }
         if (state != GpuState.Active) return 0f;
         return NvmlHelper.GetGpuPower() ?? 0f;
+    }
+
+    public (long usedMb, long totalMb)? GetVramInfo()
+    {
+        if (!IsValid) return null;
+        if (GetGpuState() != GpuState.Active) return null;
+        return NvmlHelper.GetMemoryInfo();
     }
 
 }

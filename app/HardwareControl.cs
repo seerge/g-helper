@@ -41,11 +41,16 @@ public static class HardwareControl
 
     public static int? cpuUsage;
     public static int? gpuUsage;
+    public static int? vramUsage;
+    public static int? ramUsage;
+    public static int? vramUsedMb;
+    public static int? ramUsedMb;
 
     // Set by the overlay so ReadSensorsOverlay skips sensors that won't be
     // displayed in the current mode (fan ACPI calls and CPU usage counter).
     public static bool readFans;
     public static bool readUsage;
+    public static bool readMemory;
 
     static long lastUpdate;
 
@@ -631,6 +636,32 @@ public static class HardwareControl
         return Math.Clamp((int)Math.Round((1.0 - (double)deltaIdle / deltaTotal) * 100), 0, 100);
     }
 
+    [StructLayout(LayoutKind.Sequential)]
+    private struct MEMORYSTATUSEX
+    {
+        public uint dwLength;
+        public uint dwMemoryLoad;
+        public ulong ullTotalPhys;
+        public ulong ullAvailPhys;
+        public ulong ullTotalPageFile;
+        public ulong ullAvailPageFile;
+        public ulong ullTotalVirtual;
+        public ulong ullAvailVirtual;
+        public ulong ullAvailExtendedVirtual;
+    }
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool GlobalMemoryStatusEx(ref MEMORYSTATUSEX lpBuffer);
+
+    public static (int percent, int usedMb)? GetRAMInfo()
+    {
+        var status = new MEMORYSTATUSEX { dwLength = (uint)Marshal.SizeOf<MEMORYSTATUSEX>() };
+        if (!GlobalMemoryStatusEx(ref status)) return null;
+        int usedMb = (int)((status.ullTotalPhys - status.ullAvailPhys) / (1024 * 1024));
+        return ((int)status.dwMemoryLoad, usedMb);
+    }
+
 
     private static AmdGpuControl? _amdApuControl;
     private static bool _amdApuPowerFailed;
@@ -746,6 +777,31 @@ public static class HardwareControl
         {
             cpuUsage = null;
             gpuUsage = null;
+        }
+
+        if (readMemory)
+        {
+            var ram = GetRAMInfo();
+            ramUsage = ram?.percent;
+            ramUsedMb = ram?.usedMb;
+
+            try
+            {
+                if (GpuControl?.GetVramInfo() is { } v && v.totalMb > 0)
+                {
+                    vramUsedMb = (int)v.usedMb;
+                    vramUsage = (int)Math.Clamp(v.usedMb * 100 / v.totalMb, 0, 100);
+                }
+                else { vramUsedMb = null; vramUsage = null; }
+            }
+            catch { vramUsedMb = null; vramUsage = null; }
+        }
+        else
+        {
+            ramUsage = null;
+            ramUsedMb = null;
+            vramUsage = null;
+            vramUsedMb = null;
         }
 
         // Only overwrite with a new reading when the counter returns a valid value.
