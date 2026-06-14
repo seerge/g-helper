@@ -103,7 +103,7 @@ namespace GHelper.Overlay
         private const int BaseLightWidth = BasePadX + BaseFpsColWidth + BaseColGap + BaseLightLeftColWidth + BasePowerGap + BasePowerColWidth + BasePadX;
         private const int BaseWidth = BasePadX + BaseFpsColWidth + BaseColGap + BaseLeftColWidth + BaseColGap + BaseChartColWidth + BasePowerGap + BasePowerColWidth + BasePadX;
         private const int BaseFullWidth = BaseWidth - BasePadX + BaseUsageBarGap + BaseUsageBarWidth + BaseUsageNumGap + BaseUsageNumColWidth + BaseFullPadRight;
-        private const int BaseCompleteWidth = BaseFullWidth + BaseNameColWidth + BaseColGap + BaseMemBarGap + BaseMemNumColWidth + BaseUsageNumGap + BaseUsageBarWidth;
+        private const int BaseCompleteWidth = BaseFullWidth + BaseMemBarGap + BaseMemNumColWidth + BaseUsageNumGap + BaseUsageBarWidth;
 
         private static readonly SolidBrush _bgBrush = new(Color.FromArgb(128, 0, 0, 0));
         private static readonly SolidBrush _gpuBrush = new(Color.FromArgb(255, 0, 255, 80));
@@ -155,6 +155,7 @@ namespace GHelper.Overlay
         private int _lastFgPid;
         private bool _active;
         private bool _gameOnly;
+        private bool _showNames;
         private bool _hidden;
         private int _shownPid;
         private bool _fgDesktop;
@@ -295,6 +296,18 @@ namespace GHelper.Overlay
 
         private float GetScale() => BaseScale * (_scalePercent / 100f);
 
+        private int BaseModeWidth()
+        {
+            int w = _mode switch
+            {
+                OverlayMode.Light    => BaseLightWidth,
+                OverlayMode.Full     => BaseFullWidth,
+                OverlayMode.Complete => BaseCompleteWidth,
+                _                    => BaseWidth,
+            };
+            return _showNames ? w + BaseNameColWidth + BaseColGap : w;
+        }
+
         private static int S(float sc, int v) => (int)(v * sc);
         private static double D(object? v) { try { return v is null ? 0.0 : Convert.ToDouble(v); } catch { return 0.0; } }
 
@@ -415,7 +428,7 @@ namespace GHelper.Overlay
             _ramUsage = HardwareControl.ramUsage;
             _ramUsedMb = HardwareControl.ramUsedMb;
 
-            if (_mode == OverlayMode.Complete)
+            if (_showNames)
             {
                 if (_cpuShortName.Length == 0)
                     _cpuShortName = ShortCpuName(PawnIO.CpuInfo.Name);
@@ -454,13 +467,7 @@ namespace GHelper.Overlay
             int padY = S(sc, BasePadY);
             int lineH = S(sc, BaseLineHeight);
             int lineGap = S(sc, BaseLineSpacing);
-            int width = S(sc, _mode switch
-            {
-                OverlayMode.Light    => BaseLightWidth,
-                OverlayMode.Full     => BaseFullWidth,
-                OverlayMode.Complete => BaseCompleteWidth,
-                _                    => BaseWidth,
-            });
+            int width = S(sc, BaseModeWidth());
             int radius = S(sc, CornerRadius);
             int fpsColW = S(sc, BaseFpsColWidth);
             int chartColW = S(sc, BaseChartColWidth);
@@ -505,8 +512,8 @@ namespace GHelper.Overlay
             bool showUsage = isFull || isComplete;
 
             int nameX = padX + fpsColW + colGap;
-            int nameColW = isComplete ? S(sc, BaseNameColWidth) : 0;
-            int leftX = nameX + nameColW + (isComplete ? colGap : 0);
+            int nameColW = _showNames ? S(sc, BaseNameColWidth) : 0;
+            int leftX = nameX + nameColW + (_showNames ? colGap : 0);
             int chartX = leftX + S(sc, isLight ? BaseLightLeftColWidth : BaseLeftColWidth);
             int powX = isLight ? chartX + powGap : chartX + chartColW + powGap;
             int usageNumX = powX + powColW + S(sc, BaseUsageBarGap);
@@ -526,7 +533,7 @@ namespace GHelper.Overlay
             g.DrawString(fpsStr, fpsBold, _gpuBrush,
             new PointF(padX + (fpsColW - fpsW) / 2f, topY));
 
-            if (isComplete)
+            if (_showNames)
             {
                 var savedClip = g.Save();
                 g.SetClip(new RectangleF(nameX, topY, nameColW, innerH));
@@ -770,6 +777,7 @@ namespace GHelper.Overlay
             _active = true;
             _lastFgPid = 0;
             _gameOnly = AppConfig.IsOverlayGameOnly();
+            _showNames = AppConfig.Is("overlay_names");
             _hidden = false;
             _shownPid = 0;
             _fgDesktop = false;
@@ -794,14 +802,7 @@ namespace GHelper.Overlay
 
             float sc = GetScale();
             int innerH = S(sc, BaseLineHeight) * 2 + S(sc, BaseLineSpacing);
-            int initialBaseW = _mode switch
-            {
-                OverlayMode.Light    => BaseLightWidth,
-                OverlayMode.Full     => BaseFullWidth,
-                OverlayMode.Complete => BaseCompleteWidth,
-                _                    => BaseWidth,
-            };
-            Size = new Size(S(sc, initialBaseW), S(sc, BasePadY) * 2 + innerH);
+            Size = new Size(S(sc, BaseModeWidth()), S(sc, BasePadY) * 2 + innerH);
 
             RestorePosition();
             base.Show();
