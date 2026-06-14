@@ -1,5 +1,6 @@
 ﻿using GHelper.UI;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Windows.Forms.DataVisualization.Charting;
 
@@ -68,14 +69,15 @@ public static class ControlHelper
                 button.ForeColor = RForm.foreMain;
 
                 button.FlatStyle = FlatStyle.Flat;
-                button.FlatAppearance.BorderColor = RForm.borderMain;
+                if (!button.Borderless)
+                    button.FlatAppearance.BorderColor = button.Secondary ? RForm.borderSecond : RForm.borderMain;
 
-                if (button.Image is not null)
+                if (button.Image is not null && _invert)
                     button.Image = AdjustImage(button.Image);
             }
 
             var pictureBox = control as PictureBox;
-            if (pictureBox != null && pictureBox.BackgroundImage is not null)
+            if (pictureBox != null && pictureBox.BackgroundImage is not null && _invert)
                 pictureBox.BackgroundImage = AdjustImage(pictureBox.BackgroundImage);
 
 
@@ -84,7 +86,7 @@ public static class ControlHelper
             {
                 combo.BackColor = RForm.buttonMain;
                 combo.ForeColor = RForm.foreMain;
-                combo.BorderColor = RForm.buttonMain;
+                combo.BorderColor = RForm.borderMain;
                 combo.ButtonColor = RForm.buttonMain;
                 combo.ArrowColor = RForm.foreMain;
             }
@@ -127,7 +129,11 @@ public static class ControlHelper
             if (chk != null)
             {
                 if (chk.BackColor != RForm.formBack)
+                {
                     chk.BackColor = RForm.buttonSecond;
+                    if (chk is RCheckBox)
+                        chk.FlatAppearance.BorderColor = RForm.borderSecond;
+                }
                 SetWindowTheme(chk.Handle, _darkMode ? "DarkMode_Explorer" : "Explorer", null);
             }
 
@@ -187,24 +193,77 @@ public static class ControlHelper
         return pic;
     }
 
-    private static Image AdjustImage(Image image)
-    {
-        var pic = new Bitmap(image);
+    // Design tokens
+    private const float GradientHeightFraction = 0.3f;
+    private const float LightGradientHeightFraction = 0.9f;
+    private const int TopFadeAlpha = 64;
 
-        if (_invert)
+    public static void DrawGradientBorder(Graphics g, Rectangle bounds, Color sideColor, int radius, float strokeWidth = 1f, PenAlignment alignment = PenAlignment.Center, float topLighten = 0.1f)
+    {
+        Color topColor = !_darkMode && strokeWidth <= 1f
+            ? Color.FromArgb(TopFadeAlpha, sideColor)
+            : Color.FromArgb(sideColor.A,
+                (int)(sideColor.R + (255 - sideColor.R) * topLighten),
+                (int)(sideColor.G + (255 - sideColor.G) * topLighten),
+                (int)(sideColor.B + (255 - sideColor.B) * topLighten));
+
+        float flatHeight = Math.Max(1f, strokeWidth);
+        float gradHeight = (float)Math.Round(bounds.Height * (_darkMode ? GradientHeightFraction : LightGradientHeightFraction));
+        float pad = strokeWidth;
+        float axisStart = bounds.Y - pad;
+        float axisEnd = bounds.Y + bounds.Height + pad;
+        float axisLen = axisEnd - axisStart;
+        float p1 = Math.Max(0f, Math.Min(0.98f, (pad + flatHeight) / axisLen));
+        float p2 = Math.Max(p1 + 0.01f, Math.Min(1f, (pad + flatHeight + gradHeight) / axisLen));
+
+        using (GraphicsPath path = RComboBox.RoundedRect(bounds, radius, radius))
+        using (LinearGradientBrush brush = new LinearGradientBrush(
+            new PointF(0, axisStart), new PointF(0, axisEnd),
+            topColor, sideColor))
         {
-            for (int y = 0; (y <= (pic.Height - 1)); y++)
+            brush.InterpolationColors = new ColorBlend(4)
             {
-                for (int x = 0; (x <= (pic.Width - 1)); x++)
-                {
-                    Color col = pic.GetPixel(x, y);
-                    pic.SetPixel(x, y, Color.FromArgb(col.A, (255 - col.R), (255 - col.G), (255 - col.B)));
-                }
+                Colors = new[] { topColor, topColor, sideColor, sideColor },
+                Positions = new[] { 0f, p1, p2, 1f }
+            };
+            using (Pen pen = new Pen(brush, strokeWidth) { Alignment = alignment })
+            {
+                SmoothingMode prev = g.SmoothingMode;
+                g.SmoothingMode = SmoothingMode.AntiAlias;
+                g.DrawPath(pen, path);
+                g.SmoothingMode = prev;
             }
         }
+    }
 
+    private static readonly ImageAttributes _invertAttributes = CreateInvertAttributes();
+
+    private static ImageAttributes CreateInvertAttributes()
+    {
+        var matrix = new ColorMatrix(new[]
+        {
+            new float[] { -1,  0,  0, 0, 0 },
+            new float[] {  0, -1,  0, 0, 0 },
+            new float[] {  0,  0, -1, 0, 0 },
+            new float[] {  0,  0,  0, 1, 0 },
+            new float[] {  1,  1,  1, 0, 1 }
+        });
+        var attr = new ImageAttributes();
+        attr.SetColorMatrix(matrix);
+        return attr;
+    }
+
+    private static Image AdjustImage(Image image)
+    {
+        var pic = new Bitmap(image.Width, image.Height);
+        using (var g = Graphics.FromImage(pic))
+        {
+            g.DrawImage(image,
+                new Rectangle(0, 0, image.Width, image.Height),
+                0, 0, image.Width, image.Height,
+                GraphicsUnit.Pixel, _invertAttributes);
+        }
         return pic;
-
     }
 
     public static Image TintImage(Image image, Color tintColor)

@@ -265,7 +265,7 @@
     <value>Išjungta</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Apšvietimo laikas įkraunant / akumuliatoriaus režimu</value>
+    <value>Apšvietimo laikas: įkraunant / baterijoje</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Foninio apšvietimo laikas akumuliatoriaus režimu</value>
@@ -957,5 +957,11 @@ ir automatiškai jas paleidžia, kai GPU yra įjungtas</value>
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>Neleidžia PCIe įrenginiams pereiti į mažo energijos suvartojimo budėjimo būsenas.
 Rekomenduojama, jei pastebėjote atsitiktinius užstrigimus ar nereaguojančią aparatinę įrangą.</value>
+  </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
   </data>
 </root>

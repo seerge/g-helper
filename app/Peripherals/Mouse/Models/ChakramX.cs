@@ -183,6 +183,7 @@ namespace GHelper.Peripherals.Mouse.Models
                 (0x01DB, "Joystick +X"   ),
                 (0x0000, "Disabled"      ),
             }),
+            ("Combos",     AsusMouse.MouseCombos.Select(c => (c.PassthroughCode, c.Label)).ToList()),
             ("Multimedia", AsusMouse.MultimediaBindings),
             ("Keyboard",   AsusMouse.KeyboardBindings  ),
         };

@@ -84,7 +84,7 @@ namespace GHelper.Helpers
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             e.Graphics.FillRoundedRectangle(_toastBrush, Bound, 10);
 
-            Bitmap? icon = toastIcon switch
+            using Bitmap? icon = toastIcon switch
             {
                 ToastIcon.BrightnessUp   => Properties.Resources.brightness_up,
                 ToastIcon.BrightnessDown => Properties.Resources.brightness_down,

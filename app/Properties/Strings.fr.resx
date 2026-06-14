@@ -265,7 +265,7 @@
     <value>Désactivé</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Délai d'extinction du rétroéclairage branché / sur batterie</value>
+    <value>Délai rétroéclairage branché / batterie</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Délai de rétro-éclairage sur batterie</value>
@@ -957,5 +957,11 @@ et les redémarre automatiquement lorsqu'il est activé</value>
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>Empêche les périphériques PCIe d'entrer dans des états d'inactivité à faible consommation.
 Recommandé en cas de blocages aléatoires ou de matériel qui ne répond plus.</value>
+  </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
   </data>
 </root>

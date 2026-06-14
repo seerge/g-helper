@@ -958,4 +958,10 @@
     <value>防止 PCIe 设备进入低功耗空闲状态。
 如遇随机卡死或硬件无响应，建议启用。</value>
   </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
+  </data>
 </root>

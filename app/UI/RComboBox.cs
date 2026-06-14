@@ -6,6 +6,14 @@ namespace GHelper.UI
 {
     public class RComboBox : ComboBox
     {
+        private const int TextLeftPad = 1;
+        public bool UseCustomTextPadding = true;
+
+        public RComboBox()
+        {
+            DrawMode = UseCustomTextPadding ? DrawMode.OwnerDrawFixed : DrawMode.Normal;
+        }
+
         protected override void OnMouseWheel(MouseEventArgs e)
         {
             var args = (HandledMouseEventArgs)e;
@@ -13,6 +21,53 @@ namespace GHelper.UI
                 args.Handled = true;
             else
                 base.OnMouseWheel(e);
+        }
+
+        protected override void OnHandleCreated(EventArgs e)
+        {
+            base.OnHandleCreated(e);
+            CalibrateItemHeight();
+        }
+
+        protected override void OnDpiChangedAfterParent(EventArgs e)
+        {
+            base.OnDpiChangedAfterParent(e);
+            CalibrateItemHeight();
+        }
+
+        public bool NativeHeight { get; set; }
+
+        private void CalibrateItemHeight()
+        {
+            if (DrawMode != DrawMode.OwnerDrawFixed || NativeHeight) return;
+            int chrome = PreferredHeight - ItemHeight;
+            int target = (int)Math.Round(44 * (DeviceDpi / 192f));
+            ItemHeight = Math.Max(1, target - chrome);
+        }
+
+        protected override void OnDrawItem(DrawItemEventArgs e)
+        {
+            if (!UseCustomTextPadding || e.Index < 0)
+            {
+                base.OnDrawItem(e);
+                return;
+            }
+
+            bool selected = (e.State & DrawItemState.Selected) != 0;
+            Color bg = selected ? RForm.borderMain : BackColor;
+            Color fg = ForeColor;
+
+            using (var bgBrush = new SolidBrush(bg))
+                e.Graphics.FillRectangle(bgBrush, e.Bounds);
+
+            int pad = (int)Math.Round(TextLeftPad * e.Graphics.DpiX / 96f);
+            var textRect = new Rectangle(e.Bounds.X + pad, e.Bounds.Y,
+                e.Bounds.Width - pad, e.Bounds.Height);
+
+            TextRenderer.DrawText(e.Graphics, GetItemText(Items[e.Index]), e.Font, textRect, fg,
+                TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis | TextFormatFlags.NoPrefix);
+
+            e.DrawFocusRectangle();
         }
 
         private Color borderColor = Color.Gray;
@@ -178,11 +233,15 @@ namespace GHelper.UI
                 rgn = CreateRectRgn(clientRect.Left, clientRect.Top,
                     clientRect.Right, clientRect.Bottom);
                 SelectClipRgn(dc, rgn);
+                float ratio = DeviceDpi / 192f;
+                int innerRadiusL = Math.Max(1, (int)Math.Round(3 * ratio));
+                int innerRadiusR = Math.Max(1, (int)Math.Round(1 * ratio));
+                int outerRadius = Math.Max(1, (int)Math.Round(4 * ratio));
+
                 using (var g = Graphics.FromHdc(dc))
                 {
                     using (var b = new SolidBrush(buttonColor))
                     {
-                        //FillRoundedRectangle(g, b, dropDownRect, 1, 3);
                         g.FillRectangle(b, dropDownRect);
                     }
                     using (var b = new SolidBrush(arrowColor))
@@ -191,17 +250,13 @@ namespace GHelper.UI
                     }
                     using (var p = new Pen(innerBorderColor, 2))
                     {
-                        DrawRoundedRectangle(g, p, innerBorder, 3, 1);
-                        //DrawRoundedRectangle(g, p, innerInnerBorder, 3, 1);
-
-                        //g.DrawRectangle(p, innerBorder);
-                        //g.DrawRectangle(p, innerInnerBorder);
+                        DrawRoundedRectangle(g, p, innerBorder, innerRadiusL, innerRadiusR);
                     }
-                    using (var p = new Pen(outerBorderColor))
-                    {
-                        DrawRoundedRectangle(g, p, outerBorder, 4, 4);
-                        //g.DrawRectangle(p, outerBorder);
-                    }
+                    if (DropDownStyle == ComboBoxStyle.DropDown)
+                        using (var b = new SolidBrush(innerBorderColor))
+                            g.FillRectangle(b, innerInnerBorder);
+                    if (!RForm.flatTheme)
+                        ControlHelper.DrawGradientBorder(g, outerBorder, outerBorderColor, outerRadius);
                 }
                 if (shoulEndPaint)
                     EndPaint(Handle, ref ps);
