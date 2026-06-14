@@ -252,6 +252,9 @@ namespace GHelper.UI
                     {
                         DrawRoundedRectangle(g, p, innerBorder, innerRadiusL, innerRadiusR);
                     }
+                    if (DropDownStyle == ComboBoxStyle.DropDown)
+                        using (var b = new SolidBrush(innerBorderColor))
+                            g.FillRectangle(b, innerInnerBorder);
                     if (!RForm.flatTheme)
                         ControlHelper.DrawGradientBorder(g, outerBorder, outerBorderColor, outerRadius);
                 }
