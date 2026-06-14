@@ -42,7 +42,7 @@ namespace GHelper.Overlay
         private const int VK_SHIFT           = 0x10;
         private const int VK_MENU            = 0x12; // ALT
 
-        private const int MinScalePercent  = 50;
+        private const int MinScalePercent  = 35;
         private const int MaxScalePercent  = 300;
         private const int ScaleStepPercent = 10;
         private int _scalePercent = 100;
