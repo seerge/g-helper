@@ -51,6 +51,7 @@ namespace GHelper
 
             //float dpi = ControlHelper.GetDpiScale(this).Value;
             //comboModes.Size = new Size(comboModes.Width, (int)dpi * 18);
+            comboModes.NativeHeight = true;
             comboModes.ClientSize = new Size(comboModes.Width, comboModes.Height - 4);
 
             Text = Properties.Strings.FansAndPower;
@@ -510,7 +511,7 @@ namespace GHelper
         private void RenameToggle()
         {
             if (comboModes.DropDownStyle == ComboBoxStyle.DropDownList)
-                comboModes.DropDownStyle = ComboBoxStyle.Simple;
+                comboModes.DropDownStyle = ComboBoxStyle.DropDown;
             else
             {
                 var mode = Modes.GetCurrent();
