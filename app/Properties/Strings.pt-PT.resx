@@ -265,7 +265,7 @@
     <value>Desligado</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Tempo limite de retroiluminação ligado à corrente / na bateria</value>
+    <value>Tempo de retroiluminação ligado / bateria</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Desligar o ecrã após (em Bateria)</value>
@@ -957,5 +957,11 @@ e reinicia-os automaticamente quando a GPU é ativada</value>
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>Impede que os dispositivos PCIe entrem em estados de inatividade de baixa energia.
 Recomendado se ocorrerem bloqueios aleatórios ou hardware que não responde.</value>
+  </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
   </data>
 </root>

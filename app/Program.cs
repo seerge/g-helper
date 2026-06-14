@@ -123,7 +123,7 @@ namespace GHelper
                 return;
             }
 
-            ProcessHelper.KillByName("ASUSSmartDisplayControl");
+            ProcessHelper.KillSmartDisplayControl();
 
             Application.EnableVisualStyles();
 
@@ -223,7 +223,7 @@ namespace GHelper
                 settingsForm.VisualiseArmoury(AsusService.IsArmouryRunning());
             });
 
-            if (AppConfig.Is("overlay"))
+            if (AppConfig.IsOverlay())
                 hardwareOverlay?.StartOverlay();
 
             Application.Run();
@@ -243,6 +243,7 @@ namespace GHelper
             if (e.Reason == SessionSwitchReason.SessionLogon || e.Reason == SessionSwitchReason.SessionUnlock)
             {
                 Logger.WriteLine("Session:" + e.Reason.ToString());
+                ProcessHelper.KillSmartDisplayControl();
                 bool wasLocked = Aura.sessionLock;
                 Aura.sessionLock = false;
                 ScreenControl.AutoScreen();
@@ -270,6 +271,8 @@ namespace GHelper
                     bool changed = settingsForm.InitTheme();
                     settingsForm.InitContextMenuTheme();
                     settingsForm.VisualiseIcon();
+                    settingsForm.VisualiseFnLock();
+                    settingsForm.VisualiseBatteryFull();
 
                     if (changed)
                     {
@@ -301,6 +304,8 @@ namespace GHelper
         public static bool SetAutoModes(bool powerChanged = false, bool init = false, bool wakeup = false)
         {
             int skipDelay = wakeup ? 10000 : 3000;
+
+            if (init) gpuControl.CaptureNvBootState();
 
             if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < skipDelay) return false;
             lastAuto = DateTimeOffset.Now.ToUnixTimeMilliseconds();
@@ -344,7 +349,7 @@ namespace GHelper
             return true;
         }
 
-        public enum PowerSource { Battery, USBC, Barrel }
+        public enum PowerSource { Battery, Barrel, USBC }
 
         public static PowerSource currentSource = PowerSource.Battery;
         private static PowerLineStatus lastLineStatus = SystemInformation.PowerStatus.PowerLineStatus;
@@ -361,6 +366,11 @@ namespace GHelper
 
             return PowerSource.Barrel;
         }
+
+        public static bool usbcProfile = AppConfig.Is("usbc_profile");
+
+        public static int PerformanceKey() =>
+            usbcProfile ? (int)ReadPowerSource() : (int)SystemInformation.PowerStatus.PowerLineStatus;
 
         public static void SchedulePowerCheck()
         {

@@ -265,7 +265,7 @@
     <value>Kapalı</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Klavye arka ışığı kapanma süresi (Şarj / Pil)</value>
+    <value>Arka ışığı kapanma süresi (Şarj / Pil)</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Pildeyken Arka Işık Zaman Aşımı</value>
@@ -957,5 +957,11 @@ ve GPU etkinleştirildiğinde otomatik olarak yeniden başlatır</value>
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>PCIe aygıtlarının düşük güçlü boşta durumlarına geçmesini engeller.
 Rastgele takılmalar veya yanıt vermeyen donanım yaşıyorsanız önerilir.</value>
+  </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
   </data>
 </root>

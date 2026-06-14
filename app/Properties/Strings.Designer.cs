@@ -1971,6 +1971,24 @@ namespace GHelper.Properties {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Overlay.
+        /// </summary>
+        internal static string Overlay {
+            get {
+                return ResourceManager.GetString("Overlay", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Overlay only in games.
+        /// </summary>
+        internal static string OverlayOnlyInGames {
+            get {
+                return ResourceManager.GetString("OverlayOnlyInGames", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Read Limits.
         /// </summary>
         internal static string ReadLimits {

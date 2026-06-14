@@ -330,11 +330,10 @@ namespace GHelper.AnimeMatrix
         {
             if (deviceSlash is null) return;
 
-            //kill timer if called but not in battery pattern mode
+            //stop timer if called but not in battery pattern mode
             if ((SlashMode)AppConfig.Get("matrix_running", 0) != SlashMode.BatteryLevel)
             {
                 slashTimer.Stop();
-                slashTimer.Dispose();
                 return;
             }
 

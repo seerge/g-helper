@@ -235,6 +235,7 @@ namespace GHelper.Display
 
             int miniled = (miniled1 >= 0) ? miniled1 : miniled2;
             bool hdr = false;
+            bool acm = false;
 
             if (miniled >= 0)
             {
@@ -244,7 +245,7 @@ namespace GHelper.Display
 
             try
             {
-                hdr = ScreenCCD.GetHDRStatus();
+                hdr = ScreenCCD.GetHDRStatus(out acm);
             } catch (Exception ex)
             {
                 Logger.WriteLine(ex.Message);
@@ -276,6 +277,7 @@ namespace GHelper.Display
                     miniled1: miniled1,
                     miniled2: miniled2,
                     hdr: hdr,
+                    acm: acm,
                     fhd: fhd,
                     hdrControl: hdrControl
                 );
