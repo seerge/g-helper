@@ -470,6 +470,22 @@ namespace GHelper.Display
         [DllImport("gdi32", CharSet = CharSet.Unicode)]
         public static extern IntPtr CreateDC(string driver, string device, string port, IntPtr deviceMode);
 
+        [DllImport("gdi32")]
+        public static extern bool DeleteDC(IntPtr hdc);
+
+        [DllImport("gdi32")]
+        public static extern bool SetDeviceGammaRamp(IntPtr hdc, ref GAMMA_RAMP ramp);
+
+        /// <summary>
+        /// 256 entries per channel x 3 channels (R,G,B), 16-bit each.
+        /// Layout matches what Win32 expects for SetDeviceGammaRamp.
+        /// </summary>
+        [StructLayout(LayoutKind.Sequential)]
+        public unsafe struct GAMMA_RAMP
+        {
+            public fixed ushort table[3 * 256];
+        }
+
         [DllImport("gdi32", CharSet = CharSet.Unicode)]
         public static extern bool SetICMProfileW(IntPtr dcHandle, string lpFileName);
 
