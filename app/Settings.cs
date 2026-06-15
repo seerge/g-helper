@@ -1,4 +1,4 @@
-﻿using GHelper.Ally;
+using GHelper.Ally;
 using GHelper.AnimeMatrix;
 using GHelper.AutoUpdate;
 using GHelper.Battery;
@@ -897,6 +897,52 @@ namespace GHelper
             menuOverlayGameOnly.Checked = AppConfig.IsOverlayGameOnly();
             menuOverlayGameOnly.Enabled = AppConfig.IsOverlay();
             contextMenuStrip.Items.Add(menuOverlayGameOnly);
+
+            string currentApp = AppProfileWatcher.LastUserProcessName;
+            if (!string.IsNullOrEmpty(currentApp))
+            {
+                contextMenuStrip.Items.Add("-");
+
+                var menuAutoProfile = new ToolStripMenuItem("Auto Profile: " + currentApp);
+                menuAutoProfile.Margin = padding;
+                menuAutoProfile.DropDown.BackColor = this.BackColor;
+                menuAutoProfile.DropDown.ForeColor = this.ForeColor;
+                if (menuAutoProfile.DropDown is ToolStripDropDownMenu menuDropDown)
+                {
+                    menuDropDown.ShowImageMargin = false;
+                }
+
+                var profiles = AppProfileWatcher.GetAppProfiles();
+                bool hasLink = profiles.TryGetValue(currentApp, out int linkedMode);
+
+                foreach (var mode in Modes.GetDictonary())
+                {
+                    var modeItem = new ToolStripMenuItem(mode.Value);
+                    modeItem.Margin = padding;
+                    modeItem.Checked = (hasLink && linkedMode == mode.Key);
+                    modeItem.Click += (sender, args) =>
+                    {
+                        AppProfileWatcher.LinkProcess(currentApp, mode.Key);
+                        SetContextMenu();
+                    };
+                    menuAutoProfile.DropDownItems.Add(modeItem);
+                }
+
+                if (hasLink)
+                {
+                    menuAutoProfile.DropDownItems.Add("-");
+                    var removeLinkItem = new ToolStripMenuItem("Remove Profile Link");
+                    removeLinkItem.Margin = padding;
+                    removeLinkItem.Click += (sender, args) =>
+                    {
+                        AppProfileWatcher.UnlinkProcess(currentApp);
+                        SetContextMenu();
+                    };
+                    menuAutoProfile.DropDownItems.Add(removeLinkItem);
+                }
+
+                contextMenuStrip.Items.Add(menuAutoProfile);
+            }
 
             var quit = new ToolStripMenuItem(Properties.Strings.Quit);
             quit.Click += ButtonQuit_Click;
