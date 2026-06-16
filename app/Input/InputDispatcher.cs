@@ -894,6 +894,7 @@ namespace GHelper.Input
                     case 181:    // FN + Numpad Enter
                         KeyProcess("fne");
                         return;
+                    case 93:    // GoPro key
                     case 174:   // FN+F5
                     case 153:   // FN+F5 OLD MODELS
                         modeControl.CyclePerformanceMode(Control.ModifierKeys == Keys.Shift);
