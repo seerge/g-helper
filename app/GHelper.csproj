@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows10.0.17763.0</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>True</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -55,6 +55,7 @@
     <PackageReference Include="System.Management" Version="10.0.5" />
     <PackageReference Include="TaskScheduler" Version="2.12.2" />
     <PackageReference Include="WinForms.DataVisualization" Version="1.10.0" />
+	<PackageReference Include="DSoft.System.BluetoothLe" Version="2.0.2110.291" />
   </ItemGroup>
 
   <ItemGroup>

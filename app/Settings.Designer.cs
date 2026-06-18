@@ -30,6 +30,7 @@ namespace GHelper
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsForm));
             panelMatrix = new Panel();
             panelMatrixAuto = new Panel();
             checkMatrixLid = new CheckBox();
@@ -54,6 +55,7 @@ namespace GHelper
             buttonDonate = new RBadgeButton();
             buttonQuit = new RButton();
             buttonUpdates = new RButton();
+            buttonCompanionApp = new RButton();
             checkStartup = new CheckBox();
             panelPerformance = new Panel();
             tablePerf = new TableLayoutPanel();
@@ -90,6 +92,7 @@ namespace GHelper
             button120Hz = new RButton();
             buttonMiniled = new RButton();
             buttonFHD = new RButton();
+            buttonHDRControl = new RButton();
             panelScreenTitle = new Panel();
             labelMidFan = new Label();
             pictureScreen = new PictureBox();
@@ -148,7 +151,6 @@ namespace GHelper
             buttonAmdOled = new RButton();
             buttonArmoury = new RButton();
             labelVersion = new Label();
-            buttonHDRControl = new RButton();
             panelMatrix.SuspendLayout();
             panelMatrixAuto.SuspendLayout();
             tableLayoutMatrix.SuspendLayout();
@@ -208,11 +210,11 @@ namespace GHelper
             panelMatrix.Controls.Add(tableLayoutMatrix);
             panelMatrix.Controls.Add(panelMatrixTitle);
             panelMatrix.Dock = DockStyle.Top;
-            panelMatrix.Location = new Point(11, 1071);
+            panelMatrix.Location = new Point(7, 666);
             panelMatrix.Margin = new Padding(0);
             panelMatrix.Name = "panelMatrix";
-            panelMatrix.Padding = new Padding(20, 20, 20, 11);
-            panelMatrix.Size = new Size(827, 183);
+            panelMatrix.Padding = new Padding(12, 12, 12, 7);
+            panelMatrix.Size = new Size(517, 117);
             panelMatrix.TabIndex = 4;
             panelMatrix.TabStop = true;
             // 
@@ -221,11 +223,11 @@ namespace GHelper
             panelMatrixAuto.Controls.Add(checkMatrixLid);
             panelMatrixAuto.Controls.Add(checkMatrix);
             panelMatrixAuto.Dock = DockStyle.Top;
-            panelMatrixAuto.Location = new Point(20, 132);
-            panelMatrixAuto.Margin = new Padding(4);
+            panelMatrixAuto.Location = new Point(12, 84);
+            panelMatrixAuto.Margin = new Padding(2);
             panelMatrixAuto.Name = "panelMatrixAuto";
-            panelMatrixAuto.Padding = new Padding(10, 10, 0, 0);
-            panelMatrixAuto.Size = new Size(787, 42);
+            panelMatrixAuto.Padding = new Padding(6, 6, 0, 0);
+            panelMatrixAuto.Size = new Size(493, 26);
             panelMatrixAuto.TabIndex = 47;
             // 
             // checkMatrixLid
@@ -233,25 +235,24 @@ namespace GHelper
             checkMatrixLid.AutoSize = true;
             checkMatrixLid.Dock = DockStyle.Left;
             checkMatrixLid.ForeColor = SystemColors.GrayText;
-            checkMatrixLid.Location = new Point(260, 0);
-            checkMatrixLid.Margin = new Padding(8, 4, 8, 4);
+            checkMatrixLid.Location = new Point(161, 6);
+            checkMatrixLid.Margin = new Padding(5, 2, 5, 2);
             checkMatrixLid.Name = "checkMatrixLid";
-            checkMatrixLid.Size = new Size(253, 40);
+            checkMatrixLid.Size = new Size(161, 20);
             checkMatrixLid.TabIndex = 46;
             checkMatrixLid.Text = "Disable on lid close";
             checkMatrixLid.UseVisualStyleBackColor = true;
-            checkMatrixLid.Visible = true;
             // 
             // checkMatrix
             // 
             checkMatrix.AutoSize = true;
             checkMatrix.Dock = DockStyle.Left;
             checkMatrix.ForeColor = SystemColors.GrayText;
-            checkMatrix.Location = new Point(8, 0);
-            checkMatrix.Margin = new Padding(8, 4, 8, 4);
+            checkMatrix.Location = new Point(6, 6);
+            checkMatrix.Margin = new Padding(5, 2, 5, 2);
             checkMatrix.Name = "checkMatrix";
-            checkMatrix.Padding = new Padding(0, 0, 4, 0);
-            checkMatrix.Size = new Size(252, 40);
+            checkMatrix.Padding = new Padding(0, 0, 2, 0);
+            checkMatrix.Size = new Size(155, 20);
             checkMatrix.TabIndex = 19;
             checkMatrix.Text = Properties.Strings.TurnOffOnBattery;
             checkMatrix.UseVisualStyleBackColor = true;
@@ -270,14 +271,14 @@ namespace GHelper
             tableLayoutMatrix.Controls.Add(comboInterval, 2, 0);
             tableLayoutMatrix.Controls.Add(buttonMatrix, 2, 0);
             tableLayoutMatrix.Dock = DockStyle.Top;
-            tableLayoutMatrix.Location = new Point(20, 60);
-            tableLayoutMatrix.Margin = new Padding(8, 4, 8, 4);
+            tableLayoutMatrix.Location = new Point(12, 37);
+            tableLayoutMatrix.Margin = new Padding(5, 2, 5, 2);
             tableLayoutMatrix.Name = "tableLayoutMatrix";
-            tableLayoutMatrix.Padding = new Padding(3, 0, 3, 0);
+            tableLayoutMatrix.Padding = new Padding(2, 0, 2, 0);
             tableLayoutMatrix.RowCount = 1;
             tableLayoutMatrix.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutMatrix.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutMatrix.Size = new Size(787, 72);
+            tableLayoutMatrix.RowStyles.Add(new RowStyle(SizeType.Absolute, 12F));
+            tableLayoutMatrix.Size = new Size(493, 47);
             tableLayoutMatrix.TabIndex = 43;
             // 
             // comboMatrix
@@ -285,13 +286,15 @@ namespace GHelper
             comboMatrix.BorderColor = Color.White;
             comboMatrix.ButtonColor = Color.FromArgb(255, 255, 255);
             comboMatrix.Dock = DockStyle.Top;
+            comboMatrix.DrawMode = DrawMode.OwnerDrawFixed;
             comboMatrix.Font = new Font("Segoe UI", 9F);
             comboMatrix.FormattingEnabled = true;
+            comboMatrix.ItemHeight = 22;
             comboMatrix.Items.AddRange(new object[] { Properties.Strings.MatrixOff, Properties.Strings.MatrixDim, Properties.Strings.MatrixMedium, Properties.Strings.MatrixBright });
-            comboMatrix.Location = new Point(10, 8);
-            comboMatrix.Margin = new Padding(7, 8, 7, 4);
+            comboMatrix.Location = new Point(6, 5);
+            comboMatrix.Margin = new Padding(4, 5, 4, 2);
             comboMatrix.Name = "comboMatrix";
-            comboMatrix.Size = new Size(246, 40);
+            comboMatrix.Size = new Size(155, 28);
             comboMatrix.TabIndex = 16;
             // 
             // comboMatrixRunning
@@ -299,13 +302,15 @@ namespace GHelper
             comboMatrixRunning.BorderColor = Color.White;
             comboMatrixRunning.ButtonColor = Color.FromArgb(255, 255, 255);
             comboMatrixRunning.Dock = DockStyle.Top;
+            comboMatrixRunning.DrawMode = DrawMode.OwnerDrawFixed;
             comboMatrixRunning.Font = new Font("Segoe UI", 9F);
             comboMatrixRunning.FormattingEnabled = true;
+            comboMatrixRunning.ItemHeight = 22;
             comboMatrixRunning.Items.AddRange(new object[] { Properties.Strings.MatrixBanner, Properties.Strings.MatrixLogo, Properties.Strings.MatrixPicture, Properties.Strings.MatrixClock, Properties.Strings.MatrixAudio });
-            comboMatrixRunning.Location = new Point(270, 8);
-            comboMatrixRunning.Margin = new Padding(7, 8, 7, 4);
+            comboMatrixRunning.Location = new Point(169, 5);
+            comboMatrixRunning.Margin = new Padding(4, 5, 4, 2);
             comboMatrixRunning.Name = "comboMatrixRunning";
-            comboMatrixRunning.Size = new Size(246, 40);
+            comboMatrixRunning.Size = new Size(155, 28);
             comboMatrixRunning.TabIndex = 17;
             // 
             // comboInterval
@@ -313,12 +318,14 @@ namespace GHelper
             comboInterval.BorderColor = Color.White;
             comboInterval.ButtonColor = Color.FromArgb(255, 255, 255);
             comboInterval.Dock = DockStyle.Top;
+            comboInterval.DrawMode = DrawMode.OwnerDrawFixed;
             comboInterval.Font = new Font("Segoe UI", 9F);
             comboInterval.FormattingEnabled = true;
-            comboInterval.Location = new Point(10, 60);
-            comboInterval.Margin = new Padding(7, 8, 7, 4);
+            comboInterval.ItemHeight = 22;
+            comboInterval.Location = new Point(6, 40);
+            comboInterval.Margin = new Padding(4, 5, 4, 2);
             comboInterval.Name = "comboInterval";
-            comboInterval.Size = new Size(246, 40);
+            comboInterval.Size = new Size(155, 28);
             comboInterval.TabIndex = 19;
             comboInterval.Visible = false;
             // 
@@ -329,17 +336,20 @@ namespace GHelper
             buttonMatrix.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonMatrix.BackColor = SystemColors.ControlLight;
             buttonMatrix.BorderColor = Color.Transparent;
+            buttonMatrix.Borderless = false;
             buttonMatrix.BorderRadius = 2;
             buttonMatrix.Dock = DockStyle.Top;
             buttonMatrix.FlatAppearance.BorderSize = 0;
+            buttonMatrix.FlatAppearance.MouseDownBackColor = Color.FromArgb(199, 199, 199);
+            buttonMatrix.FlatAppearance.MouseOverBackColor = Color.FromArgb(213, 213, 213);
             buttonMatrix.FlatStyle = FlatStyle.Flat;
-            buttonMatrix.Location = new Point(527, 4);
-            buttonMatrix.Margin = new Padding(4);
-            buttonMatrix.MaximumSize = new Size(0, 48);
-            buttonMatrix.MinimumSize = new Size(0, 44);
+            buttonMatrix.Location = new Point(330, 2);
+            buttonMatrix.Margin = new Padding(2);
+            buttonMatrix.MaximumSize = new Size(0, 30);
+            buttonMatrix.MinimumSize = new Size(0, 28);
             buttonMatrix.Name = "buttonMatrix";
             buttonMatrix.Secondary = true;
-            buttonMatrix.Size = new Size(253, 44);
+            buttonMatrix.Size = new Size(159, 30);
             buttonMatrix.TabIndex = 18;
             buttonMatrix.Text = Properties.Strings.PictureGif;
             buttonMatrix.UseVisualStyleBackColor = false;
@@ -349,20 +359,20 @@ namespace GHelper
             panelMatrixTitle.Controls.Add(pictureMatrix);
             panelMatrixTitle.Controls.Add(labelMatrix);
             panelMatrixTitle.Dock = DockStyle.Top;
-            panelMatrixTitle.Location = new Point(20, 20);
-            panelMatrixTitle.Margin = new Padding(4);
+            panelMatrixTitle.Location = new Point(12, 12);
+            panelMatrixTitle.Margin = new Padding(2);
             panelMatrixTitle.Name = "panelMatrixTitle";
-            panelMatrixTitle.Size = new Size(787, 40);
+            panelMatrixTitle.Size = new Size(493, 25);
             panelMatrixTitle.TabIndex = 45;
             // 
             // pictureMatrix
             // 
             pictureMatrix.BackgroundImage = Properties.Resources.icons8_matrix_32;
             pictureMatrix.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureMatrix.Location = new Point(8, 3);
-            pictureMatrix.Margin = new Padding(4);
+            pictureMatrix.Location = new Point(5, 2);
+            pictureMatrix.Margin = new Padding(2);
             pictureMatrix.Name = "pictureMatrix";
-            pictureMatrix.Size = new Size(32, 32);
+            pictureMatrix.Size = new Size(20, 20);
             pictureMatrix.TabIndex = 41;
             pictureMatrix.TabStop = false;
             // 
@@ -370,10 +380,10 @@ namespace GHelper
             // 
             labelMatrix.AutoSize = true;
             labelMatrix.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            labelMatrix.Location = new Point(44, 0);
-            labelMatrix.Margin = new Padding(4, 0, 4, 0);
+            labelMatrix.Location = new Point(28, 0);
+            labelMatrix.Margin = new Padding(2, 0, 2, 0);
             labelMatrix.Name = "labelMatrix";
-            labelMatrix.Size = new Size(170, 32);
+            labelMatrix.Size = new Size(105, 20);
             labelMatrix.TabIndex = 40;
             labelMatrix.Text = "Anime Matrix";
             // 
@@ -385,11 +395,11 @@ namespace GHelper
             panelBattery.Controls.Add(sliderBattery);
             panelBattery.Controls.Add(panelBatteryTitle);
             panelBattery.Dock = DockStyle.Top;
-            panelBattery.Location = new Point(11, 1683);
+            panelBattery.Location = new Point(7, 1121);
             panelBattery.Margin = new Padding(0);
             panelBattery.Name = "panelBattery";
-            panelBattery.Padding = new Padding(20, 15, 20, 0);
-            panelBattery.Size = new Size(827, 104);
+            panelBattery.Padding = new Padding(12, 9, 12, 0);
+            panelBattery.Size = new Size(517, 65);
             panelBattery.TabIndex = 8;
             // 
             // buttonBatteryFull
@@ -398,17 +408,19 @@ namespace GHelper
             buttonBatteryFull.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             buttonBatteryFull.BackColor = SystemColors.ControlLight;
             buttonBatteryFull.BorderColor = Color.Transparent;
+            buttonBatteryFull.Borderless = false;
             buttonBatteryFull.BorderRadius = 2;
             buttonBatteryFull.FlatAppearance.BorderSize = 0;
+            buttonBatteryFull.FlatAppearance.MouseDownBackColor = Color.FromArgb(199, 199, 199);
+            buttonBatteryFull.FlatAppearance.MouseOverBackColor = Color.FromArgb(213, 213, 213);
             buttonBatteryFull.FlatStyle = FlatStyle.Flat;
             buttonBatteryFull.Font = new Font("Segoe UI", 7.125F, FontStyle.Bold);
             buttonBatteryFull.ForeColor = SystemColors.ControlDark;
-            buttonBatteryFull.Location = new Point(728, 62);
-            buttonBatteryFull.Borderless = true;
+            buttonBatteryFull.Location = new Point(455, 39);
             buttonBatteryFull.Margin = new Padding(0);
             buttonBatteryFull.Name = "buttonBatteryFull";
             buttonBatteryFull.Secondary = true;
-            buttonBatteryFull.Size = new Size(73, 36);
+            buttonBatteryFull.Size = new Size(46, 22);
             buttonBatteryFull.TabIndex = 41;
             buttonBatteryFull.Text = "100%";
             buttonBatteryFull.UseVisualStyleBackColor = false;
@@ -416,12 +428,12 @@ namespace GHelper
             // sliderBattery
             // 
             sliderBattery.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            sliderBattery.Location = new Point(20, 60);
-            sliderBattery.Margin = new Padding(4);
+            sliderBattery.Location = new Point(12, 38);
+            sliderBattery.Margin = new Padding(2);
             sliderBattery.Max = 100;
             sliderBattery.Min = 40;
             sliderBattery.Name = "sliderBattery";
-            sliderBattery.Size = new Size(707, 40);
+            sliderBattery.Size = new Size(442, 25);
             sliderBattery.Step = 5;
             sliderBattery.TabIndex = 20;
             sliderBattery.Text = "sliderBattery";
@@ -433,20 +445,20 @@ namespace GHelper
             panelBatteryTitle.Controls.Add(pictureBattery);
             panelBatteryTitle.Controls.Add(labelBatteryTitle);
             panelBatteryTitle.Dock = DockStyle.Top;
-            panelBatteryTitle.Location = new Point(20, 15);
-            panelBatteryTitle.Margin = new Padding(4);
+            panelBatteryTitle.Location = new Point(12, 9);
+            panelBatteryTitle.Margin = new Padding(2);
             panelBatteryTitle.Name = "panelBatteryTitle";
-            panelBatteryTitle.Padding = new Padding(0, 0, 0, 4);
-            panelBatteryTitle.Size = new Size(787, 44);
+            panelBatteryTitle.Padding = new Padding(0, 0, 0, 2);
+            panelBatteryTitle.Size = new Size(493, 28);
             panelBatteryTitle.TabIndex = 40;
             // 
             // labelBattery
             // 
             labelBattery.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            labelBattery.Location = new Point(455, 0);
-            labelBattery.Margin = new Padding(8, 0, 8, 0);
+            labelBattery.Location = new Point(285, 0);
+            labelBattery.Margin = new Padding(5, 0, 5, 0);
             labelBattery.Name = "labelBattery";
-            labelBattery.Size = new Size(324, 36);
+            labelBattery.Size = new Size(202, 22);
             labelBattery.TabIndex = 39;
             labelBattery.Text = "                ";
             labelBattery.TextAlign = ContentAlignment.TopRight;
@@ -455,20 +467,20 @@ namespace GHelper
             // 
             pictureBattery.BackgroundImage = Properties.Resources.icons8_charging_battery_32;
             pictureBattery.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBattery.Location = new Point(8, 3);
-            pictureBattery.Margin = new Padding(4);
+            pictureBattery.Location = new Point(5, 2);
+            pictureBattery.Margin = new Padding(2);
             pictureBattery.Name = "pictureBattery";
-            pictureBattery.Size = new Size(32, 32);
+            pictureBattery.Size = new Size(20, 20);
             pictureBattery.TabIndex = 38;
             pictureBattery.TabStop = false;
             // 
             // labelBatteryTitle
             // 
             labelBatteryTitle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            labelBatteryTitle.Location = new Point(43, 0);
-            labelBatteryTitle.Margin = new Padding(8, 0, 8, 0);
+            labelBatteryTitle.Location = new Point(27, 0);
+            labelBatteryTitle.Margin = new Padding(5, 0, 5, 0);
             labelBatteryTitle.Name = "labelBatteryTitle";
-            labelBatteryTitle.Size = new Size(467, 32);
+            labelBatteryTitle.Size = new Size(292, 20);
             labelBatteryTitle.TabIndex = 37;
             labelBatteryTitle.Text = "Battery Charge Limit";
             // 
@@ -478,31 +490,32 @@ namespace GHelper
             panelFooter.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelFooter.Controls.Add(tableButtons);
             panelFooter.Dock = DockStyle.Top;
-            panelFooter.Location = new Point(11, 1887);
+            panelFooter.Location = new Point(7, 1248);
             panelFooter.Margin = new Padding(0);
             panelFooter.Name = "panelFooter";
-            panelFooter.Padding = new Padding(20, 10, 20, 20);
-            panelFooter.Size = new Size(827, 88);
+            panelFooter.Padding = new Padding(12, 6, 12, 12);
+            panelFooter.Size = new Size(517, 54);
             panelFooter.TabIndex = 11;
             // 
             // tableButtons
             // 
             tableButtons.AutoSize = true;
-            tableButtons.ColumnCount = 3;
+            tableButtons.ColumnCount = 4;
             tableButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
             tableButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
             tableButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
-            tableButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 27F));
+            tableButtons.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 18F));
             tableButtons.Controls.Add(buttonDonate, 0, 0);
             tableButtons.Controls.Add(buttonQuit, 2, 0);
             tableButtons.Controls.Add(buttonUpdates, 1, 0);
+            tableButtons.Controls.Add(buttonCompanionApp, 3, 0);
             tableButtons.Dock = DockStyle.Top;
-            tableButtons.Location = new Point(20, 10);
-            tableButtons.Margin = new Padding(8, 4, 8, 4);
+            tableButtons.Location = new Point(12, 6);
+            tableButtons.Margin = new Padding(5, 2, 5, 2);
             tableButtons.Name = "tableButtons";
             tableButtons.RowCount = 1;
             tableButtons.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableButtons.Size = new Size(787, 58);
+            tableButtons.Size = new Size(493, 36);
             tableButtons.TabIndex = 25;
             // 
             // buttonDonate
@@ -511,16 +524,19 @@ namespace GHelper
             buttonDonate.BackColor = SystemColors.ControlLight;
             buttonDonate.Badge = 0;
             buttonDonate.BorderColor = Color.Transparent;
+            buttonDonate.Borderless = false;
             buttonDonate.BorderRadius = 2;
             buttonDonate.Dock = DockStyle.Top;
+            buttonDonate.FlatAppearance.MouseDownBackColor = Color.FromArgb(199, 199, 199);
+            buttonDonate.FlatAppearance.MouseOverBackColor = Color.FromArgb(213, 213, 213);
             buttonDonate.FlatStyle = FlatStyle.Flat;
             buttonDonate.Image = Properties.Resources.icons8_heart_32;
             buttonDonate.ImageAlign = ContentAlignment.MiddleRight;
-            buttonDonate.Location = new Point(4, 5);
-            buttonDonate.Margin = new Padding(4, 5, 4, 5);
+            buttonDonate.Location = new Point(2, 3);
+            buttonDonate.Margin = new Padding(2, 3, 2, 3);
             buttonDonate.Name = "buttonDonate";
             buttonDonate.Secondary = true;
-            buttonDonate.Size = new Size(254, 48);
+            buttonDonate.Size = new Size(154, 30);
             buttonDonate.TabIndex = 3;
             buttonDonate.Text = "&Donate";
             buttonDonate.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -531,15 +547,18 @@ namespace GHelper
             buttonQuit.Activated = false;
             buttonQuit.BackColor = SystemColors.ControlLight;
             buttonQuit.BorderColor = Color.Transparent;
+            buttonQuit.Borderless = false;
             buttonQuit.BorderRadius = 2;
             buttonQuit.Dock = DockStyle.Top;
+            buttonQuit.FlatAppearance.MouseDownBackColor = Color.FromArgb(199, 199, 199);
+            buttonQuit.FlatAppearance.MouseOverBackColor = Color.FromArgb(213, 213, 213);
             buttonQuit.FlatStyle = FlatStyle.Flat;
             buttonQuit.Image = Properties.Resources.icons8_quit_32;
-            buttonQuit.Location = new Point(528, 5);
-            buttonQuit.Margin = new Padding(4, 5, 4, 5);
+            buttonQuit.Location = new Point(318, 3);
+            buttonQuit.Margin = new Padding(2, 3, 2, 3);
             buttonQuit.Name = "buttonQuit";
             buttonQuit.Secondary = true;
-            buttonQuit.Size = new Size(255, 48);
+            buttonQuit.Size = new Size(154, 30);
             buttonQuit.TabIndex = 2;
             buttonQuit.Text = "&Quit";
             buttonQuit.TextAlign = ContentAlignment.MiddleRight;
@@ -551,30 +570,56 @@ namespace GHelper
             buttonUpdates.Activated = false;
             buttonUpdates.BackColor = SystemColors.ControlLight;
             buttonUpdates.BorderColor = Color.Transparent;
+            buttonUpdates.Borderless = false;
             buttonUpdates.BorderRadius = 2;
             buttonUpdates.Dock = DockStyle.Top;
+            buttonUpdates.FlatAppearance.MouseDownBackColor = Color.FromArgb(199, 199, 199);
+            buttonUpdates.FlatAppearance.MouseOverBackColor = Color.FromArgb(213, 213, 213);
             buttonUpdates.FlatStyle = FlatStyle.Flat;
             buttonUpdates.Image = Properties.Resources.icons8_software_32_white;
             buttonUpdates.ImageAlign = ContentAlignment.MiddleRight;
-            buttonUpdates.Location = new Point(266, 5);
-            buttonUpdates.Margin = new Padding(4, 5, 4, 5);
+            buttonUpdates.Location = new Point(160, 3);
+            buttonUpdates.Margin = new Padding(2, 3, 2, 3);
             buttonUpdates.Name = "buttonUpdates";
             buttonUpdates.Secondary = true;
-            buttonUpdates.Size = new Size(254, 48);
+            buttonUpdates.Size = new Size(154, 30);
             buttonUpdates.TabIndex = 1;
             buttonUpdates.Text = "&Updates";
             buttonUpdates.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonUpdates.UseVisualStyleBackColor = false;
             // 
+            // buttonCompanionApp
+            // 
+            buttonCompanionApp.Activated = false;
+            buttonCompanionApp.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            buttonCompanionApp.BackColor = SystemColors.ControlLight;
+            buttonCompanionApp.BorderColor = Color.Transparent;
+            buttonCompanionApp.Borderless = false;
+            buttonCompanionApp.BorderRadius = 2;
+            buttonCompanionApp.FlatAppearance.BorderSize = 0;
+            buttonCompanionApp.FlatAppearance.MouseDownBackColor = Color.FromArgb(199, 199, 199);
+            buttonCompanionApp.FlatAppearance.MouseOverBackColor = Color.FromArgb(213, 213, 213);
+            buttonCompanionApp.FlatStyle = FlatStyle.Flat;
+            buttonCompanionApp.Image = (Image)resources.GetObject("buttonCompanionApp.Image");
+            buttonCompanionApp.Location = new Point(475, 1);
+            buttonCompanionApp.Margin = new Padding(1);
+            buttonCompanionApp.Name = "buttonCompanionApp";
+            buttonCompanionApp.Secondary = true;
+            buttonCompanionApp.Size = new Size(17, 34);
+            buttonCompanionApp.TabIndex = 11;
+            buttonCompanionApp.TextImageRelation = TextImageRelation.ImageBeforeText;
+            buttonCompanionApp.UseVisualStyleBackColor = false;
+            buttonCompanionApp.Click += buttonCompanionApp_Click;
+            // 
             // checkStartup
             // 
             checkStartup.AutoSize = true;
             checkStartup.Dock = DockStyle.Left;
-            checkStartup.Location = new Point(20, 0);
-            checkStartup.Margin = new Padding(11, 5, 11, 5);
+            checkStartup.Location = new Point(12, 0);
+            checkStartup.Margin = new Padding(7, 3, 7, 3);
             checkStartup.Name = "checkStartup";
-            checkStartup.Padding = new Padding(10, 0, 0, 0);
-            checkStartup.Size = new Size(216, 50);
+            checkStartup.Padding = new Padding(6, 0, 0, 0);
+            checkStartup.Size = new Size(135, 31);
             checkStartup.TabIndex = 21;
             checkStartup.Text = Properties.Strings.RunOnStartup;
             checkStartup.UseVisualStyleBackColor = true;
@@ -587,11 +632,11 @@ namespace GHelper
             panelPerformance.Controls.Add(tablePerf);
             panelPerformance.Controls.Add(panelCPUTitle);
             panelPerformance.Dock = DockStyle.Top;
-            panelPerformance.Location = new Point(11, 11);
+            panelPerformance.Location = new Point(7, 7);
             panelPerformance.Margin = new Padding(0);
             panelPerformance.Name = "panelPerformance";
-            panelPerformance.Padding = new Padding(20);
-            panelPerformance.Size = new Size(827, 208);
+            panelPerformance.Padding = new Padding(12);
+            panelPerformance.Size = new Size(517, 129);
             panelPerformance.TabIndex = 0;
             panelPerformance.TabStop = true;
             // 
@@ -609,12 +654,12 @@ namespace GHelper
             tablePerf.Controls.Add(buttonTurbo, 2, 0);
             tablePerf.Controls.Add(buttonFans, 3, 0);
             tablePerf.Dock = DockStyle.Top;
-            tablePerf.Location = new Point(20, 60);
-            tablePerf.Margin = new Padding(8, 4, 8, 4);
+            tablePerf.Location = new Point(12, 37);
+            tablePerf.Margin = new Padding(5, 2, 5, 2);
             tablePerf.Name = "tablePerf";
             tablePerf.RowCount = 1;
-            tablePerf.RowStyles.Add(new RowStyle(SizeType.Absolute, 128F));
-            tablePerf.Size = new Size(787, 128);
+            tablePerf.RowStyles.Add(new RowStyle(SizeType.Absolute, 80F));
+            tablePerf.Size = new Size(493, 80);
             tablePerf.TabIndex = 29;
             // 
             // buttonSilent
@@ -623,18 +668,21 @@ namespace GHelper
             buttonSilent.BackColor = SystemColors.ControlLightLight;
             buttonSilent.BackgroundImageLayout = ImageLayout.None;
             buttonSilent.BorderColor = Color.Transparent;
+            buttonSilent.Borderless = false;
             buttonSilent.BorderRadius = 5;
             buttonSilent.Dock = DockStyle.Fill;
             buttonSilent.FlatAppearance.BorderSize = 0;
+            buttonSilent.FlatAppearance.MouseDownBackColor = Color.FromArgb(224, 224, 224);
+            buttonSilent.FlatAppearance.MouseOverBackColor = Color.FromArgb(239, 239, 239);
             buttonSilent.FlatStyle = FlatStyle.Flat;
             buttonSilent.ForeColor = SystemColors.ControlText;
             buttonSilent.Image = Properties.Resources.icons8_bicycle_48__1_;
             buttonSilent.ImageAlign = ContentAlignment.BottomCenter;
-            buttonSilent.Location = new Point(4, 4);
-            buttonSilent.Margin = new Padding(4);
+            buttonSilent.Location = new Point(2, 2);
+            buttonSilent.Margin = new Padding(2);
             buttonSilent.Name = "buttonSilent";
             buttonSilent.Secondary = false;
-            buttonSilent.Size = new Size(188, 120);
+            buttonSilent.Size = new Size(119, 76);
             buttonSilent.TabIndex = 1;
             buttonSilent.Text = "&Silent";
             buttonSilent.TextImageRelation = TextImageRelation.ImageAboveText;
@@ -645,18 +693,21 @@ namespace GHelper
             buttonBalanced.Activated = false;
             buttonBalanced.BackColor = SystemColors.ControlLightLight;
             buttonBalanced.BorderColor = Color.Transparent;
+            buttonBalanced.Borderless = false;
             buttonBalanced.BorderRadius = 5;
             buttonBalanced.Dock = DockStyle.Fill;
             buttonBalanced.FlatAppearance.BorderSize = 0;
+            buttonBalanced.FlatAppearance.MouseDownBackColor = Color.FromArgb(224, 224, 224);
+            buttonBalanced.FlatAppearance.MouseOverBackColor = Color.FromArgb(239, 239, 239);
             buttonBalanced.FlatStyle = FlatStyle.Flat;
             buttonBalanced.ForeColor = SystemColors.ControlText;
             buttonBalanced.Image = Properties.Resources.icons8_fiat_500_48;
             buttonBalanced.ImageAlign = ContentAlignment.BottomCenter;
-            buttonBalanced.Location = new Point(200, 4);
-            buttonBalanced.Margin = new Padding(4);
+            buttonBalanced.Location = new Point(125, 2);
+            buttonBalanced.Margin = new Padding(2);
             buttonBalanced.Name = "buttonBalanced";
             buttonBalanced.Secondary = false;
-            buttonBalanced.Size = new Size(188, 120);
+            buttonBalanced.Size = new Size(119, 76);
             buttonBalanced.TabIndex = 1;
             buttonBalanced.Text = "&Balanced";
             buttonBalanced.TextImageRelation = TextImageRelation.ImageAboveText;
@@ -667,18 +718,21 @@ namespace GHelper
             buttonTurbo.Activated = false;
             buttonTurbo.BackColor = SystemColors.ControlLightLight;
             buttonTurbo.BorderColor = Color.Transparent;
+            buttonTurbo.Borderless = false;
             buttonTurbo.BorderRadius = 5;
             buttonTurbo.Dock = DockStyle.Fill;
             buttonTurbo.FlatAppearance.BorderSize = 0;
+            buttonTurbo.FlatAppearance.MouseDownBackColor = Color.FromArgb(224, 224, 224);
+            buttonTurbo.FlatAppearance.MouseOverBackColor = Color.FromArgb(239, 239, 239);
             buttonTurbo.FlatStyle = FlatStyle.Flat;
             buttonTurbo.ForeColor = SystemColors.ControlText;
             buttonTurbo.Image = Properties.Resources.icons8_rocket_48;
             buttonTurbo.ImageAlign = ContentAlignment.BottomCenter;
-            buttonTurbo.Location = new Point(396, 4);
-            buttonTurbo.Margin = new Padding(4);
+            buttonTurbo.Location = new Point(248, 2);
+            buttonTurbo.Margin = new Padding(2);
             buttonTurbo.Name = "buttonTurbo";
             buttonTurbo.Secondary = false;
-            buttonTurbo.Size = new Size(188, 120);
+            buttonTurbo.Size = new Size(119, 76);
             buttonTurbo.TabIndex = 2;
             buttonTurbo.Text = "&Turbo";
             buttonTurbo.TextImageRelation = TextImageRelation.ImageAboveText;
@@ -689,17 +743,20 @@ namespace GHelper
             buttonFans.Activated = false;
             buttonFans.BackColor = SystemColors.ControlLight;
             buttonFans.BorderColor = Color.Transparent;
+            buttonFans.Borderless = false;
             buttonFans.BorderRadius = 5;
             buttonFans.Dock = DockStyle.Fill;
             buttonFans.FlatAppearance.BorderSize = 0;
+            buttonFans.FlatAppearance.MouseDownBackColor = Color.FromArgb(199, 199, 199);
+            buttonFans.FlatAppearance.MouseOverBackColor = Color.FromArgb(213, 213, 213);
             buttonFans.FlatStyle = FlatStyle.Flat;
             buttonFans.Image = Properties.Resources.icons8_fan_48;
             buttonFans.ImageAlign = ContentAlignment.BottomCenter;
-            buttonFans.Location = new Point(592, 4);
-            buttonFans.Margin = new Padding(4);
+            buttonFans.Location = new Point(371, 2);
+            buttonFans.Margin = new Padding(2);
             buttonFans.Name = "buttonFans";
             buttonFans.Secondary = true;
-            buttonFans.Size = new Size(191, 120);
+            buttonFans.Size = new Size(120, 76);
             buttonFans.TabIndex = 3;
             buttonFans.Text = "&Fans + Power";
             buttonFans.TextImageRelation = TextImageRelation.ImageAboveText;
@@ -711,10 +768,10 @@ namespace GHelper
             panelCPUTitle.Controls.Add(labelPerf);
             panelCPUTitle.Controls.Add(labelCPUFan);
             panelCPUTitle.Dock = DockStyle.Top;
-            panelCPUTitle.Location = new Point(20, 20);
-            panelCPUTitle.Margin = new Padding(4);
+            panelCPUTitle.Location = new Point(12, 12);
+            panelCPUTitle.Margin = new Padding(2);
             panelCPUTitle.Name = "panelCPUTitle";
-            panelCPUTitle.Size = new Size(787, 40);
+            panelCPUTitle.Size = new Size(493, 25);
             panelCPUTitle.TabIndex = 30;
             // 
             // picturePerf
@@ -722,10 +779,10 @@ namespace GHelper
             picturePerf.BackgroundImage = Properties.Resources.icons8_gauge_32;
             picturePerf.BackgroundImageLayout = ImageLayout.Zoom;
             picturePerf.InitialImage = null;
-            picturePerf.Location = new Point(8, 0);
-            picturePerf.Margin = new Padding(4);
+            picturePerf.Location = new Point(5, 0);
+            picturePerf.Margin = new Padding(2);
             picturePerf.Name = "picturePerf";
-            picturePerf.Size = new Size(32, 32);
+            picturePerf.Size = new Size(20, 20);
             picturePerf.TabIndex = 35;
             picturePerf.TabStop = false;
             // 
@@ -735,10 +792,10 @@ namespace GHelper
             labelPerf.AutoSize = true;
             labelPerf.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             labelPerf.LiveSetting = System.Windows.Forms.Automation.AutomationLiveSetting.Polite;
-            labelPerf.Location = new Point(40, 0);
-            labelPerf.Margin = new Padding(8, 0, 8, 0);
+            labelPerf.Location = new Point(25, 0);
+            labelPerf.Margin = new Padding(5, 0, 5, 0);
             labelPerf.Name = "labelPerf";
-            labelPerf.Size = new Size(234, 32);
+            labelPerf.Size = new Size(143, 20);
             labelPerf.TabIndex = 0;
             labelPerf.Text = "Performance Mode";
             // 
@@ -747,10 +804,10 @@ namespace GHelper
             labelCPUFan.AccessibleRole = AccessibleRole.TitleBar;
             labelCPUFan.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             labelCPUFan.Cursor = Cursors.Hand;
-            labelCPUFan.Location = new Point(387, 0);
-            labelCPUFan.Margin = new Padding(8, 0, 8, 0);
+            labelCPUFan.Location = new Point(243, 0);
+            labelCPUFan.Margin = new Padding(5, 0, 5, 0);
             labelCPUFan.Name = "labelCPUFan";
-            labelCPUFan.Size = new Size(400, 36);
+            labelCPUFan.Size = new Size(250, 22);
             labelCPUFan.TabIndex = 33;
             labelCPUFan.Text = "      ";
             labelCPUFan.TextAlign = ContentAlignment.TopRight;
@@ -765,11 +822,11 @@ namespace GHelper
             panelGPU.Controls.Add(tableGPU);
             panelGPU.Controls.Add(panelGPUTitle);
             panelGPU.Dock = DockStyle.Top;
-            panelGPU.Location = new Point(11, 219);
+            panelGPU.Location = new Point(7, 136);
             panelGPU.Margin = new Padding(0);
             panelGPU.Name = "panelGPU";
-            panelGPU.Padding = new Padding(20, 20, 20, 0);
-            panelGPU.Size = new Size(827, 432);
+            panelGPU.Padding = new Padding(12, 12, 12, 0);
+            panelGPU.Size = new Size(517, 269);
             panelGPU.TabIndex = 1;
             panelGPU.TabStop = true;
             // 
@@ -777,10 +834,10 @@ namespace GHelper
             // 
             labelTipGPU.Dock = DockStyle.Top;
             labelTipGPU.ForeColor = SystemColors.GrayText;
-            labelTipGPU.Location = new Point(20, 396);
-            labelTipGPU.Margin = new Padding(4, 0, 4, 0);
+            labelTipGPU.Location = new Point(12, 247);
+            labelTipGPU.Margin = new Padding(2, 0, 2, 0);
             labelTipGPU.Name = "labelTipGPU";
-            labelTipGPU.Size = new Size(787, 36);
+            labelTipGPU.Size = new Size(493, 22);
             labelTipGPU.TabIndex = 20;
             // 
             // tableAMD
@@ -795,12 +852,12 @@ namespace GHelper
             tableAMD.Controls.Add(buttonOverlay, 0, 0);
             tableAMD.Controls.Add(buttonFPS, 0, 0);
             tableAMD.Dock = DockStyle.Top;
-            tableAMD.Location = new Point(20, 316);
-            tableAMD.Margin = new Padding(8, 4, 8, 4);
+            tableAMD.Location = new Point(12, 197);
+            tableAMD.Margin = new Padding(5, 2, 5, 2);
             tableAMD.Name = "tableAMD";
             tableAMD.RowCount = 1;
-            tableAMD.RowStyles.Add(new RowStyle(SizeType.Absolute, 80F));
-            tableAMD.Size = new Size(787, 80);
+            tableAMD.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
+            tableAMD.Size = new Size(493, 50);
             tableAMD.TabIndex = 24;
             tableAMD.Visible = false;
             // 
@@ -809,18 +866,21 @@ namespace GHelper
             buttonAutoTDP.Activated = false;
             buttonAutoTDP.BackColor = SystemColors.ControlLightLight;
             buttonAutoTDP.BorderColor = Color.Transparent;
+            buttonAutoTDP.Borderless = false;
             buttonAutoTDP.BorderRadius = 5;
             buttonAutoTDP.Dock = DockStyle.Fill;
             buttonAutoTDP.FlatAppearance.BorderSize = 0;
+            buttonAutoTDP.FlatAppearance.MouseDownBackColor = Color.FromArgb(224, 224, 224);
+            buttonAutoTDP.FlatAppearance.MouseOverBackColor = Color.FromArgb(239, 239, 239);
             buttonAutoTDP.FlatStyle = FlatStyle.Flat;
             buttonAutoTDP.ForeColor = SystemColors.ControlText;
             buttonAutoTDP.Image = Properties.Resources.icons8_gauge_32;
             buttonAutoTDP.ImageAlign = ContentAlignment.MiddleRight;
-            buttonAutoTDP.Location = new Point(528, 4);
-            buttonAutoTDP.Margin = new Padding(4);
+            buttonAutoTDP.Location = new Point(330, 2);
+            buttonAutoTDP.Margin = new Padding(2);
             buttonAutoTDP.Name = "buttonAutoTDP";
             buttonAutoTDP.Secondary = false;
-            buttonAutoTDP.Size = new Size(255, 72);
+            buttonAutoTDP.Size = new Size(161, 46);
             buttonAutoTDP.TabIndex = 13;
             buttonAutoTDP.Text = "AutoTDP";
             buttonAutoTDP.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -831,18 +891,21 @@ namespace GHelper
             buttonOverlay.Activated = false;
             buttonOverlay.BackColor = SystemColors.ControlLightLight;
             buttonOverlay.BorderColor = Color.Transparent;
+            buttonOverlay.Borderless = false;
             buttonOverlay.BorderRadius = 5;
             buttonOverlay.Dock = DockStyle.Fill;
             buttonOverlay.FlatAppearance.BorderSize = 0;
+            buttonOverlay.FlatAppearance.MouseDownBackColor = Color.FromArgb(224, 224, 224);
+            buttonOverlay.FlatAppearance.MouseOverBackColor = Color.FromArgb(239, 239, 239);
             buttonOverlay.FlatStyle = FlatStyle.Flat;
             buttonOverlay.ForeColor = SystemColors.ControlText;
             buttonOverlay.Image = Properties.Resources.icons8_heartbeat_32;
             buttonOverlay.ImageAlign = ContentAlignment.MiddleRight;
-            buttonOverlay.Location = new Point(266, 4);
-            buttonOverlay.Margin = new Padding(4);
+            buttonOverlay.Location = new Point(166, 2);
+            buttonOverlay.Margin = new Padding(2);
             buttonOverlay.Name = "buttonOverlay";
             buttonOverlay.Secondary = false;
-            buttonOverlay.Size = new Size(254, 72);
+            buttonOverlay.Size = new Size(160, 46);
             buttonOverlay.TabIndex = 12;
             buttonOverlay.Text = "AMD Overlay";
             buttonOverlay.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -853,18 +916,21 @@ namespace GHelper
             buttonFPS.Activated = false;
             buttonFPS.BackColor = SystemColors.ControlLightLight;
             buttonFPS.BorderColor = Color.Transparent;
+            buttonFPS.Borderless = false;
             buttonFPS.BorderRadius = 5;
             buttonFPS.Dock = DockStyle.Fill;
             buttonFPS.FlatAppearance.BorderSize = 0;
+            buttonFPS.FlatAppearance.MouseDownBackColor = Color.FromArgb(224, 224, 224);
+            buttonFPS.FlatAppearance.MouseOverBackColor = Color.FromArgb(239, 239, 239);
             buttonFPS.FlatStyle = FlatStyle.Flat;
             buttonFPS.ForeColor = SystemColors.ControlText;
             buttonFPS.Image = Properties.Resources.icons8_animation_32;
             buttonFPS.ImageAlign = ContentAlignment.MiddleRight;
-            buttonFPS.Location = new Point(4, 4);
-            buttonFPS.Margin = new Padding(4);
+            buttonFPS.Location = new Point(2, 2);
+            buttonFPS.Margin = new Padding(2);
             buttonFPS.Name = "buttonFPS";
             buttonFPS.Secondary = false;
-            buttonFPS.Size = new Size(254, 72);
+            buttonFPS.Size = new Size(160, 46);
             buttonFPS.TabIndex = 11;
             buttonFPS.Text = "FPS Limit OFF";
             buttonFPS.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -886,13 +952,13 @@ namespace GHelper
             tableGPU.Controls.Add(buttonOptimized, 2, 0);
             tableGPU.Controls.Add(buttonUltimate, 2, 0);
             tableGPU.Dock = DockStyle.Top;
-            tableGPU.Location = new Point(20, 60);
-            tableGPU.Margin = new Padding(8, 4, 8, 4);
+            tableGPU.Location = new Point(12, 37);
+            tableGPU.Margin = new Padding(5, 2, 5, 2);
             tableGPU.Name = "tableGPU";
             tableGPU.RowCount = 1;
-            tableGPU.RowStyles.Add(new RowStyle(SizeType.Absolute, 128F));
-            tableGPU.RowStyles.Add(new RowStyle(SizeType.Absolute, 128F));
-            tableGPU.Size = new Size(787, 256);
+            tableGPU.RowStyles.Add(new RowStyle(SizeType.Absolute, 80F));
+            tableGPU.RowStyles.Add(new RowStyle(SizeType.Absolute, 80F));
+            tableGPU.Size = new Size(493, 160);
             tableGPU.TabIndex = 16;
             // 
             // buttonStopGPU
@@ -900,19 +966,22 @@ namespace GHelper
             buttonStopGPU.Activated = false;
             buttonStopGPU.BackColor = SystemColors.ControlLightLight;
             buttonStopGPU.BorderColor = Color.Transparent;
+            buttonStopGPU.Borderless = false;
             buttonStopGPU.BorderRadius = 5;
             buttonStopGPU.CausesValidation = false;
             buttonStopGPU.Dock = DockStyle.Top;
             buttonStopGPU.FlatAppearance.BorderSize = 0;
+            buttonStopGPU.FlatAppearance.MouseDownBackColor = Color.FromArgb(224, 224, 224);
+            buttonStopGPU.FlatAppearance.MouseOverBackColor = Color.FromArgb(239, 239, 239);
             buttonStopGPU.FlatStyle = FlatStyle.Flat;
             buttonStopGPU.ForeColor = SystemColors.ControlText;
             buttonStopGPU.Image = Properties.Resources.icons8_leaf_48;
             buttonStopGPU.ImageAlign = ContentAlignment.BottomCenter;
-            buttonStopGPU.Location = new Point(200, 4);
-            buttonStopGPU.Margin = new Padding(4);
+            buttonStopGPU.Location = new Point(125, 2);
+            buttonStopGPU.Margin = new Padding(2);
             buttonStopGPU.Name = "buttonStopGPU";
             buttonStopGPU.Secondary = false;
-            buttonStopGPU.Size = new Size(188, 120);
+            buttonStopGPU.Size = new Size(119, 75);
             buttonStopGPU.TabIndex = 4;
             buttonStopGPU.Text = "Stop GPU applications";
             buttonStopGPU.TextImageRelation = TextImageRelation.ImageAboveText;
@@ -924,19 +993,22 @@ namespace GHelper
             buttonEco.Activated = false;
             buttonEco.BackColor = SystemColors.ControlLightLight;
             buttonEco.BorderColor = Color.Transparent;
+            buttonEco.Borderless = false;
             buttonEco.BorderRadius = 5;
             buttonEco.CausesValidation = false;
             buttonEco.Dock = DockStyle.Top;
             buttonEco.FlatAppearance.BorderSize = 0;
+            buttonEco.FlatAppearance.MouseDownBackColor = Color.FromArgb(224, 224, 224);
+            buttonEco.FlatAppearance.MouseOverBackColor = Color.FromArgb(239, 239, 239);
             buttonEco.FlatStyle = FlatStyle.Flat;
             buttonEco.ForeColor = SystemColors.ControlText;
             buttonEco.Image = Properties.Resources.icons8_leaf_48;
             buttonEco.ImageAlign = ContentAlignment.BottomCenter;
-            buttonEco.Location = new Point(4, 4);
-            buttonEco.Margin = new Padding(4);
+            buttonEco.Location = new Point(2, 2);
+            buttonEco.Margin = new Padding(2);
             buttonEco.Name = "buttonEco";
             buttonEco.Secondary = false;
-            buttonEco.Size = new Size(188, 120);
+            buttonEco.Size = new Size(119, 75);
             buttonEco.TabIndex = 4;
             buttonEco.Text = Properties.Strings.EcoMode;
             buttonEco.TextImageRelation = TextImageRelation.ImageAboveText;
@@ -947,18 +1019,21 @@ namespace GHelper
             buttonStandard.Activated = false;
             buttonStandard.BackColor = SystemColors.ControlLightLight;
             buttonStandard.BorderColor = Color.Transparent;
+            buttonStandard.Borderless = false;
             buttonStandard.BorderRadius = 5;
             buttonStandard.Dock = DockStyle.Top;
             buttonStandard.FlatAppearance.BorderSize = 0;
+            buttonStandard.FlatAppearance.MouseDownBackColor = Color.FromArgb(224, 224, 224);
+            buttonStandard.FlatAppearance.MouseOverBackColor = Color.FromArgb(239, 239, 239);
             buttonStandard.FlatStyle = FlatStyle.Flat;
             buttonStandard.ForeColor = SystemColors.ControlText;
             buttonStandard.Image = Properties.Resources.icons8_spa_flower_48;
             buttonStandard.ImageAlign = ContentAlignment.BottomCenter;
-            buttonStandard.Location = new Point(396, 4);
-            buttonStandard.Margin = new Padding(4);
+            buttonStandard.Location = new Point(248, 2);
+            buttonStandard.Margin = new Padding(2);
             buttonStandard.Name = "buttonStandard";
             buttonStandard.Secondary = false;
-            buttonStandard.Size = new Size(188, 120);
+            buttonStandard.Size = new Size(119, 75);
             buttonStandard.TabIndex = 5;
             buttonStandard.Text = Properties.Strings.StandardMode;
             buttonStandard.TextImageRelation = TextImageRelation.ImageAboveText;
@@ -969,18 +1044,21 @@ namespace GHelper
             buttonXGM.Activated = false;
             buttonXGM.BackColor = SystemColors.ControlLightLight;
             buttonXGM.BorderColor = Color.Transparent;
+            buttonXGM.Borderless = false;
             buttonXGM.BorderRadius = 5;
             buttonXGM.Dock = DockStyle.Top;
             buttonXGM.FlatAppearance.BorderSize = 0;
+            buttonXGM.FlatAppearance.MouseDownBackColor = Color.FromArgb(224, 224, 224);
+            buttonXGM.FlatAppearance.MouseOverBackColor = Color.FromArgb(239, 239, 239);
             buttonXGM.FlatStyle = FlatStyle.Flat;
             buttonXGM.ForeColor = SystemColors.ControlText;
             buttonXGM.Image = Properties.Resources.icons8_video_48;
             buttonXGM.ImageAlign = ContentAlignment.BottomCenter;
-            buttonXGM.Location = new Point(200, 132);
-            buttonXGM.Margin = new Padding(4);
+            buttonXGM.Location = new Point(125, 82);
+            buttonXGM.Margin = new Padding(2);
             buttonXGM.Name = "buttonXGM";
             buttonXGM.Secondary = false;
-            buttonXGM.Size = new Size(188, 120);
+            buttonXGM.Size = new Size(119, 75);
             buttonXGM.TabIndex = 8;
             buttonXGM.Text = "XG Mobile";
             buttonXGM.TextImageRelation = TextImageRelation.ImageAboveText;
@@ -992,18 +1070,21 @@ namespace GHelper
             buttonOptimized.Activated = false;
             buttonOptimized.BackColor = SystemColors.ControlLightLight;
             buttonOptimized.BorderColor = Color.Transparent;
+            buttonOptimized.Borderless = false;
             buttonOptimized.BorderRadius = 5;
             buttonOptimized.Dock = DockStyle.Top;
             buttonOptimized.FlatAppearance.BorderSize = 0;
+            buttonOptimized.FlatAppearance.MouseDownBackColor = Color.FromArgb(224, 224, 224);
+            buttonOptimized.FlatAppearance.MouseOverBackColor = Color.FromArgb(239, 239, 239);
             buttonOptimized.FlatStyle = FlatStyle.Flat;
             buttonOptimized.ForeColor = SystemColors.ControlText;
             buttonOptimized.Image = Properties.Resources.icons8_project_management_48__1_;
             buttonOptimized.ImageAlign = ContentAlignment.BottomCenter;
-            buttonOptimized.Location = new Point(4, 132);
-            buttonOptimized.Margin = new Padding(4);
+            buttonOptimized.Location = new Point(2, 82);
+            buttonOptimized.Margin = new Padding(2);
             buttonOptimized.Name = "buttonOptimized";
             buttonOptimized.Secondary = false;
-            buttonOptimized.Size = new Size(188, 120);
+            buttonOptimized.Size = new Size(119, 75);
             buttonOptimized.TabIndex = 7;
             buttonOptimized.Text = Properties.Strings.Optimized;
             buttonOptimized.TextImageRelation = TextImageRelation.ImageAboveText;
@@ -1014,18 +1095,21 @@ namespace GHelper
             buttonUltimate.Activated = false;
             buttonUltimate.BackColor = SystemColors.ControlLightLight;
             buttonUltimate.BorderColor = Color.Transparent;
+            buttonUltimate.Borderless = false;
             buttonUltimate.BorderRadius = 5;
             buttonUltimate.Dock = DockStyle.Top;
             buttonUltimate.FlatAppearance.BorderSize = 0;
+            buttonUltimate.FlatAppearance.MouseDownBackColor = Color.FromArgb(224, 224, 224);
+            buttonUltimate.FlatAppearance.MouseOverBackColor = Color.FromArgb(239, 239, 239);
             buttonUltimate.FlatStyle = FlatStyle.Flat;
             buttonUltimate.ForeColor = SystemColors.ControlText;
             buttonUltimate.Image = Properties.Resources.icons8_game_controller_48;
             buttonUltimate.ImageAlign = ContentAlignment.BottomCenter;
-            buttonUltimate.Location = new Point(592, 4);
-            buttonUltimate.Margin = new Padding(4);
+            buttonUltimate.Location = new Point(371, 2);
+            buttonUltimate.Margin = new Padding(2);
             buttonUltimate.Name = "buttonUltimate";
             buttonUltimate.Secondary = false;
-            buttonUltimate.Size = new Size(191, 120);
+            buttonUltimate.Size = new Size(120, 75);
             buttonUltimate.TabIndex = 6;
             buttonUltimate.Text = Properties.Strings.UltimateMode;
             buttonUltimate.TextImageRelation = TextImageRelation.ImageAboveText;
@@ -1037,20 +1121,20 @@ namespace GHelper
             panelGPUTitle.Controls.Add(labelGPU);
             panelGPUTitle.Controls.Add(labelGPUFan);
             panelGPUTitle.Dock = DockStyle.Top;
-            panelGPUTitle.Location = new Point(20, 20);
-            panelGPUTitle.Margin = new Padding(4);
+            panelGPUTitle.Location = new Point(12, 12);
+            panelGPUTitle.Margin = new Padding(2);
             panelGPUTitle.Name = "panelGPUTitle";
-            panelGPUTitle.Size = new Size(787, 40);
+            panelGPUTitle.Size = new Size(493, 25);
             panelGPUTitle.TabIndex = 21;
             // 
             // pictureGPU
             // 
             pictureGPU.BackgroundImage = Properties.Resources.icons8_video_card_32;
             pictureGPU.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureGPU.Location = new Point(8, 0);
-            pictureGPU.Margin = new Padding(4);
+            pictureGPU.Location = new Point(5, 0);
+            pictureGPU.Margin = new Padding(2);
             pictureGPU.Name = "pictureGPU";
-            pictureGPU.Size = new Size(32, 32);
+            pictureGPU.Size = new Size(20, 20);
             pictureGPU.TabIndex = 22;
             pictureGPU.TabStop = false;
             // 
@@ -1058,20 +1142,20 @@ namespace GHelper
             // 
             labelGPU.AutoSize = true;
             labelGPU.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            labelGPU.Location = new Point(40, 0);
-            labelGPU.Margin = new Padding(8, 0, 8, 0);
+            labelGPU.Location = new Point(25, 0);
+            labelGPU.Margin = new Padding(5, 0, 5, 0);
             labelGPU.Name = "labelGPU";
-            labelGPU.Size = new Size(136, 32);
+            labelGPU.Size = new Size(84, 20);
             labelGPU.TabIndex = 21;
             labelGPU.Text = "GPU Mode";
             // 
             // labelGPUFan
             // 
             labelGPUFan.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            labelGPUFan.Location = new Point(387, 0);
-            labelGPUFan.Margin = new Padding(8, 0, 8, 0);
+            labelGPUFan.Location = new Point(243, 0);
+            labelGPUFan.Margin = new Padding(5, 0, 5, 0);
             labelGPUFan.Name = "labelGPUFan";
-            labelGPUFan.Size = new Size(400, 35);
+            labelGPUFan.Size = new Size(250, 22);
             labelGPUFan.TabIndex = 20;
             labelGPUFan.Text = "         ";
             labelGPUFan.TextAlign = ContentAlignment.TopRight;
@@ -1085,11 +1169,11 @@ namespace GHelper
             panelScreen.Controls.Add(tableScreen);
             panelScreen.Controls.Add(panelScreenTitle);
             panelScreen.Dock = DockStyle.Top;
-            panelScreen.Location = new Point(11, 651);
+            panelScreen.Location = new Point(7, 405);
             panelScreen.Margin = new Padding(0);
             panelScreen.Name = "panelScreen";
-            panelScreen.Padding = new Padding(20, 11, 20, 0);
-            panelScreen.Size = new Size(827, 187);
+            panelScreen.Padding = new Padding(12, 7, 12, 0);
+            panelScreen.Size = new Size(517, 116);
             panelScreen.TabIndex = 2;
             panelScreen.TabStop = true;
             // 
@@ -1097,10 +1181,10 @@ namespace GHelper
             // 
             labelTipScreen.Dock = DockStyle.Top;
             labelTipScreen.ForeColor = SystemColors.GrayText;
-            labelTipScreen.Location = new Point(20, 151);
-            labelTipScreen.Margin = new Padding(4, 0, 4, 0);
+            labelTipScreen.Location = new Point(12, 94);
+            labelTipScreen.Margin = new Padding(2, 0, 2, 0);
             labelTipScreen.Name = "labelTipScreen";
-            labelTipScreen.Size = new Size(787, 36);
+            labelTipScreen.Size = new Size(493, 22);
             labelTipScreen.TabIndex = 24;
             // 
             // tableScreen
@@ -1119,13 +1203,13 @@ namespace GHelper
             tableScreen.Controls.Add(buttonFHD, 3, 0);
             tableScreen.Controls.Add(buttonHDRControl, 3, 0);
             tableScreen.Dock = DockStyle.Top;
-            tableScreen.Location = new Point(20, 51);
-            tableScreen.Margin = new Padding(8, 4, 8, 4);
+            tableScreen.Location = new Point(12, 32);
+            tableScreen.Margin = new Padding(5, 2, 5, 2);
             tableScreen.Name = "tableScreen";
             tableScreen.RowCount = 1;
-            tableScreen.RowStyles.Add(new RowStyle(SizeType.Absolute, 80F));
-            tableScreen.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableScreen.Size = new Size(787, 100);
+            tableScreen.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
+            tableScreen.RowStyles.Add(new RowStyle(SizeType.Absolute, 12F));
+            tableScreen.Size = new Size(493, 62);
             tableScreen.TabIndex = 23;
             // 
             // buttonScreenAuto
@@ -1133,16 +1217,19 @@ namespace GHelper
             buttonScreenAuto.Activated = false;
             buttonScreenAuto.BackColor = SystemColors.ControlLightLight;
             buttonScreenAuto.BorderColor = Color.Transparent;
+            buttonScreenAuto.Borderless = false;
             buttonScreenAuto.BorderRadius = 5;
             buttonScreenAuto.Dock = DockStyle.Fill;
             buttonScreenAuto.FlatAppearance.BorderSize = 0;
+            buttonScreenAuto.FlatAppearance.MouseDownBackColor = Color.FromArgb(224, 224, 224);
+            buttonScreenAuto.FlatAppearance.MouseOverBackColor = Color.FromArgb(239, 239, 239);
             buttonScreenAuto.FlatStyle = FlatStyle.Flat;
             buttonScreenAuto.ForeColor = SystemColors.ControlText;
-            buttonScreenAuto.Location = new Point(4, 4);
-            buttonScreenAuto.Margin = new Padding(4);
+            buttonScreenAuto.Location = new Point(2, 2);
+            buttonScreenAuto.Margin = new Padding(2);
             buttonScreenAuto.Name = "buttonScreenAuto";
             buttonScreenAuto.Secondary = false;
-            buttonScreenAuto.Size = new Size(188, 72);
+            buttonScreenAuto.Size = new Size(119, 46);
             buttonScreenAuto.TabIndex = 9;
             buttonScreenAuto.Text = Properties.Strings.AutoMode;
             buttonScreenAuto.UseVisualStyleBackColor = false;
@@ -1152,17 +1239,20 @@ namespace GHelper
             button60Hz.Activated = false;
             button60Hz.BackColor = SystemColors.ControlLightLight;
             button60Hz.BorderColor = Color.Transparent;
+            button60Hz.Borderless = false;
             button60Hz.BorderRadius = 5;
             button60Hz.CausesValidation = false;
             button60Hz.Dock = DockStyle.Fill;
             button60Hz.FlatAppearance.BorderSize = 0;
+            button60Hz.FlatAppearance.MouseDownBackColor = Color.FromArgb(224, 224, 224);
+            button60Hz.FlatAppearance.MouseOverBackColor = Color.FromArgb(239, 239, 239);
             button60Hz.FlatStyle = FlatStyle.Flat;
             button60Hz.ForeColor = SystemColors.ControlText;
-            button60Hz.Location = new Point(200, 4);
-            button60Hz.Margin = new Padding(4);
+            button60Hz.Location = new Point(125, 2);
+            button60Hz.Margin = new Padding(2);
             button60Hz.Name = "button60Hz";
             button60Hz.Secondary = false;
-            button60Hz.Size = new Size(188, 72);
+            button60Hz.Size = new Size(119, 46);
             button60Hz.TabIndex = 10;
             button60Hz.Text = "60Hz";
             button60Hz.UseVisualStyleBackColor = false;
@@ -1172,16 +1262,19 @@ namespace GHelper
             button120Hz.Activated = false;
             button120Hz.BackColor = SystemColors.ControlLightLight;
             button120Hz.BorderColor = Color.Transparent;
+            button120Hz.Borderless = false;
             button120Hz.BorderRadius = 5;
             button120Hz.Dock = DockStyle.Fill;
             button120Hz.FlatAppearance.BorderSize = 0;
+            button120Hz.FlatAppearance.MouseDownBackColor = Color.FromArgb(224, 224, 224);
+            button120Hz.FlatAppearance.MouseOverBackColor = Color.FromArgb(239, 239, 239);
             button120Hz.FlatStyle = FlatStyle.Flat;
             button120Hz.ForeColor = SystemColors.ControlText;
-            button120Hz.Location = new Point(396, 4);
-            button120Hz.Margin = new Padding(4);
+            button120Hz.Location = new Point(248, 2);
+            button120Hz.Margin = new Padding(2);
             button120Hz.Name = "button120Hz";
             button120Hz.Secondary = false;
-            button120Hz.Size = new Size(188, 72);
+            button120Hz.Size = new Size(119, 46);
             button120Hz.TabIndex = 11;
             button120Hz.Text = "120Hz + OD";
             button120Hz.UseVisualStyleBackColor = false;
@@ -1191,17 +1284,20 @@ namespace GHelper
             buttonMiniled.Activated = false;
             buttonMiniled.BackColor = SystemColors.ControlLightLight;
             buttonMiniled.BorderColor = Color.Transparent;
+            buttonMiniled.Borderless = false;
             buttonMiniled.BorderRadius = 5;
             buttonMiniled.CausesValidation = false;
             buttonMiniled.Dock = DockStyle.Fill;
             buttonMiniled.FlatAppearance.BorderSize = 0;
+            buttonMiniled.FlatAppearance.MouseDownBackColor = Color.FromArgb(224, 224, 224);
+            buttonMiniled.FlatAppearance.MouseOverBackColor = Color.FromArgb(239, 239, 239);
             buttonMiniled.FlatStyle = FlatStyle.Flat;
             buttonMiniled.ForeColor = SystemColors.ControlText;
-            buttonMiniled.Location = new Point(592, 4);
-            buttonMiniled.Margin = new Padding(4);
+            buttonMiniled.Location = new Point(125, 52);
+            buttonMiniled.Margin = new Padding(2);
             buttonMiniled.Name = "buttonMiniled";
             buttonMiniled.Secondary = false;
-            buttonMiniled.Size = new Size(191, 72);
+            buttonMiniled.Size = new Size(119, 8);
             buttonMiniled.TabIndex = 12;
             buttonMiniled.Text = Properties.Strings.Multizone;
             buttonMiniled.UseVisualStyleBackColor = false;
@@ -1211,21 +1307,48 @@ namespace GHelper
             buttonFHD.Activated = false;
             buttonFHD.BackColor = SystemColors.ControlLightLight;
             buttonFHD.BorderColor = Color.Transparent;
+            buttonFHD.Borderless = false;
             buttonFHD.BorderRadius = 5;
             buttonFHD.CausesValidation = false;
             buttonFHD.Dock = DockStyle.Fill;
             buttonFHD.FlatAppearance.BorderSize = 0;
+            buttonFHD.FlatAppearance.MouseDownBackColor = Color.FromArgb(224, 224, 224);
+            buttonFHD.FlatAppearance.MouseOverBackColor = Color.FromArgb(239, 239, 239);
             buttonFHD.FlatStyle = FlatStyle.Flat;
             buttonFHD.ForeColor = SystemColors.ControlText;
-            buttonFHD.Location = new Point(4, 84);
-            buttonFHD.Margin = new Padding(4);
+            buttonFHD.Location = new Point(2, 52);
+            buttonFHD.Margin = new Padding(2);
             buttonFHD.Name = "buttonFHD";
             buttonFHD.Secondary = false;
-            buttonFHD.Size = new Size(188, 12);
+            buttonFHD.Size = new Size(119, 8);
             buttonFHD.TabIndex = 13;
             buttonFHD.Text = "FHD";
             buttonFHD.UseVisualStyleBackColor = false;
             buttonFHD.Visible = false;
+            // 
+            // buttonHDRControl
+            // 
+            buttonHDRControl.Activated = false;
+            buttonHDRControl.BackColor = SystemColors.ControlLightLight;
+            buttonHDRControl.BorderColor = Color.Transparent;
+            buttonHDRControl.Borderless = false;
+            buttonHDRControl.BorderRadius = 5;
+            buttonHDRControl.CausesValidation = false;
+            buttonHDRControl.Dock = DockStyle.Fill;
+            buttonHDRControl.FlatAppearance.BorderSize = 0;
+            buttonHDRControl.FlatAppearance.MouseDownBackColor = Color.FromArgb(224, 224, 224);
+            buttonHDRControl.FlatAppearance.MouseOverBackColor = Color.FromArgb(239, 239, 239);
+            buttonHDRControl.FlatStyle = FlatStyle.Flat;
+            buttonHDRControl.ForeColor = SystemColors.ControlText;
+            buttonHDRControl.Location = new Point(371, 2);
+            buttonHDRControl.Margin = new Padding(2);
+            buttonHDRControl.Name = "buttonHDRControl";
+            buttonHDRControl.Secondary = false;
+            buttonHDRControl.Size = new Size(120, 46);
+            buttonHDRControl.TabIndex = 14;
+            buttonHDRControl.Text = "HDR Color Control";
+            buttonHDRControl.UseVisualStyleBackColor = false;
+            buttonHDRControl.Visible = false;
             // 
             // panelScreenTitle
             // 
@@ -1233,19 +1356,19 @@ namespace GHelper
             panelScreenTitle.Controls.Add(pictureScreen);
             panelScreenTitle.Controls.Add(labelSreen);
             panelScreenTitle.Dock = DockStyle.Top;
-            panelScreenTitle.Location = new Point(20, 11);
-            panelScreenTitle.Margin = new Padding(4);
+            panelScreenTitle.Location = new Point(12, 7);
+            panelScreenTitle.Margin = new Padding(2);
             panelScreenTitle.Name = "panelScreenTitle";
-            panelScreenTitle.Size = new Size(787, 40);
+            panelScreenTitle.Size = new Size(493, 25);
             panelScreenTitle.TabIndex = 25;
             // 
             // labelMidFan
             // 
             labelMidFan.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            labelMidFan.Location = new Point(500, 0);
-            labelMidFan.Margin = new Padding(8, 0, 8, 0);
+            labelMidFan.Location = new Point(313, 0);
+            labelMidFan.Margin = new Padding(5, 0, 5, 0);
             labelMidFan.Name = "labelMidFan";
-            labelMidFan.Size = new Size(285, 35);
+            labelMidFan.Size = new Size(178, 22);
             labelMidFan.TabIndex = 28;
             labelMidFan.Text = "         ";
             labelMidFan.TextAlign = ContentAlignment.TopRight;
@@ -1254,10 +1377,10 @@ namespace GHelper
             // 
             pictureScreen.BackgroundImage = Properties.Resources.icons8_laptop_32;
             pictureScreen.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureScreen.Location = new Point(8, 3);
-            pictureScreen.Margin = new Padding(4);
+            pictureScreen.Location = new Point(5, 2);
+            pictureScreen.Margin = new Padding(2);
             pictureScreen.Name = "pictureScreen";
-            pictureScreen.Size = new Size(32, 32);
+            pictureScreen.Size = new Size(20, 20);
             pictureScreen.TabIndex = 27;
             pictureScreen.TabStop = false;
             // 
@@ -1265,10 +1388,10 @@ namespace GHelper
             // 
             labelSreen.AutoSize = true;
             labelSreen.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            labelSreen.Location = new Point(40, 0);
-            labelSreen.Margin = new Padding(4, 0, 4, 0);
+            labelSreen.Location = new Point(25, 0);
+            labelSreen.Margin = new Padding(2, 0, 2, 0);
             labelSreen.Name = "labelSreen";
-            labelSreen.Size = new Size(176, 32);
+            labelSreen.Size = new Size(108, 20);
             labelSreen.TabIndex = 26;
             labelSreen.Text = "Laptop Screen";
             // 
@@ -1281,11 +1404,11 @@ namespace GHelper
             panelKeyboard.Controls.Add(tableLayoutKeyboard);
             panelKeyboard.Controls.Add(panelKeyboardTitle);
             panelKeyboard.Dock = DockStyle.Top;
-            panelKeyboard.Location = new Point(11, 1394);
+            panelKeyboard.Location = new Point(7, 941);
             panelKeyboard.Margin = new Padding(0);
             panelKeyboard.Name = "panelKeyboard";
-            panelKeyboard.Padding = new Padding(20, 20, 20, 0);
-            panelKeyboard.Size = new Size(827, 146);
+            panelKeyboard.Padding = new Padding(12, 12, 12, 0);
+            panelKeyboard.Size = new Size(517, 92);
             panelKeyboard.TabIndex = 6;
             panelKeyboard.TabStop = true;
             // 
@@ -1295,11 +1418,11 @@ namespace GHelper
             labelBacklight.Dock = DockStyle.Top;
             labelBacklight.Font = new Font("Segoe UI", 9F);
             labelBacklight.ForeColor = SystemColors.GrayText;
-            labelBacklight.Location = new Point(20, 112);
-            labelBacklight.Margin = new Padding(4, 0, 4, 0);
+            labelBacklight.Location = new Point(12, 71);
+            labelBacklight.Margin = new Padding(2, 0, 2, 0);
             labelBacklight.Name = "labelBacklight";
-            labelBacklight.Padding = new Padding(4, 0, 4, 0);
-            labelBacklight.Size = new Size(787, 34);
+            labelBacklight.Padding = new Padding(2, 0, 2, 0);
+            labelBacklight.Size = new Size(493, 21);
             labelBacklight.TabIndex = 43;
             // 
             // tableLayoutKeyboard
@@ -1314,12 +1437,12 @@ namespace GHelper
             tableLayoutKeyboard.Controls.Add(panelColor, 0, 0);
             tableLayoutKeyboard.Controls.Add(comboKeyboard, 0, 0);
             tableLayoutKeyboard.Dock = DockStyle.Top;
-            tableLayoutKeyboard.Location = new Point(20, 60);
-            tableLayoutKeyboard.Margin = new Padding(8, 4, 8, 4);
+            tableLayoutKeyboard.Location = new Point(12, 37);
+            tableLayoutKeyboard.Margin = new Padding(5, 2, 5, 2);
             tableLayoutKeyboard.Name = "tableLayoutKeyboard";
             tableLayoutKeyboard.RowCount = 1;
             tableLayoutKeyboard.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutKeyboard.Size = new Size(787, 52);
+            tableLayoutKeyboard.Size = new Size(493, 34);
             tableLayoutKeyboard.TabIndex = 39;
             // 
             // buttonKeyboard
@@ -1328,17 +1451,20 @@ namespace GHelper
             buttonKeyboard.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonKeyboard.BackColor = SystemColors.ControlLight;
             buttonKeyboard.BorderColor = Color.Transparent;
+            buttonKeyboard.Borderless = false;
             buttonKeyboard.BorderRadius = 2;
             buttonKeyboard.Dock = DockStyle.Top;
             buttonKeyboard.FlatAppearance.BorderSize = 0;
+            buttonKeyboard.FlatAppearance.MouseDownBackColor = Color.FromArgb(199, 199, 199);
+            buttonKeyboard.FlatAppearance.MouseOverBackColor = Color.FromArgb(213, 213, 213);
             buttonKeyboard.FlatStyle = FlatStyle.Flat;
             buttonKeyboard.Image = Properties.Resources.icons8_settings_32;
             buttonKeyboard.ImageAlign = ContentAlignment.MiddleRight;
-            buttonKeyboard.Location = new Point(528, 4);
-            buttonKeyboard.Margin = new Padding(4);
+            buttonKeyboard.Location = new Point(330, 2);
+            buttonKeyboard.Margin = new Padding(2);
             buttonKeyboard.Name = "buttonKeyboard";
             buttonKeyboard.Secondary = true;
-            buttonKeyboard.Size = new Size(255, 48);
+            buttonKeyboard.Size = new Size(161, 30);
             buttonKeyboard.TabIndex = 37;
             buttonKeyboard.Text = "&Extra";
             buttonKeyboard.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -1351,29 +1477,29 @@ namespace GHelper
             panelColor.Controls.Add(pictureColor);
             panelColor.Controls.Add(buttonKeyboardColor);
             panelColor.Dock = DockStyle.Fill;
-            panelColor.Location = new Point(266, 4);
-            panelColor.Margin = new Padding(4);
+            panelColor.Location = new Point(166, 2);
+            panelColor.Margin = new Padding(2);
             panelColor.Name = "panelColor";
-            panelColor.Size = new Size(254, 44);
+            panelColor.Size = new Size(160, 30);
             panelColor.TabIndex = 36;
             // 
             // pictureColor2
             // 
             pictureColor2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            pictureColor2.Location = new Point(187, 15);
-            pictureColor2.Margin = new Padding(8);
+            pictureColor2.Location = new Point(118, 9);
+            pictureColor2.Margin = new Padding(5);
             pictureColor2.Name = "pictureColor2";
-            pictureColor2.Size = new Size(20, 20);
+            pictureColor2.Size = new Size(12, 12);
             pictureColor2.TabIndex = 41;
             pictureColor2.TabStop = false;
             // 
             // pictureColor
             // 
             pictureColor.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            pictureColor.Location = new Point(218, 15);
-            pictureColor.Margin = new Padding(8);
+            pictureColor.Location = new Point(137, 9);
+            pictureColor.Margin = new Padding(5);
             pictureColor.Name = "pictureColor";
-            pictureColor.Size = new Size(20, 20);
+            pictureColor.Size = new Size(12, 12);
             pictureColor.TabIndex = 40;
             pictureColor.TabStop = false;
             // 
@@ -1383,15 +1509,18 @@ namespace GHelper
             buttonKeyboardColor.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonKeyboardColor.BackColor = SystemColors.ButtonHighlight;
             buttonKeyboardColor.BorderColor = Color.Transparent;
+            buttonKeyboardColor.Borderless = false;
             buttonKeyboardColor.BorderRadius = 2;
             buttonKeyboardColor.Dock = DockStyle.Top;
+            buttonKeyboardColor.FlatAppearance.MouseDownBackColor = Color.FromArgb(224, 224, 224);
+            buttonKeyboardColor.FlatAppearance.MouseOverBackColor = Color.FromArgb(239, 239, 239);
             buttonKeyboardColor.FlatStyle = FlatStyle.Flat;
             buttonKeyboardColor.ForeColor = SystemColors.ControlText;
             buttonKeyboardColor.Location = new Point(0, 0);
-            buttonKeyboardColor.Margin = new Padding(4);
+            buttonKeyboardColor.Margin = new Padding(2);
             buttonKeyboardColor.Name = "buttonKeyboardColor";
             buttonKeyboardColor.Secondary = false;
-            buttonKeyboardColor.Size = new Size(254, 48);
+            buttonKeyboardColor.Size = new Size(160, 30);
             buttonKeyboardColor.TabIndex = 14;
             buttonKeyboardColor.Text = Properties.Strings.Color;
             buttonKeyboardColor.UseVisualStyleBackColor = false;
@@ -1401,14 +1530,16 @@ namespace GHelper
             comboKeyboard.BorderColor = Color.White;
             comboKeyboard.ButtonColor = Color.FromArgb(255, 255, 255);
             comboKeyboard.Dock = DockStyle.Top;
+            comboKeyboard.DrawMode = DrawMode.OwnerDrawFixed;
             comboKeyboard.FlatStyle = FlatStyle.Flat;
             comboKeyboard.Font = new Font("Segoe UI", 9F);
             comboKeyboard.FormattingEnabled = true;
+            comboKeyboard.ItemHeight = 22;
             comboKeyboard.Items.AddRange(new object[] { "Static", "Breathe", "Rainbow", "Strobe" });
-            comboKeyboard.Location = new Point(7, 7);
-            comboKeyboard.Margin = new Padding(7, 7, 7, 4);
+            comboKeyboard.Location = new Point(4, 4);
+            comboKeyboard.Margin = new Padding(4, 4, 4, 2);
             comboKeyboard.Name = "comboKeyboard";
-            comboKeyboard.Size = new Size(248, 40);
+            comboKeyboard.Size = new Size(156, 28);
             comboKeyboard.TabIndex = 13;
             // 
             // panelKeyboardTitle
@@ -1417,11 +1548,11 @@ namespace GHelper
             panelKeyboardTitle.Controls.Add(pictureKeyboard);
             panelKeyboardTitle.Controls.Add(labelKeyboard);
             panelKeyboardTitle.Dock = DockStyle.Top;
-            panelKeyboardTitle.Location = new Point(20, 20);
+            panelKeyboardTitle.Location = new Point(12, 12);
             panelKeyboardTitle.Margin = new Padding(0);
             panelKeyboardTitle.Name = "panelKeyboardTitle";
-            panelKeyboardTitle.Padding = new Padding(0, 0, 5, 0);
-            panelKeyboardTitle.Size = new Size(787, 40);
+            panelKeyboardTitle.Padding = new Padding(0, 0, 3, 0);
+            panelKeyboardTitle.Size = new Size(493, 25);
             panelKeyboardTitle.TabIndex = 40;
             // 
             // buttonFnLock
@@ -1429,18 +1560,20 @@ namespace GHelper
             buttonFnLock.Activated = false;
             buttonFnLock.BackColor = SystemColors.ControlLight;
             buttonFnLock.BorderColor = Color.Transparent;
+            buttonFnLock.Borderless = false;
             buttonFnLock.BorderRadius = 2;
-            buttonFnLock.Borderless = true;
             buttonFnLock.Dock = DockStyle.Right;
             buttonFnLock.FlatAppearance.BorderSize = 0;
+            buttonFnLock.FlatAppearance.MouseDownBackColor = Color.FromArgb(199, 199, 199);
+            buttonFnLock.FlatAppearance.MouseOverBackColor = Color.FromArgb(213, 213, 213);
             buttonFnLock.FlatStyle = FlatStyle.Flat;
             buttonFnLock.Font = new Font("Segoe UI", 7.125F, FontStyle.Bold);
             buttonFnLock.ForeColor = SystemColors.ControlDark;
-            buttonFnLock.Location = new Point(675, 0);
+            buttonFnLock.Location = new Point(423, 0);
             buttonFnLock.Margin = new Padding(0);
             buttonFnLock.Name = "buttonFnLock";
             buttonFnLock.Secondary = true;
-            buttonFnLock.Size = new Size(107, 40);
+            buttonFnLock.Size = new Size(67, 25);
             buttonFnLock.TabIndex = 4;
             buttonFnLock.Text = "FN-Lock";
             buttonFnLock.UseVisualStyleBackColor = false;
@@ -1449,10 +1582,10 @@ namespace GHelper
             // 
             pictureKeyboard.BackgroundImage = Properties.Resources.icons8_keyboard_32__1_;
             pictureKeyboard.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureKeyboard.Location = new Point(8, 0);
-            pictureKeyboard.Margin = new Padding(4);
+            pictureKeyboard.Location = new Point(5, 0);
+            pictureKeyboard.Margin = new Padding(2);
             pictureKeyboard.Name = "pictureKeyboard";
-            pictureKeyboard.Size = new Size(32, 32);
+            pictureKeyboard.Size = new Size(20, 20);
             pictureKeyboard.TabIndex = 35;
             pictureKeyboard.TabStop = false;
             // 
@@ -1460,10 +1593,10 @@ namespace GHelper
             // 
             labelKeyboard.AutoSize = true;
             labelKeyboard.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            labelKeyboard.Location = new Point(43, 0);
-            labelKeyboard.Margin = new Padding(4, 0, 4, 0);
+            labelKeyboard.Location = new Point(27, 0);
+            labelKeyboard.Margin = new Padding(2, 0, 2, 0);
             labelKeyboard.Name = "labelKeyboard";
-            labelKeyboard.Size = new Size(210, 32);
+            labelKeyboard.Size = new Size(129, 20);
             labelKeyboard.TabIndex = 34;
             labelKeyboard.Text = "Laptop Keyboard";
             // 
@@ -1475,11 +1608,11 @@ namespace GHelper
             panelRearLight.Controls.Add(tableLayoutRearLight);
             panelRearLight.Controls.Add(panelRearLightTitle);
             panelRearLight.Dock = DockStyle.Top;
-            panelRearLight.Location = new Point(11, 1540);
+            panelRearLight.Location = new Point(7, 870);
             panelRearLight.Margin = new Padding(0);
             panelRearLight.Name = "panelRearLight";
-            panelRearLight.Padding = new Padding(20, 20, 20, 0);
-            panelRearLight.Size = new Size(827, 112);
+            panelRearLight.Padding = new Padding(12, 12, 12, 0);
+            panelRearLight.Size = new Size(517, 71);
             panelRearLight.TabIndex = 7;
             panelRearLight.TabStop = true;
             panelRearLight.Visible = false;
@@ -1495,12 +1628,12 @@ namespace GHelper
             tableLayoutRearLight.Controls.Add(panelRearColor, 0, 0);
             tableLayoutRearLight.Controls.Add(comboRearLight, 0, 0);
             tableLayoutRearLight.Dock = DockStyle.Top;
-            tableLayoutRearLight.Location = new Point(20, 60);
-            tableLayoutRearLight.Margin = new Padding(8, 4, 8, 4);
+            tableLayoutRearLight.Location = new Point(12, 37);
+            tableLayoutRearLight.Margin = new Padding(5, 2, 5, 2);
             tableLayoutRearLight.Name = "tableLayoutRearLight";
             tableLayoutRearLight.RowCount = 1;
             tableLayoutRearLight.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutRearLight.Size = new Size(787, 52);
+            tableLayoutRearLight.Size = new Size(493, 34);
             tableLayoutRearLight.TabIndex = 39;
             // 
             // panelRearColor
@@ -1509,19 +1642,19 @@ namespace GHelper
             panelRearColor.Controls.Add(pictureRearColor);
             panelRearColor.Controls.Add(buttonRearColor);
             panelRearColor.Dock = DockStyle.Fill;
-            panelRearColor.Location = new Point(266, 4);
-            panelRearColor.Margin = new Padding(4);
+            panelRearColor.Location = new Point(166, 2);
+            panelRearColor.Margin = new Padding(2);
             panelRearColor.Name = "panelRearColor";
-            panelRearColor.Size = new Size(254, 44);
+            panelRearColor.Size = new Size(160, 30);
             panelRearColor.TabIndex = 36;
             // 
             // pictureRearColor
             // 
             pictureRearColor.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            pictureRearColor.Location = new Point(218, 13);
-            pictureRearColor.Margin = new Padding(8);
+            pictureRearColor.Location = new Point(137, 8);
+            pictureRearColor.Margin = new Padding(5);
             pictureRearColor.Name = "pictureRearColor";
-            pictureRearColor.Size = new Size(20, 20);
+            pictureRearColor.Size = new Size(12, 12);
             pictureRearColor.TabIndex = 40;
             pictureRearColor.TabStop = false;
             // 
@@ -1532,17 +1665,20 @@ namespace GHelper
             buttonRearColor.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonRearColor.BackColor = SystemColors.ButtonHighlight;
             buttonRearColor.BorderColor = Color.Transparent;
+            buttonRearColor.Borderless = false;
             buttonRearColor.BorderRadius = 2;
             buttonRearColor.Dock = DockStyle.Top;
+            buttonRearColor.FlatAppearance.MouseDownBackColor = Color.FromArgb(224, 224, 224);
+            buttonRearColor.FlatAppearance.MouseOverBackColor = Color.FromArgb(239, 239, 239);
             buttonRearColor.FlatStyle = FlatStyle.Flat;
             buttonRearColor.ForeColor = SystemColors.ControlText;
             buttonRearColor.Location = new Point(0, 0);
-            buttonRearColor.Margin = new Padding(4);
-            buttonRearColor.MaximumSize = new Size(0, 48);
-            buttonRearColor.MinimumSize = new Size(0, 44);
+            buttonRearColor.Margin = new Padding(2);
+            buttonRearColor.MaximumSize = new Size(0, 30);
+            buttonRearColor.MinimumSize = new Size(0, 28);
             buttonRearColor.Name = "buttonRearColor";
             buttonRearColor.Secondary = false;
-            buttonRearColor.Size = new Size(254, 44);
+            buttonRearColor.Size = new Size(160, 30);
             buttonRearColor.TabIndex = 14;
             buttonRearColor.Text = Properties.Strings.Color;
             buttonRearColor.UseVisualStyleBackColor = false;
@@ -1552,14 +1688,16 @@ namespace GHelper
             comboRearLight.BorderColor = Color.White;
             comboRearLight.ButtonColor = Color.FromArgb(255, 255, 255);
             comboRearLight.Dock = DockStyle.Top;
+            comboRearLight.DrawMode = DrawMode.OwnerDrawFixed;
             comboRearLight.FlatStyle = FlatStyle.Flat;
             comboRearLight.Font = new Font("Segoe UI", 9F);
             comboRearLight.FormattingEnabled = true;
+            comboRearLight.ItemHeight = 22;
             comboRearLight.Items.AddRange(new object[] { "Static", "Breathe", "Color Cycle", "Strobe" });
-            comboRearLight.Location = new Point(7, 7);
-            comboRearLight.Margin = new Padding(7, 7, 7, 4);
+            comboRearLight.Location = new Point(4, 4);
+            comboRearLight.Margin = new Padding(4, 4, 4, 2);
             comboRearLight.Name = "comboRearLight";
-            comboRearLight.Size = new Size(248, 40);
+            comboRearLight.Size = new Size(156, 28);
             comboRearLight.TabIndex = 13;
             // 
             // panelRearLightTitle
@@ -1567,45 +1705,45 @@ namespace GHelper
             panelRearLightTitle.Controls.Add(pictureRearLight);
             panelRearLightTitle.Controls.Add(labelRearLight);
             panelRearLightTitle.Dock = DockStyle.Top;
-            panelRearLightTitle.Location = new Point(20, 20);
+            panelRearLightTitle.Location = new Point(12, 12);
             panelRearLightTitle.Margin = new Padding(0);
             panelRearLightTitle.Name = "panelRearLightTitle";
-            panelRearLightTitle.Padding = new Padding(0, 0, 5, 0);
-            panelRearLightTitle.Size = new Size(787, 40);
+            panelRearLightTitle.Padding = new Padding(0, 0, 3, 0);
+            panelRearLightTitle.Size = new Size(493, 25);
             panelRearLightTitle.TabIndex = 40;
-            // 
-            // labelRearLight
-            // 
-            labelRearLight.AutoSize = true;
-            labelRearLight.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            labelRearLight.Location = new Point(43, 0);
-            labelRearLight.Margin = new Padding(4, 0, 4, 0);
-            labelRearLight.Name = "labelRearLight";
-            labelRearLight.Size = new Size(120, 32);
-            labelRearLight.TabIndex = 34;
-            labelRearLight.Text = "Rear Light";
             // 
             // pictureRearLight
             // 
             pictureRearLight.BackgroundImage = Properties.Resources.icons8_show_right_side_panel_48;
             pictureRearLight.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureRearLight.Location = new Point(8, 0);
-            pictureRearLight.Margin = new Padding(4);
+            pictureRearLight.Location = new Point(5, 0);
+            pictureRearLight.Margin = new Padding(2);
             pictureRearLight.Name = "pictureRearLight";
-            pictureRearLight.Size = new Size(32, 32);
+            pictureRearLight.Size = new Size(20, 20);
             pictureRearLight.TabIndex = 35;
             pictureRearLight.TabStop = false;
+            // 
+            // labelRearLight
+            // 
+            labelRearLight.AutoSize = true;
+            labelRearLight.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            labelRearLight.Location = new Point(27, 0);
+            labelRearLight.Margin = new Padding(2, 0, 2, 0);
+            labelRearLight.Name = "labelRearLight";
+            labelRearLight.Size = new Size(81, 20);
+            labelRearLight.TabIndex = 34;
+            labelRearLight.Text = "Rear Light";
             // 
             // panelStartup
             // 
             panelStartup.Controls.Add(labelCharge);
             panelStartup.Controls.Add(checkStartup);
             panelStartup.Dock = DockStyle.Top;
-            panelStartup.Location = new Point(11, 1787);
+            panelStartup.Location = new Point(7, 1186);
             panelStartup.Margin = new Padding(0);
             panelStartup.Name = "panelStartup";
-            panelStartup.Padding = new Padding(20, 0, 20, 0);
-            panelStartup.Size = new Size(827, 50);
+            panelStartup.Padding = new Padding(12, 0, 12, 0);
+            panelStartup.Size = new Size(517, 31);
             panelStartup.TabIndex = 9;
             // 
             // labelCharge
@@ -1613,10 +1751,10 @@ namespace GHelper
             labelCharge.Cursor = Cursors.Hand;
             labelCharge.Dock = DockStyle.Right;
             labelCharge.ForeColor = SystemColors.ControlDark;
-            labelCharge.Location = new Point(442, 0);
+            labelCharge.Location = new Point(277, 0);
             labelCharge.Margin = new Padding(0);
             labelCharge.Name = "labelCharge";
-            labelCharge.Size = new Size(365, 50);
+            labelCharge.Size = new Size(228, 31);
             labelCharge.TabIndex = 40;
             labelCharge.TextAlign = ContentAlignment.MiddleRight;
             // 
@@ -1626,11 +1764,11 @@ namespace GHelper
             panelPeripherals.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelPeripherals.Controls.Add(tableLayoutPeripherals);
             panelPeripherals.Dock = DockStyle.Top;
-            panelPeripherals.Location = new Point(11, 1540);
+            panelPeripherals.Location = new Point(7, 1033);
             panelPeripherals.Margin = new Padding(0);
             panelPeripherals.Name = "panelPeripherals";
-            panelPeripherals.Padding = new Padding(20, 5, 20, 10);
-            panelPeripherals.Size = new Size(827, 143);
+            panelPeripherals.Padding = new Padding(12, 3, 12, 6);
+            panelPeripherals.Size = new Size(517, 88);
             panelPeripherals.TabIndex = 7;
             panelPeripherals.Visible = false;
             // 
@@ -1647,12 +1785,12 @@ namespace GHelper
             tableLayoutPeripherals.Controls.Add(buttonPeripheral2, 0, 0);
             tableLayoutPeripherals.Controls.Add(buttonPeripheral1, 0, 0);
             tableLayoutPeripherals.Dock = DockStyle.Top;
-            tableLayoutPeripherals.Location = new Point(20, 5);
-            tableLayoutPeripherals.Margin = new Padding(8, 4, 8, 4);
+            tableLayoutPeripherals.Location = new Point(12, 3);
+            tableLayoutPeripherals.Margin = new Padding(5, 2, 5, 2);
             tableLayoutPeripherals.Name = "tableLayoutPeripherals";
             tableLayoutPeripherals.RowCount = 1;
             tableLayoutPeripherals.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPeripherals.Size = new Size(787, 128);
+            tableLayoutPeripherals.Size = new Size(493, 79);
             tableLayoutPeripherals.TabIndex = 43;
             // 
             // buttonPeripheral3
@@ -1660,20 +1798,23 @@ namespace GHelper
             buttonPeripheral3.Activated = false;
             buttonPeripheral3.BackColor = SystemColors.ControlLightLight;
             buttonPeripheral3.BorderColor = Color.Transparent;
+            buttonPeripheral3.Borderless = false;
             buttonPeripheral3.BorderRadius = 5;
             buttonPeripheral3.CausesValidation = false;
             buttonPeripheral3.Dock = DockStyle.Top;
             buttonPeripheral3.FlatAppearance.BorderSize = 0;
+            buttonPeripheral3.FlatAppearance.MouseDownBackColor = Color.FromArgb(224, 224, 224);
+            buttonPeripheral3.FlatAppearance.MouseOverBackColor = Color.FromArgb(239, 239, 239);
             buttonPeripheral3.FlatStyle = FlatStyle.Flat;
             buttonPeripheral3.Font = new Font("Segoe UI", 8F);
             buttonPeripheral3.ForeColor = SystemColors.ControlText;
             buttonPeripheral3.Image = Properties.Resources.icons8_maus_48;
             buttonPeripheral3.ImageAlign = ContentAlignment.MiddleLeft;
-            buttonPeripheral3.Location = new Point(528, 4);
-            buttonPeripheral3.Margin = new Padding(4);
+            buttonPeripheral3.Location = new Point(330, 2);
+            buttonPeripheral3.Margin = new Padding(2);
             buttonPeripheral3.Name = "buttonPeripheral3";
             buttonPeripheral3.Secondary = true;
-            buttonPeripheral3.Size = new Size(255, 120);
+            buttonPeripheral3.Size = new Size(161, 75);
             buttonPeripheral3.TabIndex = 2;
             buttonPeripheral3.Text = "Mouse 3";
             buttonPeripheral3.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -1684,20 +1825,23 @@ namespace GHelper
             buttonPeripheral2.Activated = false;
             buttonPeripheral2.BackColor = SystemColors.ControlLightLight;
             buttonPeripheral2.BorderColor = Color.Transparent;
+            buttonPeripheral2.Borderless = false;
             buttonPeripheral2.BorderRadius = 5;
             buttonPeripheral2.CausesValidation = false;
             buttonPeripheral2.Dock = DockStyle.Top;
             buttonPeripheral2.FlatAppearance.BorderSize = 0;
+            buttonPeripheral2.FlatAppearance.MouseDownBackColor = Color.FromArgb(224, 224, 224);
+            buttonPeripheral2.FlatAppearance.MouseOverBackColor = Color.FromArgb(239, 239, 239);
             buttonPeripheral2.FlatStyle = FlatStyle.Flat;
             buttonPeripheral2.Font = new Font("Segoe UI", 8F);
             buttonPeripheral2.ForeColor = SystemColors.ControlText;
             buttonPeripheral2.Image = Properties.Resources.icons8_maus_48;
             buttonPeripheral2.ImageAlign = ContentAlignment.MiddleLeft;
-            buttonPeripheral2.Location = new Point(266, 4);
-            buttonPeripheral2.Margin = new Padding(4);
+            buttonPeripheral2.Location = new Point(166, 2);
+            buttonPeripheral2.Margin = new Padding(2);
             buttonPeripheral2.Name = "buttonPeripheral2";
             buttonPeripheral2.Secondary = true;
-            buttonPeripheral2.Size = new Size(254, 120);
+            buttonPeripheral2.Size = new Size(160, 75);
             buttonPeripheral2.TabIndex = 1;
             buttonPeripheral2.Text = "Mouse 2";
             buttonPeripheral2.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -1708,20 +1852,23 @@ namespace GHelper
             buttonPeripheral1.Activated = false;
             buttonPeripheral1.BackColor = SystemColors.ControlLightLight;
             buttonPeripheral1.BorderColor = Color.Transparent;
+            buttonPeripheral1.Borderless = false;
             buttonPeripheral1.BorderRadius = 5;
             buttonPeripheral1.CausesValidation = false;
             buttonPeripheral1.Dock = DockStyle.Top;
             buttonPeripheral1.FlatAppearance.BorderSize = 0;
+            buttonPeripheral1.FlatAppearance.MouseDownBackColor = Color.FromArgb(224, 224, 224);
+            buttonPeripheral1.FlatAppearance.MouseOverBackColor = Color.FromArgb(239, 239, 239);
             buttonPeripheral1.FlatStyle = FlatStyle.Flat;
             buttonPeripheral1.Font = new Font("Segoe UI", 8F);
             buttonPeripheral1.ForeColor = SystemColors.ControlText;
             buttonPeripheral1.Image = Properties.Resources.icons8_maus_48;
             buttonPeripheral1.ImageAlign = ContentAlignment.MiddleLeft;
-            buttonPeripheral1.Location = new Point(4, 4);
-            buttonPeripheral1.Margin = new Padding(4);
+            buttonPeripheral1.Location = new Point(2, 2);
+            buttonPeripheral1.Margin = new Padding(2);
             buttonPeripheral1.Name = "buttonPeripheral1";
             buttonPeripheral1.Secondary = true;
-            buttonPeripheral1.Size = new Size(254, 120);
+            buttonPeripheral1.Size = new Size(160, 75);
             buttonPeripheral1.TabIndex = 0;
             buttonPeripheral1.Text = "Mouse 1";
             buttonPeripheral1.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -1735,11 +1882,11 @@ namespace GHelper
             panelAlly.Controls.Add(tableLayoutAlly);
             panelAlly.Controls.Add(panelAllyTitle);
             panelAlly.Dock = DockStyle.Top;
-            panelAlly.Location = new Point(11, 1254);
+            panelAlly.Location = new Point(7, 783);
             panelAlly.Margin = new Padding(0);
             panelAlly.Name = "panelAlly";
-            panelAlly.Padding = new Padding(20, 20, 20, 0);
-            panelAlly.Size = new Size(827, 140);
+            panelAlly.Padding = new Padding(12, 12, 12, 0);
+            panelAlly.Size = new Size(517, 87);
             panelAlly.TabIndex = 5;
             panelAlly.TabStop = true;
             panelAlly.Visible = false;
@@ -1756,12 +1903,12 @@ namespace GHelper
             tableLayoutAlly.Controls.Add(buttonBacklight, 0, 0);
             tableLayoutAlly.Controls.Add(buttonControllerMode, 0, 0);
             tableLayoutAlly.Dock = DockStyle.Top;
-            tableLayoutAlly.Location = new Point(20, 60);
-            tableLayoutAlly.Margin = new Padding(8, 4, 8, 4);
+            tableLayoutAlly.Location = new Point(12, 37);
+            tableLayoutAlly.Margin = new Padding(5, 2, 5, 2);
             tableLayoutAlly.Name = "tableLayoutAlly";
             tableLayoutAlly.RowCount = 1;
-            tableLayoutAlly.RowStyles.Add(new RowStyle(SizeType.Absolute, 80F));
-            tableLayoutAlly.Size = new Size(787, 80);
+            tableLayoutAlly.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
+            tableLayoutAlly.Size = new Size(493, 50);
             tableLayoutAlly.TabIndex = 23;
             // 
             // buttonController
@@ -1769,18 +1916,21 @@ namespace GHelper
             buttonController.Activated = false;
             buttonController.BackColor = SystemColors.ControlLight;
             buttonController.BorderColor = Color.Transparent;
+            buttonController.Borderless = false;
             buttonController.BorderRadius = 5;
             buttonController.Dock = DockStyle.Fill;
             buttonController.FlatAppearance.BorderSize = 0;
+            buttonController.FlatAppearance.MouseDownBackColor = Color.FromArgb(199, 199, 199);
+            buttonController.FlatAppearance.MouseOverBackColor = Color.FromArgb(213, 213, 213);
             buttonController.FlatStyle = FlatStyle.Flat;
             buttonController.ForeColor = SystemColors.ControlText;
             buttonController.Image = Properties.Resources.icons8_controls_32;
             buttonController.ImageAlign = ContentAlignment.MiddleRight;
-            buttonController.Location = new Point(528, 4);
-            buttonController.Margin = new Padding(4);
+            buttonController.Location = new Point(330, 2);
+            buttonController.Margin = new Padding(2);
             buttonController.Name = "buttonController";
             buttonController.Secondary = true;
-            buttonController.Size = new Size(255, 72);
+            buttonController.Size = new Size(161, 46);
             buttonController.TabIndex = 11;
             buttonController.Text = "Controller";
             buttonController.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -1791,18 +1941,21 @@ namespace GHelper
             buttonBacklight.Activated = false;
             buttonBacklight.BackColor = SystemColors.ControlLightLight;
             buttonBacklight.BorderColor = Color.Transparent;
+            buttonBacklight.Borderless = false;
             buttonBacklight.BorderRadius = 5;
             buttonBacklight.Dock = DockStyle.Fill;
             buttonBacklight.FlatAppearance.BorderSize = 0;
+            buttonBacklight.FlatAppearance.MouseDownBackColor = Color.FromArgb(224, 224, 224);
+            buttonBacklight.FlatAppearance.MouseOverBackColor = Color.FromArgb(239, 239, 239);
             buttonBacklight.FlatStyle = FlatStyle.Flat;
             buttonBacklight.ForeColor = SystemColors.ControlText;
             buttonBacklight.Image = Properties.Resources.backlight;
             buttonBacklight.ImageAlign = ContentAlignment.MiddleRight;
-            buttonBacklight.Location = new Point(266, 4);
-            buttonBacklight.Margin = new Padding(4);
+            buttonBacklight.Location = new Point(166, 2);
+            buttonBacklight.Margin = new Padding(2);
             buttonBacklight.Name = "buttonBacklight";
             buttonBacklight.Secondary = false;
-            buttonBacklight.Size = new Size(254, 72);
+            buttonBacklight.Size = new Size(160, 46);
             buttonBacklight.TabIndex = 10;
             buttonBacklight.Text = "100%";
             buttonBacklight.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -1813,18 +1966,21 @@ namespace GHelper
             buttonControllerMode.Activated = false;
             buttonControllerMode.BackColor = SystemColors.ControlLightLight;
             buttonControllerMode.BorderColor = Color.Transparent;
+            buttonControllerMode.Borderless = false;
             buttonControllerMode.BorderRadius = 5;
             buttonControllerMode.Dock = DockStyle.Fill;
             buttonControllerMode.FlatAppearance.BorderSize = 0;
+            buttonControllerMode.FlatAppearance.MouseDownBackColor = Color.FromArgb(224, 224, 224);
+            buttonControllerMode.FlatAppearance.MouseOverBackColor = Color.FromArgb(239, 239, 239);
             buttonControllerMode.FlatStyle = FlatStyle.Flat;
             buttonControllerMode.ForeColor = SystemColors.ControlText;
             buttonControllerMode.Image = Properties.Resources.icons8_game_controller_48;
             buttonControllerMode.ImageAlign = ContentAlignment.MiddleRight;
-            buttonControllerMode.Location = new Point(4, 4);
-            buttonControllerMode.Margin = new Padding(4);
+            buttonControllerMode.Location = new Point(2, 2);
+            buttonControllerMode.Margin = new Padding(2);
             buttonControllerMode.Name = "buttonControllerMode";
             buttonControllerMode.Secondary = false;
-            buttonControllerMode.Size = new Size(254, 72);
+            buttonControllerMode.Size = new Size(160, 46);
             buttonControllerMode.TabIndex = 9;
             buttonControllerMode.Text = Properties.Strings.AutoMode;
             buttonControllerMode.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -1835,20 +1991,20 @@ namespace GHelper
             panelAllyTitle.Controls.Add(pictureAlly);
             panelAllyTitle.Controls.Add(labelAlly);
             panelAllyTitle.Dock = DockStyle.Top;
-            panelAllyTitle.Location = new Point(20, 20);
-            panelAllyTitle.Margin = new Padding(4);
+            panelAllyTitle.Location = new Point(12, 12);
+            panelAllyTitle.Margin = new Padding(2);
             panelAllyTitle.Name = "panelAllyTitle";
-            panelAllyTitle.Size = new Size(787, 40);
+            panelAllyTitle.Size = new Size(493, 25);
             panelAllyTitle.TabIndex = 25;
             // 
             // pictureAlly
             // 
             pictureAlly.BackgroundImage = Properties.Resources.icons8_controller_32;
             pictureAlly.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureAlly.Location = new Point(8, 0);
-            pictureAlly.Margin = new Padding(4);
+            pictureAlly.Location = new Point(5, 0);
+            pictureAlly.Margin = new Padding(2);
             pictureAlly.Name = "pictureAlly";
-            pictureAlly.Size = new Size(32, 32);
+            pictureAlly.Size = new Size(20, 20);
             pictureAlly.TabIndex = 27;
             pictureAlly.TabStop = false;
             // 
@@ -1856,10 +2012,10 @@ namespace GHelper
             // 
             labelAlly.AutoSize = true;
             labelAlly.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            labelAlly.Location = new Point(43, 0);
-            labelAlly.Margin = new Padding(4, 0, 4, 0);
+            labelAlly.Location = new Point(27, 0);
+            labelAlly.Margin = new Padding(2, 0, 2, 0);
             labelAlly.Name = "labelAlly";
-            labelAlly.Size = new Size(181, 32);
+            labelAlly.Size = new Size(110, 20);
             labelAlly.TabIndex = 26;
             labelAlly.Text = "Ally Controller";
             // 
@@ -1872,11 +2028,11 @@ namespace GHelper
             panelGamma.Controls.Add(sliderGamma);
             panelGamma.Controls.Add(panelGammaTitle);
             panelGamma.Dock = DockStyle.Top;
-            panelGamma.Location = new Point(11, 838);
+            panelGamma.Location = new Point(7, 521);
             panelGamma.Margin = new Padding(0);
             panelGamma.Name = "panelGamma";
-            panelGamma.Padding = new Padding(20, 11, 20, 11);
-            panelGamma.Size = new Size(827, 233);
+            panelGamma.Padding = new Padding(12, 7, 12, 7);
+            panelGamma.Size = new Size(517, 145);
             panelGamma.TabIndex = 3;
             panelGamma.Visible = false;
             // 
@@ -1884,11 +2040,11 @@ namespace GHelper
             // 
             labelVisual.Cursor = Cursors.Hand;
             labelVisual.ForeColor = SystemColors.GrayText;
-            labelVisual.Location = new Point(20, 170);
-            labelVisual.Margin = new Padding(4, 0, 4, 0);
+            labelVisual.Location = new Point(12, 106);
+            labelVisual.Margin = new Padding(2, 0, 2, 0);
             labelVisual.Name = "labelVisual";
-            labelVisual.Padding = new Padding(4);
-            labelVisual.Size = new Size(800, 52);
+            labelVisual.Padding = new Padding(2);
+            labelVisual.Size = new Size(500, 32);
             labelVisual.TabIndex = 3;
             labelVisual.Text = "Visual Modes are not available when HDR is active";
             labelVisual.Visible = false;
@@ -1906,14 +2062,14 @@ namespace GHelper
             tableVisual.Controls.Add(comboColorTemp, 1, 0);
             tableVisual.Controls.Add(comboGamut, 2, 0);
             tableVisual.Dock = DockStyle.Top;
-            tableVisual.Location = new Point(20, 91);
-            tableVisual.Margin = new Padding(8, 4, 8, 4);
+            tableVisual.Location = new Point(12, 57);
+            tableVisual.Margin = new Padding(5, 2, 5, 2);
             tableVisual.Name = "tableVisual";
-            tableVisual.Padding = new Padding(3, 0, 3, 0);
+            tableVisual.Padding = new Padding(2, 0, 2, 0);
             tableVisual.RowCount = 1;
             tableVisual.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableVisual.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableVisual.Size = new Size(787, 79);
+            tableVisual.RowStyles.Add(new RowStyle(SizeType.Absolute, 12F));
+            tableVisual.Size = new Size(493, 48);
             tableVisual.TabIndex = 2;
             tableVisual.Visible = false;
             // 
@@ -1922,17 +2078,20 @@ namespace GHelper
             buttonInstallColor.Activated = false;
             buttonInstallColor.BackColor = SystemColors.ControlLight;
             buttonInstallColor.BorderColor = Color.Transparent;
+            buttonInstallColor.Borderless = false;
             buttonInstallColor.BorderRadius = 2;
             buttonInstallColor.Dock = DockStyle.Top;
             buttonInstallColor.FlatAppearance.BorderSize = 0;
+            buttonInstallColor.FlatAppearance.MouseDownBackColor = Color.FromArgb(199, 199, 199);
+            buttonInstallColor.FlatAppearance.MouseOverBackColor = Color.FromArgb(213, 213, 213);
             buttonInstallColor.FlatStyle = FlatStyle.Flat;
             buttonInstallColor.Image = Properties.Resources.icons8_color_32;
             buttonInstallColor.ImageAlign = ContentAlignment.MiddleRight;
-            buttonInstallColor.Location = new Point(267, 4);
-            buttonInstallColor.Margin = new Padding(4);
+            buttonInstallColor.Location = new Point(166, 2);
+            buttonInstallColor.Margin = new Padding(2);
             buttonInstallColor.Name = "buttonInstallColor";
             buttonInstallColor.Secondary = true;
-            buttonInstallColor.Size = new Size(252, 51);
+            buttonInstallColor.Size = new Size(158, 32);
             buttonInstallColor.TabIndex = 1;
             buttonInstallColor.Text = "Install Colors";
             buttonInstallColor.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -1944,13 +2103,15 @@ namespace GHelper
             comboVisual.BorderColor = Color.White;
             comboVisual.ButtonColor = Color.FromArgb(255, 255, 255);
             comboVisual.Dock = DockStyle.Top;
+            comboVisual.DrawMode = DrawMode.OwnerDrawFixed;
             comboVisual.FlatStyle = FlatStyle.Flat;
             comboVisual.Font = new Font("Segoe UI", 9F);
             comboVisual.FormattingEnabled = true;
-            comboVisual.Location = new Point(10, 8);
-            comboVisual.Margin = new Padding(7, 8, 7, 4);
+            comboVisual.ItemHeight = 22;
+            comboVisual.Location = new Point(6, 5);
+            comboVisual.Margin = new Padding(4, 5, 4, 2);
             comboVisual.Name = "comboVisual";
-            comboVisual.Size = new Size(246, 40);
+            comboVisual.Size = new Size(154, 28);
             comboVisual.TabIndex = 0;
             comboVisual.Visible = false;
             // 
@@ -1959,13 +2120,15 @@ namespace GHelper
             comboColorTemp.BorderColor = Color.White;
             comboColorTemp.ButtonColor = Color.FromArgb(255, 255, 255);
             comboColorTemp.Dock = DockStyle.Top;
+            comboColorTemp.DrawMode = DrawMode.OwnerDrawFixed;
             comboColorTemp.FlatStyle = FlatStyle.Flat;
             comboColorTemp.Font = new Font("Segoe UI", 9F);
             comboColorTemp.FormattingEnabled = true;
-            comboColorTemp.Location = new Point(530, 8);
-            comboColorTemp.Margin = new Padding(7, 8, 7, 4);
+            comboColorTemp.ItemHeight = 22;
+            comboColorTemp.Location = new Point(330, 5);
+            comboColorTemp.Margin = new Padding(4, 5, 4, 2);
             comboColorTemp.Name = "comboColorTemp";
-            comboColorTemp.Size = new Size(247, 40);
+            comboColorTemp.Size = new Size(157, 28);
             comboColorTemp.TabIndex = 2;
             comboColorTemp.Visible = false;
             // 
@@ -1974,25 +2137,27 @@ namespace GHelper
             comboGamut.BorderColor = Color.White;
             comboGamut.ButtonColor = Color.FromArgb(255, 255, 255);
             comboGamut.Dock = DockStyle.Top;
+            comboGamut.DrawMode = DrawMode.OwnerDrawFixed;
             comboGamut.FlatStyle = FlatStyle.Flat;
             comboGamut.Font = new Font("Segoe UI", 9F);
             comboGamut.FormattingEnabled = true;
-            comboGamut.Location = new Point(10, 67);
-            comboGamut.Margin = new Padding(7, 8, 7, 4);
+            comboGamut.ItemHeight = 22;
+            comboGamut.Location = new Point(6, 41);
+            comboGamut.Margin = new Padding(4, 5, 4, 2);
             comboGamut.Name = "comboGamut";
-            comboGamut.Size = new Size(246, 40);
+            comboGamut.Size = new Size(154, 28);
             comboGamut.TabIndex = 3;
             comboGamut.Visible = false;
             // 
             // sliderGamma
             // 
             sliderGamma.Dock = DockStyle.Top;
-            sliderGamma.Location = new Point(20, 51);
-            sliderGamma.Margin = new Padding(4);
+            sliderGamma.Location = new Point(12, 32);
+            sliderGamma.Margin = new Padding(2);
             sliderGamma.Max = 100;
             sliderGamma.Min = 0;
             sliderGamma.Name = "sliderGamma";
-            sliderGamma.Size = new Size(787, 40);
+            sliderGamma.Size = new Size(493, 25);
             sliderGamma.Step = 5;
             sliderGamma.TabIndex = 1;
             sliderGamma.Text = "sliderGamma";
@@ -2005,19 +2170,19 @@ namespace GHelper
             panelGammaTitle.Controls.Add(pictureGamma);
             panelGammaTitle.Controls.Add(labelGammaTitle);
             panelGammaTitle.Dock = DockStyle.Top;
-            panelGammaTitle.Location = new Point(20, 11);
-            panelGammaTitle.Margin = new Padding(4);
+            panelGammaTitle.Location = new Point(12, 7);
+            panelGammaTitle.Margin = new Padding(2);
             panelGammaTitle.Name = "panelGammaTitle";
-            panelGammaTitle.Size = new Size(787, 40);
+            panelGammaTitle.Size = new Size(493, 25);
             panelGammaTitle.TabIndex = 0;
             // 
             // labelGamma
             // 
             labelGamma.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            labelGamma.Location = new Point(675, 0);
-            labelGamma.Margin = new Padding(4, 0, 4, 0);
+            labelGamma.Location = new Point(423, 0);
+            labelGamma.Margin = new Padding(2, 0, 2, 0);
             labelGamma.Name = "labelGamma";
-            labelGamma.Size = new Size(107, 32);
+            labelGamma.Size = new Size(67, 20);
             labelGamma.TabIndex = 39;
             labelGamma.Text = "                ";
             labelGamma.TextAlign = ContentAlignment.TopRight;
@@ -2026,20 +2191,20 @@ namespace GHelper
             // 
             pictureGamma.BackgroundImage = Properties.Resources.icons8_brightness_32;
             pictureGamma.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureGamma.Location = new Point(8, 3);
-            pictureGamma.Margin = new Padding(4);
+            pictureGamma.Location = new Point(5, 2);
+            pictureGamma.Margin = new Padding(2);
             pictureGamma.Name = "pictureGamma";
-            pictureGamma.Size = new Size(32, 32);
+            pictureGamma.Size = new Size(20, 20);
             pictureGamma.TabIndex = 38;
             pictureGamma.TabStop = false;
             // 
             // labelGammaTitle
             // 
             labelGammaTitle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            labelGammaTitle.Location = new Point(43, 0);
-            labelGammaTitle.Margin = new Padding(4, 0, 4, 0);
+            labelGammaTitle.Location = new Point(27, 0);
+            labelGammaTitle.Margin = new Padding(2, 0, 2, 0);
             labelGammaTitle.Name = "labelGammaTitle";
-            labelGammaTitle.Size = new Size(540, 32);
+            labelGammaTitle.Size = new Size(338, 20);
             labelGammaTitle.TabIndex = 37;
             labelGammaTitle.Text = "Flicker-free Dimming";
             // 
@@ -2052,11 +2217,12 @@ namespace GHelper
             panelVersion.Controls.Add(buttonArmoury);
             panelVersion.Controls.Add(labelVersion);
             panelVersion.Dock = DockStyle.Top;
-            panelVersion.Location = new Point(11, 1837);
-            panelVersion.MinimumSize = new Size(0, 50);
+            panelVersion.Location = new Point(7, 1217);
+            panelVersion.Margin = new Padding(2);
+            panelVersion.MinimumSize = new Size(0, 31);
             panelVersion.Name = "panelVersion";
-            panelVersion.Padding = new Padding(20, 5, 24, 5);
-            panelVersion.Size = new Size(827, 50);
+            panelVersion.Padding = new Padding(12, 3, 15, 3);
+            panelVersion.Size = new Size(517, 31);
             panelVersion.TabIndex = 10;
             // 
             // buttonEnergySaver
@@ -2064,18 +2230,21 @@ namespace GHelper
             buttonEnergySaver.Activated = false;
             buttonEnergySaver.BackColor = SystemColors.ControlLight;
             buttonEnergySaver.BorderColor = Color.Transparent;
+            buttonEnergySaver.Borderless = false;
             buttonEnergySaver.BorderRadius = 2;
             buttonEnergySaver.Dock = DockStyle.Right;
             buttonEnergySaver.FlatAppearance.BorderSize = 0;
+            buttonEnergySaver.FlatAppearance.MouseDownBackColor = Color.FromArgb(199, 199, 199);
+            buttonEnergySaver.FlatAppearance.MouseOverBackColor = Color.FromArgb(213, 213, 213);
             buttonEnergySaver.FlatStyle = FlatStyle.Flat;
             buttonEnergySaver.Font = new Font("Segoe UI", 7.125F, FontStyle.Bold);
             buttonEnergySaver.ForeColor = SystemColors.ControlDark;
             buttonEnergySaver.ImageAlign = ContentAlignment.MiddleLeft;
-            buttonEnergySaver.Location = new Point(640, 5);
+            buttonEnergySaver.Location = new Point(176, 3);
             buttonEnergySaver.Margin = new Padding(0);
             buttonEnergySaver.Name = "buttonEnergySaver";
             buttonEnergySaver.Secondary = true;
-            buttonEnergySaver.Size = new Size(163, 40);
+            buttonEnergySaver.Size = new Size(102, 25);
             buttonEnergySaver.TabIndex = 39;
             buttonEnergySaver.Text = "Energy Saver";
             buttonEnergySaver.UseVisualStyleBackColor = false;
@@ -2085,18 +2254,21 @@ namespace GHelper
             buttonAmdOled.Activated = false;
             buttonAmdOled.BackColor = SystemColors.ControlLight;
             buttonAmdOled.BorderColor = Color.Transparent;
+            buttonAmdOled.Borderless = false;
             buttonAmdOled.BorderRadius = 2;
             buttonAmdOled.Dock = DockStyle.Right;
             buttonAmdOled.FlatAppearance.BorderSize = 0;
+            buttonAmdOled.FlatAppearance.MouseDownBackColor = Color.FromArgb(199, 199, 199);
+            buttonAmdOled.FlatAppearance.MouseOverBackColor = Color.FromArgb(213, 213, 213);
             buttonAmdOled.FlatStyle = FlatStyle.Flat;
             buttonAmdOled.Font = new Font("Segoe UI", 7.125F, FontStyle.Bold);
             buttonAmdOled.ForeColor = SystemColors.ControlDark;
             buttonAmdOled.ImageAlign = ContentAlignment.MiddleLeft;
-            buttonAmdOled.Location = new Point(640, 5);
+            buttonAmdOled.Location = new Point(278, 3);
             buttonAmdOled.Margin = new Padding(0);
             buttonAmdOled.Name = "buttonAmdOled";
             buttonAmdOled.Secondary = true;
-            buttonAmdOled.Size = new Size(180, 40);
+            buttonAmdOled.Size = new Size(112, 25);
             buttonAmdOled.TabIndex = 39;
             buttonAmdOled.Text = "AMD OledSaver";
             buttonAmdOled.UseVisualStyleBackColor = false;
@@ -2107,22 +2279,25 @@ namespace GHelper
             buttonArmoury.Activated = false;
             buttonArmoury.BackColor = SystemColors.ControlLight;
             buttonArmoury.BorderColor = Color.Transparent;
+            buttonArmoury.Borderless = false;
             buttonArmoury.BorderRadius = 2;
             buttonArmoury.Dock = DockStyle.Right;
             buttonArmoury.FlatAppearance.BorderSize = 0;
+            buttonArmoury.FlatAppearance.MouseDownBackColor = Color.FromArgb(199, 199, 199);
+            buttonArmoury.FlatAppearance.MouseOverBackColor = Color.FromArgb(213, 213, 213);
             buttonArmoury.FlatStyle = FlatStyle.Flat;
             buttonArmoury.Font = new Font("Segoe UI", 7.125F, FontStyle.Bold);
             buttonArmoury.ForeColor = SystemColors.ControlDark;
             buttonArmoury.ImageAlign = ContentAlignment.MiddleLeft;
-            buttonArmoury.Location = new Point(640, 5);
+            buttonArmoury.Location = new Point(390, 3);
             buttonArmoury.Margin = new Padding(0);
             buttonArmoury.Name = "buttonArmoury";
             buttonArmoury.Secondary = true;
-            buttonArmoury.Size = new Size(180, 40);
+            buttonArmoury.Size = new Size(112, 25);
             buttonArmoury.TabIndex = 40;
             buttonArmoury.Text = "ArmouryCrate";
             buttonArmoury.UseVisualStyleBackColor = false;
-            buttonArmoury.Visible = false;            
+            buttonArmoury.Visible = false;
             // 
             // labelVersion
             // 
@@ -2130,43 +2305,22 @@ namespace GHelper
             labelVersion.Dock = DockStyle.Left;
             labelVersion.Font = new Font("Segoe UI", 9F, FontStyle.Underline);
             labelVersion.ForeColor = SystemColors.ControlDark;
-            labelVersion.Location = new Point(20, 5);
+            labelVersion.Location = new Point(12, 3);
             labelVersion.Margin = new Padding(0);
             labelVersion.Name = "labelVersion";
-            labelVersion.Padding = new Padding(5, 0, 5, 0);
-            labelVersion.Size = new Size(399, 40);
+            labelVersion.Padding = new Padding(3, 0, 3, 0);
+            labelVersion.Size = new Size(249, 25);
             labelVersion.TabIndex = 38;
             labelVersion.Text = "v.0";
             labelVersion.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // buttonHDRControl
-            // 
-            buttonHDRControl.Activated = false;
-            buttonHDRControl.BackColor = SystemColors.ControlLightLight;
-            buttonHDRControl.BorderColor = Color.Transparent;
-            buttonHDRControl.BorderRadius = 5;
-            buttonHDRControl.CausesValidation = false;
-            buttonHDRControl.Dock = DockStyle.Fill;
-            buttonHDRControl.FlatAppearance.BorderSize = 0;
-            buttonHDRControl.FlatStyle = FlatStyle.Flat;
-            buttonHDRControl.ForeColor = SystemColors.ControlText;
-            buttonHDRControl.Location = new Point(200, 84);
-            buttonHDRControl.Margin = new Padding(4);
-            buttonHDRControl.Name = "buttonHDRControl";
-            buttonHDRControl.Secondary = false;
-            buttonHDRControl.Size = new Size(188, 12);
-            buttonHDRControl.TabIndex = 14;
-            buttonHDRControl.Text = "HDR Color Control";
-            buttonHDRControl.UseVisualStyleBackColor = false;
-            buttonHDRControl.Visible = false;
-            // 
             // SettingsForm
             // 
-            AutoScaleDimensions = new SizeF(192F, 192F);
+            AutoScaleDimensions = new SizeF(120F, 120F);
             AutoScaleMode = AutoScaleMode.Dpi;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(849, 2075);
+            ClientSize = new Size(531, 1287);
             Controls.Add(panelFooter);
             Controls.Add(panelVersion);
             Controls.Add(panelStartup);
@@ -2180,13 +2334,13 @@ namespace GHelper
             Controls.Add(panelScreen);
             Controls.Add(panelGPU);
             Controls.Add(panelPerformance);
-            Margin = new Padding(8, 4, 8, 4);
+            Margin = new Padding(5, 2, 5, 2);
             MaximizeBox = false;
             MdiChildrenMinimizedAnchorBottom = false;
             MinimizeBox = false;
-            MinimumSize = new Size(821, 71);
+            MinimumSize = new Size(520, 62);
             Name = "SettingsForm";
-            Padding = new Padding(11);
+            Padding = new Padding(7);
             ShowIcon = false;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "G-Helper";
@@ -2229,7 +2383,6 @@ namespace GHelper
             tableLayoutKeyboard.ResumeLayout(false);
             tableLayoutKeyboard.PerformLayout();
             panelColor.ResumeLayout(false);
-            panelColor.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureColor2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureColor).EndInit();
             panelKeyboardTitle.ResumeLayout(false);
@@ -2282,6 +2435,7 @@ namespace GHelper
         private RButton buttonXGM;
         private RButton buttonUltimate;
         private RButton buttonStandard;
+        private RButton buttonCompanionApp;
         private RButton buttonEco;
         private Panel panelScreen;
         private TableLayoutPanel tableScreen;
