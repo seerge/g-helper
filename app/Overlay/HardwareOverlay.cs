@@ -165,7 +165,6 @@ namespace GHelper.Overlay
         private bool _active;
         private bool _gameOnly;
         private bool _showNames;
-        // Per-section visibility (Complete mode only), read once at start
         private bool _showFps, _showTemp, _showFans, _showChart, _showPower, _showUsage, _showRam;
         private bool _hidden;
         private int _shownPid;
@@ -279,7 +278,9 @@ namespace GHelper.Overlay
                         _                   => OverlayMode.Light,
                     };
                     AppConfig.Set("overlay_mode", (int)_mode);
-                    ApplyModeReadFlags();
+                    ApplyPreset(_mode);
+                    ApplySensorFlags();
+                    EnsureFpsMonitor();
                     Invalidate(); // resizes the window synchronously via PerformPaint → Size.set
 
                     if (isRight)
@@ -316,7 +317,7 @@ namespace GHelper.Overlay
                 OverlayMode.Complete => BaseCompleteWidth,
                 _                    => BaseWidth,
             };
-            return _mode == OverlayMode.Complete && _showNames ? w + BaseNameColWidth + BaseColGap : w;
+            return _showNames ? w + BaseNameColWidth + BaseColGap : w;
         }
 
         private static int S(float sc, int v) => (int)(v * sc);
@@ -489,20 +490,9 @@ namespace GHelper.Overlay
             int innerH = lineH * 2 + lineGap;
             int totalH = padY * 2 + innerH;
 
-            bool isLight = _mode == OverlayMode.Light;
-            bool isFull  = _mode == OverlayMode.Full;
-            bool isComplete = _mode == OverlayMode.Complete;
-            bool showUsage = isFull || isComplete;
-
-            // Per-section flags only apply in Complete mode; hidden columns collapse so the box stays compact.
-            bool showFps   = !isComplete || _showFps;
-            bool showTemp  = !isComplete || _showTemp;
-            bool showFans  = (!isComplete || _showFans) && !isLight;
-            bool showChart = (!isComplete || _showChart) && !isLight;
-            bool showPower = !isComplete || _showPower;
-            bool showUsageMetric = showUsage && (!isComplete || _showUsage);
-            bool showMem = isComplete && _showRam;
-            bool showNames = isComplete && _showNames;
+            bool showFps = _showFps, showTemp = _showTemp, showFans = _showFans, showChart = _showChart;
+            bool showPower = _showPower, showUsageMetric = _showUsage, showMem = _showRam, showNames = _showNames;
+            bool showUsage = _showUsage || _showRam; // bar sizing is shared by the usage and ram bars
 
             int nameColW = showNames ? S(sc, BaseNameColWidth) : 0;
             int usageNumColW = S(sc, BaseUsageNumColWidth);
@@ -816,11 +806,40 @@ namespace GHelper.Overlay
             _bgBrush.Dispose();      _bgBrush = new SolidBrush(Color.FromArgb(_bgAlpha, 0, 0, 0));
         }
 
-        private void ApplyModeReadFlags()
+        // Complete is the customizable preset (blocks from overlay_show_*, default on); others are fixed.
+        private void ApplyPreset(OverlayMode mode)
         {
-            HardwareControl.readFans   = _mode != OverlayMode.Light;
-            HardwareControl.readUsage  = _mode == OverlayMode.Full || _mode == OverlayMode.Complete;
-            HardwareControl.readMemory = _mode == OverlayMode.Complete;
+            bool complete = mode == OverlayMode.Complete;
+            bool extra = mode != OverlayMode.Light; // fans + chart on for Default/Full/Complete
+
+            _showFps   = complete ? AppConfig.IsNotFalse("overlay_show_fps")   : true;
+            _showTemp  = complete ? AppConfig.IsNotFalse("overlay_show_temp")  : true;
+            _showFans  = complete ? AppConfig.IsNotFalse("overlay_show_fans")  : extra;
+            _showChart = complete ? AppConfig.IsNotFalse("overlay_show_chart") : extra;
+            _showPower = complete ? AppConfig.IsNotFalse("overlay_show_power") : true;
+            _showUsage = complete ? AppConfig.IsNotFalse("overlay_show_usage") : mode == OverlayMode.Full;
+            _showRam   = complete ? AppConfig.IsNotFalse("overlay_show_ram")   : false;
+            _showNames = complete && AppConfig.Is("overlay_names");
+        }
+
+        // Don't pull sensors for blocks that aren't drawn (power feeds both the power and chart blocks).
+        private void ApplySensorFlags()
+        {
+            HardwareControl.readFans   = _showFans;
+            HardwareControl.readUsage  = _showUsage;
+            HardwareControl.readMemory = _showRam;
+            HardwareControl.readPower  = _showPower || _showChart;
+        }
+
+        // Started for the FPS block, or for Auto Show to detect a game even with FPS hidden. Only
+        // torn down in StopOverlay — disposing here would race the timer thread's SampleFps (the
+        // reference write is atomic, so that thread cleanly sees null-or-monitor).
+        private void EnsureFpsMonitor()
+        {
+            if (_fps != null || !(_showFps || _gameOnly)) return;
+            _currentFps = 0;
+            _fps = new EtwFpsMonitor();
+            _fpsTask = Task.Run(() => _fps.Start());
         }
 
         // Re-anchor the overlay after the user changes resolution or swaps the primary
@@ -854,7 +873,6 @@ namespace GHelper.Overlay
             _active = true;
             _lastFgPid = 0;
             _gameOnly = AppConfig.IsOverlayGameOnly();
-            _showNames = AppConfig.Is("overlay_names");
             _hidden = false;
             _shownPid = 0;
             _fgDesktop = false;
@@ -868,22 +886,16 @@ namespace GHelper.Overlay
                   : storedMode == (int)OverlayMode.Complete ? OverlayMode.Complete
                   : OverlayMode.Default;
             _scalePercent = Math.Clamp(AppConfig.Get("overlay_scale_percent", 100), MinScalePercent, MaxScalePercent);
-            _showFps   = AppConfig.IsNotFalse("overlay_show_fps");
-            _showTemp  = AppConfig.IsNotFalse("overlay_show_temp");
-            _showFans  = AppConfig.IsNotFalse("overlay_show_fans");
-            _showChart = AppConfig.IsNotFalse("overlay_show_chart");
-            _showPower = AppConfig.IsNotFalse("overlay_show_power");
-            _showUsage = AppConfig.IsNotFalse("overlay_show_usage");
-            _showRam   = AppConfig.IsNotFalse("overlay_show_ram");
             ApplyColors();
-            ApplyModeReadFlags();
+            ApplyPreset(_mode);
+            ApplySensorFlags();
             SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
             HardwareControl.ResetCPUPowerCounter();
 
             _fps?.Dispose();
+            _fps = null;
             _currentFps = 0;
-            _fps = new EtwFpsMonitor();
-            _fpsTask = Task.Run(() => _fps.Start());
+            EnsureFpsMonitor();
 
             float sc = GetScale();
             int innerH = S(sc, BaseLineHeight) * 2 + S(sc, BaseLineSpacing);
@@ -903,6 +915,7 @@ namespace GHelper.Overlay
             HardwareControl.readUsage = false;
             HardwareControl.readFans = false;
             HardwareControl.readMemory = false;
+            HardwareControl.readPower = false;
             SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
             _timer.Stop();
             _dragModeActive = false;
