@@ -516,7 +516,7 @@ namespace GHelper.Overlay
             if (showNames) cursor += nameColW + colGap;
 
             int leftX = cursor;
-            cursor += S(sc, isLight || !showFans ? BaseLightLeftColWidth : BaseLeftColWidth);
+            cursor += S(sc, showTemp && showFans ? BaseLeftColWidth : showTemp || showFans ? BaseLightLeftColWidth : 0);
 
             int chartX = cursor;
             if (showChart) cursor += chartColW;
