@@ -408,7 +408,8 @@ namespace GHelper.USB
         public static void DirectBrightness(int brightness, string log)
         {
             if (isACPI) Program.acpi.TUFKeyboardBrightness(brightness, log);
-            AsusHid.WriteInput([AsusHid.INPUT_ID, 0xBA, 0xC5, 0xC4, (byte)brightness], log);
+            if (AppConfig.IsAlly()) AsusHid.SetFeatureAura([AsusHid.AURA_ID, 0xBA, 0xC5, 0xC4, (byte)brightness]);
+            else AsusHid.WriteInput([AsusHid.INPUT_ID, 0xBA, 0xC5, 0xC4, (byte)brightness], log);
         }
 
         static byte[] AuraPowerMessage(AuraPower flags)
