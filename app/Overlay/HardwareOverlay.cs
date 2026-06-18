@@ -86,6 +86,7 @@ namespace GHelper.Overlay
         private const int BasePowerGap = 4;
         private const int BasePowerColWidth = 46; // fits "120.9W" (6 chars, F1 + "W") right-aligned, no extra slack
         private const int BaseColGap = 8;
+        private const int BaseRefreshRateColWidth = 52;
         private const int CornerRadius = 3;
         private const int MarginFromEdge = 10;
         private const int BaseLightLeftColWidth = 64; // fits "GPU: 82° " (9 Consolas chars); trailing space is the gap to the power column
@@ -100,8 +101,8 @@ namespace GHelper.Overlay
         private const int BaseNameColWidth = 90;     // fits "Core Ultra 9" / "Ryzen AI 9"
         private const int BaseMemBarGap = 8;
         private const int BaseMemNumColWidth = 54;   // fits "127.9GB"
-        private const int BaseLightWidth = BasePadX + BaseFpsColWidth + BaseColGap + BaseLightLeftColWidth + BasePowerGap + BasePowerColWidth + BasePadX;
-        private const int BaseWidth = BasePadX + BaseFpsColWidth + BaseColGap + BaseLeftColWidth + BaseColGap + BaseChartColWidth + BasePowerGap + BasePowerColWidth + BasePadX;
+        private const int BaseLightWidth = BasePadX + BaseFpsColWidth + BaseColGap + BaseLightLeftColWidth + BasePowerGap + BasePowerColWidth + BasePadX + BaseRefreshRateColWidth;
+        private const int BaseWidth = BasePadX + BaseFpsColWidth + BaseColGap + BaseLeftColWidth + BaseColGap + BaseChartColWidth + BasePowerGap + BasePowerColWidth + BasePadX + BaseRefreshRateColWidth;
         private const int BaseFullWidth = BaseWidth - BasePadX + BaseUsageBarGap + BaseUsageBarWidth + BaseUsageNumGap + BaseUsageNumColWidth + BaseFullPadRight;
         private const int BaseCompleteWidth = BaseFullWidth + BaseMemBarGap + BaseMemNumColWidth + BaseUsageNumGap + BaseUsageBarWidth;
 
@@ -585,6 +586,18 @@ namespace GHelper.Overlay
                     DrawUsageBar(g, memBarX, topY + barYOff, barW, cellH, sepH, numCells, _vramUsage ?? 0, _gpuBrush, _gpuFillBrush);
                     DrawUsageBar(g, memBarX, topY + row2Y + barYOff, barW, cellH, sepH, numCells, _ramUsage ?? 0, _cpuBrush, _cpuFillBrush);
                 }
+            }
+
+            // Refresh rate
+            string _refreshRateStr = HardwareControl.refreshRate is int hz ? $"{hz}Hz" : "";
+            if (_refreshRateStr.Length > 0)
+            {
+                float hzW = g.MeasureString(_refreshRateStr, font).Width;
+                g.DrawString(
+                _refreshRateStr,
+                font,
+                _cpuBrush,
+                new PointF(width - padX - hzW, (textY + lineH + lineGap) / 2f));
             }
         }
 
