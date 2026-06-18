@@ -16,6 +16,7 @@ public static class HardwareControl
 
     public static float? cpuTemp = -1;
     public static float? gpuTemp = -1;
+    public static int?   refreshRate = -1;
 
     public static float? cpuPower;
     public static float? gpuPower;
@@ -51,6 +52,47 @@ public static class HardwareControl
     public static bool readFans;
     public static bool readUsage;
     public static bool readMemory;
+
+
+    /* Screen Refresh rate */
+    // Refresh rate rarely changes, so read it only occasionally to avoid overhead
+    private static int _refreshRateTick = 0;
+
+    [DllImport("user32.dll")]
+    private static extern bool EnumDisplaySettings(
+    string? deviceName, int modeNum, ref DEVMODE devMode);
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    private struct DEVMODE
+    {
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+        public string dmDeviceName;
+        public ushort dmSpecVersion;
+        public ushort dmDriverVersion;
+        public ushort dmSize;
+        public ushort dmDriverExtra;
+        public uint dmFields;
+        public int dmPositionX;
+        public int dmPositionY;
+        public uint dmDisplayOrientation;
+        public uint dmDisplayFixedOutput;
+        public short dmColor;
+        public short dmDuplex;
+        public short dmYResolution;
+        public short dmTTOption;
+        public short dmCollate;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+        public string dmFormName;
+        public ushort dmLogPixels;
+        public uint dmBitsPerPel;
+        public uint dmPelsWidth;
+        public uint dmPelsHeight;
+        public uint dmDisplayFlags;
+        public uint dmDisplayFrequency;  // Refresh rate
+    }
+
+    private const int ENUM_CURRENT_SETTINGS = -1;
+
 
     static long lastUpdate;
 
@@ -505,6 +547,16 @@ public static class HardwareControl
         return gpuTemp;
     }
 
+    // Refresh rate
+    public static int? GetRefreshRate()
+    {
+        DEVMODE dm = new DEVMODE();
+        dm.dmSize = (ushort) Marshal.SizeOf<DEVMODE>();
+        if (EnumDisplaySettings(null, ENUM_CURRENT_SETTINGS, ref dm))
+            return (int) dm.dmDisplayFrequency;
+        return null;
+    }
+
     private static PerformanceCounter? _cpuPowerCounter;
     private static bool _cpuPowerCounterFailed;
     private static bool _cpuPowerInitStarted;
@@ -821,6 +873,11 @@ public static class HardwareControl
         }
 
         gpuPower = GetGPUPower();
+
+        if (_refreshRateTick++ % 10 == 0)
+        { 
+            refreshRate = GetRefreshRate();
+        }
     }
 
     public static double GetBatteryChargePercentage()
