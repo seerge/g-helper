@@ -154,7 +154,7 @@
     <value>Animáció sebessége</value>
   </data>
   <data name="AnimeMatrix" xml:space="preserve">
-    <value>AniMe Matrix kijelző</value>
+    <value>Anime Mátrix</value>
   </data>
   <data name="AppAlreadyRunning" xml:space="preserve">
     <value>Az alkalmazás már el lett indítva</value>
@@ -957,5 +957,11 @@ Folytatni szeretnéd?</value>
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>Megakadályozza, hogy a PCIe eszközök alacsony fogyasztású tétlen állapotba lépjenek.
 Ajánlott, ha véletlenszerű lefagyásokat vagy nem reagáló hardvert tapasztal.</value>
+  </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Átfedés</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Csak a játékokban jelenítse meg</value>
   </data>
 </root>

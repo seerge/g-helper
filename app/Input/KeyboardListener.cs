@@ -13,12 +13,13 @@ namespace GHelper.Input
         public KeyboardListener(Action<int> KeyHandler)
         {
             _handler = KeyHandler;
-            var task = Task.Run(Listen);
+            var task = Task.Run(() => { while (Listen()) { } });
         }
 
-        private void Listen()
+        private bool Listen()
         {
 
+            try { input?.Dispose(); } catch { }
             input = AsusHid.FindHidStream(AsusHid.INPUT_ID);
 
             // Fallback
@@ -33,7 +34,7 @@ namespace GHelper.Input
             if (input == null)
             {
                 Logger.WriteLine($"Input device not found");
-                return;
+                return false;
             }
 
             AsusHid.InitInput();
@@ -72,10 +73,11 @@ namespace GHelper.Input
                 {
                     Thread.Sleep(300);
                     Logger.WriteLine($"Restarting listener");
-                    Listen();
+                    return true;
                 }
             }
 
+            return false;
         }
 
         public void Dispose()

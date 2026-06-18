@@ -645,7 +645,7 @@ namespace GHelper
             panelBacklightHeader.Name = "panelBacklightHeader";
             panelBacklightHeader.Padding = new Padding(11, 5, 11, 5);
             panelBacklightHeader.Size = new Size(949, 51);
-            panelBacklightHeader.TabIndex = 44;
+            panelBacklightHeader.TabIndex = 2;
             // 
             // sliderBrightness
             // 
@@ -658,7 +658,7 @@ namespace GHelper
             sliderBrightness.Size = new Size(501, 40);
             sliderBrightness.Step = 1;
             sliderBrightness.TabIndex = 50;
-            sliderBrightness.TabStop = false;
+            sliderBrightness.TabStop = true;
             sliderBrightness.Text = "sliderBrightness";
             sliderBrightness.Value = 3;
             // 
@@ -693,7 +693,7 @@ namespace GHelper
             panelBacklight.Name = "panelBacklight";
             panelBacklight.Padding = new Padding(0, 5, 0, 5);
             panelBacklight.Size = new Size(949, 444);
-            panelBacklight.TabIndex = 2;
+            panelBacklight.TabIndex = 3;
             // 
             // panelBacklightExtra
             // 
@@ -762,7 +762,6 @@ namespace GHelper
             comboKeyboardSpeed.FlatStyle = FlatStyle.Flat;
             comboKeyboardSpeed.Font = new Font("Segoe UI", 9F);
             comboKeyboardSpeed.FormattingEnabled = true;
-            comboKeyboardSpeed.ItemHeight = 32;
             comboKeyboardSpeed.Items.AddRange(new object[] { "Slow", "Normal", "Fast" });
             comboKeyboardSpeed.Location = new Point(634, 13);
             comboKeyboardSpeed.Margin = new Padding(5, 11, 5, 9);
@@ -1210,7 +1209,7 @@ namespace GHelper
             panelSettings.Name = "panelSettings";
             panelSettings.Padding = new Padding(21, 5, 11, 5);
             panelSettings.Size = new Size(949, 472);
-            panelSettings.TabIndex = 3;
+            panelSettings.TabIndex = 50;
             // 
             // checkAutoToggleClamshellMode
             // 
@@ -1220,7 +1219,7 @@ namespace GHelper
             checkAutoToggleClamshellMode.Name = "checkAutoToggleClamshellMode";
             checkAutoToggleClamshellMode.Padding = new Padding(3);
             checkAutoToggleClamshellMode.Size = new Size(917, 42);
-            checkAutoToggleClamshellMode.TabIndex = 8;
+            checkAutoToggleClamshellMode.TabIndex = 9;
             checkAutoToggleClamshellMode.Text = "Auto Toggle Clamshell Mode";
             checkAutoToggleClamshellMode.UseVisualStyleBackColor = true;
             //
@@ -1233,7 +1232,7 @@ namespace GHelper
             checkTopmost.Name = "checkTopmost";
             checkTopmost.Padding = new Padding(3);
             checkTopmost.Size = new Size(917, 42);
-            checkTopmost.TabIndex = 6;
+            checkTopmost.TabIndex = 8;
             checkTopmost.Text = Strings.WindowTop;
             checkTopmost.UseVisualStyleBackColor = true;
             // 
@@ -1246,7 +1245,7 @@ namespace GHelper
             checkNoOverdrive.Name = "checkNoOverdrive";
             checkNoOverdrive.Padding = new Padding(3);
             checkNoOverdrive.Size = new Size(917, 42);
-            checkNoOverdrive.TabIndex = 5;
+            checkNoOverdrive.TabIndex = 7;
             checkNoOverdrive.Text = Strings.DisableOverdrive;
             checkNoOverdrive.UseVisualStyleBackColor = true;
             // 
@@ -1259,7 +1258,7 @@ namespace GHelper
             checkBootSound.Name = "checkBootSound";
             checkBootSound.Padding = new Padding(3);
             checkBootSound.Size = new Size(917, 42);
-            checkBootSound.TabIndex = 10;
+            checkBootSound.TabIndex = 5;
             checkBootSound.Text = "Boot Sound";
             checkBootSound.UseVisualStyleBackColor = true;
             //
@@ -1272,7 +1271,7 @@ namespace GHelper
             checkKeystoneSound.Name = "checkKeystoneSound";
             checkKeystoneSound.Padding = new Padding(3);
             checkKeystoneSound.Size = new Size(917, 42);
-            checkKeystoneSound.TabIndex = 16;
+            checkKeystoneSound.TabIndex = 6;
             checkKeystoneSound.Text = "Keystone Sound";
             checkKeystoneSound.UseVisualStyleBackColor = true;
             checkKeystoneSound.Visible = false;
@@ -1299,7 +1298,7 @@ namespace GHelper
             checkGpuApps.Name = "checkGpuApps";
             checkGpuApps.Padding = new Padding(3);
             checkGpuApps.Size = new Size(917, 42);
-            checkGpuApps.TabIndex = 2;
+            checkGpuApps.TabIndex = 3;
             checkGpuApps.Text = "Stop all apps using GPU when switching to Eco";
             checkGpuApps.UseVisualStyleBackColor = true;
             //
@@ -1312,7 +1311,7 @@ namespace GHelper
             checkNVPlatform.Name = "checkNVPlatform";
             checkNVPlatform.Padding = new Padding(3);
             checkNVPlatform.Size = new Size(917, 42);
-            checkNVPlatform.TabIndex = 15;
+            checkNVPlatform.TabIndex = 2;
             checkNVPlatform.Text = "Stop/Start NVIDIA services based on dGPU state";
             checkNVPlatform.UseVisualStyleBackColor = true;
             // 
@@ -1325,7 +1324,7 @@ namespace GHelper
             checkStatusLed.Name = "checkStatusLed";
             checkStatusLed.Padding = new Padding(3);
             checkStatusLed.Size = new Size(917, 42);
-            checkStatusLed.TabIndex = 12;
+            checkStatusLed.TabIndex = 1;
             checkStatusLed.Text = "LED Status Indicators";
             checkStatusLed.UseVisualStyleBackColor = true;
             checkStatusLed.Visible = false;
@@ -1339,7 +1338,7 @@ namespace GHelper
             checkAspm.Name = "checkAspm";
             checkAspm.Padding = new Padding(3);
             checkAspm.Size = new Size(917, 42);
-            checkAspm.TabIndex = 13;
+            checkAspm.TabIndex = 0;
             checkAspm.Text = "Disable PCIe Link State Management (plugged in)";
             checkAspm.UseVisualStyleBackColor = true;
             checkAspm.Visible = true;
@@ -1425,7 +1424,6 @@ namespace GHelper
             comboAPU.FlatStyle = FlatStyle.Flat;
             comboAPU.Font = new Font("Segoe UI", 9F);
             comboAPU.FormattingEnabled = true;
-            comboAPU.ItemHeight = 32;
             comboAPU.Items.AddRange(new object[] { "Auto", "1G", "2G", "3G", "4G", "5G", "6G", "7G", "8G" });
             comboAPU.Location = new Point(618, 8);
             comboAPU.Margin = new Padding(5, 11, 5, 9);
@@ -1482,7 +1480,7 @@ namespace GHelper
             buttonCores.Margin = new Padding(5, 3, 5, 3);
             buttonCores.Name = "buttonCores";
             buttonCores.Secondary = false;
-            buttonCores.Size = new Size(106, 44);
+            buttonCores.Size = new Size(106, 48);
             buttonCores.TabIndex = 20;
             buttonCores.Text = "Apply";
             buttonCores.UseVisualStyleBackColor = false;
@@ -1495,7 +1493,6 @@ namespace GHelper
             comboCoresP.FlatStyle = FlatStyle.Flat;
             comboCoresP.Font = new Font("Segoe UI", 9F);
             comboCoresP.FormattingEnabled = true;
-            comboCoresP.ItemHeight = 32;
             comboCoresP.Location = new Point(513, 10);
             comboCoresP.Margin = new Padding(5, 11, 5, 9);
             comboCoresP.Name = "comboCoresP";
@@ -1511,7 +1508,6 @@ namespace GHelper
             comboCoresE.FlatStyle = FlatStyle.Flat;
             comboCoresE.Font = new Font("Segoe UI", 9F);
             comboCoresE.FormattingEnabled = true;
-            comboCoresE.ItemHeight = 32;
             comboCoresE.Location = new Point(674, 10);
             comboCoresE.Margin = new Padding(5, 11, 5, 9);
             comboCoresE.Name = "comboCoresE";
@@ -1634,7 +1630,6 @@ namespace GHelper
             comboOptimalBrightness.FlatStyle = FlatStyle.Flat;
             comboOptimalBrightness.Font = new Font("Segoe UI", 9F);
             comboOptimalBrightness.FormattingEnabled = true;
-            comboOptimalBrightness.ItemHeight = 32;
             comboOptimalBrightness.Items.AddRange(new object[] { "Off", "On Always", "On Battery" });
             comboOptimalBrightness.Location = new Point(618, 11);
             comboOptimalBrightness.Margin = new Padding(5, 11, 5, 9);

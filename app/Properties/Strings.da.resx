@@ -958,4 +958,10 @@ og genstarter dem automatisk, når GPU'en er aktiveret</value>
     <value>Forhindrer PCIe-enheder i at gå i lavenergi-inaktive tilstande.
 Anbefales, hvis du oplever tilfældige hængninger eller hardware, der ikke reagerer.</value>
   </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
+  </data>
 </root>

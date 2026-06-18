@@ -958,4 +958,10 @@
     <value>Împiedică dispozitivele PCIe să intre în stări inactive cu consum redus.
 Recomandat dacă întâmpinați blocaje aleatorii sau hardware care nu răspunde.</value>
   </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
+  </data>
 </root>

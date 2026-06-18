@@ -96,14 +96,14 @@ Asus 노트북을 위한 작고 가벼운 Armoury Crate 대체 도구로, 훨씬
 3. **얼티밋**: iGPU와 dGPU가 활성화되지만, dGPU가 내장 디스플레이를 구동합니다 (2022년 이후 모델 지원)
 4. **최적화**: 배터리 사용 시 dGPU를 비활성화(에코)하고, 전원 연결 시 활성화(표준)합니다
 
-<img width="1134" alt="GPU 모드" src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/gpu-modes-ko.png" />
+<img width="1134" alt="GPU 모드" src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/gpu-modes-ko.svg" />
 
 ### 💿 드라이버 업데이트
 이 앱에는 사용 중인 모델에 맞춰 Asus 공식 웹사이트에서 직접 가져오는 BIOS 및 드라이버 자동 업데이트 검사기가 포함되어 있으며, 새 다운로드가 제공되면 강조 표시합니다. `Updates` 섹션의 모든 링크는 Asus 공식 다운로드를 가리킵니다.
 <img width="2302" alt="Driver Updates" src="https://github.com/user-attachments/assets/303dfce9-fbbd-4d15-b6d7-f21e7c2c59a4" />
 
 ### 🎮 메트릭 오버레이
-게임 화면 위에 실시간 **FPS, CPU / GPU 온도, 사용률, 전력**을 표시하는 내장 게임 내 오버레이(OSD)입니다. RTSS 같은 별도 도구가 필요 없습니다. DX10 이상 게임에서 작동합니다. 전체 화면 독점 모드를 사용하는 구형 게임에서는 보이지 않을 수 있으므로 게임을 창 / 테두리 없는 전체 화면 모드로 설정하세요.
+게임 화면 위에 실시간 **FPS, CPU / GPU 온도, 사용률, 전력**을 표시하는 내장 게임 내 오버레이(OSD)입니다. 별도 도구가 필요 없습니다. DX10 이상 게임에서 작동합니다. 전체 화면 독점 모드를 사용하는 구형 게임에서는 보이지 않을 수 있으므로 게임을 창 / 테두리 없는 전체 화면 모드로 설정하세요.
 
 - ``Ctrl + Shift + Alt + O`` - 게임 내 오버레이 켜기 / 끄기
 - ``Ctrl + Shift + Alt + 마우스 드래그`` - 오버레이 이동
