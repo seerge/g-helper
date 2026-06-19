@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -21,6 +22,9 @@ namespace GHelper.Helpers
 
         [DllImport("user32.dll")]
         private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetForegroundWindow();
 
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern IntPtr OpenProcess(uint processAccess, bool bInheritHandle, uint processId);
@@ -72,6 +76,29 @@ namespace GHelper.Helpers
             _defaultMode = Modes.GetCurrent();
             _lastReportedMode = _defaultMode;
 
+            // Initialize with the current foreground window name
+            try
+            {
+                IntPtr hwnd = GetForegroundWindow();
+                if (hwnd != IntPtr.Zero)
+                {
+                    GetWindowThreadProcessId(hwnd, out uint pid);
+                    if (pid != 0)
+                    {
+                        string processName = GetProcessName(pid);
+                        Logger.WriteLine($"AppProfileWatcher: Initial foreground app resolved as '{processName}'");
+                        if (!string.IsNullOrEmpty(processName) && !_ignoredProcessNames.Contains(processName))
+                        {
+                            LastUserProcessName = processName;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine($"AppProfileWatcher: Error getting initial foreground: {ex.Message}");
+            }
+
             _winEventDelegate = new WinEventDelegate(WinEventCallback);
             _hookHandle = SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND, IntPtr.Zero, _winEventDelegate, 0, 0, WINEVENT_OUTOFCONTEXT);
             Logger.WriteLine("AppProfileWatcher: Started WinEventHook");
@@ -108,20 +135,35 @@ namespace GHelper.Helpers
 
                 if (processName == _pendingProcessName) return;
 
+                Logger.WriteLine($"AppProfileWatcher: Active app switched to '{processName}'");
                 _pendingProcessName = processName;
                 _cooldownTimer.Stop();
                 _cooldownTimer.Start();
             }
-            catch
+            catch (Exception ex)
             {
-                // Process might have exited or access denied
+                Logger.WriteLine($"AppProfileWatcher: Error in WinEventCallback: {ex.Message}");
             }
         }
 
         private static string GetProcessName(uint pid)
         {
             IntPtr hProcess = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, false, pid);
-            if (hProcess == IntPtr.Zero) return string.Empty;
+            if (hProcess == IntPtr.Zero)
+            {
+                // Fallback to managed Process class if OpenProcess fails
+                try
+                {
+                    using (var proc = Process.GetProcessById((int)pid))
+                    {
+                        return proc.ProcessName.ToLower();
+                    }
+                }
+                catch
+                {
+                    return string.Empty;
+                }
+            }
 
             try
             {
@@ -133,15 +175,27 @@ namespace GHelper.Helpers
                     return Path.GetFileNameWithoutExtension(path).ToLower();
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                // Ignore and return empty
+                Logger.WriteLine($"AppProfileWatcher: QueryFullProcessImageName error for PID {pid}: {ex.Message}");
             }
             finally
             {
                 CloseHandle(hProcess);
             }
-            return string.Empty;
+
+            // Secondary fallback
+            try
+            {
+                using (var proc = Process.GetProcessById((int)pid))
+                {
+                    return proc.ProcessName.ToLower();
+                }
+            }
+            catch
+            {
+                return string.Empty;
+            }
         }
 
         private static void CooldownTimer_Tick(object? sender, EventArgs e)

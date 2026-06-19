@@ -58,6 +58,7 @@ namespace GHelper
 
             InitializeComponent();
             InitTheme(true);
+            contextMenuStrip.Opening += ContextMenuStrip_Opening;
 
             gpuControl = new GPUModeControl(this);
             updateControl = new AutoUpdateControl(this);
@@ -957,6 +958,11 @@ namespace GHelper
             if (Program.trayIcon is not null) Program.trayIcon.ContextMenuStrip = contextMenuStrip;
 
 
+        }
+
+        private void ContextMenuStrip_Opening(object? sender, System.ComponentModel.CancelEventArgs e)
+        {
+            SetContextMenu();
         }
 
         public void InitContextMenuTheme()
