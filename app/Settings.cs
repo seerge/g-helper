@@ -1111,7 +1111,7 @@ namespace GHelper
 
         private void PictureColor2_Click(object? sender, EventArgs e)
         {
-            SetColorPicker("aura_color2");
+            SetColorPicker("aura_color2", pictureColor2);
         }
 
         private void PictureColor_Click(object? sender, EventArgs e)
@@ -1177,22 +1177,13 @@ namespace GHelper
 
         private void SetColorPicker(string colorField = "aura_color", PictureBox? preview = null)
         {
-            ColorDialog colorDlg = new ColorDialog();
-            colorDlg.AllowFullOpen = true;
-            colorDlg.Color = (preview ?? pictureColor).BackColor;
-
-            try
+            RColorPicker colorDlg = new RColorPicker((preview ?? pictureColor).BackColor);
+            colorDlg.ColorChanged += c =>
             {
-                colorDlg.CustomColors = AppConfig.GetString("aura_color_custom", "").Split('-').Select(int.Parse).ToArray();
-            }
-            catch (Exception ex) { }
-
-            if (colorDlg.ShowDialog() == DialogResult.OK)
-            {
-                AppConfig.Set("aura_color_custom", string.Join("-", colorDlg.CustomColors));
-                AppConfig.Set(colorField, colorDlg.Color.ToArgb());
+                AppConfig.Set(colorField, c.ToArgb());
                 SetAura();
-            }
+            };
+            colorDlg.ShowDialog(this);
         }
 
         private void ButtonKeyboardColor_Click(object? sender, EventArgs e)
