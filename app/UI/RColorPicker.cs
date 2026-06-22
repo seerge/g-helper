@@ -68,7 +68,7 @@ namespace GHelper.UI
 
             FormClosing += (s, e) =>
             {
-                if (DialogResult != DialogResult.OK && Color != originalColor) ColorChanged?.Invoke(originalColor);
+                if (DialogResult != DialogResult.OK && ColorToColorRef(Color) != ColorToColorRef(originalColor)) ColorChanged?.Invoke(originalColor);
             };
         }
 

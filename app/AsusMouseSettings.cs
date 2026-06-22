@@ -474,6 +474,7 @@ namespace GHelper
         private void ButtonLightingColor_Click(object? sender, EventArgs e)
         {
             LightingSetting? ls = mouse.LightingSettingForZone(visibleZone);
+            if (ls is null) return;
 
             RColorPicker colorDlg = new RColorPicker(pictureBoxLightingColor.BackColor);
             colorDlg.ColorChanged += c =>
