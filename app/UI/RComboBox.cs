@@ -256,7 +256,7 @@ namespace GHelper.UI
                         using (var b = new SolidBrush(innerBorderColor))
                             g.FillRectangle(b, innerInnerBorder);
                     if (RForm.flatTheme)
-                        using (var p = new Pen(outerBorderColor))
+                        using (var p = new Pen(BackColor))
                             DrawRoundedRectangle(g, p, outerBorder, outerRadius, outerRadius);
                     else
                         ControlHelper.DrawGradientBorder(g, outerBorder, outerBorderColor, outerRadius);
