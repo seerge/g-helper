@@ -109,8 +109,8 @@ namespace GHelper.UI
             base.OnPaint(pevent);
 
             float ratio = pevent.Graphics.DpiX / 192.0f;
-            int border = (int)(ratio * borderSize);
-            int radius = (int)(ratio * borderRadius);
+            int border = (int)Math.Round((ratio * borderSize - 1) / 2) * 2 + 1;
+            int radius = (int)Math.Round(ratio * borderRadius, MidpointRounding.AwayFromZero);
 
             Rectangle rectSurface = ClientRectangle;
 
