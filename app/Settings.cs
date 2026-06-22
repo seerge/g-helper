@@ -1111,7 +1111,7 @@ namespace GHelper
 
         private void PictureColor2_Click(object? sender, EventArgs e)
         {
-            SetColorPicker("aura_color2");
+            SetColorPicker("aura_color2", pictureColor2);
         }
 
         private void PictureColor_Click(object? sender, EventArgs e)
