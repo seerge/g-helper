@@ -142,10 +142,11 @@ namespace GHelper.UI
                             Colors = new[] { bgTop, bgTransparent, bgTransparent },
                             Positions = new[] { 0f, bgEndPos, 1f }
                         };
-                        pevent.Graphics.FillPath(bgBrush, bgPath);
+                        if (!RForm.flatTheme)
+                            pevent.Graphics.FillPath(bgBrush, bgPath);
                     }
 
-                    ControlHelper.DrawGradientBorder(pevent.Graphics, borderRect, borderColor, radius, border, PenAlignment.Outset, ActiveTopLighten);
+                    ControlHelper.DrawGradientBorder(pevent.Graphics, borderRect, borderColor, radius, border, PenAlignment.Outset, RForm.flatTheme ? 0f : ActiveTopLighten);
                 }
                 else if (drawRest)
                 {
