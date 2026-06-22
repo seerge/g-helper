@@ -55,6 +55,7 @@ namespace GHelper.UI
             MaximizeBox = false;
             MinimizeBox = false;
             ShowInTaskbar = false;
+            TopMost = true;
             StartPosition = FormStartPosition.CenterParent;
             AutoScaleMode = AutoScaleMode.None;
 
@@ -94,7 +95,7 @@ namespace GHelper.UI
             hexBox.TextChanged += (s, e) => { if (!suppressHex) ApplyHex(false); };
             hexBox.Leave += (s, e) => ApplyHex(true);
 
-            rgbLabel = new Label { Location = new Point(S(rightX), S(pad + 170)), AutoSize = true };
+            rgbLabel = new Label { Location = new Point(S(rightX), S(pad + 184)), AutoSize = true };
 
             int gridY = pad + square + 10;
             for (int i = 0; i < Defaults.Length; i++)
