@@ -140,14 +140,14 @@ namespace GHelper.UI
             sw.Invalidate();
         }
 
+        // Tolerate garbage config: skip any token that isn't a valid integer rather than dropping the whole palette.
         private void LoadCustom()
         {
-            try
+            foreach (var s in (AppConfig.GetString(CustomKey, "") ?? "").Split('-'))
             {
-                foreach (var s in AppConfig.GetString(CustomKey, "").Split('-').Where(s => s.Length > 0).Take(Cols))
-                    customColors.Add(ColorRefToColor(int.Parse(s)));
+                if (customColors.Count >= Cols) break;
+                if (int.TryParse(s, out int v)) customColors.Add(ColorRefToColor(v));
             }
-            catch { customColors.Clear(); }
         }
 
         // Filled slot picks its color; empty slot saves the current color into the custom palette.
@@ -184,15 +184,28 @@ namespace GHelper.UI
         private static int ColorToColorRef(Color c) => c.R | (c.G << 8) | (c.B << 16);
         private static Color ColorRefToColor(int v) => Color.FromArgb(255, v & 0xFF, (v >> 8) & 0xFF, (v >> 16) & 0xFF);
 
+        // Index of the selected editable custom slot, or -1 if the active swatch isn't one (fixed preset / none).
+        private int ActiveCustomIndex
+        {
+            get { int i = active == null ? -1 : Array.IndexOf(customSwatches, active); return i < customColors.Count ? i : -1; }
+        }
+
         // Live in-dialog preview while dragging; the device apply waits for mouse-up via Commit.
-        // Editing moves away from any picked swatch, so clear its selection highlight.
+        // A selected custom slot is edited in place; editing away from a fixed preset clears its highlight.
         private void Preview(Control source)
         {
             UpdateAll(source);
-            if (active != null) { active.Selected = false; active.Invalidate(); active = null; }
+            int idx = ActiveCustomIndex;
+            if (idx >= 0) { customColors[idx] = Color; customSwatches[idx].Color = Color; }
+            else if (active != null) { active.Selected = false; active.Invalidate(); active = null; }
         }
 
-        private void Commit() => ColorChanged?.Invoke(Color);
+        // Persist an in-place custom-slot edit on mouse-up (not per drag-step) alongside the device apply.
+        private void Commit()
+        {
+            if (ActiveCustomIndex >= 0) AppConfig.Set(CustomKey, string.Join("-", customColors.Select(ColorToColorRef)));
+            ColorChanged?.Invoke(Color);
+        }
 
         // Discrete pick (swatch/custom): set the color, sync the controls and apply to the device.
         private void Apply(Color c)
