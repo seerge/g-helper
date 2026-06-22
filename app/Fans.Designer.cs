@@ -31,6 +31,7 @@ namespace GHelper
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             ChartArea chartArea1 = new ChartArea();
             Title title1 = new Title();
             ChartArea chartArea2 = new ChartArea();
@@ -97,6 +98,14 @@ namespace GHelper
             panelTitleTemp = new Panel();
             pictureTemp = new PictureBox();
             labelTempLimit = new Label();
+            panelTitleAmdProfile = new Panel();
+            pictureAmdProfile = new PictureBox();
+            labelTitleAmdProfile = new Label();
+            pictureAmdProfileHelp = new PictureBox();
+            panelAmdProfile = new Panel();
+            comboAmdProfile = new RComboBox();
+            panelAmdProfileDivider = new Panel();
+            toolTip = new ToolTip(components);
             panelDownload = new Panel();
             buttonDownload = new RButton();
             panelPawnIO = new Panel();
@@ -193,6 +202,10 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)trackTemp).BeginInit();
             panelTitleTemp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureTemp).BeginInit();
+            panelTitleAmdProfile.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureAmdProfile).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureAmdProfileHelp).BeginInit();
+            panelAmdProfile.SuspendLayout();
             panelDownload.SuspendLayout();
             panelPawnIO.SuspendLayout();
             panelPower.SuspendLayout();
@@ -787,7 +800,6 @@ namespace GHelper
             labelRisky.BackColor = Color.IndianRed;
             labelRisky.Dock = DockStyle.Top;
             labelRisky.ForeColor = SystemColors.ControlLightLight;
-            labelRisky.Location = new Point(0, 608);
             labelRisky.Margin = new Padding(0);
             labelRisky.Name = "labelRisky";
             labelRisky.Padding = new Padding(10, 10, 10, 5);
@@ -896,7 +908,6 @@ namespace GHelper
             panelTitleAdvanced.Controls.Add(pictureUV);
             panelTitleAdvanced.Controls.Add(labelTitleUV);
             panelTitleAdvanced.Dock = DockStyle.Top;
-            panelTitleAdvanced.Location = new Point(0, 294);
             panelTitleAdvanced.Name = "panelTitleAdvanced";
             panelTitleAdvanced.Size = new Size(520, 66);
             panelTitleAdvanced.TabIndex = 2;
@@ -917,7 +928,7 @@ namespace GHelper
             // 
             labelTitleUV.AutoSize = true;
             labelTitleUV.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            labelTitleUV.Location = new Point(43, 17);
+            labelTitleUV.Location = new Point(46, 18);
             labelTitleUV.Margin = new Padding(4, 0, 4, 0);
             labelTitleUV.Name = "labelTitleUV";
             labelTitleUV.Size = new Size(166, 32);
@@ -934,9 +945,11 @@ namespace GHelper
             panelTemperature.Dock = DockStyle.Top;
             panelTemperature.Location = new Point(0, 170);
             panelTemperature.Margin = new Padding(4);
-            panelTemperature.MaximumSize = new Size(0, 124);
+            panelTemperature.MaximumSize = new Size(0, 100);
+            panelTemperature.MinimumSize = new Size(0, 100);
             panelTemperature.Name = "panelTemperature";
-            panelTemperature.Size = new Size(520, 124);
+            panelTemperature.Padding = new Padding(0, 0, 0, 12);
+            panelTemperature.Size = new Size(520, 100);
             panelTemperature.TabIndex = 1;
             // 
             // labelTemp
@@ -977,17 +990,16 @@ namespace GHelper
             panelTitleTemp.Controls.Add(pictureTemp);
             panelTitleTemp.Controls.Add(labelTempLimit);
             panelTitleTemp.Dock = DockStyle.Top;
-            panelTitleTemp.Location = new Point(0, 104);
+            panelTitleTemp.MinimumSize = new Size(0, 88);
             panelTitleTemp.Name = "panelTitleTemp";
-            panelTitleTemp.Size = new Size(520, 66);
+            panelTitleTemp.Size = new Size(520, 88);
             panelTitleTemp.TabIndex = 0;
-            // 
             // pictureTemp
             // 
             pictureTemp.BackgroundImage = Properties.Resources.icons8_temperature_32;
             pictureTemp.BackgroundImageLayout = ImageLayout.Zoom;
             pictureTemp.InitialImage = null;
-            pictureTemp.Location = new Point(10, 18);
+            pictureTemp.Location = new Point(10, 40);
             pictureTemp.Margin = new Padding(4, 2, 4, 10);
             pictureTemp.Name = "pictureTemp";
             pictureTemp.Size = new Size(32, 32);
@@ -998,12 +1010,91 @@ namespace GHelper
             // 
             labelTempLimit.AutoSize = true;
             labelTempLimit.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            labelTempLimit.Location = new Point(46, 17);
+            labelTempLimit.Location = new Point(46, 40);
             labelTempLimit.Margin = new Padding(4, 0, 4, 0);
             labelTempLimit.Name = "labelTempLimit";
             labelTempLimit.Size = new Size(140, 32);
             labelTempLimit.TabIndex = 47;
             labelTempLimit.Text = "Temp Limit";
+            // 
+            // panelTitleAmdProfile
+            // 
+            panelTitleAmdProfile.AutoSize = true;
+            panelTitleAmdProfile.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelTitleAmdProfile.Controls.Add(pictureAmdProfileHelp);
+            panelTitleAmdProfile.Controls.Add(pictureAmdProfile);
+            panelTitleAmdProfile.Controls.Add(labelTitleAmdProfile);
+            panelTitleAmdProfile.Dock = DockStyle.Top;
+            panelTitleAmdProfile.Margin = new Padding(4);
+            panelTitleAmdProfile.Name = "panelTitleAmdProfile";
+            panelTitleAmdProfile.Size = new Size(520, 60);
+            panelTitleAmdProfile.TabIndex = 8;
+            // 
+            // pictureAmdProfile
+            // 
+            pictureAmdProfile.BackgroundImage = Properties.Resources.icons8_gauge_32;
+            pictureAmdProfile.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureAmdProfile.Location = new Point(10, 18);
+            pictureAmdProfile.Margin = new Padding(4, 2, 4, 10);
+            pictureAmdProfile.Name = "pictureAmdProfile";
+            pictureAmdProfile.Size = new Size(32, 32);
+            pictureAmdProfile.TabIndex = 48;
+            pictureAmdProfile.TabStop = false;
+            // 
+            // labelTitleAmdProfile
+            // 
+            labelTitleAmdProfile.AutoSize = true;
+            labelTitleAmdProfile.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            labelTitleAmdProfile.Location = new Point(46, 18);
+            labelTitleAmdProfile.Margin = new Padding(4, 0, 4, 0);
+            labelTitleAmdProfile.Name = "labelTitleAmdProfile";
+            labelTitleAmdProfile.Size = new Size(220, 32);
+            labelTitleAmdProfile.TabIndex = 47;
+            labelTitleAmdProfile.Text = "AMD Boost Profile";
+            // 
+            // pictureAmdProfileHelp
+            // 
+            pictureAmdProfileHelp.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            pictureAmdProfileHelp.BackgroundImage = Properties.Resources.icons8_help_32;
+            pictureAmdProfileHelp.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureAmdProfileHelp.Cursor = Cursors.Hand;
+            pictureAmdProfileHelp.Location = new Point(478, 17);
+            pictureAmdProfileHelp.Margin = new Padding(5, 3, 5, 3);
+            pictureAmdProfileHelp.Name = "pictureAmdProfileHelp";
+            pictureAmdProfileHelp.Size = new Size(32, 32);
+            pictureAmdProfileHelp.TabIndex = 49;
+            pictureAmdProfileHelp.TabStop = false;
+            // 
+            // panelAmdProfile
+            // 
+            panelAmdProfile.Controls.Add(comboAmdProfile);
+            panelAmdProfile.Dock = DockStyle.Top;
+            panelAmdProfile.Margin = new Padding(4);
+            panelAmdProfile.MinimumSize = new Size(0, 76);
+            panelAmdProfile.Name = "panelAmdProfile";
+            panelAmdProfile.Size = new Size(520, 76);
+            panelAmdProfile.TabIndex = 10;
+            // 
+            // comboAmdProfile
+            // 
+            comboAmdProfile.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            comboAmdProfile.BorderColor = Color.White;
+            comboAmdProfile.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboAmdProfile.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboAmdProfile.FormattingEnabled = true;
+            comboAmdProfile.Location = new Point(13, 12);
+            comboAmdProfile.Margin = new Padding(4);
+            comboAmdProfile.Name = "comboAmdProfile";
+            comboAmdProfile.Size = new Size(329, 40);
+            comboAmdProfile.TabIndex = 0;
+            // 
+            // panelAmdProfileDivider
+            // 
+            panelAmdProfileDivider.Dock = DockStyle.Top;
+            panelAmdProfileDivider.Margin = new Padding(0);
+            panelAmdProfileDivider.Name = "panelAmdProfileDivider";
+            panelAmdProfileDivider.Size = new Size(520, 3);
+            panelAmdProfileDivider.TabIndex = 11;
             // 
             // panelDownload
             // 
@@ -1021,6 +1112,9 @@ namespace GHelper
             panelPawnIO.Controls.Add(panelTitleAdvanced);
             panelPawnIO.Controls.Add(panelTemperature);
             panelPawnIO.Controls.Add(panelTitleTemp);
+            panelPawnIO.Controls.Add(panelAmdProfileDivider);
+            panelPawnIO.Controls.Add(panelAmdProfile);
+            panelPawnIO.Controls.Add(panelTitleAmdProfile);
             panelPawnIO.Dock = DockStyle.Top;
             panelPawnIO.Name = "panelPawnIO";
             panelPawnIO.TabIndex = 1;
@@ -1933,6 +2027,11 @@ namespace GHelper
             panelTitleTemp.ResumeLayout(false);
             panelTitleTemp.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureTemp).EndInit();
+            panelTitleAmdProfile.ResumeLayout(false);
+            panelTitleAmdProfile.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureAmdProfile).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureAmdProfileHelp).EndInit();
+            panelAmdProfile.ResumeLayout(false);
             panelDownload.ResumeLayout(false);
             panelDownload.PerformLayout();
             panelPawnIO.ResumeLayout(false);
@@ -2118,5 +2217,13 @@ namespace GHelper
         private RTrackBar trackHysteresisDown;
         private Label labelHysteresisUpValue;
         private Label labelHysteresisDownValue;
+        private Panel panelTitleAmdProfile;
+        private PictureBox pictureAmdProfile;
+        private Label labelTitleAmdProfile;
+        private PictureBox pictureAmdProfileHelp;
+        private Panel panelAmdProfile;
+        private RComboBox comboAmdProfile;
+        private Panel panelAmdProfileDivider;
+        private ToolTip toolTip;
     }
 }
