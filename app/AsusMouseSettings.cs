@@ -83,6 +83,7 @@ namespace GHelper
             sliderDPI.PreviewKeyDown += (_, _) => updateMouseDPI = false;
             sliderDPI.KeyUp += (s, e) => SliderDPI_MouseUp(s, e);
             buttonDPIColor.Click += ButtonDPIColor_Click;
+            pictureDPIColor.Click += (s, e) => buttonDPIColor.PerformClick();
             buttonDPI1.Click += ButtonDPI_Click;
             buttonDPI2.Click += ButtonDPI_Click;
             buttonDPI3.Click += ButtonDPI_Click;
@@ -123,6 +124,7 @@ namespace GHelper
             sliderDeceleration.ValueChanged += SliderDeceleration_ValueChanged;
 
             buttonLightingColor.Click += ButtonLightingColor_Click;
+            pictureBoxLightingColor.Click += (s, e) => buttonLightingColor.PerformClick();
             comboBoxLightingMode.DropDownClosed += ComboBoxLightingMode_DropDownClosed;
             sliderBrightness.MouseUp += SliderBrightness_MouseUp;
             sliderBrightness.KeyUp += SliderBrightness_MouseUp;

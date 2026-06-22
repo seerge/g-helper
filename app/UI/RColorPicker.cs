@@ -95,7 +95,7 @@ namespace GHelper.UI
             hexBox.TextChanged += (s, e) => { if (!suppressHex) ApplyHex(false); };
             hexBox.Leave += (s, e) => ApplyHex(true);
 
-            rgbLabel = new Label { Location = new Point(S(rightX), S(pad + 184)), AutoSize = true };
+            rgbLabel = new Label { Location = new Point(S(rightX), S(pad + 168)), AutoSize = true, BackColor = Color.Transparent };
 
             int gridY = pad + square + 10;
             for (int i = 0; i < Defaults.Length; i++)
