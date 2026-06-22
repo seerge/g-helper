@@ -854,21 +854,25 @@ namespace GHelper
                 menuEco = new ToolStripMenuItem(Properties.Strings.EcoMode);
                 menuEco.Click += ButtonEco_Click;
                 menuEco.Margin = padding;
+                menuEco.Checked = buttonEco.Activated;
                 contextMenuStrip.Items.Add(menuEco);
 
                 menuStandard = new ToolStripMenuItem(Properties.Strings.StandardMode);
                 menuStandard.Click += ButtonStandard_Click;
                 menuStandard.Margin = padding;
+                menuStandard.Checked = buttonStandard.Activated;
                 contextMenuStrip.Items.Add(menuStandard);
 
                 menuUltimate = new ToolStripMenuItem(Properties.Strings.UltimateMode);
                 menuUltimate.Click += ButtonUltimate_Click;
                 menuUltimate.Margin = padding;
+                menuUltimate.Checked = buttonUltimate.Activated;
                 contextMenuStrip.Items.Add(menuUltimate);
 
                 menuOptimized = new ToolStripMenuItem(Properties.Strings.Optimized);
                 menuOptimized.Click += ButtonOptimized_Click;
                 menuOptimized.Margin = padding;
+                menuOptimized.Checked = buttonOptimized.Activated;
                 contextMenuStrip.Items.Add(menuOptimized);
 
                 contextMenuStrip.Items.Add("-");
