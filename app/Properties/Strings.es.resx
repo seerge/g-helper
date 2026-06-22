@@ -959,9 +959,9 @@ y los reinicia automáticamente cuando se activa</value>
 Recomendado si experimenta cuelgues aleatorios o hardware que no responde.</value>
   </data>
   <data name="Overlay" xml:space="preserve">
-    <value>Overlay</value>
+    <value>Interfaz superpuesta</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
-    <value>Overlay only in games</value>
+    <value>Interfaz superpuesta solo juegos</value>
   </data>
 </root>
