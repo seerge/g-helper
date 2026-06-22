@@ -140,45 +140,31 @@ namespace GHelper.UI
             sw.Invalidate();
         }
 
-        // Tolerate garbage config: skip any token that isn't a valid integer rather than dropping the whole palette.
+        // Fixed Cols slots, white by default. Garbage config is tolerated: only valid integer tokens fill slots
+        // (left to right), bad tokens are skipped and any beyond Cols are ignored — empty/short/long never breaks it.
         private void LoadCustom()
         {
+            for (int i = 0; i < Cols; i++) customColors.Add(Color.White);
+
+            int idx = 0;
             foreach (var s in (AppConfig.GetString(CustomKey, "") ?? "").Split('-'))
             {
-                if (customColors.Count >= Cols) break;
-                if (int.TryParse(s, out int v)) customColors.Add(ColorRefToColor(v));
+                if (idx >= Cols) break;
+                if (int.TryParse(s, out int v)) customColors[idx++] = ColorRefToColor(v);
             }
         }
 
-        // Filled slot picks its color; empty slot saves the current color into the custom palette.
+        // Every slot is an editable preset: clicking selects and applies its color; editing then updates it in place.
         private void OnCustomClick(int idx)
         {
-            if (idx < customColors.Count)
-            {
-                SetActive(customSwatches[idx]);
-                Apply(customColors[idx]);
-            }
-            else
-            {
-                AddCustom(Color);
-                SetActive(customSwatches[0]);
-            }
-        }
-
-        private void AddCustom(Color c)
-        {
-            int colorRef = ColorToColorRef(c);
-            customColors.RemoveAll(x => ColorToColorRef(x) == colorRef);
-            customColors.Insert(0, c);
-            while (customColors.Count > Cols) customColors.RemoveAt(customColors.Count - 1);
-            AppConfig.Set(CustomKey, string.Join("-", customColors.Select(ColorToColorRef)));
-            RefreshCustom();
+            SetActive(customSwatches[idx]);
+            Apply(customColors[idx]);
         }
 
         private void RefreshCustom()
         {
             for (int i = 0; i < customSwatches.Length; i++)
-                customSwatches[i].Color = i < customColors.Count ? customColors[i] : RForm.buttonSecond;
+                customSwatches[i].Color = customColors[i];
         }
 
         private static int ColorToColorRef(Color c) => c.R | (c.G << 8) | (c.B << 16);
