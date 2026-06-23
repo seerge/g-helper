@@ -9,6 +9,10 @@ public static class NvmlHelper
     [DllImport(NvmlDll)] static extern int nvmlDeviceGetHandleByIndex_v2(uint index, out IntPtr device);
     [DllImport(NvmlDll)] static extern int nvmlDeviceGetTemperature(IntPtr device, uint sensorType, out uint temp);
     [DllImport(NvmlDll)] static extern int nvmlDeviceGetPowerUsage(IntPtr device, out uint powerMilliWatts);
+    [DllImport(NvmlDll)] static extern int nvmlDeviceGetMemoryInfo(IntPtr device, out nvmlMemory_t memory);
+
+    [StructLayout(LayoutKind.Sequential)]
+    struct nvmlMemory_t { public ulong total; public ulong free; public ulong used; }
 
     const uint NVML_TEMPERATURE_GPU = 0;
     const int NVML_SUCCESS = 0;
@@ -59,6 +63,24 @@ public static class NvmlHelper
                 if (nvmlDeviceGetPowerUsage(device, out uint mW) != NVML_SUCCESS) return null;
                 if (mW > 200_000f) return null;
                 return mW / 1000f;
+            }
+            catch { return null; }
+        }
+    }
+
+    public static (long usedMb, long totalMb)? GetMemoryInfo(uint gpuIndex = 0)
+    {
+        lock (_lock)
+        {
+            Init();
+            if (!_init) return null;
+            try
+            {
+                if (nvmlDeviceGetHandleByIndex_v2(gpuIndex, out IntPtr device) != NVML_SUCCESS) return null;
+                if (nvmlDeviceGetMemoryInfo(device, out nvmlMemory_t mem) != NVML_SUCCESS) return null;
+                if (mem.total == 0) return null;
+                const ulong MB = 1024 * 1024;
+                return ((long)(mem.used / MB), (long)(mem.total / MB));
             }
             catch { return null; }
         }

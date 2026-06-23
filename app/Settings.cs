@@ -783,10 +783,12 @@ namespace GHelper
                         case 0:
                             Logger.WriteLine("Monitor Power Off");
                             Aura.SleepBrightness();
+                            Program.hardwareOverlay?.SuspendForDisplayOff();
                             break;
                         case 1:
                             Logger.WriteLine("Monitor Power On");
                             if (!Program.SetAutoModes(wakeup: true)) BatteryControl.AutoBattery();
+                            Program.hardwareOverlay?.ResumeForDisplayOn();
                             break;
                         case 2:
                             Logger.WriteLine("Monitor Dimmed");
@@ -853,21 +855,25 @@ namespace GHelper
                 menuEco = new ToolStripMenuItem(Properties.Strings.EcoMode);
                 menuEco.Click += ButtonEco_Click;
                 menuEco.Margin = padding;
+                menuEco.Checked = buttonEco.Activated;
                 contextMenuStrip.Items.Add(menuEco);
 
                 menuStandard = new ToolStripMenuItem(Properties.Strings.StandardMode);
                 menuStandard.Click += ButtonStandard_Click;
                 menuStandard.Margin = padding;
+                menuStandard.Checked = buttonStandard.Activated;
                 contextMenuStrip.Items.Add(menuStandard);
 
                 menuUltimate = new ToolStripMenuItem(Properties.Strings.UltimateMode);
                 menuUltimate.Click += ButtonUltimate_Click;
                 menuUltimate.Margin = padding;
+                menuUltimate.Checked = buttonUltimate.Activated;
                 contextMenuStrip.Items.Add(menuUltimate);
 
                 menuOptimized = new ToolStripMenuItem(Properties.Strings.Optimized);
                 menuOptimized.Click += ButtonOptimized_Click;
                 menuOptimized.Margin = padding;
+                menuOptimized.Checked = buttonOptimized.Activated;
                 contextMenuStrip.Items.Add(menuOptimized);
 
                 contextMenuStrip.Items.Add("-");
@@ -1161,7 +1167,7 @@ namespace GHelper
 
         private void PictureColor2_Click(object? sender, EventArgs e)
         {
-            SetColorPicker("aura_color2");
+            SetColorPicker("aura_color2", pictureColor2);
         }
 
         private void PictureColor_Click(object? sender, EventArgs e)
@@ -1227,22 +1233,13 @@ namespace GHelper
 
         private void SetColorPicker(string colorField = "aura_color", PictureBox? preview = null)
         {
-            ColorDialog colorDlg = new ColorDialog();
-            colorDlg.AllowFullOpen = true;
-            colorDlg.Color = (preview ?? pictureColor).BackColor;
-
-            try
+            RColorPicker colorDlg = new RColorPicker((preview ?? pictureColor).BackColor);
+            colorDlg.ColorChanged += c =>
             {
-                colorDlg.CustomColors = AppConfig.GetString("aura_color_custom", "").Split('-').Select(int.Parse).ToArray();
-            }
-            catch (Exception ex) { }
-
-            if (colorDlg.ShowDialog() == DialogResult.OK)
-            {
-                AppConfig.Set("aura_color_custom", string.Join("-", colorDlg.CustomColors));
-                AppConfig.Set(colorField, colorDlg.Color.ToArgb());
+                AppConfig.Set(colorField, c.ToArgb());
                 SetAura();
-            }
+            };
+            colorDlg.ShowDialog(this);
         }
 
         private void ButtonKeyboardColor_Click(object? sender, EventArgs e)

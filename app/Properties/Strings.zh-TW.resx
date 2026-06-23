@@ -959,9 +959,9 @@
 若遇隨機當機或硬體無回應，建議啟用。</value>
   </data>
   <data name="Overlay" xml:space="preserve">
-    <value>覆蓋</value>
+    <value>效能監控(OSD)</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
-    <value>僅在遊戲時覆蓋</value>
+    <value>僅遊戲時顯示OSD</value>
   </data>
 </root>

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 
 namespace GHelper.Overlay
 {
@@ -57,16 +58,17 @@ namespace GHelper.Overlay
         private bool _dragModeActive;
         // Values match the persisted "overlay_light_mode" key for backward compat
         // (legacy: 0 = default, 1 = light).
-        private enum OverlayMode { Default = 0, Light = 1, Full = 2 }
+        private enum OverlayMode { Default = 0, Light = 1, Full = 2, Complete = 3 }
         private OverlayMode _mode;
 
         // ── Layout constants (base = 96 dpi) ─────────────────────────────────
         //
-        // Light:    fps | temp                 | power
-        // Default:  fps | temp + fan RPM       | chart | power
-        // Full:     fps | temp + fan RPM       | chart | power | bar | usage%
+        // Light:    fps | temp                        | power
+        // Default:  fps | temp + fan RPM              | chart | power
+        // Full:     fps | temp + fan RPM              | chart | power | usage% | bar
+        // Complete: fps | name | temp + fan RPM       | chart | power | usage% | bar | mem GB | bar
         //
-        // Click on the overlay cycles Light → Default → Full → Light.
+        // Click on the overlay cycles Light → Default → Full → Complete → Light.
         //
         // Bar height is fixed per DPI (~BaseUsageBarHeight * sc) and cell pitch is
         // integer, so the number of cells varies with available pixels while every
@@ -87,24 +89,38 @@ namespace GHelper.Overlay
         private const int CornerRadius = 3;
         private const int MarginFromEdge = 10;
         private const int BaseLightLeftColWidth = 64; // fits "GPU: 82° " (9 Consolas chars); trailing space is the gap to the power column
-        private const int BaseUsageBarGap = 11;       // gap between W letter and bar (full mode)
+        private const int BaseUsageBarGap = 11;       // gap between the power W and the usage % column (full mode)
         private const int BaseUsageBarWidth = 5;
-        private const int BaseUsageNumGap = 4;        // gap between bar and usage % text
+        private const int BaseUsageNumGap = 4;        // gap between the usage % text and its bar
         private const int BaseUsageNumColWidth = 30;  // right-aligned column fitting "100%"
         private const int BaseFullPadRight = 4;       // tighter right margin in full mode (vs BasePadX)
         // Target bar height at base DPI; tuned so at 2x DPI numCells = 10.
         private const int BaseUsageBarHeight = 15;
+        private const int BaseUsageBarYNudge = 1; // raise bars to align with the text baseline
+        private const int BaseNameColWidth = 90;     // fits "Core Ultra 9" / "Ryzen AI 9"
+        private const int BaseMemBarGap = 8;
+        private const int BaseMemNumColWidth = 54;   // fits "127.9GB"
         private const int BaseLightWidth = BasePadX + BaseFpsColWidth + BaseColGap + BaseLightLeftColWidth + BasePowerGap + BasePowerColWidth + BasePadX;
         private const int BaseWidth = BasePadX + BaseFpsColWidth + BaseColGap + BaseLeftColWidth + BaseColGap + BaseChartColWidth + BasePowerGap + BasePowerColWidth + BasePadX;
         private const int BaseFullWidth = BaseWidth - BasePadX + BaseUsageBarGap + BaseUsageBarWidth + BaseUsageNumGap + BaseUsageNumColWidth + BaseFullPadRight;
+        private const int BaseCompleteWidth = BaseFullWidth + BaseMemBarGap + BaseMemNumColWidth + BaseUsageNumGap + BaseUsageBarWidth;
 
-        private static readonly SolidBrush _bgBrush = new(Color.FromArgb(128, 0, 0, 0));
-        private static readonly SolidBrush _gpuBrush = new(Color.FromArgb(255, 0, 255, 80));
-        private static readonly SolidBrush _cpuBrush = new(Color.FromArgb(255, 60, 220, 255));
-        private static readonly Pen _gpuLinePen = new(Color.FromArgb(255, 0, 255, 80), 1.5f);
-        private static readonly Pen _cpuLinePen = new(Color.FromArgb(255, 60, 220, 255), 1.5f);
-        private static readonly SolidBrush _gpuFillBrush = new(Color.FromArgb(128, 0, 85, 27));
-        private static readonly SolidBrush _cpuFillBrush = new(Color.FromArgb(128, 20, 73, 85));
+        private static readonly Color DefaultGpuColor = Color.FromArgb(255, 0, 255, 80);
+        private static readonly Color DefaultCpuColor = Color.FromArgb(255, 60, 220, 255);
+
+        // Minimum background alpha while dragging, so a near-transparent box stays grabbable
+        // (a layered window ignores mouse hits on fully transparent pixels).
+        private const int DragMinAlpha = 110;
+        private static readonly SolidBrush _dragBgBrush = new(Color.FromArgb(DragMinAlpha, 0, 0, 0));
+        private int _bgAlpha = 128;
+
+        private SolidBrush _bgBrush = new(Color.FromArgb(128, 0, 0, 0));
+        private SolidBrush _gpuBrush = new(DefaultGpuColor);
+        private SolidBrush _cpuBrush = new(DefaultCpuColor);
+        private Pen _gpuLinePen = new(DefaultGpuColor, 1.5f);
+        private Pen _cpuLinePen = new(DefaultCpuColor, 1.5f);
+        private SolidBrush _gpuFillBrush = new(Color.FromArgb(128, 0, 85, 27));
+        private SolidBrush _cpuFillBrush = new(Color.FromArgb(128, 20, 73, 85));
 
         // Cached drawing resources — recreated only when the scale changes
         private float _lastScale = 0f;
@@ -129,6 +145,12 @@ namespace GHelper.Overlay
         private string _cpuPow = "";
         private int? _gpuUsage;
         private int? _cpuUsage;
+        private int? _vramUsage;
+        private int? _ramUsage;
+        private int? _vramUsedMb;
+        private int? _ramUsedMb;
+        private string _gpuShortName = "";
+        private string _cpuShortName = "";
 
         private const int HistoryLength = 60;
         private readonly float[] _cpuHistory = new float[HistoryLength];
@@ -142,6 +164,8 @@ namespace GHelper.Overlay
         private int _lastFgPid;
         private bool _active;
         private bool _gameOnly;
+        private bool _showNames;
+        private bool _showFps, _showTemp, _showFans, _showChart, _showPower, _showUsage, _showRam;
         private bool _hidden;
         private int _shownPid;
         private bool _fgDesktop;
@@ -250,10 +274,13 @@ namespace GHelper.Overlay
                     {
                         OverlayMode.Light   => OverlayMode.Default,
                         OverlayMode.Default => OverlayMode.Full,
+                        OverlayMode.Full    => OverlayMode.Complete,
                         _                   => OverlayMode.Light,
                     };
                     AppConfig.Set("overlay_mode", (int)_mode);
-                    ApplyModeReadFlags();
+                    ApplyPreset(_mode);
+                    ApplySensorFlags();
+                    EnsureFpsMonitor();
                     Invalidate(); // resizes the window synchronously via PerformPaint → Size.set
 
                     if (isRight)
@@ -281,6 +308,18 @@ namespace GHelper.Overlay
 
         private float GetScale() => BaseScale * (_scalePercent / 100f);
 
+        private int BaseModeWidth()
+        {
+            int w = _mode switch
+            {
+                OverlayMode.Light    => BaseLightWidth,
+                OverlayMode.Full     => BaseFullWidth,
+                OverlayMode.Complete => BaseCompleteWidth,
+                _                    => BaseWidth,
+            };
+            return _showNames ? w + BaseNameColWidth + BaseColGap : w;
+        }
+
         private static int S(float sc, int v) => (int)(v * sc);
         private static double D(object? v) { try { return v is null ? 0.0 : Convert.ToDouble(v); } catch { return 0.0; } }
 
@@ -289,6 +328,40 @@ namespace GHelper.Overlay
 
         private static string FmtPow(double p) =>
         p > 0 ? Math.Round(p, 1).ToString("F1") + "W" : "";
+
+        // "NVIDIA GeForce RTX 4070 Laptop GPU" -> "RTX 4070", "AMD Radeon RX 6850M XT" -> "RX 6850M"
+        private static string ShortGpuName(string? full)
+        {
+            if (string.IsNullOrEmpty(full)) return "";
+            foreach (string tag in new[] { "RTX", "GTX", "RX", "Arc" })
+            {
+                int i = full.IndexOf(tag, StringComparison.OrdinalIgnoreCase);
+                if (i < 0) continue;
+                string[] p = full[i..].Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                return p.Length >= 2 ? p[0] + " " + p[1] : p[0];
+            }
+            return full;
+        }
+
+        // "...Core(TM) i9-13980HX" -> "i9-13980HX", "AMD Ryzen 9 7945HX..." -> "Ryzen 7945HX", "...Core(TM) Ultra 9 185H" -> "Ultra 185H"
+        private static string ShortCpuName(string name)
+        {
+            if (string.IsNullOrEmpty(name)) return "";
+
+            var m = Regex.Match(name, @"i[3579]-\w+");
+            if (m.Success) return m.Value;
+
+            m = Regex.Match(name, @"Ultra\s+\d+\s+(\w*\d\w*)");
+            if (m.Success) return "Ultra " + m.Groups[1].Value;
+
+            if (name.Contains("Ryzen", StringComparison.OrdinalIgnoreCase))
+            {
+                m = Regex.Match(name, @"(?:[A-Z]{2,}\s+)?\d{3,}\w*");
+                return m.Success ? "Ryzen " + m.Value : "Ryzen";
+            }
+
+            return name.Split(' ', StringSplitOptions.RemoveEmptyEntries) is { Length: > 0 } t ? t[0] : "";
+        }
 
         private static string FormatFan(int? fan)
         {
@@ -307,6 +380,7 @@ namespace GHelper.Overlay
                 _dragModeActive = keysDown;
                 SetTransparentStyle(!keysDown);
                 Cursor.Current = keysDown ? Cursors.Hand : Cursors.Default;
+                if (_bgAlpha < DragMinAlpha) Invalidate();
             }
 
             if (Handle != nint.Zero && GetWindow(Handle, GW_HWNDPREV) != IntPtr.Zero)
@@ -362,6 +436,18 @@ namespace GHelper.Overlay
 
             _cpuUsage = HardwareControl.cpuUsage;
             _gpuUsage = gpuActive ? (HardwareControl.gpuUsage ?? 0) : null;
+            _vramUsage = gpuActive ? (HardwareControl.vramUsage ?? 0) : null;
+            _vramUsedMb = gpuActive ? (HardwareControl.vramUsedMb ?? 0) : null;
+            _ramUsage = HardwareControl.ramUsage;
+            _ramUsedMb = HardwareControl.ramUsedMb;
+
+            if (_showNames)
+            {
+                if (_cpuShortName.Length == 0)
+                    _cpuShortName = ShortCpuName(PawnIO.CpuInfo.Name);
+                if (_gpuShortName.Length == 0)
+                    _gpuShortName = ShortGpuName(HardwareControl.GpuControl?.FullName);
+            }
 
             Invalidate();
         }
@@ -394,12 +480,6 @@ namespace GHelper.Overlay
             int padY = S(sc, BasePadY);
             int lineH = S(sc, BaseLineHeight);
             int lineGap = S(sc, BaseLineSpacing);
-            int width = S(sc, _mode switch
-            {
-                OverlayMode.Light => BaseLightWidth,
-                OverlayMode.Full  => BaseFullWidth,
-                _                 => BaseWidth,
-            });
             int radius = S(sc, CornerRadius);
             int fpsColW = S(sc, BaseFpsColWidth);
             int chartColW = S(sc, BaseChartColWidth);
@@ -410,6 +490,48 @@ namespace GHelper.Overlay
             int innerH = lineH * 2 + lineGap;
             int totalH = padY * 2 + innerH;
 
+            bool showFps = _showFps, showTemp = _showTemp, showFans = _showFans, showChart = _showChart;
+            bool showPower = _showPower, showUsageMetric = _showUsage, showMem = _showRam, showNames = _showNames;
+            bool showUsage = _showUsage || _showRam; // bar sizing is shared by the usage and ram bars
+
+            int nameColW = showNames ? S(sc, BaseNameColWidth) : 0;
+            int usageNumColW = S(sc, BaseUsageNumColWidth);
+            int barW = S(sc, BaseUsageBarWidth);
+            int memNumColW = S(sc, BaseMemNumColWidth);
+
+            int cursor = padX;
+            if (showFps) cursor += fpsColW + colGap;
+
+            int nameX = cursor;
+            if (showNames) cursor += nameColW + colGap;
+
+            int leftX = cursor;
+            cursor += S(sc, showTemp && showFans ? BaseLeftColWidth : showTemp || showFans ? BaseLightLeftColWidth : 0);
+
+            int chartX = cursor;
+            if (showChart) cursor += chartColW;
+
+            int powX = cursor;
+            if (showPower) { powX = cursor + powGap; cursor = powX + powColW; }
+
+            int usageNumX = cursor, barX = cursor;
+            if (showUsageMetric)
+            {
+                usageNumX = cursor + S(sc, BaseUsageBarGap);
+                barX = usageNumX + usageNumColW + S(sc, BaseUsageNumGap);
+                cursor = barX + barW;
+            }
+
+            int memNumX = cursor, memBarX = cursor;
+            if (showMem)
+            {
+                memNumX = cursor + S(sc, BaseMemBarGap);
+                memBarX = memNumX + memNumColW + S(sc, BaseUsageNumGap);
+                cursor = memBarX + barW;
+            }
+
+            int width = cursor + padX;
+
             if (Size.Width != width || Size.Height != totalH)
                 Size = new Size(width, totalH);
 
@@ -418,7 +540,7 @@ namespace GHelper.Overlay
             g.PixelOffsetMode = PixelOffsetMode.HighQuality;
             g.TextRenderingHint = _scalePercent <= 75 ? TextRenderingHint.ClearTypeGridFit : TextRenderingHint.AntiAliasGridFit;
 
-            g.FillRoundedRectangle(_bgBrush, Bound, radius);
+            g.FillRoundedRectangle(_dragModeActive && _bgAlpha < DragMinAlpha ? _dragBgBrush : _bgBrush, Bound, radius);
 
             if (sc != _lastScale)
             {
@@ -438,43 +560,45 @@ namespace GHelper.Overlay
             // fixed GDI+ padding, giving the true per-character advance width for Consolas.
             float charW = g.MeasureString("XX", font).Width - g.MeasureString("X", font).Width;
 
-            bool isLight = _mode == OverlayMode.Light;
-            bool isFull  = _mode == OverlayMode.Full;
-
-            int leftX = padX + fpsColW + colGap;
-            int chartX = leftX + S(sc, isLight ? BaseLightLeftColWidth : BaseLeftColWidth);
-            int powX = isLight ? chartX + powGap : chartX + chartColW + powGap;
-            int barX = powX + powColW + S(sc, BaseUsageBarGap);
-            int barW = S(sc, BaseUsageBarWidth);
-            int usageNumX = barX + barW + S(sc, BaseUsageNumGap);
-            int usageNumColW = S(sc, BaseUsageNumColWidth);
             int topY = padY;
             // Nudge per-row text down so it lines up with the vertically centered usage bars.
             int textY = topY + (int)Math.Round(sc);
 
             // FPS
-            string fpsStr = _currentFps > 0 ? _currentFps.ToString() : "--";
-            float fpsW = g.MeasureString(fpsStr, fpsBold).Width;
-            g.DrawString(fpsStr, fpsBold, _gpuBrush,
-            new PointF(padX + (fpsColW - fpsW) / 2f, topY));
+            if (showFps)
+            {
+                string fpsStr = _currentFps > 0 ? _currentFps.ToString() : "--";
+                float fpsW = g.MeasureString(fpsStr, fpsBold).Width;
+                g.DrawString(fpsStr, fpsBold, _gpuBrush,
+                new PointF(padX + (fpsColW - fpsW) / 2f, topY));
+            }
+
+            if (showNames)
+            {
+                var savedClip = g.Save();
+                g.SetClip(new RectangleF(nameX, topY, nameColW, innerH));
+                g.DrawString(_gpuShortName, font, _gpuBrush, new PointF(nameX, textY));
+                g.DrawString(_cpuShortName, font, _cpuBrush, new PointF(nameX, textY + lineH + lineGap));
+                g.Restore(savedClip);
+            }
 
             // Left column: fan RPM hidden in Light mode
-            DrawTempFan(g, font, rpmFont, charW, sc, leftX, textY, _gpuTempStr, isLight ? "" : _gpuFanNum, _gpuBrush);
-            DrawTempFan(g, font, rpmFont, charW, sc, leftX, textY + lineH + lineGap, _cpuTempStr, isLight ? "" : _cpuFanNum, _cpuBrush);
+            DrawTempFan(g, font, rpmFont, charW, sc, leftX, textY, showTemp ? _gpuTempStr : "", showFans ? _gpuFanNum : "", _gpuBrush);
+            DrawTempFan(g, font, rpmFont, charW, sc, leftX, textY + lineH + lineGap, showTemp ? _cpuTempStr : "", showFans ? _cpuFanNum : "", _cpuBrush);
 
             // Chart — hidden in Light mode
-            if (!isLight)
+            if (showChart)
                 DrawStackedChart(g, chartX, topY, chartColW, innerH, sc);
 
             // Power — right-aligned, drawn in all modes
-            if (_gpuPow.Length > 0)
+            if (showPower && _gpuPow.Length > 0)
                 g.DrawString(_gpuPow, font, _gpuBrush,
                 new PointF(powX + powColW - g.MeasureString(_gpuPow, font).Width, textY));
-            if (_cpuPow.Length > 0)
+            if (showPower && _cpuPow.Length > 0)
                 g.DrawString(_cpuPow, font, _cpuBrush,
                 new PointF(powX + powColW - g.MeasureString(_cpuPow, font).Width, textY + lineH + lineGap));
 
-            if (isFull)
+            if (showUsage)
             {
                 // Bar sizing: fixed bar height per DPI; cellH grows with DPI but sepH stays 1.
                 int cellH = Math.Max(1, (int)Math.Floor(sc));
@@ -483,13 +607,27 @@ namespace GHelper.Overlay
                 int pitch = cellH + sepH;
                 int numCells = Math.Max(2, (targetBarH + sepH) / pitch);
                 int barH = numCells * cellH + (numCells - 1) * sepH;
-                int barYOff = (lineH - barH) / 2;
+                int barYOff = (lineH - barH) / 2 - S(sc, BaseUsageBarYNudge);
+                int row2Y = lineH + lineGap;
 
-                DrawUsageBar(g, barX, topY + barYOff, barW, cellH, sepH, numCells, _gpuUsage ?? 0, _gpuBrush, _gpuFillBrush);
-                DrawUsageBar(g, barX, topY + lineH + lineGap + barYOff, barW, cellH, sepH, numCells, _cpuUsage ?? 0, _cpuBrush, _cpuFillBrush);
+                if (showUsageMetric)
+                {
+                    DrawUsageBar(g, barX, topY + barYOff, barW, cellH, sepH, numCells, _gpuUsage ?? 0, _gpuBrush, _gpuFillBrush);
+                    DrawUsageBar(g, barX, topY + row2Y + barYOff, barW, cellH, sepH, numCells, _cpuUsage ?? 0, _cpuBrush, _cpuFillBrush);
 
-                DrawUsagePercent(g, font, usageNumX, usageNumColW, textY,                       _gpuUsage, _gpuBrush);
-                DrawUsagePercent(g, font, usageNumX, usageNumColW, textY + lineH + lineGap,     _cpuUsage, _cpuBrush);
+                    DrawUsagePercent(g, font, usageNumX, usageNumColW, textY,           _gpuUsage, _gpuBrush);
+                    DrawUsagePercent(g, font, usageNumX, usageNumColW, textY + row2Y,   _cpuUsage, _cpuBrush);
+                }
+
+                // VRAM (GPU row) / RAM (CPU row) — complete mode only
+                if (showMem)
+                {
+                    DrawMemGb(g, font, memNumX, memNumColW, textY,         _vramUsedMb, _gpuBrush);
+                    DrawMemGb(g, font, memNumX, memNumColW, textY + row2Y, _ramUsedMb, _cpuBrush);
+
+                    DrawUsageBar(g, memBarX, topY + barYOff, barW, cellH, sepH, numCells, _vramUsage ?? 0, _gpuBrush, _gpuFillBrush);
+                    DrawUsageBar(g, memBarX, topY + row2Y + barYOff, barW, cellH, sepH, numCells, _ramUsage ?? 0, _cpuBrush, _cpuFillBrush);
+                }
             }
         }
 
@@ -500,12 +638,19 @@ namespace GHelper.Overlay
             g.DrawString(s, font, brush, new PointF(x + colW - g.MeasureString(s, font).Width, y));
         }
 
+        private static void DrawMemGb(Graphics g, Font font, int x, int colW, int y, int? usedMb, SolidBrush brush)
+        {
+            if (!usedMb.HasValue) return;
+            string s = (usedMb.Value / 1024.0).ToString("F1") + "GB";
+            g.DrawString(s, font, brush, new PointF(x + colW - g.MeasureString(s, font).Width, y));
+        }
+
         private static void DrawUsageBar(Graphics g, int x, int y, int w, int cellH, int sepH, int numCells, int usage, SolidBrush litBrush, SolidBrush dimBrush)
         {
             var prevSmoothing = g.SmoothingMode;
             g.SmoothingMode = SmoothingMode.None;
 
-            int lit = Math.Clamp((int)Math.Round(usage * numCells / 100f), 0, numCells);
+            int lit = Math.Clamp((int)Math.Ceiling(usage * numCells / 100f), 0, numCells);
             int pitch = cellH + sepH;
 
             for (int i = 0; i < numCells; i++)
@@ -637,10 +782,64 @@ namespace GHelper.Overlay
             AppConfig.Set("overlay_offset_y", offsetY);
         }
 
-        private void ApplyModeReadFlags()
+        private static Color ParseColor(string key, Color fallback)
         {
-            HardwareControl.readFans  = _mode != OverlayMode.Light;
-            HardwareControl.readUsage = _mode == OverlayMode.Full;
+            string hex = AppConfig.GetString(key);
+            if (string.IsNullOrEmpty(hex)) return fallback;
+            try { return ColorTranslator.FromHtml(hex.StartsWith("#") ? hex : "#" + hex); }
+            catch { return fallback; }
+        }
+
+        private void ApplyColors()
+        {
+            Color gpu = ParseColor("overlay_color_gpu", DefaultGpuColor);
+            Color cpu = ParseColor("overlay_color_cpu", DefaultCpuColor);
+            _bgAlpha = Math.Clamp(AppConfig.Get("overlay_alpha", 128), 0, 255);
+
+            _gpuBrush.Dispose();     _gpuBrush = new SolidBrush(gpu);
+            _cpuBrush.Dispose();     _cpuBrush = new SolidBrush(cpu);
+            _gpuLinePen.Dispose();   _gpuLinePen = new Pen(gpu, 1.5f);
+            _cpuLinePen.Dispose();   _cpuLinePen = new Pen(cpu, 1.5f);
+            // Chart fill = base color at 1/3 brightness, alpha 128
+            _gpuFillBrush.Dispose(); _gpuFillBrush = new SolidBrush(Color.FromArgb(128, gpu.R / 3, gpu.G / 3, gpu.B / 3));
+            _cpuFillBrush.Dispose(); _cpuFillBrush = new SolidBrush(Color.FromArgb(128, cpu.R / 3, cpu.G / 3, cpu.B / 3));
+            _bgBrush.Dispose();      _bgBrush = new SolidBrush(Color.FromArgb(_bgAlpha, 0, 0, 0));
+        }
+
+        // Complete is the customizable preset (blocks from overlay_show_*, default on); others are fixed.
+        private void ApplyPreset(OverlayMode mode)
+        {
+            bool complete = mode == OverlayMode.Complete;
+            bool extra = mode != OverlayMode.Light; // fans + chart on for Default/Full/Complete
+
+            _showFps   = complete ? AppConfig.IsNotFalse("overlay_show_fps")   : true;
+            _showTemp  = complete ? AppConfig.IsNotFalse("overlay_show_temp")  : true;
+            _showFans  = complete ? AppConfig.IsNotFalse("overlay_show_fans")  : extra;
+            _showChart = complete ? AppConfig.IsNotFalse("overlay_show_chart") : extra;
+            _showPower = complete ? AppConfig.IsNotFalse("overlay_show_power") : true;
+            _showUsage = complete ? AppConfig.IsNotFalse("overlay_show_usage") : mode == OverlayMode.Full;
+            _showRam   = complete ? AppConfig.IsNotFalse("overlay_show_ram")   : false;
+            _showNames = complete && AppConfig.Is("overlay_names");
+        }
+
+        // Don't pull sensors for blocks that aren't drawn (power feeds both the power and chart blocks).
+        private void ApplySensorFlags()
+        {
+            HardwareControl.readFans   = _showFans;
+            HardwareControl.readUsage  = _showUsage;
+            HardwareControl.readMemory = _showRam;
+            HardwareControl.readPower  = _showPower || _showChart;
+        }
+
+        // Started for the FPS block, or for Auto Show to detect a game even with FPS hidden. Only
+        // torn down in StopOverlay — disposing here would race the timer thread's SampleFps (the
+        // reference write is atomic, so that thread cleanly sees null-or-monitor).
+        private void EnsureFpsMonitor()
+        {
+            if (_fps != null || !(_showFps || _gameOnly)) return;
+            _currentFps = 0;
+            _fps = new EtwFpsMonitor();
+            _fpsTask = Task.Run(() => _fps.Start());
         }
 
         // Re-anchor the overlay after the user changes resolution or swaps the primary
@@ -682,33 +881,31 @@ namespace GHelper.Overlay
             int storedMode = AppConfig.Exists("overlay_mode")
                 ? AppConfig.Get("overlay_mode", 0)
                 : AppConfig.Get("overlay_light_mode", 0);
-            _mode = storedMode == (int)OverlayMode.Light ? OverlayMode.Light
-                  : storedMode == (int)OverlayMode.Full  ? OverlayMode.Full
+            _mode = storedMode == (int)OverlayMode.Light    ? OverlayMode.Light
+                  : storedMode == (int)OverlayMode.Full     ? OverlayMode.Full
+                  : storedMode == (int)OverlayMode.Complete ? OverlayMode.Complete
                   : OverlayMode.Default;
             _scalePercent = Math.Clamp(AppConfig.Get("overlay_scale_percent", 100), MinScalePercent, MaxScalePercent);
-            ApplyModeReadFlags();
+            ApplyColors();
+            ApplyPreset(_mode);
+            ApplySensorFlags();
             SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
             HardwareControl.ResetCPUPowerCounter();
 
             _fps?.Dispose();
+            _fps = null;
             _currentFps = 0;
-            _fps = new EtwFpsMonitor();
-            _fpsTask = Task.Run(() => _fps.Start());
+            EnsureFpsMonitor();
 
             float sc = GetScale();
             int innerH = S(sc, BaseLineHeight) * 2 + S(sc, BaseLineSpacing);
-            int initialBaseW = _mode switch
-            {
-                OverlayMode.Light => BaseLightWidth,
-                OverlayMode.Full  => BaseFullWidth,
-                _                 => BaseWidth,
-            };
-            Size = new Size(S(sc, initialBaseW), S(sc, BasePadY) * 2 + innerH);
+            Size = new Size(S(sc, BaseModeWidth()), S(sc, BasePadY) * 2 + innerH);
 
             RestorePosition();
             base.Show();
             if (_gameOnly) { _hidden = true; User32.ShowWindow(Handle, User32.SW_HIDE); }
             Tick();
+            RestorePosition(); // re-anchor once the first paint has settled the collapsed width
             _timer.Start();
         }
 
@@ -717,6 +914,8 @@ namespace GHelper.Overlay
             _active = false;
             HardwareControl.readUsage = false;
             HardwareControl.readFans = false;
+            HardwareControl.readMemory = false;
+            HardwareControl.readPower = false;
             SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
             _timer.Stop();
             _dragModeActive = false;
@@ -741,6 +940,16 @@ namespace GHelper.Overlay
             _axPen?.Dispose();    _axPen    = null;
             _lastScale = 0f;
             base.Hide();
+        }
+
+        public void SuspendForDisplayOff()
+        {
+            if (_active) StopOverlay();
+        }
+
+        public void ResumeForDisplayOn()
+        {
+            if (!_active && AppConfig.IsOverlay()) StartOverlay();
         }
     }
 }

@@ -83,6 +83,7 @@ namespace GHelper
             sliderDPI.PreviewKeyDown += (_, _) => updateMouseDPI = false;
             sliderDPI.KeyUp += (s, e) => SliderDPI_MouseUp(s, e);
             buttonDPIColor.Click += ButtonDPIColor_Click;
+            pictureDPIColor.Click += (s, e) => buttonDPIColor.PerformClick();
             buttonDPI1.Click += ButtonDPI_Click;
             buttonDPI2.Click += ButtonDPI_Click;
             buttonDPI3.Click += ButtonDPI_Click;
@@ -123,6 +124,7 @@ namespace GHelper
             sliderDeceleration.ValueChanged += SliderDeceleration_ValueChanged;
 
             buttonLightingColor.Click += ButtonLightingColor_Click;
+            pictureBoxLightingColor.Click += (s, e) => buttonLightingColor.PerformClick();
             comboBoxLightingMode.DropDownClosed += ComboBoxLightingMode_DropDownClosed;
             sliderBrightness.MouseUp += SliderBrightness_MouseUp;
             sliderBrightness.KeyUp += SliderBrightness_MouseUp;
@@ -283,22 +285,18 @@ namespace GHelper
 
         private void ButtonDPIColor_Click(object? sender, EventArgs e)
         {
-            ColorDialog colorDlg = new ColorDialog
-            {
-                AllowFullOpen = true,
-                Color = pictureDPIColor.BackColor
-            };
+            AsusMouseDPI dpi = mouse.DpiSettings[mouse.DpiProfile - 1];
 
-            if (colorDlg.ShowDialog() == DialogResult.OK)
+            RColorPicker colorDlg = new RColorPicker(pictureDPIColor.BackColor);
+            colorDlg.ColorChanged += c =>
             {
-                AsusMouseDPI dpi = mouse.DpiSettings[mouse.DpiProfile - 1];
-                dpi.Color = colorDlg.Color;
-
+                dpi.Color = c;
                 mouse.SetDPIForProfile(dpi, mouse.DpiProfile);
 
                 VisualizeDPIButtons();
                 VisualizeCurrentDPIProfile();
-            }
+            };
+            colorDlg.ShowDialog(this);
         }
 
         // Logic for Delete Area
@@ -477,19 +475,16 @@ namespace GHelper
 
         private void ButtonLightingColor_Click(object? sender, EventArgs e)
         {
-            ColorDialog colorDlg = new ColorDialog
-            {
-                AllowFullOpen = true,
-                Color = pictureBoxLightingColor.BackColor
-            };
+            LightingSetting? ls = mouse.LightingSettingForZone(visibleZone);
+            if (ls is null) return;
 
-            if (colorDlg.ShowDialog() == DialogResult.OK)
+            RColorPicker colorDlg = new RColorPicker(pictureBoxLightingColor.BackColor);
+            colorDlg.ColorChanged += c =>
             {
-                LightingSetting? ls = mouse.LightingSettingForZone(visibleZone);
-                ls.RGBColor = colorDlg.Color;
-
+                ls.RGBColor = c;
                 UpdateLightingSettings(ls, visibleZone);
-            }
+            };
+            colorDlg.ShowDialog(this);
         }
 
         private void SliderLowBatteryWarning_ValueChanged(object? sender, EventArgs e)

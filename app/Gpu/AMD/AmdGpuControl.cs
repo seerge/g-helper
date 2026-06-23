@@ -103,12 +103,8 @@ public class AmdGpuControl : IGpuControl
         logData = default;
         if (!IsValid) return false;
 
-        long now = Environment.TickCount64;
-        if (_cachedDiscreteLogData.HasValue && Math.Abs(now - _lastDiscreteLogDataTime) < 500)
-        {
-            logData = _cachedDiscreteLogData.Value;
-            return true;
-        }
+        if (!GetPMLog(out ADLPMLogDataOutput adlpmLogDataOutput))
+            return null;
 
         if (ADL2_New_QueryPMLogData_Get(_adlContextHandle, _internalDiscreteAdapter.AdapterIndex, out ADLPMLogDataOutput adlpmLogDataOutput) != Adl2.ADL_SUCCESS)
             return false;
@@ -119,17 +115,34 @@ public class AmdGpuControl : IGpuControl
         return true;
     }
 
-    private bool GetIntegratedLogData(out ADLPMLogDataOutput logData)
+
+    private ADLPMLogDataOutput _pmLog;
+    private bool _pmLogValid;
+    private long _pmLogTime = -PMLogCacheMs;
+    private const int PMLogCacheMs = 500;
+
+    private bool GetPMLog(out ADLPMLogDataOutput log)
+    {
+        if (Environment.TickCount64 - _pmLogTime >= PMLogCacheMs)
+        {
+            _pmLogValid = ADL2_New_QueryPMLogData_Get(_adlContextHandle, _internalDiscreteAdapter.AdapterIndex, out _pmLog) == Adl2.ADL_SUCCESS;
+            _pmLogTime = Environment.TickCount64;
+        }
+        log = _pmLog;
+        return _pmLogValid;
+    }
+
+    public int? GetGpuUse()
     {
         logData = default;
         if (_adlContextHandle == nint.Zero || _iGPU == null) return false;
 
-        long now = Environment.TickCount64;
-        if (_cachedIntegratedLogData.HasValue && Math.Abs(now - _lastIntegratedLogDataTime) < 500)
-        {
-            logData = _cachedIntegratedLogData.Value;
-            return true;
-        }
+        if (!GetPMLog(out ADLPMLogDataOutput adlpmLogDataOutput))
+            return null;
+
+        ADLSingleSensorData gpuUsage = adlpmLogDataOutput.Sensors[(int)ADLSensorType.PMLOG_INFO_ACTIVITY_GFX];
+        if (gpuUsage.Supported == 0)
+            return null;
 
         if (ADL2_New_QueryPMLogData_Get(_adlContextHandle, ((ADLAdapterInfo)_iGPU).AdapterIndex, out ADLPMLogDataOutput adlpmLogDataOutput) != Adl2.ADL_SUCCESS)
             return false;
@@ -140,9 +153,27 @@ public class AmdGpuControl : IGpuControl
         return true;
     }
 
-    public bool IsValid => _isReady && _adlContextHandle != nint.Zero;
+    private long _totalVramMB; // total VRAM is static — cached on first successful query (0 = not yet)
 
-    public int? GetCurrentTemperature()
+    public (long usedMb, long totalMb)? GetVramInfo()
+    {
+        if (!IsValid) return null;
+
+        if (_totalVramMB <= 0)
+        {
+            if (ADL2_Adapter_MemoryInfo2_Get(_adlContextHandle, _internalDiscreteAdapter.AdapterIndex, out ADLMemoryInfo2 mem) != Adl2.ADL_SUCCESS)
+                return null;
+            _totalVramMB = mem.iMemorySize / (1024 * 1024);
+            if (_totalVramMB <= 0) return null;
+        }
+
+        if (ADL2_Adapter_DedicatedVRAMUsage_Get(_adlContextHandle, _internalDiscreteAdapter.AdapterIndex, out int usedMB) != Adl2.ADL_SUCCESS)
+            return null;
+
+        return (usedMB, _totalVramMB);
+    }
+
+    public int? GetiGpuUse()
     {
         if (GetDiscreteLogData(out ADLPMLogDataOutput logData))
         {
@@ -178,7 +209,10 @@ public class AmdGpuControl : IGpuControl
 
     public float? GetGpuPower()
     {
-        if (GetDiscreteLogData(out ADLPMLogDataOutput logData))
+        if (!IsValid) return null;
+        if (!GetPMLog(out ADLPMLogDataOutput adlpmLogDataOutput)) return null;
+
+        foreach (var sensorType in new[] { ADLSensorType.PMLOG_ASIC_POWER, ADLSensorType.PMLOG_GFX_POWER, ADLSensorType.PMLOG_BOARD_POWER })
         {
             foreach (var sensorType in new[] { ADLSensorType.PMLOG_ASIC_POWER, ADLSensorType.PMLOG_GFX_POWER, ADLSensorType.PMLOG_BOARD_POWER })
             {

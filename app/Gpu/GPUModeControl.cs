@@ -200,7 +200,12 @@ namespace GHelper.Gpu
                             settings.Invoke(delegate { InitGPUMode(); });
                         }
 
-                        HardwareControl.RecreateGpuControl();
+                        for (int i = 0; i < 3; i++)
+                        {
+                            HardwareControl.RecreateGpuControl();
+                            if (HardwareControl.GpuControl is not null) break;
+                            await Task.Delay(TimeSpan.FromSeconds(2));
+                        }
                         Program.modeControl.SetGPUClocks(false);
                     }
 

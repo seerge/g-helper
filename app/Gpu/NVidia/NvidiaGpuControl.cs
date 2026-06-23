@@ -55,39 +55,27 @@ public class NvidiaGpuControl : IGpuControl
 
     private enum GpuState { Active, Asleep, Off }
 
-    private GpuState? _cachedState;
-    private long _lastStateTime;
-
-    private int? _cachedGpuUse;
-    private long _lastGpuUseTime;
-
-    private float? _cachedGpuPower;
-    private long _lastGpuPowerTime;
+    private GpuState _lastState = GpuState.Off;
+    private long _lastStateTime = -StateCacheMs;
+    private const int StateCacheMs = 500; 
 
     private GpuState GetGpuState()
     {
         if (!IsValid) return GpuState.Off;
-
-        long now = Environment.TickCount64;
-        if (_cachedState.HasValue && Math.Abs(now - _lastStateTime) < 500)
-        {
-            return _cachedState.Value;
-        }
-
+        if (Environment.TickCount64 - _lastStateTime < StateCacheMs) return _lastState;
         try
         {
             var perfState = GPUApi.GetCurrentPerformanceState(_internalGpu!.Handle);
             if (verboseLog) Logger.WriteLine($"GPU: {perfState}");
-            _cachedState = GpuState.Active;
+            _lastState = GpuState.Active;
         }
         catch (Exception ex)
         {
             if (verboseLog) Logger.WriteLine($"GPU: {ex.Message}");
-            _cachedState = ex.Message == "NVAPI_GPU_NOT_POWERED" ? GpuState.Asleep : GpuState.Off;
+            _lastState = ex.Message == "NVAPI_GPU_NOT_POWERED" ? GpuState.Asleep : GpuState.Off;
         }
-
-        _lastStateTime = now;
-        return _cachedState.Value;
+        _lastStateTime = Environment.TickCount64;
+        return _lastState;
     }
 
     public int? ReadCurrentTemperature(bool log = false)
@@ -425,6 +413,13 @@ public class NvidiaGpuControl : IGpuControl
         _cachedGpuPower = NvmlHelper.GetGpuPower() ?? 0f;
         _lastGpuPowerTime = now;
         return _cachedGpuPower;
+    }
+
+    public (long usedMb, long totalMb)? GetVramInfo()
+    {
+        if (!IsValid) return null;
+        if (GetGpuState() != GpuState.Active) return null;
+        return NvmlHelper.GetMemoryInfo();
     }
 
 }
