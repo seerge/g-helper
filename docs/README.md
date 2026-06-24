@@ -108,7 +108,7 @@ A built-in in-game overlay (OSD) that shows live **FPS, CPU / GPU temperatures, 
 
 - ``Ctrl + Shift + Alt + O`` - Toggle in-game overlay ON / OFF
 - ``Ctrl + Shift + Alt + Mouse Drag`` - Move overlay
-- ``Ctrl + Shift + Alt + Mouse Click`` - Switch mode (Light / Default / Full)
+- ``Ctrl + Shift + Alt + Mouse Click`` - Switch mode (Light / Default / Full / Complete)
 - ``Ctrl + Shift + Alt + Wheel`` - Resize overlay
 - ``Ctrl + Shift + Alt + Wheel Click`` - Reset overlay size
 
