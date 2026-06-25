@@ -958,4 +958,10 @@
     <value>يمنع أجهزة PCIe من الدخول في حالات الخمول منخفضة الطاقة.
 موصى به في حال حدوث تعليق عشوائي أو عدم استجابة الأجهزة.</value>
   </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
+  </data>
 </root>

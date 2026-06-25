@@ -119,6 +119,7 @@ namespace GHelper
             }
 
             ProcessHelper.KillSmartDisplayControl();
+            AsusService.StopOnStartup();
 
             Application.EnableVisualStyles();
 
@@ -219,7 +220,7 @@ namespace GHelper
                 settingsForm.VisualiseArmoury(AsusService.IsArmouryRunning());
             });
 
-            if (AppConfig.Is("overlay"))
+            if (AppConfig.IsOverlay())
                 GHelper.Helpers.OverlayLauncher.Start();
 
             Application.Run();
@@ -267,6 +268,8 @@ namespace GHelper
                     bool changed = settingsForm.InitTheme();
                     settingsForm.InitContextMenuTheme();
                     settingsForm.VisualiseIcon();
+                    settingsForm.VisualiseFnLock();
+                    settingsForm.VisualiseBatteryFull();
 
                     if (changed)
                     {
@@ -298,6 +301,8 @@ namespace GHelper
         public static bool SetAutoModes(bool powerChanged = false, bool init = false, bool wakeup = false)
         {
             int skipDelay = wakeup ? 10000 : 3000;
+
+            if (init) gpuControl.CaptureNvBootState();
 
             if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < skipDelay) return false;
             lastAuto = DateTimeOffset.Now.ToUnixTimeMilliseconds();

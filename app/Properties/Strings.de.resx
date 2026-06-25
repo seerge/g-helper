@@ -958,4 +958,10 @@ und startet sie automatisch neu, wenn die GPU aktiviert wird</value>
     <value>Verhindert, dass PCIe-Geräte in energiesparende Leerlaufzustände wechseln.
 Empfohlen, wenn zufällige Hänger oder nicht reagierende Hardware auftreten.</value>
   </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
+  </data>
 </root>
