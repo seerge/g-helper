@@ -124,6 +124,7 @@ namespace GHelper
             }
 
             ProcessHelper.KillSmartDisplayControl();
+            AsusService.StopOnStartup();
 
             Application.EnableVisualStyles();
 
