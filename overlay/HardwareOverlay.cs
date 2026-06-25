@@ -205,6 +205,19 @@ namespace GHelperOverlay
             if (_active) StopOverlay(); else StartOverlay();
         }
 
+        // Called by the tray when the user flips the "Game only" menu item — re-reads
+        // the persisted flag and unhides immediately if game-only just turned off.
+        public void RefreshGameOnly()
+        {
+            _gameOnly = AppConfig.IsOverlayGameOnly();
+            if (!_active) return;
+            if (!_gameOnly && _hidden)
+            {
+                _hidden = false;
+                if (Handle != IntPtr.Zero) User32.ShowWindow(Handle, User32.SW_SHOWNOACTIVATE);
+            }
+        }
+
         private const int WM_NCDESTROY = 0x0082;
         private const int WM_SETCURSOR  = 0x0020;
         protected override void WndProc(ref Message m)
@@ -543,7 +556,12 @@ namespace GHelperOverlay
             int width = cursor + padX;
 
             if (Size.Width != width || Size.Height != totalH)
+            {
+                // Size setter triggers a recursive UpdateLayeredWindow that disposes
+                // and recreates _canvasGfx; e.Graphics here is the now-stale one.
                 Size = new Size(width, totalH);
+                return;
+            }
 
             var g = e.Graphics;
             g.SmoothingMode = SmoothingMode.AntiAlias;

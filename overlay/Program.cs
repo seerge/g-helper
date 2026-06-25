@@ -56,9 +56,17 @@ internal sealed class OverlayContext : ApplicationContext
             Visible = true,
             ContextMenuStrip = new ContextMenuStrip(),
         };
-        _tray.ContextMenuStrip.Items.Add("Exit", null, (_, _) => ExitThread());
 
         _overlay = new HardwareOverlay(_uiInvoker);
+
+        var gameOnly = new ToolStripMenuItem("Only in games") { Checked = AppConfig.IsOverlayGameOnly(), CheckOnClick = true };
+        gameOnly.CheckedChanged += (_, _) =>
+        {
+            AppConfig.Set("overlay_game_only", gameOnly.Checked ? 1 : 0);
+            _overlay.RefreshGameOnly();
+        };
+        _tray.ContextMenuStrip.Items.Add(gameOnly);
+        _tray.ContextMenuStrip.Items.Add("Exit", null, (_, _) => ExitThread());
 
         // Left-click toggles the overlay on/off; right-click keeps opening the
         // context menu (NotifyIcon handles that itself, no wiring needed).
