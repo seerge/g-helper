@@ -83,7 +83,6 @@ namespace GHelper
             sliderDPI.PreviewKeyDown += (_, _) => updateMouseDPI = false;
             sliderDPI.KeyUp += (s, e) => SliderDPI_MouseUp(s, e);
             buttonDPIColor.Click += ButtonDPIColor_Click;
-            pictureDPIColor.Click += (s, e) => buttonDPIColor.PerformClick();
             buttonDPI1.Click += ButtonDPI_Click;
             buttonDPI2.Click += ButtonDPI_Click;
             buttonDPI3.Click += ButtonDPI_Click;
@@ -124,7 +123,6 @@ namespace GHelper
             sliderDeceleration.ValueChanged += SliderDeceleration_ValueChanged;
 
             buttonLightingColor.Click += ButtonLightingColor_Click;
-            pictureBoxLightingColor.Click += (s, e) => buttonLightingColor.PerformClick();
             comboBoxLightingMode.DropDownClosed += ComboBoxLightingMode_DropDownClosed;
             sliderBrightness.MouseUp += SliderBrightness_MouseUp;
             sliderBrightness.KeyUp += SliderBrightness_MouseUp;
@@ -287,7 +285,7 @@ namespace GHelper
         {
             AsusMouseDPI dpi = mouse.DpiSettings[mouse.DpiProfile - 1];
 
-            RColorPicker colorDlg = new RColorPicker(pictureDPIColor.BackColor);
+            RColorPicker colorDlg = new RColorPicker(dpi.Color);
             colorDlg.ColorChanged += c =>
             {
                 dpi.Color = c;
@@ -478,7 +476,7 @@ namespace GHelper
             LightingSetting? ls = mouse.LightingSettingForZone(visibleZone);
             if (ls is null) return;
 
-            RColorPicker colorDlg = new RColorPicker(pictureBoxLightingColor.BackColor);
+            RColorPicker colorDlg = new RColorPicker(ls.RGBColor);
             colorDlg.ColorChanged += c =>
             {
                 ls.RGBColor = c;
@@ -682,7 +680,6 @@ namespace GHelper
             if (!mouse.HasDPIColors())
             {
                 buttonDPIColor.Visible = false;
-                pictureDPIColor.Visible = false;
                 buttonDPI1.Image = ControlHelper.ResizeImage(ControlHelper.TintImage(Properties.Resources.lighting_dot_32, Color.Red), ControlHelper.Scale);
                 buttonDPI2.Image = ControlHelper.ResizeImage(ControlHelper.TintImage(Properties.Resources.lighting_dot_32, Color.Purple), ControlHelper.Scale);
                 buttonDPI3.Image = ControlHelper.ResizeImage(ControlHelper.TintImage(Properties.Resources.lighting_dot_32, Color.Blue), ControlHelper.Scale);
@@ -1258,7 +1255,6 @@ namespace GHelper
 
             checkBoxRandomColor.Visible = mouse.SupportsRandomColor(ls.LightingMode);
 
-            pictureBoxLightingColor.Visible = mouse.SupportsColorSetting(ls.LightingMode);
             buttonLightingColor.Visible = mouse.SupportsColorSetting(ls.LightingMode);
 
             comboBoxAnimationSpeed.Visible = mouse.SupportsAnimationSpeed(ls.LightingMode);
@@ -1274,10 +1270,7 @@ namespace GHelper
                 buttonLightingColor.Visible = !ls.RandomColor;
             }
 
-            if (ls.RandomColor && mouse.SupportsRandomColor(ls.LightingMode))
-                pictureBoxLightingColor.BackColor = Color.Transparent;
-            else
-                pictureBoxLightingColor.BackColor = ls.RGBColor;
+            buttonLightingColor.SwatchColor = ls.RGBColor;
 
             //0x09 => 0
             //0x07 => 1
@@ -1372,7 +1365,7 @@ namespace GHelper
                 return;
             }
             sliderDPI.Value = (int)dpi.DPI;
-            pictureDPIColor.BackColor = dpi.Color;
+            buttonDPIColor.SwatchColor = dpi.Color;
         }
 
         private void AsusMouseSettings_Shown(object? sender, EventArgs e)

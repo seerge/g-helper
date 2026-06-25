@@ -181,13 +181,11 @@ namespace GHelper
             buttonQuit.Click += ButtonQuit_Click;
 
             buttonKeyboardColor.Click += ButtonKeyboardColor_Click;
+            buttonKeyboardColor.Swatch2Click += ButtonKeyboardColor2_Click;
 
             buttonFans.Click += ButtonFans_Click;
             buttonKeyboard.Click += ButtonKeyboard_Click;
             buttonController.Click += ButtonHandheld_Click;
-
-            pictureColor.Click += PictureColor_Click;
-            pictureColor2.Click += PictureColor2_Click;
 
             labelCPUFan.Click += LabelCPUFan_Click;
             labelGPUFan.Click += LabelCPUFan_Click;
@@ -1113,14 +1111,9 @@ namespace GHelper
             RefreshSensors(true);
         }
 
-        private void PictureColor2_Click(object? sender, EventArgs e)
+        private void ButtonKeyboardColor2_Click(object? sender, EventArgs e)
         {
-            SetColorPicker("aura_color2", pictureColor2);
-        }
-
-        private void PictureColor_Click(object? sender, EventArgs e)
-        {
-            buttonKeyboardColor.PerformClick();
+            SetColorPicker("aura_color2", Aura.Color2);
         }
 
         private void ButtonKeyboard_Click(object? sender, EventArgs e)
@@ -1179,9 +1172,9 @@ namespace GHelper
             FansToggle();
         }
 
-        private void SetColorPicker(string colorField = "aura_color", PictureBox? preview = null)
+        private void SetColorPicker(string colorField, Color initial)
         {
-            RColorPicker colorDlg = new RColorPicker((preview ?? pictureColor).BackColor);
+            RColorPicker colorDlg = new RColorPicker(initial);
             colorDlg.ColorChanged += c =>
             {
                 AppConfig.Set(colorField, c.ToArgb());
@@ -1192,17 +1185,12 @@ namespace GHelper
 
         private void ButtonKeyboardColor_Click(object? sender, EventArgs e)
         {
-            SetColorPicker("aura_color");
+            SetColorPicker("aura_color", Aura.Color1);
         }
 
         private void ButtonRearColor_Click(object? sender, EventArgs e)
         {
-            SetColorPicker("rear_color", pictureRearColor);
-        }
-
-        private void PictureRearColor_Click(object? sender, EventArgs e)
-        {
-            SetColorPicker("rear_color", pictureRearColor);
+            SetColorPicker("rear_color", Aura.RearColor);
         }
 
         private void ComboRearLight_SelectedValueChanged(object? sender, EventArgs e)
@@ -1227,9 +1215,8 @@ namespace GHelper
             comboRearLight.SelectedValueChanged += ComboRearLight_SelectedValueChanged;
 
             buttonRearColor.Click += ButtonRearColor_Click;
-            pictureRearColor.Click += PictureRearColor_Click;
 
-            pictureRearColor.BackColor = Aura.RearColor;
+            buttonRearColor.SwatchColor = Aura.RearColor;
             panelRearLight.Visible = true;
         }
 
@@ -1253,7 +1240,7 @@ namespace GHelper
 
             if (Aura.isWhite)
             {
-                panelColor.Visible = false;
+                buttonKeyboardColor.Visible = false;
             }
 
             if (AppConfig.NoAura())
@@ -1277,11 +1264,10 @@ namespace GHelper
 
         private void _VisualiseAura()
         {
-            pictureColor.BackColor = Aura.Color1;
-            pictureColor2.BackColor = Aura.Color2;
-            pictureColor2.Visible = Aura.HasSecondColor();
+            buttonKeyboardColor.SwatchColor = Aura.Color1;
+            buttonKeyboardColor.SwatchColor2 = Aura.HasSecondColor() ? Aura.Color2 : (Color?)null;
 
-            if (panelRearLight.Visible) pictureRearColor.BackColor = Aura.RearColor;
+            if (panelRearLight.Visible) buttonRearColor.SwatchColor = Aura.RearColor;
 
             bool dynamic = AppConfig.IsDynamicLighting() && DynamicLightingHelper.IsEnabled() && !AppConfig.IsDynamicLightingOnly();
 
