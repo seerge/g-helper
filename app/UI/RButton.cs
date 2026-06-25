@@ -109,8 +109,8 @@ namespace GHelper.UI
             base.OnPaint(pevent);
 
             float ratio = pevent.Graphics.DpiX / 192.0f;
-            int border = (int)(ratio * borderSize);
-            int radius = (int)(ratio * borderRadius);
+            int border = (int)Math.Round((ratio * borderSize - 1) / 2) * 2 + 1;
+            int radius = (int)Math.Round(ratio * borderRadius, MidpointRounding.AwayFromZero);
 
             Rectangle rectSurface = ClientRectangle;
 
@@ -142,10 +142,11 @@ namespace GHelper.UI
                             Colors = new[] { bgTop, bgTransparent, bgTransparent },
                             Positions = new[] { 0f, bgEndPos, 1f }
                         };
-                        pevent.Graphics.FillPath(bgBrush, bgPath);
+                        if (!RForm.flatTheme)
+                            pevent.Graphics.FillPath(bgBrush, bgPath);
                     }
 
-                    ControlHelper.DrawGradientBorder(pevent.Graphics, borderRect, borderColor, radius, border, PenAlignment.Outset, ActiveTopLighten);
+                    ControlHelper.DrawGradientBorder(pevent.Graphics, borderRect, borderColor, radius, border, PenAlignment.Outset, RForm.flatTheme ? 0f : ActiveTopLighten);
                 }
                 else if (drawRest)
                 {
@@ -163,6 +164,10 @@ namespace GHelper.UI
                     rect.Y += Image.Height;
                     rect.Height -= Image.Height;
                 }
+                using (var brush = new SolidBrush(Parent.BackColor))
+                    pevent.Graphics.FillRectangle(brush, rect);
+                using (var brush = new SolidBrush(BackColor))
+                    pevent.Graphics.FillRectangle(brush, rect);
                 TextFormatFlags flags = TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.WordBreak;
                 TextRenderer.DrawText(pevent.Graphics, Text, Font, rect, Color.Gray, flags);
             }

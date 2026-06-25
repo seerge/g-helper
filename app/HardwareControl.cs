@@ -51,6 +51,7 @@ public static class HardwareControl
     public static bool readFans;
     public static bool readUsage;
     public static bool readMemory;
+    public static bool readPower;
 
     static long lastUpdate;
 
@@ -752,8 +753,6 @@ public static class HardwareControl
     {
         if (Program.acpi is null) return;
 
-        InitCPUPowerAsync();
-
         if (readFans)
         {
             cpuFanRPM = Program.acpi.GetFan(AsusFan.CPU) * 100;
@@ -804,23 +803,33 @@ public static class HardwareControl
             vramUsedMb = null;
         }
 
-        // Only overwrite with a new reading when the counter returns a valid value.
-        // If the counter is absent or returns 0 for several consecutive ticks (e.g. after
-        // a game exits and invalidates the Intel Energy Meter counter), clear the stale
-        // value so the overlay shows "--" rather than the last-seen wattage.
-        float? newCpu = GetCPUPower() ?? GetIntelMsrPower() ?? GetAmdApuPower();
-        if (newCpu > 0)
+        if (readPower)
         {
-            cpuPower = newCpu;
-            _cpuPowerNullTicks = 0;
+            InitCPUPowerAsync();
+
+            // Only overwrite with a new reading when the counter returns a valid value.
+            // If the counter is absent or returns 0 for several consecutive ticks (e.g. after
+            // a game exits and invalidates the Intel Energy Meter counter), clear the stale
+            // value so the overlay shows "--" rather than the last-seen wattage.
+            float? newCpu = GetCPUPower() ?? GetIntelMsrPower() ?? GetAmdApuPower();
+            if (newCpu > 0)
+            {
+                cpuPower = newCpu;
+                _cpuPowerNullTicks = 0;
+            }
+            else
+            {
+                if (++_cpuPowerNullTicks >= 5)
+                    cpuPower = null;
+            }
+
+            gpuPower = GetGPUPower();
         }
         else
         {
-            if (++_cpuPowerNullTicks >= 5)
-                cpuPower = null;
+            cpuPower = null;
+            gpuPower = null;
         }
-
-        gpuPower = GetGPUPower();
     }
 
     public static double GetBatteryChargePercentage()
