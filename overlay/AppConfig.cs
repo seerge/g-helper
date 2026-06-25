@@ -52,6 +52,12 @@ public static class AppConfig
 
     public static bool Is(string name) => Get(name) == 1;
 
+    // True unless the key exists and is set to 0 — matches main g-helper's semantics
+    // for the `overlay_show_*` keys (defaults to ON if the user never set them).
+    public static bool IsNotFalse(string name) => !Exists(name) || Get(name) != 0;
+
+    public static bool IsOverlayGameOnly() => Is("overlay_game_only");
+
     public static void Set(string name, int value) { values[name] = value.ToString(); Save(); }
 
     public static void Set(string name, string value) { values[name] = value; Save(); }

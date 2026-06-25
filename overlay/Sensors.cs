@@ -16,9 +16,58 @@ public static class Sensors
     public static int?   GpuFanRpm;
     public static int?   CpuUsage;
     public static int?   GpuUsage;
+    public static int?   RamUsage;
+    public static int?   RamUsedMb;
+    public static int?   VramUsage;
+    public static int?   VramUsedMb;
 
     public static bool ReadFans;
     public static bool ReadUsage;
+    public static bool ReadMemory;
+    public static bool ReadPower = true; // overlay gates power reads via this; default-on for backward compat
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct MEMORYSTATUSEX
+    {
+        public uint dwLength;
+        public uint dwMemoryLoad;
+        public ulong ullTotalPhys;
+        public ulong ullAvailPhys;
+        public ulong ullTotalPageFile;
+        public ulong ullAvailPageFile;
+        public ulong ullTotalVirtual;
+        public ulong ullAvailVirtual;
+        public ulong ullAvailExtendedVirtual;
+    }
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool GlobalMemoryStatusEx(ref MEMORYSTATUSEX lpBuffer);
+
+    private static (int percent, int usedMb)? GetRamInfo()
+    {
+        var st = new MEMORYSTATUSEX { dwLength = (uint)Marshal.SizeOf<MEMORYSTATUSEX>() };
+        if (!GlobalMemoryStatusEx(ref st)) return null;
+        int usedMb = (int)((st.ullTotalPhys - st.ullAvailPhys) / (1024 * 1024));
+        return ((int)st.dwMemoryLoad, usedMb);
+    }
+
+    public static string CpuName
+    {
+        get
+        {
+            if (_cpuName != null) return _cpuName;
+            try
+            {
+                using var k = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(
+                    @"HARDWARE\DESCRIPTION\System\CentralProcessor\0");
+                _cpuName = k?.GetValue("ProcessorNameString")?.ToString()?.Trim() ?? "";
+            }
+            catch { _cpuName = ""; }
+            return _cpuName;
+        }
+    }
+    private static string? _cpuName;
 
     private static readonly AsusACPI _acpi = new();
 
@@ -76,6 +125,29 @@ public static class Sensors
         {
             CpuUsage = null;
             GpuUsage = null;
+        }
+
+        if (ReadMemory)
+        {
+            var ram = GetRamInfo();
+            RamUsage = ram?.percent;
+            RamUsedMb = ram?.usedMb;
+
+            var vram = GpuSensors.GetMemoryInfo() ?? GHelperOverlay.Gpu.AmdAdl.DGpuMemoryInfo();
+            if (vram is { totalMb: > 0 } v)
+            {
+                VramUsedMb = (int)v.usedMb;
+                long pct = v.usedMb * 100 / v.totalMb;
+                VramUsage = (int)Math.Max(0, Math.Min(100, pct));
+            }
+            else { VramUsedMb = null; VramUsage = null; }
+        }
+        else
+        {
+            RamUsage = null;
+            RamUsedMb = null;
+            VramUsage = null;
+            VramUsedMb = null;
         }
     }
 

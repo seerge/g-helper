@@ -64,6 +64,18 @@ internal static class AmdAdl
     [DllImport(Dll)] static extern int ADL2_Adapter_AdapterInfo_Get(IntPtr ctx, IntPtr info, int size);
     [DllImport(Dll)] static extern int ADL2_Adapter_ASICFamilyType_Get(IntPtr ctx, int adapter, out AsicFamily family, out int valids);
     [DllImport(Dll)] static extern int ADL2_New_QueryPMLogData_Get(IntPtr ctx, int adapter, out PMLogDataOutput log);
+    [DllImport(Dll)] static extern int ADL2_Adapter_MemoryInfo2_Get(IntPtr ctx, int adapter, out MemoryInfo2 mem);
+    [DllImport(Dll)] static extern int ADL2_Adapter_DedicatedVRAMUsage_Get(IntPtr ctx, int adapter, out int usedMB);
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct MemoryInfo2
+    {
+        public long iMemorySize;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)] public string strMemoryType;
+        public long iMemoryBandwidth, iHyperMemorySize, iInvisibleMemorySize, iVisibleMemorySize;
+    }
+
+    private static long _totalVramMb; // static — cached on first successful query
 
     private static bool _tried, _ready;
     private static IntPtr _ctx;
@@ -151,5 +163,22 @@ internal static class AmdAdl
         if (!PawnIO.CpuInfo.IsAMD) return null;
         Init(); if (!_ready) return null;
         return ReadSensor(_dGpuIndex, PMLOG_INFO_ACTIVITY_GFX);
+    }
+
+    // Discrete AMD GPU VRAM (used, total) in MB; null when no AMD dGPU.
+    public static (long usedMb, long totalMb)? DGpuMemoryInfo()
+    {
+        if (!PawnIO.CpuInfo.IsAMD) return null;
+        Init(); if (!_ready || _dGpuIndex < 0) return null;
+
+        if (_totalVramMb <= 0)
+        {
+            if (ADL2_Adapter_MemoryInfo2_Get(_ctx, _dGpuIndex, out MemoryInfo2 mem) != ADL_SUCCESS) return null;
+            _totalVramMb = mem.iMemorySize / (1024 * 1024);
+            if (_totalVramMb <= 0) return null;
+        }
+
+        if (ADL2_Adapter_DedicatedVRAMUsage_Get(_ctx, _dGpuIndex, out int usedMb) != ADL_SUCCESS) return null;
+        return (usedMb, _totalVramMb);
     }
 }

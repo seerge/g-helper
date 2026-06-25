@@ -208,6 +208,19 @@ public static class GpuSensors
         return Nvml.GetPower() ?? 0f;
     }
 
+    public static (long usedMb, long totalMb)? GetMemoryInfo()
+    {
+        var state = GetState();
+        if (state == State.Off || state == State.Sleeping) return null;
+        return Nvml.GetMemoryInfo();
+    }
+
+    public static string? GetFullName()
+    {
+        if (_gpu == IntPtr.Zero) return null;
+        return Nvml.GetName();
+    }
+
     public static int? GetUsage()
     {
         if (_getDynPstates is null) return null;
@@ -244,6 +257,11 @@ internal static class Nvml
     [DllImport(Dll)] static extern int nvmlShutdown();
     [DllImport(Dll)] static extern int nvmlDeviceGetHandleByIndex_v2(uint index, out IntPtr device);
     [DllImport(Dll)] static extern int nvmlDeviceGetPowerUsage(IntPtr device, out uint powerMilliWatts);
+    [DllImport(Dll)] static extern int nvmlDeviceGetMemoryInfo(IntPtr device, ref nvmlMemory_t mem);
+    [DllImport(Dll, CharSet = CharSet.Ansi)] static extern int nvmlDeviceGetName(IntPtr device, System.Text.StringBuilder name, uint length);
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct nvmlMemory_t { public ulong total, free, used; }
 
     private static readonly object _lock = new();
     private static bool _init;
@@ -295,6 +313,40 @@ internal static class Nvml
                 _init = false;
                 return null;
             }
+        }
+    }
+
+    [HandleProcessCorruptedStateExceptions, System.Security.SecurityCritical]
+    public static (long usedMb, long totalMb)? GetMemoryInfo()
+    {
+        lock (_lock)
+        {
+            if (!Init()) return null;
+            try
+            {
+                if (nvmlDeviceGetHandleByIndex_v2(0, out IntPtr device) != NVML_SUCCESS) return null;
+                var mem = new nvmlMemory_t();
+                if (nvmlDeviceGetMemoryInfo(device, ref mem) != NVML_SUCCESS) return null;
+                const long MB = 1024 * 1024;
+                return ((long)(mem.used / MB), (long)(mem.total / MB));
+            }
+            catch { return null; }
+        }
+    }
+
+    public static string? GetName()
+    {
+        lock (_lock)
+        {
+            if (!Init()) return null;
+            try
+            {
+                if (nvmlDeviceGetHandleByIndex_v2(0, out IntPtr device) != NVML_SUCCESS) return null;
+                var sb = new System.Text.StringBuilder(96);
+                if (nvmlDeviceGetName(device, sb, (uint)sb.Capacity) != NVML_SUCCESS) return null;
+                return sb.ToString();
+            }
+            catch { return null; }
         }
     }
 }

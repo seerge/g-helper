@@ -86,9 +86,6 @@
     <EmbeddedResource Include="Pawn\RyzenSMU.bin">
       <LogicalName>GHelper.RyzenSMU.bin</LogicalName>
     </EmbeddedResource>
-    <EmbeddedResource Include="Pawn\IntelMSR.bin">
-      <LogicalName>GHelper.IntelMSR.bin</LogicalName>
-    </EmbeddedResource>
   </ItemGroup>
 
   <Target Name="PublishOverlayFirst" BeforeTargets="BeforeBuild" Condition="'$(SkipOverlayPublish)'!='true'">

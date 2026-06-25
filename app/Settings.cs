@@ -780,12 +780,12 @@ namespace GHelper
                         case 0:
                             Logger.WriteLine("Monitor Power Off");
                             Aura.SleepBrightness();
-                            Program.hardwareOverlay?.SuspendForDisplayOff();
+                            GHelper.Helpers.OverlayLauncher.Stop();
                             break;
                         case 1:
                             Logger.WriteLine("Monitor Power On");
                             if (!Program.SetAutoModes(wakeup: true)) BatteryControl.AutoBattery();
-                            Program.hardwareOverlay?.ResumeForDisplayOn();
+                            if (AppConfig.IsOverlay()) GHelper.Helpers.OverlayLauncher.Start();
                             break;
                         case 2:
                             Logger.WriteLine("Monitor Dimmed");
