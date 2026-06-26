@@ -358,7 +358,7 @@ namespace GHelper.USB
 
             HasLogo = (feat1 & FEAT1_LOGO) != 0 || AppConfig.IsZ13();
             HasLightbar = (feat1 & FEAT1_LIGHTBAR) != 0;
-            HasRearglow = (feat1 & FEAT1_REARGLOW) != 0;
+            HasRearglow = (feat1 & (FEAT1_REARGLOW | FEAT1_VCUT)) != 0;
 
             isStrix4Zone = BacklightType == AuraBacklightType.MultiZone;
 
