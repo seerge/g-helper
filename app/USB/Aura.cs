@@ -356,6 +356,7 @@ namespace GHelper.USB
 
             AppConfig.Set("backlight_type", typeByte);
 
+            if (feat1 == 0 && AppConfig.IsStrix()) feat1 = FEAT1_LOGO | FEAT1_LIGHTBAR | FEAT1_REARGLOW;
             HasLogo = (feat1 & FEAT1_LOGO) != 0 || AppConfig.IsZ13();
             HasLightbar = (feat1 & FEAT1_LIGHTBAR) != 0;
             HasRearglow = (feat1 & (FEAT1_REARGLOW | FEAT1_VCUT)) != 0;
