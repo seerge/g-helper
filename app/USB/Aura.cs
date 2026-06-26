@@ -116,6 +116,7 @@ namespace GHelper.USB
         public static bool HasLogo { get; private set; }
         public static bool HasLightbar { get; private set; }
         public static bool HasRearglow { get; private set; }
+        public static bool IsOldStrix { get; private set; }
 
         static System.Timers.Timer timer = new System.Timers.Timer(1000);
 
@@ -356,7 +357,8 @@ namespace GHelper.USB
 
             AppConfig.Set("backlight_type", typeByte);
 
-            if (feat1 == 0 && AppConfig.IsStrix()) feat1 = FEAT1_LOGO | FEAT1_LIGHTBAR | FEAT1_REARGLOW;
+            IsOldStrix = feat1 == 0 && AppConfig.IsStrix();
+            if (IsOldStrix) feat1 = FEAT1_LOGO | FEAT1_LIGHTBAR;
             HasLogo = (feat1 & FEAT1_LOGO) != 0 || AppConfig.IsZ13();
             HasLightbar = (feat1 & FEAT1_LIGHTBAR) != 0;
             HasRearglow = (feat1 & (FEAT1_REARGLOW | FEAT1_VCUT)) != 0;
