@@ -1,10 +1,12 @@
-﻿using GHelper.Gpu;
+using GHelper.Gpu;
 using GHelper.Helpers;
 using GHelper.Input;
 using GHelper.Peripherals;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using NAudio.Wave;
+using NAudio.CoreAudioApi;
 using static GHelper.Helpers.DynamicLightingHelper;
 
 namespace GHelper.USB
@@ -56,6 +58,7 @@ namespace GHelper.USB
         BATTERY = 23,
         GRADIENT = 24,
         ZONETEST = 25,
+        AUDIO = 26,
     }
 
     public enum AuraSpeed : int
@@ -194,6 +197,7 @@ namespace GHelper.USB
             modes[AuraMode.GPUMODE] = "GPU Mode";
             modes[AuraMode.AMBIENT] = "Ambient";
             modes[AuraMode.BATTERY] = "Battery";
+            modes[AuraMode.AUDIO] = Properties.Strings.MatrixAudio;
 
             if (isStrixKb)
             {
@@ -822,8 +826,15 @@ namespace GHelper.USB
             }
 
             timer.Stop();
+            CustomRGB.StopAudio();
 
             Logger.WriteLine($"AuraMode: {Mode}");
+
+            if (Mode == AuraMode.AUDIO)
+            {
+                CustomRGB.ApplyAudio(true);
+                return;
+            }
 
             if (Mode == AuraMode.HEATMAP)
             {
@@ -1227,6 +1238,263 @@ namespace GHelper.USB
                 }
             }
 
+            private static WasapiLoopbackCapture? audioDevice;
+            private static MMDevice? activeAudioDevice;
+            private static MMDeviceEnumerator? audioDeviceEnum;
+            private static AudioNotificationClient? audioNotificationClient;
+            private static double[]? audioValues;
+            private static readonly object audioLock = new object();
+            private static List<double> audioMaxes = new List<double>();
+            private static long lastAudioPresent = 0;
+            private static string? audioDeviceId = null;
+            private static bool isListening = false;
+            private static bool isStopping = false;
+            private static bool isProcessing = false;
+
+            private class AudioNotificationClient : NAudio.CoreAudioApi.Interfaces.IMMNotificationClient
+            {
+                public void OnDeviceStateChanged(string deviceId, DeviceState newState) {}
+                public void OnDeviceAdded(string pwstrDeviceId) {}
+                public void OnDeviceRemoved(string deviceId) {}
+                public void OnDefaultDeviceChanged(DataFlow flow, Role role, string defaultDeviceId)
+                {
+                    if (!isListening || isStopping) return;
+                    if (flow != DataFlow.Render || role != Role.Console) return;
+                    if (!string.IsNullOrEmpty(audioDeviceId) && audioDeviceId == defaultDeviceId) return;
+
+                    Logger.WriteLine("Aura Audio: Default Output changed to " + defaultDeviceId);
+                    
+                    Task.Run(() =>
+                    {
+                        StopAudio();
+                        ApplyAudio(true);
+                    });
+                }
+                public void OnPropertyValueChanged(string pwstrDeviceId, PropertyKey key) {}
+            }
+
+            public static void StopAudio()
+            {
+                lock (audioLock)
+                {
+                    if (!isListening) return;
+                    isStopping = true;
+                    isListening = false;
+
+                    if (audioDevice is not null)
+                    {
+                        try
+                        {
+                            audioDevice.DataAvailable -= AudioDevice_DataAvailable;
+                            audioDevice.StopRecording();
+                            audioDevice.Dispose();
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.WriteLine("Aura Audio stop: " + ex.ToString());
+                        }
+                        audioDevice = null;
+                    }
+
+                    if (activeAudioDevice is not null)
+                    {
+                        try { activeAudioDevice.Dispose(); } catch { /* ignore */ }
+                        activeAudioDevice = null;
+                    }
+
+                    if (audioDeviceEnum is not null)
+                    {
+                        if (audioNotificationClient is not null)
+                        {
+                            try { audioDeviceEnum.UnregisterEndpointNotificationCallback(audioNotificationClient); } catch { /* ignore */ }
+                        }
+                        try { audioDeviceEnum.Dispose(); } catch { /* ignore */ }
+                        audioDeviceEnum = null;
+                    }
+
+                    audioNotificationClient = null;
+                    audioDeviceId = null;
+                    isStopping = false;
+                    Logger.WriteLine("Aura Audio: Unsubscribed from Audio");
+                }
+            }
+
+            public static void ApplyAudio(bool init = false)
+            {
+                if (!backlight || sessionLock)
+                {
+                    StopAudio();
+                    return;
+                }
+
+                lock (audioLock)
+                {
+                    if (isListening) return;
+                    isListening = true;
+                    isStopping = false;
+                    audioMaxes.Clear();
+
+                    try
+                    {
+                        audioNotificationClient = new AudioNotificationClient();
+                        audioDeviceEnum = new MMDeviceEnumerator();
+                        audioDeviceEnum.RegisterEndpointNotificationCallback(audioNotificationClient);
+
+                        activeAudioDevice = audioDeviceEnum.GetDefaultAudioEndpoint(DataFlow.Render, Role.Console);
+                        audioDevice = new WasapiLoopbackCapture(activeAudioDevice);
+                        audioDeviceId = activeAudioDevice.ID;
+
+                        var fmt = audioDevice.WaveFormat;
+                        audioValues = new double[fmt.SampleRate / 1000];
+
+                        audioDevice.DataAvailable += AudioDevice_DataAvailable;
+                        audioDevice.StartRecording();
+                        Logger.WriteLine("Aura Audio: Subscribed to Audio");
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.WriteLine("Aura Audio: failed to start " + ex.ToString());
+                        isListening = false;
+                    }
+                }
+            }
+
+            private static void AudioDevice_DataAvailable(object? sender, WaveInEventArgs e)
+            {
+                if (!isListening || isStopping || audioDevice is null || audioValues is null) return;
+
+                lock (audioLock)
+                {
+                    if (isProcessing) return;
+                    isProcessing = true;
+                }
+
+                try
+                {
+                    int bytesPerSamplePerChannel = audioDevice.WaveFormat.BitsPerSample / 8;
+                    int bytesPerSample = bytesPerSamplePerChannel * audioDevice.WaveFormat.Channels;
+                    int bufferSampleCount = e.Buffer.Length / bytesPerSample;
+
+                    if (bufferSampleCount >= audioValues.Length)
+                    {
+                        bufferSampleCount = audioValues.Length;
+                    }
+
+                    if (bytesPerSamplePerChannel == 2 && audioDevice.WaveFormat.Encoding == WaveFormatEncoding.Pcm)
+                    {
+                        for (int i = 0; i < bufferSampleCount; i++)
+                            audioValues[i] = BitConverter.ToInt16(e.Buffer, i * bytesPerSample);
+                    }
+                    else if (bytesPerSamplePerChannel == 4 && audioDevice.WaveFormat.Encoding == WaveFormatEncoding.Pcm)
+                    {
+                        for (int i = 0; i < bufferSampleCount; i++)
+                            audioValues[i] = BitConverter.ToInt32(e.Buffer, i * bytesPerSample);
+                    }
+                    else if (bytesPerSamplePerChannel == 4 && audioDevice.WaveFormat.Encoding == WaveFormatEncoding.IeeeFloat)
+                    {
+                        for (int i = 0; i < bufferSampleCount; i++)
+                            audioValues[i] = BitConverter.ToSingle(e.Buffer, i * bytesPerSample);
+                    }
+
+                    double[] paddedAudio = FftSharp.Pad.ZeroPad(audioValues);
+                    var fft = FftSharp.FFT.Forward(paddedAudio);
+                    double[] fftMag = FftSharp.FFT.Magnitude(fft);
+
+                    PresentAudio(fftMag);
+                }
+                finally
+                {
+                    lock (audioLock)
+                    {
+                        isProcessing = false;
+                    }
+                }
+            }
+
+            private static void PresentAudio(double[] audio)
+            {
+                if (!isListening || isStopping) return;
+
+                long now = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                int delay = isACPI ? 150 : 50; 
+                if (Math.Abs(now - lastAudioPresent) < delay) return;
+                lastAudioPresent = now;
+
+                int size = 20;
+                double[] bars = new double[size];
+                double max = 2, maxAverage;
+
+                for (int i = 0; i < size; i++)
+                {
+                    bars[i] = Math.Sqrt(audio[i] * 10000);
+                    if (bars[i] > max) max = bars[i];
+                }
+
+                audioMaxes.Add(max);
+                if (audioMaxes.Count > 20) audioMaxes.RemoveAt(0);
+                maxAverage = audioMaxes.Average();
+
+                float masterVolume = 1f;
+                if (activeAudioDevice is not null)
+                {
+                    try { masterVolume = activeAudioDevice.AudioEndpointVolume.MasterVolumeLevelScalar; } catch { /* ignore */ }
+                }
+
+                if (isStrix)
+                {
+                    Color[] colors = new Color[AURA_ZONES];
+
+                    double z0Val = bars[0];
+                    double z1Val = bars[1] + bars[2];
+                    double z2Val = bars[3] + bars[4] + bars[5];
+                    double z3Val = bars[6] + bars[7] + bars[8] + bars[9];
+
+                    float t0 = (float)(z0Val / maxAverage) * masterVolume;
+                    float t1 = (float)(z1Val / (maxAverage * 1.5)) * masterVolume;
+                    float t2 = (float)(z2Val / (maxAverage * 2.0)) * masterVolume;
+                    float t3 = (float)(z3Val / (maxAverage * 2.5)) * masterVolume;
+
+                    colors[0] = InterpolateColor(t0);
+                    colors[1] = InterpolateColor(t1);
+                    colors[2] = InterpolateColor(t2);
+                    colors[3] = InterpolateColor(t3);
+
+                    colors[4] = colors[0];
+                    colors[5] = colors[1];
+                    colors[6] = colors[2];
+                    colors[7] = colors[3];
+
+                    ApplyDirect(colors);
+                }
+                else
+                {
+                    double total = (bars[0] + bars[1] + bars[2] + bars[3]) / 4.0;
+                    float t = (float)(total / maxAverage) * masterVolume;
+                    Color color = InterpolateColor(t);
+                    ApplyDirect(color);
+                }
+            }
+
+            private static Color ScaleColor(float weight)
+            {
+                if (float.IsNaN(weight) || weight < 0f) weight = 0f;
+                if (weight > 1f) weight = 1f;
+
+                int r = (int)(Color1.R * weight);
+                int g = (int)(Color1.G * weight);
+                int b = (int)(Color1.B * weight);
+
+                return ColorDim(Color.FromArgb(r, g, b));
+            }
+
+            private static Color InterpolateColor(float weight)
+            {
+                const float threshold = 0.1f;
+                if (weight < threshold) weight = 0f;
+                else weight = (weight - threshold) / (1f - threshold);
+
+                return ScaleColor(weight);
+            }
         }
 
     }
