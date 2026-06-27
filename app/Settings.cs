@@ -865,6 +865,7 @@ namespace GHelper
                 menuUltimate.Click += ButtonUltimate_Click;
                 menuUltimate.Margin = padding;
                 menuUltimate.Checked = buttonUltimate.Activated;
+                menuUltimate.Visible = buttonUltimate.Visible;
                 contextMenuStrip.Items.Add(menuUltimate);
 
                 menuOptimized = new ToolStripMenuItem(Properties.Strings.Optimized);
