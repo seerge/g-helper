@@ -104,7 +104,7 @@ public class AmdGpuControl : IGpuControl
         if (!IsValid) return false;
 
         if (!GetPMLog(out ADLPMLogDataOutput adlpmLogDataOutput))
-            return null;
+            return GetLegacy().temp;
 
         if (ADL2_New_QueryPMLogData_Get(_adlContextHandle, _internalDiscreteAdapter.AdapterIndex, out ADLPMLogDataOutput adlpmLogDataOutput) != Adl2.ADL_SUCCESS)
             return false;
@@ -138,11 +138,11 @@ public class AmdGpuControl : IGpuControl
         if (_adlContextHandle == nint.Zero || _iGPU == null) return false;
 
         if (!GetPMLog(out ADLPMLogDataOutput adlpmLogDataOutput))
-            return null;
+            return GetLegacy().use;
 
         ADLSingleSensorData gpuUsage = adlpmLogDataOutput.Sensors[(int)ADLSensorType.PMLOG_INFO_ACTIVITY_GFX];
         if (gpuUsage.Supported == 0)
-            return null;
+            return GetLegacy().use;
 
         if (ADL2_New_QueryPMLogData_Get(_adlContextHandle, ((ADLAdapterInfo)_iGPU).AdapterIndex, out ADLPMLogDataOutput adlpmLogDataOutput) != Adl2.ADL_SUCCESS)
             return false;
@@ -210,7 +210,7 @@ public class AmdGpuControl : IGpuControl
     public float? GetGpuPower()
     {
         if (!IsValid) return null;
-        if (!GetPMLog(out ADLPMLogDataOutput adlpmLogDataOutput)) return null;
+        if (!GetPMLog(out ADLPMLogDataOutput adlpmLogDataOutput)) return GetLegacy().power;
 
         foreach (var sensorType in new[] { ADLSensorType.PMLOG_ASIC_POWER, ADLSensorType.PMLOG_GFX_POWER, ADLSensorType.PMLOG_BOARD_POWER })
         {

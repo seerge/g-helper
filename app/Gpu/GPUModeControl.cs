@@ -104,6 +104,13 @@ namespace GHelper.Gpu
             }
             else if (GPUMode == AsusACPI.GPUModeUltimate)
             {
+                if (Program.acpi.DeviceGet(AsusACPI.GPUMux) < 0)
+                {
+                    Logger.WriteLine("Mux not supported");
+                    settings.VisualiseGPUMode();
+                    return;
+                }
+
                 DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertUltimateOn, Properties.Strings.AlertUltimateTitle, MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {

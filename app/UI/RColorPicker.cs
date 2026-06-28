@@ -91,11 +91,11 @@ namespace GHelper.UI
             preview = new Panel { Location = new Point(S(rightX), S(pad)), Size = new Size(S(rightW), S(110)), BorderStyle = BorderStyle.FixedSingle };
 
             var hexLabel = new Label { Text = "Hex", Location = new Point(S(rightX), S(pad + 118)), AutoSize = true };
-            hexBox = new RTextBox { Location = new Point(S(rightX), S(pad + 138)), Size = new Size(S(rightW), S(23)), MaxLength = 7 };
+            hexBox = new RTextBox { Location = new Point(S(rightX), S(pad + 145)), Size = new Size(S(rightW), S(23)), MaxLength = 7 };
             hexBox.TextChanged += (s, e) => { if (!suppressHex) ApplyHex(false); };
             hexBox.Leave += (s, e) => ApplyHex(true);
 
-            rgbLabel = new Label { Location = new Point(S(rightX), S(pad + 168)), AutoSize = true, BackColor = Color.Transparent };
+            rgbLabel = new Label { Location = new Point(S(rightX), S(pad + 174)), AutoSize = true, BackColor = Color.Transparent };
 
             int gridY = pad + square + 10;
             for (int i = 0; i < Defaults.Length; i++)
