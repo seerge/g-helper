@@ -175,6 +175,12 @@ namespace GHelper.UI
                 TextRenderer.DrawText(pevent.Graphics, Text, Font, rect, Color.Gray, flags);
             }
 
+            if (!Enabled && !Borderless && activated && borderColor.A > 0)
+            {
+                Rectangle borderRect = new Rectangle(border, border, rectSurface.Width - 2 * border, rectSurface.Height - 2 * border);
+                ControlHelper.DrawGradientBorder(pevent.Graphics, borderRect, borderColor, radius, border, PenAlignment.Outset, RForm.flatTheme ? 0f : ActiveTopLighten);
+            }
+
 
         }
 
