@@ -16,6 +16,18 @@ namespace GHelperOverlay
         [DllImport("user32.dll")]
         private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
 
+        // Foreground-change subscription (alt-tab detection).
+        [DllImport("user32.dll")]
+        private static extern IntPtr SetWinEventHook(uint eventMin, uint eventMax, IntPtr hmodWinEventProc,
+            WinEventProc lpfnWinEventProc, uint idProcess, uint idThread, uint dwFlags);
+        [DllImport("user32.dll")]
+        private static extern bool UnhookWinEvent(IntPtr hWinEventHook);
+        private delegate void WinEventProc(IntPtr hWinEventHook, uint eventType, IntPtr hwnd,
+            int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
+        private const uint EVENT_SYSTEM_FOREGROUND = 0x0003;
+        private const uint WINEVENT_OUTOFCONTEXT = 0x0000;
+        private const uint WINEVENT_SKIPOWNPROCESS = 0x0002;
+
         // Drag support
         [DllImport("user32.dll")]
         private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
@@ -169,6 +181,8 @@ namespace GHelperOverlay
         private bool _hidden;
         private int _shownPid;
         private bool _fgDesktop;
+        private IntPtr _fgHook;
+        private WinEventProc? _fgHookProc; // keep delegate alive
         private const int MinGameFps = 6;
 
         private static readonly HashSet<string> DesktopApps = new(StringComparer.OrdinalIgnoreCase)
@@ -478,6 +492,21 @@ namespace GHelperOverlay
         private void UpdateGameVisibility(int fgPid)
         {
             if (_currentFps >= MinGameFps && !_fgDesktop) _shownPid = fgPid;
+            bool show = fgPid == _shownPid;
+            if (show != _hidden) return;
+            _hidden = !show;
+            if (Handle != IntPtr.Zero)
+                User32.ShowWindow(Handle, (short)(_hidden ? User32.SW_HIDE : User32.SW_SHOWNOACTIVATE));
+        }
+
+        // Instant show/hide vs the latched game. Doesn't latch _shownPid (timer's job —
+        // _currentFps still reflects the old foreground here). UI thread, so no lock needed.
+        private void OnForegroundChanged()
+        {
+            if (!_active || !_gameOnly) return;
+            GetWindowThreadProcessId(GetForegroundWindow(), out uint fgPidRaw);
+            int fgPid = (int)fgPidRaw;
+            if (fgPid == 0 || fgPid == _ownPid) return;
             bool show = fgPid == _shownPid;
             if (show != _hidden) return;
             _hidden = !show;
@@ -935,11 +964,20 @@ namespace GHelperOverlay
             Tick();
             RestorePosition(); // re-anchor once the first paint has settled the collapsed width
             _timer.Start();
+
+            if (_gameOnly && _fgHook == IntPtr.Zero)
+            {
+                _fgHookProc = (_, _, _, _, _, _, _) => OnForegroundChanged();
+                _fgHook = SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND,
+                    IntPtr.Zero, _fgHookProc, 0, 0, WINEVENT_OUTOFCONTEXT | WINEVENT_SKIPOWNPROCESS);
+            }
         }
 
         public void StopOverlay()
         {
             _active = false;
+            if (_fgHook != IntPtr.Zero) { UnhookWinEvent(_fgHook); _fgHook = IntPtr.Zero; }
+            _fgHookProc = null;
             Sensors.ReadUsage = false;
             Sensors.ReadFans = false;
             Sensors.ReadMemory = false;
