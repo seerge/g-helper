@@ -961,7 +961,4 @@ Ajánlott, ha véletlenszerű lefagyásokat vagy nem reagáló hardvert tapaszta
   <data name="Overlay" xml:space="preserve">
     <value>Átfedés</value>
   </data>
-  <data name="OverlayOnlyInGames" xml:space="preserve">
-    <value>Csak a játékokban jelenítse meg</value>
-  </data>
 </root>

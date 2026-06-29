@@ -5,7 +5,6 @@ using GHelper.Gpu;
 using GHelper.Helpers;
 using GHelper.Input;
 using GHelper.Mode;
-using GHelper.Overlay;
 using GHelper.Peripherals;
 using GHelper.USB;
 using Microsoft.Win32;
@@ -31,8 +30,6 @@ namespace GHelper
         public static ClamshellModeControl clamshellControl;
 
         public static ToastForm toast;
-
-        public static HardwareOverlay? hardwareOverlay;
 
         public static IntPtr unRegPowerNotify, unRegPowerNotifyLid, unRegSuspendResume;
         public static int WM_TASKBARCREATED = 0;
@@ -97,8 +94,6 @@ namespace GHelper
             allyControl = new AllyControl(settingsForm);
             clamshellControl = new ClamshellModeControl();
             toast = new ToastForm();
-
-            hardwareOverlay = new HardwareOverlay();
 
             ProcessHelper.CheckAlreadyRunning();
             ProcessHelper.SetPriority();
@@ -166,6 +161,7 @@ namespace GHelper
 
             SystemEvents.SessionSwitch += SystemEvents_SessionSwitch;
             SystemEvents.SessionEnding += SystemEvents_SessionEnding;
+            Application.ApplicationExit += OnExit;
 
             clamshellControl.RegisterDisplayEvents();
             clamshellControl.ToggleLidAction();
@@ -225,7 +221,7 @@ namespace GHelper
             });
 
             if (AppConfig.IsOverlay())
-                hardwareOverlay?.StartOverlay();
+                GHelper.Helpers.OverlayLauncher.Start();
 
             Application.Run();
         }
@@ -471,6 +467,8 @@ namespace GHelper
                 trayIcon.Visible = false;
                 trayIcon.Dispose();
             }
+
+            GHelper.Helpers.OverlayLauncher.Stop();
 
             PeripheralsProvider.UnregisterForDeviceEvents();
             clamshellControl.UnregisterDisplayEvents();

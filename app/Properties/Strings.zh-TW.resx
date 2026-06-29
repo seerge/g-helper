@@ -961,7 +961,4 @@
   <data name="Overlay" xml:space="preserve">
     <value>效能監控(OSD)</value>
   </data>
-  <data name="OverlayOnlyInGames" xml:space="preserve">
-    <value>僅遊戲時顯示OSD</value>
-  </data>
 </root>

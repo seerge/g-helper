@@ -686,23 +686,5 @@ public class Adl2
 
         [DllImport(Atiadlxx_FileName)]
         public static extern int ADL2_Overdrive6_CurrentPower_Get(nint context, int adapterIndex, int powerType, out int currentValue);
-
-        [DllImport(Atiadlxx_FileName)]
-        public static extern int ADL2_Adapter_DedicatedVRAMUsage_Get(nint context, int iAdapterIndex, out int iVRAMUsageInMB);
-
-        [DllImport(Atiadlxx_FileName)]
-        public static extern int ADL2_Adapter_MemoryInfo2_Get(nint context, int iAdapterIndex, out ADLMemoryInfo2 lpMemoryInfo2);
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct ADLMemoryInfo2
-        {
-            public long iMemorySize;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
-            public string strMemoryType;
-            public long iMemoryBandwidth;
-            public long iHyperMemorySize;
-            public long iInvisibleMemorySize;
-            public long iVisibleMemorySize;
-        }
     }
 }

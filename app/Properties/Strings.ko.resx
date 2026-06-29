@@ -961,7 +961,4 @@ GPU가 활성화될 때 자동으로 다시 시작합니다</value>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
-  <data name="OverlayOnlyInGames" xml:space="preserve">
-    <value>Overlay only in games</value>
-  </data>
 </root>

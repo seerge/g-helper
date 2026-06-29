@@ -43,7 +43,7 @@ namespace PawnIO
             if (!_init || !ReadMsr(MSR_PKG_ENERGY_STATUS, out ulong raw)) return null;
 
             uint energy = (uint)raw;
-            long tick = Environment.TickCount64;
+            long tick = Environment.TickCount;
 
             if (_lastTick == 0) { _lastEnergy = energy; _lastTick = tick; return null; }
 

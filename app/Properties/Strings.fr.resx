@@ -961,7 +961,4 @@ Recommandé en cas de blocages aléatoires ou de matériel qui ne répond plus.<
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
-  <data name="OverlayOnlyInGames" xml:space="preserve">
-    <value>Overlay only in games</value>
-  </data>
 </root>

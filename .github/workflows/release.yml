@@ -20,36 +20,72 @@ jobs:
       with:
         dotnet-version: '8.0.x'
 
-    - name: Publish
+    - name: Publish overlay (net48)
       run: |
-        dotnet publish app/GHelper.sln --configuration Release --runtime win-x64 -p:PublishSingleFile=true --no-self-contained
+        dotnet publish overlay/GHelperOverlay.csproj -c Release --nologo
 
-    - name: Upload unsigned EXE
-      id: upload-unsigned
+    - name: Upload unsigned overlay for signing
+      id: upload-unsigned-overlay
       uses: actions/upload-artifact@v4
       with:
-        path: app/bin/x64/Release/net8.0-windows/win-x64/publish/GHelper.exe
+        name: GHelperOverlay-unsigned
+        path: overlay/bin/Release/net48/publish/GHelperOverlay.exe
 
-    - id: sign-exe
+    - id: sign-overlay
       uses: signpath/github-action-submit-signing-request@v1.1
       with:
         api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
         organization-id: ${{ secrets.SIGNPATH_ORG_ID }}
         project-slug: ${{ secrets.SIGNPATH_PROJECT }}
         signing-policy-slug: ${{ secrets.SIGNPATH_POLICY }}
-        github-artifact-id: ${{ steps.upload-unsigned.outputs.artifact-id }}
+        artifact-configuration-slug: overlay
+        github-artifact-id: ${{ steps.upload-unsigned-overlay.outputs.artifact-id }}
+        wait-for-completion: true
+        output-artifact-directory: 'overlay/bin/Release/net48/publish'
+
+    - name: Publish main (embeds signed overlay)
+      run: |
+        dotnet publish app/GHelper.csproj -c Release -r win-x64 --no-self-contained -p:PublishSingleFile=true -p:SkipOverlayPublish=true --nologo
+
+    - name: Upload unsigned main for signing
+      id: upload-unsigned-main
+      uses: actions/upload-artifact@v4
+      with:
+        name: GHelper-unsigned
+        path: app/bin/Release/net8.0-windows/win-x64/publish/GHelper.exe
+
+    - id: sign-main
+      uses: signpath/github-action-submit-signing-request@v1.1
+      with:
+        api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+        organization-id: ${{ secrets.SIGNPATH_ORG_ID }}
+        project-slug: ${{ secrets.SIGNPATH_PROJECT }}
+        signing-policy-slug: ${{ secrets.SIGNPATH_POLICY }}
+        artifact-configuration-slug: initial
+        github-artifact-id: ${{ steps.upload-unsigned-main.outputs.artifact-id }}
         wait-for-completion: true
         output-artifact-directory: './signed'
 
-    - name: Create ZIP from signed EXE
+    - name: Create ZIP from signed main
       run: powershell Compress-Archive ./signed/GHelper.exe ./signed/GHelper.zip
 
-    - name: Upload signed EXE and ZIP
+    - name: Upload signed artifacts (downloadable from workflow run)
+      uses: actions/upload-artifact@v4
+      with:
+        name: GHelper-signed
+        path: |
+          ./signed/GHelper.exe
+          ./signed/GHelper.zip
+
+    - name: Upload signed main + ZIP to release
+      if: github.event_name == 'release'
       env:
         GH_TOKEN: ${{ github.token }}
       run: |
         gh release upload "${{ github.event.release.tag_name }}" ./signed/GHelper.exe ./signed/GHelper.zip --clobber
+
     - name: Generate SLSA build provenance attestation
+      if: github.event_name == 'release'
       uses: actions/attest-build-provenance@v2
       with:
         subject-path: |
