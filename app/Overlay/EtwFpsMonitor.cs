@@ -361,7 +361,12 @@ namespace GHelper.Overlay
             // 1. Create the real-time ETW session
             var props = BuildSessionProperties();
             uint hr = StartTrace(out _sessionHandle, SessionName, ref props);
-            if (hr != ERROR_SUCCESS && hr != 0xB7 /*ERROR_ALREADY_EXISTS*/)
+            if (hr == 0xB7 /*ERROR_ALREADY_EXISTS*/)
+            {
+                StopTrace(0, SessionName, ref stopProps);
+                hr = StartTrace(out _sessionHandle, SessionName, ref props);
+            }
+            if (hr != ERROR_SUCCESS)
                 throw new InvalidOperationException($"StartTrace failed: 0x{hr:X}");
 
             // 2a. Subscribe to the DXGI provider (DX11 + DX12 games that go through
