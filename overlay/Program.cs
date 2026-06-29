@@ -49,24 +49,40 @@ internal sealed class OverlayContext : ApplicationContext
         _uiInvoker.CreateControl();
 
         _trayIcon = TrayIconFactory.Build();
+
+        // Dark theme + larger padding/font so the menu matches main g-helper's tray
+        // (the default ContextMenuStrip renders tiny, light-themed items).
+        var menu = new CustomContextMenu
+        {
+            BackColor = Color.FromArgb(255, 30, 30, 30),
+            ForeColor = Color.FromArgb(255, 240, 240, 240),
+            Font = new Font("Segoe UI", 10f),
+            Renderer = new CustomMenuRenderer(),
+        };
+
         _tray = new NotifyIcon
         {
             Icon = _trayIcon,
             Text = "G-Helper Overlay",
             Visible = true,
-            ContextMenuStrip = new ContextMenuStrip(),
+            ContextMenuStrip = menu,
         };
 
         _overlay = new HardwareOverlay(_uiInvoker);
 
-        var gameOnly = new ToolStripMenuItem("Only in games") { Checked = AppConfig.IsOverlayGameOnly(), CheckOnClick = true };
+        var padding = new Padding(5, 5, 5, 5);
+
+        var gameOnly = new ToolStripMenuItem("Only in games") { Checked = AppConfig.IsOverlayGameOnly(), CheckOnClick = true, Margin = padding };
         gameOnly.CheckedChanged += (_, _) =>
         {
             AppConfig.Set("overlay_game_only", gameOnly.Checked ? 1 : 0);
             _overlay.RefreshGameOnly();
         };
-        _tray.ContextMenuStrip.Items.Add(gameOnly);
-        _tray.ContextMenuStrip.Items.Add("Exit", null, (_, _) => ExitThread());
+        menu.Items.Add(gameOnly);
+
+        var exit = new ToolStripMenuItem("Exit") { Margin = padding };
+        exit.Click += (_, _) => ExitThread();
+        menu.Items.Add(exit);
 
         // Left-click toggles the overlay on/off; right-click keeps opening the
         // context menu (NotifyIcon handles that itself, no wiring needed).
