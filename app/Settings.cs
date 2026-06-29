@@ -46,6 +46,7 @@ namespace GHelper
         static long lastLostFocus;
 
         bool isGpuSection = true;
+        bool isMuxGpu = true;
 
         bool batteryMouseOver = false;
         bool batteryFullMouseOver = false;
@@ -865,7 +866,7 @@ namespace GHelper
                 menuUltimate.Click += ButtonUltimate_Click;
                 menuUltimate.Margin = padding;
                 menuUltimate.Checked = buttonUltimate.Activated;
-                menuUltimate.Visible = buttonUltimate.Visible;
+                menuUltimate.Visible = isMuxGpu;
                 contextMenuStrip.Items.Add(menuUltimate);
 
                 menuOptimized = new ToolStripMenuItem(Properties.Strings.Optimized);
@@ -1801,6 +1802,8 @@ namespace GHelper
 
         public void VisualiseGPUButtons(bool eco = true, bool ultimate = true)
         {
+            isMuxGpu = ultimate;
+
             if (!eco)
             {
                 menuEco.Visible = buttonEco.Visible = false;
