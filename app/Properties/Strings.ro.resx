@@ -961,7 +961,4 @@ Recomandat dacă întâmpinați blocaje aleatorii sau hardware care nu răspunde
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
-  <data name="OverlayOnlyInGames" xml:space="preserve">
-    <value>Overlay only in games</value>
-  </data>
 </root>
