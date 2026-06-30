@@ -167,6 +167,7 @@ namespace GHelper.AutoUpdate
                 {
                     var bytes = await client.GetByteArrayAsync(uri);
                     File.WriteAllBytes(zipLocation, bytes);
+                    Logger.WriteLine($"Downloaded {bytes.Length}b: {zipLocation} (exists={File.Exists(zipLocation)}, size={new FileInfo(zipLocation).Length})");
                 }
                 catch (Exception ex)
                 {
