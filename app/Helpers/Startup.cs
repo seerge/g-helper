@@ -174,7 +174,7 @@ public class Startup
             {
                 TaskService.Instance.RootFolder.RegisterTaskDefinition(taskName, td);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 if (ProcessHelper.IsUserAdministrator())
                     MessageBox.Show("Can't create a start up task. Try running Task Scheduler by hand and manually deleting GHelper task if it exists there.", "Scheduler Error", MessageBoxButtons.OK);
@@ -197,7 +197,7 @@ public class Startup
             {
                 taskService.RootFolder.DeleteTask(taskName);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 if (ProcessHelper.IsUserAdministrator())
                     MessageBox.Show("Can't remove task. Try running Task Scheduler by hand and manually deleting GHelper task if it exists there.", "Scheduler Error", MessageBoxButtons.OK);

@@ -450,7 +450,7 @@ public static class HardwareControl
 
             cpuTemp = _cpuTempCounter.NextValue() - 273;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             //Debug.WriteLine("Failed reading CPU temp :" + ex.Message);
         }
@@ -477,7 +477,7 @@ public static class HardwareControl
                 }
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             //Logger.WriteLine("Error retrieving temperature: " + ex.Message);
         }
@@ -491,7 +491,7 @@ public static class HardwareControl
             gpuTemp = GpuControl?.GetCurrentTemperature();
 
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             gpuTemp = -1;
             //Debug.WriteLine("Failed reading GPU temp :" + ex.Message);

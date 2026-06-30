@@ -362,7 +362,7 @@
             };
         }
 
-        protected LightingSetting? ParseLightingSetting(byte[] packet, LightingZone zone)
+        protected new LightingSetting? ParseLightingSetting(byte[] packet, LightingZone zone)
         {
             if (packet[1] != 0x12 || packet[2] != 0x03)
             {

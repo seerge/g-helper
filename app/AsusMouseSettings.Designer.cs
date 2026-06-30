@@ -1739,7 +1739,6 @@ namespace GHelper
         private Label labelMinDPI;
         private Panel panelDPITile;
         private Label labelDPI;
-        private TableLayoutPanel tableLayoutPollingRate;
         private UI.RComboBox comboBoxPollingRate;
         private UI.Slider sliderAngleAdjustment;
         private CheckBox checkBoxAngleSnapping;
@@ -1811,8 +1810,6 @@ namespace GHelper
         private Panel panelRight;
         private Panel panelGap;
         private TableLayoutPanel tableRoot;
-        private Label labelBinding0, labelBinding1, labelBinding2, labelBinding3, labelBinding4, labelBinding5, labelBinding6;
-        private GHelper.UI.RComboBox comboBinding0, comboBinding1, comboBinding2, comboBinding3, comboBinding4, comboBinding5, comboBinding6;
         private Panel panelBindingsHeader;
         private PictureBox pictureBindigs;
         private Label labelBindingsTitle;
