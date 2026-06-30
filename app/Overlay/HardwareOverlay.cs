@@ -813,7 +813,7 @@ namespace GHelper.Overlay
             bool isRight  = center.X > screen.Bounds.X + screen.Bounds.Width  / 2;
             bool isBottom = center.Y > screen.Bounds.Y + screen.Bounds.Height / 2;
             int anchor  = (isBottom ? 2 : 0) | (isRight ? 1 : 0);
-            AppConfig.Set("overlay_screen", screen.DeviceName);
+            AppConfig.Set("overlay_screen", screen.Primary ? "" : screen.DeviceName);
             int offsetX = isRight  ? screen.Bounds.Right  - Location.X - Width  : Location.X - screen.Bounds.X;
             int offsetY = isBottom ? screen.Bounds.Bottom - Location.Y - Height : Location.Y - screen.Bounds.Y;
             AppConfig.Set("overlay_anchor",   anchor);
