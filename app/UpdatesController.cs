@@ -104,41 +104,52 @@ namespace GHelper
 
         public void ResolveStatus(List<DriverUpdate> updates, int type, string bios, CancellationToken token = default)
         {
-            var inventory = type == 0 ? BuildInventory() : null;
-            Dictionary<string, string>? staged = null;
-            HashSet<string>? packages = null;
+            if (type != 0)
+            {
+                for (int n = 0; n < updates.Count; n++)
+                {
+                    var u = updates[n];
+                    if (type == 1 && !u.title.Contains("Firmware") && int.TryParse(u.version, out var sv) && int.TryParse(bios, out var bv))
+                    {
+                        u.status = sv > bv ? STATUS_NEW : STATUS_UPTODATE;
+                        u.tip = "Download: " + u.version + "\n" + "Installed: " + bios;
+                    }
+                    updates[n] = u;
+                }
+                return;
+            }
 
+            var inventory = BuildInventory();
+            var installed = new string?[updates.Count];
+            var needStaged = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             for (int n = 0; n < updates.Count; n++)
             {
                 token.ThrowIfCancellationRequested();
+                installed[n] = ResolveInstalledVersion(inventory, updates[n]);
+                if (installed[n] is null && updates[n].hardwares.Length > 0)
+                    foreach (var h in updates[n].hardwares) needStaged.Add(h);
+            }
 
+            var staged = needStaged.Count > 0 ? BuildStagedVersions(needStaged) : null;
+
+            HashSet<string>? packages = null;
+            for (int n = 0; n < updates.Count; n++)
+            {
                 var u = updates[n];
+                var version = installed[n];
+                if (version is null && staged is not null && u.hardwares.Length > 0)
+                    version = MaxVersion(u.hardwares.Where(staged.ContainsKey).Select(h => staged[h]));
 
-                if (type == 0)
+                if (version is not null && Version.TryParse(u.version, out var sv) && Version.TryParse(version, out var iv))
                 {
-                    var installed = ResolveInstalledVersion(inventory!, u);
-                    // staged driver check
-                    if (installed is null && u.hardwares.Length > 0)
-                    {
-                        staged ??= BuildStagedVersions(updates.SelectMany(x => x.hardwares).ToHashSet(StringComparer.OrdinalIgnoreCase));
-                        installed = MaxVersion(u.hardwares.Where(staged.ContainsKey).Select(h => staged[h]));
-                    }
-                    if (installed is not null && Version.TryParse(u.version, out var sv) && Version.TryParse(installed, out var iv))
-                    {
-                        u.status = sv > iv ? STATUS_NEW : STATUS_UPTODATE;
-                        u.tip = "Download: " + u.version + "\n" + "Installed: " + installed;
-                        Logger.WriteLine(u.title + " " + u.version + " vs " + installed + " = " + u.status);
-                    }
-                    // store apps have no versions
-                    else if (u.version.Contains("store", StringComparison.OrdinalIgnoreCase) && IsStoreAppInstalled(packages ??= GetInstalledPackages(), u.title))
-                    {
-                        u.status = STATUS_UPTODATE;
-                    }
+                    u.status = sv > iv ? STATUS_NEW : STATUS_UPTODATE;
+                    u.tip = "Download: " + u.version + "\n" + "Installed: " + version;
+                    Logger.WriteLine(u.title + " " + u.version + " vs " + version + " = " + u.status);
                 }
-                else if (type == 1 && !u.title.Contains("Firmware") && int.TryParse(u.version, out var sv) && int.TryParse(bios, out var bv))
+                // store apps have no versions
+                else if (u.version.Contains("store", StringComparison.OrdinalIgnoreCase) && IsStoreAppInstalled(packages ??= GetInstalledPackages(), u.title))
                 {
-                    u.status = sv > bv ? STATUS_NEW : STATUS_UPTODATE;
-                    u.tip = "Download: " + u.version + "\n" + "Installed: " + bios;
+                    u.status = STATUS_UPTODATE;
                 }
 
                 updates[n] = u;
@@ -341,13 +352,20 @@ namespace GHelper
             return new string(buffer).Split('\0', StringSplitOptions.RemoveEmptyEntries);
         }
 
+        const int CR_BUFFER_SMALL = 0x1A;
+
         static byte[]? GetDevNodeProperty(uint devInst, DEVPROPKEY key)
         {
-            uint size = 0;
-            CM_Get_DevNode_PropertyW(devInst, key, out _, null, ref size, 0);
-            if (size == 0) return null;
-            var buffer = new byte[size];
-            return CM_Get_DevNode_PropertyW(devInst, key, out _, buffer, ref size, 0) == 0 ? buffer : null;
+            var buffer = new byte[2048];
+            uint size = (uint)buffer.Length;
+            int cr = CM_Get_DevNode_PropertyW(devInst, key, out _, buffer, ref size, 0);
+            if (cr == CR_BUFFER_SMALL)
+            {
+                buffer = new byte[size];
+                cr = CM_Get_DevNode_PropertyW(devInst, key, out _, buffer, ref size, 0);
+            }
+            if (cr != 0 || size == 0) return null;
+            return size == buffer.Length ? buffer : buffer[..(int)size];
         }
 
         static string? PropString(byte[]? buffer) => buffer is null ? null : Encoding.Unicode.GetString(buffer).TrimEnd('\0');
