@@ -158,6 +158,7 @@ namespace GHelper
                 _cts.Dispose();
                 _boldUnderlineFont.Dispose();
                 _font.Dispose();
+                MemoryHelper.TrimAfter();
             };
         }
 
