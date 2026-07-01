@@ -91,8 +91,8 @@
     </EmbeddedResource>
   </ItemGroup>
 
-	<Target Name="KillRunningGHelper" BeforeTargets="Build" Condition="'$(GITHUB_ACTIONS)'!='true' AND '$(PublishProtocol)'!=''">
-		<Exec Command="powershell -NoProfile -Command &quot;try { [System.Threading.EventWaitHandle]::OpenExisting('Global\GHelperApp-Exit').Set() } catch {}; Start-Sleep -Milliseconds 500&quot;" />
+	<Target Name="KillRunningGHelper" BeforeTargets="Build" Condition="'$(GITHUB_ACTIONS)'!='true'">
+		<Exec Command="powershell -NoProfile -Command &quot;try { [System.Threading.EventWaitHandle]::OpenExisting('Global\GHelperApp-Exit').Set() } catch {}; for ($i = 0; $i -lt 50; $i++) { if (-not (Get-Process -Name GHelper -ErrorAction SilentlyContinue)) { break }; Start-Sleep -Milliseconds 100 }&quot;" />
 	</Target>
 
 	<Target Name="ZipSingleExe" AfterTargets="Publish" Condition="'$(GITHUB_ACTIONS)'!='true'">
