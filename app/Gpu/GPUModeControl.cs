@@ -45,6 +45,20 @@ namespace GHelper.Gpu
                 }
             }
 
+            if (eco == 0 && HardwareControl.GpuControl is null)
+            {
+                Logger.WriteLine("Standard half-state");
+                if (AppConfig.IsStandardForceFix())
+                {
+                    Task.Run(async () =>
+                    {
+                        Program.acpi.DeviceSet(AsusACPI.GPUEco, 0, "GPUStandard Force Fix");
+                        await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("nv_delay", 5000)));
+                        HardwareControl.RecreateGpuControl();
+                    });
+                }
+            }
+
             settings.VisualiseGPUButtons(eco >= 0, mux >= 0);
 
             if (mux == 0)

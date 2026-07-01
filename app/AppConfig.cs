@@ -497,6 +497,11 @@ public static class AppConfig
         return ContainsModel("G635L") || ContainsModel("G615L") || ContainsModel("G835L") || ContainsModel("G815L") || ContainsModel("FA506");
     }
 
+    public static bool IsStandardForceFix()
+    {
+        return (ContainsModel("GU605") || ContainsModel("H7606")) && IsNotFalse("standard_force_fix");
+    }
+
     public static bool IsBacklightZones()
     {
         return IsStrix() || IsZ13();
