@@ -223,7 +223,24 @@ namespace GHelper
                 }
             }
 
+            AddAsusInstalledVersions(list);
             return list;
+        }
+
+        static void AddAsusInstalledVersions(List<LocalDriver> list)
+        {
+            try
+            {
+                using var asus = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\ASUS");
+                if (asus is null) return;
+                foreach (var name in asus.GetSubKeyNames())
+                {
+                    using var sub = asus.OpenSubKey(name);
+                    if (sub?.GetValue("DisplayVersion") is string ver && Version.TryParse(ver, out _))
+                        list.Add(new LocalDriver { matchId = "", version = ver, isExtension = true, entry = name });
+                }
+            }
+            catch (Exception ex) { Logger.WriteLine(ex.ToString()); }
         }
 
         static Dictionary<string, string> BuildStagedVersions(HashSet<string> hardwares)
