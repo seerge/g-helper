@@ -109,10 +109,13 @@ namespace GHelper
                 for (int n = 0; n < updates.Count; n++)
                 {
                     var u = updates[n];
-                    if (type == 1 && !u.title.Contains("Firmware") && int.TryParse(u.version, out var sv) && int.TryParse(bios, out var bv))
+                    var version = type != 1 ? null
+                        : u.title.Contains("Firmware") ? FirmwareVersion(u.title)
+                        : bios;
+                    if (version is not null && int.TryParse(u.version, out var sv) && int.TryParse(version, out var iv))
                     {
-                        u.status = sv > bv ? STATUS_NEW : STATUS_UPTODATE;
-                        u.tip = "Download: " + u.version + "\n" + "Installed: " + bios;
+                        u.status = sv > iv ? STATUS_NEW : STATUS_UPTODATE;
+                        u.tip = "Download: " + u.version + "\n" + "Installed: " + version;
                     }
                     updates[n] = u;
                 }
@@ -238,6 +241,25 @@ namespace GHelper
             return list;
         }
 
+        static string? FirmwareVersion(string title)
+        {
+            var key = title.Split('_', ' ')[0];
+            if (key.Length < 2) return null;
+
+            foreach (var deviceId in GetPresentDeviceIds())
+            {
+                if (!deviceId.StartsWith("UEFI\\RES", StringComparison.OrdinalIgnoreCase)) continue;
+                if (CM_Locate_DevNodeW(out uint devInst, deviceId, 0) != 0) continue;
+
+                var name = PropString(GetDevNodeProperty(devInst, DEVPKEY_Device_DeviceDesc));
+                if (name is null || !name.Contains(key, StringComparison.OrdinalIgnoreCase)) continue;
+                if (PropString(GetDevNodeProperty(devInst, DEVPKEY_Device_DriverProvider)) == "Microsoft") continue;
+
+                return PropString(GetDevNodeProperty(devInst, DEVPKEY_Device_DriverVersion))?.Split('.')[^1];
+            }
+            return null;
+        }
+
         static void AddAsusInstalledVersions(List<LocalDriver> list)
         {
             try
@@ -328,6 +350,7 @@ namespace GHelper
         static readonly DEVPROPKEY DEVPKEY_Device_DeviceDesc = new() { fmtid = new Guid("a45c254e-df1c-4efd-8020-67d146a850e0"), pid = 2 };
         static readonly DEVPROPKEY DEVPKEY_Device_HardwareIds = new() { fmtid = new Guid("a45c254e-df1c-4efd-8020-67d146a850e0"), pid = 3 };
         static readonly DEVPROPKEY DEVPKEY_Device_DriverVersion = new() { fmtid = new Guid("a8b865dd-2e3d-4094-ad97-e593a70c75d6"), pid = 3 };
+        static readonly DEVPROPKEY DEVPKEY_Device_DriverProvider = new() { fmtid = new Guid("a8b865dd-2e3d-4094-ad97-e593a70c75d6"), pid = 9 };
         static readonly DEVPROPKEY DEVPKEY_Device_ExtendedConfigurationIds = new() { fmtid = new Guid("540b947e-8b40-45bc-a8a2-6a0b894cbda2"), pid = 15 };
 
         const uint CM_GETIDLIST_FILTER_PRESENT = 0x00000100;
