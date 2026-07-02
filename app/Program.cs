@@ -38,6 +38,7 @@ namespace GHelper
         public static int WM_TASKBARCREATED = 0;
 
         private static long lastAuto;
+        private static readonly object autoLock = new();
         private static long lastTheme;
 
         public static InputDispatcher? inputDispatcher;
@@ -311,8 +312,11 @@ namespace GHelper
 
             if (init) gpuControl.CaptureNvBootState();
 
-            if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < skipDelay) return false;
-            lastAuto = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            lock (autoLock)
+            {
+                if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < skipDelay) return false;
+                lastAuto = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            }
 
             currentSource = ReadPowerSource();
             Logger.WriteLine("AutoSetting for " + SystemInformation.PowerStatus.PowerLineStatus.ToString());
