@@ -860,7 +860,11 @@ namespace GHelper.Input
                     // This is both the M1 and M2 keys.
                     // There's a way to differentiate, apparently, but it isn't over USB or any other obvious protocol.
                     case 165:
+                        Program.settingsForm.BeginInvoke(() => Program.hardwareOverlay?.SetDragKey(true));
                         KeyProcess("paddle");
+                        return;
+                    case 0:
+                        Program.settingsForm.BeginInvoke(() => Program.hardwareOverlay?.SetDragKey(false));
                         return;
                     // The Command Center ("play-looking") button below the select key.
                     case 166:

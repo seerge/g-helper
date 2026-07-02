@@ -268,6 +268,7 @@ namespace GHelper
 
             buttonFPS.Click += ButtonFPS_Click;
             buttonOverlay.Click += ButtonOverlay_Click;
+            buttonOverlay.BorderColor = colorStandard;
 
             buttonAutoTDP.Click += ButtonAutoTDP_Click;
             buttonAutoTDP.BorderColor = colorTurbo;
@@ -541,7 +542,7 @@ namespace GHelper
 
         private void ButtonOverlay_Click(object? sender, EventArgs e)
         {
-            KeyboardHook.KeyKeyKeyPress(Keys.LControlKey, Keys.LShiftKey, Keys.O);
+            ToggleOverlay();
         }
 
         private void ButtonHandheld_Click(object? sender, EventArgs e)
@@ -586,6 +587,9 @@ namespace GHelper
             panelAlly.Visible = true;
             panelKeyboardTitle.Visible = false;
             panelKeyboard.Padding = new Padding(panelKeyboard.Padding.Left, 0, panelKeyboard.Padding.Right, panelKeyboard.Padding.Bottom);
+
+            buttonOverlay.Text = Properties.Strings.Overlay;
+            buttonOverlay.Activated = AppConfig.IsOverlay();
 
             tableAMD.Visible = true;
         }
@@ -1687,6 +1691,8 @@ namespace GHelper
                 Program.hardwareOverlay?.StartOverlay();
             else
                 Program.hardwareOverlay?.StopOverlay();
+
+            buttonOverlay.Activated = enable;
 
             if (fromHotkey && AppConfig.IsOverlayGameOnly())
                 Program.toast.RunToast(Properties.Strings.Overlay + " " + (enable ? Properties.Strings.On : Properties.Strings.Off));
