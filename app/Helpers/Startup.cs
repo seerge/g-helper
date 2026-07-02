@@ -16,7 +16,7 @@ public class Startup
         try
         {
             using (TaskService taskService = new TaskService())
-                return (taskService.RootFolder.AllTasks.Any(t => t.Name == taskName));
+                return taskService.GetTask(taskName) != null;
         }
         catch (Exception e)
         {

@@ -47,6 +47,8 @@ namespace GHelper
         {
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
 
+            AppDomain.CurrentDomain.UnhandledException += (s, e) => Logger.WriteLine("Unhandled: " + e.ExceptionObject);
+
             string action = "";
             if (args.Length > 0) action = args[0];
 

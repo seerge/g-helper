@@ -280,9 +280,7 @@ public class AsusACPI
                 IntPtr.Zero
             );
 
-            //handle = new IntPtr(-1);
-            //throw new Exception("ERROR");
-            _connected = true;
+            _connected = handle != new IntPtr(-1);
 
         }
         catch (Exception ex)
