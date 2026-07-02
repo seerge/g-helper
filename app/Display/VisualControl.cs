@@ -257,7 +257,7 @@ namespace GHelper.Display
                 if (ProcessHelper.IsUserAdministrator() && _download)
                 {
                     _download = false;
-                    ColorProfileHelper.InstallProfile();
+                    _ = ColorProfileHelper.InstallProfile();
                 }
             }
             if (result == 1 && _init)
@@ -326,7 +326,7 @@ namespace GHelper.Display
                     if (ProcessHelper.IsUserAdministrator() && _download)
                     {
                         _download = false;
-                        ColorProfileHelper.InstallProfile();
+                        _ = ColorProfileHelper.InstallProfile();
                     }
                 }
                 if (result == 1 && _init)

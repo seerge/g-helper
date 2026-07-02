@@ -16,6 +16,18 @@ namespace GHelper.Overlay
         [DllImport("user32.dll")]
         private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
 
+        // Foreground-change subscription (alt-tab detection).
+        [DllImport("user32.dll")]
+        private static extern IntPtr SetWinEventHook(uint eventMin, uint eventMax, IntPtr hmodWinEventProc,
+            WinEventProc lpfnWinEventProc, uint idProcess, uint idThread, uint dwFlags);
+        [DllImport("user32.dll")]
+        private static extern bool UnhookWinEvent(IntPtr hWinEventHook);
+        private delegate void WinEventProc(IntPtr hWinEventHook, uint eventType, IntPtr hwnd,
+            int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
+        private const uint EVENT_SYSTEM_FOREGROUND = 0x0003;
+        private const uint WINEVENT_OUTOFCONTEXT = 0x0000;
+        private const uint WINEVENT_SKIPOWNPROCESS = 0x0002;
+
         // Drag support
         [DllImport("user32.dll")]
         private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
@@ -169,16 +181,19 @@ namespace GHelper.Overlay
         private bool _hidden;
         private int _shownPid;
         private bool _fgDesktop;
+        private IntPtr _fgHook;
+        private WinEventProc? _fgHookProc; // keep delegate alive
         private const int MinGameFps = 6;
 
         private static readonly HashSet<string> DesktopApps = new(StringComparer.OrdinalIgnoreCase)
         {
-            "chrome", "msedge", "firefox", "opera", "brave", "vivaldi", "iexplore", "chromium", "librewolf",
+            "chrome", "msedge", "firefox", "opera", "brave", "vivaldi", "iexplore", "chromium", "librewolf", "arc", "waterfox", "thorium",
             "WindowsTerminal", "conhost", "cmd", "powershell", "pwsh", "alacritty", "wezterm-gui", "mintty",
-            "discord", "slack", "Teams", "ms-teams", "Spotify", "WhatsApp", "Signal", "Telegram", "Code", "Notion", "obsidian", "zoom", "Skype",
+            "discord", "slack", "Teams", "ms-teams", "Spotify", "WhatsApp", "Signal", "Telegram", "Code", "Notion", "obsidian", "zoom", "Skype", "Element", "Viber", "LINE", "WeChat",
+            "notepad", "notepad++", "sublime_text", "devenv", "rider64", "idea64", "pycharm64", "webstorm64",
             "steam", "steamwebhelper", "EpicGamesLauncher", "Battle.net", "GalaxyClient", "EADesktop", "UbisoftConnect",
-            "vlc", "mpv", "mpc-hc64", "mpc-be64", "PotPlayerMini64", "wmplayer", "smplayer",
-            "WINWORD", "EXCEL", "POWERPNT", "OUTLOOK", "Acrobat", "AcroRd32", "SumatraPDF",
+            "vlc", "mpv", "mpc-hc64", "mpc-be64", "PotPlayerMini64", "wmplayer", "smplayer", "foobar2000", "aimp",
+            "WINWORD", "EXCEL", "POWERPNT", "OUTLOOK", "Acrobat", "AcroRd32", "SumatraPDF", "thunderbird", "Mailspring", "OneNote", "GitHubDesktop", "7zFM", "WinRAR", "SnippingTool",
             "explorer", "ShellExperienceHost", "SearchHost", "StartMenuExperienceHost", "ApplicationFrameHost", "SystemSettings", "Taskmgr",
         };
 
@@ -399,8 +414,8 @@ namespace GHelper.Overlay
                 {
                     _lastFgPid = fgPid;
                     _currentFps = 0;
-                    _fps.TargetPid = fgPid;
-                    _fgDesktop = _gameOnly && IsDesktopApp(fgPid);
+                    _fgDesktop = IsDesktopApp(fgPid);
+                    _fps.TargetPid = _fgDesktop ? 0 : fgPid;
                 }
                 else
                 {
@@ -455,6 +470,21 @@ namespace GHelper.Overlay
         private void UpdateGameVisibility(int fgPid)
         {
             if (_currentFps >= MinGameFps && !_fgDesktop) _shownPid = fgPid;
+            bool show = fgPid == _shownPid;
+            if (show != _hidden) return;
+            _hidden = !show;
+            if (Handle != nint.Zero)
+                User32.ShowWindow(Handle, (short)(_hidden ? User32.SW_HIDE : User32.SW_SHOWNOACTIVATE));
+        }
+
+        // Instant show/hide vs the latched game. Doesn't latch _shownPid (timer's job —
+        // _currentFps still reflects the old foreground here). UI thread, so no lock needed.
+        private void OnForegroundChanged()
+        {
+            if (!_active || !_gameOnly) return;
+            GetWindowThreadProcessId(GetForegroundWindow(), out uint fgPidRaw);
+            int fgPid = (int)fgPidRaw;
+            if (fgPid == 0 || fgPid == Environment.ProcessId) return;
             bool show = fgPid == _shownPid;
             if (show != _hidden) return;
             _hidden = !show;
@@ -732,6 +762,15 @@ namespace GHelper.Overlay
             Location = new Point(screen.Bounds.X + MarginFromEdge, screen.Bounds.Y + MarginFromEdge);
         }
 
+        private static Screen TargetScreen()
+        {
+            string name = AppConfig.GetString("overlay_screen");
+            if (!string.IsNullOrEmpty(name))
+                foreach (Screen s in Screen.AllScreens)
+                    if (s.DeviceName == name) return s;
+            return Screen.PrimaryScreen ?? Screen.AllScreens[0];
+        }
+
         private bool AreDragKeysDown() =>
             (GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0 &&
             (GetAsyncKeyState(VK_SHIFT)   & 0x8000) != 0 &&
@@ -775,6 +814,7 @@ namespace GHelper.Overlay
             bool isRight  = center.X > screen.Bounds.X + screen.Bounds.Width  / 2;
             bool isBottom = center.Y > screen.Bounds.Y + screen.Bounds.Height / 2;
             int anchor  = (isBottom ? 2 : 0) | (isRight ? 1 : 0);
+            AppConfig.Set("overlay_screen", screen.Primary ? "" : screen.DeviceName);
             int offsetX = isRight  ? screen.Bounds.Right  - Location.X - Width  : Location.X - screen.Bounds.X;
             int offsetY = isBottom ? screen.Bounds.Bottom - Location.Y - Height : Location.Y - screen.Bounds.Y;
             AppConfig.Set("overlay_anchor",   anchor);
@@ -857,14 +897,14 @@ namespace GHelper.Overlay
             if (anchor < 0) { PositionAtTopLeft(); return; }
             int offsetX = AppConfig.Get("overlay_offset_x", MarginFromEdge);
             int offsetY = AppConfig.Get("overlay_offset_y", MarginFromEdge);
-            Screen screen = Screen.PrimaryScreen ?? Screen.AllScreens[0];
+            Screen screen = TargetScreen();
             bool isRight  = (anchor & 1) != 0;
             bool isBottom = (anchor & 2) != 0;
             int x = isRight  ? screen.Bounds.Right  - Width  - offsetX : screen.Bounds.X + offsetX;
             int y = isBottom ? screen.Bounds.Bottom - Height - offsetY : screen.Bounds.Y + offsetY;
             const int margin = 5;
-            x = Math.Clamp(x, screen.Bounds.Left + margin, screen.Bounds.Right  - Width  - margin);
-            y = Math.Clamp(y, screen.Bounds.Top  + margin, screen.Bounds.Bottom - Height - margin);
+            x = Math.Max(screen.Bounds.Left + margin, Math.Min(x, screen.Bounds.Right  - Width  - margin));
+            y = Math.Max(screen.Bounds.Top  + margin, Math.Min(y, screen.Bounds.Bottom - Height - margin));
             Location = new Point(x, y);
         }
 
@@ -907,11 +947,20 @@ namespace GHelper.Overlay
             Tick();
             RestorePosition(); // re-anchor once the first paint has settled the collapsed width
             _timer.Start();
+
+            if (_gameOnly && _fgHook == IntPtr.Zero)
+            {
+                _fgHookProc = (_, _, _, _, _, _, _) => OnForegroundChanged();
+                _fgHook = SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND,
+                    IntPtr.Zero, _fgHookProc, 0, 0, WINEVENT_OUTOFCONTEXT | WINEVENT_SKIPOWNPROCESS);
+            }
         }
 
         public void StopOverlay()
         {
             _active = false;
+            if (_fgHook != IntPtr.Zero) { UnhookWinEvent(_fgHook); _fgHook = IntPtr.Zero; }
+            _fgHookProc = null;
             HardwareControl.readUsage = false;
             HardwareControl.readFans = false;
             HardwareControl.readMemory = false;

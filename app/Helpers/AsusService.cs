@@ -99,10 +99,12 @@ namespace GHelper.Helpers
                 Thread.Sleep(1000);
             }
 
+            if (GetRunningCount() == 0) AppConfig.Set("services_disabled", 1);
         }
 
         public static void StartAsusServices()
         {
+            AppConfig.Set("services_disabled", 0);
             foreach (string service in services)
             {
                 ProcessHelper.StartEnableService(service);
@@ -117,6 +119,16 @@ namespace GHelper.Helpers
                 Thread.Sleep(1000);
             }
 
+        }
+
+        public static void StopOnStartup()
+        {
+            if (AppConfig.Is("services_skip")) return;
+            if (!AppConfig.Is("services_disabled") || !ProcessHelper.IsUserAdministrator()) return;
+            if (GetRunningCount() == 0) return;
+
+            Logger.WriteLine("ASUS services revived, re-stopping on startup");
+            Task.Run(() => StopAsusServices());
         }
 
     }

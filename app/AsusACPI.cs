@@ -245,7 +245,6 @@ public class AsusACPI
 
         byte[] outBuffer = new byte[16];
         byte[] data = new byte[8];
-        bool result;
 
         data[0] = BitConverter.GetBytes(eventHandle.ToInt32())[0];
         data[1] = BitConverter.GetBytes(eventHandle.ToInt32())[1];

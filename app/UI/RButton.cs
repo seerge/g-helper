@@ -164,12 +164,21 @@ namespace GHelper.UI
                     rect.Y += Image.Height;
                     rect.Height -= Image.Height;
                 }
-                using (var brush = new SolidBrush(Parent.BackColor))
-                    pevent.Graphics.FillRectangle(brush, rect);
-                using (var brush = new SolidBrush(BackColor))
-                    pevent.Graphics.FillRectangle(brush, rect);
+                else
+                {
+                    using (var brush = new SolidBrush(Parent.BackColor))
+                        pevent.Graphics.FillRectangle(brush, rect);
+                    using (var brush = new SolidBrush(BackColor))
+                        pevent.Graphics.FillRectangle(brush, rect);
+                }
                 TextFormatFlags flags = TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.WordBreak;
                 TextRenderer.DrawText(pevent.Graphics, Text, Font, rect, Color.Gray, flags);
+            }
+
+            if (!Enabled && !Borderless && activated && borderColor.A > 0)
+            {
+                Rectangle borderRect = new Rectangle(border, border, rectSurface.Width - 2 * border, rectSurface.Height - 2 * border);
+                ControlHelper.DrawGradientBorder(pevent.Graphics, borderRect, borderColor, radius, border, PenAlignment.Outset, RForm.flatTheme ? 0f : ActiveTopLighten);
             }
 
 

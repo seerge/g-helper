@@ -115,7 +115,7 @@ public static class AppConfig
             Directory.CreateDirectory(Path.GetDirectoryName(fallbackConfigFile));
             File.Copy(configFile, fallbackConfigFile, overwrite: true);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             //Logger.WriteLine("Can't sync fallback config: " + ex.Message);
         }
@@ -304,7 +304,6 @@ public static class AppConfig
     public static byte[] GetDefaultCurve(AsusFan device)
     {
         int mode = Modes.GetCurrentBase();
-        byte[] curve;
 
         switch (mode)
         {

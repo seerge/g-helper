@@ -8,6 +8,7 @@ namespace GHelper.Overlay
         // ── ETW Constants ────────────────────────────────────────────────────────
         private const uint ERROR_SUCCESS = 0;
         private const uint EVENT_CONTROL_CODE_ENABLE_PROVIDER = 1;
+        private const uint EVENT_CONTROL_CODE_DISABLE_PROVIDER = 0;
         private const uint EVENT_TRACE_CONTROL_FLUSH = 3; // ControlTrace code — deliver buffers now
         private const byte TRACE_LEVEL_INFORMATION = 4;
         private const uint PROCESS_TRACE_MODE_REAL_TIME = 0x00000100;
@@ -222,7 +223,7 @@ namespace GHelper.Overlay
         private const int MinFlushFps = 10;      // below this fps = idle/browsing, flush only 1×/s
         private System.Threading.Timer? _flushTimer;
         private long _lastFlushTick;             // ≥1 s flush floor
-        private volatile int _targetPid;  // written by overlay timer thread, read by ETW callback thread
+        private volatile int _targetPid = -1;
         private int _lastTargetPid;       // detects PID switches so the window can be reset
 
         // When a game fires DXGI event 42, we prefer it over DxgKrnl to avoid double-counting.
@@ -257,13 +258,22 @@ namespace GHelper.Overlay
             {
                 if (_targetPid == value) return;
                 _targetPid = value;
+                if (_sessionHandle == 0) return;
                 // Push the kernel-side filter on every foreground PID change. One-shot
                 // doesn't work: if the user launches a game while the overlay is already
                 // open, the kernel filter would stay pinned to the previous foreground
                 // and events from the new game would be dropped before reaching us.
-                if (value != 0 && _sessionHandle != 0)
+                if (value == 0)
+                    PauseProviders();
+                else
                     ApplyKernelFilters(value);
             }
+        }
+
+        private void PauseProviders()
+        {
+            EnableTraceEx2(_sessionHandle, DxgiProviderId,    EVENT_CONTROL_CODE_DISABLE_PROVIDER, 0, 0, 0, 0, IntPtr.Zero);
+            EnableTraceEx2(_sessionHandle, DxgKrnlProviderId, EVENT_CONTROL_CODE_DISABLE_PROVIDER, 0, 0, 0, 0, IntPtr.Zero);
         }
 
         private void ApplyKernelFilters(int pid)
@@ -346,8 +356,7 @@ namespace GHelper.Overlay
         /// Starts the ETW session. Blocks the calling thread — always run via Task.Run.
         /// Requires Administrator privileges.
         /// </summary>
-        /// <param name="targetPid">Process ID to monitor. 0 (default) = set later via TargetPid.</param>
-        public void Start(int targetPid = 0)
+        public void Start(int targetPid = -1)
         {
             _targetPid = targetPid;
 
@@ -361,7 +370,12 @@ namespace GHelper.Overlay
             // 1. Create the real-time ETW session
             var props = BuildSessionProperties();
             uint hr = StartTrace(out _sessionHandle, SessionName, ref props);
-            if (hr != ERROR_SUCCESS && hr != 0xB7 /*ERROR_ALREADY_EXISTS*/)
+            if (hr == 0xB7 /*ERROR_ALREADY_EXISTS*/)
+            {
+                StopTrace(0, SessionName, ref stopProps);
+                hr = StartTrace(out _sessionHandle, SessionName, ref props);
+            }
+            if (hr != ERROR_SUCCESS)
                 throw new InvalidOperationException($"StartTrace failed: 0x{hr:X}");
 
             // 2a. Subscribe to the DXGI provider (DX11 + DX12 games that go through
