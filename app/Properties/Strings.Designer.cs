@@ -187,6 +187,51 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AMD Boost Profile.
+        /// </summary>
+        internal static string AmdBoostProfileTitle {
+            get {
+                return ResourceManager.GetString("AmdBoostProfileTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default.
+        /// </summary>
+        internal static string AmdProfileDefault {
+            get {
+                return ResourceManager.GetString("AmdProfileDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default follows power source: max performance on charger, power saving on battery.
+        /// </summary>
+        internal static string AmdProfileHint {
+            get {
+                return ResourceManager.GetString("AmdProfileHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max Performance.
+        /// </summary>
+        internal static string AmdProfileMaxPerformance {
+            get {
+                return ResourceManager.GetString("AmdProfileMaxPerformance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Power Saving.
+        /// </summary>
+        internal static string AmdProfilePowerSaving {
+            get {
+                return ResourceManager.GetString("AmdProfilePowerSaving", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to App already running.
         /// </summary>
         internal static string AppAlreadyRunning {

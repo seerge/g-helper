@@ -41,6 +41,7 @@ namespace GHelper
         static int gpuPowerBase = 0;
         static bool isGPUPower => gpuPowerBase > 0;
         static bool clampFanDots = AppConfig.IsClampFanDots();
+        bool amdProfileLoading;
 
         public Fans()
         {
@@ -81,6 +82,9 @@ namespace GHelper
             labelHysteresisDown.Text = Properties.Strings.HysteresisDown;
             buttonReadLimits.Text = Properties.Strings.ReadLimits;
             buttonDownload.Text = Properties.Strings.InstallPawnIODriver;
+
+            labelTitleAmdProfile.Text = Properties.Strings.AmdBoostProfileTitle;
+            toolTip.SetToolTip(pictureAmdProfileHelp, Properties.Strings.AmdProfileHint);
 
             InitTheme(true);
 
@@ -234,12 +238,20 @@ namespace GHelper
             comboPowerMode.DisplayMember = "Value";
             comboPowerMode.ValueMember = "Key";
 
+            comboAmdProfile.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboAmdProfile.Items.AddRange([
+                Properties.Strings.AmdProfileDefault,
+                Properties.Strings.AmdProfilePowerSaving,
+                Properties.Strings.AmdProfileMaxPerformance
+            ]);
+
             FillModes(false);
             InitAll();
             InitCPU();
 
             comboBoost.SelectedValueChanged += ComboBoost_Changed;
             comboPowerMode.SelectedValueChanged += ComboPowerMode_Changed;
+            comboAmdProfile.SelectedIndexChanged += ComboAmdProfile_Changed;
 
 
             comboModes.SelectionChangeCommitted += ComboModes_SelectedValueChanged;
@@ -451,6 +463,8 @@ namespace GHelper
 
             VisualiseAdvanced();
 
+            if (ModeControl.IsAmdPowerProfileSupported()) VisualiseAmdProfile();
+
             buttonAdvanced.Visible = CpuInfo.IsAMD;
 
         }
@@ -462,6 +476,13 @@ namespace GHelper
 
             panelPawnIO.Visible   = installed;
             panelDownload.Visible = !installed;
+
+            bool profileSupported = CpuInfo.IsAMD && ModeControl.IsAmdPowerProfileSupported();
+            panelTitleAmdProfile.Visible = profileSupported;
+            pictureAmdProfileHelp.Visible = profileSupported;
+            panelAmdProfile.Visible = profileSupported;
+            panelAmdProfileDivider.Visible = profileSupported;
+            panelAmdProfileDivider.BackColor = borderMain;
 
             if (installed)
             {
@@ -475,6 +496,22 @@ namespace GHelper
             labelUViGPU.Text = trackUViGPU.Value.ToString();
 
             labelTemp.Text = (trackTemp.Value < CpuInfo.DefaultTemp) ? TempHelper.FormatTemp(trackTemp.Value) : "Default";
+
+            if (profileSupported) VisualiseAmdProfile();
+        }
+
+        private void VisualiseAmdProfile()
+        {
+            amdProfileLoading = true;
+            comboAmdProfile.SelectedIndex = (int)ModeControl.GetConfiguredProfile();
+            amdProfileLoading = false;
+        }
+
+        private void ComboAmdProfile_Changed(object? sender, EventArgs e)
+        {
+            if (amdProfileLoading || comboAmdProfile.SelectedIndex < 0) return;
+            AppConfig.SetMode("amd_boost_profile", comboAmdProfile.SelectedIndex);
+            modeControl.SetAmdProfile(true);
         }
 
         private void AdvancedScroll()
@@ -1276,6 +1313,13 @@ namespace GHelper
 
             AdvancedScroll();
             AppConfig.RemoveMode("cpu_temp");
+
+            AppConfig.SetMode("amd_boost_profile", 0);
+            if (ModeControl.IsAmdPowerProfileSupported())
+            {
+                VisualiseAmdProfile();
+                modeControl.SetAmdProfile();
+            }
 
             modeControl.ResetPerformanceMode();
 

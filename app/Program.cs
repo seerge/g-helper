@@ -205,6 +205,11 @@ namespace GHelper
                     settingsForm.FansToggle(2);
                     modeControl.SetRyzen();
                     break;
+                case "amdprofile":
+                    Startup.ReScheduleAdmin();
+                    settingsForm.FansToggle(2);
+                    modeControl.SetAmdProfile();
+                    break;
                 case "colors":
                     Task.Run(async () =>
                     {
