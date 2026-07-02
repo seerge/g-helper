@@ -10,28 +10,16 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <StartupObject>GHelper.Program</StartupObject>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
-    <Platforms>AnyCPU;x64</Platforms>
+    <Platforms>x64</Platforms>
+    <Platform>x64</Platform>
     <AssemblyName>GHelper</AssemblyName>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+    <DebugType>embedded</DebugType>
+    <OutputPath>bin\x64\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>obj\x64\$(Configuration)\</IntermediateOutputPath>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <AssemblyVersion>0.261</AssemblyVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DebugType>embedded</DebugType>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DebugType>embedded</DebugType>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <DebugType>embedded</DebugType>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <DebugType>embedded</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
