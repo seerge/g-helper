@@ -52,6 +52,7 @@ public static class HardwareControl
     public static bool readUsage;
     public static bool readMemory;
     public static bool readPower;
+    public static bool readBattery;
 
     static long lastUpdate;
 
@@ -830,6 +831,8 @@ public static class HardwareControl
             cpuPower = null;
             gpuPower = null;
         }
+
+        if (readBattery) ReadBatteryState();
     }
 
     public static double GetBatteryChargePercentage()

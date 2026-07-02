@@ -834,7 +834,7 @@ namespace GHelper
             buttonOverlay.Secondary = false;
             buttonOverlay.Size = new Size(254, 72);
             buttonOverlay.TabIndex = 12;
-            buttonOverlay.Text = "AMD Overlay";
+            buttonOverlay.Text = "Overlay";
             buttonOverlay.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonOverlay.UseVisualStyleBackColor = false;
             // 
