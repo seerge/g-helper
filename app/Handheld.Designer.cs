@@ -173,13 +173,13 @@ namespace GHelper
             // 
             // trackRTMax
             // 
-            trackRTMax.Location = new Point(294, 48);
+            trackRTMax.Location = new Point(339, 48);
             trackRTMax.Margin = new Padding(4, 2, 4, 2);
             trackRTMax.Maximum = 100;
             trackRTMax.Minimum = 50;
             trackRTMax.Name = "trackRTMax";
             trackRTMax.RightToLeft = RightToLeft.No;
-            trackRTMax.Size = new Size(300, 90);
+            trackRTMax.Size = new Size(345, 90);
             trackRTMax.TabIndex = 30;
             trackRTMax.TickFrequency = 5;
             trackRTMax.TickStyle = TickStyle.TopLeft;
@@ -188,7 +188,7 @@ namespace GHelper
             // labelRT
             // 
             labelRT.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            labelRT.Location = new Point(402, 13);
+            labelRT.Location = new Point(492, 13);
             labelRT.Margin = new Padding(4, 0, 4, 0);
             labelRT.Name = "labelRT";
             labelRT.Size = new Size(176, 32);
@@ -204,7 +204,7 @@ namespace GHelper
             trackRTMin.Maximum = 50;
             trackRTMin.Name = "trackRTMin";
             trackRTMin.RightToLeft = RightToLeft.No;
-            trackRTMin.Size = new Size(300, 90);
+            trackRTMin.Size = new Size(345, 90);
             trackRTMin.SmallChange = 10;
             trackRTMin.TabIndex = 18;
             trackRTMin.TickFrequency = 5;
@@ -252,13 +252,13 @@ namespace GHelper
             // 
             // trackRSMax
             // 
-            trackRSMax.Location = new Point(294, 48);
+            trackRSMax.Location = new Point(339, 48);
             trackRSMax.Margin = new Padding(4, 2, 4, 2);
             trackRSMax.Maximum = 100;
             trackRSMax.Minimum = 50;
             trackRSMax.Name = "trackRSMax";
             trackRSMax.RightToLeft = RightToLeft.No;
-            trackRSMax.Size = new Size(300, 90);
+            trackRSMax.Size = new Size(345, 90);
             trackRSMax.TabIndex = 30;
             trackRSMax.TickFrequency = 5;
             trackRSMax.TickStyle = TickStyle.TopLeft;
@@ -267,7 +267,7 @@ namespace GHelper
             // labelRS
             // 
             labelRS.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            labelRS.Location = new Point(402, 13);
+            labelRS.Location = new Point(492, 13);
             labelRS.Margin = new Padding(4, 0, 4, 0);
             labelRS.Name = "labelRS";
             labelRS.Size = new Size(176, 32);
@@ -283,7 +283,7 @@ namespace GHelper
             trackRSMin.Maximum = 50;
             trackRSMin.Name = "trackRSMin";
             trackRSMin.RightToLeft = RightToLeft.No;
-            trackRSMin.Size = new Size(300, 90);
+            trackRSMin.Size = new Size(345, 90);
             trackRSMin.SmallChange = 10;
             trackRSMin.TabIndex = 18;
             trackRSMin.TickFrequency = 5;
@@ -345,13 +345,13 @@ namespace GHelper
             // 
             // trackLTMax
             // 
-            trackLTMax.Location = new Point(295, 48);
+            trackLTMax.Location = new Point(340, 48);
             trackLTMax.Margin = new Padding(4, 2, 4, 2);
             trackLTMax.Maximum = 100;
             trackLTMax.Minimum = 50;
             trackLTMax.Name = "trackLTMax";
             trackLTMax.RightToLeft = RightToLeft.No;
-            trackLTMax.Size = new Size(300, 90);
+            trackLTMax.Size = new Size(345, 90);
             trackLTMax.TabIndex = 30;
             trackLTMax.TickFrequency = 5;
             trackLTMax.TickStyle = TickStyle.TopLeft;
@@ -360,7 +360,7 @@ namespace GHelper
             // labelLT
             // 
             labelLT.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            labelLT.Location = new Point(402, 13);
+            labelLT.Location = new Point(492, 13);
             labelLT.Margin = new Padding(4, 0, 4, 0);
             labelLT.Name = "labelLT";
             labelLT.Size = new Size(176, 32);
@@ -376,7 +376,7 @@ namespace GHelper
             trackLTMin.Maximum = 50;
             trackLTMin.Name = "trackLTMin";
             trackLTMin.RightToLeft = RightToLeft.No;
-            trackLTMin.Size = new Size(300, 90);
+            trackLTMin.Size = new Size(345, 90);
             trackLTMin.SmallChange = 10;
             trackLTMin.TabIndex = 18;
             trackLTMin.TickFrequency = 5;
@@ -424,13 +424,13 @@ namespace GHelper
             // 
             // trackLSMax
             // 
-            trackLSMax.Location = new Point(295, 48);
+            trackLSMax.Location = new Point(340, 48);
             trackLSMax.Margin = new Padding(4, 2, 4, 2);
             trackLSMax.Maximum = 100;
             trackLSMax.Minimum = 50;
             trackLSMax.Name = "trackLSMax";
             trackLSMax.RightToLeft = RightToLeft.No;
-            trackLSMax.Size = new Size(300, 90);
+            trackLSMax.Size = new Size(345, 90);
             trackLSMax.TabIndex = 30;
             trackLSMax.TickFrequency = 5;
             trackLSMax.TickStyle = TickStyle.TopLeft;
@@ -439,7 +439,7 @@ namespace GHelper
             // labelLS
             // 
             labelLS.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            labelLS.Location = new Point(402, 13);
+            labelLS.Location = new Point(492, 13);
             labelLS.Margin = new Padding(4, 0, 4, 0);
             labelLS.Name = "labelLS";
             labelLS.Size = new Size(176, 32);
@@ -455,7 +455,7 @@ namespace GHelper
             trackLSMin.Maximum = 50;
             trackLSMin.Name = "trackLSMin";
             trackLSMin.RightToLeft = RightToLeft.No;
-            trackLSMin.Size = new Size(300, 90);
+            trackLSMin.Size = new Size(345, 90);
             trackLSMin.SmallChange = 10;
             trackLSMin.TabIndex = 18;
             trackLSMin.TickFrequency = 5;
@@ -1042,7 +1042,7 @@ namespace GHelper
             // labelVibra
             // 
             labelVibra.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            labelVibra.Location = new Point(408, 14);
+            labelVibra.Location = new Point(498, 14);
             labelVibra.Margin = new Padding(4, 0, 4, 0);
             labelVibra.Name = "labelVibra";
             labelVibra.Size = new Size(124, 32);
@@ -1066,7 +1066,7 @@ namespace GHelper
             trackVibra.Margin = new Padding(4, 2, 4, 2);
             trackVibra.Maximum = 100;
             trackVibra.Name = "trackVibra";
-            trackVibra.Size = new Size(589, 90);
+            trackVibra.Size = new Size(679, 90);
             trackVibra.TabIndex = 42;
             trackVibra.TickFrequency = 5;
             trackVibra.TickStyle = TickStyle.TopLeft;
