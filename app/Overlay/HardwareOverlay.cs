@@ -81,7 +81,7 @@ namespace GHelper.Overlay
         // Full:     fps | temp + fan RPM              | chart | power | usage% | bar | bat% + rate
         // Complete: fps | name | temp + fan RPM       | chart | power | usage% | bar | mem GB | bar | bat% + rate
         //
-        // The battery column only appears while the device runs on battery.
+        // The battery column only appears while the device runs on battery (always on Ally).
         //
         // Click on the overlay cycles Light → Default → Full → Complete → Light.
         //
@@ -116,7 +116,7 @@ namespace GHelper.Overlay
         private const int BaseMemBarGap = 8;
         private const int BaseMemNumColWidth = 54;   // fits "127.9GB"
         private const int BaseBatColGap = 8;
-        private const int BaseBatColWidth = 46;      // fits "-22.4W"
+        private const int BaseBatColWidth = 38;      // fits "-22.4"
         private const int BaseBatIconGap = 4;
         private const int BaseBatIconWidth = 8;
         private const int BaseBatIconHeight = 15;
@@ -178,6 +178,11 @@ namespace GHelper.Overlay
         private string _batLevel = "";
         private string _batRate = "";
         private int _batPercent;
+        private bool _batCharging;
+
+        private static readonly PointF[] _boltShape = { new(0.6f, 0f), new(0.15f, 0.55f), new(0.45f, 0.55f), new(0.35f, 1f), new(0.85f, 0.45f), new(0.5f, 0.45f) };
+        private static readonly PointF[] _boltPts = new PointF[6];
+        private static readonly SolidBrush _batBoltBrush = new(Color.FromArgb(255, 25, 25, 25));
 
         private const int HistoryLength = 60;
         private readonly float[] _cpuHistory = new float[HistoryLength];
@@ -194,6 +199,7 @@ namespace GHelper.Overlay
         private bool _showNames;
         private bool _showFps, _showTemp, _showFans, _showChart, _showPower, _showUsage, _showRam, _showBattery;
         private bool _onBattery;
+        private static readonly bool _isAlly = AppConfig.IsAlly();
         private bool _hidden;
         private int _shownPid;
         private bool _fgDesktop;
@@ -470,7 +476,7 @@ namespace GHelper.Overlay
 
             if (_showBattery)
             {
-                bool onBattery = SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online;
+                bool onBattery = _isAlly || SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online;
                 if (onBattery != _onBattery)
                 {
                     _onBattery = onBattery;
@@ -492,7 +498,8 @@ namespace GHelper.Overlay
                     _batPercent = (int)Math.Round(level);
                     _batLevel = level > 0 ? _batPercent + "%" : "--";
                     decimal rate = HardwareControl.batteryRate ?? 0;
-                    _batRate = rate == 0 ? "" : (rate > 0 ? "+" : "-") + Math.Abs(rate).ToString("F1") + "W";
+                    _batRate = rate == 0 ? "" : (rate > 0 ? "+" : "-") + Math.Abs(rate).ToString("F1");
+                    _batCharging = rate > 0;
                 }
             }
 
@@ -716,11 +723,15 @@ namespace GHelper.Overlay
                     g.DrawString(_batLevel, font, _batBrush,
                     new PointF(batX + batColW - g.MeasureString(_batLevel, font).Width, textY));
                 if (_batRate.Length > 0)
+                {
                     g.DrawString(_batRate, font, _batBrush,
                     new PointF(batX + batColW - g.MeasureString(_batRate, font).Width, textY + lineH + lineGap));
+                    g.DrawString("W", font, _batBrush,
+                    new PointF(batIconX + (S(sc, BaseBatIconWidth) - g.MeasureString("W", font).Width) / 2f, textY + lineH + lineGap));
+                }
 
                 int batIconH = S(sc, BaseBatIconHeight);
-                DrawBatteryIcon(g, batIconX, topY + (lineH - batIconH) / 2 - S(sc, BaseUsageBarYNudge), batIconH, sc, _batPercent);
+                DrawBatteryIcon(g, batIconX, topY + (lineH - batIconH) / 2 - S(sc, BaseUsageBarYNudge), batIconH, sc, _batPercent, _batCharging);
             }
         }
 
@@ -738,7 +749,7 @@ namespace GHelper.Overlay
             g.DrawString(s, font, brush, new PointF(x + colW - g.MeasureString(s, font).Width, y));
         }
 
-        private static void DrawBatteryIcon(Graphics g, int x, int y, int h, float sc, int level)
+        private static void DrawBatteryIcon(Graphics g, int x, int y, int h, float sc, int level, bool charging)
         {
             var prevSmoothing = g.SmoothingMode;
             g.SmoothingMode = SmoothingMode.None;
@@ -761,6 +772,16 @@ namespace GHelper.Overlay
             int fillH = (int)Math.Round(innerH * Math.Clamp(level, 0, 100) / 100.0);
             if (fillH > 0) g.FillRectangle(_batBrush, innerX, innerY + innerH - fillH, innerW, fillH);
             if (fillH < innerH) g.FillRectangle(_batDimBrush, innerX, innerY, innerW, innerH - fillH);
+
+            if (charging)
+            {
+                g.SmoothingMode = SmoothingMode.AntiAlias;
+                float bw = w * 0.9f, bh = bodyH * 0.64f;
+                float bx = x + (w - bw) / 2f, by = bodyY + (bodyH - bh) / 2f;
+                for (int i = 0; i < _boltShape.Length; i++)
+                    _boltPts[i] = new PointF(bx + _boltShape[i].X * bw, by + _boltShape[i].Y * bh);
+                g.FillPolygon(_batBoltBrush, _boltPts);
+            }
 
             g.SmoothingMode = prevSmoothing;
         }
@@ -1033,7 +1054,7 @@ namespace GHelper.Overlay
                   : storedMode == (int)OverlayMode.Complete ? OverlayMode.Complete
                   : OverlayMode.Default;
             _scalePercent = Math.Clamp(AppConfig.Get("overlay_scale_percent", 100), MinScalePercent, MaxScalePercent);
-            _onBattery = SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online;
+            _onBattery = _isAlly || SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online;
             ApplyColors();
             ApplyPreset(_mode);
             ApplySensorFlags();
