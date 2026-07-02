@@ -7,6 +7,22 @@ namespace GHelper.Battery
     public static class BatteryControl
     {
 
+        static System.Timers.Timer limitTimer = new System.Timers.Timer(200);
+
+        static BatteryControl()
+        {
+            limitTimer.Elapsed += LimitTimer_Elapsed;
+        }
+
+        private static void LimitTimer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
+        {
+            limitTimer.Stop();
+            if (chargeFull) return;
+            int limit = AppConfig.Get("charge_limit");
+            SetAsusChargeLimit(limit);
+            Program.acpi.DeviceSet(AsusACPI.BatteryLimit, limit, "BatteryLimit");
+        }
+
         static bool _chargeFull = AppConfig.Is("charge_full");
         public static bool chargeFull
         {
@@ -30,6 +46,7 @@ namespace GHelper.Battery
         public static void SetBatteryLimitFull()
         {
             chargeFull = true;
+            limitTimer.Stop();
             Program.acpi.DeviceSet(AsusACPI.BatteryLimit, 100, "BatteryLimit");
             Program.settingsForm.VisualiseBatteryFull();
         }
@@ -75,12 +92,11 @@ namespace GHelper.Battery
                 else if (limit < 60) limit = 60;
             }
 
-            if (setLimit > 0) SetAsusChargeLimit(limit);
-
-            Program.acpi.DeviceSet(AsusACPI.BatteryLimit, limit, "BatteryLimit");
-
             AppConfig.Set("charge_limit", limit);
             chargeFull = false;
+
+            limitTimer.Stop();
+            limitTimer.Start();
 
             Program.settingsForm.VisualiseBattery(limit);
         }

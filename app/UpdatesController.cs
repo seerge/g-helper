@@ -79,7 +79,7 @@ namespace GHelper
                     var file = files[j];
                     var title = file.GetProperty("Title").ToString();
 
-                    if (oldTitle != title && !SkipList.Contains(title))
+                    if (oldTitle != title && !SkipList.Contains(title) && !title.Contains("Armoury Crate"))
                     {
                         var version = file.GetProperty("Version").ToString().Replace("V", "");
                         updates.Add(new DriverUpdate
@@ -110,6 +110,7 @@ namespace GHelper
                 {
                     var u = updates[n];
                     var version = type != 1 ? null
+                        : u.title.Contains("MCU") ? McuFirmwareVersion()
                         : u.title.Contains("Firmware") ? FirmwareVersion(u.title)
                         : bios;
                     if (version is not null && int.TryParse(u.version, out var sv) && int.TryParse(version, out var iv))
@@ -239,6 +240,13 @@ namespace GHelper
 
             AddAsusInstalledVersions(list);
             return list;
+        }
+
+        static string? McuFirmwareVersion()
+        {
+            const string k = @"HKEY_LOCAL_MACHINE\SOFTWARE\ASUS\FWVersion\ROGMCUFW";
+            var raw = (Registry.GetValue(k, "Main FW version", null) ?? Registry.GetValue(k, "FW version", null)) as string;
+            return string.IsNullOrEmpty(raw) ? null : raw.Split('.')[^1];
         }
 
         static string? FirmwareVersion(string title)

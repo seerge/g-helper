@@ -185,7 +185,7 @@ namespace GHelper
         private void AddDriverRow(UpdatesController.DriverUpdate driver, TableLayoutPanel table)
         {
             string versionText = driver.version.Replace("latest version at the ", "");
-            LinkLabel versionLabel = new LinkLabel { Text = versionText, Anchor = AnchorStyles.Left, AutoSize = true };
+            LinkLabel versionLabel = new LinkLabel { Text = versionText, Dock = DockStyle.Fill, AutoSize = false, AutoEllipsis = true };
 
             versionLabel.AccessibleName = driver.title;
             versionLabel.TabStop = true;
@@ -208,10 +208,10 @@ namespace GHelper
                 Padding = new Padding(0, 5, 4, 5),
             };
 
-            table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            table.Controls.Add(new Label { Text = driver.categoryName, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Padding = new Padding(5, 5, 5, 5) }, 0, table.RowCount);
-            table.Controls.Add(new Label { Text = driver.title, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Padding = new Padding(5, 5, 5, 5) }, 1, table.RowCount);
-            table.Controls.Add(new Label { Text = driver.date, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Padding = new Padding(5, 5, 5, 5) }, 2, table.RowCount);
+            table.RowStyles.Add(new RowStyle(SizeType.Absolute, TextRenderer.MeasureText("Ag", Font).Height + 10));
+            table.Controls.Add(new Label { Text = driver.categoryName, AutoEllipsis = true, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Padding = new Padding(5, 5, 5, 5) }, 0, table.RowCount);
+            table.Controls.Add(new Label { Text = driver.title, AutoEllipsis = true, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Padding = new Padding(5, 5, 5, 5) }, 1, table.RowCount);
+            table.Controls.Add(new Label { Text = driver.date, AutoEllipsis = true, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Padding = new Padding(5, 5, 5, 5) }, 2, table.RowCount);
             table.Controls.Add(symbolLabel, 3, table.RowCount);
             table.Controls.Add(versionLabel, 4, table.RowCount);
             table.RowCount++;

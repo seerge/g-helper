@@ -326,10 +326,10 @@ namespace GHelper
             buttonMatrix.Location = new Point(527, 4);
             buttonMatrix.Margin = new Padding(4);
             buttonMatrix.MaximumSize = new Size(0, 48);
-            buttonMatrix.MinimumSize = new Size(0, 44);
+            buttonMatrix.MinimumSize = new Size(0, 48);
             buttonMatrix.Name = "buttonMatrix";
             buttonMatrix.Secondary = true;
-            buttonMatrix.Size = new Size(253, 44);
+            buttonMatrix.Size = new Size(253, 48);
             buttonMatrix.TabIndex = 18;
             buttonMatrix.Text = Properties.Strings.PictureGif;
             buttonMatrix.UseVisualStyleBackColor = false;
