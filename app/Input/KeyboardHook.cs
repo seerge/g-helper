@@ -180,6 +180,7 @@ public sealed class KeyboardHook : IDisposable
         {
             UnregisterHotKey(_window.Handle, i);
         }
+        _currentId = 0;
     }
 
     public void Dispose()

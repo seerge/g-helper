@@ -1334,14 +1334,21 @@ namespace GHelper.Input
 
         static void WatcherEventArrived(object sender, EventArrivedEventArgs e)
         {
-            if (e.NewEvent is null) return;
-            int EventID = int.Parse(e.NewEvent["EventID"].ToString());
-            Logger.WriteLine("WMI event " + EventID);
-            if (AppConfig.NoWMI()) return;
+            try
+            {
+                if (e.NewEvent is null) return;
+                int EventID = int.Parse(e.NewEvent["EventID"].ToString());
+                Logger.WriteLine("WMI event " + EventID);
+                if (AppConfig.NoWMI()) return;
 
-            if (EventID == 123) Program.OnChargerEvent();
+                if (EventID == 123) Program.OnChargerEvent();
 
-            HandleEvent(EventID);
+                HandleEvent(EventID);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine("WMI event error: " + ex.Message);
+            }
         }
     }
 }

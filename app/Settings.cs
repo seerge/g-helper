@@ -581,6 +581,7 @@ namespace GHelper
         public void VisualiseAlly(bool visible = false)
         {
             if (!visible) return;
+            if (InvokeRequired) { Invoke(() => VisualiseAlly(visible)); return; }
 
             panelAlly.Visible = true;
             panelKeyboardTitle.Visible = false;
@@ -610,11 +611,13 @@ namespace GHelper
 
         public void VisualiseBacklight(int backlight)
         {
+            if (InvokeRequired) { Invoke(() => VisualiseBacklight(backlight)); return; }
             buttonBacklight.Text = Math.Round((double)backlight * 33.33).ToString() + "%";
         }
 
         public void VisualiseFPSLimit(int limit)
         {
+            if (InvokeRequired) { Invoke(() => VisualiseFPSLimit(limit)); return; }
             buttonFPS.Text = "FPS Limit " + ((limit > 0 && limit <= 120) ? limit : "OFF");
         }
 
@@ -1808,6 +1811,7 @@ namespace GHelper
 
         public void VisualiseGPUButtons(bool eco = true, bool ultimate = true)
         {
+            if (InvokeRequired) { Invoke(() => VisualiseGPUButtons(eco, ultimate)); return; }
             isMuxGpu = ultimate;
 
             if (!eco)
@@ -1868,6 +1872,7 @@ namespace GHelper
 
         public void VisualiseGPUMode(int GPUMode = -1)
         {
+            if (InvokeRequired) { Invoke(() => VisualiseGPUMode(GPUMode)); return; }
             if (AppConfig.IsAlly())
             {
                 tableGPU.Visible = false;
@@ -1988,6 +1993,7 @@ namespace GHelper
 
         public void VisualiseBattery(int limit)
         {
+            if (InvokeRequired) { Invoke(() => VisualiseBattery(limit)); return; }
             VisualiseBatteryTitle(limit);
             sliderBattery.Value = limit;
 
@@ -1999,6 +2005,7 @@ namespace GHelper
 
         public void VisualiseBatteryFull()
         {
+            if (InvokeRequired) { Invoke(VisualiseBatteryFull); return; }
             if (BatteryControl.chargeFull)
             {
                 buttonBatteryFull.BackColor = colorStandard;

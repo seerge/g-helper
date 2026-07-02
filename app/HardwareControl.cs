@@ -937,7 +937,7 @@ public static class HardwareControl
         }
         catch (Exception ex)
         {
-            Debug.WriteLine("Can't connect to GPU " + ex.ToString());
+            Logger.WriteLine("Can't connect to GPU " + ex.Message);
         }
     }
 
