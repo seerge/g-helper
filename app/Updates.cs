@@ -96,7 +96,7 @@ namespace GHelper
                     catch (OperationCanceledException) { return; }
                     catch (Exception ex) { Logger.WriteLine(ex.ToString()); return; }
 
-                    if (!IsDisposed) Invoke(() => ApplyStatus(updates, table));
+                    if (!token.IsCancellationRequested && !IsDisposed) Invoke(() => ApplyStatus(updates, table));
                 }
                 catch (OperationCanceledException) { }
                 catch (Exception ex) { Logger.WriteLine(ex.ToString()); }

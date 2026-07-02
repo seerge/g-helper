@@ -133,7 +133,7 @@ namespace GHelper
                     foreach (var h in updates[n].hardwares) needStaged.Add(h);
             }
 
-            var staged = needStaged.Count > 0 ? BuildStagedVersions(needStaged) : null;
+            var staged = needStaged.Count > 0 ? BuildStagedVersions(needStaged, token) : null;
 
             HashSet<string>? packages = null;
             for (int n = 0; n < updates.Count; n++)
@@ -276,7 +276,7 @@ namespace GHelper
             catch (Exception ex) { Logger.WriteLine(ex.ToString()); }
         }
 
-        static Dictionary<string, string> BuildStagedVersions(HashSet<string> hardwares)
+        static Dictionary<string, string> BuildStagedVersions(HashSet<string> hardwares, CancellationToken token)
         {
             var map = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             string[] files;
@@ -285,6 +285,7 @@ namespace GHelper
 
             foreach (var file in files)
             {
+                token.ThrowIfCancellationRequested();
                 string text;
                 try
                 {
