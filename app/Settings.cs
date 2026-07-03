@@ -34,6 +34,7 @@ namespace GHelper
 
         public static System.Timers.Timer sensorTimer = default!;
         private static readonly bool sensorsAlways = AppConfig.Is("sensors_always");
+        private readonly System.Windows.Forms.Timer batteryTimer = new() { Interval = 200 };
 
         public Matrix? matrixForm;
         public Fans? fansForm;
@@ -241,6 +242,7 @@ namespace GHelper
             sliderBattery.MouseUp += SliderBattery_MouseUp;
             sliderBattery.KeyUp += SliderBattery_KeyUp;
             sliderBattery.ValueChanged += SliderBattery_ValueChanged;
+            batteryTimer.Tick += (_, _) => { batteryTimer.Stop(); BatteryControl.SetBatteryChargeLimit(sliderBattery.Value); };
             if (AppConfig.IsChargeLimit6080()) sliderBattery.supportedValues = new() { 60, 65, 70, 75, 80, 100 };
 
             sensorTimer = new System.Timers.Timer(AppConfig.Get("sensor_timer", 1000));
@@ -342,12 +344,14 @@ namespace GHelper
 
         private void SliderBattery_KeyUp(object? sender, KeyEventArgs e)
         {
-            BatteryControl.SetBatteryChargeLimit(sliderBattery.Value);
+            batteryTimer.Stop();
+            batteryTimer.Start();
         }
 
         private void SliderBattery_MouseUp(object? sender, MouseEventArgs e)
         {
-            BatteryControl.SetBatteryChargeLimit(sliderBattery.Value);
+            batteryTimer.Stop();
+            batteryTimer.Start();
         }
 
         private void ButtonAutoTDP_Click(object? sender, EventArgs e)
