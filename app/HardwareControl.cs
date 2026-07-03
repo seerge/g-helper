@@ -331,7 +331,7 @@ public static class HardwareControl
                 decimal? discharge = Program.acpi.GetBatteryDischarge();
                 if (discharge is not null)
                 {
-                    batteryRate = discharge;
+                    batteryRate = Math.Abs(discharge.Value) < 1.5m ? 0 : discharge;
 
                     // Capacity from cached power manager state is sufficient
                     var batteryState = GetNativeBatteryState();
