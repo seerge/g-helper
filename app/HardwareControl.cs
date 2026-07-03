@@ -841,7 +841,8 @@ public static class HardwareControl
 
             try
             {
-                if (GpuControl?.GetVramInfo() is { } v && v.totalMb > 0)
+                var vram = GpuControl?.GetVramInfo() ?? (isAMDiGPU ? AmdApu().GetVramInfo() : null);
+                if (vram is { } v && v.totalMb > 0)
                 {
                     vramUsedMb = (int)v.usedMb;
                     vramUsage = (int)Math.Clamp(v.usedMb * 100 / v.totalMb, 0, 100);

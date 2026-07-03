@@ -117,7 +117,7 @@ namespace GHelper.Overlay
         private const int BaseMemNumColWidth = 54;   // fits "127.9GB"
         private const int BaseBatColGap = 8;
         private const int BaseBatColWidth = 38;      // fits "-22.4"
-        private const int BaseBatIconGap = 4;
+        private const int BaseBatIconGap = 2;
         private const int BaseBatIconWidth = 8;
         private const int BaseBatIconHeight = 15;
         private const int BaseBatNubWidth = 4;
