@@ -268,6 +268,7 @@ namespace GHelper.Peripherals
             DetectMouse(new GladiusIIIAimpointWired());
             DetectMouse(new GladiusIIOrigin());
             DetectMouse(new GladiusIIOriginPink());
+            DetectMouse(new GladiusIIOriginCOD());
             DetectMouse(new GladiusII());
             DetectMouse(new GladiusIIWireless());
             DetectMouse(new KerisWireless());

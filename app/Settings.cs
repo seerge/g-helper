@@ -268,6 +268,7 @@ namespace GHelper
 
             buttonFPS.Click += ButtonFPS_Click;
             buttonOverlay.Click += ButtonOverlay_Click;
+            buttonOverlay.BorderColor = colorStandard;
 
             buttonAutoTDP.Click += ButtonAutoTDP_Click;
             buttonAutoTDP.BorderColor = colorTurbo;
@@ -541,7 +542,7 @@ namespace GHelper
 
         private void ButtonOverlay_Click(object? sender, EventArgs e)
         {
-            KeyboardHook.KeyKeyKeyPress(Keys.LControlKey, Keys.LShiftKey, Keys.O);
+            ToggleOverlay();
         }
 
         private void ButtonHandheld_Click(object? sender, EventArgs e)
@@ -581,10 +582,14 @@ namespace GHelper
         public void VisualiseAlly(bool visible = false)
         {
             if (!visible) return;
+            if (InvokeRequired) { Invoke(() => VisualiseAlly(visible)); return; }
 
             panelAlly.Visible = true;
             panelKeyboardTitle.Visible = false;
             panelKeyboard.Padding = new Padding(panelKeyboard.Padding.Left, 0, panelKeyboard.Padding.Right, panelKeyboard.Padding.Bottom);
+
+            buttonOverlay.Text = Properties.Strings.Overlay;
+            buttonOverlay.Activated = AppConfig.IsOverlay();
 
             tableAMD.Visible = true;
         }
@@ -610,11 +615,13 @@ namespace GHelper
 
         public void VisualiseBacklight(int backlight)
         {
+            if (InvokeRequired) { Invoke(() => VisualiseBacklight(backlight)); return; }
             buttonBacklight.Text = Math.Round((double)backlight * 33.33).ToString() + "%";
         }
 
         public void VisualiseFPSLimit(int limit)
         {
+            if (InvokeRequired) { Invoke(() => VisualiseFPSLimit(limit)); return; }
             buttonFPS.Text = "FPS Limit " + ((limit > 0 && limit <= 120) ? limit : "OFF");
         }
 
@@ -657,6 +664,12 @@ namespace GHelper
 
         private void SettingsForm_Resize(object? sender, EventArgs e)
         {
+            if (WindowState != FormWindowState.Normal)
+            {
+                WindowState = FormWindowState.Normal;
+                return;
+            }
+
             Left = Screen.FromControl(this).WorkingArea.Width - 10 - Width;
             Top = Screen.FromControl(this).WorkingArea.Height - 10 - Height;
         }
@@ -1679,6 +1692,8 @@ namespace GHelper
             else
                 Program.hardwareOverlay?.StopOverlay();
 
+            buttonOverlay.Activated = enable;
+
             if (fromHotkey && AppConfig.IsOverlayGameOnly())
                 Program.toast.RunToast(Properties.Strings.Overlay + " " + (enable ? Properties.Strings.On : Properties.Strings.Off));
 
@@ -1802,6 +1817,7 @@ namespace GHelper
 
         public void VisualiseGPUButtons(bool eco = true, bool ultimate = true)
         {
+            if (InvokeRequired) { Invoke(() => VisualiseGPUButtons(eco, ultimate)); return; }
             isMuxGpu = ultimate;
 
             if (!eco)
@@ -1862,6 +1878,7 @@ namespace GHelper
 
         public void VisualiseGPUMode(int GPUMode = -1)
         {
+            if (InvokeRequired) { Invoke(() => VisualiseGPUMode(GPUMode)); return; }
             if (AppConfig.IsAlly())
             {
                 tableGPU.Visible = false;
@@ -1982,6 +1999,7 @@ namespace GHelper
 
         public void VisualiseBattery(int limit)
         {
+            if (InvokeRequired) { Invoke(() => VisualiseBattery(limit)); return; }
             VisualiseBatteryTitle(limit);
             sliderBattery.Value = limit;
 
@@ -1993,6 +2011,7 @@ namespace GHelper
 
         public void VisualiseBatteryFull()
         {
+            if (InvokeRequired) { Invoke(VisualiseBatteryFull); return; }
             if (BatteryControl.chargeFull)
             {
                 buttonBatteryFull.BackColor = colorStandard;

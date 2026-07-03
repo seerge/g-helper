@@ -52,10 +52,13 @@ public static class HardwareControl
     public static bool readUsage;
     public static bool readMemory;
     public static bool readPower;
+    public static bool readBattery;
 
     static long lastUpdate;
 
     static bool isPZ13 = AppConfig.IsPZ13();
+    static bool isAlly = AppConfig.IsAlly();
+    static bool isAMDiGPU = AppConfig.IsAMDiGPU();
 
     static bool _chargeWatt = AppConfig.Is("charge_watt");
 
@@ -320,24 +323,15 @@ public static class HardwareControl
     public static void ReadBatteryState()
     {
         var now = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-        if (Math.Abs(now - _lastBatteryRead) < 5000)
-        {
-            FormatBatteryCharge();
-            return;
-        }
-        _lastBatteryRead = now;
 
-        batteryRate = 0;
-        chargeCapacity = 0;
-
-        try
+        if (isAlly)
         {
-            if (AppConfig.IsAlly())
+            try
             {
                 decimal? discharge = Program.acpi.GetBatteryDischarge();
                 if (discharge is not null)
                 {
-                    batteryRate = discharge;
+                    batteryRate = Math.Abs(discharge.Value) < 1.5m ? 0 : discharge;
 
                     // Capacity from cached power manager state is sufficient
                     var batteryState = GetNativeBatteryState();
@@ -352,7 +346,24 @@ public static class HardwareControl
                     return;
                 }
             }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Battery Reading: " + ex.Message);
+            }
+        }
 
+        if (Math.Abs(now - _lastBatteryRead) < 5000)
+        {
+            FormatBatteryCharge();
+            return;
+        }
+        _lastBatteryRead = now;
+
+        batteryRate = 0;
+        chargeCapacity = 0;
+
+        try
+        {
             var statusTask = Task.Run(QueryBatteryStatus);
             var directStatus = statusTask.Wait(1000) ? statusTask.Result : null;
 
@@ -503,6 +514,9 @@ public static class HardwareControl
             gpuTemp = (acpiTemp > 0 && acpiTemp < 125) ? acpiTemp : null;
         }
 
+        if (isAMDiGPU && gpuTemp is null)
+            try { gpuTemp = AmdApu().GetiGpuSensors().temp; } catch { }
+
         return gpuTemp;
     }
 
@@ -521,6 +535,25 @@ public static class HardwareControl
 
         Task.Run(() =>
         {
+            if (isAMDiGPU && _coreCounters is null)
+                try
+                {
+                    var names = new PerformanceCounterCategory("Energy Meter").GetInstanceNames();
+                    var cores = new List<PerformanceCounter>();
+                    foreach (var name in names.Where(n => n.EndsWith("_CORE")))
+                    {
+                        var counter = new PerformanceCounter("Energy Meter", "Power", name, true);
+                        counter.NextValue();
+                        cores.Add(counter);
+                    }
+                    if (cores.Count > 0)
+                    {
+                        _coreCounters = cores;
+                        Logger.WriteLine($"CPU Power source: {cores.Count} RAPL cores");
+                    }
+                }
+                catch { }
+
             // Try cached instance name first — skips the PerformanceCounterCategory
             // enumeration which costs ~1–2 s on a cold perflib cache.
             var cached = AppConfig.GetString("cpu_power_counter");
@@ -565,6 +598,25 @@ public static class HardwareControl
                 _cpuPowerCounterFailed = true;
             }
         });
+    }
+
+    private static List<PerformanceCounter>? _coreCounters;
+
+    private static float? GetCoresPower()
+    {
+        var counters = _coreCounters;
+        if (counters is null) return null;
+        try
+        {
+            float mW = 0;
+            foreach (var counter in counters) mW += counter.NextValue();
+            return mW > 0 ? mW / 1000f : null;
+        }
+        catch
+        {
+            _coreCounters = null;
+            return null;
+        }
     }
 
     public static float? GetCPUPower()
@@ -667,13 +719,14 @@ public static class HardwareControl
     private static AmdGpuControl? _amdApuControl;
     private static bool _amdApuPowerFailed;
 
+    private static AmdGpuControl AmdApu() => GpuControl as AmdGpuControl ?? (_amdApuControl ??= new AmdGpuControl());
+
     private static float? GetAmdApuPower()
     {
         if (_amdApuPowerFailed || !PawnIO.CpuInfo.IsAMD) return null;
         try
         {
-            AmdGpuControl amd = GpuControl as AmdGpuControl ?? (_amdApuControl ??= new AmdGpuControl());
-            int power = amd.GetiGpuPower();
+            int power = AmdApu().GetiGpuPower();
             return power > 0 ? power : null;
         }
         catch
@@ -771,6 +824,8 @@ public static class HardwareControl
         {
             cpuUsage = GetCPUUsage();
             try { gpuUsage = GpuControl?.GetGpuUse(); } catch { gpuUsage = null; }
+            if (isAMDiGPU && gpuUsage is null)
+                try { gpuUsage = AmdApu().GetiGpuSensors().use; } catch { }
         }
         else
         {
@@ -786,7 +841,8 @@ public static class HardwareControl
 
             try
             {
-                if (GpuControl?.GetVramInfo() is { } v && v.totalMb > 0)
+                var vram = GpuControl?.GetVramInfo() ?? (isAMDiGPU ? AmdApu().GetVramInfo() : null);
+                if (vram is { } v && v.totalMb > 0)
                 {
                     vramUsedMb = (int)v.usedMb;
                     vramUsage = (int)Math.Clamp(v.usedMb * 100 / v.totalMb, 0, 100);
@@ -812,6 +868,27 @@ public static class HardwareControl
             // a game exits and invalidates the Intel Energy Meter counter), clear the stale
             // value so the overlay shows "--" rather than the last-seen wattage.
             float? newCpu = GetCPUPower() ?? GetIntelMsrPower() ?? GetAmdApuPower();
+            float? iGpuPower = null;
+
+            if (isAMDiGPU)
+            {
+                float? cores = GetCoresPower();
+                if (cores > 0 && newCpu > cores)
+                {
+                    iGpuPower = newCpu - cores;
+                    newCpu = cores;
+                }
+                else
+                    try
+                    {
+                        var (_, _, gfxPower, corePower, asicPower) = AmdApu().GetiGpuSensors();
+                        if (gfxPower > 0) iGpuPower = gfxPower;
+                        if (corePower > 0) newCpu = corePower;
+                        else if (asicPower > gfxPower) newCpu = asicPower - gfxPower;
+                    }
+                    catch { }
+            }
+
             if (newCpu > 0)
             {
                 cpuPower = newCpu;
@@ -823,13 +900,15 @@ public static class HardwareControl
                     cpuPower = null;
             }
 
-            gpuPower = GetGPUPower();
+            gpuPower = iGpuPower ?? GetGPUPower();
         }
         else
         {
             cpuPower = null;
             gpuPower = null;
         }
+
+        if (readBattery) ReadBatteryState();
     }
 
     public static double GetBatteryChargePercentage()
@@ -937,7 +1016,7 @@ public static class HardwareControl
         }
         catch (Exception ex)
         {
-            Debug.WriteLine("Can't connect to GPU " + ex.ToString());
+            Logger.WriteLine("Can't connect to GPU " + ex.Message);
         }
     }
 

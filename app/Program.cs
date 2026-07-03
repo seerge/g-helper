@@ -38,6 +38,7 @@ namespace GHelper
         public static int WM_TASKBARCREATED = 0;
 
         private static long lastAuto;
+        private static readonly object autoLock = new();
         private static long lastTheme;
 
         public static InputDispatcher? inputDispatcher;
@@ -46,6 +47,8 @@ namespace GHelper
         public static void Main(string[] args)
         {
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
+
+            AppDomain.CurrentDomain.UnhandledException += (s, e) => Logger.WriteLine("Unhandled: " + e.ExceptionObject);
 
             string action = "";
             if (args.Length > 0) action = args[0];
@@ -309,8 +312,11 @@ namespace GHelper
 
             if (init) gpuControl.CaptureNvBootState();
 
-            if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < skipDelay) return false;
-            lastAuto = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            lock (autoLock)
+            {
+                if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < skipDelay) return false;
+                lastAuto = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            }
 
             currentSource = ReadPowerSource();
             Logger.WriteLine("AutoSetting for " + SystemInformation.PowerStatus.PowerLineStatus.ToString());
@@ -434,6 +440,8 @@ namespace GHelper
             {
                 var screen = Screen.PrimaryScreen;
                 if (screen is null) screen = Screen.FromControl(settingsForm);
+
+                settingsForm.WindowState = FormWindowState.Normal;
 
                 settingsForm.Location = screen.WorkingArea.Location;
                 settingsForm.Left = screen.WorkingArea.Width - 10 - settingsForm.Width;

@@ -459,4 +459,17 @@
             }
         }
     }
+
+    //Call of Duty Black Ops 4 edition
+    public class GladiusIIOriginCOD : GladiusIIOrigin
+    {
+        public GladiusIIOriginCOD() : base(0x18B1, "mi_02")
+        {
+
+        }
+        public override string GetDisplayName()
+        {
+            return "Gladius II Origin COD";
+        }
+    }
 }

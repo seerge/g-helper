@@ -144,17 +144,19 @@ public class AmdGpuControl : IGpuControl
 
     public (long usedMb, long totalMb)? GetVramInfo()
     {
-        if (!IsValid) return null;
+        ADLAdapterInfo? adapter = IsValid ? _internalDiscreteAdapter : _iGPU;
+        if (adapter is null) return null;
+        int index = adapter.Value.AdapterIndex;
 
         if (_totalVramMB <= 0)
         {
-            if (ADL2_Adapter_MemoryInfo2_Get(_adlContextHandle, _internalDiscreteAdapter.AdapterIndex, out ADLMemoryInfo2 mem) != Adl2.ADL_SUCCESS)
+            if (ADL2_Adapter_MemoryInfo2_Get(_adlContextHandle, index, out ADLMemoryInfo2 mem) != Adl2.ADL_SUCCESS)
                 return null;
             _totalVramMB = mem.iMemorySize / (1024 * 1024);
             if (_totalVramMB <= 0) return null;
         }
 
-        if (ADL2_Adapter_DedicatedVRAMUsage_Get(_adlContextHandle, _internalDiscreteAdapter.AdapterIndex, out int usedMB) != Adl2.ADL_SUCCESS)
+        if (ADL2_Adapter_DedicatedVRAMUsage_Get(_adlContextHandle, index, out int usedMB) != Adl2.ADL_SUCCESS)
             return null;
 
         return (usedMB, _totalVramMB);
@@ -170,6 +172,40 @@ public class AmdGpuControl : IGpuControl
 
         return gpuUsage.Value;
 
+    }
+
+    private ADLPMLogDataOutput _pmLogiGpu;
+    private bool _pmLogiGpuValid;
+    private long _pmLogiGpuTime = -PMLogCacheMs;
+
+    private bool GetPMLogiGpu(out ADLPMLogDataOutput log)
+    {
+        log = default;
+        if (_adlContextHandle == nint.Zero || _iGPU == null) return false;
+        if (Environment.TickCount64 - _pmLogiGpuTime >= PMLogCacheMs)
+        {
+            _pmLogiGpuValid = ADL2_New_QueryPMLogData_Get(_adlContextHandle, ((ADLAdapterInfo)_iGPU).AdapterIndex, out _pmLogiGpu) == Adl2.ADL_SUCCESS;
+            _pmLogiGpuTime = Environment.TickCount64;
+        }
+        log = _pmLogiGpu;
+        return _pmLogiGpuValid;
+    }
+
+    private static int? Sensor(ADLPMLogDataOutput log, ADLSensorType type)
+    {
+        ADLSingleSensorData sensor = log.Sensors[(int)type];
+        return sensor.Supported != 0 ? sensor.Value : null;
+    }
+
+    public (int? temp, int? use, int? gfxPower, int? cpuPower, int? asicPower) GetiGpuSensors()
+    {
+        if (!GetPMLogiGpu(out ADLPMLogDataOutput log)) return default;
+
+        return (Sensor(log, ADLSensorType.PMLOG_TEMPERATURE_EDGE),
+                Sensor(log, ADLSensorType.PMLOG_INFO_ACTIVITY_GFX),
+                Sensor(log, ADLSensorType.PMLOG_GFX_POWER),
+                Sensor(log, ADLSensorType.PMLOG_CPU_POWER),
+                Sensor(log, ADLSensorType.PMLOG_ASIC_POWER));
     }
 
     public float? GetGpuPower()

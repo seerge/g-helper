@@ -860,7 +860,11 @@ namespace GHelper.Input
                     // This is both the M1 and M2 keys.
                     // There's a way to differentiate, apparently, but it isn't over USB or any other obvious protocol.
                     case 165:
+                        Program.settingsForm.BeginInvoke(() => Program.hardwareOverlay?.SetDragKey(true));
                         KeyProcess("paddle");
+                        return;
+                    case 0:
+                        Program.settingsForm.BeginInvoke(() => Program.hardwareOverlay?.SetDragKey(false));
                         return;
                     // The Command Center ("play-looking") button below the select key.
                     case 166:
@@ -1334,14 +1338,21 @@ namespace GHelper.Input
 
         static void WatcherEventArrived(object sender, EventArrivedEventArgs e)
         {
-            if (e.NewEvent is null) return;
-            int EventID = int.Parse(e.NewEvent["EventID"].ToString());
-            Logger.WriteLine("WMI event " + EventID);
-            if (AppConfig.NoWMI()) return;
+            try
+            {
+                if (e.NewEvent is null) return;
+                int EventID = int.Parse(e.NewEvent["EventID"].ToString());
+                Logger.WriteLine("WMI event " + EventID);
+                if (AppConfig.NoWMI()) return;
 
-            if (EventID == 123) Program.OnChargerEvent();
+                if (EventID == 123) Program.OnChargerEvent();
 
-            HandleEvent(EventID);
+                HandleEvent(EventID);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine("WMI event error: " + ex.Message);
+            }
         }
     }
 }
