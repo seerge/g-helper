@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using GHelper.Ally;
+using System.Diagnostics;
 
 namespace GHelper.Helpers
 {
@@ -100,6 +101,8 @@ namespace GHelper.Helpers
             }
 
             if (GetRunningCount() == 0) AppConfig.Set("services_disabled", 1);
+
+            if (AppConfig.IsAlly()) AllyControl.ApplyMode((ControllerMode)AppConfig.Get("controller_mode", (int)ControllerMode.Auto), true);
         }
 
         public static void StartAsusServices()

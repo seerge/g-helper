@@ -703,6 +703,7 @@ namespace GHelper.Ally
                 if (init)
                 {
                     WakeUp();
+                    DisableXBoxController(false);
                     InputDispatcher.SetBacklightAuto();
                 }
 
@@ -724,7 +725,6 @@ namespace GHelper.Ally
                 if (init && AppConfig.Is("controller_disabled"))
                 {
                     Thread.Sleep(500);
-                    DisableXBoxController(false);
                     DisableXBoxController(true);
                 }
 
