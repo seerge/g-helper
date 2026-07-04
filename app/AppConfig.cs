@@ -748,7 +748,7 @@ public static class AppConfig
 
     public static bool IsSleepReset()
     {
-        return Is("sleep_reset") || ContainsModel("GU605MI") || ContainsModel("GU605MV");
+        return Is("sleep_reset") || ContainsModel("GU605MI") || ContainsModel("GU605MV") || ContainsModel("GU605CR");
     }
 
     public static bool SaveDimming()
