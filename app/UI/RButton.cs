@@ -134,7 +134,8 @@ namespace GHelper.UI
 
                     using (GraphicsPath bgPath = GetFigurePath(borderRect, radius))
                     using (LinearGradientBrush bgBrush = new LinearGradientBrush(
-                        new PointF(0, borderRect.Y), new PointF(0, borderRect.Bottom),
+                        ControlHelper.DarkMode ? new PointF(0, borderRect.Y) : new PointF(0, borderRect.Bottom),
+                        ControlHelper.DarkMode ? new PointF(0, borderRect.Bottom) : new PointF(0, borderRect.Y),
                         bgTop, bgTransparent))
                     {
                         bgBrush.InterpolationColors = new ColorBlend
