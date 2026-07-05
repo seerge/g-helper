@@ -575,7 +575,7 @@ namespace GHelper.Overlay
             {
                 BufferSize = (uint)Marshal.SizeOf<EVENT_TRACE_PROPERTIES>(),
                 Flags = WNODE_FLAG_TRACED_GUID,
-                ClientContext = 0, // 0 = QPC — same frequency as Stopwatch.Frequency
+                ClientContext = 1, // 1 = QPC — matches Stopwatch.GetTimestamp()/Frequency 
             },
             LogFileMode = 0x00000100, // EVENT_TRACE_REAL_TIME_MODE
             LogFileNameOffset = 0,
