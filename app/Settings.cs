@@ -1,4 +1,4 @@
-﻿using GHelper.Ally;
+using GHelper.Ally;
 using GHelper.AnimeMatrix;
 using GHelper.AutoUpdate;
 using GHelper.Battery;
@@ -1294,7 +1294,7 @@ namespace GHelper
             {
                 labelBacklight.Cursor = Cursors.Hand;
                 labelBacklight.Text = Strings.DisableDynamicLighting;
-            } else if (Aura.Mode == AuraMode.AMBIENT)
+            } else if (Aura.Mode == AuraMode.AMBIENT || Aura.Mode == AuraMode.AUDIO)
             {
                 labelBacklight.Cursor = Cursors.Default;
                 labelBacklight.Text = Strings.AmbientModeResources;
