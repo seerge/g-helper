@@ -247,6 +247,12 @@ namespace GHelper.Overlay
         private int _diagFrames;
         private double _diagLatMin, _diagLatMax, _diagLatSum, _diagGapMax;
 
+        // Verbose ETW lifecycle + per-second event-flow logging for diagnosing "FPS shows --".
+        // Flip to false for release.
+        private static readonly bool Verbose = true;
+        private long _vLogTick;
+        private int _vRaw, _vDxgi, _vKrnl, _vMatched, _vWrongPid, _vLastWrongPid;
+
         private EventRecordCallback? _callbackRef; // keep delegate alive — prevents GC collection
 
         /// Set to the foreground process PID to filter events.
@@ -258,6 +264,7 @@ namespace GHelper.Overlay
             {
                 if (_targetPid == value) return;
                 _targetPid = value;
+                if (Verbose) Logger.WriteLine($"FPS: TargetPid -> {value}");
                 if (_sessionHandle == 0) return;
                 // Push the kernel-side filter on every foreground PID change. One-shot
                 // doesn't work: if the user launches a game while the overlay is already
@@ -340,6 +347,8 @@ namespace GHelper.Overlay
                 // in Start(), so callback-side filtering continues to work.
                 if (hr != ERROR_SUCCESS)
                     Logger.WriteLine($"EnableTraceEx2 (filter) failed for {providerId}: 0x{hr:X}");
+                else if (Verbose)
+                    Logger.WriteLine($"FPS: filters applied {providerId} pid={pid} eventId={applyDxgiEventIdFilter} hr=0x{hr:X}");
             }
             finally
             {
@@ -359,6 +368,7 @@ namespace GHelper.Overlay
         public void Start(int targetPid = -1)
         {
             _targetPid = targetPid;
+            if (Verbose) Logger.WriteLine($"FPS: Start pid={targetPid}");
 
             // Kill any stale session left by a previous unclean exit. Otherwise StartTrace
             // returns ERROR_ALREADY_EXISTS without populating sessionHandle, EnableTraceEx2
@@ -372,25 +382,32 @@ namespace GHelper.Overlay
             uint hr = StartTrace(out _sessionHandle, SessionName, ref props);
             if (hr == 0xB7 /*ERROR_ALREADY_EXISTS*/)
             {
+                if (Verbose) Logger.WriteLine("FPS: StartTrace 0xB7 (already exists), stopping stale and retrying");
                 StopTrace(0, SessionName, ref stopProps);
                 hr = StartTrace(out _sessionHandle, SessionName, ref props);
             }
             if (hr != ERROR_SUCCESS)
+            {
+                Logger.WriteLine($"FPS: StartTrace failed: 0x{hr:X}");
                 throw new InvalidOperationException($"StartTrace failed: 0x{hr:X}");
+            }
+            if (Verbose) Logger.WriteLine($"FPS: StartTrace OK handle=0x{_sessionHandle:X}");
 
             // 2a. Subscribe to the DXGI provider (DX11 + DX12 games that go through
             //     the user-mode DXGI swapchain — fires event ID 42 per frame).
-            EnableTraceEx2(_sessionHandle, DxgiProviderId,
+            uint dxgiHr = EnableTraceEx2(_sessionHandle, DxgiProviderId,
                 EVENT_CONTROL_CODE_ENABLE_PROVIDER,
                 TRACE_LEVEL_INFORMATION, 0, 0, 0, IntPtr.Zero);
+            if (Verbose) Logger.WriteLine($"FPS: EnableTraceEx2 DXGI hr=0x{dxgiHr:X}");
 
             // 2b. Subscribe to the DxgKrnl provider (DX12 flip-model + Vulkan games
             //     that call D3DKMTPresent directly and never surface a DXGI event 42).
             //     DXGKRNL_KEYWORD_PRESENT scopes delivery to flip/present events only,
             //     avoiding the high volume of all kernel GPU scheduling events.
-            EnableTraceEx2(_sessionHandle, DxgKrnlProviderId,
+            uint krnlHr = EnableTraceEx2(_sessionHandle, DxgKrnlProviderId,
                 EVENT_CONTROL_CODE_ENABLE_PROVIDER,
                 TRACE_LEVEL_INFORMATION, DXGKRNL_KEYWORD_PRESENT, 0, 0, IntPtr.Zero);
+            if (Verbose) Logger.WriteLine($"FPS: EnableTraceEx2 DxgKrnl hr=0x{krnlHr:X}");
 
             // 3. Open the real-time consumer using explicit-layout struct.
             //    LoggerName and EventRecordCallback are marshaled as raw IntPtrs to
@@ -417,12 +434,16 @@ namespace GHelper.Overlay
                 // OpenTrace copies the name internally — safe to free immediately
                 Marshal.FreeHGlobal(loggerNamePtr);
             }
+            if (Verbose || _traceHandle == -1)
+                Logger.WriteLine($"FPS: OpenTrace handle=0x{_traceHandle:X}");
 
             // 4. Force prompt delivery — kernel otherwise batches events to ~1×/s.
             _flushTimer = new System.Threading.Timer(_ => FlushSession(), null, FlushIntervalMs, FlushIntervalMs);
 
             // 5. Blocking pump — returns when CloseTrace() is called from Stop()/Dispose()
-            ProcessTrace(new[] { _traceHandle }, 1, IntPtr.Zero, IntPtr.Zero);
+            if (Verbose) Logger.WriteLine("FPS: ProcessTrace pumping");
+            uint ptHr = ProcessTrace(new[] { _traceHandle }, 1, IntPtr.Zero, IntPtr.Zero);
+            if (Verbose) Logger.WriteLine($"FPS: ProcessTrace exited hr=0x{ptHr:X}");
         }
 
         public void Stop()
@@ -440,6 +461,14 @@ namespace GHelper.Overlay
             if (_sessionHandle == 0) return;
 
             long now = Stopwatch.GetTimestamp();
+
+            if (Verbose && now - _vLogTick >= Stopwatch.Frequency)
+            {
+                _vLogTick = now;
+                Logger.WriteLine($"FPS diag: sess=0x{_sessionHandle:X} pid={_targetPid} raw={_vRaw} dxgi={_vDxgi} krnl={_vKrnl} matched={_vMatched} wrongpid={_vWrongPid}(last={_vLastWrongPid}) filled={_framesFilled} fps={SampleFps():F0}");
+                _vRaw = _vDxgi = _vKrnl = _vMatched = _vWrongPid = 0;
+            }
+
             bool idleFlushDue = now - _lastFlushTick >= Stopwatch.Frequency; // ≥1 s since last flush
             if (SampleFps() < MinFlushFps && !idleFlushDue) return;
 
@@ -465,11 +494,23 @@ namespace GHelper.Overlay
                                  && record.EventHeader.Task == DXGKRNL_TASK_FLIP
                                  && record.EventHeader.Opcode == DXGKRNL_OPCODE_START;
 
+            if (Verbose)
+            {
+                _vRaw++;
+                if (isDxgiPresent) _vDxgi++;
+                else if (isDxgKrnlPresent) _vKrnl++;
+            }
+
             if (!isDxgiPresent && !isDxgKrnlPresent) return;
 
             int targetPid = _targetPid;
             if (targetPid == 0) return;                                    // no foreground target yet
-            if ((int)record.EventHeader.ProcessId != targetPid) return;    // wrong process
+            if ((int)record.EventHeader.ProcessId != targetPid)            // wrong process
+            {
+                if (Verbose) { _vWrongPid++; _vLastWrongPid = (int)record.EventHeader.ProcessId; }
+                return;
+            }
+            if (Verbose) _vMatched++;
 
             // DXGI_PRESENT_TEST presents probe swapchain state without displaying a frame.
             // S.T.A.L.K.E.R. Anomaly's X-Ray engine fires one between every real Present,
