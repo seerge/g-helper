@@ -240,6 +240,7 @@ namespace GHelper.Overlay
         private readonly long[] _frameTimes = new long[RollingWindowSize];
         private volatile int _frameHead = 0;    // next write slot — read by overlay tick thread
         private volatile int _framesFilled = 0; // valid entries (capped at RollingWindowSize)
+        private long _lastFrameArrival;
 
         // Flip true to log ETW delivery latency once per second (see LogFpsDiagnostics).
         private static readonly bool FpsDiagLogging = false;
@@ -465,7 +466,8 @@ namespace GHelper.Overlay
             if (Verbose && now - _vLogTick >= Stopwatch.Frequency)
             {
                 _vLogTick = now;
-                Logger.WriteLine($"FPS diag: sess=0x{_sessionHandle:X} pid={_targetPid} raw={_vRaw} dxgi={_vDxgi} krnl={_vKrnl} matched={_vMatched} wrongpid={_vWrongPid}(last={_vLastWrongPid}) filled={_framesFilled} fps={SampleFps():F0}");
+                long newest = _framesFilled > 0 ? _frameTimes[(_frameHead - 1 + RollingWindowSize) % RollingWindowSize] : 0;
+                Logger.WriteLine($"FPS diag: sess=0x{_sessionHandle:X} pid={_targetPid} raw={_vRaw} dxgi={_vDxgi} krnl={_vKrnl} matched={_vMatched} wrongpid={_vWrongPid}(last={_vLastWrongPid}) filled={_framesFilled} fps={SampleFps():F0} now={now} newest={newest} d={now - newest} freq={Stopwatch.Frequency}");
                 _vRaw = _vDxgi = _vKrnl = _vMatched = _vWrongPid = 0;
             }
 
@@ -544,6 +546,7 @@ namespace GHelper.Overlay
             _frameTimes[_frameHead] = record.EventHeader.TimeStamp;
             _frameHead = (_frameHead + 1) % RollingWindowSize;
             if (_framesFilled < RollingWindowSize) _framesFilled++;
+            _lastFrameArrival = Stopwatch.GetTimestamp();
 
             if (FpsDiagLogging) LogFpsDiagnostics(record.EventHeader.TimeStamp);
         }
@@ -558,8 +561,9 @@ namespace GHelper.Overlay
             int head = _frameHead;
             long newest = _frameTimes[(head - 1 + RollingWindowSize) % RollingWindowSize];
 
-            // No frame in the last second → not rendering; blank instead of showing a stale value.
-            if (Stopwatch.GetTimestamp() - newest > freq) return 0;
+            // Idle check uses arrival time, not the frame's Present timestamp — ETW delivery can lag
+            // seconds on some systems, which would else make live frames look stale and blank FPS (#5673).
+            if (Stopwatch.GetTimestamp() - _lastFrameArrival > freq) return 0;
 
             // Average over the last second of frames only.
             long cutoff = newest - freq;
@@ -616,7 +620,7 @@ namespace GHelper.Overlay
             {
                 BufferSize = (uint)Marshal.SizeOf<EVENT_TRACE_PROPERTIES>(),
                 Flags = WNODE_FLAG_TRACED_GUID,
-                ClientContext = 0, // 0 = QPC — same frequency as Stopwatch.Frequency
+                ClientContext = 1, // 1 = QPC — matches Stopwatch.GetTimestamp()/Frequency (0 is undocumented, not QPC on all machines)
             },
             LogFileMode = 0x00000100, // EVENT_TRACE_REAL_TIME_MODE
             LogFileNameOffset = 0,
