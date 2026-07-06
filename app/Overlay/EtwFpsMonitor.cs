@@ -240,7 +240,6 @@ namespace GHelper.Overlay
         private readonly long[] _frameTimes = new long[RollingWindowSize];
         private volatile int _frameHead = 0;    // next write slot — read by overlay tick thread
         private volatile int _framesFilled = 0; // valid entries (capped at RollingWindowSize)
-        private long _lastFrameArrival;
 
         // Flip true to log ETW delivery latency once per second (see LogFpsDiagnostics).
         private static readonly bool FpsDiagLogging = false;
@@ -546,7 +545,6 @@ namespace GHelper.Overlay
             _frameTimes[_frameHead] = record.EventHeader.TimeStamp;
             _frameHead = (_frameHead + 1) % RollingWindowSize;
             if (_framesFilled < RollingWindowSize) _framesFilled++;
-            _lastFrameArrival = Stopwatch.GetTimestamp();
 
             if (FpsDiagLogging) LogFpsDiagnostics(record.EventHeader.TimeStamp);
         }
@@ -561,9 +559,9 @@ namespace GHelper.Overlay
             int head = _frameHead;
             long newest = _frameTimes[(head - 1 + RollingWindowSize) % RollingWindowSize];
 
-            // Idle check uses arrival time, not the frame's Present timestamp — ETW delivery can lag
-            // seconds on some systems, which would else make live frames look stale and blank FPS (#5673).
-            if (Stopwatch.GetTimestamp() - _lastFrameArrival > freq) return 0;
+            // Not rendering → blank. 4 s tolerance (PresentMon's swap-chain prune window) so ETW
+            // real-time delivery latency doesn't blank a live counter (#5673).
+            if (Stopwatch.GetTimestamp() - newest > 4 * freq) return 0;
 
             // Average over the last second of frames only.
             long cutoff = newest - freq;
