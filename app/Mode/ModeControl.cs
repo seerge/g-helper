@@ -47,6 +47,7 @@ namespace GHelper.Mode
         static System.Timers.Timer? reapplyTimer;
         static System.Timers.Timer modeToggleTimer = default!;
         static CancellationTokenSource _modeCts = new();
+        static Task _modeTask = Task.CompletedTask;
 
         public ModeControl()
         {
@@ -81,6 +82,11 @@ namespace GHelper.Mode
         {
             SetCPUTemp(AppConfig.GetMode("cpu_temp"));
             SetRyzenPower();
+        }
+
+        public void WaitForApply()
+        {
+            try { _modeTask.Wait(5000); } catch { }
         }
 
         public void AutoPerformance(bool powerChanged = false)
@@ -128,7 +134,7 @@ namespace GHelper.Mode
             _modeCts = new CancellationTokenSource();
             var ct = _modeCts.Token;
 
-            Task.Run(async () =>
+            _modeTask = Task.Run(async () =>
             {
                 try
                 {
