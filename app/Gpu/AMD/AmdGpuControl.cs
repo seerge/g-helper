@@ -99,30 +99,67 @@ public class AmdGpuControl : IGpuControl
         if (!IsValid)
             return null;
 
-        if (ADL2_New_QueryPMLogData_Get(_adlContextHandle, _internalDiscreteAdapter.AdapterIndex, out ADLPMLogDataOutput adlpmLogDataOutput) != Adl2.ADL_SUCCESS)
-            return null;
+        if (!GetPMLog(out ADLPMLogDataOutput adlpmLogDataOutput))
+            return GetLegacy().temp;
 
         ADLSingleSensorData temperatureSensor = adlpmLogDataOutput.Sensors[(int)ADLSensorType.PMLOG_TEMPERATURE_EDGE];
         if (temperatureSensor.Supported == 0)
-            return null;
+            return GetLegacy().temp;
 
         return temperatureSensor.Value;
     }
 
 
+    private ADLPMLogDataOutput _pmLog;
+    private bool _pmLogValid;
+    private long _pmLogTime = -PMLogCacheMs;
+    private const int PMLogCacheMs = 500;
+
+    private bool GetPMLog(out ADLPMLogDataOutput log)
+    {
+        if (Environment.TickCount64 - _pmLogTime >= PMLogCacheMs)
+        {
+            _pmLogValid = ADL2_New_QueryPMLogData_Get(_adlContextHandle, _internalDiscreteAdapter.AdapterIndex, out _pmLog) == Adl2.ADL_SUCCESS;
+            _pmLogTime = Environment.TickCount64;
+        }
+        log = _pmLog;
+        return _pmLogValid;
+    }
+
     public int? GetGpuUse()
     {
         if (!IsValid) return null;
 
-        if (ADL2_New_QueryPMLogData_Get(_adlContextHandle, _internalDiscreteAdapter.AdapterIndex, out ADLPMLogDataOutput adlpmLogDataOutput) != Adl2.ADL_SUCCESS)
-            return null;
+        if (!GetPMLog(out ADLPMLogDataOutput adlpmLogDataOutput))
+            return GetLegacy().use;
 
         ADLSingleSensorData gpuUsage = adlpmLogDataOutput.Sensors[(int)ADLSensorType.PMLOG_INFO_ACTIVITY_GFX];
         if (gpuUsage.Supported == 0)
-            return null;
+            return GetLegacy().use;
 
         return gpuUsage.Value;
+    }
 
+    private long _totalVramMB; // total VRAM is static — cached on first successful query (0 = not yet)
+
+    public (long usedMb, long totalMb)? GetVramInfo()
+    {
+        ADLAdapterInfo? adapter = IsValid ? _internalDiscreteAdapter : _iGPU;
+        if (adapter is null) return null;
+        int index = adapter.Value.AdapterIndex;
+
+        if (_totalVramMB <= 0)
+        {
+            if (ADL2_Adapter_MemoryInfo2_Get(_adlContextHandle, index, out ADLMemoryInfo2 mem) != Adl2.ADL_SUCCESS)
+                return null;
+            _totalVramMB = mem.iMemorySize / (1024 * 1024);
+            if (_totalVramMB <= 0) return null;
+        }
+
+        if (ADL2_Adapter_DedicatedVRAMUsage_Get(_adlContextHandle, index, out int usedMB) != Adl2.ADL_SUCCESS)
+            return null;
+
+        return (usedMB, _totalVramMB);
     }
 
     public int? GetiGpuUse()
@@ -137,10 +174,44 @@ public class AmdGpuControl : IGpuControl
 
     }
 
+    private ADLPMLogDataOutput _pmLogiGpu;
+    private bool _pmLogiGpuValid;
+    private long _pmLogiGpuTime = -PMLogCacheMs;
+
+    private bool GetPMLogiGpu(out ADLPMLogDataOutput log)
+    {
+        log = default;
+        if (_adlContextHandle == nint.Zero || _iGPU == null) return false;
+        if (Environment.TickCount64 - _pmLogiGpuTime >= PMLogCacheMs)
+        {
+            _pmLogiGpuValid = ADL2_New_QueryPMLogData_Get(_adlContextHandle, ((ADLAdapterInfo)_iGPU).AdapterIndex, out _pmLogiGpu) == Adl2.ADL_SUCCESS;
+            _pmLogiGpuTime = Environment.TickCount64;
+        }
+        log = _pmLogiGpu;
+        return _pmLogiGpuValid;
+    }
+
+    private static int? Sensor(ADLPMLogDataOutput log, ADLSensorType type)
+    {
+        ADLSingleSensorData sensor = log.Sensors[(int)type];
+        return sensor.Supported != 0 ? sensor.Value : null;
+    }
+
+    public (int? temp, int? use, int? gfxPower, int? cpuPower, int? asicPower) GetiGpuSensors()
+    {
+        if (!GetPMLogiGpu(out ADLPMLogDataOutput log)) return default;
+
+        return (Sensor(log, ADLSensorType.PMLOG_TEMPERATURE_EDGE),
+                Sensor(log, ADLSensorType.PMLOG_INFO_ACTIVITY_GFX),
+                Sensor(log, ADLSensorType.PMLOG_GFX_POWER),
+                Sensor(log, ADLSensorType.PMLOG_CPU_POWER),
+                Sensor(log, ADLSensorType.PMLOG_ASIC_POWER));
+    }
+
     public float? GetGpuPower()
     {
         if (!IsValid) return null;
-        if (ADL2_New_QueryPMLogData_Get(_adlContextHandle, _internalDiscreteAdapter.AdapterIndex, out ADLPMLogDataOutput adlpmLogDataOutput) != Adl2.ADL_SUCCESS) return null;
+        if (!GetPMLog(out ADLPMLogDataOutput adlpmLogDataOutput)) return GetLegacy().power;
 
         foreach (var sensorType in new[] { ADLSensorType.PMLOG_ASIC_POWER, ADLSensorType.PMLOG_GFX_POWER, ADLSensorType.PMLOG_BOARD_POWER })
         {
@@ -149,7 +220,41 @@ public class AmdGpuControl : IGpuControl
                 return sensor.Value;
         }
 
-        return null;
+        return GetLegacy().power;
+    }
+
+    private bool? _oldGpu;
+    private (int? temp, int? use, float? power) _legacy;
+    private long _legacyTick = -PMLogCacheMs;
+
+    private (int? temp, int? use, float? power) GetLegacy()
+    {
+        _oldGpu ??= ADL2_Overdrive_Caps(_adlContextHandle, _internalDiscreteAdapter.AdapterIndex, out _, out _, out int v) == Adl2.ADL_SUCCESS && v < 8;
+        if (_oldGpu == false) return default;
+        if (Environment.TickCount64 - _legacyTick < PMLogCacheMs) return _legacy;
+
+        int idx = _internalDiscreteAdapter.AdapterIndex;
+        (int? temp, int? use, float? power) data = default;
+        try
+        {
+            if (ADL2_OverdriveN_Temperature_Get(_adlContextHandle, idx, 1, out int t) == Adl2.ADL_SUCCESS)
+            {
+                if (t > 1000) t /= 1000;
+                if (t > 0 && t < 125) data.temp = t;
+            }
+            if (ADL2_OverdriveN_PerformanceStatus_Get(_adlContextHandle, idx, out ADLODNPerformanceStatus st) == Adl2.ADL_SUCCESS
+                && st.iGPUActivityPercent >= 0 && st.iGPUActivityPercent <= 100)
+                data.use = st.iGPUActivityPercent;
+            if (ADL2_Overdrive6_CurrentPower_Get(_adlContextHandle, idx, 0, out int p) == Adl2.ADL_SUCCESS)
+            {
+                float watts = p / 256f;
+                if (watts > 0 && watts < 1000) data.power = watts;
+            }
+        }
+        catch (EntryPointNotFoundException) { _oldGpu = false; }
+
+        _legacyTick = Environment.TickCount64;
+        return _legacy = data;
     }
 
     // Used by ROG Ally (iGPU-only) for auto-TDP logic - queries the integrated GPU adapter

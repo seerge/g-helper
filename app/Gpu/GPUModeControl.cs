@@ -104,6 +104,13 @@ namespace GHelper.Gpu
             }
             else if (GPUMode == AsusACPI.GPUModeUltimate)
             {
+                if (Program.acpi.DeviceGet(AsusACPI.GPUMux) < 0)
+                {
+                    Logger.WriteLine("Mux not supported");
+                    settings.VisualiseGPUMode();
+                    return;
+                }
+
                 DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertUltimateOn, Properties.Strings.AlertUltimateTitle, MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
@@ -200,7 +207,12 @@ namespace GHelper.Gpu
                             settings.Invoke(delegate { InitGPUMode(); });
                         }
 
-                        HardwareControl.RecreateGpuControl();
+                        for (int i = 0; i < 3; i++)
+                        {
+                            HardwareControl.RecreateGpuControl();
+                            if (HardwareControl.GpuControl is not null) break;
+                            await Task.Delay(TimeSpan.FromSeconds(2));
+                        }
                         Program.modeControl.SetGPUClocks(false);
                     }
 

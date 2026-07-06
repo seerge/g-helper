@@ -118,6 +118,7 @@ namespace GHelper.USB
         public static bool HasLogo { get; private set; }
         public static bool HasLightbar { get; private set; }
         public static bool HasRearglow { get; private set; }
+        public static bool IsOldStrix { get; private set; }
 
         static System.Timers.Timer timer = new System.Timers.Timer(1000);
 
@@ -366,9 +367,11 @@ namespace GHelper.USB
 
             AppConfig.Set("backlight_type", typeByte);
 
+            IsOldStrix = feat1 == 0 && AppConfig.IsStrix();
+            if (IsOldStrix) feat1 = FEAT1_LOGO | FEAT1_LIGHTBAR;
             HasLogo = (feat1 & FEAT1_LOGO) != 0 || AppConfig.IsZ13();
             HasLightbar = (feat1 & FEAT1_LIGHTBAR) != 0;
-            HasRearglow = (feat1 & FEAT1_REARGLOW) != 0;
+            HasRearglow = (feat1 & (FEAT1_REARGLOW | FEAT1_VCUT)) != 0;
 
             isStrix4Zone = BacklightType == AuraBacklightType.MultiZone;
 
@@ -418,7 +421,8 @@ namespace GHelper.USB
         public static void DirectBrightness(int brightness, string log)
         {
             if (isACPI) Program.acpi.TUFKeyboardBrightness(brightness, log);
-            AsusHid.WriteInput([AsusHid.INPUT_ID, 0xBA, 0xC5, 0xC4, (byte)brightness], log);
+            if (AppConfig.IsAlly()) AsusHid.SetFeatureAura([AsusHid.AURA_ID, 0xBA, 0xC5, 0xC4, (byte)brightness]);
+            else AsusHid.WriteInput([AsusHid.INPUT_ID, 0xBA, 0xC5, 0xC4, (byte)brightness], log);
         }
 
         static byte[] AuraPowerMessage(AuraPower flags)
@@ -660,7 +664,7 @@ namespace GHelper.USB
             if (init || initDirect)
             {
                 initDirect = false;
-                AsusHid.SetFeatureAura(new byte[] { AsusHid.AURA_ID, 0xBC });
+                AsusHid.SetFeatureAura(new byte[] { AsusHid.AURA_ID, 0xBC, 1 });
                 Thread.Sleep(50);
             }
 

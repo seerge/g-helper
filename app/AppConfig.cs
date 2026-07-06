@@ -115,7 +115,7 @@ public static class AppConfig
             Directory.CreateDirectory(Path.GetDirectoryName(fallbackConfigFile));
             File.Copy(configFile, fallbackConfigFile, overwrite: true);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             //Logger.WriteLine("Can't sync fallback config: " + ex.Message);
         }
@@ -304,7 +304,6 @@ public static class AppConfig
     public static byte[] GetDefaultCurve(AsusFan device)
     {
         int mode = Modes.GetCurrentBase();
-        byte[] curve;
 
         switch (mode)
         {
@@ -445,7 +444,7 @@ public static class AppConfig
 
     public static bool IsSleepBacklight()
     {
-        return ContainsModel("FA617") || ContainsModel("FX507") || ContainsModel("FA507");
+        return ContainsModel("FA617") || ContainsModel("FX507") || ContainsModel("FA507") || ContainsModel("FA401");
     }
 
     public static bool IsAnimeMatrix()
@@ -626,7 +625,7 @@ public static class AppConfig
 
     public static bool IsModeReapplyRequired()
     {
-        return Is("mode_reapply") || ContainsModel("FA401");
+        return Is("mode_reapply") || ContainsModel("FA401") || ContainsModel("GA403");
     }
 
     public static bool IsStandardModeFix()
@@ -749,7 +748,7 @@ public static class AppConfig
 
     public static bool IsSleepReset()
     {
-        return Is("sleep_reset") || ContainsModel("GU605MI") || ContainsModel("GU605MV");
+        return Is("sleep_reset") || ContainsModel("GU605MI") || ContainsModel("GU605MV") || ContainsModel("GU605CR");
     }
 
     public static bool SaveDimming()

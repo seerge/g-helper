@@ -576,6 +576,17 @@ namespace GHelper.Input
 
         public static void KeyProcess(string name = "m3")
         {
+            if (name == "m4" && Control.ModifierKeys == (Keys.Control | Keys.Shift | Keys.Alt))
+            {
+                Thread.Sleep(3000);
+                if ((User32.GetAsyncKeyState(0x11) & User32.GetAsyncKeyState(0x10) & User32.GetAsyncKeyState(0x12) & 0x8000) != 0)
+                {
+                    Program.acpi.DeviceSet(AsusACPI.GPUMux, 1, "MUX hybrid recovery");
+                    Process.Start(new ProcessStartInfo("shutdown", "/r /t 1") { CreateNoWindow = true, UseShellExecute = false });
+                }
+                return;
+            }
+
             string action = AppConfig.GetString(name);
 
             if (action is null || action.Length <= 1)
@@ -849,7 +860,11 @@ namespace GHelper.Input
                     // This is both the M1 and M2 keys.
                     // There's a way to differentiate, apparently, but it isn't over USB or any other obvious protocol.
                     case 165:
+                        Program.settingsForm.BeginInvoke(() => Program.hardwareOverlay?.SetDragKey(true));
                         KeyProcess("paddle");
+                        return;
+                    case 0:
+                        Program.settingsForm.BeginInvoke(() => Program.hardwareOverlay?.SetDragKey(false));
                         return;
                     // The Command Center ("play-looking") button below the select key.
                     case 166:
@@ -894,6 +909,7 @@ namespace GHelper.Input
                     case 181:    // FN + Numpad Enter
                         KeyProcess("fne");
                         return;
+                    case 93:    // GoPro key
                     case 174:   // FN+F5
                     case 153:   // FN+F5 OLD MODELS
                         modeControl.CyclePerformanceMode(Control.ModifierKeys == Keys.Shift);
@@ -1322,14 +1338,21 @@ namespace GHelper.Input
 
         static void WatcherEventArrived(object sender, EventArrivedEventArgs e)
         {
-            if (e.NewEvent is null) return;
-            int EventID = int.Parse(e.NewEvent["EventID"].ToString());
-            Logger.WriteLine("WMI event " + EventID);
-            if (AppConfig.NoWMI()) return;
+            try
+            {
+                if (e.NewEvent is null) return;
+                int EventID = int.Parse(e.NewEvent["EventID"].ToString());
+                Logger.WriteLine("WMI event " + EventID);
+                if (AppConfig.NoWMI()) return;
 
-            if (EventID == 123) Program.OnChargerEvent();
+                if (EventID == 123) Program.OnChargerEvent();
 
-            HandleEvent(EventID);
+                HandleEvent(EventID);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine("WMI event error: " + ex.Message);
+            }
         }
     }
 }

@@ -6,7 +6,7 @@ namespace GHelper.UI
     {
 
         // Design tokens
-        private const float HoverShiftAmount = 0.06f;
+        private const float HoverShiftAmount = 0.04f;
         private const float ActiveTopLighten = 0.25f;
         private const float RestTopLighten = 0.1f;
         private const int ActiveBgTopAlpha = 32;
@@ -61,6 +61,8 @@ namespace GHelper.UI
 
         public bool Borderless { get; set; } = false;
 
+        protected override bool ShowFocusCues => false;
+
         public RButton()
         {
             DoubleBuffered = true;
@@ -107,8 +109,8 @@ namespace GHelper.UI
             base.OnPaint(pevent);
 
             float ratio = pevent.Graphics.DpiX / 192.0f;
-            int border = (int)(ratio * borderSize);
-            int radius = (int)(ratio * borderRadius);
+            int border = (int)Math.Round((ratio * borderSize - 1) / 2) * 2 + 1;
+            int radius = (int)Math.Round(ratio * borderRadius, MidpointRounding.AwayFromZero);
 
             Rectangle rectSurface = ClientRectangle;
 
@@ -120,7 +122,7 @@ namespace GHelper.UI
                 pevent.Graphics.DrawPath(penSurface, pathSurface);
 
                 bool drawActive = Enabled && !Borderless && activated && borderColor.A > 0;
-                bool drawRest = Enabled && !Borderless && !activated && FlatAppearance.BorderColor.A > 0;
+                bool drawRest = Enabled && !Borderless && !activated && FlatAppearance.BorderColor.A > 0 && !RForm.flatTheme;
 
                 if (drawActive)
                 {
@@ -132,7 +134,8 @@ namespace GHelper.UI
 
                     using (GraphicsPath bgPath = GetFigurePath(borderRect, radius))
                     using (LinearGradientBrush bgBrush = new LinearGradientBrush(
-                        new PointF(0, borderRect.Y), new PointF(0, borderRect.Bottom),
+                        ControlHelper.DarkMode ? new PointF(0, borderRect.Y) : new PointF(0, borderRect.Bottom),
+                        ControlHelper.DarkMode ? new PointF(0, borderRect.Bottom) : new PointF(0, borderRect.Y),
                         bgTop, bgTransparent))
                     {
                         bgBrush.InterpolationColors = new ColorBlend
@@ -140,10 +143,11 @@ namespace GHelper.UI
                             Colors = new[] { bgTop, bgTransparent, bgTransparent },
                             Positions = new[] { 0f, bgEndPos, 1f }
                         };
-                        pevent.Graphics.FillPath(bgBrush, bgPath);
+                        if (!RForm.flatTheme)
+                            pevent.Graphics.FillPath(bgBrush, bgPath);
                     }
 
-                    ControlHelper.DrawGradientBorder(pevent.Graphics, borderRect, borderColor, radius, border, PenAlignment.Outset, ActiveTopLighten);
+                    ControlHelper.DrawGradientBorder(pevent.Graphics, borderRect, borderColor, radius, border, PenAlignment.Outset, RForm.flatTheme ? 0f : ActiveTopLighten);
                 }
                 else if (drawRest)
                 {
@@ -161,8 +165,21 @@ namespace GHelper.UI
                     rect.Y += Image.Height;
                     rect.Height -= Image.Height;
                 }
+                else
+                {
+                    using (var brush = new SolidBrush(Parent.BackColor))
+                        pevent.Graphics.FillRectangle(brush, rect);
+                    using (var brush = new SolidBrush(BackColor))
+                        pevent.Graphics.FillRectangle(brush, rect);
+                }
                 TextFormatFlags flags = TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.WordBreak;
                 TextRenderer.DrawText(pevent.Graphics, Text, Font, rect, Color.Gray, flags);
+            }
+
+            if (!Enabled && !Borderless && activated && borderColor.A > 0)
+            {
+                Rectangle borderRect = new Rectangle(border, border, rectSurface.Width - 2 * border, rectSurface.Height - 2 * border);
+                ControlHelper.DrawGradientBorder(pevent.Graphics, borderRect, borderColor, radius, border, PenAlignment.Outset, RForm.flatTheme ? 0f : ActiveTopLighten);
             }
 
 

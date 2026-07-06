@@ -98,10 +98,7 @@ namespace GHelper
             labelBacklight = new Label();
             tableLayoutKeyboard = new TableLayoutPanel();
             buttonKeyboard = new RButton();
-            panelColor = new Panel();
-            pictureColor2 = new PictureBox();
-            pictureColor = new PictureBox();
-            buttonKeyboardColor = new RButton();
+            buttonKeyboardColor = new RColorButton();
             comboKeyboard = new RComboBox();
             panelKeyboardTitle = new Panel();
             buttonFnLock = new RButton();
@@ -109,9 +106,7 @@ namespace GHelper
             labelKeyboard = new Label();
             panelRearLight = new Panel();
             tableLayoutRearLight = new TableLayoutPanel();
-            panelRearColor = new Panel();
-            pictureRearColor = new PictureBox();
-            buttonRearColor = new RButton();
+            buttonRearColor = new RColorButton();
             comboRearLight = new RComboBox();
             panelRearLightTitle = new Panel();
             pictureRearLight = new PictureBox();
@@ -174,15 +169,10 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)pictureScreen).BeginInit();
             panelKeyboard.SuspendLayout();
             tableLayoutKeyboard.SuspendLayout();
-            panelColor.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureColor2).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureColor).BeginInit();
             panelKeyboardTitle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureKeyboard).BeginInit();
             panelRearLight.SuspendLayout();
             tableLayoutRearLight.SuspendLayout();
-            panelRearColor.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureRearColor).BeginInit();
             panelRearLightTitle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureRearLight).BeginInit();
             panelStartup.SuspendLayout();
@@ -336,10 +326,10 @@ namespace GHelper
             buttonMatrix.Location = new Point(527, 4);
             buttonMatrix.Margin = new Padding(4);
             buttonMatrix.MaximumSize = new Size(0, 48);
-            buttonMatrix.MinimumSize = new Size(0, 44);
+            buttonMatrix.MinimumSize = new Size(0, 48);
             buttonMatrix.Name = "buttonMatrix";
             buttonMatrix.Secondary = true;
-            buttonMatrix.Size = new Size(253, 44);
+            buttonMatrix.Size = new Size(253, 48);
             buttonMatrix.TabIndex = 18;
             buttonMatrix.Text = Properties.Strings.PictureGif;
             buttonMatrix.UseVisualStyleBackColor = false;
@@ -844,7 +834,7 @@ namespace GHelper
             buttonOverlay.Secondary = false;
             buttonOverlay.Size = new Size(254, 72);
             buttonOverlay.TabIndex = 12;
-            buttonOverlay.Text = "AMD Overlay";
+            buttonOverlay.Text = "Overlay";
             buttonOverlay.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonOverlay.UseVisualStyleBackColor = false;
             // 
@@ -1311,7 +1301,7 @@ namespace GHelper
             tableLayoutKeyboard.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
             tableLayoutKeyboard.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
             tableLayoutKeyboard.Controls.Add(buttonKeyboard, 0, 0);
-            tableLayoutKeyboard.Controls.Add(panelColor, 0, 0);
+            tableLayoutKeyboard.Controls.Add(buttonKeyboardColor, 0, 0);
             tableLayoutKeyboard.Controls.Add(comboKeyboard, 0, 0);
             tableLayoutKeyboard.Dock = DockStyle.Top;
             tableLayoutKeyboard.Location = new Point(20, 60);
@@ -1343,42 +1333,9 @@ namespace GHelper
             buttonKeyboard.Text = "&Extra";
             buttonKeyboard.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonKeyboard.UseVisualStyleBackColor = false;
-            // 
-            // panelColor
-            // 
-            panelColor.AutoSize = true;
-            panelColor.Controls.Add(pictureColor2);
-            panelColor.Controls.Add(pictureColor);
-            panelColor.Controls.Add(buttonKeyboardColor);
-            panelColor.Dock = DockStyle.Fill;
-            panelColor.Location = new Point(266, 4);
-            panelColor.Margin = new Padding(4);
-            panelColor.Name = "panelColor";
-            panelColor.Size = new Size(254, 44);
-            panelColor.TabIndex = 36;
-            // 
-            // pictureColor2
-            // 
-            pictureColor2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            pictureColor2.Location = new Point(187, 15);
-            pictureColor2.Margin = new Padding(8);
-            pictureColor2.Name = "pictureColor2";
-            pictureColor2.Size = new Size(20, 20);
-            pictureColor2.TabIndex = 41;
-            pictureColor2.TabStop = false;
-            // 
-            // pictureColor
-            // 
-            pictureColor.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            pictureColor.Location = new Point(218, 15);
-            pictureColor.Margin = new Padding(8);
-            pictureColor.Name = "pictureColor";
-            pictureColor.Size = new Size(20, 20);
-            pictureColor.TabIndex = 40;
-            pictureColor.TabStop = false;
-            // 
+            //
             // buttonKeyboardColor
-            // 
+            //
             buttonKeyboardColor.Activated = false;
             buttonKeyboardColor.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             buttonKeyboardColor.BackColor = SystemColors.ButtonHighlight;
@@ -1492,7 +1449,7 @@ namespace GHelper
             tableLayoutRearLight.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
             tableLayoutRearLight.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
             tableLayoutRearLight.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
-            tableLayoutRearLight.Controls.Add(panelRearColor, 0, 0);
+            tableLayoutRearLight.Controls.Add(buttonRearColor, 0, 0);
             tableLayoutRearLight.Controls.Add(comboRearLight, 0, 0);
             tableLayoutRearLight.Dock = DockStyle.Top;
             tableLayoutRearLight.Location = new Point(20, 60);
@@ -1502,31 +1459,9 @@ namespace GHelper
             tableLayoutRearLight.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutRearLight.Size = new Size(787, 52);
             tableLayoutRearLight.TabIndex = 39;
-            // 
-            // panelRearColor
-            // 
-            panelRearColor.AutoSize = true;
-            panelRearColor.Controls.Add(pictureRearColor);
-            panelRearColor.Controls.Add(buttonRearColor);
-            panelRearColor.Dock = DockStyle.Fill;
-            panelRearColor.Location = new Point(266, 4);
-            panelRearColor.Margin = new Padding(4);
-            panelRearColor.Name = "panelRearColor";
-            panelRearColor.Size = new Size(254, 44);
-            panelRearColor.TabIndex = 36;
-            // 
-            // pictureRearColor
-            // 
-            pictureRearColor.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            pictureRearColor.Location = new Point(218, 13);
-            pictureRearColor.Margin = new Padding(8);
-            pictureRearColor.Name = "pictureRearColor";
-            pictureRearColor.Size = new Size(20, 20);
-            pictureRearColor.TabIndex = 40;
-            pictureRearColor.TabStop = false;
-            // 
+            //
             // buttonRearColor
-            // 
+            //
             buttonRearColor.Activated = false;
             buttonRearColor.AutoSize = true;
             buttonRearColor.AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -1636,7 +1571,7 @@ namespace GHelper
             // 
             // tableLayoutPeripherals
             // 
-            tableLayoutPeripherals.AutoSize = true;
+            tableLayoutPeripherals.AutoSize = false;
             tableLayoutPeripherals.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             tableLayoutPeripherals.ColumnCount = 3;
             tableLayoutPeripherals.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
@@ -2228,10 +2163,6 @@ namespace GHelper
             panelKeyboard.PerformLayout();
             tableLayoutKeyboard.ResumeLayout(false);
             tableLayoutKeyboard.PerformLayout();
-            panelColor.ResumeLayout(false);
-            panelColor.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureColor2).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureColor).EndInit();
             panelKeyboardTitle.ResumeLayout(false);
             panelKeyboardTitle.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureKeyboard).EndInit();
@@ -2239,9 +2170,6 @@ namespace GHelper
             panelRearLight.PerformLayout();
             tableLayoutRearLight.ResumeLayout(false);
             tableLayoutRearLight.PerformLayout();
-            panelRearColor.ResumeLayout(false);
-            panelRearColor.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureRearColor).EndInit();
             panelRearLightTitle.ResumeLayout(false);
             panelRearLightTitle.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureRearLight).EndInit();
@@ -2293,9 +2221,6 @@ namespace GHelper
         private RComboBox comboMatrix;
         private TableLayoutPanel tableLayoutKeyboard;
         private RComboBox comboKeyboard;
-        private Panel panelColor;
-        private PictureBox pictureColor2;
-        private PictureBox pictureColor;
         private CheckBox checkMatrix;
         private RButton button120Hz;
         private RButton buttonOptimized;
@@ -2303,7 +2228,7 @@ namespace GHelper
         private Label labelTipScreen;
         private RButton buttonMiniled;
         private RButton buttonMatrix;
-        private RButton buttonKeyboardColor;
+        private RColorButton buttonKeyboardColor;
         private RButton buttonFans;
         private Slider sliderBattery;
         private Panel panelGPUTitle;
@@ -2379,9 +2304,7 @@ namespace GHelper
         private RButton buttonHDRControl;
         private Panel panelRearLight;
         private TableLayoutPanel tableLayoutRearLight;
-        private Panel panelRearColor;
-        private PictureBox pictureRearColor;
-        private RButton buttonRearColor;
+        private RColorButton buttonRearColor;
         private RComboBox comboRearLight;
         private Panel panelRearLightTitle;
         private PictureBox pictureRearLight;

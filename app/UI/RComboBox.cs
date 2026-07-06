@@ -54,8 +54,8 @@ namespace GHelper.UI
             }
 
             bool selected = (e.State & DrawItemState.Selected) != 0;
-            Color bg = selected ? RForm.colorStandard : BackColor;
-            Color fg = selected ? Color.White : ForeColor;
+            Color bg = selected ? RForm.borderMain : BackColor;
+            Color fg = ForeColor;
 
             using (var bgBrush = new SolidBrush(bg))
                 e.Graphics.FillRectangle(bgBrush, e.Bounds);
@@ -210,6 +210,9 @@ namespace GHelper.UI
                 new Point(middle.X + 4, middle.Y - 2),
                 new Point(middle.X, middle.Y + 2)
                 };
+                int outerRadius = Math.Max(1, (int)Math.Round(4 * DeviceDpi / 192f));
+                var formBackColor = Parent is not null ? Parent.BackColor : BackColor;
+
                 var ps = new PAINTSTRUCT();
                 bool shoulEndPaint = false;
                 nint dc;
@@ -224,6 +227,15 @@ namespace GHelper.UI
                     dc = m.WParam;
                 }
 
+                using (var g = Graphics.FromHdc(dc))
+                {
+                    g.SmoothingMode = SmoothingMode.AntiAlias;
+                    using (var b = new SolidBrush(formBackColor))
+                        g.FillRectangle(b, clientRect);
+                    using (var b = new SolidBrush(buttonColor))
+                        FillRoundedRectangle(g, b, outerBorder, outerRadius, outerRadius);
+                }
+
                 var rgn = CreateRectRgn(innerInnerBorder.Left, innerInnerBorder.Top,
                     innerInnerBorder.Right, innerInnerBorder.Bottom);
 
@@ -233,26 +245,20 @@ namespace GHelper.UI
                 rgn = CreateRectRgn(clientRect.Left, clientRect.Top,
                     clientRect.Right, clientRect.Bottom);
                 SelectClipRgn(dc, rgn);
-                float ratio = DeviceDpi / 192f;
-                int innerRadiusL = Math.Max(1, (int)Math.Round(3 * ratio));
-                int innerRadiusR = Math.Max(1, (int)Math.Round(1 * ratio));
-                int outerRadius = Math.Max(1, (int)Math.Round(4 * ratio));
 
                 using (var g = Graphics.FromHdc(dc))
                 {
-                    using (var b = new SolidBrush(buttonColor))
-                    {
-                        g.FillRectangle(b, dropDownRect);
-                    }
+                    g.SmoothingMode = SmoothingMode.AntiAlias;
                     using (var b = new SolidBrush(arrowColor))
-                    {
                         g.FillPolygon(b, arrow);
-                    }
-                    using (var p = new Pen(innerBorderColor, 2))
-                    {
-                        DrawRoundedRectangle(g, p, innerBorder, innerRadiusL, innerRadiusR);
-                    }
-                    ControlHelper.DrawGradientBorder(g, outerBorder, outerBorderColor, outerRadius);
+                    if (DropDownStyle == ComboBoxStyle.DropDown)
+                        using (var b = new SolidBrush(innerBorderColor))
+                            g.FillRectangle(b, innerInnerBorder);
+                    if (RForm.flatTheme)
+                        using (var p = new Pen(BackColor))
+                            DrawRoundedRectangle(g, p, outerBorder, outerRadius, outerRadius);
+                    else
+                        ControlHelper.DrawGradientBorder(g, outerBorder, outerBorderColor, outerRadius);
                 }
                 if (shoulEndPaint)
                     EndPaint(Handle, ref ps);

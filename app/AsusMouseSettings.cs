@@ -283,22 +283,18 @@ namespace GHelper
 
         private void ButtonDPIColor_Click(object? sender, EventArgs e)
         {
-            ColorDialog colorDlg = new ColorDialog
-            {
-                AllowFullOpen = true,
-                Color = pictureDPIColor.BackColor
-            };
+            AsusMouseDPI dpi = mouse.DpiSettings[mouse.DpiProfile - 1];
 
-            if (colorDlg.ShowDialog() == DialogResult.OK)
+            RColorPicker colorDlg = new RColorPicker(dpi.Color);
+            colorDlg.ColorChanged += c =>
             {
-                AsusMouseDPI dpi = mouse.DpiSettings[mouse.DpiProfile - 1];
-                dpi.Color = colorDlg.Color;
-
+                dpi.Color = c;
                 mouse.SetDPIForProfile(dpi, mouse.DpiProfile);
 
                 VisualizeDPIButtons();
                 VisualizeCurrentDPIProfile();
-            }
+            };
+            colorDlg.ShowDialog(this);
         }
 
         // Logic for Delete Area
@@ -477,19 +473,16 @@ namespace GHelper
 
         private void ButtonLightingColor_Click(object? sender, EventArgs e)
         {
-            ColorDialog colorDlg = new ColorDialog
-            {
-                AllowFullOpen = true,
-                Color = pictureBoxLightingColor.BackColor
-            };
+            LightingSetting? ls = mouse.LightingSettingForZone(visibleZone);
+            if (ls is null) return;
 
-            if (colorDlg.ShowDialog() == DialogResult.OK)
+            RColorPicker colorDlg = new RColorPicker(ls.RGBColor);
+            colorDlg.ColorChanged += c =>
             {
-                LightingSetting? ls = mouse.LightingSettingForZone(visibleZone);
-                ls.RGBColor = colorDlg.Color;
-
+                ls.RGBColor = c;
                 UpdateLightingSettings(ls, visibleZone);
-            }
+            };
+            colorDlg.ShowDialog(this);
         }
 
         private void SliderLowBatteryWarning_ValueChanged(object? sender, EventArgs e)
@@ -687,7 +680,6 @@ namespace GHelper
             if (!mouse.HasDPIColors())
             {
                 buttonDPIColor.Visible = false;
-                pictureDPIColor.Visible = false;
                 buttonDPI1.Image = ControlHelper.ResizeImage(ControlHelper.TintImage(Properties.Resources.lighting_dot_32, Color.Red), ControlHelper.Scale);
                 buttonDPI2.Image = ControlHelper.ResizeImage(ControlHelper.TintImage(Properties.Resources.lighting_dot_32, Color.Purple), ControlHelper.Scale);
                 buttonDPI3.Image = ControlHelper.ResizeImage(ControlHelper.TintImage(Properties.Resources.lighting_dot_32, Color.Blue), ControlHelper.Scale);
@@ -1263,7 +1255,6 @@ namespace GHelper
 
             checkBoxRandomColor.Visible = mouse.SupportsRandomColor(ls.LightingMode);
 
-            pictureBoxLightingColor.Visible = mouse.SupportsColorSetting(ls.LightingMode);
             buttonLightingColor.Visible = mouse.SupportsColorSetting(ls.LightingMode);
 
             comboBoxAnimationSpeed.Visible = mouse.SupportsAnimationSpeed(ls.LightingMode);
@@ -1279,10 +1270,7 @@ namespace GHelper
                 buttonLightingColor.Visible = !ls.RandomColor;
             }
 
-            if (ls.RandomColor && mouse.SupportsRandomColor(ls.LightingMode))
-                pictureBoxLightingColor.BackColor = Color.Transparent;
-            else
-                pictureBoxLightingColor.BackColor = ls.RGBColor;
+            buttonLightingColor.SwatchColor = ls.RGBColor;
 
             //0x09 => 0
             //0x07 => 1
@@ -1377,7 +1365,7 @@ namespace GHelper
                 return;
             }
             sliderDPI.Value = (int)dpi.DPI;
-            pictureDPIColor.BackColor = dpi.Color;
+            buttonDPIColor.SwatchColor = dpi.Color;
         }
 
         private void AsusMouseSettings_Shown(object? sender, EventArgs e)

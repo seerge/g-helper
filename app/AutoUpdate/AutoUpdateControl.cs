@@ -1,6 +1,5 @@
 ﻿using GHelper.Helpers;
 using System.Diagnostics;
-using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Text.Json;
@@ -155,10 +154,10 @@ namespace GHelper.AutoUpdate
             string exeName = Path.GetFileName(exeLocation);
             string zipLocation = exeDir + "\\" + zipName;
 
-            using (WebClient client = new WebClient())
+            using (HttpClient client = new HttpClient())
             {
 
-                client.Headers.Add("User-Agent", "G-Helper App");
+                client.DefaultRequestHeaders.Add("User-Agent", "G-Helper App");
                 Logger.WriteLine(requestUri);
                 Logger.WriteLine(exeDir);
                 Logger.WriteLine(zipName);
@@ -166,7 +165,9 @@ namespace GHelper.AutoUpdate
 
                 try
                 {
-                    client.DownloadFile(uri, zipLocation);
+                    var bytes = await client.GetByteArrayAsync(uri);
+                    File.WriteAllBytes(zipLocation, bytes);
+                    Logger.WriteLine($"Downloaded {bytes.Length}b: {zipLocation} (exists={File.Exists(zipLocation)}, size={new FileInfo(zipLocation).Length})");
                 }
                 catch (Exception ex)
                 {

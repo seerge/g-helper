@@ -798,6 +798,7 @@ namespace GHelper
             }
 
             Aura.ApplyPower();
+            if (Aura.IsOldStrix) Aura.ApplyAura();
 
         }
 

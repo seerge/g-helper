@@ -510,7 +510,7 @@ namespace GHelper
         private void RenameToggle()
         {
             if (comboModes.DropDownStyle == ComboBoxStyle.DropDownList)
-                comboModes.DropDownStyle = ComboBoxStyle.Simple;
+                comboModes.DropDownStyle = ComboBoxStyle.DropDown;
             else
             {
                 var mode = Modes.GetCurrent();

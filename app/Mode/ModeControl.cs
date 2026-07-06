@@ -172,6 +172,10 @@ namespace GHelper.Mode
                 {
                     Logger.WriteLine($"SetPerformanceMode cancelled (mode {mode})");
                 }
+                catch (Exception ex)
+                {
+                    Logger.WriteLine($"SetPerformanceMode failed (mode {mode}): {ex.Message}");
+                }
             }, ct);
 
             if (notify) Toast();
