@@ -199,6 +199,7 @@ namespace GHelper.Overlay
         private bool _showNames;
         private bool _showFps, _showTemp, _showFans, _showChart, _showPower, _showUsage, _showRam, _showBattery;
         private bool _onBattery;
+        private int _overlayBattery = -1;
         private static readonly bool _isAlly = AppConfig.IsAlly();
         private bool _hidden;
         private int _shownPid;
@@ -476,7 +477,7 @@ namespace GHelper.Overlay
 
             if (_showBattery)
             {
-                bool onBattery = _isAlly || SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online;
+                bool onBattery = _isAlly || _overlayBattery == 1 || SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online;
                 if (onBattery != _onBattery)
                 {
                     _onBattery = onBattery;
@@ -985,7 +986,8 @@ namespace GHelper.Overlay
             _showPower = complete ? AppConfig.IsNotFalse("overlay_show_power") : true;
             _showUsage = complete ? AppConfig.IsNotFalse("overlay_show_usage") : mode == OverlayMode.Full;
             _showRam   = complete ? AppConfig.IsNotFalse("overlay_show_ram")   : false;
-            _showBattery = complete ? AppConfig.IsNotFalse("overlay_show_battery") : extra;
+            _overlayBattery = complete ? AppConfig.Get("overlay_show_battery") : -1;
+            _showBattery = complete ? _overlayBattery != 0 : extra;
             _showNames = complete && AppConfig.Is("overlay_names");
         }
 
@@ -1054,9 +1056,9 @@ namespace GHelper.Overlay
                   : storedMode == (int)OverlayMode.Complete ? OverlayMode.Complete
                   : OverlayMode.Default;
             _scalePercent = Math.Clamp(AppConfig.Get("overlay_scale_percent", 100), MinScalePercent, MaxScalePercent);
-            _onBattery = _isAlly || SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online;
             ApplyColors();
             ApplyPreset(_mode);
+            _onBattery = _isAlly || _overlayBattery == 1 || SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online;
             ApplySensorFlags();
             SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
             HardwareControl.ResetCPUPowerCounter();
