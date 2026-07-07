@@ -21,7 +21,7 @@ namespace GHelper.Gpu
             settings = settingsForm;
         }
 
-        public void InitGPUMode()
+        public void InitGPUMode(bool transition = false)
         {
             if (AppConfig.NoGpu())
             {
@@ -45,7 +45,7 @@ namespace GHelper.Gpu
                 }
             }
 
-            if (eco == 0 && HardwareControl.GpuControl is null)
+            if (eco == 0 && HardwareControl.GpuControl is null && !transition)
             {
                 Logger.WriteLine("Standard half-state");
                 if (AppConfig.IsStandardForceFix())
@@ -202,7 +202,7 @@ namespace GHelper.Gpu
 
                     settings.Invoke(delegate
                     {
-                        InitGPUMode();
+                        InitGPUMode(true);
                         ScreenControl.AutoScreen();
                     });
 
@@ -213,14 +213,12 @@ namespace GHelper.Gpu
                             settings.LockGPUModes(Properties.Strings.GPUMode +": Restarting NV Services...");
                             await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("nv_delay", 5000)));
                             NvidiaGpuControl.RestartNVService();
-                            settings.Invoke(delegate { InitGPUMode(); });
                             await Task.Delay(TimeSpan.FromMilliseconds(1000));
                         } else if (nvRestartPending) {
                             settings.LockGPUModes(Properties.Strings.GPUMode +": Restarting NV Service...");
                             await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("nv_delay", 5000)));
                             NvidiaGpuControl.RestartNvContainer();
                             nvRestartPending = false;
-                            settings.Invoke(delegate { InitGPUMode(); });
                         }
 
                         for (int i = 0; i < 3; i++)
@@ -229,6 +227,9 @@ namespace GHelper.Gpu
                             if (HardwareControl.GpuControl is not null) break;
                             await Task.Delay(TimeSpan.FromSeconds(2));
                         }
+
+                        settings.Invoke(delegate { InitGPUMode(); });
+
                         Program.modeControl.SetGPUClocks(false);
                     }
 
