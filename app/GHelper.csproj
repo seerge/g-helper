@@ -3,35 +3,23 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>annotations</Nullable>
     <UseWindowsForms>True</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <IsPublishable>True</IsPublishable>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <StartupObject>GHelper.Program</StartupObject>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
-    <Platforms>AnyCPU;x64</Platforms>
+    <Platforms>x64</Platforms>
+    <Platform>x64</Platform>
     <AssemblyName>GHelper</AssemblyName>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+    <DebugType>embedded</DebugType>
+    <OutputPath>bin\x64\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>obj\x64\$(Configuration)\</IntermediateOutputPath>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <AssemblyVersion>0.261</AssemblyVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DebugType>embedded</DebugType>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DebugType>embedded</DebugType>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <DebugType>embedded</DebugType>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <DebugType>embedded</DebugType>
+    <AssemblyVersion>0.262</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -98,8 +86,8 @@
     </EmbeddedResource>
   </ItemGroup>
 
-	<Target Name="KillRunningGHelper" BeforeTargets="Build" Condition="'$(GITHUB_ACTIONS)'!='true' AND '$(PublishProtocol)'!=''">
-		<Exec Command="powershell -NoProfile -Command &quot;Get-Process -Name GHelper -ErrorAction SilentlyContinue | Stop-Process -Force; Start-Sleep -Milliseconds 500&quot;" />
+	<Target Name="KillRunningGHelper" BeforeTargets="Build" Condition="'$(GITHUB_ACTIONS)'!='true'">
+		<Exec Command="powershell -NoProfile -Command &quot;try { [System.Threading.EventWaitHandle]::OpenExisting('Global\GHelperApp-Exit').Set() } catch {}; for ($i = 0; $i -lt 50; $i++) { if (-not (Get-Process -Name GHelper -ErrorAction SilentlyContinue)) { break }; Start-Sleep -Milliseconds 100 }&quot;" />
 	</Target>
 
 	<Target Name="ZipSingleExe" AfterTargets="Publish" Condition="'$(GITHUB_ACTIONS)'!='true'">

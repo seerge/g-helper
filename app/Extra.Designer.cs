@@ -1802,7 +1802,6 @@ namespace GHelper
         private Label labelFNE;
         private RComboBox comboFNE;
         private RTextBox textFNE;
-        private Slider slider1;
         private Panel panelPower;
         private PictureBox pictureHibernate;
         private Label labelHibernateAfter;

@@ -2076,7 +2076,6 @@ namespace GHelper
         private RButton buttonAdvanced;
         private Panel panelBoostTitle;
         private PictureBox pictureBoost;
-        private Label labelBoostTitle;
         private Label labelRisky;
         private Panel panelTitleTemp;
         private PictureBox pictureTemp;

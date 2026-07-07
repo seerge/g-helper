@@ -115,7 +115,7 @@ public static class AppConfig
             Directory.CreateDirectory(Path.GetDirectoryName(fallbackConfigFile));
             File.Copy(configFile, fallbackConfigFile, overwrite: true);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             //Logger.WriteLine("Can't sync fallback config: " + ex.Message);
         }
@@ -304,7 +304,6 @@ public static class AppConfig
     public static byte[] GetDefaultCurve(AsusFan device)
     {
         int mode = Modes.GetCurrentBase();
-        byte[] curve;
 
         switch (mode)
         {
@@ -611,7 +610,7 @@ public static class AppConfig
 
     public static bool IsFanRequired()
     {
-        return ContainsModel("GA402X") || ContainsModel("GU604") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("G634J") || ContainsModel("G834J") || ContainsModel("G614J") || ContainsModel("G814J") || ContainsModel("FX507V") || ContainsModel("FX507ZV") || ContainsModel("FX608") || ContainsModel("FA608P") || ContainsModel("G614F") || ContainsModel("G614R") || ContainsModel("G733") || ContainsModel("H7606");
+        return ContainsModel("GA402X") || ContainsModel("GU604") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("G634J") || ContainsModel("G834J") || ContainsModel("G614J") || ContainsModel("G814J") || ContainsModel("FX507V") || ContainsModel("FX507Z") || ContainsModel("FX608") || ContainsModel("FA608P") || ContainsModel("G614F") || ContainsModel("G614R") || ContainsModel("G733") || ContainsModel("H7606");
     }
 
     public static bool IsCPULight()
@@ -744,7 +743,7 @@ public static class AppConfig
 
     public static bool IsSleepReset()
     {
-        return Is("sleep_reset") || ContainsModel("GU605MI") || ContainsModel("GU605MV");
+        return Is("sleep_reset") || ContainsModel("GU605MI") || ContainsModel("GU605MV") || ContainsModel("GU605CR");
     }
 
     public static bool SaveDimming()

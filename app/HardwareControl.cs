@@ -34,6 +34,8 @@ public static class HardwareControl
     static long lastUpdate;
 
     static bool isPZ13 = AppConfig.IsPZ13();
+    static bool isAlly = AppConfig.IsAlly();
+    static bool isAMDiGPU = AppConfig.IsAMDiGPU();
 
     static bool _chargeWatt = AppConfig.Is("charge_watt");
 
@@ -298,24 +300,15 @@ public static class HardwareControl
     public static void ReadBatteryState()
     {
         var now = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-        if (Math.Abs(now - _lastBatteryRead) < 5000)
-        {
-            FormatBatteryCharge();
-            return;
-        }
-        _lastBatteryRead = now;
 
-        batteryRate = 0;
-        chargeCapacity = 0;
-
-        try
+        if (isAlly)
         {
-            if (AppConfig.IsAlly())
+            try
             {
                 decimal? discharge = Program.acpi.GetBatteryDischarge();
                 if (discharge is not null)
                 {
-                    batteryRate = discharge;
+                    batteryRate = Math.Abs(discharge.Value) < 1.5m ? 0 : discharge;
 
                     // Capacity from cached power manager state is sufficient
                     var batteryState = GetNativeBatteryState();
@@ -330,7 +323,24 @@ public static class HardwareControl
                     return;
                 }
             }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Battery Reading: " + ex.Message);
+            }
+        }
 
+        if (Math.Abs(now - _lastBatteryRead) < 5000)
+        {
+            FormatBatteryCharge();
+            return;
+        }
+        _lastBatteryRead = now;
+
+        batteryRate = 0;
+        chargeCapacity = 0;
+
+        try
+        {
             var statusTask = Task.Run(QueryBatteryStatus);
             var directStatus = statusTask.Wait(1000) ? statusTask.Result : null;
 
@@ -428,7 +438,7 @@ public static class HardwareControl
 
             cpuTemp = _cpuTempCounter.NextValue() - 273;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             //Debug.WriteLine("Failed reading CPU temp :" + ex.Message);
         }
@@ -455,7 +465,7 @@ public static class HardwareControl
                 }
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             //Logger.WriteLine("Error retrieving temperature: " + ex.Message);
         }
@@ -469,7 +479,7 @@ public static class HardwareControl
             gpuTemp = GpuControl?.GetCurrentTemperature();
 
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             gpuTemp = -1;
             //Debug.WriteLine("Failed reading GPU temp :" + ex.Message);
@@ -481,8 +491,15 @@ public static class HardwareControl
             gpuTemp = (acpiTemp > 0 && acpiTemp < 125) ? acpiTemp : null;
         }
 
+        if (isAMDiGPU && gpuTemp is null)
+            try { gpuTemp = AmdApu().GetiGpuSensors().temp; } catch { }
+
         return gpuTemp;
     }
+
+    private static AmdGpuControl? _amdApuControl;
+
+    private static AmdGpuControl AmdApu() => GpuControl as AmdGpuControl ?? (_amdApuControl ??= new AmdGpuControl());
 
     public static void ReadSensors(bool log = false)
     {
@@ -605,7 +622,7 @@ public static class HardwareControl
         }
         catch (Exception ex)
         {
-            Debug.WriteLine("Can't connect to GPU " + ex.ToString());
+            Logger.WriteLine("Can't connect to GPU " + ex.Message);
         }
     }
 

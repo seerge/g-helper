@@ -368,6 +368,8 @@ namespace GHelper.Helpers
         [DllImport("User32.dll", CharSet = CharSet.Auto)]
         internal static extern ushort GetKeyState(int virtKey);
         [DllImport("User32.dll", CharSet = CharSet.Auto)]
+        internal static extern short GetAsyncKeyState(int virtKey);
+        [DllImport("User32.dll", CharSet = CharSet.Auto)]
         internal static extern bool GetMessage(ref MSG msg, int hWnd, uint wFilterMin, uint wFilterMax);
         [DllImport("User32.dll", CharSet = CharSet.Auto)]
         internal static extern nint GetParent(nint hWnd);

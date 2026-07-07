@@ -18,6 +18,7 @@ internal static class AmdAdl
     private const int PMLOG_INFO_ACTIVITY_GFX = 19;
     private const int PMLOG_ASIC_POWER = 23;
     private const int PMLOG_GFX_POWER = 30;
+    private const int PMLOG_CPU_POWER = 33;
     private const int PMLOG_BOARD_POWER = 73;
 
     [Flags]
@@ -180,5 +181,56 @@ internal static class AmdAdl
 
         if (ADL2_Adapter_DedicatedVRAMUsage_Get(_ctx, _dGpuIndex, out int usedMb) != ADL_SUCCESS) return null;
         return (usedMb, _totalVramMb);
+    }
+
+    // iGPU (APU) edge temperature — GPU temp on AMD iGPU-only machines.
+    public static int? IGpuTemperature()
+    {
+        if (!PawnIO.CpuInfo.IsAMD) return null;
+        Init(); if (!_ready) return null;
+        return ReadSensor(_iGpuIndex, PMLOG_TEMPERATURE_EDGE);
+    }
+
+    // iGPU (APU) graphics activity, percent.
+    public static int? IGpuUsage()
+    {
+        if (!PawnIO.CpuInfo.IsAMD) return null;
+        Init(); if (!_ready) return null;
+        return ReadSensor(_iGpuIndex, PMLOG_INFO_ACTIVITY_GFX);
+    }
+
+    // One PMLog query for the CPU/iGPU power split on AMD iGPU machines. Values are
+    // raw (not >0 filtered) so the caller can mirror main g-helper's split arithmetic.
+    public static (int? gfx, int? cpu, int? asic) IGpuPowerSplit()
+    {
+        if (!PawnIO.CpuInfo.IsAMD) return default;
+        Init(); if (!_ready || _iGpuIndex < 0) return default;
+        if (ADL2_New_QueryPMLogData_Get(_ctx, _iGpuIndex, out PMLogDataOutput log) != ADL_SUCCESS) return default;
+        return (RawSensor(log, PMLOG_GFX_POWER), RawSensor(log, PMLOG_CPU_POWER), RawSensor(log, PMLOG_ASIC_POWER));
+    }
+
+    private static int? RawSensor(PMLogDataOutput log, int sensorIndex)
+    {
+        var s = log.Sensors[sensorIndex];
+        return s.Supported != 0 ? s.Value : (int?)null;
+    }
+
+    private static long _totalIGpuVramMb;
+
+    // iGPU dedicated VRAM (used, total) in MB — AMD iGPU-only machines without a dGPU.
+    public static (long usedMb, long totalMb)? IGpuMemoryInfo()
+    {
+        if (!PawnIO.CpuInfo.IsAMD) return null;
+        Init(); if (!_ready || _iGpuIndex < 0) return null;
+
+        if (_totalIGpuVramMb <= 0)
+        {
+            if (ADL2_Adapter_MemoryInfo2_Get(_ctx, _iGpuIndex, out MemoryInfo2 mem) != ADL_SUCCESS) return null;
+            _totalIGpuVramMb = mem.iMemorySize / (1024 * 1024);
+            if (_totalIGpuVramMb <= 0) return null;
+        }
+
+        if (ADL2_Adapter_DedicatedVRAMUsage_Get(_ctx, _iGpuIndex, out int usedMb) != ADL_SUCCESS) return null;
+        return (usedMb, _totalIGpuVramMb);
     }
 }

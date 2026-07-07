@@ -15,6 +15,7 @@ public sealed class AsusACPI : IDisposable
     public const int Temp_GPU = 0x00120097;
     public const uint CPU_Fan = 0x00110013;
     public const uint GPU_Fan = 0x00110014;
+    public const uint BatteryDischarge = 0x0012005A;
 
     private const uint GENERIC_READ  = 0x80000000;
     private const uint GENERIC_WRITE = 0x40000000;
@@ -73,6 +74,26 @@ public sealed class AsusACPI : IDisposable
 
     public int GetCpuFanRpm() => NormaliseFan(DeviceGet(CPU_Fan));
     public int GetGpuFanRpm() => NormaliseFan(DeviceGet(GPU_Fan));
+
+    // Ally battery rate in W — byte[2] of the raw response signals a valid reading,
+    // bytes [0..1] are the signed rate in 10 mW units (matches main g-helper).
+    public decimal? GetBatteryDischarge()
+    {
+        if (!IsConnected) return null;
+        byte[] acpiBuf = new byte[16];
+        byte[] outBuffer = new byte[16];
+        BitConverter.GetBytes(DSTS).CopyTo(acpiBuf, 0);
+        BitConverter.GetBytes((uint)8).CopyTo(acpiBuf, 4);
+        BitConverter.GetBytes(BatteryDischarge).CopyTo(acpiBuf, 8);
+
+        uint returned = 0;
+        if (!DeviceIoControl(handle, CONTROL_CODE, acpiBuf, (uint)acpiBuf.Length,
+                outBuffer, (uint)outBuffer.Length, ref returned, IntPtr.Zero))
+            return null;
+
+        if (outBuffer[2] == 0) return null;
+        return (decimal)BitConverter.ToInt16(outBuffer, 0) / 100;
+    }
 
     private static int NormaliseFan(int fan)
     {

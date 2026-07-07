@@ -61,4 +61,31 @@ public static class AppConfig
     public static void Set(string name, int value) { values[name] = value.ToString(); Save(); }
 
     public static void Set(string name, string value) { values[name] = value; Save(); }
+
+    // Registry SystemProductName matches WMI Win32_ComputerSystem.Model that main
+    // g-helper uses, without paying the WMI query cost.
+    private static string? _model;
+
+    private static string GetModel()
+    {
+        if (_model != null) return _model;
+        try
+        {
+            using var k = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(
+                @"HARDWARE\DESCRIPTION\System\BIOS");
+            _model = k?.GetValue("SystemProductName")?.ToString() ?? "";
+        }
+        catch { _model = ""; }
+        return _model;
+    }
+
+    private static bool ContainsModel(string contains)
+        => GetModel().IndexOf(contains, StringComparison.OrdinalIgnoreCase) >= 0;
+
+    public static bool IsAlly() => ContainsModel("RC7");
+
+    // Same model list as main g-helper's IsAMDiGPU (incl. IsOnlyAIMAX models).
+    public static bool IsAMDiGPU()
+        => ContainsModel("GV301RA") || ContainsModel("GV302XA") || ContainsModel("GZ302")
+        || ContainsModel("FA401EA") || ContainsModel("HN7306EA") || IsAlly();
 }
