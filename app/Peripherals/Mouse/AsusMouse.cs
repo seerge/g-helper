@@ -212,7 +212,7 @@ namespace GHelper.Peripherals.Mouse
         public event EventHandler? BatteryUpdated;
         public event EventHandler? MouseReadyChanged;
 
-        private readonly string path;
+        private string path;
 
         protected byte reportId = 0x00;
 
@@ -291,6 +291,11 @@ namespace GHelper.Peripherals.Mouse
         public AsusMouse(ushort vendorId, ushort productId, string path, bool wireless, byte reportId) : this(vendorId, productId, path, wireless)
         {
             this.reportId = reportId;
+        }
+
+        public void SetPath(string path)
+        {
+            this.path = path;
         }
 
 
