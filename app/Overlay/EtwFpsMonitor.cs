@@ -517,8 +517,8 @@ namespace GHelper.Overlay
             int head = _frameHead;
             long newest = _frameTimes[(head - 1 + RollingWindowSize) % RollingWindowSize];
 
-            // No frame in the last second → not rendering; blank instead of showing a stale value.
-            if (Stopwatch.GetTimestamp() - newest > freq) return 0;
+            // No frame in the last seconds → not rendering; blank instead of showing a stale value.
+            if (Stopwatch.GetTimestamp() - newest > 4 * freq) return 0;
 
             // Average over the last second of frames only.
             long cutoff = newest - freq;
@@ -575,7 +575,7 @@ namespace GHelper.Overlay
             {
                 BufferSize = (uint)Marshal.SizeOf<EVENT_TRACE_PROPERTIES>(),
                 Flags = WNODE_FLAG_TRACED_GUID,
-                ClientContext = 0, // 0 = QPC — same frequency as Stopwatch.Frequency
+                ClientContext = 1, // 1 = QPC — matches Stopwatch.GetTimestamp()/Frequency 
             },
             LogFileMode = 0x00000100, // EVENT_TRACE_REAL_TIME_MODE
             LogFileNameOffset = 0,

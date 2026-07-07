@@ -208,7 +208,7 @@ namespace GHelper
                 Padding = new Padding(0, 5, 4, 5),
             };
 
-            table.RowStyles.Add(new RowStyle(SizeType.Absolute, TextRenderer.MeasureText("Ag", Font).Height + 10));
+            table.RowStyles.Add(new RowStyle(SizeType.Absolute, TextRenderer.MeasureText("Ag", Font).Height + 16));
             table.Controls.Add(new Label { Text = driver.categoryName, AutoEllipsis = true, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Padding = new Padding(5, 5, 5, 5) }, 0, table.RowCount);
             table.Controls.Add(new Label { Text = driver.title, AutoEllipsis = true, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Padding = new Padding(5, 5, 5, 5) }, 1, table.RowCount);
             table.Controls.Add(new Label { Text = driver.date, AutoEllipsis = true, Anchor = AnchorStyles.Left, Dock = DockStyle.Fill, Padding = new Padding(5, 5, 5, 5) }, 2, table.RowCount);

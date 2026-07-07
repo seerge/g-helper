@@ -183,6 +183,8 @@ namespace GHelper.Gpu
 
                 int status = 1;
 
+                Program.modeControl.WaitForApply();
+
                 if (eco == 1)
                 {
                     HardwareControl.KillGPUApps();
