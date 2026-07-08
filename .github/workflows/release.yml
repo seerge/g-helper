@@ -44,7 +44,14 @@ jobs:
     - name: Create ZIP from signed EXE
       run: powershell Compress-Archive ./signed/GHelper.exe ./signed/GHelper.zip
 
+    - name: Upload signed EXE as workflow artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: GHelper-signed
+        path: ./signed/GHelper.exe
+
     - name: Upload signed EXE and ZIP
+      if: github.event_name == 'release'
       env:
         GH_TOKEN: ${{ github.token }}
       run: |
