@@ -55,6 +55,7 @@ namespace GHelper.Input
 
             hook.KeyPressed += new EventHandler<KeyPressedEventArgs>(KeyPressed);
 
+            MKeyControl.ApplyAll();
             RegisterKeys();
 
             timer.Elapsed += Timer_Elapsed;
@@ -188,8 +189,8 @@ namespace GHelper.Input
 
             if (!AppConfig.IsZ13() && !AppConfig.IsAlly() && !AppConfig.IsVivoZenPro())
             {
-                if (actionM1 is not null && actionM1.Length > 0) hook.RegisterHotKey(ModifierKeys.None, Keys.VolumeDown);
-                if (actionM2 is not null && actionM2.Length > 0) hook.RegisterHotKey(ModifierKeys.None, Keys.VolumeUp);
+                if (actionM1 is not null && actionM1.Length > 0 && !MKeyControl.IsFirmware("m1")) hook.RegisterHotKey(ModifierKeys.None, Keys.VolumeDown);
+                if (actionM2 is not null && actionM2.Length > 0 && !MKeyControl.IsFirmware("m2")) hook.RegisterHotKey(ModifierKeys.None, Keys.VolumeUp);
             }
 
             if (AppConfig.IsAlly())
@@ -218,6 +219,9 @@ namespace GHelper.Input
 
             foreach (ushort code in GetActiveMouseComboCarriers())
                 hook.RegisterHotKey(ModifierKeys.None, Keys.F13 + (code - 0x0068));
+
+            foreach (Keys key in MKeyControl.CarrierKeys())
+                hook.RegisterHotKey(MKeyControl.CarrierModifier, key);
 
         }
 
@@ -329,6 +333,13 @@ namespace GHelper.Input
         {
 
             Logger.WriteLine(e.Key.ToString() + " " + e.Modifier.ToString());
+
+            string carrier = MKeyControl.CarrierSlot(e.Modifier, e.Key);
+            if (carrier is not null)
+            {
+                KeyProcess(carrier);
+                return;
+            }
 
             if (e.Modifier == ModifierKeys.None)
             {
@@ -593,6 +604,8 @@ namespace GHelper.Input
             {
                 if (name == "m4")
                     action = "ghelper";
+                if (name == "m5")
+                    action = "performance";
                 if (name == "fnf4")
                     action = "aura";
                 if (name == "fnf5")
@@ -611,6 +624,18 @@ namespace GHelper.Input
             {
                 case "mute":
                     KeyboardHook.KeyPress(Keys.VolumeMute);
+                    break;
+                case "volume_down":
+                    KeyboardHook.KeyPress(Keys.VolumeDown);
+                    break;
+                case "volume_up":
+                    KeyboardHook.KeyPress(Keys.VolumeUp);
+                    break;
+                case "backlight_down":
+                    SetBacklight(-1);
+                    break;
+                case "backlight_up":
+                    SetBacklight(1);
                     break;
                 case "play":
                     KeyboardHook.KeyPress(Keys.MediaPlayPause);
