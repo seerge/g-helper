@@ -502,11 +502,6 @@ public static class AppConfig
         return IsStrix() || IsZ13();
     }
 
-    public static bool IsLidLogo()
-    {
-        return IsZ13() || ContainsModel("G513QY") || ContainsModel("G713QY");
-    }
-
     public static bool IsHardwareHotkeys()
     {
         return ContainsModel("FX506");
