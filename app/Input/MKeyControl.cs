@@ -70,7 +70,6 @@ namespace GHelper.Input
         public static void ApplyAll()
         {
             if (Skip || !IsSupported()) return;
-            if (slots.Keys.All(IsDefault)) return;
 
             foreach (string name in slots.Keys) Apply(name);
         }
