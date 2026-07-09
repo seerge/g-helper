@@ -4,6 +4,22 @@ namespace GHelper.Helpers
 {
     internal class Audio
     {
+        static AudioEndpointVolume? endpointVolume; // keeps the COM callback alive
+
+        public static void SubscribeMute(Action<bool> onMuteChange)
+        {
+            try
+            {
+                using var enumerator = new MMDeviceEnumerator();
+                endpointVolume = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia).AudioEndpointVolume;
+                endpointVolume.OnVolumeNotification += (data) => onMuteChange(data.Muted);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine("Error subscribing to volume notifications: " + ex.Message);
+            }
+        }
+
         public static bool ToggleMicMute()
         {
             using (var enumerator = new MMDeviceEnumerator())
