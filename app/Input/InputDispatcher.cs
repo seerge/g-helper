@@ -220,9 +220,6 @@ namespace GHelper.Input
             foreach (ushort code in GetActiveMouseComboCarriers())
                 hook.RegisterHotKey(ModifierKeys.None, Keys.F13 + (code - 0x0068));
 
-            foreach (Keys key in MKeyControl.CarrierKeys())
-                hook.RegisterHotKey(MKeyControl.CarrierModifier, key);
-
         }
 
         private static IEnumerable<ushort> GetActiveMouseComboCarriers()
@@ -333,13 +330,6 @@ namespace GHelper.Input
         {
 
             Logger.WriteLine(e.Key.ToString() + " " + e.Modifier.ToString());
-
-            string carrier = MKeyControl.CarrierSlot(e.Modifier, e.Key);
-            if (carrier is not null)
-            {
-                KeyProcess(carrier);
-                return;
-            }
 
             if (e.Modifier == ModifierKeys.None)
             {
@@ -587,6 +577,8 @@ namespace GHelper.Input
 
         public static void KeyProcess(string name = "m3")
         {
+            if (MKeyControl.IsRepeat(name)) return;
+
             if (name == "m4" && Control.ModifierKeys == (Keys.Control | Keys.Shift | Keys.Alt))
             {
                 Thread.Sleep(3000);
@@ -875,6 +867,13 @@ namespace GHelper.Input
 
         static void HandleEvent(int EventID)
         {
+            string carrier = MKeyControl.CarrierSlot(EventID);
+            if (carrier is not null)
+            {
+                KeyProcess(carrier);
+                return;
+            }
+
             // The ROG Ally uses different M-key codes.
             // We'll special-case the translation of those.
             if (AppConfig.IsAlly())
