@@ -666,6 +666,15 @@ namespace GHelper
             sliderBrightness.AccessibleName = Properties.Strings.LaptopBacklight + ": " + sliderBrightness.Value;
         }
 
+        public void VisualiseBacklight(int backlight)
+        {
+            if (InvokeRequired) { Invoke(() => VisualiseBacklight(backlight)); return; }
+            sliderBrightness.ValueChanged -= SliderBrightness_ValueChanged;
+            sliderBrightness.Value = backlight;
+            sliderBrightness.AccessibleName = Properties.Strings.LaptopBacklight + ": " + sliderBrightness.Value;
+            sliderBrightness.ValueChanged += SliderBrightness_ValueChanged;
+        }
+
         private void InitServices()
         {
 
