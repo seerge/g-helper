@@ -171,7 +171,7 @@ namespace GHelper.Mode
                     var command = AppConfig.GetModeString("mode_command");
                     if (command is not null)
                     {   Logger.WriteLine("Running mode command: " + command);
-                        RestrictedProcessHelper.RunAsRestrictedUser(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "cmd.exe"), "/C " + command);
+                        RestrictedProcessHelper.RunAsRestrictedUser(command);
                     }
                 }
                 catch (OperationCanceledException)

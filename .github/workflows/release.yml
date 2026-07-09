@@ -20,6 +20,13 @@ jobs:
       with:
         dotnet-version: '8.0.x'
 
+    - name: Check tag matches version
+      if: github.event_name == 'release'
+      run: |
+        $version = ([xml](Get-Content app/GHelper.csproj)).Project.PropertyGroup.AssemblyVersion
+        $tag = "${{ github.event.release.tag_name }}"
+        if ($tag -ne "v$version") { throw "Tag $tag does not match AssemblyVersion $version" }
+
     - name: Publish overlay (net48)
       run: |
         dotnet publish overlay/GHelperOverlay.csproj -c Release --nologo

@@ -500,29 +500,23 @@ namespace GHelper
 
         public void VisualiseBrightness()
         {
-            Invoke(delegate
-            {
-                sliderGammaIgnore = true;
-                sliderGamma.Value = VisualControl.GetBrightness();
-                labelGamma.Text = sliderGamma.Value + "%";
-                sliderGammaIgnore = false;
-            });
+            if (InvokeRequired) { Invoke(VisualiseBrightness); return; }
+            sliderGammaIgnore = true;
+            sliderGamma.Value = VisualControl.GetBrightness();
+            labelGamma.Text = sliderGamma.Value + "%";
+            sliderGammaIgnore = false;
         }
 
         public void VisualiseAmdOled(bool status = false)
         {
-            Invoke(delegate
-            {
-                buttonAmdOled.Visible = status;
-            });
+            if (InvokeRequired) { Invoke(() => VisualiseAmdOled(status)); return; }
+            buttonAmdOled.Visible = status;
         }
 
         public void VisualiseArmoury(bool status = false)
         {
-            Invoke(delegate
-            {
-                buttonArmoury.Visible = status;
-            });
+            if (InvokeRequired) { Invoke(() => VisualiseArmoury(status)); return; }
+            buttonArmoury.Visible = status;
         }
 
         public void VisualiseDisabled()
@@ -532,10 +526,8 @@ namespace GHelper
 
         public void VisualiseGamut()
         {
-            Invoke(delegate
-            {
-                if (comboGamut.Items.Count > 0) comboGamut.SelectedIndex = 0;
-            });
+            if (InvokeRequired) { Invoke(VisualiseGamut); return; }
+            if (comboGamut.Items.Count > 0) comboGamut.SelectedIndex = 0;
         }
 
         private void SliderGamma_ValueChanged(object? sender, EventArgs e)
@@ -1090,11 +1082,9 @@ namespace GHelper
 
         public void VisualiseMatrixRunning(int mode)
         {
-            Invoke(delegate
-            {
-                comboMatrixRunning.SelectedIndex = mode;
-                if (comboMatrix.SelectedIndex == 0) comboMatrix.SelectedIndex = 3;
-            });
+            if (InvokeRequired) { Invoke(() => VisualiseMatrixRunning(mode)); return; }
+            comboMatrixRunning.SelectedIndex = mode;
+            if (comboMatrix.SelectedIndex == 0) comboMatrix.SelectedIndex = 3;
         }
 
         private void ComboInterval_DropDownClosed(object? sender, EventArgs e)
@@ -1845,18 +1835,16 @@ namespace GHelper
 
         public void LockGPUModes(string text = null)
         {
-            Invoke(delegate
-            {
-                if (text is null) text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUChanging + " ...";
+            if (InvokeRequired) { Invoke(() => LockGPUModes(text)); return; }
+            if (text is null) text = Properties.Strings.GPUMode + ": " + Properties.Strings.GPUChanging + " ...";
 
-                ButtonEnabled(buttonOptimized, false);
-                ButtonEnabled(buttonEco, false);
-                ButtonEnabled(buttonStandard, false);
-                ButtonEnabled(buttonUltimate, false);
-                ButtonEnabled(buttonXGM, false);
+            ButtonEnabled(buttonOptimized, false);
+            ButtonEnabled(buttonEco, false);
+            ButtonEnabled(buttonStandard, false);
+            ButtonEnabled(buttonUltimate, false);
+            ButtonEnabled(buttonXGM, false);
 
-                labelGPU.Text = text;
-            });
+            labelGPU.Text = text;
         }
 
         public void VisualiseGPUMode(int GPUMode = -1)
@@ -2166,12 +2154,10 @@ namespace GHelper
 
         public void VisualiseAudio(double level)
         {
+            if (InvokeRequired) { Invoke(() => VisualiseAudio(level)); return; }
             int filledSquares = (int)Math.Round(level/2);
             string squares = new string('|', filledSquares);
-            Invoke(delegate
-            {
-                labelMatrix.Text = $"Slash Lighting: {squares}";
-            });
+            labelMatrix.Text = $"Slash Lighting: {squares}";
         }
 
         public void VisualiseFnLock()
