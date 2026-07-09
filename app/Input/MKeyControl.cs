@@ -146,7 +146,8 @@ namespace GHelper.Input
             ];
 
             return Send($"MKey {key} combo {vk:X2}",
-                [AsusHid.AURA_ID, 0x9F, 0x05, 0x01, (byte)key, 0x01],
+                [AsusHid.AURA_ID, 0x9F, 0x03, 0x01, (byte)key, 0x00],
+                [AsusHid.AURA_ID, 0x9F, 0x05, 0x01, (byte)key, 0x02, (byte)(records.Length / 4)],
                 [AsusHid.AURA_ID, 0x9F, 0x06, 0x00, 0x00, (byte)key, 0x00, 0x00, 0x01],
                 [AsusHid.AURA_ID, 0x9F, 0x06, 0x00, 0x09, (byte)key, 0x01, 0x00, .. records, 0xFF]);
         }
