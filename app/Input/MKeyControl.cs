@@ -136,18 +136,18 @@ namespace GHelper.Input
             byte[] records =
             [
                 VkLControl, 0x02, 0x00, 0x00, // Ctrl down
-                VkLShift, 0x02, 0x14, 0x00,   // Shift down
-                VkLAlt, 0x02, 0x14, 0x00,     // Alt down
-                vk, 0x02, 0x14, 0x00,         // key down
-                vk, 0x01, 0x14, 0x00,         // key up
-                VkLAlt, 0x01, 0x14, 0x00,     // Alt up
-                VkLShift, 0x01, 0x14, 0x00,   // Shift up
-                VkLControl, 0x01, 0x14, 0x00, // Ctrl up
+                VkLShift, 0x02, 0x32, 0x00,   // Shift down
+                VkLAlt, 0x02, 0x32, 0x00,     // Alt down
+                vk, 0x02, 0x32, 0x00,         // key down (modifiers settle first)
+                vk, 0x01, 0x32, 0x00,         // key up
+                VkLAlt, 0x01, 0x32, 0x00,     // Alt up
+                VkLShift, 0x01, 0x32, 0x00,   // Shift up
+                VkLControl, 0x01, 0x32, 0x00, // Ctrl up
             ];
 
             return Send($"MKey {key} combo {vk:X2}",
                 [AsusHid.AURA_ID, 0x9F, 0x03, 0x01, (byte)key, 0x00],
-                [AsusHid.AURA_ID, 0x9F, 0x05, 0x01, (byte)key, 0x02, (byte)(records.Length / 4)],
+                [AsusHid.AURA_ID, 0x9F, 0x05, 0x01, (byte)key, 0x01],
                 [AsusHid.AURA_ID, 0x9F, 0x06, 0x00, 0x00, (byte)key, 0x00, 0x00, 0x01],
                 [AsusHid.AURA_ID, 0x9F, 0x06, 0x00, 0x09, (byte)key, 0x01, 0x00, .. records, 0xFF]);
         }
