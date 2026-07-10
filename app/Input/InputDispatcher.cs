@@ -96,6 +96,7 @@ namespace GHelper.Input
 
             Program.acpi.DeviceInit();
             MKeyControl.ApplyAll();
+            RegisterKeys();
 
             if (!AsusService.IsAsusOptimizationRunning())
             {
