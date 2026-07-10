@@ -1122,7 +1122,7 @@ namespace GHelper
 
         private void ButtonKeyboardColor2_Click(object? sender, EventArgs e)
         {
-            SetColorPicker("aura_color2", Aura.Color2);
+            SetColorPicker(Aura.GetColor2Key(), Aura.Color2);
         }
 
         private void ButtonKeyboard_Click(object? sender, EventArgs e)
@@ -1194,7 +1194,7 @@ namespace GHelper
 
         private void ButtonKeyboardColor_Click(object? sender, EventArgs e)
         {
-            SetColorPicker("aura_color", Aura.Color1);
+            SetColorPicker(Aura.GetColorKey(), Aura.Color1);
         }
 
         private void ButtonRearColor_Click(object? sender, EventArgs e)
@@ -1236,9 +1236,9 @@ namespace GHelper
                 Aura.Init();
 
             Aura.Mode = (AuraMode)AppConfig.Get("aura_mode");
-            Aura.Speed = (AuraSpeed)AppConfig.Get("aura_speed");
-            Aura.SetColor(AppConfig.Get("aura_color"));
-            Aura.SetColor2(AppConfig.Get("aura_color2"));
+            Aura.Speed = (AuraSpeed)AppConfig.Get(Aura.GetSpeedKey(), AppConfig.Get("aura_speed"));
+            Aura.SetColor(AppConfig.Get(Aura.GetColorKey(), AppConfig.Get("aura_color")));
+            Aura.SetColor2(AppConfig.Get(Aura.GetColor2Key(), AppConfig.Get("aura_color2")));
 
             comboKeyboard.DataSource = new BindingSource(Aura.GetModes(), null);
             comboKeyboard.DisplayMember = "Value";

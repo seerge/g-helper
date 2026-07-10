@@ -2186,8 +2186,8 @@ namespace GHelper.Peripherals.Mouse
 
             if (!IsLightingModeSupported(lm)) return false;
 
-            Color color = Color.FromArgb(AppConfig.Get("aura_color"));
-            AnimationSpeed mappedSpeed = (AuraSpeed)AppConfig.Get("aura_speed") switch
+            Color color = Aura.Color1;
+            AnimationSpeed mappedSpeed = Aura.Speed switch
             {
                 AuraSpeed.Fast => AnimationSpeed.Fast,
                 AuraSpeed.Slow => AnimationSpeed.Slow,

@@ -813,7 +813,7 @@ namespace GHelper
 
         private void ComboKeyboardSpeed_SelectedValueChanged(object? sender, EventArgs e)
         {
-            AppConfig.Set("aura_speed", (int)comboKeyboardSpeed.SelectedValue);
+            AppConfig.Set(Aura.GetSpeedKey(), (int)comboKeyboardSpeed.SelectedValue);
             Aura.ApplyAura();
         }
 
