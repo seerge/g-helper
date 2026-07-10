@@ -1146,6 +1146,9 @@ namespace GHelper.Input
             else
                 AppConfig.Set("keyboard_brightness", backlight);
 
+            var extraForm = Program.settingsForm.extraForm;
+            if (extraForm != null && extraForm.Text != "") extraForm.VisualiseBacklight(backlight);
+
             if (force || !AsusService.IsAsusOptimizationRunning())
             {
                 Aura.ApplyBrightness(backlight, "HotKey");
