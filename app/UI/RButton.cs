@@ -1,4 +1,5 @@
 ﻿using System.Drawing.Drawing2D;
+using System.Runtime.InteropServices;
 
 namespace GHelper.UI
 {
@@ -60,6 +61,29 @@ namespace GHelper.UI
         }
 
         public bool Borderless { get; set; } = false;
+
+        private const int WS_EX_LAYERED = 0x80000;
+        private const int LWA_COLORKEY = 0x1;
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var cp = base.CreateParams;
+                cp.ExStyle |= WS_EX_LAYERED;
+                return cp;
+            }
+        }
+
+        [DllImport("user32.dll")]
+        private static extern bool SetLayeredWindowAttributes(IntPtr hwnd, uint crKey, byte bAlpha, uint dwFlags);
+
+        protected override void OnHandleCreated(EventArgs e)
+        {
+            base.OnHandleCreated(e);
+            Color TransparentKey = Color.FromArgb(255, 3, 2, 1);
+            uint colorRef = (uint)((TransparentKey.B << 16) | (TransparentKey.G << 8) | TransparentKey.R);
+            SetLayeredWindowAttributes(Handle, colorRef, 0, LWA_COLORKEY);
+        }
 
         protected override bool ShowFocusCues => false;
 
@@ -123,7 +147,7 @@ namespace GHelper.UI
             using (GraphicsPath pathSurface = GetFigurePath(rectSurface, radius + border))
             using (Pen penSurface = new Pen(Color.FromArgb(100, Parent.BackColor), border))
             {
-                pevent.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                pevent.Graphics.SmoothingMode = SmoothingMode.None;
                 Region = new Region(pathSurface);
                 pevent.Graphics.DrawPath(penSurface, pathSurface);
 
