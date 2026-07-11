@@ -39,6 +39,9 @@ namespace GHelper.UI
 
         public bool darkTheme = false;
         private bool themeInitialized = false;
+
+        public bool mica = true;
+
         protected override CreateParams CreateParams
         {
             get
@@ -97,7 +100,7 @@ namespace GHelper.UI
 
             if (uiMode is not null && uiMode.ToLower() == "windows")
             {
-                return CheckSystemDarkModeStatus();
+                return NativeMethods.CheckSystemDarkModeStatus();
             }
 
             using var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
@@ -115,6 +118,8 @@ namespace GHelper.UI
             darkTheme = newDarkTheme;
             themeInitialized = true;
 
+            SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+
             InitColors(darkTheme);
 
             if (setDPI)
@@ -122,11 +127,17 @@ namespace GHelper.UI
 
             if (changed || firstInit)
             {
-                DwmSetWindowAttribute(Handle, 20, new[] { darkTheme ? 1 : 0 }, 4);
+                DwmSetWindowAttribute(Handle, 20, [darkTheme ? 1 : 0 ], 4);
                 SetPreferredAppMode(darkTheme ? 1 : 0); 
                 SetWindowTheme(Handle, darkTheme ? "DarkMode_Explorer" : "Explorer", null);
                 ControlHelper.Adjust(this, changed);
-                this.Invalidate();
+                Invalidate();
+            }
+
+            if (mica)
+            {
+                NativeMethods.DwmSetWindowAttribute(Handle, 38, [2], 4);
+                BackColor = TransparencyKey = Color.Black;
             }
 
 

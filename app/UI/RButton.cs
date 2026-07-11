@@ -66,8 +66,14 @@ namespace GHelper.UI
         public RButton()
         {
             DoubleBuffered = true;
+            
+            SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+
             FlatStyle = FlatStyle.Flat;
             FlatAppearance.BorderSize = 0;
+            BackColor = Color.FromArgb(255, 1, 1, 1);
+            BackColor = Color.Transparent;
+            
             BackColorChanged += (s, e) => UpdateHoverColor();
             UpdateHoverColor();
         }
