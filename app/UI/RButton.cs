@@ -143,13 +143,19 @@ namespace GHelper.UI
             int border = (int)Math.Round((ratio * borderSize - 1) / 2) * 2 + 1;
             int radius = (int)Math.Round(ratio * borderRadius, MidpointRounding.AwayFromZero);
 
-            pevent.Graphics.Clear(TransparentKey);
+            //pevent.Graphics.Clear(TransparentKey);
 
             Rectangle rectSurface = ClientRectangle;
 
-            using GraphicsPath pathSurface = GetFigurePath(rectSurface, borderRadius);
+            using GraphicsPath pathSurface = GetFigurePath(rectSurface, radius + border);
 
-            using (GraphicsPath pathSurface = GetFigurePath(rectSurface, radius + border))
+            using (Region outsideRegion = new Region(rectSurface))
+            {
+                outsideRegion.Exclude(pathSurface);
+                using (SolidBrush keyBrush = new SolidBrush(TransparentKey))
+                    pevent.Graphics.FillRegion(keyBrush, outsideRegion);
+            }
+
             using (Pen penSurface = new Pen(Color.FromArgb(100, Parent.BackColor), border))
             {
                 pevent.Graphics.SmoothingMode = SmoothingMode.None;
