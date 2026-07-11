@@ -12,6 +12,7 @@ namespace GHelper.UI
         public RComboBox()
         {
             DrawMode = UseCustomTextPadding ? DrawMode.OwnerDrawFixed : DrawMode.Normal;
+            SetStyle(ControlStyles.SupportsTransparentBackColor, true);
         }
 
         protected override void OnMouseWheel(MouseEventArgs e)
@@ -115,13 +116,6 @@ namespace GHelper.UI
                 }
             }
         }
-
-
-        public RComboBox()
-        {
-            SetStyle(ControlStyles.SupportsTransparentBackColor, true);
-        }
-
 
         public static GraphicsPath RoundedRect(Rectangle bounds, int radiusL, int radiusR)
         {
