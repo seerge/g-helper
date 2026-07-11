@@ -98,7 +98,6 @@ public sealed class KeyboardHook : IDisposable
     private class Window : NativeWindow, IDisposable
     {
         private static int WM_HOTKEY = 0x0312;
-        public static Keys? fakeKey;
 
         public Window()
         {
@@ -181,6 +180,7 @@ public sealed class KeyboardHook : IDisposable
         {
             UnregisterHotKey(_window.Handle, i);
         }
+        _currentId = 0;
     }
 
     public void Dispose()

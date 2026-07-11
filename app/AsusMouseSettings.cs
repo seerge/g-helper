@@ -1,4 +1,5 @@
-﻿using GHelper.Peripherals.Mouse;
+﻿using GHelper.Peripherals;
+using GHelper.Peripherals.Mouse;
 using GHelper.UI;
 
 namespace GHelper
@@ -23,6 +24,7 @@ namespace GHelper
         private LightingZone visibleZone = LightingZone.All;
 
         private bool updateMouseDPI = true;
+        private bool loadingSettings = true;
 
         public AsusMouseSettings(AsusMouse mouse)
         {
@@ -38,6 +40,7 @@ namespace GHelper
             labelEnergy.Text = Properties.Strings.EnergySettings;
             labelPerformance.Text = Properties.Strings.MousePerformance;
             checkBoxRandomColor.Text = Properties.Strings.AuraRandomColor;
+            checkBoxSyncAura.Text = Properties.Strings.MouseSyncWithAura;
             labelLowBatteryWarning.Text = Properties.Strings.MouseLowBatteryWarning;
             labelAutoPowerOff.Text = Properties.Strings.MouseAutoPowerOff;
             buttonSync.Text = Properties.Strings.MouseSynchronize;
@@ -60,6 +63,10 @@ namespace GHelper
             buttonExport.Text = Properties.Strings.Export;
             buttonImport.Text = Properties.Strings.Import;
 
+            labelAnimationSpeed.Text = Properties.Strings.AnimationSpeed;
+            labelAnimationDirection.Text = Properties.Strings.AnimationDirection;
+            labelBindingsTitle.Text = Properties.Strings.KeyBindings;
+
             InitTheme(true);
 
             this.Text = mouse.GetDisplayName();
@@ -73,6 +80,8 @@ namespace GHelper
             numericUpDownCurrentDPI.ValueChanged += NumericUpDownCurrentDPI_ValueChanged;
             sliderDPI.MouseUp += SliderDPI_MouseUp;
             sliderDPI.MouseDown += SliderDPI_MouseDown;
+            sliderDPI.PreviewKeyDown += (_, _) => updateMouseDPI = false;
+            sliderDPI.KeyUp += (s, e) => SliderDPI_MouseUp(s, e);
             buttonDPIColor.Click += ButtonDPIColor_Click;
             buttonDPI1.Click += ButtonDPI_Click;
             buttonDPI2.Click += ButtonDPI_Click;
@@ -91,32 +100,40 @@ namespace GHelper
             checkBoxAngleSnapping.CheckedChanged += CheckAngleSnapping_CheckedChanged;
             sliderAngleAdjustment.ValueChanged += SliderAngleAdjustment_ValueChanged;
             sliderAngleAdjustment.MouseUp += SliderAngleAdjustment_MouseUp;
+            sliderAngleAdjustment.KeyUp += SliderAngleAdjustment_MouseUp;
             comboBoxLiftOffDistance.DropDownClosed += ComboBoxLiftOffDistance_DropDownClosed;
             sliderButtonDebounce.ValueChanged += SliderButtonDebounce_ValueChanged;
             sliderButtonDebounce.MouseUp += SliderButtonDebounce_MouseUp;
+            sliderButtonDebounce.KeyUp += SliderButtonDebounce_MouseUp;
 
             checkBoxMotionSync.CheckedChanged += CheckBoxMotionSync_CheckedChanged;
             checkBoxZoneMode.CheckedChanged += CheckBoxZoneMode_CheckedChanged;
             sliderZoneModeDPI.ValueChanged += SliderZoneModeDPI_ValueChanged;
             sliderZoneModeDPI.MouseUp += SliderZoneModeDPI_MouseUp;
+            sliderZoneModeDPI.KeyUp += SliderZoneModeDPI_MouseUp;
             numericUpDownZoneModeDPI.ValueChanged += NumericUpDownZoneModeDPI_ValueChanged;
             comboBoxZoneModePollingRate.DropDownClosed += ComboBoxZoneModePollingRate_DropDownClosed;
 
             sliderAcceleration.MouseUp += SliderAcceleration_MouseUp;
+            sliderAcceleration.KeyUp += SliderAcceleration_MouseUp;
             sliderAcceleration.ValueChanged += SliderAcceleration_ValueChanged;
 
             sliderDeceleration.MouseUp += SliderDeceleration_MouseUp;
+            sliderDeceleration.KeyUp += SliderDeceleration_MouseUp;
             sliderDeceleration.ValueChanged += SliderDeceleration_ValueChanged;
 
             buttonLightingColor.Click += ButtonLightingColor_Click;
             comboBoxLightingMode.DropDownClosed += ComboBoxLightingMode_DropDownClosed;
             sliderBrightness.MouseUp += SliderBrightness_MouseUp;
+            sliderBrightness.KeyUp += SliderBrightness_MouseUp;
             comboBoxAnimationSpeed.DropDownClosed += ComboBoxAnimationSpeed_DropDownClosed;
             comboBoxAnimationDirection.DropDownClosed += ComboBoxAnimationDirection_DropDownClosed;
             checkBoxRandomColor.CheckedChanged += CheckBoxRandomColor_CheckedChanged;
+            checkBoxSyncAura.CheckedChanged += CheckBoxSyncAura_CheckedChanged;
 
             sliderLowBatteryWarning.ValueChanged += SliderLowBatteryWarning_ValueChanged;
             sliderLowBatteryWarning.MouseUp += SliderLowBatteryWarning_MouseUp;
+            sliderLowBatteryWarning.KeyUp += SliderLowBatteryWarning_MouseUp;
             comboBoxAutoPowerOff.DropDownClosed += ComboBoxAutoPowerOff_DropDownClosed;
 
 
@@ -129,6 +146,8 @@ namespace GHelper
             InitMouseCapabilities();
             Logger.WriteLine(mouse.GetDisplayName() + " (GUI): Initialized capabilities. Synchronizing mouse data");
             RefreshMouseData();
+
+            loadingSettings = false;
         }
 
         public void ToggleBindingsPanel(bool show)
@@ -140,7 +159,7 @@ namespace GHelper
             panelLeft.Visible = show;
         }
 
-        private void SliderAcceleration_MouseUp(object? sender, MouseEventArgs e)
+        private void SliderAcceleration_MouseUp(object? sender, EventArgs e)
         {
             mouse.SetAcceleration(sliderAcceleration.Value);
         }
@@ -150,7 +169,7 @@ namespace GHelper
             labelAccelerationValue.Text = sliderAcceleration.Value.ToString();
         }
 
-        private void SliderDeceleration_MouseUp(object? sender, MouseEventArgs e)
+        private void SliderDeceleration_MouseUp(object? sender, EventArgs e)
         {
             mouse.SetDeceleration(sliderDeceleration.Value);
         }
@@ -160,7 +179,7 @@ namespace GHelper
             labelDecelerationValue.Text = sliderDeceleration.Value.ToString();
         }
 
-        private void SliderButtonDebounce_MouseUp(object? sender, MouseEventArgs e)
+        private void SliderButtonDebounce_MouseUp(object? sender, EventArgs e)
         {
             DebounceTime dbt = (DebounceTime)sliderButtonDebounce.Value;
             mouse.SetDebounce(dbt);
@@ -264,22 +283,18 @@ namespace GHelper
 
         private void ButtonDPIColor_Click(object? sender, EventArgs e)
         {
-            ColorDialog colorDlg = new ColorDialog
-            {
-                AllowFullOpen = true,
-                Color = pictureDPIColor.BackColor
-            };
+            AsusMouseDPI dpi = mouse.DpiSettings[mouse.DpiProfile - 1];
 
-            if (colorDlg.ShowDialog() == DialogResult.OK)
+            RColorPicker colorDlg = new RColorPicker(dpi.Color);
+            colorDlg.ColorChanged += c =>
             {
-                AsusMouseDPI dpi = mouse.DpiSettings[mouse.DpiProfile - 1];
-                dpi.Color = colorDlg.Color;
-
+                dpi.Color = c;
                 mouse.SetDPIForProfile(dpi, mouse.DpiProfile);
 
                 VisualizeDPIButtons();
                 VisualizeCurrentDPIProfile();
-            }
+            };
+            colorDlg.ShowDialog(this);
         }
 
         // Logic for Delete Area
@@ -383,6 +398,31 @@ namespace GHelper
             UpdateLightingSettings(ls, visibleZone);
         }
 
+        private void CheckBoxSyncAura_CheckedChanged(object? sender, EventArgs e)
+        {
+            ApplyAuraSyncUIState();
+            if (loadingSettings) return;
+
+            PeripheralsProvider.SetAuraSync(checkBoxSyncAura.Checked);
+            Program.settingsForm.UpdateKeyboardLabel();
+
+            if (checkBoxSyncAura.Checked)
+            {
+                mouse.SyncFromKeyboardAura();
+                VisusalizeLightingSettings();
+            }
+        }
+
+        private void ApplyAuraSyncUIState()
+        {
+            bool syncOn = checkBoxSyncAura.Checked;
+            comboBoxLightingMode.Enabled = !syncOn;
+            buttonLightingColor.Enabled = !syncOn;
+            checkBoxRandomColor.Enabled = !syncOn;
+            comboBoxAnimationSpeed.Enabled = !syncOn;
+            comboBoxAnimationDirection.Enabled = !syncOn;
+        }
+
         private void ComboBoxAnimationDirection_DropDownClosed(object? sender, EventArgs e)
         {
             LightingSetting? ls = mouse.LightingSettingForZone(visibleZone);
@@ -401,7 +441,7 @@ namespace GHelper
             UpdateLightingSettings(ls, visibleZone);
         }
 
-        private void SliderBrightness_MouseUp(object? sender, MouseEventArgs e)
+        private void SliderBrightness_MouseUp(object? sender, EventArgs e)
         {
             LightingSetting? ls = mouse.LightingSettingForZone(visibleZone);
             ls.Brightness = sliderBrightness.Value;
@@ -433,19 +473,16 @@ namespace GHelper
 
         private void ButtonLightingColor_Click(object? sender, EventArgs e)
         {
-            ColorDialog colorDlg = new ColorDialog
-            {
-                AllowFullOpen = true,
-                Color = pictureBoxLightingColor.BackColor
-            };
+            LightingSetting? ls = mouse.LightingSettingForZone(visibleZone);
+            if (ls is null) return;
 
-            if (colorDlg.ShowDialog() == DialogResult.OK)
+            RColorPicker colorDlg = new RColorPicker(ls.RGBColor);
+            colorDlg.ColorChanged += c =>
             {
-                LightingSetting? ls = mouse.LightingSettingForZone(visibleZone);
-                ls.RGBColor = colorDlg.Color;
-
+                ls.RGBColor = c;
                 UpdateLightingSettings(ls, visibleZone);
-            }
+            };
+            colorDlg.ShowDialog(this);
         }
 
         private void SliderLowBatteryWarning_ValueChanged(object? sender, EventArgs e)
@@ -453,7 +490,7 @@ namespace GHelper
             labelLowBatteryWarningValue.Text = sliderLowBatteryWarning.Value.ToString() + "%";
         }
 
-        private void SliderLowBatteryWarning_MouseUp(object? sender, MouseEventArgs e)
+        private void SliderLowBatteryWarning_MouseUp(object? sender, EventArgs e)
         {
             mouse.SetEnergySettings(sliderLowBatteryWarning.Value, mouse.PowerOffSetting);
         }
@@ -477,7 +514,7 @@ namespace GHelper
             labelAngleAdjustmentValue.Text = sliderAngleAdjustment.Value.ToString() + "°";
         }
 
-        private void SliderAngleAdjustment_MouseUp(object? sender, MouseEventArgs e)
+        private void SliderAngleAdjustment_MouseUp(object? sender, EventArgs e)
         {
             mouse.SetAngleAdjustment((short)sliderAngleAdjustment.Value);
         }
@@ -509,7 +546,7 @@ namespace GHelper
             numericUpDownZoneModeDPI.Value = sliderZoneModeDPI.Value;
         }
 
-        private void SliderZoneModeDPI_MouseUp(object? sender, MouseEventArgs e)
+        private void SliderZoneModeDPI_MouseUp(object? sender, EventArgs e)
         {
             mouse.ZoneModeDPI = sliderZoneModeDPI.Value;
             if (mouse.ZoneMode)
@@ -557,7 +594,7 @@ namespace GHelper
             updateMouseDPI = false;
         }
 
-        private void SliderDPI_MouseUp(object? sender, MouseEventArgs e)
+        private void SliderDPI_MouseUp(object? sender, EventArgs e)
         {
             updateMouseDPI = true;
             UpdateMouseDPISettings();
@@ -628,6 +665,7 @@ namespace GHelper
             sliderDPI.Max = mouse.MaxDPI();
             sliderDPI.Min = mouse.MinDPI();
             sliderDPI.Step = mouse.DPIIncrements();
+            sliderDPI.Exponential = true;
 
             numericUpDownCurrentDPI.Minimum = mouse.MinDPI();
             numericUpDownCurrentDPI.Maximum = mouse.MaxDPI();
@@ -642,7 +680,6 @@ namespace GHelper
             if (!mouse.HasDPIColors())
             {
                 buttonDPIColor.Visible = false;
-                pictureDPIColor.Visible = false;
                 buttonDPI1.Image = ControlHelper.ResizeImage(ControlHelper.TintImage(Properties.Resources.lighting_dot_32, Color.Red), ControlHelper.Scale);
                 buttonDPI2.Image = ControlHelper.ResizeImage(ControlHelper.TintImage(Properties.Resources.lighting_dot_32, Color.Purple), ControlHelper.Scale);
                 buttonDPI3.Image = ControlHelper.ResizeImage(ControlHelper.TintImage(Properties.Resources.lighting_dot_32, Color.Blue), ControlHelper.Scale);
@@ -796,6 +833,9 @@ namespace GHelper
                     buttonLightingZoneDock.Visible = false;
                 }
 
+                checkBoxSyncAura.Checked = AppConfig.IsAuraSync();
+                ApplyAuraSyncUIState();
+
                 sliderBrightness.Max = mouse.MaxBrightness();
 
                 InitLightingModes();
@@ -868,6 +908,7 @@ namespace GHelper
                     Margin = new Padding(0, (int)(6 * s), (int)(6 * s), (int)(6 * s)),
                     DropDownStyle = ComboBoxStyle.DropDownList,
                     FlatStyle = FlatStyle.Flat,
+                    UseCustomTextPadding = false,
                     DrawMode = DrawMode.OwnerDrawFixed,
                     ItemHeight = comboProfile.ItemHeight,
                     BackColor = RForm.buttonMain,
@@ -890,7 +931,7 @@ namespace GHelper
             int btnY = startY + row * rowHeight + (int)(8 * s);
             var btnReset = new UI.RButton
             {
-                Text = "Reset Bindings",
+                Text = Properties.Strings.Reset,
                 Location = new Point((int)(14 * s), btnY),
                 Size = new Size((int)(466 * s), (int)(50 * s)),
                 FlatStyle = FlatStyle.Flat,
@@ -943,6 +984,7 @@ namespace GHelper
         {
             mouse.ResetButtonBindings();
             VisualizeButtonBindings();
+            Program.inputDispatcher?.RegisterKeys();
         }
 
         private void BindingCombo_Changed(object? sender, EventArgs e)
@@ -957,7 +999,10 @@ namespace GHelper
                 return;
             }
             if (cmb.SelectedItem is BindingItem item)
+            {
                 mouse.SetButtonBinding(slot, item.Code);
+                Program.inputDispatcher?.RegisterKeys();
+            }
         }
 
         private void VisualizeButtonBindings()
@@ -1210,7 +1255,6 @@ namespace GHelper
 
             checkBoxRandomColor.Visible = mouse.SupportsRandomColor(ls.LightingMode);
 
-            pictureBoxLightingColor.Visible = mouse.SupportsColorSetting(ls.LightingMode);
             buttonLightingColor.Visible = mouse.SupportsColorSetting(ls.LightingMode);
 
             comboBoxAnimationSpeed.Visible = mouse.SupportsAnimationSpeed(ls.LightingMode);
@@ -1226,10 +1270,7 @@ namespace GHelper
                 buttonLightingColor.Visible = !ls.RandomColor;
             }
 
-            if (ls.RandomColor && mouse.SupportsRandomColor(ls.LightingMode))
-                pictureBoxLightingColor.BackColor = Color.Transparent;
-            else
-                pictureBoxLightingColor.BackColor = ls.RGBColor;
+            buttonLightingColor.SwatchColor = ls.RGBColor;
 
             //0x09 => 0
             //0x07 => 1
@@ -1324,7 +1365,7 @@ namespace GHelper
                 return;
             }
             sliderDPI.Value = (int)dpi.DPI;
-            pictureDPIColor.BackColor = dpi.Color;
+            buttonDPIColor.SwatchColor = dpi.Color;
         }
 
         private void AsusMouseSettings_Shown(object? sender, EventArgs e)

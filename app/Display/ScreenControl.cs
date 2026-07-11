@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using GHelper.Helpers;
+using Microsoft.Win32;
+using System.Diagnostics;
 
 namespace GHelper.Display
 {
@@ -27,6 +29,27 @@ namespace GHelper.Display
             else
             {
                 SetScreen(overdrive: AppConfig.Get("overdrive"));
+            }
+        }
+
+        public static void SetAutoRefresh(int auto)
+        {
+            AppConfig.Set("screen_auto", auto);
+            if (auto == 0) SetAsusRefreshFlag(0);
+        }
+
+        public static void SetAsusRefreshFlag(int value)
+        {
+            if (!ProcessHelper.IsUserAdministrator()) return;
+            const string keyPath = @"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{8714A8D1-0F08-4681-9DF6-A8C4607A58B4}";
+            try
+            {
+                using var key = Registry.LocalMachine.OpenSubKey(keyPath, writable: true);
+                key.SetValue("RefreshFlag", value, RegistryValueKind.DWord);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine($"Failed to set RefreshFlag: {ex.Message}");
             }
         }
 
@@ -76,7 +99,7 @@ namespace GHelper.Display
         {
             if (miniled >= 0)
             {
-                if (Program.acpi.DeviceGet(AsusACPI.ScreenMiniled1) >= 0)
+                if (Program.acpi.IsSupported(AsusACPI.ScreenMiniled1))
                     Program.acpi.DeviceSet(AsusACPI.ScreenMiniled1, miniled, "Miniled1");
                 else
                 {
@@ -90,8 +113,8 @@ namespace GHelper.Display
         {
             if (AppConfig.IsForceMiniled())
             {
-                SetMiniled(AppConfig.Get("miniled"));
                 SetHDRControl(AppConfig.Get("hdr_control"));
+                SetMiniled(AppConfig.Get("miniled"));
             }
         }
 
@@ -212,6 +235,7 @@ namespace GHelper.Display
 
             int miniled = (miniled1 >= 0) ? miniled1 : miniled2;
             bool hdr = false;
+            bool acm = false;
 
             if (miniled >= 0)
             {
@@ -221,7 +245,7 @@ namespace GHelper.Display
 
             try
             {
-                hdr = ScreenCCD.GetHDRStatus();
+                hdr = ScreenCCD.GetHDRStatus(out acm);
             } catch (Exception ex)
             {
                 Logger.WriteLine(ex.Message);
@@ -253,6 +277,7 @@ namespace GHelper.Display
                     miniled1: miniled1,
                     miniled2: miniled2,
                     hdr: hdr,
+                    acm: acm,
                     fhd: fhd,
                     hdrControl: hdrControl
                 );

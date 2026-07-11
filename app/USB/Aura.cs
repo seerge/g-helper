@@ -1,10 +1,10 @@
 ﻿using GHelper.Gpu;
 using GHelper.Helpers;
 using GHelper.Input;
+using GHelper.Peripherals;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
-using System.Text;
 using static GHelper.Helpers.DynamicLightingHelper;
 
 namespace GHelper.USB
@@ -54,6 +54,10 @@ namespace GHelper.USB
         GPUMODE = 21,
         AMBIENT = 22,
         BATTERY = 23,
+        GRADIENT = 24,
+        ZONETEST = 25,
+        AUDIO = 26,
+        AUDIOPULSE = 27,
     }
 
     public enum AuraSpeed : int
@@ -61,6 +65,14 @@ namespace GHelper.USB
         Slow = 0,
         Normal = 1,
         Fast = 2,
+    }
+
+    public enum AuraBacklightType : byte
+    {
+        Unknown = 0x00,
+        MultiZone = 0x02,
+        PerKey = 0x03,
+        SingleZone = 0x04,
     }
 
 
@@ -91,85 +103,34 @@ namespace GHelper.USB
         }
 
         static bool isACPI = AppConfig.IsTUF() || AppConfig.IsVivoZenPro();
-        static bool isStrix = AppConfig.IsAdvancedRGB() && !AppConfig.IsNoDirectRGB();
 
-        static bool isStrix4Zone = AppConfig.Is4ZoneRGB();
+        static bool isStrix => BacklightType == AuraBacklightType.MultiZone || BacklightType == AuraBacklightType.PerKey;
+        public static bool IsBacklightDetected => BacklightType != AuraBacklightType.Unknown;
+
+        static bool isStrix4Zone = false;
         static bool isStrixNumpad = AppConfig.IsStrixNumpad();
+        static bool isStrix4ZoneFlipped = AppConfig.IsStrix4ZoneFlipped();
 
-        static public bool isSingleColor = false;
+        static public bool isWhite = AppConfig.IsWhite();
+
+        public static AuraBacklightType BacklightType { get; private set; } = AuraBacklightType.Unknown;
+
+        public static bool HasLogo { get; private set; }
+        public static bool HasLightbar { get; private set; }
+        public static bool HasRearglow { get; private set; }
+        public static bool IsOldStrix { get; private set; }
 
         static System.Timers.Timer timer = new System.Timers.Timer(1000);
 
-        private static Dictionary<AuraMode, string> _modesSingleColor = new Dictionary<AuraMode, string>
-        {
-            { AuraMode.AuraStatic, Properties.Strings.AuraStatic },
-            { AuraMode.AuraBreathe, Properties.Strings.AuraBreathe },
-            { AuraMode.AuraStrobe, Properties.Strings.AuraStrobe },
-        };
-
-        private static Dictionary<AuraMode, string> _modes = new Dictionary<AuraMode, string>
-        {
-            { AuraMode.AuraStatic, Properties.Strings.AuraStatic },
-            { AuraMode.AuraBreathe, Properties.Strings.AuraBreathe },
-            { AuraMode.AuraColorCycle, Properties.Strings.AuraColorCycle },
-            { AuraMode.AuraRainbow, Properties.Strings.AuraRainbow },
-            { AuraMode.AuraStrobe, Properties.Strings.AuraStrobe },
-            { AuraMode.HEATMAP, "Heatmap"},
-            { AuraMode.GPUMODE, "GPU Mode" },
-            { AuraMode.AMBIENT, "Ambient"},
-            { AuraMode.BATTERY, "Battery"},
-        };
-
-        private static Dictionary<AuraMode, string> _modesDynamicLighting = new Dictionary<AuraMode, string>
-        {
-            { AuraMode.AuraStatic, Properties.Strings.AuraStatic },
-            { AuraMode.AuraBreathe, Properties.Strings.AuraColorCycle },
-            { AuraMode.AuraRainbow, Properties.Strings.AuraRainbow },
-            { AuraMode.AuraStrobe, Properties.Strings.AuraStrobe },
-        };
-
-        private static Dictionary<AuraMode, string> _modesAlly = new Dictionary<AuraMode, string>
-        {
-            { AuraMode.AuraStatic, Properties.Strings.AuraStatic },
-            { AuraMode.AuraBreathe, Properties.Strings.AuraBreathe },
-            { AuraMode.AuraColorCycle, Properties.Strings.AuraColorCycle },
-            { AuraMode.AuraRainbow, Properties.Strings.AuraRainbow },
-            { AuraMode.AuraStrobe, Properties.Strings.AuraStrobe },
-            { AuraMode.BATTERY, "Battery"},
-        };
-
-        private static Dictionary<AuraMode, string> _modesStrix = new Dictionary<AuraMode, string>
-        {
-            { AuraMode.AuraStatic, Properties.Strings.AuraStatic },
-            { AuraMode.AuraBreathe, Properties.Strings.AuraBreathe },
-            { AuraMode.AuraColorCycle, Properties.Strings.AuraColorCycle },
-            { AuraMode.AuraRainbow, Properties.Strings.AuraRainbow },
-            { AuraMode.Star, "Star" },
-            { AuraMode.Rain, "Rain" },
-            { AuraMode.Highlight, "Highlight" },
-            { AuraMode.Laser, "Laser" },
-            { AuraMode.Ripple, "Ripple" },
-            { AuraMode.AuraStrobe, Properties.Strings.AuraStrobe},
-            { AuraMode.Comet, "Comet" },
-            { AuraMode.Flash, "Flash" },
-            { AuraMode.HEATMAP, "Heatmap"},
-            { AuraMode.AMBIENT, "Ambient"},
-            { AuraMode.BATTERY, "Battery"},
-        };
+        static readonly List<double> audioMaxes = new List<double>();
+        static long lastAudioPresent;
+        static double envBrightness;
+        static double smoothedHue;
+        const double audioDecay = 0.7;
 
         static Aura()
         {
             timer.Elapsed += Timer_Elapsed;
-            isSingleColor = AppConfig.IsSingleColor(); // Mono Color
-
-            if (AppConfig.ContainsModel("GA402X") || AppConfig.ContainsModel("GA402N"))
-            {
-                var device = AsusHid.FindDevices(AsusHid.AURA_ID).FirstOrDefault();
-                if (device is null) return;
-                Logger.WriteLine($"USB Version: {device.ReleaseNumberBcd} {device.ReleaseNumber}");
-
-                if (device.ReleaseNumberBcd >= 22 && device.ReleaseNumberBcd <= 25) isSingleColor = true;
-            }
         }
 
         public static Dictionary<AuraSpeed, string> GetSpeeds()
@@ -185,37 +146,72 @@ namespace GHelper.USB
 
         public static Dictionary<AuraMode, string> GetModes()
         {
-            if (isACPI)
-            {
-                _modes.Remove(AuraMode.AuraRainbow);
-            }
+            var modes = new Dictionary<AuraMode, string>();
 
-            if (isSingleColor)
+            if (isWhite)
             {
-                return _modesSingleColor;
+                modes[AuraMode.AuraStatic] = Properties.Strings.AuraStatic;
+                modes[AuraMode.AuraBreathe] = Properties.Strings.AuraBreathe;
+                modes[AuraMode.AuraStrobe] = Properties.Strings.AuraStrobe;
+                return modes;
             }
 
             if (AppConfig.IsDynamicLightingOnly())
             {
-                return _modesDynamicLighting;
+                modes[AuraMode.AuraStatic] = Properties.Strings.AuraStatic;
+                modes[AuraMode.AuraBreathe] = Properties.Strings.AuraColorCycle;
+                modes[AuraMode.AuraRainbow] = Properties.Strings.AuraRainbow;
+                modes[AuraMode.AuraStrobe] = Properties.Strings.AuraStrobe;
+                return modes;
             }
 
-            if (AppConfig.IsAlly())
+            bool perKey = BacklightType == AuraBacklightType.PerKey;
+            bool multiZone = BacklightType == AuraBacklightType.MultiZone;
+            bool isStrixKb = perKey || multiZone;
+            bool isAlly = AppConfig.IsAlly();
+
+            modes[AuraMode.AuraStatic] = Properties.Strings.AuraStatic;
+            modes[AuraMode.AuraBreathe] = Properties.Strings.AuraBreathe;
+            modes[AuraMode.AuraColorCycle] = Properties.Strings.AuraColorCycle;
+            if (!isACPI) modes[AuraMode.AuraRainbow] = Properties.Strings.AuraRainbow;
+
+            if (perKey)
             {
-                return _modesAlly;
+                modes[AuraMode.Star] = "Star";
+                modes[AuraMode.Rain] = "Rain";
+                modes[AuraMode.Highlight] = "Highlight";
+                modes[AuraMode.Laser] = "Laser";
+                modes[AuraMode.Ripple] = "Ripple";
             }
 
-            if (AppConfig.IsAdvantageEdition())
+            modes[AuraMode.AuraStrobe] = Properties.Strings.AuraStrobe;
+
+            if (perKey)
             {
-                return _modes;
+                modes[AuraMode.Comet] = "Comet";
+                modes[AuraMode.Flash] = "Flash";
             }
 
-            if (AppConfig.IsAdvancedRGB() && !AppConfig.Is4ZoneRGB())
+            if (isAlly)
             {
-                return _modesStrix;
+                modes[AuraMode.BATTERY] = "Battery";
+                return modes;
             }
 
-            return _modes;
+            modes[AuraMode.HEATMAP] = "Heatmap";
+            modes[AuraMode.GPUMODE] = "GPU Mode";
+            modes[AuraMode.AMBIENT] = "Ambient";
+            modes[AuraMode.BATTERY] = "Battery";
+            modes[AuraMode.AUDIO] = "Audio Spectrum";
+            modes[AuraMode.AUDIOPULSE] = "Audio Pulse";
+
+            if (isStrixKb)
+            {
+                modes[AuraMode.GRADIENT] = "Gradient";
+                modes[AuraMode.ZONETEST] = "Zone Test";
+            }
+
+            return modes;
         }
 
         private static Dictionary<AuraMode, string> _modesRear = new Dictionary<AuraMode, string>
@@ -267,7 +263,7 @@ namespace GHelper.USB
 
         public static bool HasSecondColor()
         {
-            return mode == AuraMode.AuraBreathe && !isACPI;
+            return (mode == AuraMode.AuraBreathe || mode == AuraMode.GRADIENT) && (!isACPI || AppConfig.IsDynamicLightingOnly());
         }
 
         private static void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
@@ -290,7 +286,7 @@ namespace GHelper.USB
         }
 
 
-        public static byte[] AuraMessage(AuraMode mode, Color color, Color color2, int speed, bool mono = false)
+        public static byte[] AuraMessage(AuraMode mode, Color color, Color color2, int speed)
         {
 
             byte[] msg = new byte[17];
@@ -299,24 +295,92 @@ namespace GHelper.USB
             msg[2] = 0x00; // Zone 
             msg[3] = (byte)mode; // Aura Mode
             msg[4] = color.R; // R
-            msg[5] = mono ? (byte)0 : color.G; // G
-            msg[6] = mono ? (byte)0 : color.B; // B
+            msg[5] = isWhite ? (byte)0 : color.G; // G
+            msg[6] = isWhite ? (byte)0 : color.B; // B
             msg[7] = (byte)speed; // aura.speed as u8;
             msg[8] = 0x00; // aura.direction as u8;
             msg[9] = (color.R == 0 && color.G == 0 && color.B == 0) ? (byte)0xFF : (mode == AuraMode.AuraBreathe ? (byte)0x01 : (byte)0x00); // random color flag
             msg[10] = color2.R; // R
-            msg[11] = mono ? (byte)0 : color2.G; // G
-            msg[12] = mono ? (byte)0 : color2.B; // B
+            msg[11] = isWhite ? (byte)0 : color2.G; // G
+            msg[12] = isWhite ? (byte)0 : color2.B; // B
             return msg;
+        }
+
+        private static void DetectBacklightType()
+        {
+            if (isACPI) return;
+
+            if (IsBacklightDetected)
+            {
+                AsusHid.AuraProbe(false);
+                return;
+            }
+
+            var response = AsusHid.AuraProbe(true);
+
+            if (response is null || response.Length < 18) return;
+
+            byte typeByte = response[9];
+            byte year = response[10];
+            byte layout = response[12];
+            byte feat1 = response[13];
+            byte feat2 = response[14];
+            byte family = year >= 0x23 ? response[17] : (byte)0;
+
+            const byte FEAT1_LOGO     = 0x01;
+            const byte FEAT1_LIGHTBAR = 0x02;
+            const byte FEAT1_VCUT     = 0x10;
+            const byte FEAT1_AERO     = 0x20;
+            const byte FEAT1_BUMP     = 0x40;
+            const byte FEAT1_REARGLOW = 0x80;
+            const byte FEAT2_DEFAULT_COLOR        = 0x04;
+            const byte FEAT2_RGB_WHEEL            = 0x08;
+            const byte FEAT2_ONE_ZONE_RED_EFFECT  = 0x10;
+            const byte FEAT2_BIT_FORMAT_KEY_POS   = 0x40;
+
+            string familyName = family switch
+            {
+                0x01 => "Strix",
+                0x02 => "Flow",
+                0x04 => "Zephyrus",
+                0x08 => "TUF",
+                0x10 => "NR2301",
+                0x20 => "Desktop",
+                0x00 => "(pre-2023)",
+                _    => $"unknown(0x{family:X2})"
+            };
+
+            Logger.WriteLine($"Aura Probe: Type=0x{typeByte:X2} Year=0x{year:X2} Layout=0x{layout:X2} Feat1=0x{feat1:X2} Feat2=0x{feat2:X2} Family=0x{family:X2} ({familyName})");
+            Logger.WriteLine($"Aura Probe Feat1 regions: Logo={(feat1 & FEAT1_LOGO) != 0} Lightbar={(feat1 & FEAT1_LIGHTBAR) != 0} Vcut={(feat1 & FEAT1_VCUT) != 0} Aero={(feat1 & FEAT1_AERO) != 0} Bump={(feat1 & FEAT1_BUMP) != 0} Rearglow={(feat1 & FEAT1_REARGLOW) != 0}");
+            Logger.WriteLine($"Aura Probe Feat2 features: DefaultColor={(feat2 & FEAT2_DEFAULT_COLOR) != 0} RGBWheel={(feat2 & FEAT2_RGB_WHEEL) != 0} OneZoneRedEffect={(feat2 & FEAT2_ONE_ZONE_RED_EFFECT) != 0} PerKeyMap={(feat2 & FEAT2_BIT_FORMAT_KEY_POS) != 0}");
+
+            BacklightType = typeByte switch
+            {
+                (byte)AuraBacklightType.MultiZone => AuraBacklightType.MultiZone,
+                (byte)AuraBacklightType.PerKey => AuraBacklightType.PerKey,
+                (byte)AuraBacklightType.SingleZone => AuraBacklightType.SingleZone,
+                0x00 => AuraBacklightType.SingleZone,
+                _ => AuraBacklightType.Unknown
+            };
+
+            if (!IsBacklightDetected) return;
+
+            AppConfig.Set("backlight_type", typeByte);
+
+            IsOldStrix = feat1 == 0 && AppConfig.IsStrix();
+            if (IsOldStrix) feat1 = FEAT1_LOGO | FEAT1_LIGHTBAR;
+            HasLogo = (feat1 & FEAT1_LOGO) != 0 || AppConfig.IsZ13();
+            HasLightbar = (feat1 & FEAT1_LIGHTBAR) != 0;
+            HasRearglow = (feat1 & (FEAT1_REARGLOW | FEAT1_VCUT)) != 0;
+
+            isStrix4Zone = BacklightType == AuraBacklightType.MultiZone;
+
+            if (typeByte != 0x00 && (feat2 & FEAT2_ONE_ZONE_RED_EFFECT) != 0) isWhite = true;
         }
 
         public static void Init()
         {
-            AsusHid.Write(new List<byte[]> {
-                new byte[] { AsusHid.AURA_ID, 0xB9 },
-                Encoding.ASCII.GetBytes("]ASUS Tech.Inc."),
-                new byte[] { AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0, 0x1A },
-            }, "Init");
+            DetectBacklightType();
 
             if (AppConfig.IsZ13())
                 AsusHid.Write([AsusHid.AURA_ID, 0xC0, 0x03, 0x01], "Dynamic Lighting Init");
@@ -340,31 +404,25 @@ namespace GHelper.USB
             if (!AppConfig.IsSleepBacklight() || !AppConfig.Is("keyboard_sleep")) ApplyBrightness(0, "Sleep");
         }
 
-        public static void ApplyBrightness(int brightness, string log = "Backlight", bool delay = false)
+        public static void ApplyBrightness(int brightness, string log = "Backlight")
         {
             if (brightness == 0) backlight = false;
 
-            Task.Run(async () =>
-            {
-                if (delay) await Task.Delay(TimeSpan.FromSeconds(1));
-                DirectBrightness(brightness, log);
-                if (AppConfig.IsAlly()) ApplyAura();
+            DirectBrightness(brightness, log);
+            if (AppConfig.IsAlly()) ApplyAura();
 
-                if (brightness > 0)
-                {
-                    if (!backlight) initDirect = true;
-                    backlight = true;
-                }
-            });
+            if (brightness > 0)
+            {
+                if (!backlight) initDirect = true;
+                backlight = true;
+            }
         }
 
         public static void DirectBrightness(int brightness, string log)
         {
             if (isACPI) Program.acpi.TUFKeyboardBrightness(brightness, log);
-            if (AppConfig.IsInputBacklight())
-                AsusHid.WriteInput([AsusHid.INPUT_ID, 0xBA, 0xC5, 0xC4, (byte)brightness], log);
-            else
-                AsusHid.Write([AsusHid.AURA_ID, 0xBA, 0xC5, 0xC4, (byte)brightness], log);
+            if (AppConfig.IsAlly()) AsusHid.SetFeatureAura([AsusHid.AURA_ID, 0xBA, 0xC5, 0xC4, (byte)brightness]);
+            else AsusHid.WriteInput([AsusHid.INPUT_ID, 0xBA, 0xC5, 0xC4, (byte)brightness], log);
         }
 
         static byte[] AuraPowerMessage(AuraPower flags)
@@ -429,37 +487,38 @@ namespace GHelper.USB
 
             bool backlightBattery = AppConfig.IsBacklightZones() && (SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online);
 
-            AuraPower flags = new();
+            AuraPower flags = new()
+            {
+                // Keyboard
+                AwakeKeyb = backlightBattery ? AppConfig.IsOnBattery("keyboard_awake") : AppConfig.IsNotFalse("keyboard_awake"),
+                BootKeyb = AppConfig.IsNotFalse("keyboard_boot"),
+                SleepKeyb = AppConfig.IsNotFalse("keyboard_sleep"),
+                ShutdownKeyb = AppConfig.IsNotFalse("keyboard_shutdown"),
 
-            // Keyboard
-            flags.AwakeKeyb = backlightBattery ? AppConfig.IsOnBattery("keyboard_awake") : AppConfig.IsNotFalse("keyboard_awake");
-            flags.BootKeyb = AppConfig.IsNotFalse("keyboard_boot");
-            flags.SleepKeyb = AppConfig.IsNotFalse("keyboard_sleep");
-            flags.ShutdownKeyb = AppConfig.IsNotFalse("keyboard_shutdown");
+                // Logo
+                AwakeLogo = backlightBattery ? AppConfig.IsOnBattery("keyboard_awake_logo") : AppConfig.IsNotFalse("keyboard_awake_logo"),
+                BootLogo = AppConfig.IsNotFalse("keyboard_boot_logo"),
+                SleepLogo = AppConfig.IsNotFalse("keyboard_sleep_logo"),
+                ShutdownLogo = AppConfig.IsNotFalse("keyboard_shutdown_logo"),
 
-            // Logo
-            flags.AwakeLogo = backlightBattery ? AppConfig.IsOnBattery("keyboard_awake_logo") : AppConfig.IsNotFalse("keyboard_awake_logo");
-            flags.BootLogo = AppConfig.IsNotFalse("keyboard_boot_logo");
-            flags.SleepLogo = AppConfig.IsNotFalse("keyboard_sleep_logo");
-            flags.ShutdownLogo = AppConfig.IsNotFalse("keyboard_shutdown_logo");
+                // Lightbar
+                AwakeBar = backlightBattery ? AppConfig.IsOnBattery("keyboard_awake_bar") : AppConfig.IsNotFalse("keyboard_awake_bar"),
+                BootBar = AppConfig.IsNotFalse("keyboard_boot_bar"),
+                SleepBar = AppConfig.IsNotFalse("keyboard_sleep_bar"),
+                ShutdownBar = AppConfig.IsNotFalse("keyboard_shutdown_bar"),
 
-            // Lightbar
-            flags.AwakeBar = backlightBattery ? AppConfig.IsOnBattery("keyboard_awake_bar") : AppConfig.IsNotFalse("keyboard_awake_bar");
-            flags.BootBar = AppConfig.IsNotFalse("keyboard_boot_bar");
-            flags.SleepBar = AppConfig.IsNotFalse("keyboard_sleep_bar");
-            flags.ShutdownBar = AppConfig.IsNotFalse("keyboard_shutdown_bar");
+                // Lid
+                AwakeLid = backlightBattery ? AppConfig.IsOnBattery("keyboard_awake_lid") : AppConfig.IsNotFalse("keyboard_awake_lid"),
+                BootLid = AppConfig.IsNotFalse("keyboard_boot_lid"),
+                SleepLid = AppConfig.IsNotFalse("keyboard_sleep_lid"),
+                ShutdownLid = AppConfig.IsNotFalse("keyboard_shutdown_lid"),
 
-            // Lid
-            flags.AwakeLid = backlightBattery ? AppConfig.IsOnBattery("keyboard_awake_lid") : AppConfig.IsNotFalse("keyboard_awake_lid");
-            flags.BootLid = AppConfig.IsNotFalse("keyboard_boot_lid");
-            flags.SleepLid = AppConfig.IsNotFalse("keyboard_sleep_lid");
-            flags.ShutdownLid = AppConfig.IsNotFalse("keyboard_shutdown_lid");
-
-            // Rear Bar
-            flags.AwakeRear = backlightBattery ? AppConfig.IsOnBattery("keyboard_awake_lid") : AppConfig.IsNotFalse("keyboard_awake_lid");
-            flags.BootRear = AppConfig.IsNotFalse("keyboard_boot_lid");
-            flags.SleepRear = AppConfig.IsNotFalse("keyboard_sleep_lid");
-            flags.ShutdownRear = AppConfig.IsNotFalse("keyboard_shutdown_lid");
+                // Rear Bar
+                AwakeRear = backlightBattery ? AppConfig.IsOnBattery("keyboard_awake_lid") : AppConfig.IsNotFalse("keyboard_awake_lid"),
+                BootRear = AppConfig.IsNotFalse("keyboard_boot_lid"),
+                SleepRear = AppConfig.IsNotFalse("keyboard_sleep_lid"),
+                ShutdownRear = AppConfig.IsNotFalse("keyboard_shutdown_lid")
+            };
 
             // On Z13 back panel light is controlled by mix of different flags, so merging them together
             if (AppConfig.IsZ13())
@@ -561,16 +620,28 @@ namespace GHelper.USB
         static byte[] packet4Zone = new byte[]
         {
 /*01        Z1  Z2  Z3  Z4  NA  NA  KeyZone */
-            0,  1,  2,  3,  0,  0, 
+            0,  1,  2,  3,  0,  0,
 
-/*02        RR  R   RM  LM  L   LL  LighBar */
+/*02        R1  R2  R3  L3  L2  L1  LightBar (wire ascending = R->L physical, matches OpenRGB Value 169..174) */
             7,  7,  6,  5,  4,  4,
 
         };
 
+        static byte[] packet4ZoneFlipped = new byte[]
+        {
+/*01        Z1  Z2  Z3  Z4  NA  NA  KeyZone */
+            0,  1,  2,  3,  0,  0,
+
+/*02        L1  L2  L3  R3  R2  R1  LightBar (wire ascending = L->R physical, G513 quirk) */
+            4,  4,  5,  6,  7,  7,
+
+        };
 
         public static void ApplyDirect(Color[] color, bool init = false)
         {
+            if (color is { Length: > 0 })
+                PeripheralsProvider.StreamMouseColor(color.Length > 3 ? color[3] : color[0]);
+
             if (!backlight) return;
 
             const byte keySet = 167;
@@ -593,7 +664,8 @@ namespace GHelper.USB
             if (init || initDirect)
             {
                 initDirect = false;
-                AsusHid.WriteAura(new byte[] { AsusHid.AURA_ID, 0xBC });
+                AsusHid.SetFeatureAura(new byte[] { AsusHid.AURA_ID, 0xBC, 1 });
+                Thread.Sleep(50);
             }
 
             Array.Clear(keyBuf, 0, keyBuf.Length);
@@ -621,7 +693,8 @@ namespace GHelper.USB
 
                     buffer[6] = (byte)i;
                     Buffer.BlockCopy(keyBuf, 3 * i, buffer, 9, 3 * buffer[7]);
-                    AsusHid.WriteAura(buffer);
+                    AsusHid.SetFeatureAura(buffer);
+                    Thread.Sleep(1);
                 }
             }
 
@@ -632,26 +705,51 @@ namespace GHelper.USB
 
             if (isStrix4Zone)
             { // per zone
-                var leds_4_zone = packet4Zone.Count();
+                var map = isStrix4ZoneFlipped ? packet4ZoneFlipped : packet4Zone;
+                var leds_4_zone = map.Count();
                 for (int ledIndex = 0; ledIndex < leds_4_zone; ledIndex++)
                 {
-                    byte zone = packet4Zone[ledIndex];
+                    byte zone = map[ledIndex];
                     keyBuf[ledIndex * 3] = color[zone].R;
                     keyBuf[ledIndex * 3 + 1] = color[zone].G;
                     keyBuf[ledIndex * 3 + 2] = color[zone].B;
                 }
                 Buffer.BlockCopy(keyBuf, 0, buffer, 9, 3 * leds_4_zone);
-                AsusHid.WriteAura(buffer);
+                AsusHid.SetFeatureAura(buffer);
+                Thread.Sleep(1);
                 return;
             }
 
             Buffer.BlockCopy(keyBuf, 3 * keySet, buffer, 9, 3 * (ledCount - keySet));
-            AsusHid.WriteAura(buffer);
+            AsusHid.SetFeatureAura(buffer);
+        }
+
+        public static void ApplyDirectLightbar(Color[] color)
+        {
+            var map = isStrix4ZoneFlipped ? packet4ZoneFlipped : packet4Zone;
+            byte[] buffer = new byte[64];
+            buffer[0] = AsusHid.AURA_ID;
+            buffer[1] = 0xBC;
+            buffer[2] = 0;
+            buffer[3] = 1;
+            buffer[4] = 0x04;
+
+            for (int i = 0; i < map.Length; i++)
+            {
+                byte zone = map[i];
+                int o = 9 + i * 3;
+                buffer[o] = color[zone].R;
+                buffer[o + 1] = color[zone].G;
+                buffer[o + 2] = color[zone].B;
+            }
+
+            AsusHid.SetFeatureAura(buffer);
         }
 
 
         public static void ApplyDirect(Color color, bool init = false)
         {
+            PeripheralsProvider.StreamMouseColor(color);
 
             if (!backlight) return;
 
@@ -663,7 +761,8 @@ namespace GHelper.USB
 
             if (AppConfig.IsNoDirectRGB())
             {
-                AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb, isSingleColor), MESSAGE_SET }, null);
+                AsusHid.SetFeatureAura(AuraMessage(AuraMode.AuraStatic, color, color, 0xeb));
+                AsusHid.SetFeatureAura(MESSAGE_SET);
                 return;
             }
 
@@ -676,8 +775,9 @@ namespace GHelper.USB
             if (init || initDirect)
             {
                 initDirect = false;
-                Init();
-                AsusHid.WriteAura(new byte[] { AsusHid.AURA_ID, 0xbc, 1 });
+                //Init();
+                AsusHid.SetFeatureAura(new byte[] { AsusHid.AURA_ID, 0xBC, 1 });
+                Thread.Sleep(50);
             }
 
             byte[] buffer = new byte[12];
@@ -689,7 +789,7 @@ namespace GHelper.USB
             buffer[10] = color.G;
             buffer[11] = color.B;
 
-            AsusHid.WriteAura(buffer);
+            AsusHid.SetFeatureAura(buffer);
 
         }
 
@@ -732,8 +832,15 @@ namespace GHelper.USB
             }
 
             timer.Stop();
+            if (Mode != AuraMode.AUDIO && Mode != AuraMode.AUDIOPULSE) StopAudio();
 
             Logger.WriteLine($"AuraMode: {Mode}");
+
+            if (Mode == AuraMode.AUDIO || Mode == AuraMode.AUDIOPULSE)
+            {
+                StartAudio();
+                return;
+            }
 
             if (Mode == AuraMode.HEATMAP)
             {
@@ -756,6 +863,18 @@ namespace GHelper.USB
                 CustomRGB.ApplyAmbient(true);
                 timer.Interval = AppConfig.Get("aura_refresh", AppConfig.IsStrix() ? 100 : 300);
                 timer.Start();
+                return;
+            }
+
+            if (Mode == AuraMode.GRADIENT)
+            {
+                CustomRGB.ApplyGradient();
+                return;
+            }
+
+            if (Mode == AuraMode.ZONETEST)
+            {
+                CustomRGB.ApplyZoneTest();
                 return;
             }
 
@@ -801,8 +920,15 @@ namespace GHelper.USB
                 return;
             }
 
-            int _speed = (Speed == AuraSpeed.Normal) ? 0xeb : (Speed == AuraSpeed.Fast) ? 0xf5 : 0xe1;
-            AsusHid.Write(new List<byte[]> { AuraMessage(Mode, _Color1, _Color2, _speed, isSingleColor), MESSAGE_SET, MESSAGE_APPLY });
+            AuraSpeed effectiveSpeed = Speed;
+            if (PeripheralsProvider.IsAuraSync && (Mode == AuraMode.AuraBreathe || Mode == AuraMode.AuraColorCycle))
+                effectiveSpeed = AuraSpeed.Slow;
+
+            int _speed = (effectiveSpeed == AuraSpeed.Normal) ? 0xeb : (effectiveSpeed == AuraSpeed.Fast) ? 0xf5 : 0xe1;
+
+            PeripheralsProvider.SyncMiceWithKeyboardAura();
+
+            AsusHid.Write(new List<byte[]> { AuraMessage(Mode, _Color1, _Color2, _speed), MESSAGE_SET, MESSAGE_APPLY }, "Aura", AsusHid.MAIN_AURA_PIDS);
             XGM.LightMode(Mode, _Color1, _Color2, _speed);
 
             if (isACPI)
@@ -810,6 +936,106 @@ namespace GHelper.USB
 
             ApplyRearLight();
 
+        }
+
+        public static void StopAudio()
+        {
+            AudioVisualizer.Shared.Unsubscribe(OnAudioSpectrum);
+        }
+
+        public static void StartAudio()
+        {
+            if (!backlight) return;
+
+            initDirect = true;
+            audioMaxes.Clear();
+            lastAudioPresent = 0;
+            envBrightness = 0;
+            smoothedHue = 0;
+
+            AudioVisualizer.Shared.Subscribe(OnAudioSpectrum);
+        }
+
+        private static void OnAudioSpectrum(double[] fftMag)
+        {
+            if (!backlight || sessionLock) return;
+            if (Mode != AuraMode.AUDIO && Mode != AuraMode.AUDIOPULSE) return;
+
+            long now = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            if (Math.Abs(now - lastAudioPresent) < 50) return;
+            lastAudioPresent = now;
+
+            int bands = AURA_ZONES;
+            if (fftMag.Length < bands) return;
+
+            double[] bars = new double[bands];
+            double max = 0;
+            for (int i = 0; i < bands; i++)
+            {
+                bars[i] = Math.Sqrt(fftMag[i] * 10000);
+                if (bars[i] > max) max = bars[i];
+            }
+
+            audioMaxes.Add(max);
+            if (audioMaxes.Count > 100) audioMaxes.RemoveAt(0);
+            double maxAvg = audioMaxes.Average();
+            if (maxAvg < 1) maxAvg = 1;
+
+            envBrightness = Math.Max(envBrightness * audioDecay, max);
+            double brightness = Math.Min(1.0, envBrightness / maxAvg);
+
+            Color c1 = Color1;
+            double curvedBrightness = brightness * brightness * brightness;
+
+            try
+            {
+                if (Mode == AuraMode.AUDIOPULSE)
+                {
+                    Color dimmed = Color.FromArgb(
+                        (byte)(c1.R * curvedBrightness),
+                        (byte)(c1.G * curvedBrightness),
+                        (byte)(c1.B * curvedBrightness));
+                    if (isStrix) ApplyDirect(Enumerable.Repeat(dimmed, AURA_ZONES).ToArray());
+                    else ApplyDirect(dimmed);
+                    return;
+                }
+
+                double baseHue = ColorUtils.HSV.ToHSV(c1).Hue;
+
+                if (isStrix)
+                {
+                    Color[] colors = new Color[AURA_ZONES];
+                    for (int i = 0; i < AURA_ZONES; i++)
+                    {
+                        double hue = (baseHue + (double)i / (AURA_ZONES - 1) * (2.0 / 3.0)) % 1.0;
+                        double ratio = Math.Min(1.0, bars[i] / maxAvg);
+                        double v = ratio * ratio * ratio;
+                        colors[i] = new ColorUtils.HSV { Hue = hue, Saturation = 1.0, Value = v }.ToRGB();
+                    }
+                    ApplyDirect(colors);
+                }
+                else
+                {
+                    int dominant = 1;
+                    double dominantWeighted = bars[1];
+                    for (int i = 2; i < bands; i++)
+                    {
+                        double w = bars[i] * (1 + (i - 1) * 0.15);
+                        if (w > dominantWeighted) { dominantWeighted = w; dominant = i; }
+                    }
+                    if (max > maxAvg * 0.3)
+                    {
+                        double targetHue = (baseHue + (dominant - 1) / (double)(bands - 2) * (2.0 / 3.0)) % 1.0;
+                        smoothedHue = smoothedHue * 0.6 + targetHue * 0.4;
+                    }
+
+                    ApplyDirect(new ColorUtils.HSV { Hue = smoothedHue, Saturation = 1.0, Value = curvedBrightness }.ToRGB());
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine("Aura audio: " + ex.Message);
+            }
         }
 
 
@@ -838,6 +1064,51 @@ namespace GHelper.USB
             static Color colorStandard = ColorTranslator.FromHtml(AppConfig.GetString("color_standard", "#FFFF00"));
             static Color colorEco = ColorTranslator.FromHtml(AppConfig.GetString("color_eco", "#008000"));
 
+            public static void ApplyGradient()
+            {
+                if (!isStrix && !isStrix4Zone)
+                {
+                    ApplyDirect(Aura.Color1, true);
+                    return;
+                }
+
+                Color[] colors = new Color[AURA_ZONES];
+
+                for (int z = 0; z < 4; z++)
+                {
+                    float t = z / 3f;
+                    colors[z] = ColorUtils.GetWeightedAverage(Aura.Color2, Aura.Color1, t);
+                }
+
+                int[] lightbarOrder = new int[] { 7, 6, 4, 5 };
+                for (int i = 0; i < lightbarOrder.Length; i++)
+                {
+                    float t = i / 3f;
+                    colors[lightbarOrder[i]] = ColorUtils.GetWeightedAverage(Aura.Color2, Aura.Color1, t);
+                }
+
+                ApplyDirect(colors, true);
+            }
+
+            // Zone 0 red, 1 orange, 2 yellow, 3 green, 4 cyan, 5 blue, 6 magenta, 7 white.
+            public static void ApplyZoneTest()
+            {
+                Color[] colors = new Color[]
+                {
+                    Color.FromArgb(0xFF, 0x00, 0x00),
+                    Color.FromArgb(0xFF, 0x80, 0x00),
+                    Color.FromArgb(0xFF, 0xFF, 0x00),
+                    Color.FromArgb(0x00, 0xFF, 0x00),
+                    Color.FromArgb(0x00, 0xFF, 0xFF),
+                    Color.FromArgb(0x00, 0x00, 0xFF),
+                    Color.FromArgb(0xFF, 0x00, 0xFF),
+                    Color.FromArgb(0xFF, 0xFF, 0xFF),
+                };
+
+                ApplyDirect(colors, true);
+                ApplyDirectLightbar(colors);
+            }
+
             public static void ApplyGPUColor(int gpuMode = -1)
             {
                 if ((AuraMode)AppConfig.Get("aura_mode") != AuraMode.GPUMODE) return;
@@ -858,8 +1129,9 @@ namespace GHelper.USB
                         break;
                 }
 
+                PeripheralsProvider.StreamMouseColor(color);
                 if (isACPI) Program.acpi.TUFKeyboardRGB(AuraMode.AuraStatic, color, 0xeb, $"TUF RGB GPU {gpuMode}");
-                AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb, isSingleColor), MESSAGE_APPLY, MESSAGE_SET });
+                AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb), MESSAGE_APPLY, MESSAGE_SET });
 
             }
 
@@ -903,7 +1175,8 @@ namespace GHelper.USB
                 }
 
                 if (AppConfig.IsAlly()) color = ColorDim(color);
-                AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb, isSingleColor), MESSAGE_APPLY, MESSAGE_SET });
+                PeripheralsProvider.StreamMouseColor(color);
+                AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb), MESSAGE_APPLY, MESSAGE_SET });
                 if (isACPI) Program.acpi.TUFKeyboardRGB(AuraMode.AuraStatic, color, 0xeb);
             }
 

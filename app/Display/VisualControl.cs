@@ -46,8 +46,6 @@ namespace GHelper.Display
     }
     public static class VisualControl
     {
-        public static DisplayGammaRamp? gammaRamp;
-
         private static int _brightness = 100;
         private static bool _init = true;
         private static bool _download = true;
@@ -259,7 +257,7 @@ namespace GHelper.Display
                 if (ProcessHelper.IsUserAdministrator() && _download)
                 {
                     _download = false;
-                    ColorProfileHelper.InstallProfile();
+                    _ = ColorProfileHelper.InstallProfile();
                 }
             }
             if (result == 1 && _init)
@@ -272,7 +270,7 @@ namespace GHelper.Display
 
         public static void SetVisual(SplendidCommand mode = SplendidCommand.Default, int whiteBalance = DefaultColorTemp, bool init = false)
         {
-            Task.Run(async () =>
+            Task.Run(() =>
             {
                 if (AmdDisplay.IsOledPowerOptimization()) Program.settingsForm.VisualiseAmdOled(true);
             });
@@ -284,9 +282,9 @@ namespace GHelper.Display
             AppConfig.Set("visual", (int)mode);
             AppConfig.Set("color_temp", whiteBalance);
 
-            Task.Run(async () =>
+            Task.Run(() =>
             {
-                if (!forceVisual && ScreenCCD.GetHDRStatus(true)) return;
+                if (!forceVisual && (ScreenCCD.GetHDRStatus(out bool acm, true) || acm)) return;
                 if (!forceVisual && ScreenNative.GetRefreshRate(ScreenNative.FindLaptopScreen(true)) < 0) return;
 
                 if (!init && mode == SplendidCommand.EReading && !ProcessHelper.IsUserAdministrator() && !IsEReading()) ProcessHelper.RunAsAdmin();
@@ -328,7 +326,7 @@ namespace GHelper.Display
                     if (ProcessHelper.IsUserAdministrator() && _download)
                     {
                         _download = false;
-                        ColorProfileHelper.InstallProfile();
+                        _ = ColorProfileHelper.InstallProfile();
                     }
                 }
                 if (result == 1 && _init)
@@ -379,6 +377,12 @@ namespace GHelper.Display
                 return 0;
             }
 
+            if (ScreenNative.FindLaptopScreen() == null && ScreenNative.IsExternalDisplayConnected())
+            {
+                Logger.WriteLine("Skipping Splendid: internal display is off with external display connected");
+                return 0;
+            }
+
             if (isSplenddid)
             {
                 var result = ProcessHelper.RunCMD(splendidExe, (int)command + " " + param1 + " " + param2 + " " + param3, splendidPath);
@@ -412,8 +416,6 @@ namespace GHelper.Display
                 if (RunSplendid(dimmingCommand, 0, dimmingLevel) == 0) return;
             }
 
-            // GammaRamp Fallback
-            SetGamma(_brightness);
         }
 
         public static void InitBrightness()
@@ -443,6 +445,7 @@ namespace GHelper.Display
             _brightness = Math.Max(0, Math.Min(100, brightness + delta));
             AppConfig.Set(IsOnBattery() ? "brightness_battery" : "brightness", _brightness);
 
+            brightnessTimer.Stop();
             brightnessTimer.Start();
 
             Program.settingsForm.VisualiseBrightness();
@@ -462,49 +465,6 @@ namespace GHelper.Display
                 Program.settingsForm.VisualiseGamut();
                 skipGamut = false;
             }
-        }
-
-
-        public static void SetGamma(int brightness = 100)
-        {
-            var bright = Math.Round((float)brightness / 200 + 0.5, 2);
-
-            var screenName = ScreenNative.FindLaptopScreen();
-            if (screenName is null) return;
-
-            try
-            {
-                var handle = ScreenNative.CreateDC(screenName, screenName, null, IntPtr.Zero);
-                if (gammaRamp is null)
-                {
-                    var gammaDump = new GammaRamp();
-                    if (ScreenNative.GetDeviceGammaRamp(handle, ref gammaDump))
-                    {
-                        gammaRamp = new DisplayGammaRamp(gammaDump);
-                        //Logger.WriteLine("Gamma R: " + string.Join("-", gammaRamp.Red));
-                        //Logger.WriteLine("Gamma G: " + string.Join("-", gammaRamp.Green));
-                        //Logger.WriteLine("Gamma B: " + string.Join("-", gammaRamp.Blue));
-                    }
-                }
-
-                if (gammaRamp is null || !gammaRamp.IsOriginal())
-                {
-                    Logger.WriteLine("Not default Gamma");
-                    gammaRamp = new DisplayGammaRamp();
-                }
-
-                var ramp = gammaRamp.AsBrightnessRamp(bright);
-                bool result = ScreenNative.SetDeviceGammaRamp(handle, ref ramp);
-
-                Logger.WriteLine("Gamma " + bright.ToString() + ": " + result);
-
-            }
-            catch (Exception ex)
-            {
-                Logger.WriteLine(ex.ToString());
-            }
-
-            //ScreenBrightness.Set(60 + (int)(40 * bright));
         }
 
     }

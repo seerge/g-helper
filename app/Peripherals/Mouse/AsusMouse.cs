@@ -1,5 +1,6 @@
 ﻿using GHelper.AnimeMatrix.Communication;
 using GHelper.AnimeMatrix.Communication.Platform;
+using GHelper.USB;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -211,7 +212,7 @@ namespace GHelper.Peripherals.Mouse
         public event EventHandler? BatteryUpdated;
         public event EventHandler? MouseReadyChanged;
 
-        private readonly string path;
+        private string path;
 
         protected byte reportId = 0x00;
 
@@ -253,8 +254,20 @@ namespace GHelper.Peripherals.Mouse
         public bool ZoneMode { get; protected set; }
         public int ZoneModeDPI { get; set; } = 1600;
         public PollingRate ZoneModePollingRate { get; set; } = PollingRate.PR4000Hz;
-public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
-        public bool ButtonBindingsReady { get; protected set; }
+        public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
+
+        private bool _buttonBindingsReady;
+        public bool ButtonBindingsReady
+        {
+            get => _buttonBindingsReady;
+            protected set
+            {
+                _buttonBindingsReady = value;
+                if (value) ButtonBindingsChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        public event EventHandler? ButtonBindingsChanged;
 
         public bool Booster = false;
 
@@ -278,6 +291,11 @@ public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
         public AsusMouse(ushort vendorId, ushort productId, string path, bool wireless, byte reportId) : this(vendorId, productId, path, wireless)
         {
             this.reportId = reportId;
+        }
+
+        public void SetPath(string path)
+        {
+            this.path = path;
         }
 
 
@@ -553,11 +571,29 @@ public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
             return watch.ElapsedMilliseconds;
         }
 
+        private int _otherIoBusy;
+        private long _otherIoEndedMs;
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         protected virtual byte[]? WriteForResponse(byte[] packet, int matchLength = 3)
         {
+            Interlocked.Increment(ref _otherIoBusy);
+            try
+            {
+                return WriteForResponseImpl(packet, matchLength);
+            }
+            finally
+            {
+                _otherIoEndedMs = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                Interlocked.Decrement(ref _otherIoBusy);
+            }
+        }
+
+        private byte[]? WriteForResponseImpl(byte[] packet, int matchLength)
+        {
             Array.Resize(ref packet, USBPacketSize());
 
+            try { Drain(USBPacketSize()); } catch { }
 
             byte[] response = new byte[USBPacketSize()];
             response[0] = reportId;
@@ -586,7 +622,8 @@ public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
                         if (IsPacketLoggerEnabled())
                             Logger.WriteLine(GetDisplayName() + ": Read packet: " + ByteArrayToString(response));
 
-                        Logger.WriteLine(GetDisplayName() + ": Mouse returned error (FF AA). Packet probably not supported by mouse firmware.");
+                        if (!(packet[1] == 0x12 && packet[2] == 0x07))
+                            Logger.WriteLine(GetDisplayName() + ": Mouse returned error (FF AA). Packet probably not supported by mouse firmware.");
                         //Error. Mouse could not understand or process the sent packet
                         return response;
                     }
@@ -779,11 +816,12 @@ public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
                 Charging = ParseChargingState(response);
 
                 //If the device goes to standby it will not report battery state anymore.
+                bool wasReady = IsDeviceReady;
                 SetDeviceReady(Battery > 0);
 
                 if (!IsDeviceReady)
                 {
-                    Logger.WriteLine(GetDisplayName() + ": Device gone");
+                    if (wasReady) Logger.WriteLine(GetDisplayName() + ": Device gone");
                     return;
                 }
 
@@ -2094,6 +2132,79 @@ public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
             }
         }
 
+        public static LightingMode MapAuraToLightingMode(AuraMode auraMode)
+        {
+            switch (auraMode)
+            {
+                case AuraMode.AuraBreathe: return LightingMode.Breathing;
+                case AuraMode.AuraColorCycle: return LightingMode.ColorCycle;
+                case AuraMode.AuraRainbow: return LightingMode.Rainbow;
+                case AuraMode.Comet: return LightingMode.Comet;
+                default: return LightingMode.Static;
+            }
+        }
+
+        private int _streamingBusy;
+
+        public void WriteColorDirect(Color color)
+        {
+            if (!HasRGB() || !IsDeviceReady) return;
+            if (_otherIoBusy > 0) return;
+            if (DateTimeOffset.Now.ToUnixTimeMilliseconds() - _otherIoEndedMs < 200) return;
+            if (Interlocked.CompareExchange(ref _streamingBusy, 1, 0) != 0) return;
+
+            try
+            {
+                LightingSetting cached = LightingSettingForZone(LightingZone.All);
+                LightingSetting tmp = new LightingSetting
+                {
+                    LightingMode = LightingMode.Static,
+                    RGBColor = color,
+                    Brightness = cached?.Brightness ?? 25,
+                };
+
+                byte[] packet = GetUpdateLightingModePacket(tmp, LightingZone.All);
+                Array.Resize(ref packet, USBPacketSize());
+
+                Write(packet);
+            }
+            catch { }
+            finally
+            {
+                Interlocked.Exchange(ref _streamingBusy, 0);
+            }
+        }
+
+        public bool SyncFromKeyboardAura()
+        {
+            if (!HasRGB() || !IsDeviceReady) return false;
+
+            LightingMode lm = MapAuraToLightingMode((AuraMode)AppConfig.Get("aura_mode"));
+
+            if (lm == LightingMode.Rainbow && !IsLightingModeSupported(LightingMode.Rainbow))
+                lm = LightingMode.ColorCycle;
+
+            if (!IsLightingModeSupported(lm)) return false;
+
+            Color color = Color.FromArgb(AppConfig.Get("aura_color"));
+            AnimationSpeed mappedSpeed = (AuraSpeed)AppConfig.Get("aura_speed") switch
+            {
+                AuraSpeed.Fast => AnimationSpeed.Fast,
+                AuraSpeed.Slow => AnimationSpeed.Slow,
+                _ => AnimationSpeed.Medium,
+            };
+
+            LightingSetting ls = LightingSettingForZone(LightingZone.All);
+            if (ls is null) return false;
+
+            ls.LightingMode = lm;
+            if (SupportsColorSetting(lm)) ls.RGBColor = color;
+            if (SupportsAnimationSpeed(lm)) ls.AnimationSpeed = mappedSpeed;
+
+            SetLightingSetting(ls, LightingZone.All);
+            return true;
+        }
+
         protected virtual byte[] GetSaveProfilePacket()
         {
             return new byte[] { reportId, 0x50, 0x03 };
@@ -2157,6 +2268,9 @@ public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
             (0x003A, "F1" ), (0x003B, "F2" ), (0x003C, "F3" ), (0x003D, "F4" ),
             (0x003E, "F5" ), (0x003F, "F6" ), (0x0040, "F7" ), (0x0041, "F8" ),
             (0x0042, "F9" ), (0x0043, "F10"), (0x0044, "F11"), (0x0045, "F12"),
+            (0x0068, "F13"), (0x0069, "F14"), (0x006A, "F15"), (0x006B, "F16"),
+            (0x006C, "F17"), (0x006D, "F18"), (0x006E, "F19"), (0x006F, "F20"),
+            (0x0070, "F21"), (0x0071, "F22"), (0x0072, "F23"), (0x0073, "F24"),
             // navigation
             (0x0049, "Insert"   ), (0x004A, "Home"     ), (0x004B, "Page Up"  ),
             (0x004C, "Delete"   ), (0x004D, "End"      ), (0x004E, "Page Down"),
@@ -2189,16 +2303,46 @@ public ushort[] ButtonBindings { get; protected set; } = new ushort[16];
             (0x0000, "Disabled"     ),
         };
 
+        public sealed record ComboDef(ushort PassthroughCode, string Label, string DefaultCommand)
+        {
+            public string ConfigKey => $"mouse_combo_F{13 + (PassthroughCode - 0x0068)}";
+            public string ResolveCommand() => AppConfig.GetString(ConfigKey) ?? DefaultCommand;
+        }
+
+        private static string Hex(params Keys[] keys) =>
+            string.Join(" ", keys.Select(k => $"0x{(int)k:X2}"));
+
+        public static readonly IReadOnlyList<ComboDef> MouseCombos = new List<ComboDef>
+        {
+            new(0x0068, "Alt + Tab",          Hex(Keys.LMenu,       Keys.Tab)),
+            new(0x0069, "Alt + F4",           Hex(Keys.LMenu,       Keys.F4)),
+            new(0x006A, "Win + D",            Hex(Keys.LWin,        Keys.D)),
+            new(0x006B, "Win + E",            Hex(Keys.LWin,        Keys.E)),
+            new(0x006C, "Win + L",            Hex(Keys.LWin,        Keys.L)),
+            new(0x006D, "Win + Tab",          Hex(Keys.LWin,        Keys.Tab)),
+            new(0x006E, "Win + V",            Hex(Keys.LWin,        Keys.V)),
+            new(0x006F, "Copy",               Hex(Keys.LControlKey, Keys.C)),
+            new(0x0070, "Paste",              Hex(Keys.LControlKey, Keys.V)),
+            new(0x0071, "Undo",               Hex(Keys.LControlKey, Keys.Z)),
+            new(0x0072, "Task Manager",       Hex(Keys.LControlKey, Keys.LShiftKey, Keys.Escape)),
+            new(0x0073, "Minimize All",       Hex(Keys.LWin,        Keys.M)),
+        };
+
+        public static readonly Dictionary<ushort, ComboDef> CombosByCode =
+            MouseCombos.ToDictionary(c => c.PassthroughCode);
+
         public static readonly IReadOnlyList<(string GroupLabel, IReadOnlyList<(ushort Code, string Name)> Items)>
         DefaultBindingGroups = new List<(string, IReadOnlyList<(ushort, string)>)>
         {
-            ("Mouse",      MouseBindings     ),
+            ("Mouse",      MouseBindings),
+            ("Combos",     MouseCombos.Select(c => (c.PassthroughCode, c.Label)).ToList()),
             ("Multimedia", MultimediaBindings),
-            ("Keyboard",   KeyboardBindings  ),
+            ("Keyboard",   KeyboardBindings),
         };
 
         public static readonly Dictionary<ushort, string> BindingCodes =
             DefaultBindingGroups.SelectMany(g => g.Items)
+                .DistinctBy(e => e.Code)
                 .ToDictionary(e => e.Code, e => e.Name);
 
         public static string LabelForActionCode(ushort code)

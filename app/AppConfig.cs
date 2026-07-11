@@ -1,7 +1,9 @@
 using GHelper.Helpers;
 using GHelper.Mode;
 using Microsoft.Win32;
+using System.Management;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 
 public static class AppConfig
 {
@@ -12,6 +14,15 @@ public static class AppConfig
     private static Dictionary<string, object> config = new Dictionary<string, object>();
     private static System.Timers.Timer timer = new System.Timers.Timer(2000) { AutoReset = false };
     private static readonly object configLock = new();
+
+    private static readonly JsonSerializerOptions LenientOptions = new()
+    {
+        AllowTrailingCommas = true,
+        ReadCommentHandling = JsonCommentHandling.Skip
+    };
+
+    private static readonly Regex KeyValueRegex = new(
+        @"""((?:\\.|[^""\\])*)""\s*:\s*(""(?:\\.|[^""\\])*""|-?\d+(?:\.\d+)?|true|false|null)");
 
     static AppConfig()
     {
@@ -27,7 +38,7 @@ public static class AppConfig
 
         Directory.CreateDirectory(appPath);
 
-        if (!TryLoadConfig(configFile) && !TryLoadConfig(configFile + ".bak") && !TryLoadConfig(fallbackConfigFile)) Init();
+        if (!TryLoadConfig(configFile) && !TryRecoverConfig(configFile) && !TryLoadConfig(configFile + ".bak") && !TryLoadConfig(fallbackConfigFile)) Init();
 
         timer.Elapsed += Timer_Elapsed;
     }
@@ -37,13 +48,36 @@ public static class AppConfig
         if (!File.Exists(path)) return false;
         try
         {
-            config = JsonSerializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(path));
+            config = JsonSerializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(path), LenientOptions);
             Logger.WriteLine($"Config loaded from {path}");
             return true;
         }
         catch (Exception ex)
         {
             Logger.WriteLine($"Broken config {path}: {ex.Message}");
+            return false;
+        }
+    }
+
+    private static bool TryRecoverConfig(string path)
+    {
+        if (!File.Exists(path)) return false;
+        try
+        {
+            var pairs = new Dictionary<string, string>();
+            foreach (Match m in KeyValueRegex.Matches(File.ReadAllText(path)))
+                pairs["\"" + m.Groups[1].Value + "\""] = m.Groups[2].Value;
+
+            if (pairs.Count == 0) return false;
+
+            string rebuilt = "{" + string.Join(",", pairs.Select(p => p.Key + ":" + p.Value)) + "}";
+            config = JsonSerializer.Deserialize<Dictionary<string, object>>(rebuilt, LenientOptions);
+            Logger.WriteLine($"Recovered {pairs.Count} values from broken config {path}");
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine($"Config recovery failed {path}: {ex.Message}");
             return false;
         }
     }
@@ -81,7 +115,7 @@ public static class AppConfig
             Directory.CreateDirectory(Path.GetDirectoryName(fallbackConfigFile));
             File.Copy(configFile, fallbackConfigFile, overwrite: true);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             //Logger.WriteLine("Can't sync fallback config: " + ex.Message);
         }
@@ -95,38 +129,43 @@ public static class AppConfig
     private static readonly Lazy<(string Bios, string ModelShort)> _biosData =
         new Lazy<(string, string)>(LoadBios, LazyThreadSafetyMode.ExecutionAndPublication);
 
-    private const string BiosRegKey = @"HARDWARE\DESCRIPTION\System\BIOS";
-
     private static string LoadModel()
     {
         try
         {
-            using var key = Registry.LocalMachine.OpenSubKey(BiosRegKey);
-            return key?.GetValue("SystemProductName")?.ToString()?.Trim() ?? string.Empty;
+            using var searcher = new ManagementObjectSearcher("Select * from Win32_ComputerSystem");
+            foreach (var obj in searcher.Get())
+            {
+                using (obj) return obj["Model"]?.ToString() ?? string.Empty;
+            }
         }
         catch (Exception ex)
         {
             Logger.WriteLine(ex.Message);
-            return string.Empty;
         }
+        return string.Empty;
     }
 
     private static (string Bios, string ModelShort) LoadBios()
     {
         try
         {
-            using var key = Registry.LocalMachine.OpenSubKey(BiosRegKey);
-            string raw = key?.GetValue("BIOSVersion")?.ToString()?.Trim() ?? string.Empty;
-            string[] parts = raw.Split('.');
-            return parts.Length > 1
-                ? (parts[1], parts[0])
-                : (string.Empty, raw);
+            using var searcher = new ManagementObjectSearcher("SELECT * FROM Win32_BIOS");
+            foreach (var obj in searcher.Get())
+            {
+                using (obj)
+                {
+                    string raw = obj["SMBIOSBIOSVersion"]?.ToString() ?? string.Empty;
+                    string[] parts = raw.Split('.');
+                    return parts.Length > 1 ? (parts[1], parts[0]) : (string.Empty, raw);
+                }
+            }
         }
         catch (Exception ex)
         {
             Logger.WriteLine(ex.Message);
-            return (string.Empty, string.Empty);
         }
+        return (string.Empty, string.Empty);
     }
 
     public static string GetModel() => _model.Value;
@@ -265,7 +304,6 @@ public static class AppConfig
     public static byte[] GetDefaultCurve(AsusFan device)
     {
         int mode = Modes.GetCurrentBase();
-        byte[] curve;
 
         switch (mode)
         {
@@ -326,6 +364,11 @@ public static class AppConfig
         return ContainsModel("RC7");
     }
 
+    public static bool IsAuraSync()
+    {
+        return Is("mouse_aura_sync");
+    }
+
     public static bool NoMKeys()
     {
         return (ContainsModel("Z13") && !IsARCNM()) ||
@@ -354,12 +397,12 @@ public static class AppConfig
 
     public static bool IsVivoZenbook()
     {
-        return ContainsModel("Vivobook") || ContainsModel("Zenbook") || ContainsModel("EXPERTBOOK") || ContainsModel(" V16");
+        return ContainsModel("Vivobook") || ContainsModel("Zenbook") || ContainsModel("EXPERTBOOK") || ContainsModel(" V16") || ContainsModel("ASUSLaptop");
     }
 
     public static bool IsVivoZenPro()
     {
-        return ContainsModel("Vivobook") || ContainsModel("Zenbook") || ContainsModel("ProArt") || ContainsModel("EXPERTBOOK") || ContainsModel(" V16");
+        return ContainsModel("Vivobook") || ContainsModel("Zenbook") || ContainsModel("ProArt") || ContainsModel("EXPERTBOOK") || ContainsModel(" V16") || ContainsModel("ASUSLaptop");
     }
 
     public static bool IsHardwareFnLock()
@@ -394,14 +437,14 @@ public static class AppConfig
         return (ContainsModel("GA401I") && !ContainsModel("GA401IHR")) || ContainsModel("G712L") || ContainsModel("GX502L");
     }
 
-    public static bool IsSingleColor()
+    public static bool IsWhite()
     {
         return ContainsModel("GA401") || ContainsModel("FX517Z") || ContainsModel("FX516P") || ContainsModel("X13") || IsARCNM() || ContainsModel("FA617N") || ContainsModel("FA617X") || NoAura() || Is("no_rgb");
     }
 
     public static bool IsSleepBacklight()
     {
-        return ContainsModel("FA617") || ContainsModel("FX507");
+        return ContainsModel("FA617") || ContainsModel("FX507") || ContainsModel("FA507") || ContainsModel("FA401");
     }
 
     public static bool IsAnimeMatrix()
@@ -411,37 +454,37 @@ public static class AppConfig
 
     public static bool IsSlash()
     {
-        return ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("GU405") || ContainsModel("GU606");
+        return ContainsModel("GA403") || ContainsModel("GU605") || ContainsModel("GA605") || IsSlashLong();
     }
 
-    public static bool IsSlashAura()
+    public static bool IsSlashLong()
     {
-        return ContainsModel("GA605") || ContainsModel("GU605C") || ContainsModel("GA403W") || ContainsModel("GA403UM") || ContainsModel("GA403UP") || ContainsModel("GA403UH") || ContainsModel("GU405") || ContainsModel("GU606");
-    }
-
-    public static bool IsInputBacklight()
-    {
-        return ContainsModel("GA503") || IsSlash() || IsVivoZenPro();
+        return ContainsModel("GA405") || ContainsModel("GU405") || ContainsModel("GU606") || ContainsModel("GX651");
     }
 
     public static bool IsInvertedFNLock()
     {
-        return ContainsModel("M140") || ContainsModel("S550") || ContainsModel("P540") || IsTUF();
+        return ContainsModel("M140") || ContainsModel("S550") || ContainsModel("K650") || ContainsModel("P540") || IsTUF();
     }
 
     public static bool IsOLED()
     {
-        return ContainsModel("OLED") || IsSlash() || ContainsModel("M7600") || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M340") || ContainsModel("M350") || ContainsModel("K650") || ContainsModel("UM53") || ContainsModel("K660") || ContainsModel("UX84") || ContainsModel("M650") || ContainsModel("M550") || ContainsModel("M540") || ContainsModel("K340") || ContainsModel("K350") || ContainsModel("M140") || ContainsModel("S540") || ContainsModel("S550") || ContainsModel("M7400") || ContainsModel("N650") || ContainsModel("HN7306") || ContainsModel("H760") || ContainsModel("UX5406") || ContainsModel("M5606") || ContainsModel("X513") || ContainsModel("N7400") || ContainsModel("UX760");
+        return ContainsModel("OLED") || IsSlash() || ContainsModel("M7600") || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M340") || ContainsModel("M350") || ContainsModel("K650") || ContainsModel("UM53") || ContainsModel("K660") || ContainsModel("UX84") || ContainsModel("M650") || ContainsModel("M550") || ContainsModel("M540") || ContainsModel("K340") || ContainsModel("K350") || ContainsModel("M140") || ContainsModel("S540") || ContainsModel("S550") || ContainsModel("M7400") || ContainsModel("N650") || ContainsModel("HN7306") || ContainsModel("H760") || ContainsModel("UX5406") || ContainsModel("M5606") || ContainsModel("X513") || ContainsModel("N7400") || ContainsModel("UX760") || ContainsModel("Q530VJ") || _oledFromRegistry.Value;
     }
+
+    private static readonly Lazy<bool> _oledFromRegistry = new(() =>
+    {
+        try
+        {
+            var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\ASUS\OLEDCare");
+            return key is not null && Convert.ToInt32(key.GetValue("EnablePixelRefresh", 0)) != 0;
+        }
+        catch { return false; }
+    });
 
     public static bool IsNoOverdrive()
     {
         return Is("no_overdrive");
-    }
-
-    public static bool IsNoSleepEvent()
-    {
-        return ContainsModel("FX505");
     }
 
     public static bool IsStrix()
@@ -449,29 +492,14 @@ public static class AppConfig
         return ContainsModel("Strix") || ContainsModel("Scar") || ContainsModel("G703G");
     }
 
-    public static bool IsAdvancedRGB()
+    public static bool IsEcoBootFix()
     {
-        return IsStrix() || ContainsModel("GX650");
+        return ContainsModel("G635L") || ContainsModel("G615L") || ContainsModel("G835L") || ContainsModel("G815L") || ContainsModel("FA506");
     }
 
     public static bool IsBacklightZones()
     {
         return IsStrix() || IsZ13();
-    }
-
-    public static bool IsStrixLimitedRGB()
-    {
-        return ContainsModel("G614PM") || ContainsModel("G614PP") || ContainsModel("G614PR") || ContainsModel("G512LI") || ContainsModel("G513R") || ContainsModel("G713QM") || ContainsModel("G713PV") || ContainsModel("G513IE") || ContainsModel("G713RC") || ContainsModel("G713IC") || ContainsModel("G713PU") || ContainsModel("G513QE") || ContainsModel("G513QM") || ContainsModel("G513QC") || ContainsModel("G531G") || ContainsModel("G615JMR") || ContainsModel("G615LM") || ContainsModel("G815LR");
-    }
-
-    public static bool IsPossible4ZoneRGB()
-    {
-        return ContainsModel("G614JI_") || ContainsModel("G614JV_") || ContainsModel("G614JZ") || ContainsModel("G614JU") || IsStrixLimitedRGB();
-    }
-
-    public static bool Is4ZoneRGB()
-    {
-        return IsPossible4ZoneRGB() && !Is("per_key_rgb");
     }
 
     public static bool IsHardwareHotkeys()
@@ -486,12 +514,17 @@ public static class AppConfig
 
     public static bool IsNoDirectRGB()
     {
-        return ContainsModel("GA503") || ContainsModel("G533Q") || ContainsModel("GU502") || ContainsModel("GU603") || IsSlash() || IsAlly();
+        return ContainsModel("GA503") || ContainsModel("G533Q") || ContainsModel("GU502") || IsSlash();
     }
 
     public static bool IsStrixNumpad()
     {
         return ContainsModel("G713R");
+    }
+
+    public static bool IsStrix4ZoneFlipped()
+    {
+        return ContainsModel("G513");
     }
 
     public static bool IsZ1325()
@@ -541,7 +574,7 @@ public static class AppConfig
 
     public static bool DynamicBoost15()
     {
-        return ContainsModel("FX507ZC4") || ContainsModel("GA403UM") || ContainsModel("GU605CP") || ContainsModel("FX608J") || ContainsModel("FX608L") || ContainsModel("FA608U") || ContainsModel("FA608P") || ContainsModel("FA608W") ||
+        return ContainsModel("FX507ZC4") || ContainsModel("GA403UM") || ContainsModel("GU605CP") || ContainsModel("FX608J") || ContainsModel("FX608L") || ContainsModel("FA608U") || ContainsModel("FA608P") ||
         ContainsModel("FA401K") || ContainsModel("FA401UM") || ContainsModel("FA401UH");
     }
 
@@ -560,9 +593,13 @@ public static class AppConfig
         return ContainsModel("FA507NUR") || ContainsModel("FA506NCR") || ContainsModel("FA507NVR");
     }
 
+    public static bool IsApplyPower() => IsMode("auto_apply_power");
+    public static bool IsApplyFans() => IsMode("auto_apply");
+    public static bool IsApplyUV() => IsMode("auto_uv");
+
     public static bool IsManualModeRequired()
     {
-        if (!IsMode("auto_apply_power")) return false;
+        if (!IsApplyPower()) return false;
         return Is("manual_mode") || ContainsModel("G733");
     }
 
@@ -573,27 +610,27 @@ public static class AppConfig
 
     public static bool IsFanRequired()
     {
-        return ContainsModel("GA402X") || ContainsModel("GU604") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("G634J") || ContainsModel("G834J") || ContainsModel("G614J") || ContainsModel("G814J") || ContainsModel("FX507V") || ContainsModel("FX507ZV") || ContainsModel("FX608") || ContainsModel("FA608P") || ContainsModel("G614F") || ContainsModel("G614R") || ContainsModel("G733") || ContainsModel("H7606");
+        return ContainsModel("GA402X") || ContainsModel("GU604") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("G634J") || ContainsModel("G834J") || ContainsModel("G614J") || ContainsModel("G814J") || ContainsModel("FX507V") || ContainsModel("FX507Z") || ContainsModel("FX608") || ContainsModel("FA608P") || ContainsModel("G614F") || ContainsModel("G614R") || ContainsModel("G733") || ContainsModel("H7606");
     }
 
     public static bool IsCPULight()
     {
-        return ContainsModel("GA402X") || ContainsModel("GA605") || ContainsModel("GA403") || ContainsModel("FA507N") || ContainsModel("FA507X") || ContainsModel("FA707N") || ContainsModel("FA707X") || ContainsModel("GZ302") || ContainsModel("GU405");
+        return ContainsModel("GA402X") || ContainsModel("GA605") || ContainsModel("GA403") || ContainsModel("FA507N") || ContainsModel("FA507X") || ContainsModel("FA707N") || ContainsModel("FA707X") || ContainsModel("GZ302") || ContainsModel("GU405") || ContainsModel("GX651");
     }
 
     public static bool IsPowerRequired()
     {
-        return ContainsModel("FX507") || ContainsModel("FX517") || ContainsModel("FX707");
+        return ContainsModel("GU605M") || ContainsModel("FX507") || ContainsModel("FX517") || ContainsModel("FX707");
     }
 
     public static bool IsModeReapplyRequired()
     {
-        return Is("mode_reapply") || ContainsModel("FA401");
+        return Is("mode_reapply") || ContainsModel("FA401") || ContainsModel("GA403");
     }
 
-    public static bool IsGPUFix()
+    public static bool IsStandardModeFix()
     {
-        return Is("gpu_fix") || (ContainsModel("GA402X") && IsNotFalse("gpu_fix"));
+        return Is("shutdown_gpu") || ((ContainsModel("FX506HC") || ContainsModel("FA808U")) && IsNotFalse("shutdown_gpu"));
     }
 
     public static bool IsShutdownReset()
@@ -613,17 +650,17 @@ public static class AppConfig
 
     public static bool IsAMDiGPU()
     {
-        return ContainsModel("GV301RA") || ContainsModel("GV302XA") || ContainsModel("GZ302") || IsFA401EA() || IsAlly();
+        return ContainsModel("GV301RA") || ContainsModel("GV302XA") || ContainsModel("GZ302") || IsOnlyAIMAX() || IsAlly();
     }
 
     public static bool NoGpu()
     {
-        return Is("no_gpu") || ContainsModel("UX540") || ContainsModel("M560") || ContainsModel("GZ302") || IsFA401EA();
+        return Is("no_gpu") || ContainsModel("UX540") || ContainsModel("M560") || ContainsModel("GZ302") || IsOnlyAIMAX();
     }
 
-    public static bool IsFA401EA()
+    public static bool IsOnlyAIMAX()
     {
-        return ContainsModel("FA401EA");
+        return ContainsModel("FA401EA") || ContainsModel("HN7306EA");
     }
 
     public static bool IsHardwareTouchpadToggle()
@@ -658,6 +695,16 @@ public static class AppConfig
     public static bool IsBWIcon()
     {
         return Is("bw_icon");
+    }
+
+    public static bool IsOverlay()
+    {
+        return Is("overlay");
+    }
+
+    public static bool IsOverlayGameOnly()
+    {
+        return Is("overlay_game_only");
     }
 
     public static bool IsStopAC()
@@ -701,7 +748,7 @@ public static class AppConfig
 
     public static bool IsSleepReset()
     {
-        return ContainsModel("GU605MI") || ContainsModel("GU605MV");
+        return Is("sleep_reset") || ContainsModel("GU605MI") || ContainsModel("GU605MV") || ContainsModel("GU605CR");
     }
 
     public static bool SaveDimming()

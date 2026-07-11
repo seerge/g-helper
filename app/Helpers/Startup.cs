@@ -16,7 +16,7 @@ public class Startup
         try
         {
             using (TaskService taskService = new TaskService())
-                return (taskService.RootFolder.AllTasks.Any(t => t.Name == taskName));
+                return taskService.GetTask(taskName) != null;
         }
         catch (Exception e)
         {
@@ -159,7 +159,7 @@ public class Startup
         {
 
             td.RegistrationInfo.Description = "G-Helper Auto Start";
-            td.Triggers.Add(new LogonTrigger { Delay = TimeSpan.FromSeconds(1) });
+            td.Triggers.Add(new LogonTrigger { UserId = WindowsIdentity.GetCurrent().Name, Delay = TimeSpan.FromSeconds(1) });
             td.Actions.Add(strExeFilePath);
 
             td.Principal.LogonType = TaskLogonType.InteractiveToken;
@@ -173,16 +173,16 @@ public class Startup
             try
             {
                 TaskService.Instance.RootFolder.RegisterTaskDefinition(taskName, td);
+                Logger.WriteLine("Startup task scheduled: " + strExeFilePath);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
+                Logger.WriteLine("Can't create startup task: " + ex.Message);
                 if (ProcessHelper.IsUserAdministrator())
                     MessageBox.Show("Can't create a start up task. Try running Task Scheduler by hand and manually deleting GHelper task if it exists there.", "Scheduler Error", MessageBoxButtons.OK);
                 else
                     ProcessHelper.RunAsAdmin();
             }
-
-            Logger.WriteLine("Startup task scheduled: " + strExeFilePath);
         }
 
         ScheduleCharge();
@@ -197,7 +197,7 @@ public class Startup
             {
                 taskService.RootFolder.DeleteTask(taskName);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 if (ProcessHelper.IsUserAdministrator())
                     MessageBox.Show("Can't remove task. Try running Task Scheduler by hand and manually deleting GHelper task if it exists there.", "Scheduler Error", MessageBoxButtons.OK);

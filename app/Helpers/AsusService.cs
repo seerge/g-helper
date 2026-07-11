@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using GHelper.Ally;
+using System.Diagnostics;
+using System.Management;
 
 namespace GHelper.Helpers
 {
@@ -18,16 +20,11 @@ namespace GHelper.Helpers
                 "ASUSSwitch",
                 "ASUSSystemAnalysis",
                 "ASUSSystemDiagnosis",
+                "ASUSXGMobileService",
                 "AsusCertService"
         };
 
         //"AsusPTPService",
-
-        static List<string> processesAC = new() {
-                "ArmouryCrateSE.Service",
-                "ArmouryCrate.Service",
-                "LightingService",
-        };
 
         static List<string> servicesAC = new() {
                 "ArmouryCrateSEService",
@@ -35,15 +32,19 @@ namespace GHelper.Helpers
                 "LightingService",
         };
 
-        public static bool IsAsusOptimizationRunning()
+        private static bool IsRunning(string name)
         {
-            return Process.GetProcessesByName("AsusOptimization").Length > 0;
+            var procs = Process.GetProcessesByName(name);
+            try { return procs.Length > 0; }
+            finally { foreach (var p in procs) p.Dispose(); }
         }
+
+        public static bool IsAsusOptimizationRunning() => IsRunning("AsusOptimization");
 
         public static bool IsArmouryRunning()
         {
-            var acService = Process.GetProcessesByName("ArmouryCrate.Service").Length > 0;
-            var lightingService = Process.GetProcessesByName("LightingService").Length > 0;   
+            var acService = IsRunning("ArmouryCrate.Service");
+            var lightingService = IsRunning("LightingService");
             Logger.WriteLine($"AC Service: {acService}, Lighting Service: {lightingService}");
             return acService || lightingService;
         }
@@ -53,68 +54,67 @@ namespace GHelper.Helpers
             Process.Start(new ProcessStartInfo("https://dlcdnets.asus.com/pub/ASUS/mb/14Utilities/Armoury_Crate_Uninstall_Tool.zip") { UseShellExecute = true });
         }
 
-        public static bool IsOSDRunning()
+        public static bool IsOSDRunning() => IsRunning("AsusOSD");
+
+
+        private static Dictionary<string, string> GetServiceStates()
         {
-            return Process.GetProcessesByName("AsusOSD").Length > 0;
+            var names = AppConfig.IsStopAC() ? services.Concat(servicesAC) : services;
+            var states = new Dictionary<string, string>();
+            try
+            {
+                string filter = string.Join(" OR ", names.Select(name => $"Name='{name}'"));
+                using var searcher = new ManagementObjectSearcher($"SELECT Name, State FROM Win32_Service WHERE {filter}");
+                foreach (ManagementObject mo in searcher.Get())
+                    states[(string)mo["Name"]] = (string)mo["State"];
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine(ex.Message);
+            }
+            return states;
         }
 
+        private static List<string> GetRunningServices()
+        {
+            return GetServiceStates().Where(s => s.Value != "Stopped").Select(s => s.Key).ToList();
+        }
 
         public static int GetRunningCount()
         {
-            int count = 0;
-            foreach (string service in services)
-            {
-                if (Process.GetProcessesByName(service).Count() > 0) count++;
-            }
-
-            if (AppConfig.IsStopAC())
-                foreach (string service in processesAC)
-                {
-                    if (Process.GetProcessesByName(service).Count() > 0)
-                    {
-                        count++;
-                        Logger.WriteLine(service);
-                    }
-                }
-
-            return count;
+            return GetRunningServices().Count;
         }
 
 
         public static void StopAsusServices()
         {
-            foreach (string service in services)
+            foreach (string service in GetRunningServices())
             {
-                ProcessHelper.StopDisableService(service);
+                ProcessHelper.StopDisableService(service, servicesAC.Contains(service) ? "Manual" : "Disabled");
             }
 
-            if (AppConfig.IsStopAC())
-            {
-                foreach (string service in servicesAC)
-                {
-                    ProcessHelper.StopDisableService(service, "Manual");
-                }
-                Thread.Sleep(1000);
-            }
+            if (GetRunningCount() == 0) AppConfig.Set("services_disabled", 1);
 
+            if (AppConfig.IsAlly()) AllyControl.ApplyMode((ControllerMode)AppConfig.Get("controller_mode", (int)ControllerMode.Auto), true);
         }
 
         public static void StartAsusServices()
         {
-            foreach (string service in services)
+            AppConfig.Set("services_disabled", 0);
+            foreach (string service in GetServiceStates().Keys)
             {
                 ProcessHelper.StartEnableService(service);
             }
+        }
 
-            if (AppConfig.IsStopAC())
-            {
-                foreach (string service in servicesAC)
-                {
-                    ProcessHelper.StartEnableService(service);
-                }
-                Thread.Sleep(1000);
-            }
+        public static void StopOnStartup()
+        {
+            if (AppConfig.Is("services_skip")) return;
+            if (!AppConfig.Is("services_disabled") || !ProcessHelper.IsUserAdministrator()) return;
+            if (GetRunningCount() == 0) return;
 
+            Logger.WriteLine("ASUS services revived, re-stopping on startup");
+            Task.Run(() => StopAsusServices());
         }
 
     }

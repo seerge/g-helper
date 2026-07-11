@@ -26,7 +26,9 @@
             { "auto_boost", "int" },
             { "auto_apply", "int" },
             { "auto_apply_power", "int" },
-            { "auto_uv", "_" }
+            { "auto_uv", "_" },
+            { "hysteresis_up", "int" },
+            { "hysteresis_down", "int" }
         };
 
         const int maxModes = 20;
@@ -114,7 +116,7 @@
 
         public static void SetCurrent(int mode)
         {
-            AppConfig.Set("performance_" + (int)SystemInformation.PowerStatus.PowerLineStatus, mode);
+            AppConfig.Set("performance_" + Program.PerformanceKey(), mode);
             AppConfig.Set("performance_mode", mode);
         }
 

@@ -5,6 +5,13 @@ namespace GHelper.UI
     public class RButton : Button
     {
 
+        // Design tokens
+        private const float HoverShiftAmount = 0.04f;
+        private const float ActiveTopLighten = 0.15f;
+        private const float RestTopLighten = 0.1f;
+        private const int ActiveBgTopAlpha = 32;
+        private const float ActiveBgEndFraction = 0.20f;
+
         //Fields
         private int borderSize = 5;
 
@@ -38,7 +45,7 @@ namespace GHelper.UI
                 if (activated != value)
                     Invalidate();
                 activated = value;
-
+                AccessibleDescription = activated ? "Active" : null;
             }
         }
 
@@ -52,18 +59,39 @@ namespace GHelper.UI
             }
         }
 
+        public bool Borderless { get; set; } = false;
+
+        protected override bool ShowFocusCues => false;
+
         public RButton()
         {
             DoubleBuffered = true;
-            FlatStyle = FlatStyle.Flat;
-            FlatAppearance.BorderSize = 0;
-
+            
             SetStyle(ControlStyles.SupportsTransparentBackColor, true);
 
             FlatStyle = FlatStyle.Flat;
             FlatAppearance.BorderSize = 0;
             BackColor = Color.FromArgb(255, 1, 1, 1);
             BackColor = Color.Transparent;
+            
+            BackColorChanged += (s, e) => UpdateHoverColor();
+            UpdateHoverColor();
+        }
+
+        private void UpdateHoverColor()
+        {
+            int lum = (BackColor.R * 30 + BackColor.G * 59 + BackColor.B * 11) / 100;
+            Color target = lum > 128 ? Color.Black : Color.White;
+            FlatAppearance.MouseOverBackColor = Shift(BackColor, target, HoverShiftAmount);
+            FlatAppearance.MouseDownBackColor = Shift(BackColor, target, HoverShiftAmount * 2f);
+        }
+
+        private static Color Shift(Color from, Color target, float amount)
+        {
+            return Color.FromArgb(from.A,
+                (int)(from.R + (target.R - from.R) * amount),
+                (int)(from.G + (target.G - from.G) * amount),
+                (int)(from.B + (target.B - from.B) * amount));
         }
 
         private GraphicsPath GetFigurePath(Rectangle rect, int radius)
@@ -87,23 +115,52 @@ namespace GHelper.UI
             base.OnPaint(pevent);
 
             float ratio = pevent.Graphics.DpiX / 192.0f;
-            int border = (int)(ratio * borderSize);
+            int border = (int)Math.Round((ratio * borderSize - 1) / 2) * 2 + 1;
+            int radius = (int)Math.Round(ratio * borderRadius, MidpointRounding.AwayFromZero);
 
             Rectangle rectSurface = ClientRectangle;
-            Rectangle rectBorder = Rectangle.Inflate(rectSurface, -border, -border);
 
-            Color borderDrawColor = activated ? borderColor : Color.Transparent;
-
-            using (GraphicsPath pathSurface = GetFigurePath(rectSurface, borderRadius + border))
-            using (GraphicsPath pathBorder = GetFigurePath(rectBorder, borderRadius))
+            using (GraphicsPath pathSurface = GetFigurePath(rectSurface, radius + border))
             using (Pen penSurface = new Pen(Parent.BackColor, border))
-            using (Pen penBorder = new Pen(borderDrawColor, border))
             {
-                penBorder.Alignment = PenAlignment.Outset;
                 pevent.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
                 Region = new Region(pathSurface);
                 pevent.Graphics.DrawPath(penSurface, pathSurface);
-                pevent.Graphics.DrawPath(penBorder, pathBorder);
+
+                bool drawActive = Enabled && !Borderless && activated && borderColor.A > 0;
+                bool drawRest = Enabled && !Borderless && !activated && FlatAppearance.BorderColor.A > 0 && !RForm.flatTheme;
+
+                if (drawActive)
+                {
+                    Rectangle borderRect = new Rectangle(border, border, rectSurface.Width - 2 * border, rectSurface.Height - 2 * border);
+
+                    Color bgTop = Color.FromArgb(ActiveBgTopAlpha, borderColor);
+                    Color bgTransparent = Color.FromArgb(0, borderColor);
+                    float bgEndPos = ActiveBgEndFraction;
+
+                    using (GraphicsPath bgPath = GetFigurePath(borderRect, radius))
+                    using (LinearGradientBrush bgBrush = new LinearGradientBrush(
+                        ControlHelper.DarkMode ? new PointF(0, borderRect.Y) : new PointF(0, borderRect.Bottom),
+                        ControlHelper.DarkMode ? new PointF(0, borderRect.Bottom) : new PointF(0, borderRect.Y),
+                        bgTop, bgTransparent))
+                    {
+                        bgBrush.InterpolationColors = new ColorBlend
+                        {
+                            Colors = new[] { bgTop, bgTransparent, bgTransparent },
+                            Positions = new[] { 0f, bgEndPos, 1f }
+                        };
+                        if (!RForm.flatTheme)
+                            pevent.Graphics.FillPath(bgBrush, bgPath);
+                    }
+
+                    ControlHelper.DrawGradientBorder(pevent.Graphics, borderRect, borderColor, radius, border, PenAlignment.Outset, RForm.flatTheme ? 0f : ActiveTopLighten);
+                }
+                else if (drawRest)
+                {
+                    int inset = border / 2 + 1;
+                    Rectangle borderRect = new Rectangle(inset, inset, rectSurface.Width - 2 * inset, rectSurface.Height - 2 * inset);
+                    ControlHelper.DrawGradientBorder(pevent.Graphics, borderRect, FlatAppearance.BorderColor, radius + border - inset, 1f, PenAlignment.Inset, RestTopLighten);
+                }
             }
 
             if (!Enabled && ForeColor != SystemColors.ControlText)
@@ -114,8 +171,21 @@ namespace GHelper.UI
                     rect.Y += Image.Height;
                     rect.Height -= Image.Height;
                 }
+                else
+                {
+                    using (var brush = new SolidBrush(Parent.BackColor))
+                        pevent.Graphics.FillRectangle(brush, rect);
+                    using (var brush = new SolidBrush(BackColor))
+                        pevent.Graphics.FillRectangle(brush, rect);
+                }
                 TextFormatFlags flags = TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.WordBreak;
                 TextRenderer.DrawText(pevent.Graphics, Text, Font, rect, Color.Gray, flags);
+            }
+
+            if (!Enabled && !Borderless && activated && borderColor.A > 0)
+            {
+                Rectangle borderRect = new Rectangle(border, border, rectSurface.Width - 2 * border, rectSurface.Height - 2 * border);
+                ControlHelper.DrawGradientBorder(pevent.Graphics, borderRect, borderColor, radius, border, PenAlignment.Outset, RForm.flatTheme ? 0f : ActiveTopLighten);
             }
 
 

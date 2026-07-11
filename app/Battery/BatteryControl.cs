@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using GHelper.Helpers;
+using Microsoft.Win32;
+using System.Diagnostics;
 
 namespace GHelper.Battery
 {
@@ -45,9 +47,24 @@ namespace GHelper.Battery
             else SetBatteryChargeLimit();
         }
 
-        public static void SetBatteryChargeLimit(int limit = -1)
+        public static void SetAsusChargeLimit(int value)
         {
+            if (!ProcessHelper.IsUserAdministrator()) return;
+            const string keyPath = @"SOFTWARE\ASUS\ASUS System Control Interface\AsusOptimization\ASUS Keyboard Hotkeys";
+            try
+            {
+                using var key = Registry.LocalMachine.OpenSubKey(keyPath, writable: true);
+                key.SetValue("ChargingRate", value, RegistryValueKind.DWord);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine($"Failed to set ChargingRate: {ex.Message}");
+            }
+        }
 
+        public static void SetBatteryChargeLimit(int setLimit = -1)
+        {
+            int limit = setLimit;
             if (limit < 0) limit = AppConfig.Get("charge_limit");
             if (limit < 40 || limit > 100) return;
 
@@ -57,6 +74,8 @@ namespace GHelper.Battery
                 else if (limit >= 80) limit = 80;
                 else if (limit < 60) limit = 60;
             }
+
+            if (setLimit > 0) SetAsusChargeLimit(limit);
 
             Program.acpi.DeviceSet(AsusACPI.BatteryLimit, limit, "BatteryLimit");
 

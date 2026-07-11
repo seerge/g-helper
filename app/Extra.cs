@@ -19,6 +19,7 @@ namespace GHelper
 
         private void SetKeyCombo(ComboBox combo, TextBox txbox, string name)
         {
+            if (combo is RComboBox rcombo) rcombo.NativeHeight = true;
 
             Dictionary<string, string> customActions = new Dictionary<string, string>
             {
@@ -38,6 +39,7 @@ namespace GHelper
               {"touchscreen", Properties.Strings.ToggleTouchscreen },
               {"micmute", Properties.Strings.MuteMic},
               {"ghelper", Properties.Strings.OpenGHelper},
+              {"overlay", Properties.Strings.Overlay},
               {"custom", Properties.Strings.Custom}
             };
 
@@ -130,7 +132,9 @@ namespace GHelper
             checkSleep.Text = Properties.Strings.Sleep;
             checkBoot.Text = Properties.Strings.Boot;
             checkShutdown.Text = Properties.Strings.Shutdown;
+            checkBattery.Text = checkBatteryLogo.Text = checkBatteryBar.Text = checkBatteryLid.Text = Properties.Strings.Battery;
             checkBootSound.Text = Properties.Strings.BootSound;
+            checkKeystoneSound.Text = Properties.Strings.KeystoneSound;
             checkStatusLed.Text = Properties.Strings.LEDStatusIndicators;
 
             labelSpeed.Text = Properties.Strings.AnimationSpeed;
@@ -139,7 +143,6 @@ namespace GHelper
             labelBacklightTimeout.Text = Properties.Strings.BacklightTimeout;
             //labelBacklightTimeoutPlugged.Text = Properties.Strings.BacklightTimeoutPlugged;
 
-            checkGPUFix.Text = Properties.Strings.EnableGPUOnShutdown;
             checkNoOverdrive.Text = Properties.Strings.DisableOverdrive;
             checkTopmost.Text = Properties.Strings.WindowTop;
             checkUSBC.Text = Properties.Strings.OptimizedUSBC;
@@ -151,10 +154,20 @@ namespace GHelper
             labelBacklightLogo.Text = Properties.Strings.Logo;
 
             checkGpuApps.Text = Properties.Strings.KillGpuApps;
-            checkBWIcon.Text = Properties.Strings.BWTrayIcon;
+            checkAspm.Text = Properties.Strings.DisablePCIeASPM;
+            checkNVPlatform.Text = Properties.Strings.StopStartNVServices;
             labelHibernateAfter.Text = Properties.Strings.HibernateAfter;
+            numericHibernateAfter.OffText = Properties.Strings.Off;
+            numericBacklightTime.OffText = Properties.Strings.Off;
+            numericBacklightPluggedTime.OffText = Properties.Strings.Off;
 
             labelAPUMem.Text = Properties.Strings.APUMemory;
+            labelCores.Text = Properties.Strings.CPUCoresConfiguration;
+
+            labelOptimalBrightness.Text = Properties.Strings.OptimalDisplayBrightness;
+            comboOptimalBrightness.Items[0] = Properties.Strings.Off;
+            comboOptimalBrightness.Items[1] = Properties.Strings.OnAlways;
+            comboOptimalBrightness.Items[2] = Properties.Strings.OnBattery;
 
             Text = Properties.Strings.ExtraSettings;
 
@@ -229,7 +242,7 @@ namespace GHelper
                 labelFNV.Visible = comboFNV.Visible = textFNV.Visible = false;
             }
 
-            if (Program.acpi.DeviceGet(AsusACPI.GPUEco) < 0)
+            if (!Program.acpi.IsSupported(AsusACPI.GPUEco))
             {
                 checkGpuApps.Visible = false;
                 checkUSBC.Visible = false;
@@ -359,29 +372,24 @@ namespace GHelper
             checkSleepLogo.CheckedChanged += CheckPower_CheckedChanged;
             checkShutdownLogo.CheckedChanged += CheckPower_CheckedChanged;
 
-            if (!AppConfig.IsBacklightZones() || AppConfig.IsStrixLimitedRGB() || AppConfig.IsARCNM())
+            if (!AppConfig.IsBacklightZones() || AppConfig.IsARCNM())
             {
+                labelBacklightKeyboard.Visible = false;
+                checkBattery.Visible = false;
+            }
 
-                if (!AppConfig.IsStrixLimitedRGB())
-                {
-                    labelBacklightBar.Visible = false;
-                    checkAwakeBar.Visible = false;
-                    checkBatteryBar.Visible = false;
-                    checkBootBar.Visible = false;
-                    checkSleepBar.Visible = false;
-                    checkShutdownBar.Visible = false;
+            if (!Aura.HasLightbar)
+            {
+                labelBacklightBar.Visible = false;
+                checkAwakeBar.Visible = false;
+                checkBatteryBar.Visible = false;
+                checkBootBar.Visible = false;
+                checkSleepBar.Visible = false;
+                checkShutdownBar.Visible = false;
+            }
 
-                    labelBacklightKeyboard.Visible = false;
-                    checkBattery.Visible = false;
-                }
-
-                labelBacklightLid.Visible = false;
-                checkAwakeLid.Visible = false;
-                checkBatteryLid.Visible = false;
-                checkBootLid.Visible = false;
-                checkSleepLid.Visible = false;
-                checkShutdownLid.Visible = false;
-
+            if (!Aura.HasLogo)
+            {
                 labelBacklightLogo.Visible = false;
                 checkAwakeLogo.Visible = false;
                 checkBatteryLogo.Visible = false;
@@ -390,15 +398,8 @@ namespace GHelper
                 checkShutdownLogo.Visible = false;
             }
 
-            if (AppConfig.IsZ13())
+            if (!Aura.HasRearglow)
             {
-                labelBacklightBar.Visible = false;
-                checkAwakeBar.Visible = false;
-                checkBatteryBar.Visible = false;
-                checkBootBar.Visible = false;
-                checkSleepBar.Visible = false;
-                checkShutdownBar.Visible = false;
-
                 labelBacklightLid.Visible = false;
                 checkAwakeLid.Visible = false;
                 checkBatteryLid.Visible = false;
@@ -421,6 +422,7 @@ namespace GHelper
             checkUSBC.CheckedChanged += CheckUSBC_CheckedChanged;
 
             sliderBrightness.Value = InputDispatcher.GetBacklight();
+            sliderBrightness.AccessibleName = Properties.Strings.LaptopBacklight + ": " + sliderBrightness.Value;
             sliderBrightness.ValueChanged += SliderBrightness_ValueChanged;
 
             panelXGM.Visible = XGM.IsConnected();
@@ -437,6 +439,7 @@ namespace GHelper
             checkGpuApps.CheckedChanged += CheckGpuApps_CheckedChanged;
 
             int bootSound = Program.acpi.DeviceGet(AsusACPI.BootSound);
+            checkBootSound.Visible = bootSound >= 0;
             if (bootSound < 0 || bootSound > UInt16.MaxValue) bootSound = AppConfig.Get("boot_sound", 0);
 
             checkBootSound.Checked = (bootSound == 1);
@@ -456,26 +459,14 @@ namespace GHelper
                 comboOptimalBrightness.SelectedIndexChanged += OptimalBrightness_Changed;
             }
 
-            checkBWIcon.Checked = AppConfig.IsBWIcon();
-            checkBWIcon.CheckedChanged += CheckBWIcon_CheckedChanged;
-
             pictureHelp.Click += PictureHelp_Click;
             buttonServices.Click += ButtonServices_Click;
 
             pictureLog.Click += PictureLog_Click;
 
-            checkGPUFix.Visible = Program.acpi.IsNVidiaGPU();
-            checkGPUFix.Checked = AppConfig.IsGPUFix();
-            checkGPUFix.CheckedChanged += CheckGPUFix_CheckedChanged;
-
             checkNVPlatform.Visible = Program.acpi.IsNVidiaGPU();
             checkNVPlatform.Checked = AppConfig.IsNVPlatform();
             checkNVPlatform.CheckedChanged += CheckNVPlatform_CheckedChanged;
-
-
-            checkPerKeyRGB.Visible = AppConfig.IsPossible4ZoneRGB();
-            checkPerKeyRGB.Checked = AppConfig.Is("per_key_rgb");
-            checkPerKeyRGB.CheckedChanged += CheckPerKeyRGB_CheckedChanged;
 
             checkAspm.Checked = AppConfig.IsAutoASPM();
             checkAspm.CheckedChanged += CheckAspm_CheckedChanged;
@@ -484,9 +475,9 @@ namespace GHelper
             checkKeystoneSound.Checked = Keystone.IsEnabled();
             checkKeystoneSound.CheckedChanged += CheckKeystoneSoundCheckedChanged;
 
-            toolTip.SetToolTip(checkAutoToggleClamshellMode, "Disable sleep on lid close when plugged in and external monitor is connected");
-            toolTip.SetToolTip(checkNVPlatform, "Stops NVIDIA services when the discrete GPU is disabled\nand restarts them automatically when the GPU is enabled");
-            toolTip.SetToolTip(checkAspm, "Prevents PCIe devices from entering low-power idle states.\nRecommended if you experience random hangs or unresponsive hardware.");
+            toolTip.SetToolTip(checkAutoToggleClamshellMode, Properties.Strings.ClamshellModeTooltip);
+            toolTip.SetToolTip(checkNVPlatform, Properties.Strings.NVPlatformTooltip);
+            toolTip.SetToolTip(checkAspm, Properties.Strings.DisablePCIeASPMTooltip);
 
             InitCores();
             InitServices();
@@ -517,34 +508,22 @@ namespace GHelper
             ScreenControl.SetOptimalBrightness(comboOptimalBrightness.SelectedIndex);
         }
 
-        private void CheckPerKeyRGB_CheckedChanged(object? sender, EventArgs e)
-        {
-            AppConfig.Set("per_key_rgb", (checkPerKeyRGB.Checked ? 1 : 0));
-        }
-
         private void CheckLEDStatus_CheckedChanged(object? sender, EventArgs e)
         {
             InputDispatcher.SetStatusLED(checkStatusLed.Checked);
         }
 
-        private void CheckBWIcon_CheckedChanged(object? sender, EventArgs e)
-        {
-            AppConfig.Set("bw_icon", (checkBWIcon.Checked ? 1 : 0));
-            Program.settingsForm.VisualiseIcon();
-        }
-
         private void InitACPITesting()
         {
+            pictureScan.Visible = true;
+            pictureScan.Click += PictureScan_Click;
+
             if (!AppConfig.Is("debug")) return;
 
-            pictureScan.Visible = true;
             panelACPI.Visible = true;
-
-            textACPICommand.Text = "120098";
-            textACPIParam.Text = "25";
-
+            textACPICommand.Text = "110034";
+            textACPIParam.Text = "0x0303";
             buttonACPISend.Click += ButtonACPISend_Click;
-            pictureScan.Click += PictureScan_Click;
         }
 
         private void ButtonACPISend_Click(object? sender, EventArgs e)
@@ -579,7 +558,7 @@ namespace GHelper
             if (AppConfig.Is8Ecores()) eCoresMax = Math.Max(8, eCoresMax);
 
             eCoresMax = Math.Max(4, eCoresMax);
-            pCoresMax = Math.Max(6, pCoresMax);
+            pCoresMax = Math.Max(4, pCoresMax);
 
             panelCores.Visible = true;
 
@@ -640,11 +619,6 @@ namespace GHelper
             AppConfig.Set("boot_sound", bootSound);
         }
 
-        private void CheckGPUFix_CheckedChanged(object? sender, EventArgs e)
-        {
-            AppConfig.Set("gpu_fix", (checkGPUFix.Checked ? 1 : 0));
-        }
-
         private void InitHibernate()
         {
             try
@@ -689,6 +663,16 @@ namespace GHelper
                 AppConfig.Set("keyboard_brightness", sliderBrightness.Value);
 
             Aura.ApplyBrightness(sliderBrightness.Value, "Slider");
+            sliderBrightness.AccessibleName = Properties.Strings.LaptopBacklight + ": " + sliderBrightness.Value;
+        }
+
+        public void VisualiseBacklight(int backlight)
+        {
+            if (InvokeRequired) { Invoke(() => VisualiseBacklight(backlight)); return; }
+            sliderBrightness.ValueChanged -= SliderBrightness_ValueChanged;
+            sliderBrightness.Value = backlight;
+            sliderBrightness.AccessibleName = Properties.Strings.LaptopBacklight + ": " + sliderBrightness.Value;
+            sliderBrightness.ValueChanged += SliderBrightness_ValueChanged;
         }
 
         private void InitServices()
@@ -722,11 +706,11 @@ namespace GHelper
                 Task.Run(() =>
                 {
                     AsusService.StopAsusServices();
+                    Program.inputDispatcher.Init();
                     BeginInvoke(delegate
                     {
                         InitServices();
                     });
-                    Program.inputDispatcher.Init();
                 });
             }
             else
@@ -823,6 +807,7 @@ namespace GHelper
             }
 
             Aura.ApplyPower();
+            if (Aura.IsOldStrix) Aura.ApplyAura();
 
         }
 

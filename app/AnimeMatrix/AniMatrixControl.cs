@@ -1,5 +1,4 @@
-﻿using NAudio.CoreAudioApi;
-using NAudio.Wave;
+﻿using GHelper.Helpers;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -8,7 +7,7 @@ using System.Timers;
 namespace GHelper.AnimeMatrix
 {
 
-    public class AniMatrixControl : NAudio.CoreAudioApi.Interfaces.IMMNotificationClient
+    public class AniMatrixControl
     {
 
         SettingsForm settings;
@@ -21,15 +20,6 @@ namespace GHelper.AnimeMatrix
 
         public static bool lidClose = false;
         private static bool _wakeUp = false;
-
-        double[]? AudioValues;
-        WasapiCapture? AudioDevice;
-        string? AudioDeviceId;
-        private MMDeviceEnumerator? AudioDeviceEnum;
-
-        private readonly object _audioLock = new();
-        private volatile bool _listeningToAudio;
-        private volatile bool _stoppingAudio;
 
         public bool IsValid => deviceMatrix != null || deviceSlash != null;
         public bool IsSlash => deviceSlash != null;
@@ -49,10 +39,7 @@ namespace GHelper.AnimeMatrix
             {
                 if (AppConfig.IsSlash())
                 {
-                    if (AppConfig.IsSlashAura())
-                        deviceSlash = new SlashDeviceAura();
-                    else
-                        deviceSlash = new SlashDevice();
+                    deviceSlash = SlashDevice.Detect();
                 }
                 else
                 {
@@ -333,11 +320,10 @@ namespace GHelper.AnimeMatrix
         {
             if (deviceSlash is null) return;
 
-            //kill timer if called but not in battery pattern mode
+            //stop timer if called but not in battery pattern mode
             if ((SlashMode)AppConfig.Get("matrix_running", 0) != SlashMode.BatteryLevel)
             {
                 slashTimer.Stop();
-                slashTimer.Dispose();
                 return;
             }
 
@@ -356,49 +342,7 @@ namespace GHelper.AnimeMatrix
 
         void StopAudio()
         {
-            lock (_audioLock)
-            {
-                _stoppingAudio = true;
-                _listeningToAudio = false;
-
-                if (AudioDeviceEnum is not null)
-                {
-                    try
-                    {
-                        AudioDeviceEnum.UnregisterEndpointNotificationCallback(this);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.WriteLine("UnregisterEndpointNotificationCallback failed: " + ex);
-                    }
-                }
-
-                if (AudioDevice is not null)
-                {
-                    try
-                    {
-                        AudioDevice.DataAvailable -= WaveIn_DataAvailable;
-                        AudioDevice.StopRecording();
-                        AudioDevice.Dispose();
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.WriteLine(ex.ToString());
-                    }
-
-                    AudioDevice = null;
-                }
-
-                AudioDeviceId = null;
-
-                if (AudioDeviceEnum is not null)
-                {
-                    try { AudioDeviceEnum.Dispose(); } catch { /* ignore */ }
-                    AudioDeviceEnum = null;
-                }
-
-                _stoppingAudio = false;
-            }
+            AudioVisualizer.Shared.Unsubscribe(PresentAudio);
         }
 
         void SetAudio()
@@ -407,73 +351,8 @@ namespace GHelper.AnimeMatrix
             else if (deviceSlash is not null) deviceSlash.SetEmpty();
             else return;
 
-            StopAudio();
             slashBrightness = AppConfig.Get("matrix_brightness", 0);
-
-            lock (_audioLock)
-            {
-                _stoppingAudio = false;
-                _listeningToAudio = true;
-
-                try
-                {
-                    AudioDeviceEnum = new MMDeviceEnumerator();
-                    AudioDeviceEnum.RegisterEndpointNotificationCallback(this);
-
-                    using (MMDevice device = AudioDeviceEnum.GetDefaultAudioEndpoint(DataFlow.Render, Role.Console))
-                    {
-                        AudioDevice = new WasapiLoopbackCapture(device);
-                        AudioDeviceId = device.ID;
-
-                        var fmt = AudioDevice.WaveFormat;
-                        AudioValues = new double[fmt.SampleRate / 1000];
-
-                        AudioDevice.DataAvailable += WaveIn_DataAvailable;
-                        AudioDevice.StartRecording();
-                    }
-
-                    Logger.WriteLine("Subscribed to Audio");
-                }
-                catch (Exception ex)
-                {
-                    Logger.WriteLine(ex.ToString());
-                    _listeningToAudio = false;
-                }
-            }
-        }
-
-        private void WaveIn_DataAvailable(object? sender, WaveInEventArgs e)
-        {
-            int bytesPerSamplePerChannel = AudioDevice.WaveFormat.BitsPerSample / 8;
-            int bytesPerSample = bytesPerSamplePerChannel * AudioDevice.WaveFormat.Channels;
-            int bufferSampleCount = e.Buffer.Length / bytesPerSample;
-
-            if (bufferSampleCount >= AudioValues.Length)
-            {
-                bufferSampleCount = AudioValues.Length;
-            }
-
-            if (bytesPerSamplePerChannel == 2 && AudioDevice.WaveFormat.Encoding == WaveFormatEncoding.Pcm)
-            {
-                for (int i = 0; i < bufferSampleCount; i++)
-                    AudioValues[i] = BitConverter.ToInt16(e.Buffer, i * bytesPerSample);
-            }
-            else if (bytesPerSamplePerChannel == 4 && AudioDevice.WaveFormat.Encoding == WaveFormatEncoding.Pcm)
-            {
-                for (int i = 0; i < bufferSampleCount; i++)
-                    AudioValues[i] = BitConverter.ToInt32(e.Buffer, i * bytesPerSample);
-            }
-            else if (bytesPerSamplePerChannel == 4 && AudioDevice.WaveFormat.Encoding == WaveFormatEncoding.IeeeFloat)
-            {
-                for (int i = 0; i < bufferSampleCount; i++)
-                    AudioValues[i] = BitConverter.ToSingle(e.Buffer, i * bytesPerSample);
-            }
-
-            double[] paddedAudio = FftSharp.Pad.ZeroPad(AudioValues);
-            var fft = FftSharp.FFT.Forward(paddedAudio);
-            double[] fftMag = FftSharp.FFT.Magnitude(fft);
-
-            PresentAudio(fftMag);
+            AudioVisualizer.Shared.Subscribe(PresentAudio);
         }
 
         void PresentAudio(double[] audio)
@@ -646,48 +525,5 @@ namespace GHelper.AnimeMatrix
 
         }
 
-        public void OnDeviceStateChanged(string deviceId, DeviceState newState)
-        {
-
-        }
-
-        public void OnDeviceAdded(string pwstrDeviceId)
-        {
-
-        }
-
-        public void OnDeviceRemoved(string deviceId)
-        {
-
-        }
-
-        public void OnDefaultDeviceChanged(DataFlow flow, Role role, string defaultDeviceId)
-        {
-            if (!_listeningToAudio) return;
-            if (_stoppingAudio) return;
-
-            int running = AppConfig.Get("matrix_running");
-            if (flow != DataFlow.Render || role != Role.Console || running != 4) return;
-
-            var currentId = AudioDeviceId;
-            if (!string.IsNullOrEmpty(currentId) && currentId == defaultDeviceId) return;
-
-            //Restart audio if default audio changed
-            Logger.WriteLine("Matrix Audio: Default Output changed to " + defaultDeviceId);
-
-            //Already set the device here. Otherwise this will be called multiple times in a short succession and causes a crash due to dispose during initalization.
-            AudioDeviceId = defaultDeviceId;
-
-            Task.Delay(50).ContinueWith(_ =>
-            {
-                if (!_listeningToAudio) return;
-                SetMatrix();
-            });
-        }
-
-        public void OnPropertyValueChanged(string pwstrDeviceId, PropertyKey key)
-        {
-
-        }
     }
 }
