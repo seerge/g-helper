@@ -1,8 +1,9 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
+using GHelper.Helpers;
 
 public static class Logger
 {
-    public static string appPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\GHelper";
+    public static string appPath = Environment.GetFolderPath(ProcessHelper.IsRunningAsSystem() ? Environment.SpecialFolder.CommonApplicationData : Environment.SpecialFolder.ApplicationData) + "\\GHelper";
     public static string logFile = appPath + "\\log.txt";
 
     private static readonly Random _random = new Random();
@@ -10,17 +11,18 @@ public static class Logger
 
     public static void WriteLine(string logMessage)
     {
-        var stamp = DateTime.Now;
-        Debug.WriteLine($"{stamp}: {logMessage}");
+        Debug.WriteLine($"{DateTime.Now}: {logMessage}");
 
         lock (_lock)
         {
             try
             {
                 if (!Directory.Exists(appPath)) Directory.CreateDirectory(appPath);
-                using var fs = new FileStream(logFile, FileMode.Append, FileAccess.Write, FileShare.ReadWrite);
-                using var w = new StreamWriter(fs);
-                w.WriteLine($"{stamp} [{Environment.UserName}]: {logMessage}");
+                using (StreamWriter w = File.AppendText(logFile))
+                {
+                    w.WriteLine($"{DateTime.Now}: {logMessage}");
+                    w.Close();
+                }
             }
             catch { }
 
@@ -33,7 +35,7 @@ public static class Logger
         try
         {
             var file = File.ReadAllLines(logFile);
-            int skip = Math.Max(0, file.Length - 4000);
+            int skip = Math.Max(0, file.Count() - 2000);
             File.WriteAllLines(logFile, file.Skip(skip).ToArray());
         }
         catch { }
