@@ -24,6 +24,7 @@ namespace GHelper.UI
         public static Color chartGrid;
 
         public static bool flatTheme = false;
+        public static bool micaTheme = true;
 
         [DllImport("UXTheme.dll", SetLastError = true, EntryPoint = "#138")]
         public static extern bool CheckSystemDarkModeStatus();
