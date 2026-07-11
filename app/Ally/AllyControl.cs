@@ -526,6 +526,13 @@ namespace GHelper.Ally
             return code;
         }
 
+        static string BindSuffix => _applyMode == ControllerMode.Mouse ? "_mouse" : "_gamepad";
+
+        static private string GetBindString(string name, string bindDefault = null)
+        {
+            return AppConfig.GetString(name + BindSuffix) ?? AppConfig.GetString(name, bindDefault);
+        }
+
         static private void BindZone(BindingZone zone)
         {
             string KeyL1, KeyR1;
@@ -536,58 +543,58 @@ namespace GHelper.Ally
             switch (zone)
             {
                 case BindingZone.DPadUpDown:
-                    KeyL1 = AppConfig.GetString("bind_du", desktop ? BindKBU : BindDU);
-                    KeyR1 = AppConfig.GetString("bind_dd", desktop ? BindKBD : BindDD);
-                    KeyL2 = AppConfig.GetString("bind2_du", BindShowKeyboard);
-                    KeyR2 = AppConfig.GetString("bind2_dd", BindShowDesktop);
+                    KeyL1 = GetBindString("bind_du", desktop ? BindKBU : BindDU);
+                    KeyR1 = GetBindString("bind_dd", desktop ? BindKBD : BindDD);
+                    KeyL2 = GetBindString("bind2_du", BindShowKeyboard);
+                    KeyR2 = GetBindString("bind2_dd", BindShowDesktop);
                     break;
                 case BindingZone.DPadLeftRight:
-                    KeyL1 = AppConfig.GetString("bind_dl", desktop ? BindKBL : BindDL);
-                    KeyR1 = AppConfig.GetString("bind_dr", desktop ? BindKBR : BindDR);
-                    KeyL2 = AppConfig.GetString("bind2_dl", BindBrightnessDown);
-                    KeyR2 = AppConfig.GetString("bind2_dr", BindBrightnessUp);
+                    KeyL1 = GetBindString("bind_dl", desktop ? BindKBL : BindDL);
+                    KeyR1 = GetBindString("bind_dr", desktop ? BindKBR : BindDR);
+                    KeyL2 = GetBindString("bind2_dl", BindBrightnessDown);
+                    KeyR2 = GetBindString("bind2_dr", BindBrightnessUp);
                     break;
                 case BindingZone.StickClick:
-                    KeyL1 = AppConfig.GetString("bind_ls", desktop ? BindShift : BindLS);
-                    KeyR1 = AppConfig.GetString("bind_rs", desktop ? BindMouseL : BindRS);
-                    KeyL2 = AppConfig.GetString("bind2_ls");
-                    KeyR2 = AppConfig.GetString("bind2_rs", BindToggleMode);
+                    KeyL1 = GetBindString("bind_ls", desktop ? BindShift : BindLS);
+                    KeyR1 = GetBindString("bind_rs", desktop ? BindMouseL : BindRS);
+                    KeyL2 = GetBindString("bind2_ls");
+                    KeyR2 = GetBindString("bind2_rs", BindToggleMode);
                     break;
                 case BindingZone.Bumper:
-                    KeyL1 = AppConfig.GetString("bind_lb", desktop ? BindTab : BindLB);
-                    KeyR1 = AppConfig.GetString("bind_rb", desktop ? BindMouseL : BindRB);
-                    KeyL2 = AppConfig.GetString("bind2_lb");
-                    KeyR2 = AppConfig.GetString("bind2_rb");
+                    KeyL1 = GetBindString("bind_lb", desktop ? BindTab : BindLB);
+                    KeyR1 = GetBindString("bind_rb", desktop ? BindMouseL : BindRB);
+                    KeyL2 = GetBindString("bind2_lb");
+                    KeyR2 = GetBindString("bind2_rb");
                     break;
                 case BindingZone.AB:
-                    KeyL1 = AppConfig.GetString("bind_a", desktop ? BindEnter : BindA);
-                    KeyR1 = AppConfig.GetString("bind_b", desktop ? BindEsc : BindB);
-                    KeyL2 = AppConfig.GetString("bind2_a");
-                    KeyR2 = AppConfig.GetString("bind2_b");
+                    KeyL1 = GetBindString("bind_a", desktop ? BindEnter : BindA);
+                    KeyR1 = GetBindString("bind_b", desktop ? BindEsc : BindB);
+                    KeyL2 = GetBindString("bind2_a");
+                    KeyR2 = GetBindString("bind2_b");
                     break;
                 case BindingZone.XY:
-                    KeyL1 = AppConfig.GetString("bind_x", desktop ? BindPgD : BindX);
-                    KeyR1 = AppConfig.GetString("bind_y", desktop ? BindPgU : BindY);
-                    KeyL2 = AppConfig.GetString("bind2_x", BindScreenshot);
-                    KeyR2 = AppConfig.GetString("bind2_y", BindOverlay);
+                    KeyL1 = GetBindString("bind_x", desktop ? BindPgD : BindX);
+                    KeyR1 = GetBindString("bind_y", desktop ? BindPgU : BindY);
+                    KeyL2 = GetBindString("bind2_x", BindScreenshot);
+                    KeyR2 = GetBindString("bind2_y", BindOverlay);
                     break;
                 case BindingZone.ViewMenu:
-                    KeyL1 = AppConfig.GetString("bind_vb", BindVB);
-                    KeyR1 = AppConfig.GetString("bind_mb", BindMB);
-                    KeyL2 = AppConfig.GetString("bind2_vb");
-                    KeyR2 = AppConfig.GetString("bind2_mb");
+                    KeyL1 = GetBindString("bind_vb", BindVB);
+                    KeyR1 = GetBindString("bind_mb", BindMB);
+                    KeyL2 = GetBindString("bind2_vb");
+                    KeyR2 = GetBindString("bind2_mb");
                     break;
                 case BindingZone.M1M2:
-                    KeyL1 = AppConfig.GetString("bind_m2", BindM2);
-                    KeyR1 = AppConfig.GetString("bind_m1", BindM1);
-                    KeyL2 = AppConfig.GetString("bind2_m2", BindM2);
-                    KeyR2 = AppConfig.GetString("bind2_m1", BindM1);
+                    KeyL1 = GetBindString("bind_m2", BindM2);
+                    KeyR1 = GetBindString("bind_m1", BindM1);
+                    KeyL2 = GetBindString("bind2_m2", BindM2);
+                    KeyR2 = GetBindString("bind2_m1", BindM1);
                     break;
                 default:
-                    KeyL1 = AppConfig.GetString("bind_lt", desktop ? BindShiftTab : BindLT);
-                    KeyR1 = AppConfig.GetString("bind_rt", desktop ? BindMouseR : BindRT);
-                    KeyL2 = AppConfig.GetString("bind2_lt");
-                    KeyR2 = AppConfig.GetString("bind2_rt");
+                    KeyL1 = GetBindString("bind_lt", desktop ? BindShiftTab : BindLT);
+                    KeyR1 = GetBindString("bind_rt", desktop ? BindMouseR : BindRT);
+                    KeyL2 = GetBindString("bind2_lt");
+                    KeyR2 = GetBindString("bind2_rt");
                     break;
             }
 
@@ -619,13 +626,19 @@ namespace GHelper.Ally
 
             // offset = 4 + (zone - 1) * 4,  layout: [L1, L2, R1, R2]
             // value = ms / 50  (0 = off, 1 = 50ms, 2 = 100ms ... 10 = 500ms)
+            int T(string name)
+            {
+                int ms = AppConfig.Get(name + BindSuffix, -1);
+                return ms >= 0 ? ms : AppConfig.Get(name, 0);
+            }
+
             void Z(int zone, string l1, string l2, string r1, string r2)
             {
                 int o = 4 + (zone - 1) * 4;
-                turbo[o] = (byte)(AppConfig.Get(l1, 0) / 50);
-                turbo[o + 1] = (byte)(AppConfig.Get(l2, 0) / 50);
-                turbo[o + 2] = (byte)(AppConfig.Get(r1, 0) / 50);
-                turbo[o + 3] = (byte)(AppConfig.Get(r2, 0) / 50);
+                turbo[o] = (byte)(T(l1) / 50);
+                turbo[o + 1] = (byte)(T(l2) / 50);
+                turbo[o + 2] = (byte)(T(r1) / 50);
+                turbo[o + 3] = (byte)(T(r2) / 50);
             }
 
             Z(1, "turbo_du", "turbo2_du", "turbo_dd", "turbo2_dd");

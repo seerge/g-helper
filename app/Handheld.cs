@@ -9,6 +9,8 @@ namespace GHelper
         static string activeBinding = "";
         static RButton? activeButton;
 
+        string bindingScope = "";
+
         public Handheld()
         {
             InitializeComponent();
@@ -78,7 +80,7 @@ namespace GHelper
             ButtonBinding("lb", "Left Bumper", buttonLB);
 
             ButtonBinding("rs", "Right Stick", buttonRS);
-            ButtonBinding("ll", "Left Stick", buttonLS);
+            ButtonBinding("ls", "Left Stick", buttonLS);
 
             ButtonBinding("vb", "View", buttonView);
             ButtonBinding("mb", "Menu", buttonMenu);
@@ -88,6 +90,8 @@ namespace GHelper
             
             ComboTurbo(comboTurboPrimary);
             ComboTurbo(comboTurboSecondary);
+
+            ComboScope(comboScope);
 
             checkController.Checked = AppConfig.Is("controller_disabled");
             checkController.CheckedChanged += CheckController_CheckedChanged;
@@ -170,6 +174,33 @@ namespace GHelper
             combo.SelectedValueChanged += TurboSelectedValueChanged;
         }
 
+        private void ComboScope(RComboBox combo)
+        {
+            combo.DropDownStyle = ComboBoxStyle.DropDownList;
+            combo.DisplayMember = "Value";
+            combo.ValueMember = "Key";
+            combo.Items.Add(new KeyValuePair<string, string>("", "All Modes"));
+            combo.Items.Add(new KeyValuePair<string, string>("_gamepad", "Gamepad"));
+            combo.Items.Add(new KeyValuePair<string, string>("_mouse", "Mouse"));
+            combo.SelectedIndex = 0;
+            combo.SelectedValueChanged += ScopeSelectedValueChanged;
+        }
+
+        private void ScopeSelectedValueChanged(object? sender, EventArgs e)
+        {
+            bindingScope = ((KeyValuePair<string, string>)comboScope.SelectedItem).Key;
+            if (activeBinding != "") LoadBindingValues();
+        }
+
+        private void LoadBindingValues()
+        {
+            SetComboValue(comboPrimary, AppConfig.GetString("bind_" + activeBinding + bindingScope, ""));
+            SetComboValue(comboSecondary, AppConfig.GetString("bind2_" + activeBinding + bindingScope, ""));
+
+            SetTurboValue(comboTurboPrimary, AppConfig.Get("turbo_" + activeBinding + bindingScope, 0));
+            SetTurboValue(comboTurboSecondary, AppConfig.Get("turbo2_" + activeBinding + bindingScope, 0));
+        }
+
         private bool _updatingBindings;
 
         private void Binding_SelectedValueChanged(object? sender, EventArgs e)
@@ -187,7 +218,7 @@ namespace GHelper
 
             if (combo.SelectedItem is not BindingItem item) return;
 
-            string binding = "bind" + (combo.Name == "comboPrimary" ? "" : "2") + "_" + activeBinding;
+            string binding = "bind" + (combo.Name == "comboPrimary" ? "" : "2") + "_" + activeBinding + bindingScope;
 
             if (item.Code != "") AppConfig.Set(binding, item.Code);
             else AppConfig.Remove(binding);
@@ -202,7 +233,7 @@ namespace GHelper
             if (sender is null) return;
             RComboBox combo = (RComboBox)sender;
             int ms = ((KeyValuePair<int, string>)combo.SelectedItem).Key;
-            string key = (combo.Name == "comboTurboPrimary" ? "turbo_" : "turbo2_") + activeBinding;
+            string key = (combo.Name == "comboTurboPrimary" ? "turbo_" : "turbo2_") + activeBinding + bindingScope;
             if (ms > 0) AppConfig.Set(key, ms);
             else AppConfig.Remove(key);
             AllyControl.ApplyMode();
@@ -234,10 +265,12 @@ namespace GHelper
         {
             if (button == null) return;
 
-            string primary = AppConfig.GetString("bind_" + binding, "");
-            string secondary = AppConfig.GetString("bind2_" + binding, "");
+            bool bound = false;
+            foreach (string scope in new[] { "", "_gamepad", "_mouse" })
+                if (AppConfig.GetString("bind_" + binding + scope, "") != "" || AppConfig.GetString("bind2_" + binding + scope, "") != "")
+                    bound = true;
 
-            if (primary != "" || secondary != "")
+            if (bound)
             {
                 button.BorderColor = colorStandard;
                 button.Activated = true;
@@ -267,11 +300,7 @@ namespace GHelper
 
             labelBinding.Text = Properties.Strings.Binding + ": " + label;
 
-            SetComboValue(comboPrimary, AppConfig.GetString("bind_" + binding, ""));
-            SetComboValue(comboSecondary, AppConfig.GetString("bind2_" + binding, ""));
-
-            SetTurboValue(comboTurboPrimary, AppConfig.Get("turbo_" + binding, 0));
-            SetTurboValue(comboTurboSecondary, AppConfig.Get("turbo2_" + binding, 0));
+            LoadBindingValues();
         }
 
 

@@ -67,6 +67,8 @@ namespace GHelper
             labelTurbo = new Label();
             comboTurboPrimary = new GHelper.UI.RComboBox();
             comboTurboSecondary = new GHelper.UI.RComboBox();
+            labelScope = new Label();
+            comboScope = new GHelper.UI.RComboBox();
             buttonView = new GHelper.UI.RButton();
             buttonLS = new GHelper.UI.RButton();
             buttonLT = new GHelper.UI.RButton();
@@ -526,9 +528,11 @@ namespace GHelper
             panelBinding.Controls.Add(labelTurbo);
             panelBinding.Controls.Add(comboTurboPrimary);
             panelBinding.Controls.Add(comboTurboSecondary);
+            panelBinding.Controls.Add(labelScope);
+            panelBinding.Controls.Add(comboScope);
             panelBinding.Location = new Point(397, 192);
             panelBinding.Name = "panelBinding";
-            panelBinding.Size = new Size(583, 203);
+            panelBinding.Size = new Size(583, 226);
             panelBinding.TabIndex = 37;
             panelBinding.Visible = false;
             // 
@@ -623,7 +627,30 @@ namespace GHelper
             comboTurboSecondary.Name = "comboTurboSecondary";
             comboTurboSecondary.Size = new Size(127, 40);
             comboTurboSecondary.TabIndex = 37;
-            // 
+            //
+            // labelScope
+            //
+            labelScope.AutoSize = true;
+            labelScope.ForeColor = SystemColors.ControlDarkDark;
+            labelScope.Location = new Point(8, 184);
+            labelScope.Name = "labelScope";
+            labelScope.Size = new Size(103, 32);
+            labelScope.TabIndex = 38;
+            labelScope.Text = "Apply to";
+            //
+            // comboScope
+            //
+            comboScope.BorderColor = Color.White;
+            comboScope.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboScope.FlatStyle = FlatStyle.Flat;
+            comboScope.Font = new Font("Segoe UI", 9F);
+            comboScope.FormattingEnabled = true;
+            comboScope.Location = new Point(138, 179);
+            comboScope.Margin = new Padding(4, 11, 4, 8);
+            comboScope.Name = "comboScope";
+            comboScope.Size = new Size(295, 40);
+            comboScope.TabIndex = 39;
+            //
             // buttonView
             // 
             buttonView.Activated = false;
@@ -1191,5 +1218,7 @@ namespace GHelper
         private Label labelTurbo;
         private UI.RComboBox comboTurboPrimary;
         private UI.RComboBox comboTurboSecondary;
+        private Label labelScope;
+        private UI.RComboBox comboScope;
     }
 }
