@@ -47,15 +47,29 @@ namespace GHelper.Mode
         static System.Timers.Timer? reapplyTimer;
         static System.Timers.Timer modeToggleTimer = default!;
         static CancellationTokenSource _modeCts = new();
+        static Task _modeTask = Task.CompletedTask;
 
         public ModeControl()
         {
-            int reapplyTime = AppConfig.Get("reapply_time", AppConfig.IsReapplyTempRequired() ? 30 : 0);
+            int reapplyTime = AppConfig.Get("reapply_time", IsReapplyTempRequired() ? 30 : 0);
             if (reapplyTime > 0)
             {
                 reapplyTimer = new System.Timers.Timer(reapplyTime * 1000);
                 reapplyTimer.Elapsed += ReapplyTimer_Elapsed;
             }
+        }
+
+        // Cezanne/Rembrandt (Renoir) + Phoenix/HawkPoint (Mobile) silently reset temp limit under load.
+        private static bool IsReapplyTempRequired()
+        {
+            var smu = GetSmu();
+            return smu != null && smu.Family is CpuFamily.Renoir or CpuFamily.Mobile;
+        }
+
+        private static bool IsReapplyRyzenRequired()
+        {
+            var smu = GetSmu();
+            return smu != null && smu.Family is CpuFamily.Raphael;
         }
 
         private static void SetReapplyEnabled(bool enabled)
@@ -70,11 +84,15 @@ namespace GHelper.Mode
             SetRyzenPower();
         }
 
+        public void WaitForApply()
+        {
+            try { _modeTask.Wait(5000); } catch { }
+        }
+
         public void AutoPerformance(bool powerChanged = false)
         {
-            var Plugged = SystemInformation.PowerStatus.PowerLineStatus;
-
-            int mode = AppConfig.Get("performance_" + (int)Plugged);
+            int mode = AppConfig.Get("performance_" + Program.PerformanceKey());
+            Logger.WriteLine($"{Program.currentSource} Performance Mode: {Modes.GetName(mode == -1 ? Modes.GetCurrent() : mode)}");
 
             if (mode != -1)
                 SetPerformanceMode(mode, powerChanged);
@@ -116,7 +134,7 @@ namespace GHelper.Mode
             _modeCts = new CancellationTokenSource();
             var ct = _modeCts.Token;
 
-            Task.Run(async () =>
+            _modeTask = Task.Run(async () =>
             {
                 try
                 {
@@ -153,12 +171,16 @@ namespace GHelper.Mode
                     var command = AppConfig.GetModeString("mode_command");
                     if (command is not null)
                     {   Logger.WriteLine("Running mode command: " + command);
-                        RestrictedProcessHelper.RunAsRestrictedUser(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "cmd.exe"), "/C " + command);
+                        RestrictedProcessHelper.RunAsRestrictedUser(command);
                     }
                 }
                 catch (OperationCanceledException)
                 {
                     Logger.WriteLine($"SetPerformanceMode cancelled (mode {mode})");
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteLine($"SetPerformanceMode failed (mode {mode}): {ex.Message}");
                 }
             }, ct);
 
@@ -292,7 +314,7 @@ namespace GHelper.Mode
             SetGPUPower();
             AutoRyzen();
 
-            if (AppConfig.IsReapplyRyzen())
+            if (IsReapplyRyzenRequired())
                 Task.Delay(5000).ContinueWith(_ => { AutoRyzen(); ReadRyzenLimits(); });
 
         }
@@ -401,7 +423,7 @@ namespace GHelper.Mode
                 if (HardwareControl.GpuControl is null) { Logger.WriteLine("Clocks: NoGPUControl"); return; }
                 if (!HardwareControl.GpuControl!.IsNvidia) { Logger.WriteLine("Clocks: NotNvidia"); return; }
 
-                using NvidiaGpuControl nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
+                NvidiaGpuControl nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
                 try
                 {
                     int statusClocks = nvControl.SetClocks(core, memory);

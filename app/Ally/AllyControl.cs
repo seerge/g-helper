@@ -107,7 +107,8 @@ namespace GHelper.Ally
         public const string BindToggleFPSLimit = "04-04-8C-88-8A-01";
         public const string BindToggleTouchScreen = "04-04-8C-88-8A-0B";
 
-        public const string BindOverlay = "04-03-8C-88-44";
+        public const string BindAmdOverlay = "04-03-8C-88-44";
+        public const string BindOverlay = "04-04-8C-88-8A-44";
 
         public const string BindShiftTab = "04-02-88-0D";
         public const string BindAltTab = "04-02-8A-0D";
@@ -177,7 +178,8 @@ namespace GHelper.Ally
                 (BindShowKeyboard,      "Show Keyboard"),
                 (BindShowDesktop,       "Show Desktop"),
                 (BindScreenshot,        "Screenshot"),
-                (BindOverlay,           "AMD Overlay"),
+                (BindOverlay,           "Overlay"),
+                (BindAmdOverlay,        "AMD Overlay"),
                 (BindTaskManager,       "Task Manager"),
                 (BindCloseWindow,       "Close Window"),
                 (BindShiftTab,          "Shift-Tab"),
@@ -694,11 +696,14 @@ namespace GHelper.Ally
                     return;
                 }
 
+                input.Dispose();
+
                 if (applyMode != ControllerMode.Auto) _applyMode = applyMode;
 
                 if (init)
                 {
                     WakeUp();
+                    DisableXBoxController(false);
                     InputDispatcher.SetBacklightAuto();
                 }
 
@@ -720,7 +725,6 @@ namespace GHelper.Ally
                 if (init && AppConfig.Is("controller_disabled"))
                 {
                     Thread.Sleep(500);
-                    DisableXBoxController(false);
                     DisableXBoxController(true);
                 }
 

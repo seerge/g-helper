@@ -6,22 +6,26 @@ public static class Logger
     public static string logFile = appPath + "\\log.txt";
 
     private static readonly Random _random = new Random();
+    private static readonly object _lock = new object();
 
     public static void WriteLine(string logMessage)
     {
         var stamp = DateTime.Now;
         Debug.WriteLine($"{stamp}: {logMessage}");
 
-        try
+        lock (_lock)
         {
-            if (!Directory.Exists(appPath)) Directory.CreateDirectory(appPath);
-            using var fs = new FileStream(logFile, FileMode.Append, FileAccess.Write, FileShare.ReadWrite);
-            using var w = new StreamWriter(fs);
-            w.WriteLine($"{stamp} [{Environment.UserName}]: {logMessage}");
-        }
-        catch { }
+            try
+            {
+                if (!Directory.Exists(appPath)) Directory.CreateDirectory(appPath);
+                using var fs = new FileStream(logFile, FileMode.Append, FileAccess.Write, FileShare.ReadWrite);
+                using var w = new StreamWriter(fs);
+                w.WriteLine($"{stamp} [{Environment.UserName}]: {logMessage}");
+            }
+            catch { }
 
-        if (_random.Next(100) == 1) Cleanup();
+            if (_random.Next(100) == 1) Cleanup();
+        }
     }
 
     public static void Cleanup()

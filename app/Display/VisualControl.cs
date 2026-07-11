@@ -257,7 +257,7 @@ namespace GHelper.Display
                 if (ProcessHelper.IsUserAdministrator() && _download)
                 {
                     _download = false;
-                    ColorProfileHelper.InstallProfile();
+                    _ = ColorProfileHelper.InstallProfile();
                 }
             }
             if (result == 1 && _init)
@@ -270,7 +270,7 @@ namespace GHelper.Display
 
         public static void SetVisual(SplendidCommand mode = SplendidCommand.Default, int whiteBalance = DefaultColorTemp, bool init = false)
         {
-            Task.Run(async () =>
+            Task.Run(() =>
             {
                 if (AmdDisplay.IsOledPowerOptimization()) Program.settingsForm.VisualiseAmdOled(true);
             });
@@ -282,9 +282,9 @@ namespace GHelper.Display
             AppConfig.Set("visual", (int)mode);
             AppConfig.Set("color_temp", whiteBalance);
 
-            Task.Run(async () =>
+            Task.Run(() =>
             {
-                if (!forceVisual && ScreenCCD.GetHDRStatus(true)) return;
+                if (!forceVisual && (ScreenCCD.GetHDRStatus(out bool acm, true) || acm)) return;
                 if (!forceVisual && ScreenNative.GetRefreshRate(ScreenNative.FindLaptopScreen(true)) < 0) return;
 
                 if (!init && mode == SplendidCommand.EReading && !ProcessHelper.IsUserAdministrator() && !IsEReading()) ProcessHelper.RunAsAdmin();
@@ -326,7 +326,7 @@ namespace GHelper.Display
                     if (ProcessHelper.IsUserAdministrator() && _download)
                     {
                         _download = false;
-                        ColorProfileHelper.InstallProfile();
+                        _ = ColorProfileHelper.InstallProfile();
                     }
                 }
                 if (result == 1 && _init)
@@ -445,6 +445,7 @@ namespace GHelper.Display
             _brightness = Math.Max(0, Math.Min(100, brightness + delta));
             AppConfig.Set(IsOnBattery() ? "brightness_battery" : "brightness", _brightness);
 
+            brightnessTimer.Stop();
             brightnessTimer.Start();
 
             Program.settingsForm.VisualiseBrightness();

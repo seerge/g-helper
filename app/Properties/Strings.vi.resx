@@ -147,6 +147,9 @@
   <data name="AllyController" xml:space="preserve">
     <value>Bộ điều khiển Ally</value>
   </data>
+  <data name="AnimationDirection" xml:space="preserve">
+    <value>Hướng hoạt ảnh</value>
+  </data>
   <data name="AnimationSpeed" xml:space="preserve">
     <value>Tốc độ</value>
   </data>
@@ -262,7 +265,7 @@
     <value>Tắt</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Số giây để tắt đèn nền bàn phím(khi dùng pin)</value>
+    <value>Backlight timeout plugged / on battery</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Số giây để tắt đèn nền bàn phím(khi dùng pin)</value>
@@ -272,6 +275,9 @@
   </data>
   <data name="Balanced" xml:space="preserve">
     <value>Cân bằng</value>
+  </data>
+  <data name="Battery" xml:space="preserve">
+    <value>Pin</value>
   </data>
   <data name="BatteryCharge" xml:space="preserve">
     <value>Sạc</value>
@@ -321,6 +327,9 @@
   <data name="Charging" xml:space="preserve">
     <value>Đang sạc</value>
   </data>
+  <data name="ClampToGrid" xml:space="preserve">
+    <value>Bám lưới</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>Màu</value>
   </data>
@@ -332,6 +341,9 @@
   </data>
   <data name="CPUBoost" xml:space="preserve">
     <value>Tăng tốc CPU</value>
+  </data>
+  <data name="CPUCoresConfiguration" xml:space="preserve">
+    <value>Cấu hình lõi CPU</value>
   </data>
   <data name="Custom" xml:space="preserve">
     <value>Tuỳ chỉnh</value>
@@ -394,6 +406,9 @@ Bạn có muốn tiếp tục không?</value>
   </data>
   <data name="FanCurves" xml:space="preserve">
     <value>Chế độ Quạt</value>
+  </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>Giữ SHIFT để kéo tất cả các điểm cùng lúc</value>
   </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>Cấu hình Quạt CPU</value>
@@ -465,10 +480,16 @@ Bạn có muốn tiếp tục không?</value>
     <value>Nhiệt độ đích</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Minutes till Hibernation in sleep on battery (0 - OFF)</value>
+    <value>Time to hibernate in sleep on battery</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>Cao</value>
+  </data>
+  <data name="HysteresisDown" xml:space="preserve">
+    <value>Trễ giảm</value>
+  </data>
+  <data name="HysteresisUp" xml:space="preserve">
+    <value>Trễ tăng</value>
   </data>
   <data name="ImageRotation" xml:space="preserve">
     <value>Xoay Hình Ảnh</value>
@@ -476,11 +497,17 @@ Bạn có muốn tiếp tục không?</value>
   <data name="Import" xml:space="preserve">
     <value>Nhập cấu hình từ file</value>
   </data>
+  <data name="InstallPawnIODriver" xml:space="preserve">
+    <value>Cài đặt driver PawnIO (pawnio.eu)</value>
+  </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Tổ hợp phím</value>
   </data>
   <data name="Keyboard" xml:space="preserve">
     <value>Bàn phím</value>
+  </data>
+  <data name="KeystoneSound" xml:space="preserve">
+    <value>Âm thanh Keystone</value>
   </data>
   <data name="KillGpuApps" xml:space="preserve">
     <value>Ngưng tất cả app dùng GPU khi đổi sang chế độ Eco</value>
@@ -551,6 +578,9 @@ Bạn có muốn tiếp tục không?</value>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Tần số quét tối đa để có độ trễ thấp</value>
   </data>
+  <data name="Medium" xml:space="preserve">
+    <value>Vừa</value>
+  </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
     <value>Tần số quét 60Hz để tiết kiệm pin</value>
   </data>
@@ -561,7 +591,7 @@ Bạn có muốn tiếp tục không?</value>
     <value>Minutes</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Angle Snapping / Tuning</value>
+    <value>Khóa góc / Tinh chỉnh</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>Auto Power Off After</value>
@@ -585,7 +615,7 @@ Bạn có muốn tiếp tục không?</value>
     <value>Synchronize with mouse</value>
   </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
-    <value>Sync with laptop</value>
+    <value>Đồng bộ với laptop</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Multi Zone</value>
@@ -617,11 +647,20 @@ Bạn có muốn tiếp tục không?</value>
   <data name="On" xml:space="preserve">
     <value>On</value>
   </data>
+  <data name="OnAlways" xml:space="preserve">
+    <value>Luôn bật</value>
+  </data>
+  <data name="OnBattery" xml:space="preserve">
+    <value>Khi dùng pin</value>
+  </data>
   <data name="OneZone" xml:space="preserve">
     <value>One Zone</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>Mở cửa sổ G-Helper</value>
+  </data>
+  <data name="OptimalDisplayBrightness" xml:space="preserve">
+    <value>Độ sáng màn hình tối ưu</value>
   </data>
   <data name="Optimized" xml:space="preserve">
     <value>Tối ưu</value>
@@ -667,6 +706,9 @@ Bạn có muốn tiếp tục không?</value>
   </data>
   <data name="Quit" xml:space="preserve">
     <value>Thoát</value>
+  </data>
+  <data name="ReadLimits" xml:space="preserve">
+    <value>Đọc giới hạn</value>
   </data>
   <data name="Reset" xml:space="preserve">
     <value>Reset</value>
@@ -775,6 +817,12 @@ Bạn có muốn tiếp tục không?</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>Phiên bản</value>
+  </data>
+  <data name="VeryHigh" xml:space="preserve">
+    <value>Rất cao</value>
+  </data>
+  <data name="VeryLow" xml:space="preserve">
+    <value>Rất thấp</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
     <value>Vibration Strength</value>
@@ -909,5 +957,11 @@ và tự khởi động lại khi GPU được bật</value>
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>Ngăn các thiết bị PCIe vào trạng thái nhàn rỗi tiết kiệm điện.
 Khuyến nghị nếu bạn gặp tình trạng treo ngẫu nhiên hoặc phần cứng không phản hồi.</value>
+  </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
   </data>
 </root>

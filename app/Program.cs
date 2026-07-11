@@ -38,6 +38,7 @@ namespace GHelper
         public static int WM_TASKBARCREATED = 0;
 
         private static long lastAuto;
+        private static readonly object autoLock = new();
         private static long lastTheme;
 
         public static InputDispatcher? inputDispatcher;
@@ -45,6 +46,10 @@ namespace GHelper
         // The main entry point for the application
         public static void Main(string[] args)
         {
+            Application.SetHighDpiMode(HighDpiMode.SystemAware);
+
+            AppDomain.CurrentDomain.UnhandledException += (s, e) => Logger.WriteLine("Unhandled: " + e.ExceptionObject);
+            TaskScheduler.UnobservedTaskException += (s, e) => { Logger.WriteLine("Unobserved: " + e.Exception); e.SetObserved(); };
 
             string action = "";
             if (args.Length > 0) action = args[0];
@@ -123,7 +128,8 @@ namespace GHelper
                 return;
             }
 
-            ProcessHelper.KillByName("ASUSSmartDisplayControl");
+            ProcessHelper.KillSmartDisplayControl();
+            AsusService.StopOnStartup();
 
             Application.EnableVisualStyles();
 
@@ -223,7 +229,7 @@ namespace GHelper
                 settingsForm.VisualiseArmoury(AsusService.IsArmouryRunning());
             });
 
-            if (AppConfig.Is("overlay"))
+            if (AppConfig.IsOverlay())
                 hardwareOverlay?.StartOverlay();
 
             Application.Run();
@@ -243,6 +249,7 @@ namespace GHelper
             if (e.Reason == SessionSwitchReason.SessionLogon || e.Reason == SessionSwitchReason.SessionUnlock || e.Reason == SessionSwitchReason.ConsoleConnect)
             {
                 Logger.WriteLine("Session:" + e.Reason.ToString());
+                ProcessHelper.KillSmartDisplayControl();
                 bool wasLocked = Aura.sessionLock;
                 Aura.sessionLock = false;
                 ScreenControl.AutoScreen();
@@ -271,6 +278,8 @@ namespace GHelper
                     bool changed = settingsForm.InitTheme();
                     settingsForm.InitContextMenuTheme();
                     settingsForm.VisualiseIcon();
+                    settingsForm.VisualiseFnLock();
+                    settingsForm.VisualiseBatteryFull();
 
                     if (changed)
                     {
@@ -303,8 +312,13 @@ namespace GHelper
         {
             int skipDelay = wakeup ? 10000 : 3000;
 
-            if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < skipDelay) return false;
-            lastAuto = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            if (init) gpuControl.CaptureNvBootState();
+
+            lock (autoLock)
+            {
+                if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < skipDelay) return false;
+                lastAuto = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            }
 
             currentSource = ReadPowerSource();
             Logger.WriteLine("AutoSetting for " + SystemInformation.PowerStatus.PowerLineStatus.ToString());
@@ -345,7 +359,7 @@ namespace GHelper
             return true;
         }
 
-        public enum PowerSource { Battery, USBC, Barrel }
+        public enum PowerSource { Battery, Barrel, USBC }
 
         public static PowerSource currentSource = PowerSource.Battery;
         private static PowerLineStatus lastLineStatus = SystemInformation.PowerStatus.PowerLineStatus;
@@ -362,6 +376,11 @@ namespace GHelper
 
             return PowerSource.Barrel;
         }
+
+        public static bool usbcProfile = AppConfig.Is("usbc_profile");
+
+        public static int PerformanceKey() =>
+            usbcProfile ? (int)ReadPowerSource() : (int)SystemInformation.PowerStatus.PowerLineStatus;
 
         public static void SchedulePowerCheck()
         {
@@ -423,6 +442,8 @@ namespace GHelper
             {
                 var screen = Screen.PrimaryScreen;
                 if (screen is null) screen = Screen.FromControl(settingsForm);
+
+                settingsForm.WindowState = FormWindowState.Normal;
 
                 settingsForm.Location = screen.WorkingArea.Location;
                 settingsForm.Left = screen.WorkingArea.Width - 10 - settingsForm.Width;

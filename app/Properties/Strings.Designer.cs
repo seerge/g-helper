@@ -158,7 +158,16 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("AmbientModeResources", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Animation Direction.
+        /// </summary>
+        internal static string AnimationDirection {
+            get {
+                return ResourceManager.GetString("AnimationDirection", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Animation Speed.
         /// </summary>
@@ -502,7 +511,7 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Timeout plugged / on battery (0 - ON).
+        ///   Looks up a localized string similar to Backlight timeout plugged / on battery.
         /// </summary>
         internal static string BacklightTimeout {
             get {
@@ -536,7 +545,16 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("Balanced", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Battery.
+        /// </summary>
+        internal static string Battery {
+            get {
+                return ResourceManager.GetString("Battery", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Charge.
         /// </summary>
@@ -599,7 +617,7 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("BindingSecondary", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to BIOS and Driver Updates.
         /// </summary>
@@ -680,7 +698,16 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("Charging", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Clamp to Grid.
+        /// </summary>
+        internal static string ClampToGrid {
+            get {
+                return ResourceManager.GetString("ClampToGrid", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Color.
         /// </summary>
@@ -716,7 +743,16 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("CPUBoost", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to CPU Cores Configuration.
+        /// </summary>
+        internal static string CPUCoresConfiguration {
+            get {
+                return ResourceManager.GetString("CPUCoresConfiguration", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Custom.
         /// </summary>
@@ -961,7 +997,16 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("FanCurves", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Hold SHIFT to drag all points together.
+        /// </summary>
+        internal static string FanDragAll {
+            get {
+                return ResourceManager.GetString("FanDragAll", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to CPU Fan Profile.
         /// </summary>
@@ -1170,7 +1215,7 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Minutes till Hibernation in sleep on battery (0 - OFF).
+        ///   Looks up a localized string similar to Time to hibernate in sleep on battery.
         /// </summary>
         internal static string HibernateAfter {
             get {
@@ -1186,7 +1231,25 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("High", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Hysteresis Down.
+        /// </summary>
+        internal static string HysteresisDown {
+            get {
+                return ResourceManager.GetString("HysteresisDown", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Hysteresis Up.
+        /// </summary>
+        internal static string HysteresisUp {
+            get {
+                return ResourceManager.GetString("HysteresisUp", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Image Rotation.
         /// </summary>
@@ -1204,7 +1267,16 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("Import", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Install PawnIO Driver (pawnio.eu).
+        /// </summary>
+        internal static string InstallPawnIODriver {
+            get {
+                return ResourceManager.GetString("InstallPawnIODriver", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Interval Off.
         /// </summary>
@@ -1240,7 +1312,16 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("Keyboard", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Keystone Sound.
+        /// </summary>
+        internal static string KeystoneSound {
+            get {
+                return ResourceManager.GetString("KeystoneSound", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Stop all apps using GPU when switching to Eco.
         /// </summary>
@@ -1483,7 +1564,16 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("MaxRefreshTooltip", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Medium.
+        /// </summary>
+        internal static string Medium {
+            get {
+                return ResourceManager.GetString("Medium", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to 60Hz refresh rate to save battery.
         /// </summary>
@@ -1699,7 +1789,25 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("On", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to On Always.
+        /// </summary>
+        internal static string OnAlways {
+            get {
+                return ResourceManager.GetString("OnAlways", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to On Battery.
+        /// </summary>
+        internal static string OnBattery {
+            get {
+                return ResourceManager.GetString("OnBattery", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to One Zone.
         /// </summary>
@@ -1717,7 +1825,16 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("OpenGHelper", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Optimal Display Brightness.
+        /// </summary>
+        internal static string OptimalDisplayBrightness {
+            get {
+                return ResourceManager.GetString("OptimalDisplayBrightness", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Optimized.
         /// </summary>
@@ -1852,7 +1969,34 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("Quit", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Overlay.
+        /// </summary>
+        internal static string Overlay {
+            get {
+                return ResourceManager.GetString("Overlay", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Overlay only in games.
+        /// </summary>
+        internal static string OverlayOnlyInGames {
+            get {
+                return ResourceManager.GetString("OverlayOnlyInGames", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Read Limits.
+        /// </summary>
+        internal static string ReadLimits {
+            get {
+                return ResourceManager.GetString("ReadLimits", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Reset.
         /// </summary>
@@ -1861,7 +2005,7 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("Reset", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk).
         /// </summary>
@@ -2338,7 +2482,25 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("VersionLabel", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Very High.
+        /// </summary>
+        internal static string VeryHigh {
+            get {
+                return ResourceManager.GetString("VeryHigh", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Very Low.
+        /// </summary>
+        internal static string VeryLow {
+            get {
+                return ResourceManager.GetString("VeryLow", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Vibration Strength.
         /// </summary>

@@ -362,7 +362,7 @@
             };
         }
 
-        protected LightingSetting? ParseLightingSetting(byte[] packet, LightingZone zone)
+        protected new LightingSetting? ParseLightingSetting(byte[] packet, LightingZone zone)
         {
             if (packet[1] != 0x12 || packet[2] != 0x03)
             {
@@ -457,6 +457,19 @@
                 Logger.WriteLine(GetDisplayName() + ": Read RGB Setting for Zone " + lz[i].ToString() + ": " + ls.ToString());
                 LightingSetting[i] = ls;
             }
+        }
+    }
+
+    //Call of Duty Black Ops 4 edition
+    public class GladiusIIOriginCOD : GladiusIIOrigin
+    {
+        public GladiusIIOriginCOD() : base(0x18B1, "mi_02")
+        {
+
+        }
+        public override string GetDisplayName()
+        {
+            return "Gladius II Origin COD";
         }
     }
 }

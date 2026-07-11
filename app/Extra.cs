@@ -19,6 +19,7 @@ namespace GHelper
 
         private void SetKeyCombo(ComboBox combo, TextBox txbox, string name)
         {
+            if (combo is RComboBox rcombo) rcombo.NativeHeight = true;
 
             Dictionary<string, string> customActions = new Dictionary<string, string>
             {
@@ -38,7 +39,7 @@ namespace GHelper
               {"touchscreen", Properties.Strings.ToggleTouchscreen },
               {"micmute", Properties.Strings.MuteMic},
               {"ghelper", Properties.Strings.OpenGHelper},
-              {"overlay", "Hardware Overlay"},
+              {"overlay", Properties.Strings.Overlay},
               {"custom", Properties.Strings.Custom}
             };
 
@@ -131,7 +132,9 @@ namespace GHelper
             checkSleep.Text = Properties.Strings.Sleep;
             checkBoot.Text = Properties.Strings.Boot;
             checkShutdown.Text = Properties.Strings.Shutdown;
+            checkBattery.Text = checkBatteryLogo.Text = checkBatteryBar.Text = checkBatteryLid.Text = Properties.Strings.Battery;
             checkBootSound.Text = Properties.Strings.BootSound;
+            checkKeystoneSound.Text = Properties.Strings.KeystoneSound;
             checkStatusLed.Text = Properties.Strings.LEDStatusIndicators;
 
             labelSpeed.Text = Properties.Strings.AnimationSpeed;
@@ -154,8 +157,17 @@ namespace GHelper
             checkAspm.Text = Properties.Strings.DisablePCIeASPM;
             checkNVPlatform.Text = Properties.Strings.StopStartNVServices;
             labelHibernateAfter.Text = Properties.Strings.HibernateAfter;
+            numericHibernateAfter.OffText = Properties.Strings.Off;
+            numericBacklightTime.OffText = Properties.Strings.Off;
+            numericBacklightPluggedTime.OffText = Properties.Strings.Off;
 
             labelAPUMem.Text = Properties.Strings.APUMemory;
+            labelCores.Text = Properties.Strings.CPUCoresConfiguration;
+
+            labelOptimalBrightness.Text = Properties.Strings.OptimalDisplayBrightness;
+            comboOptimalBrightness.Items[0] = Properties.Strings.Off;
+            comboOptimalBrightness.Items[1] = Properties.Strings.OnAlways;
+            comboOptimalBrightness.Items[2] = Properties.Strings.OnBattery;
 
             Text = Properties.Strings.ExtraSettings;
 
@@ -410,6 +422,7 @@ namespace GHelper
             checkUSBC.CheckedChanged += CheckUSBC_CheckedChanged;
 
             sliderBrightness.Value = InputDispatcher.GetBacklight();
+            sliderBrightness.AccessibleName = Properties.Strings.LaptopBacklight + ": " + sliderBrightness.Value;
             sliderBrightness.ValueChanged += SliderBrightness_ValueChanged;
 
             panelXGM.Visible = XGM.IsConnected();
@@ -502,16 +515,15 @@ namespace GHelper
 
         private void InitACPITesting()
         {
+            pictureScan.Visible = true;
+            pictureScan.Click += PictureScan_Click;
+
             if (!AppConfig.Is("debug")) return;
 
-            pictureScan.Visible = true;
             panelACPI.Visible = true;
-
             textACPICommand.Text = "110034";
             textACPIParam.Text = "0x0303";
-
             buttonACPISend.Click += ButtonACPISend_Click;
-            pictureScan.Click += PictureScan_Click;
         }
 
         private void ButtonACPISend_Click(object? sender, EventArgs e)
@@ -651,6 +663,16 @@ namespace GHelper
                 AppConfig.Set("keyboard_brightness", sliderBrightness.Value);
 
             Aura.ApplyBrightness(sliderBrightness.Value, "Slider");
+            sliderBrightness.AccessibleName = Properties.Strings.LaptopBacklight + ": " + sliderBrightness.Value;
+        }
+
+        public void VisualiseBacklight(int backlight)
+        {
+            if (InvokeRequired) { Invoke(() => VisualiseBacklight(backlight)); return; }
+            sliderBrightness.ValueChanged -= SliderBrightness_ValueChanged;
+            sliderBrightness.Value = backlight;
+            sliderBrightness.AccessibleName = Properties.Strings.LaptopBacklight + ": " + sliderBrightness.Value;
+            sliderBrightness.ValueChanged += SliderBrightness_ValueChanged;
         }
 
         private void InitServices()
@@ -684,11 +706,11 @@ namespace GHelper
                 Task.Run(() =>
                 {
                     AsusService.StopAsusServices();
+                    Program.inputDispatcher.Init();
                     BeginInvoke(delegate
                     {
                         InitServices();
                     });
-                    Program.inputDispatcher.Init();
                 });
             }
             else
@@ -785,6 +807,7 @@ namespace GHelper
             }
 
             Aura.ApplyPower();
+            if (Aura.IsOldStrix) Aura.ApplyAura();
 
         }
 

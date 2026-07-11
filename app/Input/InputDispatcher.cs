@@ -1,6 +1,8 @@
 using GHelper.Display;
 using GHelper.Helpers;
 using GHelper.Mode;
+using GHelper.Peripherals;
+using GHelper.Peripherals.Mouse;
 using GHelper.USB;
 using Microsoft.Win32;
 using System.Diagnostics;
@@ -30,6 +32,7 @@ namespace GHelper.Input
         public static Keys keyProfile3 = (Keys)AppConfig.Get("keybind_profile_3", (int)Keys.F19);
         public static Keys keyProfile4 = (Keys)AppConfig.Get("keybind_profile_4", (int)Keys.F20);
         public static Keys keyXGM = (Keys)AppConfig.Get("keybind_xgm", (int)Keys.F21);
+        public static Keys keyOverlay = (Keys)AppConfig.Get("keybind_overlay", (int)Keys.O);
 
         public static ModifierKeys keyModifier = GetModifierKeys("modifier_keybind", ModifierKeys.Shift | ModifierKeys.Control);
         public static ModifierKeys keyModifierAlt = GetModifierKeys("modifier_keybind_alt", ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt);
@@ -179,8 +182,9 @@ namespace GHelper.Input
                 hook.RegisterHotKey(ModifierKeys.Shift, Keys.VolumeDown);
                 hook.RegisterHotKey(ModifierKeys.Shift, Keys.VolumeUp);
                 hook.RegisterHotKey(keyModifier, Keys.F20);
-                hook.RegisterHotKey(keyModifierAlt, Keys.O);
             }
+
+            if (keyOverlay != Keys.None) hook.RegisterHotKey(keyModifierAlt, keyOverlay);
 
             if (!AppConfig.IsZ13() && !AppConfig.IsAlly() && !AppConfig.IsVivoZenPro())
             {
@@ -212,6 +216,21 @@ namespace GHelper.Input
                 hook.RegisterHotKey(ModifierKeys.None, Keys.Down);
             }
 
+            foreach (ushort code in GetActiveMouseComboCarriers())
+                hook.RegisterHotKey(ModifierKeys.None, Keys.F13 + (code - 0x0068));
+
+        }
+
+        private static IEnumerable<ushort> GetActiveMouseComboCarriers()
+        {
+            var seen = new HashSet<ushort>();
+            foreach (var m in PeripheralsProvider.SnapshotMice())
+            {
+                if (!m.HasButtonBindings() || m.ButtonBindings is null) continue;
+                foreach (ushort code in m.ButtonBindings)
+                    if (AsusMouse.CombosByCode.ContainsKey(code) && seen.Add(code))
+                        yield return code;
+            }
         }
 
 
@@ -239,18 +258,10 @@ namespace GHelper.Input
         }
 
 
-        static void CustomKey(string configKey = "m3")
+        static void RunKeyCommand(string command, bool launchOnNoKeys = true)
         {
-            string command = AppConfig.GetString(configKey + "_custom");
             int[] hexKeys = new int[0];
-
-            try
-            {
-                hexKeys = ParseHexValues(command);
-            }
-            catch
-            {
-            }
+            try { hexKeys = ParseHexValues(command); } catch { }
 
             switch (hexKeys.Length)
             {
@@ -267,10 +278,14 @@ namespace GHelper.Input
                     KeyboardHook.KeyKeyKeyKeyPress((Keys)hexKeys[0], (Keys)hexKeys[1], (Keys)hexKeys[2], (Keys)hexKeys[3]);
                     break;
                 default:
-                    LaunchProcess(command);
+                    if (launchOnNoKeys && !string.IsNullOrWhiteSpace(command)) LaunchProcess(command);
                     break;
             }
+        }
 
+        static void CustomKey(string configKey = "m3")
+        {
+            RunKeyCommand(AppConfig.GetString(configKey + "_custom"));
         }
 
 
@@ -317,6 +332,16 @@ namespace GHelper.Input
 
             if (e.Modifier == ModifierKeys.None)
             {
+                if (e.Key >= Keys.F13 && e.Key <= Keys.F24)
+                {
+                    ushort code = (ushort)(0x68 + (e.Key - Keys.F13));
+                    if (AsusMouse.CombosByCode.TryGetValue(code, out var combo))
+                    {
+                        RunKeyCommand(combo.ResolveCommand(), launchOnNoKeys: false);
+                        return;
+                    }
+                }
+
                 if (AppConfig.NoMKeys())
                 {
                     switch (e.Key)
@@ -473,6 +498,7 @@ namespace GHelper.Input
                 if (e.Key == keyProfile3) modeControl.SetPerformanceMode(3, true);
                 if (e.Key == keyProfile4) modeControl.SetPerformanceMode(4, true);
                 if (e.Key == keyXGM) Program.settingsForm.gpuControl.ToggleXGM(true);
+                if (e.Key == keyOverlay) Program.settingsForm.BeginInvoke(() => Program.settingsForm.ToggleOverlay(true));
 
                 switch (e.Key)
                 {
@@ -513,9 +539,6 @@ namespace GHelper.Input
                         Program.toast.RunToast(Properties.Strings.StandardMode);
                         Program.settingsForm.gpuControl.SetGPUMode(AsusACPI.GPUModeStandard);
                         break;
-                    case Keys.O:
-                        Program.settingsForm.BeginInvoke(Program.settingsForm.ToggleOverlay);
-                        break;
                 }
             }
 
@@ -553,6 +576,17 @@ namespace GHelper.Input
 
         public static void KeyProcess(string name = "m3")
         {
+            if (name == "m4" && Control.ModifierKeys == (Keys.Control | Keys.Shift | Keys.Alt))
+            {
+                Thread.Sleep(3000);
+                if ((User32.GetAsyncKeyState(0x11) & User32.GetAsyncKeyState(0x10) & User32.GetAsyncKeyState(0x12) & 0x8000) != 0)
+                {
+                    Program.acpi.DeviceSet(AsusACPI.GPUMux, 1, "MUX hybrid recovery");
+                    Process.Start(new ProcessStartInfo("shutdown", "/r /t 1") { CreateNoWindow = true, UseShellExecute = false });
+                }
+                return;
+            }
+
             string action = AppConfig.GetString(name);
 
             if (action is null || action.Length <= 1)
@@ -623,7 +657,7 @@ namespace GHelper.Input
                     ToggleFnLock();
                     break;
                 case "overlay":
-                    Program.settingsForm.BeginInvoke(Program.settingsForm.ToggleOverlay);
+                    Program.settingsForm.BeginInvoke(() => Program.settingsForm.ToggleOverlay(true));
                     break;
                 case "micmute":
                     ToggleMic();
@@ -826,7 +860,11 @@ namespace GHelper.Input
                     // This is both the M1 and M2 keys.
                     // There's a way to differentiate, apparently, but it isn't over USB or any other obvious protocol.
                     case 165:
+                        Program.settingsForm.BeginInvoke(() => Program.hardwareOverlay?.SetDragKey(true));
                         KeyProcess("paddle");
+                        return;
+                    case 0:
+                        Program.settingsForm.BeginInvoke(() => Program.hardwareOverlay?.SetDragKey(false));
                         return;
                     // The Command Center ("play-looking") button below the select key.
                     case 166:
@@ -871,6 +909,7 @@ namespace GHelper.Input
                     case 181:    // FN + Numpad Enter
                         KeyProcess("fne");
                         return;
+                    case 93:    // GoPro key
                     case 174:   // FN+F5
                     case 153:   // FN+F5 OLD MODELS
                         modeControl.CyclePerformanceMode(Control.ModifierKeys == Keys.Shift);
@@ -1081,6 +1120,9 @@ namespace GHelper.Input
             else
                 AppConfig.Set("keyboard_brightness", backlight);
 
+            var extraForm = Program.settingsForm.extraForm;
+            if (extraForm != null && extraForm.Text != "") extraForm.VisualiseBacklight(backlight);
+
             if (force || !AsusService.IsAsusOptimizationRunning())
             {
                 Aura.ApplyBrightness(backlight, "HotKey");
@@ -1286,10 +1328,7 @@ namespace GHelper.Input
             if (string.IsNullOrEmpty(command)) return;
             try
             {
-                if (command.StartsWith("shutdown"))
-                    ProcessHelper.RunCMD("cmd", "/C " + command);
-                else
-                    RestrictedProcessHelper.RunAsRestrictedUser(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "cmd.exe"), "/C " + command);
+                RestrictedProcessHelper.RunAsRestrictedUser(command);
             }
             catch (Exception ex)
             {
@@ -1299,14 +1338,21 @@ namespace GHelper.Input
 
         static void WatcherEventArrived(object sender, EventArrivedEventArgs e)
         {
-            if (e.NewEvent is null) return;
-            int EventID = int.Parse(e.NewEvent["EventID"].ToString());
-            Logger.WriteLine("WMI event " + EventID);
-            if (AppConfig.NoWMI()) return;
+            try
+            {
+                if (e.NewEvent is null) return;
+                int EventID = int.Parse(e.NewEvent["EventID"].ToString());
+                Logger.WriteLine("WMI event " + EventID);
+                if (AppConfig.NoWMI()) return;
 
-            if (EventID == 123) Program.OnChargerEvent();
+                if (EventID == 123) Program.OnChargerEvent();
 
-            HandleEvent(EventID);
+                HandleEvent(EventID);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine("WMI event error: " + ex.Message);
+            }
         }
     }
 }

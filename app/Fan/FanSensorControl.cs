@@ -28,8 +28,11 @@ namespace GHelper.Fan
         public FanSensorControl(Fans fansForm)
         {
             this.fansForm = fansForm;
+            bool calibrating = timer is not null && timer.Enabled;
+            timer?.Dispose();
             timer = new System.Timers.Timer(1000);
             timer.Elapsed += Timer_Elapsed;
+            timer.Enabled = calibrating;
         }
 
         static int[] InitFanMax()

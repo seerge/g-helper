@@ -147,6 +147,9 @@
   <data name="AllyController" xml:space="preserve">
     <value>Ally Контролер</value>
   </data>
+  <data name="AnimationDirection" xml:space="preserve">
+    <value>Напрямок анімації</value>
+  </data>
   <data name="AnimationSpeed" xml:space="preserve">
     <value>Швидкість Анімації</value>
   </data>
@@ -262,7 +265,7 @@
     <value>Вимкнена</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Тайм-аут на зарядці / на батареї (0 - УВІМК)</value>
+    <value>Тайм-аут підсвічування: зарядка / батарея</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Тайм-аут підсвітки на батареї</value>
@@ -272,6 +275,9 @@
   </data>
   <data name="Balanced" xml:space="preserve">
     <value>Баланс</value>
+  </data>
+  <data name="Battery" xml:space="preserve">
+    <value>Батарея</value>
   </data>
   <data name="BatteryCharge" xml:space="preserve">
     <value>Заряд</value>
@@ -321,6 +327,9 @@
   <data name="Charging" xml:space="preserve">
     <value>Зарядка</value>
   </data>
+  <data name="ClampToGrid" xml:space="preserve">
+    <value>До сітки</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>Колір</value>
   </data>
@@ -332,6 +341,9 @@
   </data>
   <data name="CPUBoost" xml:space="preserve">
     <value>CPU Boost</value>
+  </data>
+  <data name="CPUCoresConfiguration" xml:space="preserve">
+    <value>Конфігурація ядер ЦП</value>
   </data>
   <data name="Custom" xml:space="preserve">
     <value>Своє</value>
@@ -394,6 +406,9 @@
   </data>
   <data name="FanCurves" xml:space="preserve">
     <value>Профілі кулерів</value>
+  </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>Утримуйте SHIFT, щоб перетягнути всі точки разом</value>
   </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>Профіль кулеру CPU</value>
@@ -465,10 +480,16 @@
     <value>Temperature Target</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Хвилин до режиму глибокого сну з акумулятором (0 - Вимкнено)</value>
+    <value>Час до режиму глибокого сну на акумуляторі</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>Висока</value>
+  </data>
+  <data name="HysteresisDown" xml:space="preserve">
+    <value>Гістерезис вниз</value>
+  </data>
+  <data name="HysteresisUp" xml:space="preserve">
+    <value>Гістерезис вгору</value>
   </data>
   <data name="ImageRotation" xml:space="preserve">
     <value>Поворот</value>
@@ -476,11 +497,17 @@
   <data name="Import" xml:space="preserve">
     <value>Імпорт Профілю</value>
   </data>
+  <data name="InstallPawnIODriver" xml:space="preserve">
+    <value>Встановити драйвер PawnIO (pawnio.eu)</value>
+  </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Прив'язки клавіш</value>
   </data>
   <data name="Keyboard" xml:space="preserve">
     <value>Клавіатура</value>
+  </data>
+  <data name="KeystoneSound" xml:space="preserve">
+    <value>Звук Keystone</value>
   </data>
   <data name="KillGpuApps" xml:space="preserve">
     <value>Закривати додатки, що використовують GPU, під час переходу в режим Eco</value>
@@ -551,6 +578,9 @@
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Максимальна частота оновлення для мінімізації затримок</value>
   </data>
+  <data name="Medium" xml:space="preserve">
+    <value>Середня</value>
+  </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
     <value>Частота 60Гц, щоб зберегти заряд батареї</value>
   </data>
@@ -561,7 +591,7 @@
     <value>Хвилини</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
-    <value>Angle Snapping / Tuning</value>
+    <value>Вирівнювання кута / Налаштування</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
     <value>Авто-вимикання</value>
@@ -585,7 +615,7 @@
     <value>Синхронізувати з мишею</value>
   </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
-    <value>Sync with laptop</value>
+    <value>Синхронізувати з ноутбуком</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Мульти зона</value>
@@ -617,11 +647,20 @@
   <data name="On" xml:space="preserve">
     <value>Увімк.</value>
   </data>
+  <data name="OnAlways" xml:space="preserve">
+    <value>Завжди увімкнено</value>
+  </data>
+  <data name="OnBattery" xml:space="preserve">
+    <value>Від батареї</value>
+  </data>
   <data name="OneZone" xml:space="preserve">
     <value>Одна зона</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>Відкрити вікно G-Helper</value>
+  </data>
+  <data name="OptimalDisplayBrightness" xml:space="preserve">
+    <value>Оптимальна яскравість екрана</value>
   </data>
   <data name="Optimized" xml:space="preserve">
     <value>Авто</value>
@@ -667,6 +706,9 @@
   </data>
   <data name="Quit" xml:space="preserve">
     <value>Вихід</value>
+  </data>
+  <data name="ReadLimits" xml:space="preserve">
+    <value>Зчитати ліміти</value>
   </data>
   <data name="Reset" xml:space="preserve">
     <value>Скинути</value>
@@ -775,6 +817,12 @@
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>Версія</value>
+  </data>
+  <data name="VeryHigh" xml:space="preserve">
+    <value>Висока+</value>
+  </data>
+  <data name="VeryLow" xml:space="preserve">
+    <value>Низька-</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
     <value>Сила вібрації</value>
@@ -909,5 +957,11 @@
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>Не дозволяє пристроям PCIe переходити в режими низького енергоспоживання.
 Рекомендується, якщо ви стикаєтеся з випадковими зависаннями або відсутністю реакції апаратного забезпечення.</value>
+  </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
   </data>
 </root>

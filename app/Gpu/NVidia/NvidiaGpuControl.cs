@@ -55,20 +55,27 @@ public class NvidiaGpuControl : IGpuControl
 
     private enum GpuState { Active, Asleep, Off }
 
+    private GpuState _lastState = GpuState.Off;
+    private long _lastStateTime = -StateCacheMs;
+    private const int StateCacheMs = 500; 
+
     private GpuState GetGpuState()
     {
         if (!IsValid) return GpuState.Off;
+        if (Environment.TickCount64 - _lastStateTime < StateCacheMs) return _lastState;
         try
         {
             var perfState = GPUApi.GetCurrentPerformanceState(_internalGpu!.Handle);
             if (verboseLog) Logger.WriteLine($"GPU: {perfState}");
-            return GpuState.Active;
+            _lastState = GpuState.Active;
         }
         catch (Exception ex)
         {
             if (verboseLog) Logger.WriteLine($"GPU: {ex.Message}");
-            return ex.Message == "NVAPI_GPU_NOT_POWERED" ? GpuState.Asleep : GpuState.Off;
+            _lastState = ex.Message == "NVAPI_GPU_NOT_POWERED" ? GpuState.Asleep : GpuState.Off;
         }
+        _lastStateTime = Environment.TickCount64;
+        return _lastState;
     }
 
     public int? ReadCurrentTemperature(bool log = false)
@@ -138,6 +145,7 @@ public class NvidiaGpuControl : IGpuControl
 
     public void Dispose()
     {
+        _internalGpu = null;
     }
 
     private static readonly HashSet<string> _systemProcessNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
@@ -270,28 +278,24 @@ public class NvidiaGpuControl : IGpuControl
 
     }
 
-    public static void FixNvContainer()
+    public static void RestartNvContainer()
     {
         if (!ProcessHelper.IsUserAdministrator()) return;
-        if (NvBootState.DGpuArrivedAfterBoot())
-        {
-            RunPowershellCommand(@"Restart-Service -Name 'NvContainerLocalSystem' -Force", 15000);
-            NvBootState.MarkHandled();
-        }
+        RunPowershellCommand(@"Restart-Service -Name 'NvContainerLocalSystem' -Force", 30000);
     }
 
     public static void RestartNVService()
     {
         if (!ProcessHelper.IsUserAdministrator()) return;
-        RunPowershellCommand(@"Restart-Service -Name 'NVDisplay.ContainerLocalSystem' -Force", 15000);
-        RunPowershellCommand(@"Restart-Service -Name 'NvContainerLocalSystem' -Force", 15000);
+        RunPowershellCommand(@"Restart-Service -Name 'NVDisplay.ContainerLocalSystem' -Force", 30000);
+        RunPowershellCommand(@"Restart-Service -Name 'NvContainerLocalSystem' -Force", 30000);
     }
 
     public static void StopNVService()
     {
         if (!ProcessHelper.IsUserAdministrator()) return;
-        RunPowershellCommand(@"Stop-Service -Name 'NvContainerLocalSystem' -Force", 15000);
-        RunPowershellCommand(@"Stop-Service -Name 'NVDisplay.ContainerLocalSystem' -Force", 15000);
+        RunPowershellCommand(@"Stop-Service -Name 'NvContainerLocalSystem' -Force", 30000);
+        RunPowershellCommand(@"Stop-Service -Name 'NVDisplay.ContainerLocalSystem' -Force", 30000);
     }
 
     public int SetClocks(int core, int memory)
@@ -372,6 +376,13 @@ public class NvidiaGpuControl : IGpuControl
         }
         if (state != GpuState.Active) return 0f;
         return NvmlHelper.GetGpuPower() ?? 0f;
+    }
+
+    public (long usedMb, long totalMb)? GetVramInfo()
+    {
+        if (!IsValid) return null;
+        if (GetGpuState() != GpuState.Active) return null;
+        return NvmlHelper.GetMemoryInfo();
     }
 
 }

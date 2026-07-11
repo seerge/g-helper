@@ -147,6 +147,9 @@
   <data name="AllyController" xml:space="preserve">
     <value>Ally Kontrolcüsü</value>
   </data>
+  <data name="AnimationDirection" xml:space="preserve">
+    <value>Animasyon yönü</value>
+  </data>
   <data name="AnimationSpeed" xml:space="preserve">
     <value>Animasyon Hızı</value>
   </data>
@@ -262,7 +265,7 @@
     <value>Kapalı</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Pilde klavye ışığı kapanma süresi</value>
+    <value>Arka ışığı kapanma süresi (Şarj / Pil)</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Pildeyken Arka Işık Zaman Aşımı</value>
@@ -272,6 +275,9 @@
   </data>
   <data name="Balanced" xml:space="preserve">
     <value>Dengeli</value>
+  </data>
+  <data name="Battery" xml:space="preserve">
+    <value>Pil</value>
   </data>
   <data name="BatteryCharge" xml:space="preserve">
     <value>Şarj</value>
@@ -321,6 +327,9 @@
   <data name="Charging" xml:space="preserve">
     <value>Şarj oluyor</value>
   </data>
+  <data name="ClampToGrid" xml:space="preserve">
+    <value>Izgaraya hizala</value>
+  </data>
   <data name="Color" xml:space="preserve">
     <value>Renk</value>
   </data>
@@ -332,6 +341,9 @@
   </data>
   <data name="CPUBoost" xml:space="preserve">
     <value>CPU Artışı</value>
+  </data>
+  <data name="CPUCoresConfiguration" xml:space="preserve">
+    <value>CPU Çekirdek Yapılandırması</value>
   </data>
   <data name="Custom" xml:space="preserve">
     <value>Özel</value>
@@ -394,6 +406,9 @@ Yine de devam etmek istiyor musunuz?</value>
   </data>
   <data name="FanCurves" xml:space="preserve">
     <value>Fan Eğrileri</value>
+  </data>
+  <data name="FanDragAll" xml:space="preserve">
+    <value>Tüm noktaları birlikte sürüklemek için SHIFT tuşunu basılı tutun</value>
   </data>
   <data name="FanProfileCPU" xml:space="preserve">
     <value>CPU Fan Profili</value>
@@ -465,10 +480,16 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Sıcaklık Hedefi</value>
   </data>
   <data name="HibernateAfter" xml:space="preserve">
-    <value>Uyku modunda, Hazırda Bekleme Moduna geçiş dakikası (0 - KAPALI)</value>
+    <value>Uyku modunda Hazırda Bekleme Moduna geçiş süresi (Pil)</value>
   </data>
   <data name="High" xml:space="preserve">
     <value>Yüksek</value>
+  </data>
+  <data name="HysteresisDown" xml:space="preserve">
+    <value>Histerezis aşağı</value>
+  </data>
+  <data name="HysteresisUp" xml:space="preserve">
+    <value>Histerezis yukarı</value>
   </data>
   <data name="ImageRotation" xml:space="preserve">
     <value>Görüntü Döndürme</value>
@@ -476,11 +497,17 @@ Yine de devam etmek istiyor musunuz?</value>
   <data name="Import" xml:space="preserve">
     <value>Profili İçe Aktar</value>
   </data>
+  <data name="InstallPawnIODriver" xml:space="preserve">
+    <value>PawnIO sürücüsünü yükle (pawnio.eu)</value>
+  </data>
   <data name="KeyBindings" xml:space="preserve">
     <value>Tuş Atamaları</value>
   </data>
   <data name="Keyboard" xml:space="preserve">
     <value>Klavye</value>
+  </data>
+  <data name="KeystoneSound" xml:space="preserve">
+    <value>Keystone Sesi</value>
   </data>
   <data name="KillGpuApps" xml:space="preserve">
     <value>Eco moda geçerken GPU kullanan tüm uygulamaları durdur</value>
@@ -551,6 +578,9 @@ Yine de devam etmek istiyor musunuz?</value>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>En düşük gecikme için en yüksek yenileme hızı</value>
   </data>
+  <data name="Medium" xml:space="preserve">
+    <value>Orta</value>
+  </data>
   <data name="MinRefreshTooltip" xml:space="preserve">
     <value>Pil tasarrufu için 60Hz yenileme hızı</value>
   </data>
@@ -585,7 +615,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Fare ile eşitle</value>
   </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
-    <value>Sync with laptop</value>
+    <value>Dizüstüyle senkronize et</value>
   </data>
   <data name="Multizone" xml:space="preserve">
     <value>Çoklu Bölge</value>
@@ -617,11 +647,20 @@ Yine de devam etmek istiyor musunuz?</value>
   <data name="On" xml:space="preserve">
     <value>Açık</value>
   </data>
+  <data name="OnAlways" xml:space="preserve">
+    <value>Her zaman açık</value>
+  </data>
+  <data name="OnBattery" xml:space="preserve">
+    <value>Pilde</value>
+  </data>
   <data name="OneZone" xml:space="preserve">
     <value>Tek Bölge</value>
   </data>
   <data name="OpenGHelper" xml:space="preserve">
     <value>G-Helper penceresini aç</value>
+  </data>
+  <data name="OptimalDisplayBrightness" xml:space="preserve">
+    <value>Optimum Ekran Parlaklığı</value>
   </data>
   <data name="Optimized" xml:space="preserve">
     <value>İyileştirilmiş</value>
@@ -667,6 +706,9 @@ Yine de devam etmek istiyor musunuz?</value>
   </data>
   <data name="Quit" xml:space="preserve">
     <value>Çıkış</value>
+  </data>
+  <data name="ReadLimits" xml:space="preserve">
+    <value>Limitleri oku</value>
   </data>
   <data name="Reset" xml:space="preserve">
     <value>Sıfırla</value>
@@ -775,6 +817,12 @@ Yine de devam etmek istiyor musunuz?</value>
   </data>
   <data name="VersionLabel" xml:space="preserve">
     <value>Sürüm</value>
+  </data>
+  <data name="VeryHigh" xml:space="preserve">
+    <value>Çok yüksek</value>
+  </data>
+  <data name="VeryLow" xml:space="preserve">
+    <value>Çok düşük</value>
   </data>
   <data name="VibrationStrength" xml:space="preserve">
     <value>Titreşim Yoğunluğu</value>
@@ -909,5 +957,11 @@ ve GPU etkinleştirildiğinde otomatik olarak yeniden başlatır</value>
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>PCIe aygıtlarının düşük güçlü boşta durumlarına geçmesini engeller.
 Rastgele takılmalar veya yanıt vermeyen donanım yaşıyorsanız önerilir.</value>
+  </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
   </data>
 </root>

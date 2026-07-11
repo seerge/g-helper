@@ -267,10 +267,11 @@ public class Startup
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
+                Logger.WriteLine("Can't create startup task: " + ex.Message);
                 if (ProcessHelper.IsUserAdministrator())
-                    MessageBox.Show("Can't create a start up task. Try running Task Scheduler by hand and manually deleting GHelper task if it exists there.\n\n" + e.Message, "Scheduler Error", MessageBoxButtons.OK);
+                    MessageBox.Show("Can't create a start up task. Try running Task Scheduler by hand and manually deleting GHelper task if it exists there.\n\n" + ex.Message, "Scheduler Error", MessageBoxButtons.OK);
                 else
                     ProcessHelper.RunAsAdmin();
             }
