@@ -156,46 +156,41 @@ namespace GHelper.UI
                     pevent.Graphics.FillRegion(keyBrush, outsideRegion);
             }
 
-            using (Pen penSurface = new Pen(Color.FromArgb(100, Parent.BackColor), border))
+            Region = new Region(pathSurface);
+
+            bool drawActive = Enabled && !Borderless && activated && borderColor.A > 0;
+            bool drawRest = Enabled && !Borderless && !activated && FlatAppearance.BorderColor.A > 0 && !RForm.flatTheme;
+
+            if (drawActive)
             {
-                pevent.Graphics.SmoothingMode = SmoothingMode.None;
-                Region = new Region(pathSurface);
-                pevent.Graphics.DrawPath(penSurface, pathSurface);
+                Rectangle borderRect = new Rectangle(border, border, rectSurface.Width - 2 * border, rectSurface.Height - 2 * border);
 
-                bool drawActive = Enabled && !Borderless && activated && borderColor.A > 0;
-                bool drawRest = Enabled && !Borderless && !activated && FlatAppearance.BorderColor.A > 0 && !RForm.flatTheme;
+                Color bgTop = Color.FromArgb(ActiveBgTopAlpha, borderColor);
+                Color bgTransparent = Color.FromArgb(0, borderColor);
+                float bgEndPos = ActiveBgEndFraction;
 
-                if (drawActive)
+                using (GraphicsPath bgPath = GetFigurePath(borderRect, radius))
+                using (LinearGradientBrush bgBrush = new LinearGradientBrush(
+                    ControlHelper.DarkMode ? new PointF(0, borderRect.Y) : new PointF(0, borderRect.Bottom),
+                    ControlHelper.DarkMode ? new PointF(0, borderRect.Bottom) : new PointF(0, borderRect.Y),
+                    bgTop, bgTransparent))
                 {
-                    Rectangle borderRect = new Rectangle(border, border, rectSurface.Width - 2 * border, rectSurface.Height - 2 * border);
-
-                    Color bgTop = Color.FromArgb(ActiveBgTopAlpha, borderColor);
-                    Color bgTransparent = Color.FromArgb(0, borderColor);
-                    float bgEndPos = ActiveBgEndFraction;
-
-                    using (GraphicsPath bgPath = GetFigurePath(borderRect, radius))
-                    using (LinearGradientBrush bgBrush = new LinearGradientBrush(
-                        ControlHelper.DarkMode ? new PointF(0, borderRect.Y) : new PointF(0, borderRect.Bottom),
-                        ControlHelper.DarkMode ? new PointF(0, borderRect.Bottom) : new PointF(0, borderRect.Y),
-                        bgTop, bgTransparent))
+                    bgBrush.InterpolationColors = new ColorBlend
                     {
-                        bgBrush.InterpolationColors = new ColorBlend
-                        {
-                            Colors = new[] { bgTop, bgTransparent, bgTransparent },
-                            Positions = new[] { 0f, bgEndPos, 1f }
-                        };
-                        if (!RForm.flatTheme)
-                            pevent.Graphics.FillPath(bgBrush, bgPath);
-                    }
+                        Colors = new[] { bgTop, bgTransparent, bgTransparent },
+                        Positions = new[] { 0f, bgEndPos, 1f }
+                    };
+                    if (!RForm.flatTheme)
+                        pevent.Graphics.FillPath(bgBrush, bgPath);
+                }
 
-                    ControlHelper.DrawGradientBorder(pevent.Graphics, borderRect, borderColor, radius, border, PenAlignment.Outset, RForm.flatTheme ? 0f : ActiveTopLighten);
-                }
-                else if (drawRest)
-                {
-                    int inset = border / 2 + 1;
-                    Rectangle borderRect = new Rectangle(inset, inset, rectSurface.Width - 2 * inset, rectSurface.Height - 2 * inset);
-                    ControlHelper.DrawGradientBorder(pevent.Graphics, borderRect, FlatAppearance.BorderColor, radius + border - inset, 1f, PenAlignment.Inset, RestTopLighten);
-                }
+                ControlHelper.DrawGradientBorder(pevent.Graphics, borderRect, borderColor, radius, border, PenAlignment.Outset, RForm.flatTheme ? 0f : ActiveTopLighten);
+            }
+            else if (drawRest)
+            {
+                int inset = border / 2 + 1;
+                Rectangle borderRect = new Rectangle(inset, inset, rectSurface.Width - 2 * inset, rectSurface.Height - 2 * inset);
+                ControlHelper.DrawGradientBorder(pevent.Graphics, borderRect, FlatAppearance.BorderColor, radius + border - inset, 1f, PenAlignment.Inset, RestTopLighten);
             }
 
             if (!Enabled && ForeColor != SystemColors.ControlText)
