@@ -64,6 +64,8 @@ namespace GHelper.UI
 
         private const int WS_EX_LAYERED = 0x80000;
         private const int LWA_COLORKEY = 0x1;
+
+        private static readonly Color TransparentKey = Color.FromArgb(255, 3, 2, 1);
         protected override CreateParams CreateParams
         {
             get
@@ -80,7 +82,6 @@ namespace GHelper.UI
         protected override void OnHandleCreated(EventArgs e)
         {
             base.OnHandleCreated(e);
-            Color TransparentKey = Color.FromArgb(255, 3, 2, 1);
             uint colorRef = (uint)((TransparentKey.B << 16) | (TransparentKey.G << 8) | TransparentKey.R);
             SetLayeredWindowAttributes(Handle, colorRef, 0, LWA_COLORKEY);
         }
@@ -142,7 +143,11 @@ namespace GHelper.UI
             int border = (int)Math.Round((ratio * borderSize - 1) / 2) * 2 + 1;
             int radius = (int)Math.Round(ratio * borderRadius, MidpointRounding.AwayFromZero);
 
+            pevent.Graphics.Clear(TransparentKey);
+
             Rectangle rectSurface = ClientRectangle;
+
+            using GraphicsPath pathSurface = GetFigurePath(rectSurface, borderRadius);
 
             using (GraphicsPath pathSurface = GetFigurePath(rectSurface, radius + border))
             using (Pen penSurface = new Pen(Color.FromArgb(100, Parent.BackColor), border))
