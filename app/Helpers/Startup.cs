@@ -10,28 +10,25 @@ public class Startup
     static string taskName = "GHelper";
     static string chargeTaskName = taskName + "Charge";
     static string strExeFilePath = Application.ExecutablePath.Trim();
+    static string userTaskName = taskName + "_" + WindowsIdentity.GetCurrent().User.Value;
 
-    private static string CurrentSid => WindowsIdentity.GetCurrent().User!.Value;
-    private static string PerUserTaskName => $"{taskName}_{CurrentSid}";
-
-    private static bool Equal(string a, string b) =>
-        !string.IsNullOrEmpty(a) && string.Equals(a, b, StringComparison.OrdinalIgnoreCase);
-
-    private static bool IsTaskOwnedByCurrentUser(Microsoft.Win32.TaskScheduler.Task task)
+    static Microsoft.Win32.TaskScheduler.Task? GetUserTask(TaskService taskService)
     {
-        string name = WindowsIdentity.GetCurrent().Name;
-        string sam = name.Contains('\\') ? name.Split('\\').Last() : name;
-        var principal = task.Definition.Principal.UserId ?? "";
-        return Equal(principal, CurrentSid) || Equal(principal, name) || Equal(principal, sam);
-    }
+        try
+        {
+            var task = taskService.GetTask(userTaskName);
+            if (task != null) return task;
 
-    private static Microsoft.Win32.TaskScheduler.Task? GetCurrentUserTask(TaskService taskService)
-    {
-        var userTask = taskService.RootFolder.AllTasks.FirstOrDefault(t => t.Name == PerUserTaskName);
-        if (userTask != null) return userTask;
-
-        var legacyTask = taskService.RootFolder.AllTasks.FirstOrDefault(t => t.Name == taskName);
-        if (legacyTask != null && IsTaskOwnedByCurrentUser(legacyTask)) return legacyTask;
+            var legacy = taskService.GetTask(taskName);
+            var owner = legacy?.Definition.Principal.UserId ?? "";
+            if (owner == WindowsIdentity.GetCurrent().User.Value ||
+                string.Equals(owner.Split('\\').Last(), Environment.UserName, StringComparison.OrdinalIgnoreCase))
+                return legacy;
+        }
+        catch (Exception e)
+        {
+            Logger.WriteLine("Can't read startup task: " + e.Message);
+        }
 
         return null;
     }
@@ -41,7 +38,7 @@ public class Startup
         try
         {
             using (TaskService taskService = new TaskService())
-                return GetCurrentUserTask(taskService) != null;
+                return GetUserTask(taskService) != null;
         }
         catch (Exception e)
         {
@@ -63,7 +60,7 @@ public class Startup
     {
         using (TaskService taskService = new TaskService())
         {
-            var task = GetCurrentUserTask(taskService);
+            var task = GetUserTask(taskService);
             if (task != null)
             {
                 try
@@ -189,7 +186,6 @@ public class Startup
             td.Triggers.Add(new SessionStateChangeTrigger { StateChange = TaskSessionStateChangeType.ConsoleConnect, UserId = WindowsIdentity.GetCurrent().Name, Delay = TimeSpan.FromSeconds(1) });
             td.Actions.Add(strExeFilePath);
 
-            td.Principal.UserId = CurrentSid;
             td.Principal.LogonType = TaskLogonType.InteractiveToken;
             if (ProcessHelper.IsUserAdministrator())
                 td.Principal.RunLevel = TaskRunLevel.Highest;
@@ -200,19 +196,8 @@ public class Startup
 
             try
             {
-                TaskService.Instance.RootFolder.RegisterTaskDefinition(PerUserTaskName, td);
-                Logger.WriteLine($"Startup task scheduled ({PerUserTaskName}): " + strExeFilePath);
-
-                try
-                {
-                    var legacy = TaskService.Instance.RootFolder.AllTasks.FirstOrDefault(t => t.Name == taskName);
-                    if (legacy != null && IsTaskOwnedByCurrentUser(legacy))
-                        TaskService.Instance.RootFolder.DeleteTask(taskName);
-                }
-                catch (Exception ex)
-                {
-                    Logger.WriteLine("Can't remove legacy startup task: " + ex.Message);
-                }
+                TaskService.Instance.RootFolder.RegisterTaskDefinition(userTaskName, td);
+                Logger.WriteLine("Startup task scheduled: " + strExeFilePath);
             }
             catch (Exception ex)
             {
@@ -234,12 +219,8 @@ public class Startup
         {
             try
             {
-                if (taskService.RootFolder.AllTasks.Any(t => t.Name == PerUserTaskName))
-                    taskService.RootFolder.DeleteTask(PerUserTaskName);
-
-                var legacyTask = taskService.RootFolder.AllTasks.FirstOrDefault(t => t.Name == taskName);
-                if (legacyTask != null && IsTaskOwnedByCurrentUser(legacyTask))
-                    taskService.RootFolder.DeleteTask(taskName);
+                taskService.RootFolder.DeleteTask(userTaskName, false);
+                if (GetUserTask(taskService) != null) taskService.RootFolder.DeleteTask(taskName);
             }
             catch (Exception)
             {
