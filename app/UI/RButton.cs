@@ -121,7 +121,7 @@ namespace GHelper.UI
             Rectangle rectSurface = ClientRectangle;
 
             using (GraphicsPath pathSurface = GetFigurePath(rectSurface, radius + border))
-            using (Pen penSurface = new Pen(Parent.BackColor, border))
+            using (Pen penSurface = new Pen(Color.FromArgb(100, Parent.BackColor), border))
             {
                 pevent.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
                 Region = new Region(pathSurface);
