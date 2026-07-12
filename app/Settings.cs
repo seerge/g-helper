@@ -755,7 +755,7 @@ namespace GHelper
             if (m.Msg == NativeMethods.WM_POWERBROADCAST && m.WParam == (IntPtr)NativeMethods.PBT_APMRESUMEAUTOMATIC)
             {
                 Logger.WriteLine("System Resume");
-                BatteryControl.AutoBattery();
+                BatteryControl.AutoBattery(retry: 10000);
                 m.Result = (IntPtr)1;
             }
 

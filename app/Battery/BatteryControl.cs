@@ -41,10 +41,10 @@ namespace GHelper.Battery
             Program.settingsForm.Invoke(Program.settingsForm.VisualiseBatteryFull);
         }
 
-        public static void AutoBattery(bool init = false)
+        public static void AutoBattery(bool init = false, int retry = 0)
         {
             if (chargeFull && !init) SetBatteryLimitFull();
-            else SetBatteryChargeLimit();
+            else SetBatteryChargeLimit(retry: retry);
         }
 
         public static void SetAsusChargeLimit(int value)
@@ -62,7 +62,7 @@ namespace GHelper.Battery
             }
         }
 
-        public static void SetBatteryChargeLimit(int setLimit = -1)
+        public static void SetBatteryChargeLimit(int setLimit = -1, int retry = 0)
         {
             int limit = setLimit;
             if (limit < 0) limit = AppConfig.Get("charge_limit");
@@ -78,6 +78,7 @@ namespace GHelper.Battery
             if (setLimit > 0) SetAsusChargeLimit(limit);
 
             Program.acpi.DeviceSet(AsusACPI.BatteryLimit, limit, "BatteryLimit");
+            if (retry > 0) Task.Delay(retry).ContinueWith(_ => SetBatteryChargeLimit());
 
             AppConfig.Set("charge_limit", limit);
             chargeFull = false;
