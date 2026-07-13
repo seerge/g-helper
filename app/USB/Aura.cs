@@ -664,7 +664,7 @@ namespace GHelper.USB
             if (init || initDirect)
             {
                 initDirect = false;
-                AsusHid.SetFeatureAura(new byte[] { AsusHid.AURA_ID, 0xBC, 1 });
+                AsusHid.SetFeatureAura(new byte[] { AsusHid.AURA_ID, 0xBC, (byte)(IsOldStrix ? 0 : 1) });
                 Thread.Sleep(50);
             }
 
