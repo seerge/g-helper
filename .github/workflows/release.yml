@@ -1,14 +1,15 @@
 name: Release
 
+# Fork build: no code signing (SignPath secrets live in the upstream repo only).
+# Pushing a tag like v0.264-vivofan.1 builds GHelper.exe and publishes a release with it.
 on:
-  release:
-    types: [ published ]
+  push:
+    tags:
+      - 'v*'
   workflow_dispatch:
 
 permissions:
   contents: write
-  id-token: write
-  attestations: write
 
 jobs:
   release:
@@ -20,52 +21,37 @@ jobs:
       with:
         dotnet-version: '8.0.x'
 
-    - name: Check tag matches version
-      if: github.event_name == 'release'
-      run: |
-        $version = ([xml](Get-Content app/GHelper.csproj)).Project.PropertyGroup.AssemblyVersion
-        $tag = "${{ github.event.release.tag_name }}"
-        if ($tag -ne "v$version") { throw "Tag $tag does not match AssemblyVersion $version" }
-
     - name: Publish
       run: |
-        dotnet publish app/GHelper.sln --configuration Release --runtime win-x64 -p:PublishSingleFile=true --no-self-contained
+        dotnet publish app/GHelper.csproj --configuration Release --runtime win-x64 -p:PublishSingleFile=true --no-self-contained
 
-    - name: Upload unsigned EXE
-      id: upload-unsigned
+    - name: Create ZIP
+      run: powershell Compress-Archive app/bin/x64/Release/net8.0-windows/win-x64/publish/GHelper.exe ./GHelper.zip
+
+    - name: Upload workflow artifact
       uses: actions/upload-artifact@v7
       with:
-        path: app/bin/x64/Release/net8.0-windows/win-x64/publish/GHelper.exe
+        name: GHelper
+        path: |
+          app/bin/x64/Release/net8.0-windows/win-x64/publish/GHelper.exe
+          GHelper.zip
 
-    - id: sign-exe
-      uses: signpath/github-action-submit-signing-request@v2
+    - name: Create release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v2
       with:
-        api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
-        organization-id: ${{ secrets.SIGNPATH_ORG_ID }}
-        project-slug: ${{ secrets.SIGNPATH_PROJECT }}
-        signing-policy-slug: ${{ secrets.SIGNPATH_POLICY }}
-        github-artifact-id: ${{ steps.upload-unsigned.outputs.artifact-id }}
-        wait-for-completion: true
-        output-artifact-directory: './signed'
+        files: GHelper.zip
+        name: "${{ github.ref_name }} — Vivobook V16 software fan control"
+        body: |
+          G-Helper build with a software fan control fallback (AsusWinIO64) for Vivobook / V16
+          models whose firmware does not support ACPI fan curves.
 
-    - name: Create ZIP from signed EXE
-      run: powershell Compress-Archive ./signed/GHelper.exe ./signed/GHelper.zip
+          **Requirements:**
+          - MyASUS / ASUS System Control Interface installed (ASUS System Analysis service running)
+          - .NET 8 Desktop Runtime
+          - Run as administrator (G-Helper asks automatically)
 
-    - name: Upload signed EXE as workflow artifact
-      uses: actions/upload-artifact@v7
-      with:
-        name: GHelper-signed
-        path: ./signed/GHelper.exe
-
-    - name: Upload signed EXE and ZIP
-      if: github.event_name == 'release'
-      env:
-        GH_TOKEN: ${{ github.token }}
-      run: |
-        gh release upload "${{ github.event.release.tag_name }}" ./signed/GHelper.exe ./signed/GHelper.zip --clobber
-    - name: Generate SLSA build provenance attestation
-      uses: actions/attest-build-provenance@v4
-      with:
-        subject-path: |
-          ./signed/GHelper.exe
-          ./signed/GHelper.zip
+          **How to test:** open Fans + Power, adjust the CPU fan curve and hit Apply.
+          The status label should say "Software fan control active (AsusWinIO)" and fan
+          speed should follow CPU temperature. On app exit / sleep, fan control is
+          returned to the EC automatically.

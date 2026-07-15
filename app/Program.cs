@@ -1,6 +1,7 @@
 using GHelper.Ally;
 using GHelper.Battery;
 using GHelper.Display;
+using GHelper.Fan;
 using GHelper.Gpu;
 using GHelper.Helpers;
 using GHelper.Input;
@@ -238,6 +239,7 @@ namespace GHelper
 
         private static void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
         {
+            WinIoFanControl.StopCurveLoop();
             gpuControl.StandardModeFix();
             modeControl.ShutdownReset();
             BatteryControl.AutoBattery();
@@ -406,6 +408,7 @@ namespace GHelper
             if (e.Mode == PowerModes.Suspend)
             {
                 Logger.WriteLine("Power Mode Changed:" + e.Mode.ToString());
+                WinIoFanControl.StopCurveLoop();
                 gpuControl.StandardModeFix();
                 modeControl.ShutdownReset();
                 InputDispatcher.ShutdownStatusLed();
@@ -476,6 +479,8 @@ namespace GHelper
 
         static void OnExit(object sender, EventArgs e)
         {
+            WinIoFanControl.StopCurveLoop();
+
             if (trayIcon is not null)
             {
                 trayIcon.Visible = false;

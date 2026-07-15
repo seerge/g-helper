@@ -1,3 +1,4 @@
+using GHelper.Fan;
 using GHelper.Gpu.NVidia;
 using GHelper.Helpers;
 using GHelper.USB;
@@ -259,12 +260,27 @@ namespace GHelper.Mode
                     // Something went wrong, resetting to default profile
                     if (cpuResult != 1 || gpuResult != 1)
                     {
-                        Program.acpi.DeviceSet(AsusACPI.PerformanceMode, Modes.GetCurrentBase(), "Reset Mode");
-                        settings.LabelFansResult("Model doesn't support custom fan curves");
+                        // Vivobook / V16 firmware has no fan-curve ACPI methods:
+                        // fall back to software fan control via AsusWinIO64 (MyASUS interface)
+                        if (WinIoFanControl.StartCurveLoop(AppConfig.GetFanConfig(AsusFan.CPU)))
+                        {
+                            settings.LabelFansResult("Software fan control active (AsusWinIO)");
+                            customFans = true;
+                        }
+                        else
+                        {
+                            Program.acpi.DeviceSet(AsusACPI.PerformanceMode, Modes.GetCurrentBase(), "Reset Mode");
+                            settings.LabelFansResult("Model doesn't support custom fan curves");
+                        }
+                    }
+                    else
+                    {
+                        WinIoFanControl.StopCurveLoop();
                     }
                 }
                 else
                 {
+                    WinIoFanControl.StopCurveLoop();
                     settings.LabelFansResult("");
                     customFans = true;
                 }
@@ -287,6 +303,7 @@ namespace GHelper.Mode
 
             } else
             {
+                WinIoFanControl.StopCurveLoop();
                 XGM.Reset();
             }
 

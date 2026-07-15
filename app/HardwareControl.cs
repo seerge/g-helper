@@ -789,8 +789,8 @@ public static class HardwareControl
 
         if (Program.acpi is null) return;
 
-        cpuFan = FanSensorControl.FormatFan(AsusFan.CPU, Program.acpi.GetFan(AsusFan.CPU));
-        gpuFan = FanSensorControl.FormatFan(AsusFan.GPU, Program.acpi.GetFan(AsusFan.GPU));
+        cpuFan = FanSensorControl.FormatFan(AsusFan.CPU, WinIoFanControl.FanRpmFallback(AsusFan.CPU, Program.acpi.GetFan(AsusFan.CPU)));
+        gpuFan = FanSensorControl.FormatFan(AsusFan.GPU, WinIoFanControl.FanRpmFallback(AsusFan.GPU, Program.acpi.GetFan(AsusFan.GPU)));
         midFan = FanSensorControl.FormatFan(AsusFan.Mid, Program.acpi.GetFan(AsusFan.Mid));
 
         cpuTemp = GetCPUTemp();
@@ -808,8 +808,8 @@ public static class HardwareControl
 
         if (readFans)
         {
-            cpuFanRPM = Program.acpi.GetFan(AsusFan.CPU) * 100;
-            gpuFanRPM = Program.acpi.GetFan(AsusFan.GPU) * 100;
+            cpuFanRPM = WinIoFanControl.FanRpmFallback(AsusFan.CPU, Program.acpi.GetFan(AsusFan.CPU)) * 100;
+            gpuFanRPM = WinIoFanControl.FanRpmFallback(AsusFan.GPU, Program.acpi.GetFan(AsusFan.GPU)) * 100;
         }
         else
         {
