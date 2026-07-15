@@ -11,7 +11,7 @@ on:
       tag:
         description: 'Release tag to create'
         required: false
-        default: 'v0.264-vivofan.3'
+        default: 'v0.264-vivofan.4'
 
 permissions:
   contents: write
@@ -32,28 +32,25 @@ jobs:
 
     # GHelper_debug.exe is the same binary renamed: the app detects "debug" in its
     # file name at runtime and turns on verbose logging of every fan decision.
+    # AsusWinIO64.dll ships in the zip and MUST stay next to the exe.
     - name: Create debug EXE and ZIP
       run: |
-        Copy-Item app/bin/x64/Release/net8.0-windows/win-x64/publish/GHelper.exe ./GHelper_debug.exe
-        powershell Compress-Archive app/bin/x64/Release/net8.0-windows/win-x64/publish/GHelper.exe ./GHelper.zip
+        $publish = "app/bin/x64/Release/net8.0-windows/win-x64/publish"
+        Copy-Item "$publish/GHelper.exe" ./GHelper_debug.exe
+        Compress-Archive -Path "$publish/GHelper.exe", "$publish/AsusWinIO64.dll", ./GHelper_debug.exe -DestinationPath ./GHelper.zip
 
     - name: Upload workflow artifact
       uses: actions/upload-artifact@v7
       with:
         name: GHelper
-        path: |
-          app/bin/x64/Release/net8.0-windows/win-x64/publish/GHelper.exe
-          GHelper_debug.exe
-          GHelper.zip
+        path: GHelper.zip
 
     - name: Create release
       uses: softprops/action-gh-release@v2
       with:
         tag_name: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
         target_commitish: ${{ github.sha }}
-        files: |
-          GHelper.zip
-          GHelper_debug.exe
+        files: GHelper.zip
         name: "${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }} — Vivobook V16 software fan control"
         body: |
           G-Helper build with a software fan control fallback (AsusWinIO64) for Vivobook / V16
@@ -68,6 +65,9 @@ jobs:
           The status label should say "Software fan control active (AsusWinIO)" and fan
           speed should follow CPU temperature. On app exit / sleep, fan control is
           returned to the EC automatically.
+
+          **IMPORTANT:** extract ALL files from the zip into one folder — `AsusWinIO64.dll`
+          (same file AsusFanControl uses, (c) ASUSTek) must stay next to the exe.
 
           **Debug build:** `GHelper_debug.exe` logs every fan decision (temperature,
           target %, applied %, RPM) to `%AppData%\GHelper\log.txt` every 2 seconds.

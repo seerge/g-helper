@@ -1,3 +1,4 @@
+using GHelper.Helpers;
 using System.Runtime.InteropServices;
 
 namespace GHelper.Fan
@@ -9,11 +10,11 @@ namespace GHelper.Fan
     // Requires the ASUS System Analysis driver stack (installed with MyASUS).
     public static class WinIoFanControl
     {
-        [DllImport("AsusWinIO64.dll")]
+        [DllImport("AsusWinIO64.dll", SetLastError = true)]
         private static extern void InitializeWinIo();
         [DllImport("AsusWinIO64.dll")]
         private static extern void ShutdownWinIo();
-        [DllImport("AsusWinIO64.dll")]
+        [DllImport("AsusWinIO64.dll", SetLastError = true)]
         private static extern int HealthyTable_FanCounts();
         [DllImport("AsusWinIO64.dll")]
         private static extern void HealthyTable_SetFanIndex(byte index);
@@ -66,6 +67,11 @@ namespace GHelper.Fan
 
         private static IEnumerable<string> DllCandidates()
         {
+            // the DLL shipped next to GHelper.exe wins — it's the same known-working
+            // binary AsusFanControl bundles; DriverStore versions can behave differently
+            string? exeDir = Path.GetDirectoryName(Environment.ProcessPath);
+            if (exeDir is not null) yield return Path.Combine(exeDir, "AsusWinIO64.dll");
+
             yield return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "AsusWinIO64.dll");
 
             string repository = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "System32", "DriverStore", "FileRepository");
@@ -83,32 +89,39 @@ namespace GHelper.Fan
                 yield return Path.Combine(dir, "ASUSSystemAnalysis", "AsusWinIO64.dll");
         }
 
+        private static long lastProbe = 0;
+
         public static bool IsAvailable()
         {
             // AsusWinIO64 opens the ASUS System Analysis driver, which requires elevation.
             // Don't cache the failure: after G-Helper restarts as admin this must re-probe.
-            if (!GHelper.Helpers.ProcessHelper.IsUserAdministrator())
+            if (!ProcessHelper.IsUserAdministrator())
             {
                 Logger.WriteLine("WinIO fan control: administrator rights required");
                 return false;
             }
 
+            // re-probe a failed init at most once a minute (service may have come up since)
+            long now = DateTimeOffset.Now.ToUnixTimeSeconds();
+            if (initState == -1 && now - lastProbe > 60) initState = 0;
+
             if (initState == 0)
             {
+                lastProbe = now;
                 try
                 {
-                    int fans;
-                    lock (ioLock)
+                    int fans = TryInit();
+
+                    if (fans <= 0)
                     {
-                        InitializeWinIo();
-                        fans = HealthyTable_FanCounts();
-                        if (fans <= 0)
-                        {
-                            // driver can need a moment right after InitializeWinIo
-                            Thread.Sleep(300);
-                            fans = HealthyTable_FanCounts();
-                        }
+                        // newer ASUS driver stacks route the fan interface through the
+                        // ASUSSystemAnalysis service — start it and probe again
+                        Logger.WriteLine("WinIO: no fans, starting ASUSSystemAnalysis service and retrying");
+                        ProcessHelper.StartEnableService("ASUSSystemAnalysis");
+                        Thread.Sleep(2000);
+                        fans = TryInit();
                     }
+
                     initState = fans > 0 ? 1 : -1;
                     Logger.WriteLine($"WinIO fan control init: fans = {fans}");
                 }
@@ -119,6 +132,28 @@ namespace GHelper.Fan
                 }
             }
             return initState == 1;
+        }
+
+        private static int TryInit()
+        {
+            lock (ioLock)
+            {
+                InitializeWinIo();
+                int initError = Marshal.GetLastWin32Error();
+
+                int fans = HealthyTable_FanCounts();
+                if (fans <= 0)
+                {
+                    // driver can need a moment right after InitializeWinIo
+                    Thread.Sleep(300);
+                    fans = HealthyTable_FanCounts();
+                }
+
+                if (fans <= 0)
+                    Logger.WriteLine($"WinIO probe: fans = {fans}, init error = {initError}, count error = {Marshal.GetLastWin32Error()}");
+
+                return fans;
+            }
         }
 
         // Starts (or re-arms with a new curve) the software fan curve loop.
