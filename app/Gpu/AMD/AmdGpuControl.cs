@@ -69,7 +69,8 @@ public class AmdGpuControl : IGpuControl
 
     public AmdGpuControl()
     {
-        if (AppConfig.NoGpu() || !Adl2.Load()) return;
+        // AMD iGPU-only models (e.g. GZ302) still need ADL for iGPU sensors
+        if ((AppConfig.NoGpu() && !AppConfig.IsAMDiGPU()) || !Adl2.Load()) return;
 
         try
         {
@@ -201,7 +202,10 @@ public class AmdGpuControl : IGpuControl
     {
         if (!GetPMLogiGpu(out ADLPMLogDataOutput log)) return default;
 
-        return (Sensor(log, ADLSensorType.PMLOG_TEMPERATURE_EDGE),
+        // Strix Halo (e.g. GZ302) doesn't report TEMPERATURE_EDGE; it exposes GFX/SOC instead
+        return (Sensor(log, ADLSensorType.PMLOG_TEMPERATURE_EDGE)
+                ?? Sensor(log, ADLSensorType.PMLOG_TEMPERATURE_GFX)
+                ?? Sensor(log, ADLSensorType.PMLOG_TEMPERATURE_SOC),
                 Sensor(log, ADLSensorType.PMLOG_INFO_ACTIVITY_GFX),
                 Sensor(log, ADLSensorType.PMLOG_GFX_POWER),
                 Sensor(log, ADLSensorType.PMLOG_CPU_POWER),
