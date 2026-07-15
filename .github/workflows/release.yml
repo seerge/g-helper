@@ -11,7 +11,7 @@ on:
       tag:
         description: 'Release tag to create'
         required: false
-        default: 'v0.264-vivofan.2'
+        default: 'v0.264-vivofan.3'
 
 permissions:
   contents: write

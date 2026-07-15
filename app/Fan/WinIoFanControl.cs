@@ -85,6 +85,14 @@ namespace GHelper.Fan
 
         public static bool IsAvailable()
         {
+            // AsusWinIO64 opens the ASUS System Analysis driver, which requires elevation.
+            // Don't cache the failure: after G-Helper restarts as admin this must re-probe.
+            if (!GHelper.Helpers.ProcessHelper.IsUserAdministrator())
+            {
+                Logger.WriteLine("WinIO fan control: administrator rights required");
+                return false;
+            }
+
             if (initState == 0)
             {
                 try
@@ -94,6 +102,12 @@ namespace GHelper.Fan
                     {
                         InitializeWinIo();
                         fans = HealthyTable_FanCounts();
+                        if (fans <= 0)
+                        {
+                            // driver can need a moment right after InitializeWinIo
+                            Thread.Sleep(300);
+                            fans = HealthyTable_FanCounts();
+                        }
                     }
                     initState = fans > 0 ? 1 : -1;
                     Logger.WriteLine($"WinIO fan control init: fans = {fans}");

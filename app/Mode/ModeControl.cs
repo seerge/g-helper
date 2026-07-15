@@ -267,6 +267,12 @@ namespace GHelper.Mode
                             settings.LabelFansResult("Software fan control active (AsusWinIO)");
                             customFans = true;
                         }
+                        else if (!ProcessHelper.IsUserAdministrator())
+                        {
+                            // AsusWinIO64 needs elevation — relaunch like other admin-only features
+                            settings.LabelFansResult("Fan control needs administrator — restarting G-Helper");
+                            ProcessHelper.RunAsAdmin();
+                        }
                         else
                         {
                             Program.acpi.DeviceSet(AsusACPI.PerformanceMode, Modes.GetCurrentBase(), "Reset Mode");
