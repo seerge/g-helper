@@ -138,7 +138,7 @@ namespace GHelper
 
             trayIcon = new NotifyIcon
             {
-                Text = "G-Helper",
+                Text = "G-Helper [" + AppConfig.ModLabel + "]",
                 Icon = Properties.Resources.standard,
                 Visible = true
             };

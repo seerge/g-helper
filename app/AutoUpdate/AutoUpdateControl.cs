@@ -21,7 +21,7 @@ namespace GHelper.AutoUpdate
         {
             settings = settingsForm;
             var appVersion = new Version(Assembly.GetExecutingAssembly().GetName().Version.ToString());
-            settings.SetVersionLabel(Properties.Strings.VersionLabel + $": {appVersion.Major}.{appVersion.Minor}.{appVersion.Build}");
+            settings.SetVersionLabel(Properties.Strings.VersionLabel + $": {appVersion.Major}.{appVersion.Minor}.{appVersion.Build} [{AppConfig.ModLabel}]");
         }
 
         public void CheckForUpdates()

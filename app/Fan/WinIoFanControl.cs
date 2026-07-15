@@ -46,6 +46,9 @@ namespace GHelper.Fan
 
         public static bool Active => timer is not null && timer.Enabled;
 
+        // Verbose logging: on in GHelper_debug.exe builds, or via "winio_debug": 1 in config.json
+        private static bool Verbose => AppConfig.DebugBuild || AppConfig.Is("winio_debug");
+
         static WinIoFanControl()
         {
             NativeLibrary.SetDllImportResolver(typeof(WinIoFanControl).Assembly, (name, assembly, path) =>
@@ -200,18 +203,21 @@ namespace GHelper.Fan
 
                 int target = temp >= FAILSAFE_TEMP ? 100 : Interpolate(curve, temp);
 
+                if (Verbose)
+                    Logger.WriteLine($"WinIO tick: temp={temp:F1}C target={target}% current={currentPercent}% down={downTicks} rpm={ReadRpmSafe()}");
+
                 if (target > Math.Max(currentPercent, 0))
                 {
                     downTicks = 0;
                     if (target - currentPercent >= DEADBAND || target == 100)
-                        Apply(Math.Min(target, Math.Max(currentPercent, 0) + STEP_UP_MAX));
+                        Apply(Math.Min(target, Math.Max(currentPercent, 0) + STEP_UP_MAX), temp);
                 }
                 else if (target < currentPercent)
                 {
                     // ramp down only after the target has stayed lower for a while,
                     // otherwise the fan oscillates around a curve point
                     if (++downTicks >= DOWN_DELAY_TICKS && currentPercent - target >= DEADBAND)
-                        Apply(Math.Max(target, currentPercent - STEP_DOWN_MAX));
+                        Apply(Math.Max(target, currentPercent - STEP_DOWN_MAX), temp);
                 }
                 else
                 {
@@ -246,13 +252,30 @@ namespace GHelper.Fan
             return -1;
         }
 
-        private static void Apply(int percent)
+        private static void Apply(int percent, float temp)
         {
             percent = Math.Clamp(percent, 0, 100);
             if (percent == currentPercent) return;
 
             SetAllFans(percent);
             currentPercent = percent;
+            Logger.WriteLine($"WinIO fan: {temp:F0}C -> {percent}%");
+        }
+
+        private static int ReadRpmSafe()
+        {
+            try
+            {
+                lock (ioLock)
+                {
+                    HealthyTable_SetFanIndex(0);
+                    return HealthyTable_FanRPM();
+                }
+            }
+            catch
+            {
+                return -1;
+            }
         }
 
         private static void SetAllFans(int percent)

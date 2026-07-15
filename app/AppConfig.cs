@@ -8,6 +8,12 @@ using System.Text.RegularExpressions;
 public static class AppConfig
 {
 
+    // Fork branding: marks this V16 fan-mod build so it's distinguishable from upstream G-Helper.
+    // Renaming the exe to GHelper_debug.exe (or anything containing "debug") turns on verbose logging.
+    public const string ModTag = "V16 Mod";
+    public static readonly bool DebugBuild = (Environment.ProcessPath ?? "").Contains("debug", StringComparison.OrdinalIgnoreCase);
+    public static string ModLabel => ModTag + (DebugBuild ? " DEBUG" : "");
+
     private static string configFile;
     private static string fallbackConfigFile;
 
