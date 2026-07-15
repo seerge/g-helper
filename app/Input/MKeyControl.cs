@@ -164,7 +164,7 @@ namespace GHelper.Input
                     if (count < 1 || count > 8 || 5 + count > length) continue;
 
                     Logger.WriteLine($"MKey bindings: {BitConverter.ToString(response, 0, Math.Min(16, length))}");
-                    LoadDefaults(response, count);
+                    defaults = response[5..(5 + count)];
                     MapSlots(count);
                     return true;
                 }
@@ -175,19 +175,6 @@ namespace GHelper.Input
             }
 
             return false;
-        }
-
-        static void LoadDefaults(byte[] response, int count)
-        {
-            defaults = new byte[count];
-
-            if (AppConfig.Get("mkey_defaults") != count)
-            {
-                for (int i = 0; i < count; i++) AppConfig.Set($"mkey_default_{i}", response[5 + i]);
-                AppConfig.Set("mkey_defaults", count);
-            }
-
-            for (int i = 0; i < count; i++) defaults[i] = (byte)AppConfig.Get($"mkey_default_{i}", response[5 + i]);
         }
 
         static void MapSlots(int count)
