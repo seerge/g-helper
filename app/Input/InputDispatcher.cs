@@ -55,6 +55,7 @@ namespace GHelper.Input
 
             hook.KeyPressed += new EventHandler<KeyPressedEventArgs>(KeyPressed);
 
+            MKeyControl.ApplyAll();
             RegisterKeys();
 
             timer.Elapsed += Timer_Elapsed;
@@ -96,7 +97,6 @@ namespace GHelper.Input
 
             Program.acpi.DeviceInit();
             MKeyControl.ApplyAll();
-            RegisterKeys();
 
             if (!AsusService.IsAsusOptimizationRunning())
             {
