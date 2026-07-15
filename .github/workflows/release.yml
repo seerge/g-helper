@@ -7,6 +7,11 @@ on:
     tags:
       - 'v*'
   workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag to create'
+        required: false
+        default: 'v0.264-vivofan.1'
 
 permissions:
   contents: write
@@ -37,11 +42,12 @@ jobs:
           GHelper.zip
 
     - name: Create release
-      if: startsWith(github.ref, 'refs/tags/')
       uses: softprops/action-gh-release@v2
       with:
+        tag_name: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+        target_commitish: ${{ github.sha }}
         files: GHelper.zip
-        name: "${{ github.ref_name }} — Vivobook V16 software fan control"
+        name: "${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }} — Vivobook V16 software fan control"
         body: |
           G-Helper build with a software fan control fallback (AsusWinIO64) for Vivobook / V16
           models whose firmware does not support ACPI fan curves.
