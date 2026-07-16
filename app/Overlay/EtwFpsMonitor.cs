@@ -26,9 +26,8 @@ namespace GHelper.Overlay
         // Keyword bit carrying Present_Info — keeps high-volume kernel GPU events out
         private const ulong DXGKRNL_KEYWORD_PRESENT = 0x0000000008000000UL;
 
-        // Kernel-side filter descriptors — applied once on first known foreground PID so we
-        // stop receiving events from every other GPU process system-wide.
-        private const uint EVENT_FILTER_TYPE_PID             = 0x80000004;
+        // Kernel-side event-id filter — only Present_Info is delivered to the session.
+        // (EVENT_FILTER_TYPE_PID is ignored by kernel-mode providers — PID is matched in the callback.)
         private const uint EVENT_FILTER_TYPE_EVENT_ID        = 0x80000200;
         private const uint ENABLE_TRACE_PARAMETERS_VERSION_2 = 2;
 
@@ -213,7 +212,6 @@ namespace GHelper.Overlay
         private System.Threading.Timer? _flushTimer;
         private long _lastFlushTick;             // ≥1 s flush floor
         private volatile int _targetPid = -1;
-        private int _lastTargetPid;       // detects PID switches so the window can be reset
 
         // Rolling-window FPS using EventHeader.TimeStamp (raw QPC ticks at Present call time).
         // Critical: ETW batches events and delivers them all at once, so Stopwatch.GetTimestamp()
@@ -225,12 +223,6 @@ namespace GHelper.Overlay
         private volatile int _frameHead = 0;    // next write slot — read by overlay tick thread
         private volatile int _framesFilled = 0; // valid entries (capped at RollingWindowSize)
 
-        // Flip true to log ETW delivery latency once per second (see LogFpsDiagnostics).
-        private static readonly bool FpsDiagLogging = false;
-        private long _diagStart, _diagLastEvent;
-        private int _diagFrames;
-        private double _diagLatMin, _diagLatMax, _diagLatSum, _diagGapMax;
-
         private EventRecordCallback? _callbackRef; // keep delegate alive — prevents GC collection
 
         /// Set to the foreground process PID to filter events.
@@ -241,91 +233,65 @@ namespace GHelper.Overlay
             set
             {
                 if (_targetPid == value) return;
+                bool wasPaused = _targetPid == 0;
                 _targetPid = value;
+                _frameHead = 0;
+                _framesFilled = 0;
                 if (_sessionHandle == 0) return;
-                // Push the kernel-side filter on every foreground PID change. One-shot
-                // doesn't work: if the user launches a game while the overlay is already
-                // open, the kernel filter would stay pinned to the previous foreground
-                // and events from the new game would be dropped before reaching us.
                 if (value == 0)
-                    PauseProviders();
-                else
-                    ApplyKernelFilters(value);
+                    EnableTraceEx2(_sessionHandle, DxgKrnlProviderId, EVENT_CONTROL_CODE_DISABLE_PROVIDER, 0, 0, 0, 0, IntPtr.Zero);
+                else if (wasPaused)
+                    EnableProvider();
             }
         }
 
-        private void PauseProviders()
+        // ETW copies the filter buffers internally — they're freed immediately in the finally.
+        private void EnableProvider()
         {
-            EnableTraceEx2(_sessionHandle, DxgKrnlProviderId, EVENT_CONTROL_CODE_DISABLE_PROVIDER, 0, 0, 0, 0, IntPtr.Zero);
-        }
-
-        private void ApplyKernelFilters(int pid)
-        {
-            EnableProviderWithFilters(DxgKrnlProviderId, DXGKRNL_KEYWORD_PRESENT, pid, EVENT_DXGKRNL_PRESENT_INFO);
-        }
-
-        // Re-enables a provider with EVENT_FILTER_TYPE_PID + EVENT_FILTER_TYPE_EVENT_ID so the
-        // kernel drops events from other processes and other event ids before delivering them.
-        // ETW copies all filter buffers internally — they're freed immediately in the finally.
-        private void EnableProviderWithFilters(Guid providerId, ulong keyword, int pid, ushort filterEventId)
-        {
-            const int filterCount = 2;
-            int descSize = Marshal.SizeOf<EVENT_FILTER_DESCRIPTOR>();
-
-            IntPtr descs      = Marshal.AllocHGlobal(filterCount * descSize);
-            IntPtr pidBuf     = Marshal.AllocHGlobal(sizeof(uint));
+            IntPtr desc       = Marshal.AllocHGlobal(Marshal.SizeOf<EVENT_FILTER_DESCRIPTOR>());
             IntPtr eventIdBuf = Marshal.AllocHGlobal(8);
             IntPtr paramsPtr  = Marshal.AllocHGlobal(Marshal.SizeOf<ENABLE_TRACE_PARAMETERS>());
 
             try
             {
-                Marshal.WriteInt32(pidBuf, pid);
-                var pidDesc = new EVENT_FILTER_DESCRIPTOR
-                {
-                    Ptr  = (ulong)pidBuf.ToInt64(),
-                    Size = sizeof(uint),
-                    Type = EVENT_FILTER_TYPE_PID,
-                };
-                Marshal.StructureToPtr(pidDesc, descs, false);
-
                 // EVENT_FILTER_EVENT_ID: BOOLEAN FilterIn; UCHAR Reserved; USHORT Count;
                 // USHORT Events[Count]. For Count=1 the descriptor is 6 bytes.
-                Marshal.WriteByte (eventIdBuf, 0, 1);                    // FilterIn = true
-                Marshal.WriteByte (eventIdBuf, 1, 0);                    // Reserved
-                Marshal.WriteInt16(eventIdBuf, 2, 1);                    // Count = 1
-                Marshal.WriteInt16(eventIdBuf, 4, (short)filterEventId); // Events[0]
+                Marshal.WriteByte (eventIdBuf, 0, 1);                                    // FilterIn = true
+                Marshal.WriteByte (eventIdBuf, 1, 0);                                    // Reserved
+                Marshal.WriteInt16(eventIdBuf, 2, 1);                                    // Count = 1
+                Marshal.WriteInt16(eventIdBuf, 4, (short)EVENT_DXGKRNL_PRESENT_INFO);    // Events[0]
 
-                var eidDesc = new EVENT_FILTER_DESCRIPTOR
+                Marshal.StructureToPtr(new EVENT_FILTER_DESCRIPTOR
                 {
                     Ptr  = (ulong)eventIdBuf.ToInt64(),
                     Size = 6,
                     Type = EVENT_FILTER_TYPE_EVENT_ID,
-                };
-                Marshal.StructureToPtr(eidDesc, descs + descSize, false);
+                }, desc, false);
 
-                var enableParams = new ENABLE_TRACE_PARAMETERS
+                Marshal.StructureToPtr(new ENABLE_TRACE_PARAMETERS
                 {
                     Version          = ENABLE_TRACE_PARAMETERS_VERSION_2,
-                    EnableFilterDesc = descs,
-                    FilterDescCount  = (uint)filterCount,
-                };
-                Marshal.StructureToPtr(enableParams, paramsPtr, false);
+                    EnableFilterDesc = desc,
+                    FilterDescCount  = 1,
+                }, paramsPtr, false);
 
-                uint hr = EnableTraceEx2(_sessionHandle, providerId,
+                uint hr = EnableTraceEx2(_sessionHandle, DxgKrnlProviderId,
                     EVENT_CONTROL_CODE_ENABLE_PROVIDER,
-                    TRACE_LEVEL_INFORMATION, keyword, 0, 0, paramsPtr);
-                // Log on failure so a regression like the previous attempt is observable next
-                // time. Failure here is non-fatal: providers were already enabled unfiltered
-                // in Start(), so callback-side filtering continues to work.
+                    TRACE_LEVEL_INFORMATION, DXGKRNL_KEYWORD_PRESENT, 0, 0, paramsPtr);
                 if (hr != ERROR_SUCCESS)
-                    Logger.WriteLine($"EnableTraceEx2 (filter) failed for {providerId}: 0x{hr:X}");
+                {
+                    Logger.WriteLine($"EnableTraceEx2 (filter) failed: 0x{hr:X}");
+                    // Fall back to unfiltered enable — the callback filters by event id anyway
+                    EnableTraceEx2(_sessionHandle, DxgKrnlProviderId,
+                        EVENT_CONTROL_CODE_ENABLE_PROVIDER,
+                        TRACE_LEVEL_INFORMATION, DXGKRNL_KEYWORD_PRESENT, 0, 0, IntPtr.Zero);
+                }
             }
             finally
             {
                 Marshal.FreeHGlobal(paramsPtr);
-                if (eventIdBuf != IntPtr.Zero) Marshal.FreeHGlobal(eventIdBuf);
-                Marshal.FreeHGlobal(pidBuf);
-                Marshal.FreeHGlobal(descs);
+                Marshal.FreeHGlobal(eventIdBuf);
+                Marshal.FreeHGlobal(desc);
             }
         }
 
@@ -359,9 +325,7 @@ namespace GHelper.Overlay
 
             // 2. Subscribe to the DxgKrnl provider — Present_Info fires once per frame
             //    for every graphics API.
-            EnableTraceEx2(_sessionHandle, DxgKrnlProviderId,
-                EVENT_CONTROL_CODE_ENABLE_PROVIDER,
-                TRACE_LEVEL_INFORMATION, DXGKRNL_KEYWORD_PRESENT, 0, 0, IntPtr.Zero);
+            EnableProvider();
 
             // 3. Open the real-time consumer using explicit-layout struct.
             //    LoggerName and EventRecordCallback are marshaled as raw IntPtrs to
@@ -429,25 +393,13 @@ namespace GHelper.Overlay
                 || record.EventHeader.Id != EVENT_DXGKRNL_PRESENT_INFO) return;
 
             int targetPid = _targetPid;
-            if (targetPid == 0) return;                                    // no foreground target yet
-            if ((int)record.EventHeader.ProcessId != targetPid) return;    // wrong process
-
-            // PID changed — reset rolling window so stale timestamps don't pollute new readings
-            if (targetPid != _lastTargetPid)
-            {
-                _lastTargetPid = targetPid;
-                _frameHead = 0;
-                _framesFilled = 0;
-                return;
-            }
+            if (targetPid <= 0 || (int)record.EventHeader.ProcessId != targetPid) return;
 
             // EventHeader.TimeStamp = kernel QPC tick at the moment Present() was called.
             // This is NOT affected by ETW delivery batching, giving accurate inter-frame timing.
             _frameTimes[_frameHead] = record.EventHeader.TimeStamp;
             _frameHead = (_frameHead + 1) % RollingWindowSize;
             if (_framesFilled < RollingWindowSize) _framesFilled++;
-
-            if (FpsDiagLogging) LogFpsDiagnostics(record.EventHeader.TimeStamp);
         }
 
         // FPS averaged over the last second of frames; 0 when nothing rendered in the last second.
@@ -478,38 +430,6 @@ namespace GHelper.Overlay
             double elapsed = (double)(newest - oldest) / freq;
             if (elapsed <= 0) return 0;
             return (count - 1) / elapsed;
-        }
-
-        // Logs ETW delivery latency (now − Present) and the max delivery gap, once per second.
-        private void LogFpsDiagnostics(long presentTick)
-        {
-            long freq = Stopwatch.Frequency;
-            long nowTick = Stopwatch.GetTimestamp();
-            double latMs = (double)(nowTick - presentTick) / freq * 1000.0;
-            if (_diagFrames == 0) { _diagLatMin = _diagLatMax = latMs; }
-            else
-            {
-                if (latMs < _diagLatMin) _diagLatMin = latMs;
-                if (latMs > _diagLatMax) _diagLatMax = latMs;
-            }
-            _diagLatSum += latMs;
-            if (_diagLastEvent != 0)
-            {
-                double gapMs = (double)(nowTick - _diagLastEvent) / freq * 1000.0;
-                if (gapMs > _diagGapMax) _diagGapMax = gapMs;
-            }
-            _diagLastEvent = nowTick;
-            _diagFrames++;
-            if (_diagStart == 0) _diagStart = nowTick;
-            else if (nowTick - _diagStart >= freq)
-            {
-                double secs = (double)(nowTick - _diagStart) / freq;
-                Logger.WriteLine(
-                    $"FPS diag: fps={SampleFps():F0} frames={_diagFrames} rate={_diagFrames / secs:F0}/s | " +
-                    $"ETW latency ms: min={_diagLatMin:F0} avg={_diagLatSum / _diagFrames:F0} max={_diagLatMax:F0} | " +
-                    $"maxgap={_diagGapMax:F0}ms");
-                _diagStart = nowTick; _diagFrames = 0; _diagLatSum = 0; _diagGapMax = 0;
-            }
         }
 
         private static EVENT_TRACE_PROPERTIES BuildSessionProperties() => new()
