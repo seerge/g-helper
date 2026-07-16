@@ -918,7 +918,7 @@
     <value>Дзвінок</value>
   </data>
   <data name="SlashStatic" xml:space="preserve">
-    <value>Static</value>
+    <value>Фіксовано</value>
   </data>
   <data name="SlashBatteryLevel" xml:space="preserve">
     <value>Заряд батареї</value>
