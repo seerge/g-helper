@@ -190,8 +190,8 @@ namespace GHelper.Input
 
             if (!AppConfig.IsZ13() && !AppConfig.IsAlly() && !AppConfig.IsVivoZenPro())
             {
-                if (actionM1 is not null && actionM1.Length > 0 && !MKeyControl.IsFirmware("m1")) hook.RegisterHotKey(ModifierKeys.None, Keys.VolumeDown);
-                if (actionM2 is not null && actionM2.Length > 0 && !MKeyControl.IsFirmware("m2")) hook.RegisterHotKey(ModifierKeys.None, Keys.VolumeUp);
+                if (actionM1 is not null && actionM1.Length > 0 && !MKeyControl.IsFirmware("m1")) hook.RegisterHotKey(ModifierKeys.NoRepeat, Keys.VolumeDown);
+                if (actionM2 is not null && actionM2.Length > 0 && !MKeyControl.IsFirmware("m2")) hook.RegisterHotKey(ModifierKeys.NoRepeat, Keys.VolumeUp);
             }
 
             if (AppConfig.IsAlly())
@@ -578,8 +578,6 @@ namespace GHelper.Input
 
         public static void KeyProcess(string name = "m3")
         {
-            if (MKeyControl.IsRepeat(name)) return;
-
             if (name == "m4" && Control.ModifierKeys == (Keys.Control | Keys.Shift | Keys.Alt))
             {
                 Thread.Sleep(3000);

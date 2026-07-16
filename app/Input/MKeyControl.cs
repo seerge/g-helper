@@ -56,17 +56,6 @@ namespace GHelper.Input
             return null;
         }
 
-        static readonly Dictionary<string, long> repeatTime = new();
-
-        public static bool IsRepeat(string name)
-        {
-            if (name != "m1" && name != "m2") return false;
-            long now = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-            bool repeat = repeatTime.TryGetValue(name, out long last) && now - last < 600;
-            repeatTime[name] = now;
-            return repeat;
-        }
-
         static bool Skip => AppConfig.IsZ13() || AppConfig.IsAlly() || AppConfig.IsVivoZenPro() || AppConfig.NoMKeys() || AppConfig.IsARCNM();
 
         public static void ApplyAll()
