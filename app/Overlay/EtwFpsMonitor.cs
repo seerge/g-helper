@@ -5,7 +5,6 @@ namespace GHelper.Overlay
 {
     public sealed class EtwFpsMonitor : IDisposable
     {
-        // ── ETW Constants ────────────────────────────────────────────────────────
         private const uint ERROR_SUCCESS = 0;
         private const uint EVENT_CONTROL_CODE_ENABLE_PROVIDER = 1;
         private const uint EVENT_CONTROL_CODE_DISABLE_PROVIDER = 0;
@@ -32,8 +31,6 @@ namespace GHelper.Overlay
         private const uint ENABLE_TRACE_PARAMETERS_VERSION_2 = 2;
 
         private const string SessionName = "FpsMonitorSession";
-
-        // ── P/Invoke Structures ──────────────────────────────────────────────────
 
         [StructLayout(LayoutKind.Sequential)]
         private struct WNODE_HEADER
@@ -74,16 +71,11 @@ namespace GHelper.Overlay
             public string LogFileName;
         }
 
+        // Truncated to EventHeader — the callback reads the record in place and needs nothing past it
         [StructLayout(LayoutKind.Sequential)]
         private struct EVENT_RECORD
         {
             public EVENT_HEADER EventHeader;
-            public ETW_BUFFER_CONTEXT BufferContext;
-            public ushort ExtendedDataCount;
-            public ushort UserDataLength;
-            public IntPtr ExtendedData;
-            public IntPtr UserData;
-            public IntPtr UserContext;
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -109,16 +101,7 @@ namespace GHelper.Overlay
             public Guid ActivityId;
         }
 
-        [StructLayout(LayoutKind.Sequential)]
-        private struct ETW_BUFFER_CONTEXT
-        {
-            public byte ProcessorNumber;
-            public byte Alignment;
-            public ushort LoggerId;
-        }
-
-        // Ptr is declared ULONGLONG in Windows headers (not a real pointer) so it's 8 bytes
-        // on every architecture — using ulong keeps the layout right regardless of bitness.
+        // Ptr is ULONGLONG in Windows headers (8 bytes on every architecture), not a pointer
         [StructLayout(LayoutKind.Sequential)]
         private struct EVENT_FILTER_DESCRIPTOR
         {
@@ -138,28 +121,7 @@ namespace GHelper.Overlay
             public uint   FilterDescCount;
         }
 
-        // ── EVENT_TRACE_LOGFILE — explicit layout with correct 64-bit offsets ───
-        //
-        // Native field map (x64):
-        //   offset 0   : LPWSTR LogFileName
-        //   offset 8   : LPWSTR LoggerName
-        //   offset 16  : LONGLONG CurrentTime
-        //   offset 24  : ULONG BuffersRead
-        //   offset 28  : ULONG ProcessTraceMode  ← we set this
-        //   offset 32  : EVENT_TRACE CurrentEvent (88 bytes)
-        //   offset 120 : TRACE_LOGFILE_HEADER LogfileHeader (280 bytes)
-        //   offset 400 : PTR BufferCallback
-        //   offset 408 : ULONG BufferSize
-        //   offset 412 : ULONG Filled
-        //   offset 416 : ULONG EventsLost
-        //   offset 420 : (4-byte pad)
-        //   offset 424 : PTR EventRecordCallback  ← we set this
-        //   offset 432 : ULONG IsKernelTrace
-        //   offset 436 : (4-byte pad)
-        //   offset 440 : PVOID Context
-        //   total 448 bytes
-        //
-        // We use IntPtr for pointer fields to avoid marshaler interference.
+        // Explicit layout at native x64 offsets — raw IntPtrs keep the marshaler out
         [StructLayout(LayoutKind.Explicit, Size = 448)]
         private struct EVENT_TRACE_LOGFILE
         {
@@ -173,7 +135,6 @@ namespace GHelper.Overlay
         // Callback delegate — must match PEVENT_RECORD_CALLBACK signature exactly
         private delegate void EventRecordCallback([In] ref EVENT_RECORD eventRecord);
 
-        // ── P/Invoke Functions ───────────────────────────────────────────────────
         [DllImport("advapi32.dll", CharSet = CharSet.Unicode)]
         private static extern uint StartTrace(out long sessionHandle,
             string sessionName, ref EVENT_TRACE_PROPERTIES properties);
@@ -203,7 +164,6 @@ namespace GHelper.Overlay
         [DllImport("advapi32.dll")]
         private static extern uint CloseTrace(long traceHandle);
 
-        // ── State ────────────────────────────────────────────────────────────────
         private long _sessionHandle;
         private long _traceHandle;
 
@@ -213,11 +173,8 @@ namespace GHelper.Overlay
         private long _lastFlushTick;             // ≥1 s flush floor
         private volatile int _targetPid = -1;
 
-        // Rolling-window FPS using EventHeader.TimeStamp (raw QPC ticks at Present call time).
-        // Critical: ETW batches events and delivers them all at once, so Stopwatch.GetTimestamp()
-        // at callback time is nearly identical for every frame in the batch — causing fps = N/~0.
-        // EventHeader.TimeStamp is stamped by the kernel when Present() actually fired, so it
-        // correctly reflects the real inter-frame spacing regardless of delivery batching.
+        // Rolling window of EventHeader.TimeStamp (kernel QPC at Present time) — ETW delivers
+        // events in batches, so callback-time timestamps would collapse to fps = N/~0.
         private const int RollingWindowSize = 360; // frames — holds a full 1 s window up to 360 fps
         private readonly long[] _frameTimes = new long[RollingWindowSize];
         private volatile int _frameHead = 0;    // next write slot — read by overlay tick thread
@@ -225,8 +182,7 @@ namespace GHelper.Overlay
 
         private EventRecordCallback? _callbackRef; // keep delegate alive — prevents GC collection
 
-        /// Set to the foreground process PID to filter events.
-        /// 0 = no target, no events counted (overlay shows "--").
+        /// Foreground PID to count; 0 = no target, provider paused, overlay shows "--"
         public int TargetPid
         {
             get => _targetPid;
@@ -295,20 +251,13 @@ namespace GHelper.Overlay
             }
         }
 
-        // ── Public API ───────────────────────────────────────────────────────────
-
-        /// <summary>
-        /// Starts the ETW session. Blocks the calling thread — always run via Task.Run.
-        /// Requires Administrator privileges.
-        /// </summary>
+        /// Starts the ETW session. Blocks the calling thread — always run via Task.Run. Requires admin.
         public void Start(int targetPid = -1)
         {
             _targetPid = targetPid;
 
-            // Kill any stale session left by a previous unclean exit. Otherwise StartTrace
-            // returns ERROR_ALREADY_EXISTS without populating sessionHandle, EnableTraceEx2
-            // silently fails against the invalid handle, and FPS stays at "--" until the
-            // user hides/shows the overlay (Stop() finds the orphaned session by name).
+            // Kill any stale session from an unclean exit — else StartTrace returns
+            // ERROR_ALREADY_EXISTS with no usable handle and FPS stays at "--"
             var stopProps = BuildSessionProperties();
             StopTrace(0, SessionName, ref stopProps);
 
@@ -323,15 +272,10 @@ namespace GHelper.Overlay
             if (hr != ERROR_SUCCESS)
                 throw new InvalidOperationException($"StartTrace failed: 0x{hr:X}");
 
-            // 2. Subscribe to the DxgKrnl provider — Present_Info fires once per frame
-            //    for every graphics API.
+            // 2. Subscribe to DxgKrnl — Present_Info fires once per frame for every graphics API
             EnableProvider();
 
-            // 3. Open the real-time consumer using explicit-layout struct.
-            //    LoggerName and EventRecordCallback are marshaled as raw IntPtrs to
-            //    guarantee correct placement at the native 64-bit offsets.
-            //    PROCESS_TRACE_MODE_RAW_TIMESTAMP makes EventHeader.TimeStamp a raw QPC
-            //    value (same units as Stopwatch.Frequency) instead of low-res system time.
+            // 3. Open the real-time consumer. RAW_TIMESTAMP = EventHeader.TimeStamp in QPC ticks.
             _callbackRef = OnEventRecord;
             IntPtr loggerNamePtr = Marshal.StringToHGlobalUni(SessionName);
             try
@@ -385,8 +329,6 @@ namespace GHelper.Overlay
 
         public void Dispose() => Stop();
 
-        // ── Internal ─────────────────────────────────────────────────────────────
-
         private void OnEventRecord(ref EVENT_RECORD record)
         {
             if (record.EventHeader.ProviderId != DxgKrnlProviderId
@@ -395,8 +337,6 @@ namespace GHelper.Overlay
             int targetPid = _targetPid;
             if (targetPid <= 0 || (int)record.EventHeader.ProcessId != targetPid) return;
 
-            // EventHeader.TimeStamp = kernel QPC tick at the moment Present() was called.
-            // This is NOT affected by ETW delivery batching, giving accurate inter-frame timing.
             _frameTimes[_frameHead] = record.EventHeader.TimeStamp;
             _frameHead = (_frameHead + 1) % RollingWindowSize;
             if (_framesFilled < RollingWindowSize) _framesFilled++;
