@@ -870,7 +870,7 @@ public static class HardwareControl
             float? newCpu = GetCPUPower() ?? GetIntelMsrPower() ?? GetAmdApuPower();
             float? iGpuPower = null;
 
-            if (isAMDiGPU)
+            if (isAMDiGPU && GpuControl is null)
             {
                 float? cores = GetCoresPower();
                 if (cores > 0 && newCpu > cores)
