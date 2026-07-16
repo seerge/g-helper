@@ -15,32 +15,16 @@ namespace GHelper.Overlay
         private const uint PROCESS_TRACE_MODE_EVENT_RECORD = 0x10000000;
         private const uint PROCESS_TRACE_MODE_RAW_TIMESTAMP = 0x00001000; // EventHeader.TimeStamp = raw QPC ticks
         private const uint WNODE_FLAG_TRACED_GUID = 0x00020000;
-        private const int EVENT_DXGI_PRESENT_START = 42;
 
-        // Microsoft-Windows-DXGI provider — DX11 + some DX12 games (user-mode swapchain path)
-        private static readonly Guid DxgiProviderId =
-            new("CA11C036-0102-4A2D-A6AD-F03CFED5D3C9");
-
-        // Microsoft-Windows-DxgKrnl provider — DX12 flip-model + Vulkan (kernel present path)
-        // Games like Kingdom Come: Deliverance 2 use DX12/Vulkan and bypass the DXGI user-mode
-        // present path, so they never fire DXGI event 42. DxgKrnl covers this case.
+        // Microsoft-Windows-DxgKrnl provider — kernel present path shared by every graphics API
         private static readonly Guid DxgKrnlProviderId =
             new("802EC45A-1E99-4B83-9920-87C98277BA9D");
 
-        // DxgKrnl_Flip_Start: Task=14 (0xE), Opcode=1
-        // Fires once per frame when a flip-model present is submitted to the hardware.
-        // Covers both DX12 (IDXGISwapChain flip model) and Vulkan (vkQueuePresentKHR).
-        private const ushort DXGKRNL_TASK_FLIP = 14;
-        private const byte DXGKRNL_OPCODE_START = 1;
-
-        // DxgKrnl Present_Info — the only per-frame event for blit-model windowed presents
-        // (AMD Vulkan/OpenGL), which emit neither DXGI event 42 nor a Flip.
+        // DxgKrnl Present_Info — kernel D3DKMTPresent, once per frame for every present path
         private const ushort EVENT_DXGKRNL_PRESENT_INFO = 184;
 
-        // Keyword mask for the DxgKrnl provider — scopes to flip/present-related events only
-        // so we don't receive every kernel GPU event system-wide (which would be very high volume).
-        // 0x8000000 carries Present_Info (184), 0x40000000000 the flips.
-        private const ulong DXGKRNL_KEYWORD_PRESENT = 0x0000040008000000UL;
+        // Keyword bit carrying Present_Info — keeps high-volume kernel GPU events out
+        private const ulong DXGKRNL_KEYWORD_PRESENT = 0x0000000008000000UL;
 
         // Kernel-side filter descriptors — applied once on first known foreground PID so we
         // stop receiving events from every other GPU process system-wide.
@@ -114,7 +98,7 @@ namespace GHelper.Overlay
             public uint ProcessId;
             public long TimeStamp; // raw QPC ticks when PROCESS_TRACE_MODE_RAW_TIMESTAMP is set
             public Guid ProviderId;
-            public ushort Id; // 42 = PresentStart (DXGI)
+            public ushort Id;
             public byte Version;
             public byte Channel;
             public byte Level;
@@ -231,12 +215,6 @@ namespace GHelper.Overlay
         private volatile int _targetPid = -1;
         private int _lastTargetPid;       // detects PID switches so the window can be reset
 
-        // When a game fires DXGI event 42, we prefer it over DxgKrnl to avoid double-counting.
-        // Some DX12 games emit both — this flag suppresses DxgKrnl once DXGI is confirmed active
-        // for the current PID. Resets on every PID switch.
-        private bool _dxgiActiveForCurrentPid = false;
-        private bool _flipActiveForCurrentPid = false;
-
         // Rolling-window FPS using EventHeader.TimeStamp (raw QPC ticks at Present call time).
         // Critical: ETW batches events and delivers them all at once, so Stopwatch.GetTimestamp()
         // at callback time is nearly identical for every frame in the batch — causing fps = N/~0.
@@ -278,27 +256,25 @@ namespace GHelper.Overlay
 
         private void PauseProviders()
         {
-            EnableTraceEx2(_sessionHandle, DxgiProviderId,    EVENT_CONTROL_CODE_DISABLE_PROVIDER, 0, 0, 0, 0, IntPtr.Zero);
             EnableTraceEx2(_sessionHandle, DxgKrnlProviderId, EVENT_CONTROL_CODE_DISABLE_PROVIDER, 0, 0, 0, 0, IntPtr.Zero);
         }
 
         private void ApplyKernelFilters(int pid)
         {
-            EnableProviderWithFilters(DxgiProviderId,    0,                       pid, applyDxgiEventIdFilter: true);
-            EnableProviderWithFilters(DxgKrnlProviderId, DXGKRNL_KEYWORD_PRESENT, pid, applyDxgiEventIdFilter: false);
+            EnableProviderWithFilters(DxgKrnlProviderId, DXGKRNL_KEYWORD_PRESENT, pid, EVENT_DXGKRNL_PRESENT_INFO);
         }
 
-        // Re-enables a provider with EVENT_FILTER_TYPE_PID (+ EVENT_FILTER_TYPE_EVENT_ID for
-        // DXGI) so the kernel drops events from other processes before delivering them.
+        // Re-enables a provider with EVENT_FILTER_TYPE_PID + EVENT_FILTER_TYPE_EVENT_ID so the
+        // kernel drops events from other processes and other event ids before delivering them.
         // ETW copies all filter buffers internally — they're freed immediately in the finally.
-        private void EnableProviderWithFilters(Guid providerId, ulong keyword, int pid, bool applyDxgiEventIdFilter)
+        private void EnableProviderWithFilters(Guid providerId, ulong keyword, int pid, ushort filterEventId)
         {
-            int filterCount = applyDxgiEventIdFilter ? 2 : 1;
-            int descSize    = Marshal.SizeOf<EVENT_FILTER_DESCRIPTOR>();
+            const int filterCount = 2;
+            int descSize = Marshal.SizeOf<EVENT_FILTER_DESCRIPTOR>();
 
             IntPtr descs      = Marshal.AllocHGlobal(filterCount * descSize);
             IntPtr pidBuf     = Marshal.AllocHGlobal(sizeof(uint));
-            IntPtr eventIdBuf = applyDxgiEventIdFilter ? Marshal.AllocHGlobal(8) : IntPtr.Zero;
+            IntPtr eventIdBuf = Marshal.AllocHGlobal(8);
             IntPtr paramsPtr  = Marshal.AllocHGlobal(Marshal.SizeOf<ENABLE_TRACE_PARAMETERS>());
 
             try
@@ -312,23 +288,20 @@ namespace GHelper.Overlay
                 };
                 Marshal.StructureToPtr(pidDesc, descs, false);
 
-                if (applyDxgiEventIdFilter)
-                {
-                    // EVENT_FILTER_EVENT_ID: BOOLEAN FilterIn; UCHAR Reserved; USHORT Count;
-                    // USHORT Events[Count]. For Count=1 the descriptor is 6 bytes.
-                    Marshal.WriteByte (eventIdBuf, 0, 1);                        // FilterIn = true
-                    Marshal.WriteByte (eventIdBuf, 1, 0);                        // Reserved
-                    Marshal.WriteInt16(eventIdBuf, 2, 1);                        // Count = 1
-                    Marshal.WriteInt16(eventIdBuf, 4, EVENT_DXGI_PRESENT_START); // Events[0] = 42
+                // EVENT_FILTER_EVENT_ID: BOOLEAN FilterIn; UCHAR Reserved; USHORT Count;
+                // USHORT Events[Count]. For Count=1 the descriptor is 6 bytes.
+                Marshal.WriteByte (eventIdBuf, 0, 1);                    // FilterIn = true
+                Marshal.WriteByte (eventIdBuf, 1, 0);                    // Reserved
+                Marshal.WriteInt16(eventIdBuf, 2, 1);                    // Count = 1
+                Marshal.WriteInt16(eventIdBuf, 4, (short)filterEventId); // Events[0]
 
-                    var eidDesc = new EVENT_FILTER_DESCRIPTOR
-                    {
-                        Ptr  = (ulong)eventIdBuf.ToInt64(),
-                        Size = 6,
-                        Type = EVENT_FILTER_TYPE_EVENT_ID,
-                    };
-                    Marshal.StructureToPtr(eidDesc, descs + descSize, false);
-                }
+                var eidDesc = new EVENT_FILTER_DESCRIPTOR
+                {
+                    Ptr  = (ulong)eventIdBuf.ToInt64(),
+                    Size = 6,
+                    Type = EVENT_FILTER_TYPE_EVENT_ID,
+                };
+                Marshal.StructureToPtr(eidDesc, descs + descSize, false);
 
                 var enableParams = new ENABLE_TRACE_PARAMETERS
                 {
@@ -384,16 +357,8 @@ namespace GHelper.Overlay
             if (hr != ERROR_SUCCESS)
                 throw new InvalidOperationException($"StartTrace failed: 0x{hr:X}");
 
-            // 2a. Subscribe to the DXGI provider (DX11 + DX12 games that go through
-            //     the user-mode DXGI swapchain — fires event ID 42 per frame).
-            EnableTraceEx2(_sessionHandle, DxgiProviderId,
-                EVENT_CONTROL_CODE_ENABLE_PROVIDER,
-                TRACE_LEVEL_INFORMATION, 0, 0, 0, IntPtr.Zero);
-
-            // 2b. Subscribe to the DxgKrnl provider (DX12 flip-model + Vulkan games
-            //     that call D3DKMTPresent directly and never surface a DXGI event 42).
-            //     DXGKRNL_KEYWORD_PRESENT scopes delivery to flip/present events only,
-            //     avoiding the high volume of all kernel GPU scheduling events.
+            // 2. Subscribe to the DxgKrnl provider — Present_Info fires once per frame
+            //    for every graphics API.
             EnableTraceEx2(_sessionHandle, DxgKrnlProviderId,
                 EVENT_CONTROL_CODE_ENABLE_PROVIDER,
                 TRACE_LEVEL_INFORMATION, DXGKRNL_KEYWORD_PRESENT, 0, 0, IntPtr.Zero);
@@ -460,60 +425,21 @@ namespace GHelper.Overlay
 
         private void OnEventRecord(ref EVENT_RECORD record)
         {
-            // DXGI PresentStart — DX11 and DX12 games using the DXGI user-mode swapchain path
-            bool isDxgiPresent = record.EventHeader.ProviderId == DxgiProviderId
-                              && record.EventHeader.Id == EVENT_DXGI_PRESENT_START;
-
-            // DxgKrnl Flip_Start — DX12 flip-model and Vulkan games (e.g. KCD2) that call
-            // D3DKMTPresent via the kernel without surfacing a DXGI event 42.
-            // Task=14 (Flip), Opcode=1 (Start) fires once per submitted flip-model frame.
-            bool isDxgKrnlFlip = record.EventHeader.ProviderId == DxgKrnlProviderId
-                              && record.EventHeader.Task == DXGKRNL_TASK_FLIP
-                              && record.EventHeader.Opcode == DXGKRNL_OPCODE_START;
-
-            bool isDxgKrnlBlitPresent = record.EventHeader.ProviderId == DxgKrnlProviderId
-                                     && record.EventHeader.Id == EVENT_DXGKRNL_PRESENT_INFO;
-
-            if (!isDxgiPresent && !isDxgKrnlFlip && !isDxgKrnlBlitPresent) return;
+            if (record.EventHeader.ProviderId != DxgKrnlProviderId
+                || record.EventHeader.Id != EVENT_DXGKRNL_PRESENT_INFO) return;
 
             int targetPid = _targetPid;
             if (targetPid == 0) return;                                    // no foreground target yet
             if ((int)record.EventHeader.ProcessId != targetPid) return;    // wrong process
 
-            // PID changed — reset rolling window so stale timestamps don't pollute new readings.
-            // Runs before the preference latches so a stale one can't mute the new process.
+            // PID changed — reset rolling window so stale timestamps don't pollute new readings
             if (targetPid != _lastTargetPid)
             {
                 _lastTargetPid = targetPid;
                 _frameHead = 0;
                 _framesFilled = 0;
-                _dxgiActiveForCurrentPid = false;
-                _flipActiveForCurrentPid = false;
                 return;
             }
-
-            // DXGI_PRESENT_TEST presents probe swapchain state without displaying a frame.
-            // S.T.A.L.K.E.R. Anomaly's X-Ray engine fires one between every real Present,
-            // which would otherwise double the reported FPS. Skip them — by definition
-            // they never produce a displayed frame, so this is safe for any game.
-            if (isDxgiPresent && record.UserDataLength >= 12)
-            {
-                uint dxgiFlags = (uint)Marshal.ReadInt32(record.UserData, 8);
-                if ((dxgiFlags & 0x1 /*DXGI_PRESENT_TEST*/) != 0) return;
-            }
-
-            // Prefer DXGI when available — if DXGI event 42 has been seen for this PID,
-            // ignore DxgKrnl events to avoid double-counting frames on games that emit both.
-            if (isDxgiPresent)
-                _dxgiActiveForCurrentPid = true;
-            else if (_dxgiActiveForCurrentPid)
-                return;
-
-            // Same one tier down: prefer Flip over blit Present_Info (flip games emit both).
-            if (isDxgKrnlFlip)
-                _flipActiveForCurrentPid = true;
-            else if (isDxgKrnlBlitPresent && _flipActiveForCurrentPid)
-                return;
 
             // EventHeader.TimeStamp = kernel QPC tick at the moment Present() was called.
             // This is NOT affected by ETW delivery batching, giving accurate inter-frame timing.
