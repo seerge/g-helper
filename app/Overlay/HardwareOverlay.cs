@@ -91,6 +91,7 @@ namespace GHelper.Overlay
         //
         private const float BaseFontSize = 13f;
         private const float BaseRpmFontSize = 8.5f;
+        private const float BaseIGpuFontSize = 10.5f;
         private const int BaseLineHeight = 18;
         private const int BaseLineSpacing = 1;
         private const int BasePadX = 8;
@@ -150,6 +151,7 @@ namespace GHelper.Overlay
         private float _lastScale = 0f;
         private Font? _font;
         private Font? _rpmFont;
+        private Font? _iGpuFont;
         private Font? _fpsBold;
         private Pen? _totalPen;
         private Pen? _axPen;
@@ -163,6 +165,7 @@ namespace GHelper.Overlay
         // _gpuTempStr includes a trailing space so fan number has breathing room
         private string _gpuTempStr = "";
         private string _cpuTempStr = "";
+        private bool _isIGpu;
         private string _gpuFanNum = "";
         private string _cpuFanNum = "";
         private string _gpuPow = "";
@@ -457,6 +460,7 @@ namespace GHelper.Overlay
             bool gpuActive = gpuTemp > 0;
 
             // Trailing space is the separator between temp and fan number
+            _isIGpu = HardwareControl.IsIGpu;
             _gpuTempStr = "GPU:" + FmtTemp(gpuTemp) + " ";
             _cpuTempStr = "CPU:" + FmtTemp(cpuTemp) + " ";
             _gpuFanNum = FormatFan(HardwareControl.gpuFanRPM);
@@ -635,6 +639,7 @@ namespace GHelper.Overlay
                 _lastScale = sc;
                 _font?.Dispose();    _font    = new Font("Consolas", BaseFontSize * sc, FontStyle.Regular, GraphicsUnit.Pixel);
                 _rpmFont?.Dispose(); _rpmFont = new Font("Consolas", BaseRpmFontSize * sc, FontStyle.Regular, GraphicsUnit.Pixel);
+                _iGpuFont?.Dispose(); _iGpuFont = new Font("Consolas", BaseIGpuFontSize * sc, FontStyle.Regular, GraphicsUnit.Pixel);
                 _fpsBold?.Dispose(); _fpsBold = new Font("Consolas", innerH / 1.15f, FontStyle.Bold, GraphicsUnit.Pixel);
                 _totalPen?.Dispose(); _totalPen = new Pen(Color.FromArgb(255, 200, 200, 200), sc * 0.75f) { DashStyle = DashStyle.Dot };
                 _axPen?.Dispose();    _axPen    = new Pen(Color.FromArgb(255, 80, 80, 80), sc * 0.5f);
@@ -671,6 +676,8 @@ namespace GHelper.Overlay
             }
 
             // Left column: fan RPM hidden in Light mode
+            if (showTemp && _isIGpu)
+                g.DrawString("i", _iGpuFont!, _gpuBrush, new PointF(leftX - charW * (BaseIGpuFontSize / BaseFontSize), textY + font.Height - _iGpuFont!.Height));
             DrawTempFan(g, font, rpmFont, charW, sc, leftX, textY, showTemp ? _gpuTempStr : "", showFans ? _gpuFanNum : "", _gpuBrush);
             DrawTempFan(g, font, rpmFont, charW, sc, leftX, textY + lineH + lineGap, showTemp ? _cpuTempStr : "", showFans ? _cpuFanNum : "", _cpuBrush);
 
@@ -1117,6 +1124,7 @@ namespace GHelper.Overlay
 
             _font?.Dispose();     _font     = null;
             _rpmFont?.Dispose();  _rpmFont  = null;
+            _iGpuFont?.Dispose(); _iGpuFont = null;
             _fpsBold?.Dispose();  _fpsBold  = null;
             _totalPen?.Dispose(); _totalPen = null;
             _axPen?.Dispose();    _axPen    = null;

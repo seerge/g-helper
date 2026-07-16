@@ -33,9 +33,14 @@ namespace GHelper.Overlay
         private const ushort DXGKRNL_TASK_FLIP = 14;
         private const byte DXGKRNL_OPCODE_START = 1;
 
+        // DxgKrnl Present_Info — the only per-frame event for blit-model windowed presents
+        // (AMD Vulkan/OpenGL), which emit neither DXGI event 42 nor a Flip.
+        private const ushort EVENT_DXGKRNL_PRESENT_INFO = 184;
+
         // Keyword mask for the DxgKrnl provider — scopes to flip/present-related events only
         // so we don't receive every kernel GPU event system-wide (which would be very high volume).
-        private const ulong DXGKRNL_KEYWORD_PRESENT = 0x0000040000000000UL;
+        // 0x8000000 carries Present_Info (184), 0x40000000000 the flips.
+        private const ulong DXGKRNL_KEYWORD_PRESENT = 0x0000040008000000UL;
 
         // Kernel-side filter descriptors — applied once on first known foreground PID so we
         // stop receiving events from every other GPU process system-wide.
@@ -230,6 +235,7 @@ namespace GHelper.Overlay
         // Some DX12 games emit both — this flag suppresses DxgKrnl once DXGI is confirmed active
         // for the current PID. Resets on every PID switch.
         private bool _dxgiActiveForCurrentPid = false;
+        private bool _flipActiveForCurrentPid = false;
 
         // Rolling-window FPS using EventHeader.TimeStamp (raw QPC ticks at Present call time).
         // Critical: ETW batches events and delivers them all at once, so Stopwatch.GetTimestamp()
@@ -461,15 +467,30 @@ namespace GHelper.Overlay
             // DxgKrnl Flip_Start — DX12 flip-model and Vulkan games (e.g. KCD2) that call
             // D3DKMTPresent via the kernel without surfacing a DXGI event 42.
             // Task=14 (Flip), Opcode=1 (Start) fires once per submitted flip-model frame.
-            bool isDxgKrnlPresent = record.EventHeader.ProviderId == DxgKrnlProviderId
-                                 && record.EventHeader.Task == DXGKRNL_TASK_FLIP
-                                 && record.EventHeader.Opcode == DXGKRNL_OPCODE_START;
+            bool isDxgKrnlFlip = record.EventHeader.ProviderId == DxgKrnlProviderId
+                              && record.EventHeader.Task == DXGKRNL_TASK_FLIP
+                              && record.EventHeader.Opcode == DXGKRNL_OPCODE_START;
 
-            if (!isDxgiPresent && !isDxgKrnlPresent) return;
+            bool isDxgKrnlBlitPresent = record.EventHeader.ProviderId == DxgKrnlProviderId
+                                     && record.EventHeader.Id == EVENT_DXGKRNL_PRESENT_INFO;
+
+            if (!isDxgiPresent && !isDxgKrnlFlip && !isDxgKrnlBlitPresent) return;
 
             int targetPid = _targetPid;
             if (targetPid == 0) return;                                    // no foreground target yet
             if ((int)record.EventHeader.ProcessId != targetPid) return;    // wrong process
+
+            // PID changed — reset rolling window so stale timestamps don't pollute new readings.
+            // Runs before the preference latches so a stale one can't mute the new process.
+            if (targetPid != _lastTargetPid)
+            {
+                _lastTargetPid = targetPid;
+                _frameHead = 0;
+                _framesFilled = 0;
+                _dxgiActiveForCurrentPid = false;
+                _flipActiveForCurrentPid = false;
+                return;
+            }
 
             // DXGI_PRESENT_TEST presents probe swapchain state without displaying a frame.
             // S.T.A.L.K.E.R. Anomaly's X-Ray engine fires one between every real Present,
@@ -488,15 +509,11 @@ namespace GHelper.Overlay
             else if (_dxgiActiveForCurrentPid)
                 return;
 
-            // PID changed — reset rolling window so stale timestamps don't pollute new readings
-            if (targetPid != _lastTargetPid)
-            {
-                _lastTargetPid = targetPid;
-                _frameHead = 0;
-                _framesFilled = 0;
-                _dxgiActiveForCurrentPid = false;
+            // Same one tier down: prefer Flip over blit Present_Info (flip games emit both).
+            if (isDxgKrnlFlip)
+                _flipActiveForCurrentPid = true;
+            else if (isDxgKrnlBlitPresent && _flipActiveForCurrentPid)
                 return;
-            }
 
             // EventHeader.TimeStamp = kernel QPC tick at the moment Present() was called.
             // This is NOT affected by ETW delivery batching, giving accurate inter-frame timing.

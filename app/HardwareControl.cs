@@ -58,7 +58,8 @@ public static class HardwareControl
 
     static bool isPZ13 = AppConfig.IsPZ13();
     static bool isAlly = AppConfig.IsAlly();
-    static bool isAMDiGPU = AppConfig.IsAMDiGPU();
+    static bool isAMDiGPU => PawnIO.CpuInfo.IsAMD && AmdApu().HasIGpu;
+    public static bool IsIGpu => isAMDiGPU && GpuControl is null;
 
     static bool _chargeWatt = AppConfig.Is("charge_watt");
 
