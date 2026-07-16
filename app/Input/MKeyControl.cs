@@ -34,13 +34,12 @@ namespace GHelper.Input
 
         enum Binding { None, Hardware, Carrier }
 
-        // carrier opcode for software actions: emits a distinct catchable EventID we intercept and re-dispatch
-        static readonly Dictionary<string, (byte opcode, int eventId)> carriers = new()
-        {
-            { "m5", (21, 181) }, // calculator — harmless: not service-owned, no calc key, no aura collision
-        };
+        // m5 software actions ride the calculator opcode (harmless: not service-owned, no calc key), whose EventID we intercept and re-dispatch
+        const byte CarrierOpcode = 21;
+        const int CarrierEvent = 181;
 
         static bool? supported;
+        static HidDevice? cachedDevice;
         static readonly Dictionary<string, Binding> bindings = new();
 
         static readonly Dictionary<string, int> slots = new();
@@ -50,9 +49,7 @@ namespace GHelper.Input
 
         public static string? CarrierSlot(int eventId)
         {
-            foreach (var carrier in carriers)
-                if (carrier.Value.eventId == eventId && bindings.GetValueOrDefault(carrier.Key) == Binding.Carrier)
-                    return carrier.Key;
+            if (eventId == CarrierEvent && bindings.GetValueOrDefault("m5") == Binding.Carrier) return "m5";
             return null;
         }
 
@@ -73,9 +70,8 @@ namespace GHelper.Input
             bindings.Clear();
         }
 
-        public static void Apply(string name)
+        static void Apply(string name)
         {
-            if (Skip || !IsSupported()) return;
             if (!slots.TryGetValue(name, out int key)) return;
 
             string action = AppConfig.GetString(name);
@@ -83,7 +79,7 @@ namespace GHelper.Input
 
             Binding binding = Binding.None;
 
-            if (action is null || action.Length == 0)
+            if (string.IsNullOrEmpty(action))
                 SetOpcode(key, fallback);
             else if (opcodeActions.TryGetValue(action, out byte opcode) && SetOpcode(key, opcode))
                 binding = Binding.Hardware;
@@ -91,7 +87,7 @@ namespace GHelper.Input
                 binding = Binding.Hardware;
             else if (action == "micmute" && slots.ContainsKey("m3") && IsDefault("m3") && SetOpcode(key, DefaultOpcode(slots["m3"])))
                 binding = Binding.Hardware;
-            else if (carriers.TryGetValue(name, out var carrier) && SetOpcode(key, carrier.opcode))
+            else if (name == "m5" && SetOpcode(key, CarrierOpcode))
                 binding = Binding.Carrier;
             else
                 SetOpcode(key, fallback);
@@ -101,18 +97,10 @@ namespace GHelper.Input
 
         static byte DefaultOpcode(int key) => key >= 0 && key < defaults.Length ? defaults[key] : (byte)0;
 
-        static bool IsDefault(string name)
-        {
-            string action = AppConfig.GetString(name);
-            return action is null || action.Length == 0;
-        }
+        static bool IsDefault(string name) => string.IsNullOrEmpty(AppConfig.GetString(name));
 
-        static bool SetOpcode(int key, byte opcode)
-        {
-            if (!IsSupported()) return false;
-            return Send($"MKey {key} opcode {opcode}",
-                [AsusHid.AURA_ID, 0x9F, 0x03, 0x01, (byte)key, opcode]);
-        }
+        static bool SetOpcode(int key, byte opcode) =>
+            Send($"MKey {key} opcode {opcode}", [AsusHid.AURA_ID, 0x9F, 0x03, 0x01, (byte)key, opcode]);
 
         public static bool IsSupported()
         {
@@ -178,6 +166,8 @@ namespace GHelper.Input
 
         static HidDevice? FindDevice()
         {
+            if (cachedDevice is not null) return cachedDevice;
+
             var devices = AsusHid.FindDevices(AsusHid.AURA_ID);
             if (devices is null) return null;
 
@@ -190,15 +180,15 @@ namespace GHelper.Input
                 {
                     foreach (var item in device.GetReportDescriptor().DeviceItems)
                         foreach (var usage in item.Usages.GetAllValues())
-                            if (usage == 0xFF310079) return device;
+                            if (usage == 0xFF310079) return cachedDevice = device;
                 }
                 catch { }
             }
 
-            return fallback;
+            return cachedDevice = fallback;
         }
 
-        static bool Send(string log, params byte[][] packets)
+        static bool Send(string log, byte[] data)
         {
             var device = FindDevice();
             if (device is null) return false;
@@ -206,17 +196,15 @@ namespace GHelper.Input
             try
             {
                 using var stream = device.Open();
-                foreach (var data in packets)
-                {
-                    var payload = new byte[device.GetMaxFeatureReportLength()];
-                    Array.Copy(data, payload, data.Length);
-                    stream.SetFeature(payload);
-                    Logger.WriteLine($"{log}: {BitConverter.ToString(data)}");
-                }
+                var payload = new byte[device.GetMaxFeatureReportLength()];
+                Array.Copy(data, payload, data.Length);
+                stream.SetFeature(payload);
+                Logger.WriteLine($"{log}: {BitConverter.ToString(data)}");
                 return true;
             }
             catch (Exception ex)
             {
+                cachedDevice = null;
                 Logger.WriteLine($"{log} error: {ex.Message}");
                 return false;
             }
