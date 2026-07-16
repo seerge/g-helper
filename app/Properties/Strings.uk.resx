@@ -444,7 +444,7 @@
     <value>FN-Lock Увімк.</value>
   </data>
   <data name="WinLockToggle" xml:space="preserve">
-    <value>Win-Lock Toggle</value>
+    <value>Перемикач утримання Win</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Dynamic Boost</value>
@@ -882,7 +882,7 @@
     <value>Завантаження</value>
   </data>
   <data name="SlashBitStream" xml:space="preserve">
-    <value>Bit Stream</value>
+    <value>Бітовий потік</value>
   </data>
   <data name="SlashTransmission" xml:space="preserve">
     <value>Трансмісія</value>
@@ -894,28 +894,28 @@
     <value>Flux</value>
   </data>
   <data name="SlashPhantom" xml:space="preserve">
-    <value>Phantom</value>
+    <value>Фантом</value>
   </data>
   <data name="SlashSpectrum" xml:space="preserve">
-    <value>Spectrum</value>
+    <value>Спектр</value>
   </data>
   <data name="SlashHazard" xml:space="preserve">
-    <value>Hazard</value>
+    <value>Небезпека</value>
   </data>
   <data name="SlashInterfacing" xml:space="preserve">
-    <value>Interfacing</value>
+    <value>Взаємодія</value>
   </data>
   <data name="SlashRamp" xml:space="preserve">
-    <value>Ramp</value>
+    <value>Рампа</value>
   </data>
   <data name="SlashGameOver" xml:space="preserve">
-    <value>Game Over</value>
+    <value>Кінець гри</value>
   </data>
   <data name="SlashStart" xml:space="preserve">
     <value>Запустити</value>
   </data>
   <data name="SlashBuzzer" xml:space="preserve">
-    <value>Buzzer</value>
+    <value>Дзвінок</value>
   </data>
   <data name="SlashStatic" xml:space="preserve">
     <value>Static</value>
