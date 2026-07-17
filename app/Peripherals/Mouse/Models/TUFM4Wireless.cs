@@ -150,4 +150,34 @@
         }
 
     }
+
+    public class TUFGamingMiniMiku : TXGamingMini
+    {
+        public TUFGamingMiniMiku() : base(0x1C57, true)
+        {
+        }
+
+        public TUFGamingMiniMiku(ushort productId, bool wireless) : base(productId, wireless)
+        {
+        }
+
+        public override string GetDisplayName()
+        {
+            return "TUF GAMING Mini Miku Edition (Wireless)";
+        }
+
+    }
+
+    public class TUFGamingMiniMikuWired : TUFGamingMiniMiku
+    {
+        public TUFGamingMiniMikuWired() : base(0x1C56, false)
+        {
+        }
+
+        public override string GetDisplayName()
+        {
+            return "TUF GAMING Mini Miku Edition (Wired)";
+        }
+
+    }
 }
