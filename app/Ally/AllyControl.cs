@@ -526,6 +526,40 @@ namespace GHelper.Ally
             return code;
         }
 
+        public record ButtonDef(string Key, BindingZone Zone, bool Right, string DefaultGamepad, string DefaultMouse, string Default2 = null);
+
+        public static readonly ButtonDef[] Buttons =
+        [
+            new("du", BindingZone.DPadUpDown, false, BindDU, BindKBU, BindShowKeyboard),
+            new("dd", BindingZone.DPadUpDown, true, BindDD, BindKBD, BindShowDesktop),
+            new("dl", BindingZone.DPadLeftRight, false, BindDL, BindKBL, BindBrightnessDown),
+            new("dr", BindingZone.DPadLeftRight, true, BindDR, BindKBR, BindBrightnessUp),
+            new("ls", BindingZone.StickClick, false, BindLS, BindShift),
+            new("rs", BindingZone.StickClick, true, BindRS, BindMouseL, BindToggleMode),
+            new("lb", BindingZone.Bumper, false, BindLB, BindTab),
+            new("rb", BindingZone.Bumper, true, BindRB, BindMouseL),
+            new("a", BindingZone.AB, false, BindA, BindEnter),
+            new("b", BindingZone.AB, true, BindB, BindEsc),
+            new("x", BindingZone.XY, false, BindX, BindPgD, BindScreenshot),
+            new("y", BindingZone.XY, true, BindY, BindPgU, BindOverlay),
+            new("vb", BindingZone.ViewMenu, false, BindVB, BindVB),
+            new("mb", BindingZone.ViewMenu, true, BindMB, BindMB),
+            new("m2", BindingZone.M1M2, false, BindM2, BindM2, BindM2),
+            new("m1", BindingZone.M1M2, true, BindM1, BindM1, BindM1),
+            new("lt", BindingZone.Trigger, false, BindLT, BindShiftTab),
+            new("rt", BindingZone.Trigger, true, BindRT, BindMouseR),
+        ];
+
+        public static string DefaultBinding(string key, string scope, bool secondary = false)
+        {
+            ButtonDef def = Buttons.FirstOrDefault(b => b.Key == key);
+            if (def is null) return null;
+            if (secondary) return def.Default2;
+            if (scope == "_mouse") return def.DefaultMouse;
+            if (scope == "_gamepad") return def.DefaultGamepad;
+            return null;
+        }
+
         static string BindSuffix => _applyMode == ControllerMode.Mouse ? "_mouse" : "_gamepad";
 
         static private string GetBindString(string name, string bindDefault = null)
@@ -535,68 +569,15 @@ namespace GHelper.Ally
 
         static private void BindZone(BindingZone zone)
         {
-            string KeyL1, KeyR1;
-            string KeyL2, KeyR2;
+            ButtonDef left = Buttons.First(b => b.Zone == zone && !b.Right);
+            ButtonDef right = Buttons.First(b => b.Zone == zone && b.Right);
 
             bool desktop = (_applyMode == ControllerMode.Mouse);
 
-            switch (zone)
-            {
-                case BindingZone.DPadUpDown:
-                    KeyL1 = GetBindString("bind_du", desktop ? BindKBU : BindDU);
-                    KeyR1 = GetBindString("bind_dd", desktop ? BindKBD : BindDD);
-                    KeyL2 = GetBindString("bind2_du", BindShowKeyboard);
-                    KeyR2 = GetBindString("bind2_dd", BindShowDesktop);
-                    break;
-                case BindingZone.DPadLeftRight:
-                    KeyL1 = GetBindString("bind_dl", desktop ? BindKBL : BindDL);
-                    KeyR1 = GetBindString("bind_dr", desktop ? BindKBR : BindDR);
-                    KeyL2 = GetBindString("bind2_dl", BindBrightnessDown);
-                    KeyR2 = GetBindString("bind2_dr", BindBrightnessUp);
-                    break;
-                case BindingZone.StickClick:
-                    KeyL1 = GetBindString("bind_ls", desktop ? BindShift : BindLS);
-                    KeyR1 = GetBindString("bind_rs", desktop ? BindMouseL : BindRS);
-                    KeyL2 = GetBindString("bind2_ls");
-                    KeyR2 = GetBindString("bind2_rs", BindToggleMode);
-                    break;
-                case BindingZone.Bumper:
-                    KeyL1 = GetBindString("bind_lb", desktop ? BindTab : BindLB);
-                    KeyR1 = GetBindString("bind_rb", desktop ? BindMouseL : BindRB);
-                    KeyL2 = GetBindString("bind2_lb");
-                    KeyR2 = GetBindString("bind2_rb");
-                    break;
-                case BindingZone.AB:
-                    KeyL1 = GetBindString("bind_a", desktop ? BindEnter : BindA);
-                    KeyR1 = GetBindString("bind_b", desktop ? BindEsc : BindB);
-                    KeyL2 = GetBindString("bind2_a");
-                    KeyR2 = GetBindString("bind2_b");
-                    break;
-                case BindingZone.XY:
-                    KeyL1 = GetBindString("bind_x", desktop ? BindPgD : BindX);
-                    KeyR1 = GetBindString("bind_y", desktop ? BindPgU : BindY);
-                    KeyL2 = GetBindString("bind2_x", BindScreenshot);
-                    KeyR2 = GetBindString("bind2_y", BindOverlay);
-                    break;
-                case BindingZone.ViewMenu:
-                    KeyL1 = GetBindString("bind_vb", BindVB);
-                    KeyR1 = GetBindString("bind_mb", BindMB);
-                    KeyL2 = GetBindString("bind2_vb");
-                    KeyR2 = GetBindString("bind2_mb");
-                    break;
-                case BindingZone.M1M2:
-                    KeyL1 = GetBindString("bind_m2", BindM2);
-                    KeyR1 = GetBindString("bind_m1", BindM1);
-                    KeyL2 = GetBindString("bind2_m2", BindM2);
-                    KeyR2 = GetBindString("bind2_m1", BindM1);
-                    break;
-                default:
-                    KeyL1 = GetBindString("bind_lt", desktop ? BindShiftTab : BindLT);
-                    KeyR1 = GetBindString("bind_rt", desktop ? BindMouseR : BindRT);
-                    KeyL2 = GetBindString("bind2_lt");
-                    KeyR2 = GetBindString("bind2_rt");
-                    break;
-            }
+            string KeyL1 = GetBindString("bind_" + left.Key, desktop ? left.DefaultMouse : left.DefaultGamepad);
+            string KeyR1 = GetBindString("bind_" + right.Key, desktop ? right.DefaultMouse : right.DefaultGamepad);
+            string KeyL2 = GetBindString("bind2_" + left.Key, left.Default2);
+            string KeyR2 = GetBindString("bind2_" + right.Key, right.Default2);
 
             if (KeyL1 == "" && KeyR1 == "") return;
 
@@ -632,24 +613,12 @@ namespace GHelper.Ally
                 return ms >= 0 ? ms : AppConfig.Get(name, 0);
             }
 
-            void Z(int zone, string l1, string l2, string r1, string r2)
+            foreach (ButtonDef button in Buttons)
             {
-                int o = 4 + (zone - 1) * 4;
-                turbo[o] = (byte)(T(l1) / 50);
-                turbo[o + 1] = (byte)(T(l2) / 50);
-                turbo[o + 2] = (byte)(T(r1) / 50);
-                turbo[o + 3] = (byte)(T(r2) / 50);
+                int o = 4 + ((byte)button.Zone - 1) * 4 + (button.Right ? 2 : 0);
+                turbo[o] = (byte)(T("turbo_" + button.Key) / 50);
+                turbo[o + 1] = (byte)(T("turbo2_" + button.Key) / 50);
             }
-
-            Z(1, "turbo_du", "turbo2_du", "turbo_dd", "turbo2_dd");
-            Z(2, "turbo_dl", "turbo2_dl", "turbo_dr", "turbo2_dr");
-            Z(3, "turbo_ls", "turbo2_ls", "turbo_rs", "turbo2_rs");
-            Z(4, "turbo_lb", "turbo2_lb", "turbo_rb", "turbo2_rb");
-            Z(5, "turbo_a", "turbo2_a", "turbo_b", "turbo2_b");
-            Z(6, "turbo_x", "turbo2_x", "turbo_y", "turbo2_y");
-            Z(7, "turbo_vb", "turbo2_vb", "turbo_mb", "turbo2_mb");
-            Z(8, "turbo_m2", "turbo2_m2", "turbo_m1", "turbo2_m1");
-            Z(9, "turbo_lt", "turbo2_lt", "turbo_rt", "turbo2_rt");
 
             AsusHid.WriteInput(turbo, null);
         }

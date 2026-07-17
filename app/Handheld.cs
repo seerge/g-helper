@@ -11,6 +11,8 @@ namespace GHelper
 
         string bindingScope = "";
 
+        readonly List<(string key, RButton button)> bindingButtons = new();
+
         public Handheld()
         {
             InitializeComponent();
@@ -192,13 +194,28 @@ namespace GHelper
             if (activeBinding != "") LoadBindingValues();
         }
 
+        private string EffectiveBinding(string prefix, bool secondary = false)
+        {
+            string value = AppConfig.GetString(prefix + activeBinding + bindingScope, "");
+            if (value == "" && bindingScope != "") value = AppConfig.GetString(prefix + activeBinding, "");
+            if (value == "") value = AllyControl.DefaultBinding(activeBinding, bindingScope, secondary) ?? "";
+            return value;
+        }
+
+        private int EffectiveTurbo(string prefix)
+        {
+            int ms = AppConfig.Get(prefix + activeBinding + bindingScope, -1);
+            if (ms < 0 && bindingScope != "") ms = AppConfig.Get(prefix + activeBinding, -1);
+            return Math.Max(ms, 0);
+        }
+
         private void LoadBindingValues()
         {
-            SetComboValue(comboPrimary, AppConfig.GetString("bind_" + activeBinding + bindingScope, ""));
-            SetComboValue(comboSecondary, AppConfig.GetString("bind2_" + activeBinding + bindingScope, ""));
+            SetComboValue(comboPrimary, EffectiveBinding("bind_"));
+            SetComboValue(comboSecondary, EffectiveBinding("bind2_", true));
 
-            SetTurboValue(comboTurboPrimary, AppConfig.Get("turbo_" + activeBinding + bindingScope, 0));
-            SetTurboValue(comboTurboSecondary, AppConfig.Get("turbo2_" + activeBinding + bindingScope, 0));
+            SetTurboValue(comboTurboPrimary, EffectiveTurbo("turbo_"));
+            SetTurboValue(comboTurboSecondary, EffectiveTurbo("turbo2_"));
         }
 
         private bool _updatingBindings;
@@ -230,7 +247,7 @@ namespace GHelper
 
         private void TurboSelectedValueChanged(object? sender, EventArgs e)
         {
-            if (sender is null) return;
+            if (_updatingBindings || sender is null) return;
             RComboBox combo = (RComboBox)sender;
             int ms = ((KeyValuePair<int, string>)combo.SelectedItem).Key;
             string key = (combo.Name == "comboTurboPrimary" ? "turbo_" : "turbo2_") + activeBinding + bindingScope;
@@ -255,24 +272,32 @@ namespace GHelper
 
         private void SetTurboValue(RComboBox combo, int ms)
         {
+            _updatingBindings = true;
             foreach (var item in combo.Items)
                 if (((KeyValuePair<int, string>)item).Key == ms)
-                { combo.SelectedItem = item; return; }
+                {
+                    combo.SelectedItem = item;
+                    _updatingBindings = false;
+                    return;
+                }
             combo.SelectedIndex = 0;
+            _updatingBindings = false;
         }
 
         private void VisualiseButton(RButton button, string binding)
         {
             if (button == null) return;
 
-            bool bound = false;
-            foreach (string scope in new[] { "", "_gamepad", "_mouse" })
-                if (AppConfig.GetString("bind_" + binding + scope, "") != "" || AppConfig.GetString("bind2_" + binding + scope, "") != "")
-                    bound = true;
+            bool universal = AppConfig.GetString("bind_" + binding, "") != "" || AppConfig.GetString("bind2_" + binding, "") != "";
 
-            if (bound)
+            bool perMode = false;
+            foreach (string scope in new[] { "_gamepad", "_mouse" })
+                if (AppConfig.GetString("bind_" + binding + scope, "") != "" || AppConfig.GetString("bind2_" + binding + scope, "") != "")
+                    perMode = true;
+
+            if (universal || perMode)
             {
-                button.BorderColor = colorStandard;
+                button.BorderColor = perMode ? colorCustom : colorStandard;
                 button.Activated = true;
             }
             else
@@ -284,6 +309,7 @@ namespace GHelper
         private void ButtonBinding(string binding, string label, RButton button)
         {
             button.Click += (sender, EventArgs) => { buttonBinding_Click(sender, EventArgs, binding, label); };
+            bindingButtons.Add((binding, button));
             VisualiseButton(button, binding);
         }
 
@@ -312,6 +338,16 @@ namespace GHelper
 
         private void ButtonReset_Click(object? sender, EventArgs e)
         {
+            foreach (var (key, _) in bindingButtons)
+                foreach (string prefix in new[] { "bind_", "bind2_", "turbo_", "turbo2_" })
+                    foreach (string scope in new[] { "", "_gamepad", "_mouse" })
+                        AppConfig.Remove(prefix + key + scope);
+
+            foreach (var (key, button) in bindingButtons) VisualiseButton(button, key);
+            if (activeBinding != "") LoadBindingValues();
+
+            AllyControl.ApplyMode();
+
             trackLSMin.Value = 0;
             trackLSMax.Value = 100;
             trackRSMin.Value = 0;
