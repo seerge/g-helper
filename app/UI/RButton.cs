@@ -1,4 +1,5 @@
 ﻿using System.Drawing.Drawing2D;
+using System.Runtime.InteropServices;
 
 namespace GHelper.UI
 {
@@ -61,13 +62,43 @@ namespace GHelper.UI
 
         public bool Borderless { get; set; } = false;
 
+        private const int WS_EX_LAYERED = 0x80000;
+        private const int LWA_COLORKEY = 0x1;
+
+        private static readonly Color TransparentKey = Color.FromArgb(255, 3, 2, 1);
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var cp = base.CreateParams;
+                cp.ExStyle |= WS_EX_LAYERED;
+                return cp;
+            }
+        }
+
+        [DllImport("user32.dll")]
+        private static extern bool SetLayeredWindowAttributes(IntPtr hwnd, uint crKey, byte bAlpha, uint dwFlags);
+
+        protected override void OnHandleCreated(EventArgs e)
+        {
+            base.OnHandleCreated(e);
+            uint colorRef = (uint)((TransparentKey.B << 16) | (TransparentKey.G << 8) | TransparentKey.R);
+            SetLayeredWindowAttributes(Handle, colorRef, 0, LWA_COLORKEY);
+        }
+
         protected override bool ShowFocusCues => false;
 
         public RButton()
         {
             DoubleBuffered = true;
+            
+            SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+
             FlatStyle = FlatStyle.Flat;
             FlatAppearance.BorderSize = 0;
+            BackColor = Color.FromArgb(255, 1, 1, 1);
+            BackColor = Color.Transparent;
+            
             BackColorChanged += (s, e) => UpdateHoverColor();
             UpdateHoverColor();
         }
@@ -112,49 +143,54 @@ namespace GHelper.UI
             int border = (int)Math.Round((ratio * borderSize - 1) / 2) * 2 + 1;
             int radius = (int)Math.Round(ratio * borderRadius, MidpointRounding.AwayFromZero);
 
+            //pevent.Graphics.Clear(TransparentKey);
+
             Rectangle rectSurface = ClientRectangle;
 
-            using (GraphicsPath pathSurface = GetFigurePath(rectSurface, radius + border))
-            using (Pen penSurface = new Pen(Parent.BackColor, border))
+            using GraphicsPath pathSurface = GetFigurePath(rectSurface, radius + border);
+
+            using (Region outsideRegion = new Region(rectSurface))
             {
-                pevent.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-                Region = new Region(pathSurface);
-                pevent.Graphics.DrawPath(penSurface, pathSurface);
+                outsideRegion.Exclude(pathSurface);
+                using (SolidBrush keyBrush = new SolidBrush(TransparentKey))
+                    pevent.Graphics.FillRegion(keyBrush, outsideRegion);
+            }
 
-                bool drawActive = Enabled && !Borderless && activated && borderColor.A > 0;
-                bool drawRest = Enabled && !Borderless && !activated && FlatAppearance.BorderColor.A > 0 && !RForm.flatTheme;
+            Region = new Region(pathSurface);
 
-                if (drawActive)
+            bool drawActive = Enabled && !Borderless && activated && borderColor.A > 0;
+            bool drawRest = Enabled && !Borderless && !activated && FlatAppearance.BorderColor.A > 0 && !RForm.flatTheme;
+
+            if (drawActive)
+            {
+                Rectangle borderRect = new Rectangle(border, border, rectSurface.Width - 2 * border, rectSurface.Height - 2 * border);
+
+                Color bgTop = Color.FromArgb(ActiveBgTopAlpha, borderColor);
+                Color bgTransparent = Color.FromArgb(0, borderColor);
+                float bgEndPos = ActiveBgEndFraction;
+
+                using (GraphicsPath bgPath = GetFigurePath(borderRect, radius))
+                using (LinearGradientBrush bgBrush = new LinearGradientBrush(
+                    ControlHelper.DarkMode ? new PointF(0, borderRect.Y) : new PointF(0, borderRect.Bottom),
+                    ControlHelper.DarkMode ? new PointF(0, borderRect.Bottom) : new PointF(0, borderRect.Y),
+                    bgTop, bgTransparent))
                 {
-                    Rectangle borderRect = new Rectangle(border, border, rectSurface.Width - 2 * border, rectSurface.Height - 2 * border);
-
-                    Color bgTop = Color.FromArgb(ActiveBgTopAlpha, borderColor);
-                    Color bgTransparent = Color.FromArgb(0, borderColor);
-                    float bgEndPos = ActiveBgEndFraction;
-
-                    using (GraphicsPath bgPath = GetFigurePath(borderRect, radius))
-                    using (LinearGradientBrush bgBrush = new LinearGradientBrush(
-                        ControlHelper.DarkMode ? new PointF(0, borderRect.Y) : new PointF(0, borderRect.Bottom),
-                        ControlHelper.DarkMode ? new PointF(0, borderRect.Bottom) : new PointF(0, borderRect.Y),
-                        bgTop, bgTransparent))
+                    bgBrush.InterpolationColors = new ColorBlend
                     {
-                        bgBrush.InterpolationColors = new ColorBlend
-                        {
-                            Colors = new[] { bgTop, bgTransparent, bgTransparent },
-                            Positions = new[] { 0f, bgEndPos, 1f }
-                        };
-                        if (!RForm.flatTheme)
-                            pevent.Graphics.FillPath(bgBrush, bgPath);
-                    }
+                        Colors = new[] { bgTop, bgTransparent, bgTransparent },
+                        Positions = new[] { 0f, bgEndPos, 1f }
+                    };
+                    if (!RForm.flatTheme)
+                        pevent.Graphics.FillPath(bgBrush, bgPath);
+                }
 
-                    ControlHelper.DrawGradientBorder(pevent.Graphics, borderRect, borderColor, radius, border, PenAlignment.Outset, RForm.flatTheme ? 0f : ActiveTopLighten);
-                }
-                else if (drawRest)
-                {
-                    int inset = border / 2 + 1;
-                    Rectangle borderRect = new Rectangle(inset, inset, rectSurface.Width - 2 * inset, rectSurface.Height - 2 * inset);
-                    ControlHelper.DrawGradientBorder(pevent.Graphics, borderRect, FlatAppearance.BorderColor, radius + border - inset, 1f, PenAlignment.Inset, RestTopLighten);
-                }
+                ControlHelper.DrawGradientBorder(pevent.Graphics, borderRect, borderColor, radius, border, PenAlignment.Outset, RForm.flatTheme ? 0f : ActiveTopLighten);
+            }
+            else if (drawRest)
+            {
+                int inset = border / 2 + 1;
+                Rectangle borderRect = new Rectangle(inset, inset, rectSurface.Width - 2 * inset, rectSurface.Height - 2 * inset);
+                ControlHelper.DrawGradientBorder(pevent.Graphics, borderRect, FlatAppearance.BorderColor, radius + border - inset, 1f, PenAlignment.Inset, RestTopLighten);
             }
 
             if (!Enabled && ForeColor != SystemColors.ControlText)
