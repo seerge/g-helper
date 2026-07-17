@@ -143,7 +143,7 @@ namespace GHelper
                 var u = updates[n];
                 var version = installed[n];
                 if (version is null && staged is not null && u.hardwares.Length > 0)
-                    version = MaxVersion(u.hardwares.Where(staged.ContainsKey).Select(h => staged[h]));
+                    version = MaxVersion(u.hardwares.Where(staged.ContainsKey).Select(h => staged[h]).Where(v => Major(v) == Major(u.version)));
 
                 if (version is not null && Version.TryParse(u.version, out var sv) && Version.TryParse(version, out var iv))
                 {
