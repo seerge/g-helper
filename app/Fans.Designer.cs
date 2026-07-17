@@ -42,6 +42,7 @@ namespace GHelper
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Fans));
             panelFans = new Panel();
             checkFanClamp = new RCheckBox();
+            checkFanSync = new RCheckBox();
             labelTip = new Label();
             tableFanCharts = new TableLayoutPanel();
             chartGPU = new RChart();
@@ -237,6 +238,7 @@ namespace GHelper
             panelFans.AutoSize = true;
             panelFans.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelFans.Controls.Add(checkFanClamp);
+            panelFans.Controls.Add(checkFanSync);
             panelFans.Controls.Add(labelTip);
             panelFans.Controls.Add(tableFanCharts);
             panelFans.Controls.Add(panelTitleFans);
@@ -263,7 +265,20 @@ namespace GHelper
             checkFanClamp.TabStop = false;
             checkFanClamp.Text = "Clamp to Grid";
             checkFanClamp.UseVisualStyleBackColor = false;
-            // 
+            //
+            // checkFanSync
+            //
+            checkFanSync.AutoSize = true;
+            checkFanSync.Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            checkFanSync.Location = new Point(215, 80);
+            checkFanSync.Name = "checkFanSync";
+            checkFanSync.Padding = new Padding(8, 1, 2, 1);
+            checkFanSync.Size = new Size(250, 44);
+            checkFanSync.TabIndex = 6;
+            checkFanSync.TabStop = false;
+            checkFanSync.Text = "Sync Fans to Hottest Sensor";
+            checkFanSync.UseVisualStyleBackColor = false;
+            //
             // labelTip
             // 
             labelTip.AutoSize = true;
@@ -2109,6 +2124,7 @@ namespace GHelper
         private RTrackBar trackGPUPower;
         private TableLayoutPanel tableLayoutModes;
         private RCheckBox checkFanClamp;
+        private RCheckBox checkFanSync;
         private Panel panelHysteresis;
         private TableLayoutPanel tableHysteresis;
         private Label labelHysteresisUp;
