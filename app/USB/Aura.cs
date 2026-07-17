@@ -126,7 +126,7 @@ namespace GHelper.USB
         static long lastAudioPresent;
         static double envBrightness;
         static double smoothedHue;
-        const double audioDecay = 0.7;
+        const double audioDecay = 0.8;
 
         static Aura()
         {
@@ -569,6 +569,50 @@ namespace GHelper.USB
 
         };
 
+        static readonly sbyte[] keyColumns = new sbyte[]
+        {
+            // Row 0: Extra keys (5)
+            0, 1, 2, 3, 4,
+            // Row 1: F-row (18) — ESC F1-F12 DEL×2 PAUS PRT HOME
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 13, 13, 14, 14,
+            // Row 2: Number row (21) — ` 1-9 0 - = BSPC×3 PLY NMLK NMDV NMTM NMMI
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 13, 13, 13, 13, 13, 13, 13,
+            // Row 3: QWERTY row (19) — TAB Q W E R T Y U I O P [ ] \ STP NM7 NM8 NM9 NMPL
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 13, 13, 13, 13, 13,
+            // Row 4: Home row (21) — CAPS A S D F G H J K L ; " # ENTR×3 PRV NM4 NM5 NM6 NMPL
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 13, 13, 13, 13, 13, 13, 13,
+            // Row 5: Shift row (21) — LSFT ISO\ Z X C V B N M , . / RSFT×3 ARWU NXT NM1 NM2 NM3 NMER
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 11, 11, 11, 12, 13, 13, 13, 13, 13,
+            // Row 6: Bottom row (15) — CTRL FN WIN ALT SPC RALT×3 CTRL ARWL ARWD ARWR PRT NM0 NMPD NMER
+            0, 1, 2, 3, 7, 7, 7, 7, 10, 11, 12, 13, 13, 13, 13,
+            // Row 7: Lightbar (10)
+            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+            // Row 8: Logo (4)
+            -1, -1, -1, -1,
+        };
+
+        static readonly byte[] keyRows = new byte[]
+        {
+            // Row 0: Extra keys (5)
+            5, 5, 5, 5, 5,
+            // Row 1: F-row (18)
+            5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+            // Row 2: Number row (21)
+            4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+            // Row 3: QWERTY row (19)
+            3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+            // Row 4: Home row (21)
+            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+            // Row 5: Shift row (21)
+            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+            // Row 6: Bottom row (15)
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            // Row 7: Lightbar (10)
+            7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+            // Row 8: Logo (4)
+            8, 8, 8, 8,
+        };
+
 
         static byte[] packetZone = new byte[]
         {
@@ -793,6 +837,65 @@ namespace GHelper.USB
 
         }
 
+        public static void ApplyDirectPerKey(Color[] keyColors)
+        {
+            if (!backlight) return;
+            if (keyColors.Length < packetMap.Length) return;
+
+            const byte keySet = 167;
+            const byte ledCount = 178;
+            const byte ledsPerPacket = 16;
+
+            byte[] buffer = new byte[64];
+            byte[] keyBuf = new byte[3 * ledCount];
+
+            buffer[0] = AsusHid.AURA_ID;
+            buffer[1] = 0xBC;
+            buffer[2] = 0;
+            buffer[3] = 1;
+            buffer[4] = 1;
+            buffer[5] = 1;
+            buffer[6] = 0;
+            buffer[7] = 0x10;
+
+            if (initDirect)
+            {
+                initDirect = false;
+                AsusHid.SetFeatureAura(new byte[] { AsusHid.AURA_ID, 0xBC, (byte)(IsOldStrix ? 0 : 1) });
+                Thread.Sleep(50);
+            }
+
+            Array.Clear(keyBuf, 0, keyBuf.Length);
+
+            for (int ledIndex = 0; ledIndex < packetMap.Length; ledIndex++)
+            {
+                ushort offset = (ushort)(3 * packetMap[ledIndex]);
+                if (offset + 2 < keyBuf.Length)
+                {
+                    keyBuf[offset] = keyColors[ledIndex].R;
+                    keyBuf[offset + 1] = keyColors[ledIndex].G;
+                    keyBuf[offset + 2] = keyColors[ledIndex].B;
+                }
+            }
+
+            for (int i = 0; i < keySet; i += ledsPerPacket)
+            {
+                byte ledsRemaining = (byte)(keySet - i);
+                if (ledsRemaining < ledsPerPacket)
+                    buffer[7] = ledsRemaining;
+                buffer[6] = (byte)i;
+                Buffer.BlockCopy(keyBuf, 3 * i, buffer, 9, 3 * buffer[7]);
+                AsusHid.SetFeatureAura(buffer);
+            }
+
+            buffer[4] = 0x04;
+            buffer[5] = 0x00;
+            buffer[6] = 0x00;
+            buffer[7] = 0x00;
+            Buffer.BlockCopy(keyBuf, 3 * keySet, buffer, 9, 3 * (ledCount - keySet));
+            AsusHid.SetFeatureAura(buffer);
+        }
+
         public static Color ColorDim(Color Color, double colorDim = 1)
         {
             switch (InputDispatcher.GetBacklight())
@@ -956,28 +1059,41 @@ namespace GHelper.USB
             AudioVisualizer.Shared.Subscribe(OnAudioSpectrum);
         }
 
+        private static double AverageFFT(double[] fftMag, int startBin, int endBin)
+        {
+            if (startBin >= endBin || startBin >= fftMag.Length) return 0;
+            endBin = Math.Min(endBin, fftMag.Length);
+            double sum = 0;
+            for (int i = startBin; i < endBin; i++)
+                sum += Math.Sqrt(fftMag[i] * 10000);
+            return sum / (endBin - startBin);
+        }
+
         private static void OnAudioSpectrum(double[] fftMag)
         {
             if (!backlight || sessionLock) return;
             if (Mode != AuraMode.AUDIO && Mode != AuraMode.AUDIOPULSE) return;
 
             long now = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-            if (Math.Abs(now - lastAudioPresent) < 50) return;
+            if (Math.Abs(now - lastAudioPresent) < 20) return;
             lastAudioPresent = now;
 
-            int bands = AURA_ZONES;
-            if (fftMag.Length < bands) return;
+            if (fftMag.Length < AURA_ZONES) return;
 
-            double[] bars = new double[bands];
+            const int numCols = 15;
+            int fftBins = Math.Min(fftMag.Length, 32);
+            int binsPerCol = Math.Max(1, fftBins / numCols);
+
+            double[] colBars = new double[numCols];
             double max = 0;
-            for (int i = 0; i < bands; i++)
+            for (int i = 0; i < numCols; i++)
             {
-                bars[i] = Math.Sqrt(fftMag[i] * 10000);
-                if (bars[i] > max) max = bars[i];
+                colBars[i] = AverageFFT(fftMag, i * binsPerCol, (i + 1) * binsPerCol);
+                if (colBars[i] > max) max = colBars[i];
             }
 
             audioMaxes.Add(max);
-            if (audioMaxes.Count > 100) audioMaxes.RemoveAt(0);
+            if (audioMaxes.Count > 30) audioMaxes.RemoveAt(0);
             double maxAvg = audioMaxes.Average();
             if (maxAvg < 1) maxAvg = 1;
 
@@ -989,44 +1105,126 @@ namespace GHelper.USB
 
             try
             {
-                if (Mode == AuraMode.AUDIOPULSE)
-                {
-                    Color dimmed = Color.FromArgb(
-                        (byte)(c1.R * curvedBrightness),
-                        (byte)(c1.G * curvedBrightness),
-                        (byte)(c1.B * curvedBrightness));
-                    if (isStrix) ApplyDirect(Enumerable.Repeat(dimmed, AURA_ZONES).ToArray());
-                    else ApplyDirect(dimmed);
-                    return;
-                }
-
                 double baseHue = ColorUtils.HSV.ToHSV(c1).Hue;
 
-                if (isStrix)
+                if (isStrix && !isStrix4Zone)
+                {
+                    Color[] keyColors = new Color[packetMap.Length];
+
+                    for (int i = 0; i < packetMap.Length; i++)
+                    {
+                        int col = keyColumns[i];
+                        int row = keyRows[i];
+
+                        if (row >= 7)
+                        {
+                            int zone = (row == 7) ? packetZone[i] : 0;
+                            if (Mode == AuraMode.AUDIOPULSE)
+                            {
+                                double pulsePhase = (now % 1200) / 1200.0;
+                                double wave = Math.Sin((pulsePhase + zone * 0.12) % 1.0 * Math.PI * 2.0) * 0.5 + 0.5;
+                                double z = curvedBrightness * wave * 0.8;
+                                keyColors[i] = Color.FromArgb((byte)(c1.R * z), (byte)(c1.G * z), (byte)(c1.B * z));
+                            }
+                            else
+                            {
+                                int freqIdx = Math.Min(zone, numCols - 1);
+                                double ratio = Math.Min(1.0, colBars[freqIdx] / maxAvg);
+                                double v = ratio * ratio * ratio * 0.9;
+                                double hue = (baseHue + (double)zone / 7.0 * (2.0 / 3.0)) % 1.0;
+                                keyColors[i] = new ColorUtils.HSV { Hue = hue, Saturation = 1.0, Value = v }.ToRGB();
+                            }
+                            continue;
+                        }
+
+                        if (col < 0 || col >= numCols)
+                        {
+                            keyColors[i] = Color.Black;
+                            continue;
+                        }
+
+                        if (Mode == AuraMode.AUDIOPULSE)
+                        {
+                            double waveCycle = (now % 1200) / 1200.0;
+                            double wave = Math.Sin((waveCycle + col * 0.07) % 1.0 * Math.PI * 2.0) * 0.5 + 0.5;
+                            double colEnergy = curvedBrightness * wave;
+                            double threshold = row * 0.15;
+
+                            if (colEnergy > threshold)
+                            {
+                                double zoneBrightness = Math.Min(1.0, colEnergy);
+                                keyColors[i] = Color.FromArgb(
+                                    (byte)(c1.R * zoneBrightness),
+                                    (byte)(c1.G * zoneBrightness),
+                                    (byte)(c1.B * zoneBrightness));
+                            }
+                            else
+                            {
+                                keyColors[i] = Color.Black;
+                            }
+                        }
+                        else
+                        {
+                            double energy = colBars[col] / maxAvg;
+                            double threshold = row * 0.15;
+
+                            if (energy > threshold)
+                            {
+                                double zoneBrightness = Math.Min(1.0, energy);
+                                double hue = (baseHue + (double)col / (numCols - 1) * (2.0 / 3.0)) % 1.0;
+                                keyColors[i] = new ColorUtils.HSV { Hue = hue, Saturation = 1.0, Value = zoneBrightness }.ToRGB();
+                            }
+                            else
+                            {
+                                keyColors[i] = Color.Black;
+                            }
+                        }
+                    }
+
+                    PeripheralsProvider.StreamMouseColor(c1);
+                    ApplyDirectPerKey(keyColors);
+                }
+                else if (isStrix4Zone)
                 {
                     Color[] colors = new Color[AURA_ZONES];
-                    for (int i = 0; i < AURA_ZONES; i++)
+
+                    if (Mode == AuraMode.AUDIOPULSE)
                     {
-                        double hue = (baseHue + (double)i / (AURA_ZONES - 1) * (2.0 / 3.0)) % 1.0;
-                        double ratio = Math.Min(1.0, bars[i] / maxAvg);
-                        double v = ratio * ratio * ratio;
-                        colors[i] = new ColorUtils.HSV { Hue = hue, Saturation = 1.0, Value = v }.ToRGB();
+                        double waveCycle = (now % 1200) / 1200.0;
+                        for (int i = 0; i < AURA_ZONES; i++)
+                        {
+                            double wave = Math.Sin((waveCycle + i * 0.12) % 1.0 * Math.PI * 2.0) * 0.5 + 0.5;
+                            double z = curvedBrightness * wave;
+                            colors[i] = Color.FromArgb((byte)(c1.R * z), (byte)(c1.G * z), (byte)(c1.B * z));
+                        }
                     }
+                    else
+                    {
+                        for (int i = 0; i < AURA_ZONES; i++)
+                        {
+                            int freqIdx = Math.Min(i * numCols / AURA_ZONES, numCols - 1);
+                            double ratio = Math.Min(1.0, colBars[freqIdx] / maxAvg);
+                            double v = ratio * ratio * ratio;
+                            double hue = (baseHue + (double)i / (AURA_ZONES - 1) * (2.0 / 3.0)) % 1.0;
+                            colors[i] = new ColorUtils.HSV { Hue = hue, Saturation = 1.0, Value = v }.ToRGB();
+                        }
+                    }
+
                     ApplyDirect(colors);
                 }
                 else
                 {
                     int dominant = 1;
-                    double dominantWeighted = bars[1];
-                    for (int i = 2; i < bands; i++)
+                    double dominantWeighted = colBars[1];
+                    for (int i = 2; i < numCols; i++)
                     {
-                        double w = bars[i] * (1 + (i - 1) * 0.15);
+                        double w = colBars[i] * (1 + (i - 1) * 0.15);
                         if (w > dominantWeighted) { dominantWeighted = w; dominant = i; }
                     }
                     if (max > maxAvg * 0.3)
                     {
-                        double targetHue = (baseHue + (dominant - 1) / (double)(bands - 2) * (2.0 / 3.0)) % 1.0;
-                        smoothedHue = smoothedHue * 0.6 + targetHue * 0.4;
+                        double targetHue = (baseHue + (dominant - 1) / (double)(numCols - 2) * (2.0 / 3.0)) % 1.0;
+                        smoothedHue = smoothedHue * 0.5 + targetHue * 0.5;
                     }
 
                     ApplyDirect(new ColorUtils.HSV { Hue = smoothedHue, Saturation = 1.0, Value = curvedBrightness }.ToRGB());
