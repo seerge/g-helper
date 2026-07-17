@@ -1,3 +1,4 @@
+using GHelper.Fan;
 using GHelper.Gpu.NVidia;
 using GHelper.Helpers;
 using GHelper.USB;
@@ -103,6 +104,7 @@ namespace GHelper.Mode
 
         public void ResetPerformanceMode()
         {
+            FanMaxTempControl.Stop();
             ResetRyzen();
 
             Program.acpi.DeviceSet(AsusACPI.PerformanceMode, Modes.GetCurrentBase(), "Mode");
@@ -289,6 +291,9 @@ namespace GHelper.Mode
             {
                 XGM.Reset();
             }
+
+            if (customFans && FanMaxTempControl.IsEnabled) FanMaxTempControl.Start();
+            else FanMaxTempControl.Stop();
 
             SetModeLabel();
 
@@ -608,12 +613,14 @@ namespace GHelper.Mode
         public void ShutdownReset()
         {
             if (!AppConfig.IsShutdownReset()) return;
+            FanMaxTempControl.Stop();
             Program.acpi.DeviceSet(AsusACPI.PerformanceMode,AsusACPI.PerformanceBalanced, "Mode Reset");
         }
 
         public void SleepReset()
         {
             if (!AppConfig.IsSleepReset()) return;
+            FanMaxTempControl.Stop();
             Program.acpi.DeviceSet(AsusACPI.PerformanceMode, Modes.GetCurrentBase(), "Sleep Reset");
         }
 

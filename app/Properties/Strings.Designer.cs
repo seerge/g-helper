@@ -1053,6 +1053,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sync Fans to Hottest Sensor.
+        /// </summary>
+        internal static string FanSyncMaxTemp {
+            get {
+                return ResourceManager.GetString("FanSyncMaxTemp", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Fan Profiles.
         /// </summary>
         internal static string FanProfiles {
