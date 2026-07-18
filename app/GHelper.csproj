@@ -19,7 +19,7 @@
     <OutputPath>bin\x64\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\x64\$(Configuration)\</IntermediateOutputPath>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <AssemblyVersion>0.264</AssemblyVersion>
+    <AssemblyVersion>0.265</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>

@@ -211,7 +211,6 @@ namespace GHelper.Overlay
         private IntPtr _fgHook;
         private WinEventProc? _fgHookProc; // keep delegate alive
         private const int MinGameFps = 6;
-        private const int GameLatchTicks = 2;
         private int _gameTicks;
 
         private static readonly HashSet<string> DesktopApps = new(StringComparer.OrdinalIgnoreCase)
@@ -524,9 +523,8 @@ namespace GHelper.Overlay
 
         private void UpdateGameVisibility(int fgPid)
         {
-            // sustained fps only — Present_Info also fires for app repaint bursts
             _gameTicks = _currentFps >= MinGameFps && !_fgDesktop ? _gameTicks + 1 : 0;
-            if (_gameTicks >= GameLatchTicks) _shownPid = fgPid;
+            if (_gameTicks >= 2) _shownPid = fgPid;
             bool show = fgPid == _shownPid;
             if (show != _hidden) return;
             _hidden = !show;
