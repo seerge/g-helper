@@ -4,14 +4,123 @@ using System.Runtime.InteropServices;
 
 namespace GHelperOverlay;
 
-// Thin uiAccess renderer: GHelper composes overlay frames and writes them to a
-// shared-memory buffer (see OverlayIpc); this process only blits them into a
-// layered topmost window and forwards raw mouse input back. No sensors, no
-// config, no logic - it exists solely because uiAccess (drawing above
+// Thin uiAccess renderer, pure Win32: GHelper composes overlay frames and writes
+// them to a shared-memory buffer (see OverlayIpc); this process only blits them
+// into a layered topmost window and forwards raw mouse input back. No WinForms,
+// no GDI+, single thread - it exists solely because uiAccess (drawing above
 // fullscreen games) requires a separate signed executable in Program Files.
-internal static class Program
+internal static unsafe class Program
 {
-    [STAThread]
+    private const uint WS_POPUP = 0x80000000;
+    private const int WS_EX_TOPMOST = 0x8;
+    private const int WS_EX_TOOLWINDOW = 0x80;
+    private const int WS_EX_LAYERED = 0x80000;
+    private const int WS_EX_TRANSPARENT = 0x20;
+    private const int WS_EX_NOACTIVATE = 0x08000000;
+    private const int GWL_EXSTYLE = -20;
+    private const int SW_HIDE = 0;
+    private const int SW_SHOWNOACTIVATE = 4;
+    private const uint WM_MOUSEMOVE = 0x0200;
+    private const uint WM_LBUTTONDOWN = 0x0201;
+    private const uint WM_LBUTTONUP = 0x0202;
+    private const uint WM_MBUTTONDOWN = 0x0207;
+    private const uint WM_MOUSEWHEEL = 0x020A;
+    private const uint WM_SETCURSOR = 0x0020;
+    private const uint WM_NCDESTROY = 0x0082;
+    private const uint WM_QUIT = 0x0012;
+    private const uint SWP_NOSIZE = 0x1;
+    private const uint SWP_NOMOVE = 0x2;
+    private const uint SWP_NOZORDER = 0x4;
+    private const uint SWP_NOACTIVATE = 0x10;
+    private const uint GW_HWNDPREV = 3;
+    private const int IDC_SIZEALL = 32646;
+    private const int IDC_HAND = 32649;
+    private const uint PM_REMOVE = 1;
+    private const uint QS_ALLINPUT = 0x04FF;
+    private const uint MWMO_INPUTAVAILABLE = 0x4;
+    private const uint WAIT_TIMEOUT = 258;
+    private const uint WAIT_FAILED = 0xFFFFFFFF;
+    private const uint SYNCHRONIZE = 0x00100000;
+    private static readonly IntPtr HWND_TOPMOST = new(-1);
+
+    private delegate IntPtr WndProcDelegate(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+    private static readonly WndProcDelegate _wndProc = WndProc; // keeps the marshaled callback alive
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    private struct WNDCLASSEX
+    {
+        public uint cbSize, style;
+        public IntPtr lpfnWndProc;
+        public int cbClsExtra, cbWndExtra;
+        public IntPtr hInstance, hIcon, hCursor, hbrBackground;
+        [MarshalAs(UnmanagedType.LPWStr)] public string? lpszMenuName;
+        [MarshalAs(UnmanagedType.LPWStr)] public string lpszClassName;
+        public IntPtr hIconSm;
+    }
+
+    [StructLayout(LayoutKind.Sequential)] private struct POINT { public int x, y; }
+    [StructLayout(LayoutKind.Sequential)] private struct SIZE { public int cx, cy; }
+    [StructLayout(LayoutKind.Sequential)]
+    private struct MSG
+    {
+        public IntPtr hwnd;
+        public uint message;
+        public IntPtr wParam, lParam;
+        public uint time;
+        public POINT pt;
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    private struct BLENDFUNCTION { public byte BlendOp, BlendFlags, SourceConstantAlpha, AlphaFormat; }
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct BITMAPINFOHEADER
+    {
+        public uint biSize;
+        public int biWidth, biHeight;
+        public ushort biPlanes, biBitCount;
+        public uint biCompression, biSizeImage;
+        public int biXPelsPerMeter, biYPelsPerMeter;
+        public uint biClrUsed, biClrImportant;
+    }
+
+    [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern ushort RegisterClassEx(ref WNDCLASSEX wc);
+    [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern IntPtr CreateWindowEx(int exStyle, string className, string windowName, uint style, int x, int y, int width, int height, IntPtr parent, IntPtr menu, IntPtr instance, IntPtr param);
+    [DllImport("user32.dll")] private static extern IntPtr DefWindowProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+    [DllImport("user32.dll")] private static extern bool PeekMessage(out MSG msg, IntPtr hWnd, uint filterMin, uint filterMax, uint remove);
+    [DllImport("user32.dll")] private static extern bool TranslateMessage(ref MSG msg);
+    [DllImport("user32.dll")] private static extern IntPtr DispatchMessage(ref MSG msg);
+    [DllImport("user32.dll")] private static extern uint MsgWaitForMultipleObjectsEx(uint count, IntPtr[] handles, uint milliseconds, uint wakeMask, uint flags);
+    [DllImport("user32.dll")] private static extern IntPtr LoadCursor(IntPtr instance, IntPtr cursorName);
+    [DllImport("user32.dll")] private static extern IntPtr SetCursor(IntPtr cursor);
+    [DllImport("user32.dll")] private static extern IntPtr GetDC(IntPtr hWnd);
+    [DllImport("user32.dll")] private static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
+    [DllImport("user32.dll")] private static extern bool UpdateLayeredWindow(IntPtr hwnd, IntPtr hdcDst, ref POINT pptDst, ref SIZE psize, IntPtr hdcSrc, ref POINT pprSrc, int crKey, ref BLENDFUNCTION pblend, int dwFlags);
+    [DllImport("user32.dll")] private static extern bool ShowWindow(IntPtr hWnd, int cmdShow);
+    [DllImport("user32.dll")] private static extern bool SetWindowPos(IntPtr hWnd, IntPtr insertAfter, int x, int y, int cx, int cy, uint flags);
+    [DllImport("user32.dll")] private static extern IntPtr GetWindow(IntPtr hWnd, uint cmd);
+    [DllImport("user32.dll")] private static extern int GetWindowLong(IntPtr hWnd, int index);
+    [DllImport("user32.dll")] private static extern int SetWindowLong(IntPtr hWnd, int index, int newLong);
+    [DllImport("user32.dll")] private static extern IntPtr SetCapture(IntPtr hWnd);
+    [DllImport("user32.dll")] private static extern bool ReleaseCapture();
+    [DllImport("user32.dll")] private static extern bool PostMessage(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
+    [DllImport("kernel32.dll", CharSet = CharSet.Unicode)] private static extern IntPtr GetModuleHandle(string? moduleName);
+    [DllImport("kernel32.dll")] private static extern IntPtr OpenProcess(uint access, bool inherit, int processId);
+    [DllImport("gdi32.dll")] private static extern IntPtr CreateCompatibleDC(IntPtr hdc);
+    [DllImport("gdi32.dll")] private static extern IntPtr CreateDIBSection(IntPtr hdc, ref BITMAPINFOHEADER pbmi, uint usage, out IntPtr ppvBits, IntPtr hSection, uint offset);
+    [DllImport("gdi32.dll")] private static extern IntPtr SelectObject(IntPtr hdc, IntPtr hObject);
+    [DllImport("gdi32.dll")] private static extern bool DeleteObject(IntPtr hObject);
+
+    private static MemoryMappedViewAccessor _view = null!;
+    private static int _lastSeq = -1;
+    private static bool _visible;
+    private static bool _clickThrough = true;
+    private static bool _dragging;
+    private static bool _needRecreate;
+    private static int _x, _y, _w, _h;
+    private static IntPtr _hwnd, _memDc, _dib, _oldBmp, _bits;
+    private static int _dibW, _dibH;
+
     private static void Main()
     {
         using var mutex = new Mutex(true, "GHelperOverlaySingleton", out bool created);
@@ -32,7 +141,10 @@ internal static class Program
             return;
         }
 
+        using var mmfHolder = mmf;
         using var view = mmf.CreateViewAccessor();
+        _view = view;
+
         if (view.ReadInt32(OverlayIpc.OffMagic) != OverlayIpc.Magic)
         {
             Logger.WriteLine("Frame buffer magic mismatch - exiting");
@@ -40,135 +152,64 @@ internal static class Program
         }
 
         int appPid = view.ReadInt32(OverlayIpc.OffAppPid);
-        try
-        {
-            var app = Process.GetProcessById(appPid);
-            app.EnableRaisingEvents = true;
-            app.Exited += (_, _) => Environment.Exit(0);
-        }
-        catch
+        IntPtr hApp = OpenProcess(SYNCHRONIZE, false, appPid);
+        if (hApp == IntPtr.Zero)
         {
             Logger.WriteLine($"GHelper (pid {appPid}) is gone - exiting");
             return;
         }
 
-        Application.EnableVisualStyles();
-        Application.SetCompatibleTextRenderingDefault(false);
-
         using var frameEvent = new EventWaitHandle(false, EventResetMode.AutoReset, OverlayIpc.FrameEventName);
 
-        var invoker = new Control();
-        invoker.CreateControl();
+        var wc = new WNDCLASSEX
+        {
+            cbSize = (uint)Marshal.SizeOf<WNDCLASSEX>(),
+            lpfnWndProc = Marshal.GetFunctionPointerForDelegate(_wndProc),
+            hInstance = GetModuleHandle(null),
+            lpszClassName = "GHelperOverlayWnd",
+        };
+        if (RegisterClassEx(ref wc) == 0)
+        {
+            Logger.WriteLine("RegisterClassEx failed: " + Marshal.GetLastWin32Error());
+            return;
+        }
 
-        var window = new RenderWindow(view);
+        CreateOverlayWindow();
         Logger.WriteLine($"Renderer started (app pid {appPid})");
 
-        var pump = new Thread(() =>
+        var handles = new[] { frameEvent.SafeWaitHandle.DangerousGetHandle(), hApp };
+        while (true)
         {
-            while (true)
-            {
-                frameEvent.WaitOne(500);
-                try { invoker.BeginInvoke((MethodInvoker)window.Apply); }
-                catch { return; }
-            }
-        })
-        { IsBackground = true };
-        pump.Start();
-
-        window.Apply();
-        Application.Run();
-    }
-}
-
-internal sealed class RenderWindow : NativeWindow
-{
-    private const uint WS_POPUP = 0x80000000;
-    private const int WS_EX_TOPMOST = 0x8;
-    private const int WS_EX_TOOLWINDOW = 0x80;
-    private const int WS_EX_LAYERED = 0x80000;
-    private const int WS_EX_TRANSPARENT = 0x20;
-    private const int WS_EX_NOACTIVATE = 0x08000000;
-    private const int GWL_EXSTYLE = -20;
-    private const int SW_HIDE = 0;
-    private const int SW_SHOWNOACTIVATE = 4;
-    private const int WM_MOUSEMOVE = 0x0200;
-    private const int WM_LBUTTONDOWN = 0x0201;
-    private const int WM_LBUTTONUP = 0x0202;
-    private const int WM_MBUTTONDOWN = 0x0207;
-    private const int WM_MOUSEWHEEL = 0x020A;
-    private const int WM_SETCURSOR = 0x0020;
-    private const int WM_NCDESTROY = 0x0082;
-    private const uint SWP_NOSIZE = 0x1;
-    private const uint SWP_NOMOVE = 0x2;
-    private const uint SWP_NOZORDER = 0x4;
-    private const uint SWP_NOACTIVATE = 0x10;
-    private const uint GW_HWNDPREV = 3;
-    private static readonly IntPtr HWND_TOPMOST = new(-1);
-
-    [DllImport("user32.dll")] private static extern IntPtr GetDC(IntPtr hWnd);
-    [DllImport("user32.dll")] private static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
-    [DllImport("user32.dll")] private static extern bool UpdateLayeredWindow(IntPtr hwnd, IntPtr hdcDst, ref POINT pptDst, ref SIZE psize, IntPtr hdcSrc, ref POINT pprSrc, int crKey, ref BLENDFUNCTION pblend, int dwFlags);
-    [DllImport("user32.dll")] private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-    [DllImport("user32.dll")] private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, uint flags);
-    [DllImport("user32.dll")] private static extern IntPtr GetWindow(IntPtr hWnd, uint uCmd);
-    [DllImport("user32.dll")] private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
-    [DllImport("user32.dll")] private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
-    [DllImport("user32.dll")] private static extern bool SetCapture(IntPtr hWnd);
-    [DllImport("user32.dll")] private static extern bool ReleaseCapture();
-    [DllImport("user32.dll")] private static extern bool PostMessage(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
-    [DllImport("gdi32.dll")] private static extern IntPtr CreateCompatibleDC(IntPtr hdc);
-    [DllImport("gdi32.dll")] private static extern IntPtr CreateDIBSection(IntPtr hdc, ref BITMAPINFOHEADER pbmi, uint usage, out IntPtr ppvBits, IntPtr hSection, uint offset);
-    [DllImport("gdi32.dll")] private static extern IntPtr SelectObject(IntPtr hdc, IntPtr hObject);
-    [DllImport("gdi32.dll")] private static extern bool DeleteObject(IntPtr hObject);
-
-    [StructLayout(LayoutKind.Sequential)] private struct POINT { public int x, y; }
-    [StructLayout(LayoutKind.Sequential)] private struct SIZE { public int cx, cy; }
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    private struct BLENDFUNCTION { public byte BlendOp, BlendFlags, SourceConstantAlpha, AlphaFormat; }
-    [StructLayout(LayoutKind.Sequential)]
-    private struct BITMAPINFOHEADER
-    {
-        public uint biSize;
-        public int biWidth, biHeight;
-        public ushort biPlanes, biBitCount;
-        public uint biCompression, biSizeImage;
-        public int biXPelsPerMeter, biYPelsPerMeter;
-        public uint biClrUsed, biClrImportant;
+            uint r = MsgWaitForMultipleObjectsEx(2, handles, 500, QS_ALLINPUT, MWMO_INPUTAVAILABLE);
+            if (r == 1 || r == WAIT_FAILED) break;      // app gone
+            if (r == 2) { if (!Pump()) break; continue; } // window messages
+            Apply();                                     // frame event or timeout tick
+        }
     }
 
-    private readonly MemoryMappedViewAccessor _view;
-    private int _lastSeq = -1;
-    private bool _visible;
-    private bool _clickThrough = true;
-    private bool _dragging;
-    private bool _needRecreate;
-    private int _x, _y, _w, _h;
-    private IntPtr _memDc, _dib, _oldBmp, _bits;
-    private int _dibW, _dibH;
-
-    public RenderWindow(MemoryMappedViewAccessor view)
+    private static bool Pump()
     {
-        _view = view;
-        CreateOverlayWindow();
-    }
-
-    private void CreateOverlayWindow()
-    {
-        var cp = new CreateParams
+        while (PeekMessage(out MSG msg, IntPtr.Zero, 0, 0, PM_REMOVE))
         {
-            Caption = "GHelperOverlay",
-            X = _x,
-            Y = _y,
-            Width = Math.Max(_w, 1),
-            Height = Math.Max(_h, 1),
-            Style = unchecked((int)WS_POPUP),
-            ExStyle = WS_EX_TOPMOST | WS_EX_TOOLWINDOW | WS_EX_LAYERED | WS_EX_NOACTIVATE
-                    | (_clickThrough ? WS_EX_TRANSPARENT : 0),
-        };
-        CreateHandle(cp);
+            if (msg.message == WM_QUIT) return false;
+            TranslateMessage(ref msg);
+            DispatchMessage(ref msg);
+        }
+        return true;
     }
 
-    public void Apply()
+    private static void CreateOverlayWindow()
+    {
+        _hwnd = CreateWindowEx(
+            WS_EX_TOPMOST | WS_EX_TOOLWINDOW | WS_EX_LAYERED | WS_EX_NOACTIVATE | (_clickThrough ? WS_EX_TRANSPARENT : 0),
+            "GHelperOverlayWnd", "GHelperOverlay", WS_POPUP,
+            _x, _y, Math.Max(_w, 1), Math.Max(_h, 1),
+            IntPtr.Zero, IntPtr.Zero, GetModuleHandle(null), IntPtr.Zero);
+        if (_hwnd == IntPtr.Zero)
+            Logger.WriteLine("CreateWindowEx failed: " + Marshal.GetLastWin32Error());
+    }
+
+    private static void Apply()
     {
         if (_needRecreate)
         {
@@ -177,7 +218,7 @@ internal sealed class RenderWindow : NativeWindow
             _lastSeq = -1;
             CreateOverlayWindow();
         }
-        if (Handle == IntPtr.Zero) return;
+        if (_hwnd == IntPtr.Zero) return;
 
         int seq = _view.ReadInt32(OverlayIpc.OffSeq);
         int x = _view.ReadInt32(OverlayIpc.OffX);
@@ -188,8 +229,8 @@ internal sealed class RenderWindow : NativeWindow
         if (clickThrough != _clickThrough)
         {
             _clickThrough = clickThrough;
-            int style = GetWindowLong(Handle, GWL_EXSTYLE);
-            SetWindowLong(Handle, GWL_EXSTYLE, clickThrough ? style | WS_EX_TRANSPARENT : style & ~WS_EX_TRANSPARENT);
+            int style = GetWindowLong(_hwnd, GWL_EXSTYLE);
+            SetWindowLong(_hwnd, GWL_EXSTYLE, clickThrough ? style | WS_EX_TRANSPARENT : style & ~WS_EX_TRANSPARENT);
         }
 
         if (seq != _lastSeq)
@@ -216,20 +257,20 @@ internal sealed class RenderWindow : NativeWindow
         {
             _x = x;
             _y = y;
-            SetWindowPos(Handle, IntPtr.Zero, x, y, 0, 0, SWP_NOSIZE | SWP_NOACTIVATE | SWP_NOZORDER);
+            SetWindowPos(_hwnd, IntPtr.Zero, x, y, 0, 0, SWP_NOSIZE | SWP_NOACTIVATE | SWP_NOZORDER);
         }
 
         if (visible != _visible)
         {
             _visible = visible;
-            ShowWindow(Handle, visible ? SW_SHOWNOACTIVATE : SW_HIDE);
+            ShowWindow(_hwnd, visible ? SW_SHOWNOACTIVATE : SW_HIDE);
         }
 
-        if (_visible && GetWindow(Handle, GW_HWNDPREV) != IntPtr.Zero)
-            SetWindowPos(Handle, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+        if (_visible && GetWindow(_hwnd, GW_HWNDPREV) != IntPtr.Zero)
+            SetWindowPos(_hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
     }
 
-    private unsafe void CopyPixels(int w, int h)
+    private static void CopyPixels(int w, int h)
     {
         EnsureDib(w, h);
         if (_bits == IntPtr.Zero) return;
@@ -245,7 +286,7 @@ internal sealed class RenderWindow : NativeWindow
         }
     }
 
-    private void EnsureDib(int w, int h)
+    private static void EnsureDib(int w, int h)
     {
         if (w == _dibW && h == _dibH && _dib != IntPtr.Zero) return;
         if (_memDc == IntPtr.Zero) _memDc = CreateCompatibleDC(IntPtr.Zero);
@@ -270,7 +311,7 @@ internal sealed class RenderWindow : NativeWindow
         _dibH = h;
     }
 
-    private void Blit(int x, int y)
+    private static void Blit(int x, int y)
     {
         _x = x;
         _y = y;
@@ -279,48 +320,46 @@ internal sealed class RenderWindow : NativeWindow
         var dst = new POINT { x = x, y = y };
         var src = new POINT();
         var blend = new BLENDFUNCTION { SourceConstantAlpha = 255, AlphaFormat = 1 };
-        UpdateLayeredWindow(Handle, screen, ref dst, ref size, _memDc, ref src, 0, ref blend, 2);
+        UpdateLayeredWindow(_hwnd, screen, ref dst, ref size, _memDc, ref src, 0, ref blend, 2);
         ReleaseDC(IntPtr.Zero, screen);
     }
 
-    protected override void WndProc(ref Message m)
+    private static IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
     {
-        switch (m.Msg)
+        switch (msg)
         {
             case WM_LBUTTONDOWN:
                 _dragging = true;
-                SetCapture(Handle);
-                Forward(OverlayIpc.MsgLButtonDown, ref m);
-                return;
+                SetCapture(hWnd);
+                Forward(OverlayIpc.MsgLButtonDown, wParam, lParam);
+                return IntPtr.Zero;
             case WM_MOUSEMOVE:
-                Forward(OverlayIpc.MsgMouseMove, ref m);
-                return;
+                Forward(OverlayIpc.MsgMouseMove, wParam, lParam);
+                return IntPtr.Zero;
             case WM_LBUTTONUP:
                 _dragging = false;
                 ReleaseCapture();
-                Forward(OverlayIpc.MsgLButtonUp, ref m);
-                return;
+                Forward(OverlayIpc.MsgLButtonUp, wParam, lParam);
+                return IntPtr.Zero;
             case WM_MOUSEWHEEL:
-                Forward(OverlayIpc.MsgMouseWheel, ref m);
-                return;
+                Forward(OverlayIpc.MsgMouseWheel, wParam, lParam);
+                return IntPtr.Zero;
             case WM_MBUTTONDOWN:
-                Forward(OverlayIpc.MsgMButtonDown, ref m);
-                return;
+                Forward(OverlayIpc.MsgMButtonDown, wParam, lParam);
+                return IntPtr.Zero;
             case WM_SETCURSOR:
-                Cursor.Current = _dragging ? Cursors.SizeAll : Cursors.Hand;
-                m.Result = (IntPtr)1;
-                return;
+                SetCursor(LoadCursor(IntPtr.Zero, (IntPtr)(_dragging ? IDC_SIZEALL : IDC_HAND)));
+                return (IntPtr)1;
             case WM_NCDESTROY:
-                base.WndProc(ref m);
                 _needRecreate = true;
-                return;
+                break;
         }
-        base.WndProc(ref m);
+        return DefWindowProc(hWnd, msg, wParam, lParam);
     }
 
-    private void Forward(int msg, ref Message m)
+    private static void Forward(int msg, IntPtr wParam, IntPtr lParam)
     {
         long hwnd = _view.ReadInt64(OverlayIpc.OffInputHwnd);
-        if (hwnd != 0) PostMessage((IntPtr)hwnd, msg, m.WParam, m.LParam);
+        if (hwnd != 0) PostMessage((IntPtr)hwnd, msg, wParam, lParam);
     }
 }
