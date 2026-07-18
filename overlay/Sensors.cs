@@ -106,7 +106,8 @@ public static class Sensors
 
             // The package counter includes the iGPU on AMD APUs — split it out via
             // per-core RAPL counters when present, else via the ADL PMLog breakdown.
-            if (_isAmdIGpu)
+            // Skip when a dGPU is present so its reading is shown instead (#5714).
+            if (_isAmdIGpu && GpuSensors.GetState() == GpuSensors.State.Off && !GHelperOverlay.Gpu.AmdAdl.HasDGpu())
             {
                 float? cores = CpuPowerCounter.CoresPower();
                 if (cores > 0 && newCpuP > cores)

@@ -134,6 +134,13 @@ internal static class AmdAdl
         return ReadSensor(_iGpuIndex, PMLOG_ASIC_POWER);
     }
 
+    public static bool HasDGpu()
+    {
+        if (!PawnIO.CpuInfo.IsAMD) return false;
+        Init();
+        return _dGpuIndex >= 0;
+    }
+
     // Discrete AMD GPU power. Tries ASIC_POWER first, then GFX_POWER, then
     // BOARD_POWER — matches main g-helper's AmdGpuControl.GetGpuPower fallback
     // since not every AMD ASIC reports all three.
