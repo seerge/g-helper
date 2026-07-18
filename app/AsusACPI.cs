@@ -320,14 +320,14 @@ public class AsusACPI
             MaxGPUBoost = 5;
         }
 
-        if (AppConfig.DynamicBoost15())
-        {
-            MaxGPUBoost = 15;
-        }
-
         if (AppConfig.DynamicBoost20())
         {
             MaxGPUBoost = 20;
+        }
+
+        if (AppConfig.DynamicBoost15())
+        {
+            MaxGPUBoost = 15;
         }
 
         if (AppConfig.IsCPULight())

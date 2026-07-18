@@ -14,9 +14,9 @@ jobs:
   release:
     runs-on: windows-2022
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - name: Setup dotnet
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: '8.0.x'
 
@@ -33,13 +33,13 @@ jobs:
 
     - name: Upload unsigned overlay for signing
       id: upload-unsigned-overlay
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: GHelperOverlay-unsigned
         path: overlay/bin/Release/net48/publish/GHelperOverlay.exe
 
     - id: sign-overlay
-      uses: signpath/github-action-submit-signing-request@v1.1
+      uses: signpath/github-action-submit-signing-request@v2
       with:
         api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
         organization-id: ${{ secrets.SIGNPATH_ORG_ID }}
@@ -56,13 +56,13 @@ jobs:
 
     - name: Upload unsigned main for signing
       id: upload-unsigned-main
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: GHelper-unsigned
         path: app/bin/Release/net8.0-windows/win-x64/publish/GHelper.exe
 
     - id: sign-main
-      uses: signpath/github-action-submit-signing-request@v1.1
+      uses: signpath/github-action-submit-signing-request@v2
       with:
         api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
         organization-id: ${{ secrets.SIGNPATH_ORG_ID }}
@@ -77,7 +77,7 @@ jobs:
       run: powershell Compress-Archive ./signed/GHelper.exe ./signed/GHelper.zip
 
     - name: Upload signed artifacts (downloadable from workflow run)
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: GHelper-signed
         path: |
@@ -93,7 +93,7 @@ jobs:
 
     - name: Generate SLSA build provenance attestation
       if: github.event_name == 'release'
-      uses: actions/attest-build-provenance@v2
+      uses: actions/attest-build-provenance@v4
       with:
         subject-path: |
           ./signed/GHelper.exe

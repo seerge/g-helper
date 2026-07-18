@@ -664,7 +664,7 @@ namespace GHelper.USB
             if (init || initDirect)
             {
                 initDirect = false;
-                AsusHid.SetFeatureAura(new byte[] { AsusHid.AURA_ID, 0xBC, 1 });
+                AsusHid.SetFeatureAura(new byte[] { AsusHid.AURA_ID, 0xBC, (byte)(IsOldStrix ? 0 : 1) });
                 Thread.Sleep(50);
             }
 
@@ -1088,6 +1088,7 @@ namespace GHelper.USB
                 }
 
                 ApplyDirect(colors, true);
+                ApplyDirect(colors);
             }
 
             // Zone 0 red, 1 orange, 2 yellow, 3 green, 4 cyan, 5 blue, 6 magenta, 7 white.
