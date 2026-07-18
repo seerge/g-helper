@@ -37,6 +37,7 @@ namespace GHelper
             labelServices = new Label();
             buttonServices = new RButton();
             panelBindingsHeader = new Panel();
+            buttonResetBindings = new RButton();
             pictureBindings = new PictureBox();
             pictureHelp = new PictureBox();
             labelBindings = new Label();
@@ -57,6 +58,9 @@ namespace GHelper
             comboM4 = new RComboBox();
             textM4 = new RTextBox();
             labelM4 = new Label();
+            comboM5 = new RComboBox();
+            textM5 = new RTextBox();
+            labelM5 = new Label();
             comboM3 = new RComboBox();
             textM3 = new RTextBox();
             labelM3 = new Label();
@@ -232,6 +236,7 @@ namespace GHelper
             // 
             panelBindingsHeader.AutoSize = true;
             panelBindingsHeader.BackColor = SystemColors.ControlLight;
+            panelBindingsHeader.Controls.Add(buttonResetBindings);
             panelBindingsHeader.Controls.Add(pictureBindings);
             panelBindingsHeader.Controls.Add(pictureHelp);
             panelBindingsHeader.Controls.Add(labelBindings);
@@ -251,9 +256,26 @@ namespace GHelper
             pictureBindings.Size = new Size(32, 32);
             pictureBindings.TabIndex = 1;
             pictureBindings.TabStop = false;
-            // 
+            //
+            // buttonResetBindings
+            //
+            buttonResetBindings.Activated = false;
+            buttonResetBindings.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            buttonResetBindings.BackColor = SystemColors.ButtonHighlight;
+            buttonResetBindings.BorderColor = Color.Transparent;
+            buttonResetBindings.BorderRadius = 2;
+            buttonResetBindings.FlatStyle = FlatStyle.Flat;
+            buttonResetBindings.Location = new Point(727, 5);
+            buttonResetBindings.Margin = new Padding(5, 3, 5, 3);
+            buttonResetBindings.Name = "buttonResetBindings";
+            buttonResetBindings.Secondary = true;
+            buttonResetBindings.Size = new Size(150, 41);
+            buttonResetBindings.TabIndex = 12;
+            buttonResetBindings.Text = "Reset";
+            buttonResetBindings.UseVisualStyleBackColor = false;
+            //
             // pictureHelp
-            // 
+            //
             pictureHelp.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             pictureHelp.BackgroundImage = Resources.icons8_help_32;
             pictureHelp.BackgroundImageLayout = ImageLayout.Zoom;
@@ -297,21 +319,24 @@ namespace GHelper
             tableBindings.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
             tableBindings.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
             tableBindings.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
-            tableBindings.Controls.Add(labelFNE, 0, 7);
-            tableBindings.Controls.Add(comboFNE, 0, 7);
-            tableBindings.Controls.Add(textFNE, 0, 7);
-            tableBindings.Controls.Add(labelFNV, 0, 6);
-            tableBindings.Controls.Add(comboFNV, 1, 6);
-            tableBindings.Controls.Add(textFNV, 2, 6);
-            tableBindings.Controls.Add(labelFNC, 0, 5);
-            tableBindings.Controls.Add(comboFNC, 1, 5);
-            tableBindings.Controls.Add(textFNC, 2, 5);
-            tableBindings.Controls.Add(labelFNF4, 0, 4);
-            tableBindings.Controls.Add(comboFNF4, 1, 4);
-            tableBindings.Controls.Add(textFNF4, 2, 4);
-            tableBindings.Controls.Add(comboM4, 1, 3);
-            tableBindings.Controls.Add(textM4, 2, 3);
-            tableBindings.Controls.Add(labelM4, 0, 3);
+            tableBindings.Controls.Add(labelFNE, 0, 8);
+            tableBindings.Controls.Add(comboFNE, 0, 8);
+            tableBindings.Controls.Add(textFNE, 0, 8);
+            tableBindings.Controls.Add(labelFNV, 0, 7);
+            tableBindings.Controls.Add(comboFNV, 1, 7);
+            tableBindings.Controls.Add(textFNV, 2, 7);
+            tableBindings.Controls.Add(labelFNC, 0, 6);
+            tableBindings.Controls.Add(comboFNC, 1, 6);
+            tableBindings.Controls.Add(textFNC, 2, 6);
+            tableBindings.Controls.Add(labelFNF4, 0, 5);
+            tableBindings.Controls.Add(comboFNF4, 1, 5);
+            tableBindings.Controls.Add(textFNF4, 2, 5);
+            tableBindings.Controls.Add(comboM4, 1, 4);
+            tableBindings.Controls.Add(textM4, 2, 4);
+            tableBindings.Controls.Add(labelM4, 0, 4);
+            tableBindings.Controls.Add(comboM5, 1, 3);
+            tableBindings.Controls.Add(textM5, 2, 3);
+            tableBindings.Controls.Add(labelM5, 0, 3);
             tableBindings.Controls.Add(comboM3, 1, 2);
             tableBindings.Controls.Add(textM3, 2, 2);
             tableBindings.Controls.Add(labelM3, 0, 2);
@@ -326,7 +351,8 @@ namespace GHelper
             tableBindings.Margin = new Padding(0, 3, 5, 3);
             tableBindings.Name = "tableBindings";
             tableBindings.Padding = new Padding(16, 11, 0, 11);
-            tableBindings.RowCount = 8;
+            tableBindings.RowCount = 9;
+            tableBindings.RowStyles.Add(new RowStyle());
             tableBindings.RowStyles.Add(new RowStyle());
             tableBindings.RowStyles.Add(new RowStyle());
             tableBindings.RowStyles.Add(new RowStyle());
@@ -508,9 +534,43 @@ namespace GHelper
             labelM4.Size = new Size(116, 43);
             labelM4.TabIndex = 2;
             labelM4.Text = "M4/ROG:";
-            // 
+            //
+            // comboM5
+            //
+            comboM5.BorderColor = Color.White;
+            comboM5.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboM5.Dock = DockStyle.Top;
+            comboM5.FormattingEnabled = true;
+            comboM5.Location = new Point(205, 152);
+            comboM5.Margin = new Padding(5, 3, 5, 3);
+            comboM5.Name = "comboM5";
+            comboM5.Size = new Size(358, 40);
+            comboM5.TabIndex = 6;
+            //
+            // textM5
+            //
+            textM5.Dock = DockStyle.Top;
+            textM5.Location = new Point(573, 152);
+            textM5.Margin = new Padding(5, 3, 5, 3);
+            textM5.Name = "textM5";
+            textM5.PlaceholderText = "action";
+            textM5.Size = new Size(360, 39);
+            textM5.TabIndex = 7;
+            textM5.TabStop = false;
+            //
+            // labelM5
+            //
+            labelM5.AutoSize = true;
+            labelM5.Location = new Point(16, 149);
+            labelM5.Margin = new Padding(0);
+            labelM5.Name = "labelM5";
+            labelM5.Padding = new Padding(5, 11, 0, 0);
+            labelM5.Size = new Size(59, 43);
+            labelM5.TabIndex = 2;
+            labelM5.Text = "M4:";
+            //
             // comboM3
-            // 
+            //
             comboM3.BorderColor = Color.White;
             comboM3.ButtonColor = Color.FromArgb(255, 255, 255);
             comboM3.Dock = DockStyle.Top;
@@ -1727,6 +1787,7 @@ namespace GHelper
         private RButton buttonServices;
         private Label labelServices;
         private Panel panelBindingsHeader;
+        private RButton buttonResetBindings;
         private Panel panelBindings;
         private TableLayoutPanel tableBindings;
         private Label labelFNC;
@@ -1741,6 +1802,9 @@ namespace GHelper
         private RTextBox textM3;
         private Label labelM4;
         private Label labelM3;
+        private RComboBox comboM5;
+        private RTextBox textM5;
+        private Label labelM5;
         private Label labelM2;
         private RComboBox comboM2;
         private Label labelFNF4;
