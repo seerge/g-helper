@@ -166,6 +166,11 @@
             return "TUF GAMING Mini Miku Edition (Wireless)";
         }
 
+        public override bool HasRGB()
+        {
+            return true;
+        }
+
     }
 
     public class TUFGamingMiniMikuWired : TUFGamingMiniMiku
