@@ -24,6 +24,10 @@ namespace GHelper
             Dictionary<string, string> customActions = new Dictionary<string, string>
             {
               {"", EMPTY},
+              {"volume_down", Properties.Strings.VolumeDown},
+              {"volume_up", Properties.Strings.VolumeUp},
+              {"backlight_down", Properties.Strings.BacklightDown},
+              {"backlight_up", Properties.Strings.BacklightUp},
               {"mute", Properties.Strings.VolumeMute},
               {"screenshot", Properties.Strings.PrintScreen},
               {"play", Properties.Strings.PlayPause},
@@ -58,9 +62,11 @@ namespace GHelper
             {
                 case "m1":
                     customActions[""] = Properties.Strings.VolumeDown;
+                    customActions.Remove("volume_down");
                     break;
                 case "m2":
                     customActions[""] = Properties.Strings.VolumeUp;
+                    customActions.Remove("volume_up");
                     break;
                 case "m3":
                     customActions[""] = Properties.Strings.MuteMic;
@@ -69,6 +75,10 @@ namespace GHelper
                 case "m4":
                     customActions[""] = Properties.Strings.OpenGHelper;
                     customActions.Remove("ghelper");
+                    break;
+                case "m5":
+                    customActions[""] = Properties.Strings.PerformanceMode;
+                    customActions.Remove("performance");
                     break;
                 case "fnf4":
                     customActions[""] = Properties.Strings.ToggleAura;
@@ -108,8 +118,11 @@ namespace GHelper
                 if (combo.SelectedValue is not null)
                     AppConfig.Set(name, combo.SelectedValue.ToString());
 
-                if (name == "m1" || name == "m2")
+                if (name == "m1" || name == "m2" || name == "m3" || name == "m4" || name == "m5")
+                {
+                    MKeyControl.ApplyAll();
                     Program.inputDispatcher.RegisterKeys();
+                }
 
             };
 
@@ -125,6 +138,7 @@ namespace GHelper
             InitializeComponent();
 
             labelBindings.Text = Properties.Strings.KeyBindings;
+            buttonResetBindings.Text = Properties.Strings.Reset;
             labelBacklightTitle.Text = Properties.Strings.LaptopBacklight;
             labelSettings.Text = Properties.Strings.Other;
 
@@ -181,6 +195,9 @@ namespace GHelper
             comboM2.AccessibleName = "M2 Action";
             comboM3.AccessibleName = "M3 Action";
             comboM4.AccessibleName = "M4 Action";
+            comboM5.AccessibleName = "M5 Action";
+
+            labelM5.Visible = comboM5.Visible = textM5.Visible = false;
             comboFNF4.AccessibleName = "Fn+F4 Action";
             comboFNC.AccessibleName = "Fn+C Action";
             comboFNV.AccessibleName = "Fn+V Action";
@@ -307,6 +324,8 @@ namespace GHelper
             if (AppConfig.IsStrix())
             {
                 labelM4.Text = "M5/ROG";
+                labelM5.Visible = comboM5.Visible = textM5.Visible = true;
+                SetKeyCombo(comboM5, textM5, "m5");
             }
 
 
@@ -460,6 +479,7 @@ namespace GHelper
             }
 
             pictureHelp.Click += PictureHelp_Click;
+            buttonResetBindings.Click += ButtonResetBindings_Click;
             buttonServices.Click += ButtonServices_Click;
 
             pictureLog.Click += PictureLog_Click;
@@ -761,6 +781,20 @@ namespace GHelper
         private void PictureHelp_Click(object? sender, EventArgs e)
         {
             Process.Start(new ProcessStartInfo("https://github.com/seerge/g-helper/wiki/Power-user-settings#custom-hotkey-actions") { UseShellExecute = true });
+        }
+
+        private void ButtonResetBindings_Click(object? sender, EventArgs e)
+        {
+            comboM1.SelectedValue = "";
+            comboM2.SelectedValue = "";
+            comboM3.SelectedValue = "";
+            comboM4.SelectedValue = "";
+            comboM5.SelectedValue = "";
+
+            textM1.Text = textM2.Text = textM3.Text = textM4.Text = textM5.Text = "";
+
+            MKeyControl.Reset();
+            Program.inputDispatcher.RegisterKeys();
         }
 
         private void CheckNoOverdrive_CheckedChanged(object? sender, EventArgs e)
