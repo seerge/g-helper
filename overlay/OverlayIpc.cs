@@ -21,8 +21,9 @@ public static class OverlayIpc
     public const int OffClickThrough = 44; // int 0/1 = WS_EX_TRANSPARENT on the renderer window
     public const int OffPixels = 64;
 
+    // Fits the largest frame: Complete mode + names + battery at 300% scale (~3920x270)
     public const int MaxWidth = 4096;
-    public const int MaxHeight = 640;
+    public const int MaxHeight = 288;
     public const long MapSize = OffPixels + (long)MaxWidth * MaxHeight * 4;
 
     // Renderer -> app input forwarding (WM_APP range, original wParam/lParam passed through)

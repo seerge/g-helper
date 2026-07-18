@@ -38,9 +38,11 @@ internal static unsafe class Program
     private const uint PM_REMOVE = 1;
     private const uint QS_ALLINPUT = 0x04FF;
     private const uint MWMO_INPUTAVAILABLE = 0x4;
-    private const uint WAIT_TIMEOUT = 258;
     private const uint WAIT_FAILED = 0xFFFFFFFF;
+    private const uint INFINITE = 0xFFFFFFFF;
     private const uint SYNCHRONIZE = 0x00100000;
+    private const uint TOKEN_QUERY = 0x8;
+    private const int TokenUIAccess = 26;
     private static readonly IntPtr HWND_TOPMOST = new(-1);
 
     private delegate IntPtr WndProcDelegate(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
@@ -106,6 +108,9 @@ internal static unsafe class Program
     [DllImport("user32.dll")] private static extern bool PostMessage(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
     [DllImport("kernel32.dll", CharSet = CharSet.Unicode)] private static extern IntPtr GetModuleHandle(string? moduleName);
     [DllImport("kernel32.dll")] private static extern IntPtr OpenProcess(uint access, bool inherit, int processId);
+    [DllImport("kernel32.dll")] private static extern bool CloseHandle(IntPtr handle);
+    [DllImport("advapi32.dll")] private static extern bool OpenProcessToken(IntPtr process, uint access, out IntPtr token);
+    [DllImport("advapi32.dll")] private static extern bool GetTokenInformation(IntPtr token, int infoClass, out uint info, uint length, out uint returnLength);
     [DllImport("gdi32.dll")] private static extern IntPtr CreateCompatibleDC(IntPtr hdc);
     [DllImport("gdi32.dll")] private static extern IntPtr CreateDIBSection(IntPtr hdc, ref BITMAPINFOHEADER pbmi, uint usage, out IntPtr ppvBits, IntPtr hSection, uint offset);
     [DllImport("gdi32.dll")] private static extern IntPtr SelectObject(IntPtr hdc, IntPtr hObject);
@@ -117,6 +122,7 @@ internal static unsafe class Program
     private static bool _clickThrough = true;
     private static bool _dragging;
     private static bool _needRecreate;
+    private static bool _uiAccess;
     private static int _x, _y, _w, _h;
     private static IntPtr _hwnd, _memDc, _dib, _oldBmp, _bits;
     private static int _dibW, _dibH;
@@ -174,16 +180,33 @@ internal static unsafe class Program
             return;
         }
 
+        _uiAccess = HasUiAccess();
         CreateOverlayWindow();
-        Logger.WriteLine($"Renderer started (app pid {appPid})");
+        Logger.WriteLine($"Renderer started (app pid {appPid}, uiAccess {_uiAccess})");
 
+        // With uiAccess the window lives in the UIAccess z-band that normal topmost
+        // windows can't reach, so no periodic topmost re-assert (or any wakeup) is
+        // needed; without it, fall back to a 500 ms tick to fight the topmost war.
         var handles = new[] { frameEvent.SafeWaitHandle.DangerousGetHandle(), hApp };
         while (true)
         {
-            uint r = MsgWaitForMultipleObjectsEx(2, handles, 500, QS_ALLINPUT, MWMO_INPUTAVAILABLE);
-            if (r == 1 || r == WAIT_FAILED) break;      // app gone
-            if (r == 2) { if (!Pump()) break; continue; } // window messages
-            Apply();                                     // frame event or timeout tick
+            uint r = MsgWaitForMultipleObjectsEx(2, handles, _uiAccess ? INFINITE : 500, QS_ALLINPUT, MWMO_INPUTAVAILABLE);
+            if (r == 1 || r == WAIT_FAILED) break; // app gone
+            if (r == 2 && !Pump()) break;          // window messages
+            Apply();
+        }
+    }
+
+    private static bool HasUiAccess()
+    {
+        if (!OpenProcessToken((IntPtr)(-1), TOKEN_QUERY, out IntPtr token)) return false;
+        try
+        {
+            return GetTokenInformation(token, TokenUIAccess, out uint ui, 4, out _) && ui != 0;
+        }
+        finally
+        {
+            CloseHandle(token);
         }
     }
 
@@ -266,7 +289,7 @@ internal static unsafe class Program
             ShowWindow(_hwnd, visible ? SW_SHOWNOACTIVATE : SW_HIDE);
         }
 
-        if (_visible && GetWindow(_hwnd, GW_HWNDPREV) != IntPtr.Zero)
+        if (!_uiAccess && _visible && GetWindow(_hwnd, GW_HWNDPREV) != IntPtr.Zero)
             SetWindowPos(_hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
     }
 
