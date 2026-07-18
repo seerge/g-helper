@@ -58,6 +58,7 @@ namespace GHelper.USB
         ZONETEST = 25,
         AUDIO = 26,
         AUDIOPULSE = 27,
+        AUDIOWAVE = 28,
     }
 
     public enum AuraSpeed : int
@@ -204,6 +205,7 @@ namespace GHelper.USB
             modes[AuraMode.BATTERY] = "Battery";
             modes[AuraMode.AUDIO] = "Audio Spectrum";
             modes[AuraMode.AUDIOPULSE] = "Audio Pulse";
+            modes[AuraMode.AUDIOWAVE] = "Audio Wave";
 
             if (isStrixKb)
             {
@@ -935,11 +937,11 @@ namespace GHelper.USB
             }
 
             timer.Stop();
-            if (Mode != AuraMode.AUDIO && Mode != AuraMode.AUDIOPULSE) StopAudio();
+            if (Mode != AuraMode.AUDIO && Mode != AuraMode.AUDIOPULSE && Mode != AuraMode.AUDIOWAVE) StopAudio();
 
             Logger.WriteLine($"AuraMode: {Mode}");
 
-            if (Mode == AuraMode.AUDIO || Mode == AuraMode.AUDIOPULSE)
+            if (Mode == AuraMode.AUDIO || Mode == AuraMode.AUDIOPULSE || Mode == AuraMode.AUDIOWAVE)
             {
                 StartAudio();
                 return;
@@ -1072,7 +1074,7 @@ namespace GHelper.USB
         private static void OnAudioSpectrum(double[] fftMag)
         {
             if (!backlight || sessionLock) return;
-            if (Mode != AuraMode.AUDIO && Mode != AuraMode.AUDIOPULSE) return;
+            if (Mode != AuraMode.AUDIO && Mode != AuraMode.AUDIOPULSE && Mode != AuraMode.AUDIOWAVE) return;
 
             long now = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             if (Math.Abs(now - lastAudioPresent) < 20) return;
@@ -1106,6 +1108,7 @@ namespace GHelper.USB
             try
             {
                 double baseHue = ColorUtils.HSV.ToHSV(c1).Hue;
+                bool singleColor = AppConfig.Is("aura_audio_single_color");
 
                 if (isStrix && !isStrix4Zone)
                 {
@@ -1121,6 +1124,11 @@ namespace GHelper.USB
                             int zone = (row == 7) ? packetZone[i] : 0;
                             if (Mode == AuraMode.AUDIOPULSE)
                             {
+                                double z = curvedBrightness * 0.8;
+                                keyColors[i] = Color.FromArgb((byte)(c1.R * z), (byte)(c1.G * z), (byte)(c1.B * z));
+                            }
+                            else if (Mode == AuraMode.AUDIOWAVE)
+                            {
                                 double pulsePhase = (now % 1200) / 1200.0;
                                 double wave = Math.Sin((pulsePhase + zone * 0.12) % 1.0 * Math.PI * 2.0) * 0.5 + 0.5;
                                 double z = curvedBrightness * wave * 0.8;
@@ -1131,8 +1139,15 @@ namespace GHelper.USB
                                 int freqIdx = Math.Min(zone, numCols - 1);
                                 double ratio = Math.Min(1.0, colBars[freqIdx] / maxAvg);
                                 double v = ratio * ratio * ratio * 0.9;
-                                double hue = (baseHue + (double)zone / 7.0 * (2.0 / 3.0)) % 1.0;
-                                keyColors[i] = new ColorUtils.HSV { Hue = hue, Saturation = 1.0, Value = v }.ToRGB();
+                                if (singleColor)
+                                {
+                                    keyColors[i] = Color.FromArgb((byte)(c1.R * v), (byte)(c1.G * v), (byte)(c1.B * v));
+                                }
+                                else
+                                {
+                                    double hue = (baseHue + (double)zone / 7.0 * (2.0 / 3.0)) % 1.0;
+                                    keyColors[i] = new ColorUtils.HSV { Hue = hue, Saturation = 1.0, Value = v }.ToRGB();
+                                }
                             }
                             continue;
                         }
@@ -1144,6 +1159,14 @@ namespace GHelper.USB
                         }
 
                         if (Mode == AuraMode.AUDIOPULSE)
+                        {
+                            double z = Math.Min(1.0, curvedBrightness);
+                            keyColors[i] = Color.FromArgb(
+                                (byte)(c1.R * z),
+                                (byte)(c1.G * z),
+                                (byte)(c1.B * z));
+                        }
+                        else if (Mode == AuraMode.AUDIOWAVE)
                         {
                             double waveCycle = (now % 1200) / 1200.0;
                             double wave = Math.Sin((waveCycle + col * 0.07) % 1.0 * Math.PI * 2.0) * 0.5 + 0.5;
@@ -1171,8 +1194,18 @@ namespace GHelper.USB
                             if (energy > threshold)
                             {
                                 double zoneBrightness = Math.Min(1.0, energy);
-                                double hue = (baseHue + (double)col / (numCols - 1) * (2.0 / 3.0)) % 1.0;
-                                keyColors[i] = new ColorUtils.HSV { Hue = hue, Saturation = 1.0, Value = zoneBrightness }.ToRGB();
+                                if (singleColor)
+                                {
+                                    keyColors[i] = Color.FromArgb(
+                                        (byte)(c1.R * zoneBrightness),
+                                        (byte)(c1.G * zoneBrightness),
+                                        (byte)(c1.B * zoneBrightness));
+                                }
+                                else
+                                {
+                                    double hue = (baseHue + (double)col / (numCols - 1) * (2.0 / 3.0)) % 1.0;
+                                    keyColors[i] = new ColorUtils.HSV { Hue = hue, Saturation = 1.0, Value = zoneBrightness }.ToRGB();
+                                }
                             }
                             else
                             {
@@ -1190,6 +1223,14 @@ namespace GHelper.USB
 
                     if (Mode == AuraMode.AUDIOPULSE)
                     {
+                        double z = Math.Min(1.0, curvedBrightness);
+                        for (int i = 0; i < AURA_ZONES; i++)
+                        {
+                            colors[i] = Color.FromArgb((byte)(c1.R * z), (byte)(c1.G * z), (byte)(c1.B * z));
+                        }
+                    }
+                    else if (Mode == AuraMode.AUDIOWAVE)
+                    {
                         double waveCycle = (now % 1200) / 1200.0;
                         for (int i = 0; i < AURA_ZONES; i++)
                         {
@@ -1205,8 +1246,15 @@ namespace GHelper.USB
                             int freqIdx = Math.Min(i * numCols / AURA_ZONES, numCols - 1);
                             double ratio = Math.Min(1.0, colBars[freqIdx] / maxAvg);
                             double v = ratio * ratio * ratio;
-                            double hue = (baseHue + (double)i / (AURA_ZONES - 1) * (2.0 / 3.0)) % 1.0;
-                            colors[i] = new ColorUtils.HSV { Hue = hue, Saturation = 1.0, Value = v }.ToRGB();
+                            if (singleColor)
+                            {
+                                colors[i] = Color.FromArgb((byte)(c1.R * v), (byte)(c1.G * v), (byte)(c1.B * v));
+                            }
+                            else
+                            {
+                                double hue = (baseHue + (double)i / (AURA_ZONES - 1) * (2.0 / 3.0)) % 1.0;
+                                colors[i] = new ColorUtils.HSV { Hue = hue, Saturation = 1.0, Value = v }.ToRGB();
+                            }
                         }
                     }
 
