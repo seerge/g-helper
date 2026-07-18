@@ -635,9 +635,9 @@ namespace GHelper.Overlay
             if (sc != _lastScale)
             {
                 _lastScale = sc;
-                _font?.Dispose();    _font    = new Font("Consolas", BaseFontSize * sc, FontStyle.Regular, GraphicsUnit.Pixel);
-                _rpmFont?.Dispose(); _rpmFont = new Font("Consolas", BaseRpmFontSize * sc, FontStyle.Regular, GraphicsUnit.Pixel);
-                _fpsBold?.Dispose(); _fpsBold = new Font("Consolas", innerH / 1.15f, FontStyle.Bold, GraphicsUnit.Pixel);
+                _font?.Dispose();    _font    = new Font(AppConfig.GetString("overlay_font", "Consolas"), BaseFontSize * sc, FontStyle.Regular, GraphicsUnit.Pixel);
+                _rpmFont?.Dispose(); _rpmFont = new Font(AppConfig.GetString("overlay_font", "Consolas"), BaseRpmFontSize * sc, FontStyle.Regular, GraphicsUnit.Pixel);
+                _fpsBold?.Dispose(); _fpsBold = new Font(AppConfig.GetString("overlay_font", "Consolas"), innerH / 1.15f, FontStyle.Bold, GraphicsUnit.Pixel);
                 _totalPen?.Dispose(); _totalPen = new Pen(Color.FromArgb(255, 200, 200, 200), sc * 0.75f) { DashStyle = DashStyle.Dot };
                 _axPen?.Dispose();    _axPen    = new Pen(Color.FromArgb(255, 80, 80, 80), sc * 0.5f);
             }
