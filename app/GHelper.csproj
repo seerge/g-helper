@@ -74,8 +74,15 @@
     <EmbeddedResource Include="Pawn\RyzenSMU.bin">
       <LogicalName>GHelper.RyzenSMU.bin</LogicalName>
     </EmbeddedResource>
-    <EmbeddedResource Include="Pawn\IntelMSR.bin">
-      <LogicalName>GHelper.IntelMSR.bin</LogicalName>
+  </ItemGroup>
+
+  <Target Name="PublishOverlayFirst" BeforeTargets="BeforeBuild" Condition="'$(SkipOverlayPublish)'!='true'">
+    <Exec Command="dotnet publish &quot;$(MSBuildThisFileDirectory)..\overlay\GHelperOverlay.csproj&quot; -c Release --nologo -v minimal" />
+  </Target>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\overlay\bin\Release\net48\publish\GHelperOverlay.exe">
+      <LogicalName>GHelperOverlay.exe</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
 

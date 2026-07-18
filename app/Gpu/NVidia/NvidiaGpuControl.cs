@@ -378,11 +378,4 @@ public class NvidiaGpuControl : IGpuControl
         return NvmlHelper.GetGpuPower() ?? 0f;
     }
 
-    public (long usedMb, long totalMb)? GetVramInfo()
-    {
-        if (!IsValid) return null;
-        if (GetGpuState() != GpuState.Active) return null;
-        return NvmlHelper.GetMemoryInfo();
-    }
-
 }

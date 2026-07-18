@@ -140,28 +140,6 @@ public class AmdGpuControl : IGpuControl
         return gpuUsage.Value;
     }
 
-    private long _totalVramMB; // total VRAM is static — cached on first successful query (0 = not yet)
-
-    public (long usedMb, long totalMb)? GetVramInfo()
-    {
-        ADLAdapterInfo? adapter = IsValid ? _internalDiscreteAdapter : _iGPU;
-        if (adapter is null) return null;
-        int index = adapter.Value.AdapterIndex;
-
-        if (_totalVramMB <= 0)
-        {
-            if (ADL2_Adapter_MemoryInfo2_Get(_adlContextHandle, index, out ADLMemoryInfo2 mem) != Adl2.ADL_SUCCESS)
-                return null;
-            _totalVramMB = mem.iMemorySize / (1024 * 1024);
-            if (_totalVramMB <= 0) return null;
-        }
-
-        if (ADL2_Adapter_DedicatedVRAMUsage_Get(_adlContextHandle, index, out int usedMB) != Adl2.ADL_SUCCESS)
-            return null;
-
-        return (usedMB, _totalVramMB);
-    }
-
     public int? GetiGpuUse()
     {
         if (_adlContextHandle == nint.Zero || _iGPU == null) return null;

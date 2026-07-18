@@ -961,7 +961,4 @@ Recomendado si experimenta cuelgues aleatorios o hardware que no responde.</valu
   <data name="Overlay" xml:space="preserve">
     <value>Interfaz superpuesta</value>
   </data>
-  <data name="OverlayOnlyInGames" xml:space="preserve">
-    <value>Interfaz superpuesta solo juegos</value>
-  </data>
 </root>

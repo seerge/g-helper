@@ -1,0 +1,54 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>True</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPublishable>True</IsPublishable>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <StartupObject>GHelperOverlay.Program</StartupObject>
+    <Platforms>AnyCPU;x64</Platforms>
+    <AssemblyName>GHelperOverlay</AssemblyName>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <AssemblyVersion>0.1</AssemblyVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Pawn\IntelMSR.bin">
+      <LogicalName>GHelperOverlay.IntelMSR.bin</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <Target Name="KillRunningGHelperOverlay" BeforeTargets="Build" Condition="'$(GITHUB_ACTIONS)'!='true' AND '$(PublishProtocol)'!=''">
+    <Exec Command="powershell -NoProfile -Command &quot;Get-Process -Name GHelperOverlay -ErrorAction SilentlyContinue | Stop-Process -Force; Start-Sleep -Milliseconds 500&quot;" />
+  </Target>
+
+  <Target Name="ZipSingleExe" AfterTargets="Build" Condition="'$(GITHUB_ACTIONS)'!='true' AND '$(Configuration)'=='Release'">
+    <Exec Command="powershell -NoProfile -Command &quot;$exe = '$(OutputPath)GHelperOverlay.exe'; for ($i = 0; $i -lt 30; $i++) { try { [IO.File]::Open($exe, 'Open', 'Read', 'None').Close(); break } catch { Start-Sleep -Milliseconds 200 } }; Compress-Archive -Path $exe -DestinationPath '$(OutputPath)GHelperOverlay.zip' -Force&quot;" />
+  </Target>
+
+</Project>

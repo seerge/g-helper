@@ -967,7 +967,4 @@ Recommended if you experience random hangs or unresponsive hardware.</value>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
-  <data name="OverlayOnlyInGames" xml:space="preserve">
-    <value>Overlay only in games</value>
-  </data>
 </root>
