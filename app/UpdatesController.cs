@@ -50,7 +50,17 @@ namespace GHelper
         public async Task<List<DriverUpdate>> FetchUpdates(string url, CancellationToken token = default)
         {
             Logger.WriteLine(url);
-            var json = await _httpClient.GetStringAsync(url, token);
+            string json;
+            try
+            {
+                json = await _httpClient.GetStringAsync(url, token);
+            }
+            catch (HttpRequestException ex)
+            {
+                url = url.Replace("rog.asus.com/support/webapi/product/", "www.asus.com/support/webapi/ProductV2/");
+                Logger.WriteLine(ex.Message + " -> " + url);
+                json = await _httpClient.GetStringAsync(url, token);
+            }
             var data = JsonSerializer.Deserialize<JsonElement>(json);
             var result = data.GetProperty("Result");
 
@@ -82,12 +92,14 @@ namespace GHelper
                     if (oldTitle != title && !SkipList.Contains(title) && !title.Contains("Armoury Crate"))
                     {
                         var version = file.GetProperty("Version").ToString().Replace("V", "");
+                        var downloadUrl = file.GetProperty("DownloadUrl").GetProperty("Global").ToString();
+                        if (downloadUrl.StartsWith("/")) downloadUrl = "https://dlcdnets.asus.com" + downloadUrl;
                         updates.Add(new DriverUpdate
                         {
                             categoryName = categoryName,
                             title = title,
                             version = version,
-                            downloadUrl = file.GetProperty("DownloadUrl").GetProperty("Global").ToString(),
+                            downloadUrl = downloadUrl,
                             date = file.GetProperty("ReleaseDate").ToString(),
                             hardwares = ParseHardwares(file.GetProperty("HardwareInfoList")),
                             tip = version,
