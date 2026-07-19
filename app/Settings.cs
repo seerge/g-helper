@@ -707,11 +707,6 @@ namespace GHelper
                 BeginInvoke(new Action(() =>
                 {
                     buttonEnergySaver.Visible = PowerNative.GetBatterySaverStatus();
-                    Task.Run(() =>
-                    {
-                        ScreenControl.InitScreen();
-                        VisualizeXGM();
-                    });
                 }));
             }
         }

@@ -159,6 +159,7 @@ namespace GHelper
             settingsForm.InitAura();
             settingsForm.InitMatrix();
 
+            ScreenControl.InitScreen();
             XGM.Init();
 
             SetAutoModes(init: true);
