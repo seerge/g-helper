@@ -319,7 +319,6 @@ namespace GHelper
         private void ButtonEnergySaver_Click(object? sender, EventArgs e)
         {
             KeyboardHook.KeyKeyPress(Keys.LWin, Keys.A);
-            activateCheck = true;
         }
 
         private void LabelBacklight_Click(object? sender, EventArgs e)
@@ -631,7 +630,6 @@ namespace GHelper
         {
             if (activateCheck)
             {
-                buttonEnergySaver.Visible = PowerNative.GetBatterySaverStatus();
                 buttonAmdOled.Visible = AmdDisplay.IsOledPowerOptimization();
                 activateCheck = false;
             }
@@ -704,10 +702,6 @@ namespace GHelper
             {
                 Task.Run((Action)RefreshPeripheralsBattery);
                 updateControl.CheckForUpdates();
-                BeginInvoke(new Action(() =>
-                {
-                    buttonEnergySaver.Visible = PowerNative.GetBatterySaverStatus();
-                }));
             }
         }
 
@@ -780,6 +774,11 @@ namespace GHelper
                             break;
                     }
 
+                }
+                else if (settings.PowerSetting == NativeMethods.PowerSettingGuid.EnergySaverStatus)
+                {
+                    Logger.WriteLine("Battery Saver: " + settings.Data);
+                    buttonEnergySaver.Visible = settings.Data != 0;
                 }
                 else
                 {

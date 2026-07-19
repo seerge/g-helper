@@ -107,6 +107,8 @@ public static class NativeMethods
         public static Guid MonitorPowerGuid { get; } = new Guid("02731015-4510-4526-99e6-e5a17ebd1aea");
         // 0=Battery Saver Off, 1=Battery Saver On.
         public static Guid PowerSavingStatus { get; } = new Guid("E00958C0-C213-4ACE-AC77-FECCED2EEEA5");
+        // Win11 24H2 Energy Saver: 0=Off, 1=Standard, 2=High Savings
+        public static Guid EnergySaverStatus { get; } = new Guid("550E8400-E29B-41D4-A716-446655440000");
 
         // Windows 8+: 0=Off, 1=On, 2=Dimmed
         public static Guid SessionDisplayStatus { get; } = new Guid("2B84C20E-AD23-4ddf-93DB-05FFBD7EFCA5");
