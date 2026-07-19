@@ -49,7 +49,7 @@ public class AmdGpuControl : IGpuControl
                     if (adapter.Exist == 0 || adapter.Present == 0)
                         return false;
 
-                    if (adapter.VendorID != amdVendorId)
+                    if (Math.Abs(adapter.VendorID) != amdVendorId)
                         return false;
 
                     if (ADL2_Adapter_ASICFamilyType_Get(_adlContextHandle, adapter.AdapterIndex, out ADLAsicFamilyType asicFamilyType, out int asicFamilyTypeValids) != Adl2.ADL_SUCCESS)
@@ -61,7 +61,20 @@ public class AmdGpuControl : IGpuControl
                 });
 
         if (internalDiscreteAdapter.Exist == 0)
-            return null;
+        {
+            if (type != ADLAsicFamilyType.Integrated || !AppConfig.IsAMDiGPU())
+                return null;
+
+            internalDiscreteAdapter = osAdapterInfoData.ADLAdapterInfo
+                .Take(numberOfAdapters)
+                .FirstOrDefault(adapter =>
+                    adapter.Exist != 0 &&
+                    adapter.Present != 0 &&
+                    Math.Abs(adapter.VendorID) == amdVendorId);
+
+            if (internalDiscreteAdapter.Exist == 0)
+                return null;
+        }
 
         return internalDiscreteAdapter;
 
@@ -201,15 +214,22 @@ public class AmdGpuControl : IGpuControl
 
     public (int? temp, int? use, int? gfxPower, int? cpuPower, int? asicPower) GetiGpuSensors()
     {
-        if (!GetPMLogiGpu(out ADLPMLogDataOutput log)) return default;
+        if (!GetPMLogiGpu(out ADLPMLogDataOutput log))
+            return (WindowsGpuSensor.GetTemperature(), WindowsGpuSensor.GetUsage(), null, null, null);
 
-        return (Sensor(log, ADLSensorType.PMLOG_TEMPERATURE_EDGE)
-                ?? Sensor(log, ADLSensorType.PMLOG_TEMPERATURE_GFX)
-                ?? Sensor(log, ADLSensorType.PMLOG_TEMPERATURE_SOC),
-                Sensor(log, ADLSensorType.PMLOG_INFO_ACTIVITY_GFX),
-                Sensor(log, ADLSensorType.PMLOG_GFX_POWER),
-                Sensor(log, ADLSensorType.PMLOG_CPU_POWER),
-                Sensor(log, ADLSensorType.PMLOG_ASIC_POWER));
+        int? edge = Sensor(log, ADLSensorType.PMLOG_TEMPERATURE_EDGE);
+        int? gfx = Sensor(log, ADLSensorType.PMLOG_TEMPERATURE_GFX);
+        int? soc = Sensor(log, ADLSensorType.PMLOG_TEMPERATURE_SOC);
+        int? use = Sensor(log, ADLSensorType.PMLOG_INFO_ACTIVITY_GFX);
+        int? gfxPower = Sensor(log, ADLSensorType.PMLOG_GFX_POWER);
+        int? cpuPower = Sensor(log, ADLSensorType.PMLOG_CPU_POWER);
+        int? asicPower = Sensor(log, ADLSensorType.PMLOG_ASIC_POWER);
+
+        return (edge ?? gfx ?? soc ?? WindowsGpuSensor.GetTemperature(),
+                use ?? WindowsGpuSensor.GetUsage(),
+                gfxPower,
+                cpuPower,
+                asicPower);
     }
 
     public float? GetGpuPower()
