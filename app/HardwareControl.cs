@@ -535,6 +535,15 @@ public static class HardwareControl
 
         Task.Run(() =>
         {
+            if (isAMDiGPU && _cpuChannel is null)
+                try
+                {
+                    _apuChannel = new EnergyChannel("Apu Power");
+                    _cpuChannel = new EnergyChannel("CPU Power");
+                    Logger.WriteLine("Power source: Energy Meter APU/CPU channels");
+                }
+                catch { }
+
             if (isAMDiGPU && _coreCounters is null)
                 try
                 {
@@ -601,6 +610,45 @@ public static class HardwareControl
     }
 
     private static List<PerformanceCounter>? _coreCounters;
+
+    // Energy raw = cumulative picowatt-hours, Time raw = ms of the provider's ~1Hz measurement clock
+    private class EnergyChannel
+    {
+        private readonly PerformanceCounter _energy;
+        private readonly PerformanceCounter _time;
+        private long _rawEnergy, _rawTime;
+        private float _watts;
+        private int _stale;
+
+        public EnergyChannel(string instance)
+        {
+            _energy = new PerformanceCounter("Energy Meter", "Energy", instance, true);
+            _time = new PerformanceCounter("Energy Meter", "Time", instance, true);
+            _rawEnergy = _energy.RawValue;
+            _rawTime = _time.RawValue;
+        }
+
+        public float? Sample()
+        {
+            try
+            {
+                long e = _energy.RawValue, t = _time.RawValue;
+                if (t != _rawTime)
+                {
+                    _watts = (e - _rawEnergy) * 3.6e-6f / (t - _rawTime);
+                    _rawEnergy = e;
+                    _rawTime = t;
+                    _stale = 0;
+                }
+                else if (++_stale >= 5)
+                    return null;
+                return _watts > 0 ? _watts : null;
+            }
+            catch { return null; }
+        }
+    }
+
+    private static EnergyChannel? _cpuChannel, _apuChannel;
 
     private static float? GetCoresPower()
     {
@@ -863,16 +911,14 @@ public static class HardwareControl
         {
             InitCPUPowerAsync();
 
-            // Only overwrite with a new reading when the counter returns a valid value.
-            // If the counter is absent or returns 0 for several consecutive ticks (e.g. after
-            // a game exits and invalidates the Intel Energy Meter counter), clear the stale
-            // value so the overlay shows "--" rather than the last-seen wattage.
             float? newCpu = GetCPUPower() ?? GetIntelMsrPower() ?? GetAmdApuPower();
             float? iGpuPower = null;
 
             if (isAMDiGPU && GpuControl is null)
             {
-                float? cores = GetCoresPower();
+                float? apu = _apuChannel?.Sample();
+                if (apu > 0) newCpu = apu;
+                float? cores = _cpuChannel?.Sample() ?? GetCoresPower();
                 if (cores > 0 && newCpu > cores)
                 {
                     iGpuPower = newCpu - cores;
