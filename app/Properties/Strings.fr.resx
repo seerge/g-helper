@@ -722,6 +722,9 @@ Voulez-vous continuer ?</value>
   <data name="RestartGPU" xml:space="preserve">
     <value>Un programme utilise le dGPU et empêche le passage en mode Éco. Laissez G-Helper tenter un redémarrage du dGPU dans le gestionnaire de tâches ? (Procéder à vos propres risques)</value>
   </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
+  </data>
   <data name="RPM" xml:space="preserve">
     <value> RPM</value>
   </data>
