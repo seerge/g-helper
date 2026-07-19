@@ -722,6 +722,9 @@ Trotzdem fortfahren?</value>
   <data name="RestartGPU" xml:space="preserve">
     <value>Ein Prozess verhindert den Wechsel in den Eco-Modus. dGPU neu starten? Fortfahren auf eigene Gefahr.</value>
   </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
+  </data>
   <data name="RPM" xml:space="preserve">
     <value>U/Min</value>
   </data>
