@@ -722,6 +722,9 @@
   <data name="RestartGPU" xml:space="preserve">
     <value>有其他程式正在使用獨顯導致無法切換至節能模式. 是否讓 G-Helper 於裝置管理員重新啟動獨顯? (請自行評估風險)</value>
   </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
+  </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
   </data>
