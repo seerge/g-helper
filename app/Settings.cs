@@ -1246,6 +1246,19 @@ namespace GHelper
             comboKeyboard.SelectedValue = Aura.Mode;
             comboKeyboard.SelectedValueChanged += ComboKeyboard_SelectedValueChanged;
 
+            // Set initial state of color button
+            var disabledModes = new[]
+            {
+                AuraMode.AuraColorCycle,
+                AuraMode.AuraRainbow,
+                AuraMode.HEATMAP,
+                AuraMode.GPUMODE,
+                AuraMode.AMBIENT,
+                AuraMode.BATTERY,
+                AuraMode.ZONETEST,
+                AuraMode.Rain
+            };
+            buttonKeyboardColor.Enabled = !disabledModes.Contains(Aura.Mode);
 
             if (Aura.isWhite)
             {
@@ -1375,6 +1388,22 @@ namespace GHelper
         private void ComboKeyboard_SelectedValueChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("aura_mode", (int)comboKeyboard.SelectedValue);
+            // Disable color button for modes that don't support custom colors
+            var selectedMode = (AuraMode)comboKeyboard.SelectedValue;
+            var disabledModes = new[]
+            {
+                AuraMode.AuraColorCycle,
+                AuraMode.AuraRainbow,
+                AuraMode.HEATMAP,
+                AuraMode.GPUMODE,
+                AuraMode.AMBIENT,
+                AuraMode.BATTERY,
+                AuraMode.ZONETEST,
+                AuraMode.Rain
+            };
+
+            buttonKeyboardColor.Enabled = !disabledModes.Contains(selectedMode);
+
             SetAura();
         }
 
