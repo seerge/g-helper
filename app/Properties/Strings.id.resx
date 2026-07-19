@@ -722,6 +722,9 @@ Apakah Anda masih ingin melanjutkan?</value>
   <data name="RestartGPU" xml:space="preserve">
     <value>Ada yang menggunakan dGPU dan mencegah mode Eco. Biarkan G-Helper mencoba memulai ulang dGPU di pengelola perangkat? (Silakan lanjutkan dengan risiko Anda sendiri)</value>
   </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
+  </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
   </data>
