@@ -722,6 +722,9 @@ Vil du stadig fortsætte?</value>
   <data name="RestartGPU" xml:space="preserve">
     <value>Noget bruger dGPU og forhindrer Øko-tilstand. Lad G-Helper forsøge at genstarte dGPU i enhedshåndtering? (fortsæt på egen risiko)</value>
   </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
+  </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
   </data>
