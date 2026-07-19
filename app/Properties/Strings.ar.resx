@@ -722,6 +722,9 @@
   <data name="RestartGPU" xml:space="preserve">
     <value>هناك شيء يستخدم وحدة معالجة الرسومات المنفصلة ويمنع وضع التوفير. هل تريد أن يحاول G-Helper إعادة تشغيل وحدة معالجة الرسومات في مدير الأجهزة؟ (يرجى المتابعة على مسؤوليتك الخاصة)</value>
   </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
+  </data>
   <data name="RPM" xml:space="preserve">
     <value>دورة في الدقيقة</value>
   </data>
