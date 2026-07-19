@@ -378,7 +378,9 @@ namespace GHelper.Overlay
                 int i = full.IndexOf(tag, StringComparison.OrdinalIgnoreCase);
                 if (i < 0) continue;
                 string[] p = full[i..].Split(' ', StringSplitOptions.RemoveEmptyEntries);
-                return p.Length >= 2 ? p[0] + " " + p[1] : p[0];
+                string s = p.Length >= 2 ? p[0] + " " + p[1] : p[0];
+                if (p.Length >= 3 && p[2] == "Ti") s += " Ti";
+                return s;
             }
             return full;
         }
