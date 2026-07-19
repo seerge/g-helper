@@ -166,7 +166,7 @@
     <value>Appliquer</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Appliquer la courbe</value>
+    <value>Apply Fan Curve</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Appliquer les limites</value>
