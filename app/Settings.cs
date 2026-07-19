@@ -704,14 +704,14 @@ namespace GHelper
             {
                 Task.Run((Action)RefreshPeripheralsBattery);
                 updateControl.CheckForUpdates();
-                Task.Run(() =>
-                {
-                    ScreenControl.InitScreen();
-                    VisualizeXGM();
-                });
                 BeginInvoke(new Action(() =>
                 {
                     buttonEnergySaver.Visible = PowerNative.GetBatterySaverStatus();
+                    Task.Run(() =>
+                    {
+                        ScreenControl.InitScreen();
+                        VisualizeXGM();
+                    });
                 }));
             }
         }
