@@ -166,7 +166,7 @@
     <value>应用</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>应用自定义风扇曲线</value>
+    <value>应用风扇曲线</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>应用功率限制</value>
