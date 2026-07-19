@@ -722,6 +722,9 @@ Bạn có muốn tiếp tục không?</value>
   <data name="RestartGPU" xml:space="preserve">
     <value>Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk)</value>
   </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
+  </data>
   <data name="RPM" xml:space="preserve">
     <value>VTP</value>
   </data>
