@@ -1183,7 +1183,7 @@ namespace GHelper
 
         private void SetColorPicker(string colorField, Color initial)
         {
-            RColorPicker colorDlg = new RColorPicker(initial);
+            RColorPicker colorDlg = new RColorPicker(initial, colorField == "aura_color" && Aura.HasRandomColor());
             colorDlg.ColorChanged += c =>
             {
                 AppConfig.Set(colorField, c.ToArgb());

@@ -266,6 +266,11 @@ namespace GHelper.USB
             return (mode == AuraMode.AuraBreathe || mode == AuraMode.GRADIENT) && (!isACPI || AppConfig.IsDynamicLightingOnly());
         }
 
+        public static bool HasRandomColor()
+        {
+            return mode == AuraMode.Star || mode == AuraMode.Highlight || mode == AuraMode.Laser || mode == AuraMode.Ripple;
+        }
+
         private static void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
             if (!InputDispatcher.backlightActivity)
