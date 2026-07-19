@@ -722,6 +722,9 @@
   <data name="RestartGPU" xml:space="preserve">
     <value>何らかの問題が dGPU を使用しており、エコモードを防止しています。G-Helper をデバイスマネージャーで dGPU を再起動させてください。(自己責任で進んでください)</value>
   </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
+  </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
   </data>
