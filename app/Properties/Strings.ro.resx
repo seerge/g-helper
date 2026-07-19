@@ -722,6 +722,9 @@
   <data name="RestartGPU" xml:space="preserve">
     <value>Ceva folosește dGPU și previne modul Eco. Permiteți G-Helper să repornească dGPU în managerul de dispozitive? (Continuați pe propriul risc)</value>
   </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
+  </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
   </data>
