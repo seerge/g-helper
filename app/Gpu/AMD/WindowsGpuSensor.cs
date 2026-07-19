@@ -9,6 +9,7 @@ internal static class WindowsGpuSensor
     private const int CounterRefreshMs = 5000;
 
     private static readonly object CounterLock = new();
+    private static readonly object MemoryLock = new();
     private static readonly Dictionary<string, PerformanceCounter> UsageCounters = new(StringComparer.OrdinalIgnoreCase);
     private static string? _luidToken;
     private static long _lastCounterRefresh = -CounterRefreshMs;
@@ -16,6 +17,8 @@ internal static class WindowsGpuSensor
     private static int? _temperature;
     private static long _usageTick = -500;
     private static int? _usage;
+    private static PerformanceCounter? _dedicatedMemoryCounter;
+    private static long _vramBudgetMb;
 
     [StructLayout(LayoutKind.Sequential)]
     private struct Luid
@@ -64,6 +67,19 @@ internal static class WindowsGpuSensor
         public uint AdapterHandle;
     }
 
+    [StructLayout(LayoutKind.Sequential)]
+    private struct QueryVideoMemoryInfo
+    {
+        public nint ProcessHandle;
+        public uint AdapterHandle;
+        public int MemorySegmentGroup;
+        public ulong Budget;
+        public ulong CurrentUsage;
+        public ulong CurrentReservation;
+        public ulong AvailableForReservation;
+        public uint PhysicalAdapterIndex;
+    }
+
     [DllImport("gdi32.dll", CharSet = CharSet.Unicode)]
     private static extern int D3DKMTOpenAdapterFromGdiDisplayName(ref OpenAdapterFromGdiDisplayName data);
 
@@ -72,6 +88,12 @@ internal static class WindowsGpuSensor
 
     [DllImport("gdi32.dll")]
     private static extern int D3DKMTCloseAdapter(ref CloseAdapter data);
+
+    [DllImport("gdi32.dll")]
+    private static extern int D3DKMTQueryVideoMemoryInfo(ref QueryVideoMemoryInfo data);
+
+    private static string LuidToken(Luid luid)
+        => $"luid_0x{(uint)luid.HighPart:x8}_0x{luid.LowPart:x8}";
 
     private static bool TryQueryPerformanceData(out AdapterPerformanceData performanceData, out Luid adapterLuid)
     {
@@ -141,7 +163,7 @@ internal static class WindowsGpuSensor
                 if (_luidToken is null)
                 {
                     if (!TryQueryPerformanceData(out _, out Luid luid)) return null;
-                    _luidToken = $"luid_0x{(uint)luid.HighPart:x8}_0x{luid.LowPart:x8}";
+                    _luidToken = LuidToken(luid);
                 }
 
                 RefreshUsageCounters();
@@ -170,6 +192,63 @@ internal static class WindowsGpuSensor
         }
         catch
         {
+            return null;
+        }
+    }
+
+    public static (long usedMb, long totalMb)? GetVramInfo()
+    {
+        try
+        {
+            lock (MemoryLock)
+            {
+                if (_vramBudgetMb <= 0 || _luidToken is null)
+                {
+                    string? deviceName = Screen.PrimaryScreen?.DeviceName;
+                    if (string.IsNullOrEmpty(deviceName)) return null;
+
+                    OpenAdapterFromGdiDisplayName open = new() { DeviceName = deviceName };
+                    if (D3DKMTOpenAdapterFromGdiDisplayName(ref open) != 0 || open.AdapterHandle == 0) return null;
+
+                    try
+                    {
+                        QueryVideoMemoryInfo memory = new()
+                        {
+                            AdapterHandle = open.AdapterHandle,
+                            MemorySegmentGroup = 0,
+                            PhysicalAdapterIndex = 0
+                        };
+                        if (D3DKMTQueryVideoMemoryInfo(ref memory) != 0 || memory.Budget == 0) return null;
+
+                        _vramBudgetMb = (long)(memory.Budget / (1024 * 1024));
+                        _luidToken = LuidToken(open.AdapterLuid);
+                    }
+                    finally
+                    {
+                        CloseAdapter close = new() { AdapterHandle = open.AdapterHandle };
+                        D3DKMTCloseAdapter(ref close);
+                    }
+                }
+
+                int? adlxUsedMb = AdlxGpuSensor.GetMetrics().vramUsedMb;
+                if (adlxUsedMb is null && _dedicatedMemoryCounter is null)
+                {
+                    PerformanceCounterCategory category = new("GPU Adapter Memory");
+                    string? instance = category.GetInstanceNames()
+                        .FirstOrDefault(name => name.Contains(_luidToken, StringComparison.OrdinalIgnoreCase));
+                    if (instance is null) return null;
+
+                    _dedicatedMemoryCounter = new PerformanceCounter("GPU Adapter Memory", "Dedicated Usage", instance, true);
+                }
+
+                long usedMb = adlxUsedMb ?? (long)Math.Round(_dedicatedMemoryCounter!.NextValue() / (1024 * 1024));
+                return (usedMb, _vramBudgetMb);
+            }
+        }
+        catch
+        {
+            _dedicatedMemoryCounter?.Dispose();
+            _dedicatedMemoryCounter = null;
             return null;
         }
     }

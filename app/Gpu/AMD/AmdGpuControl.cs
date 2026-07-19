@@ -160,19 +160,19 @@ public class AmdGpuControl : IGpuControl
     public (long usedMb, long totalMb)? GetVramInfo()
     {
         ADLAdapterInfo? adapter = IsValid ? _internalDiscreteAdapter : _iGPU;
-        if (adapter is null) return null;
+        if (adapter is null) return WindowsGpuSensor.GetVramInfo();
         int index = adapter.Value.AdapterIndex;
 
         if (_totalVramMB <= 0)
         {
             if (ADL2_Adapter_MemoryInfo2_Get(_adlContextHandle, index, out ADLMemoryInfo2 mem) != Adl2.ADL_SUCCESS)
-                return null;
+                return WindowsGpuSensor.GetVramInfo();
             _totalVramMB = mem.iMemorySize / (1024 * 1024);
-            if (_totalVramMB <= 0) return null;
+            if (_totalVramMB <= 0) return WindowsGpuSensor.GetVramInfo();
         }
 
         if (ADL2_Adapter_DedicatedVRAMUsage_Get(_adlContextHandle, index, out int usedMB) != Adl2.ADL_SUCCESS)
-            return null;
+            return WindowsGpuSensor.GetVramInfo();
 
         return (usedMB, _totalVramMB);
     }
@@ -215,7 +215,14 @@ public class AmdGpuControl : IGpuControl
     public (int? temp, int? use, int? gfxPower, int? cpuPower, int? asicPower) GetiGpuSensors()
     {
         if (!GetPMLogiGpu(out ADLPMLogDataOutput log))
-            return (WindowsGpuSensor.GetTemperature(), WindowsGpuSensor.GetUsage(), null, null, null);
+        {
+            var adlx = AdlxGpuSensor.GetMetrics();
+            return (adlx.temp ?? WindowsGpuSensor.GetTemperature(),
+                    adlx.use ?? WindowsGpuSensor.GetUsage(),
+                    null,
+                    null,
+                    null);
+        }
 
         int? edge = Sensor(log, ADLSensorType.PMLOG_TEMPERATURE_EDGE);
         int? gfx = Sensor(log, ADLSensorType.PMLOG_TEMPERATURE_GFX);
@@ -224,9 +231,10 @@ public class AmdGpuControl : IGpuControl
         int? gfxPower = Sensor(log, ADLSensorType.PMLOG_GFX_POWER);
         int? cpuPower = Sensor(log, ADLSensorType.PMLOG_CPU_POWER);
         int? asicPower = Sensor(log, ADLSensorType.PMLOG_ASIC_POWER);
+        var adlxFallback = AdlxGpuSensor.GetMetrics();
 
-        return (edge ?? gfx ?? soc ?? WindowsGpuSensor.GetTemperature(),
-                use ?? WindowsGpuSensor.GetUsage(),
+        return (edge ?? gfx ?? soc ?? adlxFallback.temp ?? WindowsGpuSensor.GetTemperature(),
+                use ?? adlxFallback.use ?? WindowsGpuSensor.GetUsage(),
                 gfxPower,
                 cpuPower,
                 asicPower);
