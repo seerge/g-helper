@@ -722,6 +722,9 @@
   <data name="RestartGPU" xml:space="preserve">
     <value>Щось використовує dGPU та запобігає Еко-режиму. Дозвольте G-Helper спробувати перезапустити dGPU у менеджері пристрою? (Будь ласка, продовжуйте на власний ризик)</value>
   </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
+  </data>
   <data name="RPM" xml:space="preserve">
     <value>Оберти</value>
   </data>
