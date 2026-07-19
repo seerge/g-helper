@@ -69,7 +69,7 @@ public class AmdGpuControl : IGpuControl
 
     public AmdGpuControl()
     {
-        if (AppConfig.NoGpu() || !Adl2.Load()) return;
+        if ((AppConfig.NoGpu() && !AppConfig.IsAMDiGPU()) || !Adl2.Load()) return;
 
         try
         {
@@ -201,7 +201,9 @@ public class AmdGpuControl : IGpuControl
     {
         if (!GetPMLogiGpu(out ADLPMLogDataOutput log)) return default;
 
-        return (Sensor(log, ADLSensorType.PMLOG_TEMPERATURE_EDGE),
+        return (Sensor(log, ADLSensorType.PMLOG_TEMPERATURE_EDGE)
+                ?? Sensor(log, ADLSensorType.PMLOG_TEMPERATURE_GFX)
+                ?? Sensor(log, ADLSensorType.PMLOG_TEMPERATURE_SOC),
                 Sensor(log, ADLSensorType.PMLOG_INFO_ACTIVITY_GFX),
                 Sensor(log, ADLSensorType.PMLOG_GFX_POWER),
                 Sensor(log, ADLSensorType.PMLOG_CPU_POWER),
