@@ -310,10 +310,10 @@
     <value>Rendszerindítási hang</value>
   </data>
   <data name="BacklightDown" xml:space="preserve">
-    <value>Backlight Down</value>
+    <value>Hátvilágítás ki</value>
   </data>
   <data name="BacklightUp" xml:space="preserve">
-    <value>Backlight Up</value>
+    <value>Hátvilágítás be</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Fényerő</value>
