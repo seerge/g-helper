@@ -2032,6 +2032,15 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("RestartGPU", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Restarting NV Services....
+        /// </summary>
+        internal static string RestartingNVServices {
+            get {
+                return ResourceManager.GetString("RestartingNVServices", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to RPM.
