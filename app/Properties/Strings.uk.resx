@@ -166,7 +166,7 @@
     <value>Застосувати</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Застосувати профілі кулерів</value>
+    <value>Apply Fan Curve</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Застосувати потужність</value>
