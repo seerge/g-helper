@@ -166,7 +166,7 @@
     <value>Alkalmaz</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Egyedi ventigörbe használata</value>
+    <value>Ventigörbe használata</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Teljesítménykorlátok alkalmazása</value>
