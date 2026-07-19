@@ -704,10 +704,13 @@ namespace GHelper
             {
                 Task.Run((Action)RefreshPeripheralsBattery);
                 updateControl.CheckForUpdates();
-                BeginInvoke(new Action(() =>
+                Task.Run(() =>
                 {
                     ScreenControl.InitScreen();
                     VisualizeXGM();
+                });
+                BeginInvoke(new Action(() =>
+                {
                     buttonEnergySaver.Visible = PowerNative.GetBatterySaverStatus();
                 }));
             }
@@ -1779,6 +1782,12 @@ namespace GHelper
         {
 
             bool connected = Program.acpi.IsXGConnected();
+            int activated = connected ? Program.acpi.DeviceGet(AsusACPI.GPUXG) : -1;
+            Invoke(() => VisualizeXGM(connected, activated, GPUMode));
+        }
+
+        void VisualizeXGM(bool connected, int activated, int GPUMode)
+        {
             buttonXGM.Enabled = buttonXGM.Visible = connected;
 
             if (!connected) return;
@@ -1787,7 +1796,6 @@ namespace GHelper
                 ButtonEnabled(buttonXGM, AppConfig.IsAMDiGPU() || GPUMode != AsusACPI.GPUModeEco);
 
 
-            int activated = Program.acpi.DeviceGet(AsusACPI.GPUXG);
             Logger.WriteLine("XGM Activated flag: " + activated);
 
             buttonXGM.Activated = activated == 1;
