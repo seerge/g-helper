@@ -166,7 +166,7 @@
     <value>Uygula</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Özel Fan Eğrisini Uygula</value>
+    <value>Fan Eğrisini Uygula</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Güç Sınırlarını Uygula</value>
