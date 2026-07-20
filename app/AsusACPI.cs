@@ -699,7 +699,7 @@ public class AsusACPI
 
     public bool IsXGConnected()
     {
-        return DeviceGet(GPUXGConnected) == 1;
+        return IsSupported(GPUXGConnected) && DeviceGet(GPUXGConnected) == 1;
     }
 
     public bool IsAllAmdPPT()
