@@ -79,6 +79,20 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Include="..\overlay\OverlayIpc.cs" Link="Overlay\OverlayIpc.cs" />
+  </ItemGroup>
+
+  <Target Name="PublishOverlayFirst" BeforeTargets="BeforeBuild" Condition="'$(SkipOverlayPublish)'!='true'">
+    <Exec Command="dotnet publish &quot;$(MSBuildThisFileDirectory)..\overlay\GHelperOverlay.csproj&quot; -c Release --nologo -v minimal" />
+  </Target>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\overlay\bin\Release\net48\publish\GHelperOverlay.exe">
+      <LogicalName>GHelperOverlay.exe</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+
 	<Target Name="KillRunningGHelper" BeforeTargets="Build" Condition="'$(GITHUB_ACTIONS)'!='true'">
 		<Exec Command="powershell -NoProfile -Command &quot;try { [System.Threading.EventWaitHandle]::OpenExisting('Global\GHelperApp-Exit').Set() } catch {}; for ($i = 0; $i -lt 50; $i++) { if (-not (Get-Process -Name GHelper -ErrorAction SilentlyContinue)) { break }; Start-Sleep -Milliseconds 100 }&quot;" />
 	</Target>

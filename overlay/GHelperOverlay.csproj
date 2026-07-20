@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPublishable>True</IsPublishable>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <StartupObject>GHelperOverlay.Program</StartupObject>
+    <Platforms>AnyCPU;x64</Platforms>
+    <AssemblyName>GHelperOverlay</AssemblyName>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <AssemblyVersion>0.2</AssemblyVersion>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <Target Name="KillRunningGHelperOverlay" BeforeTargets="Build" Condition="'$(GITHUB_ACTIONS)'!='true' AND '$(PublishProtocol)'!=''">
+    <Exec Command="powershell -NoProfile -Command &quot;Get-Process -Name GHelperOverlay -ErrorAction SilentlyContinue | Stop-Process -Force; Start-Sleep -Milliseconds 500&quot;" />
+  </Target>
+
+</Project>

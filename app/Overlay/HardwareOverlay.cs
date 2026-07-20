@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace GHelper.Overlay
 {
-    public class HardwareOverlay : OSDNativeForm
+    public class HardwareOverlay : RemoteOverlayForm
     {
         // Foreground window — used to pin FPS measurement to the active process
         [DllImport("user32.dll")]
@@ -526,8 +526,7 @@ namespace GHelper.Overlay
             bool show = fgPid == _shownPid;
             if (show != _hidden) return;
             _hidden = !show;
-            if (Handle != nint.Zero)
-                User32.ShowWindow(Handle, (short)(_hidden ? User32.SW_HIDE : User32.SW_SHOWNOACTIVATE));
+            SetOverlayVisible(!_hidden);
         }
 
         // Instant show/hide vs the latched game. Doesn't latch _shownPid (timer's job —
@@ -541,8 +540,7 @@ namespace GHelper.Overlay
             bool show = fgPid == _shownPid;
             if (show != _hidden) return;
             _hidden = !show;
-            if (Handle != nint.Zero)
-                User32.ShowWindow(Handle, (short)(_hidden ? User32.SW_HIDE : User32.SW_SHOWNOACTIVATE));
+            SetOverlayVisible(!_hidden);
         }
 
         private static bool IsDesktopApp(int pid)
@@ -909,10 +907,7 @@ namespace GHelper.Overlay
 
         private void SetTransparentStyle(bool transparent)
         {
-            if (Handle == nint.Zero) return;
-            int style = GetWindowLong(Handle, GWL_EXSTYLE);
-            style = transparent ? (style | WS_EX_TRANSPARENT_FLAG) : (style & ~WS_EX_TRANSPARENT_FLAG);
-            SetWindowLong(Handle, GWL_EXSTYLE, style);
+            SetClickThrough(transparent);
         }
 
         private void ApplyScale(int next)
@@ -1078,7 +1073,7 @@ namespace GHelper.Overlay
 
             RestorePosition();
             base.Show();
-            if (_gameOnly) { _hidden = true; User32.ShowWindow(Handle, User32.SW_HIDE); }
+            if (_gameOnly) { _hidden = true; SetOverlayVisible(false); }
             Tick();
             RestorePosition(); // re-anchor once the first paint has settled the collapsed width
             _timer.Start();

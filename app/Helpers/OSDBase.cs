@@ -18,7 +18,7 @@ namespace GHelper.Helpers
         {
         }
 
-        protected internal void Invalidate()
+        protected internal virtual void Invalidate()
         {
             UpdateLayeredWindow();
         }
