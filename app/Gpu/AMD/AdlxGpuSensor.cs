@@ -15,6 +15,8 @@ internal static class AdlxGpuSensor
     private const int PerformanceGetCurrentGpuIndex = 18;
     private const int MetricsUsageIndex = 4;
     private const int MetricsTemperatureIndex = 7;
+    private const int MetricsPowerIndex = 9;
+    private const int MetricsTotalBoardPowerIndex = 10;
     private const int MetricsVramIndex = 12;
 
     private static readonly object Sync = new();
@@ -24,7 +26,7 @@ internal static class AdlxGpuSensor
     private static nint _gpu;
     private static nint _performance;
     private static long _lastRead = -CacheMs;
-    private static (int? temp, int? use, int? vramUsedMb) _metrics;
+    private static (int? temp, int? use, int? vramUsedMb, float? gpuPower, float? totalBoardPower) _metrics;
 
     [DllImport("amdadlx64.dll", CallingConvention = CallingConvention.Cdecl)]
     private static extern int ADLXInitializeWithIncompatibleDriver(ulong version, out nint system);
@@ -90,7 +92,7 @@ internal static class AdlxGpuSensor
         }
     }
 
-    public static (int? temp, int? use, int? vramUsedMb) GetMetrics()
+    public static (int? temp, int? use, int? vramUsedMb, float? gpuPower, float? totalBoardPower) GetMetrics()
     {
         lock (Sync)
         {
@@ -114,8 +116,16 @@ internal static class AdlxGpuSensor
                 int? vram = Vtable<GetInt>(current, MetricsVramIndex)(current, out int vramValue) == 0 && vramValue >= 0
                     ? vramValue
                     : null;
+                float? gpuPower = Vtable<GetDouble>(current, MetricsPowerIndex)(current, out double gpuPowerValue) == 0
+                    && gpuPowerValue is > 0 and < 1000
+                    ? (float)gpuPowerValue
+                    : null;
+                float? totalBoardPower = Vtable<GetDouble>(current, MetricsTotalBoardPowerIndex)(current, out double totalBoardPowerValue) == 0
+                    && totalBoardPowerValue is > 0 and < 1000
+                    ? (float)totalBoardPowerValue
+                    : null;
 
-                _metrics = (temperature, usage, vram);
+                _metrics = (temperature, usage, vram, gpuPower, totalBoardPower);
                 _lastRead = now;
                 return _metrics;
             }

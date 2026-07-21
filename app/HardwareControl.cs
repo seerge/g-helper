@@ -527,7 +527,7 @@ public static class HardwareControl
     private static int _cpuPowerNullTicks;
     private static int _cpuPowerReadErrors;
     private const int CpuPowerMaxReadErrors = 3;
-    private static readonly string[] _powerCounterInstances = { "Apu Power", "RAPL_Package0_PKG", "CPU Power", "Socket Power", "Current Socket Power" };
+    private static readonly string[] _powerCounterInstances = { "RAPL_Package0_PKG", "CPU Power", "Apu Power", "Socket Power", "Current Socket Power" };
 
     public static void InitCPUPowerAsync()
     {
@@ -536,25 +536,6 @@ public static class HardwareControl
 
         Task.Run(() =>
         {
-            if (isAMDiGPU && _coreCounters is null)
-                try
-                {
-                    var names = new PerformanceCounterCategory("Energy Meter").GetInstanceNames();
-                    var cores = new List<PerformanceCounter>();
-                    foreach (var name in names.Where(n => n.EndsWith("_CORE")))
-                    {
-                        var counter = new PerformanceCounter("Energy Meter", "Power", name, true);
-                        counter.NextValue();
-                        cores.Add(counter);
-                    }
-                    if (cores.Count > 0)
-                    {
-                        _coreCounters = cores;
-                        Logger.WriteLine($"CPU Power source: {cores.Count} RAPL cores");
-                    }
-                }
-                catch { }
-
             // Try cached instance name first — skips the PerformanceCounterCategory
             // enumeration which costs ~1–2 s on a cold perflib cache.
             var cached = AppConfig.GetString("cpu_power_counter");
@@ -599,25 +580,6 @@ public static class HardwareControl
                 _cpuPowerCounterFailed = true;
             }
         });
-    }
-
-    private static List<PerformanceCounter>? _coreCounters;
-
-    private static float? GetCoresPower()
-    {
-        var counters = _coreCounters;
-        if (counters is null) return null;
-        try
-        {
-            float mW = 0;
-            foreach (var counter in counters) mW += counter.NextValue();
-            return mW > 0 ? mW / 1000f : null;
-        }
-        catch
-        {
-            _coreCounters = null;
-            return null;
-        }
     }
 
     public static float? GetCPUPower()
@@ -873,13 +835,15 @@ public static class HardwareControl
 
             if (isAMDiGPU && GpuControl is null)
             {
-                float? cores = GetCoresPower();
-                if (cores > 0 && newCpu > cores)
+                var adlx = AdlxGpuSensor.GetMetrics();
+                iGpuPower = adlx.gpuPower ?? adlx.totalBoardPower;
+
+                // On current AMD APUs, RAPL_Package0_PKG is already the CPU package
+                // reading. Splitting it into a sum of core counters plus a derived GPU
+                // remainder produces neither AMD's CPU nor GPU metric. Use ADLX for the
+                // GPU and keep the package counter intact for the CPU.
+                if (iGpuPower is null)
                 {
-                    iGpuPower = newCpu - cores;
-                    newCpu = cores;
-                }
-                else
                     try
                     {
                         var (_, _, gfxPower, corePower, asicPower) = AmdApu().GetiGpuSensors();
@@ -888,6 +852,7 @@ public static class HardwareControl
                         else if (asicPower > gfxPower) newCpu = asicPower - gfxPower;
                     }
                     catch { }
+                }
             }
 
             if (newCpu > 0)
