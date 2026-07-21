@@ -261,6 +261,10 @@ namespace GHelper.USB
             RearColor = Color.FromArgb(colorCode);
         }
 
+        public static string GetColorKey() => $"aura_color_{(int)Mode}";
+        public static string GetColor2Key() => $"aura_color2_{(int)Mode}";
+        public static string GetSpeedKey() => $"aura_speed_{(int)Mode}";
+
         public static bool HasSecondColor()
         {
             return (mode == AuraMode.AuraBreathe || mode == AuraMode.GRADIENT) && (!isACPI || AppConfig.IsDynamicLightingOnly());
@@ -822,9 +826,9 @@ namespace GHelper.USB
         public static void ApplyAura()
         {
             Mode = (AuraMode)AppConfig.Get("aura_mode");
-            Speed = (AuraSpeed)AppConfig.Get("aura_speed");
-            SetColor(AppConfig.Get("aura_color"));
-            SetColor2(AppConfig.Get("aura_color2"));
+            Speed = (AuraSpeed)AppConfig.Get(GetSpeedKey(), AppConfig.Get("aura_speed"));
+            SetColor(AppConfig.Get(GetColorKey(), AppConfig.Get("aura_color")));
+            SetColor2(AppConfig.Get(GetColor2Key(), AppConfig.Get("aura_color2")));
 
             Color _Color1 = Color1;
             Color _Color2 = Color2;
