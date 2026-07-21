@@ -42,6 +42,7 @@ namespace GHelper
         private static long lastTheme;
 
         public static InputDispatcher? inputDispatcher;
+        private static TrayIconMouseWheelHandler? trayIconMouseWheelHandler;
 
         // The main entry point for the application
         public static void Main(string[] args)
@@ -152,6 +153,8 @@ namespace GHelper
             settingsForm.SetContextMenu();
             trayIcon.MouseClick += TrayIcon_MouseClick;
             trayIcon.MouseMove += TrayIcon_MouseMove;
+            trayIconMouseWheelHandler = new TrayIconMouseWheelHandler(trayIcon, settingsForm, TrayIcon_MouseWheel);
+            trayIconMouseWheelHandler.Start();
 
 
             inputDispatcher = new InputDispatcher();
@@ -474,11 +477,20 @@ namespace GHelper
 
         static void TrayIcon_MouseMove(object? sender, MouseEventArgs e)
         {
+            trayIconMouseWheelHandler?.NoteMouseMove();
             settingsForm.RefreshSensors();
+        }
+
+        static void TrayIcon_MouseWheel(bool back)
+        {
+            Logger.WriteLine($"Tray wheel mode: {(back ? "previous" : "next")}");
+            modeControl.CyclePerformanceMode(back);
         }
 
         static void OnExit(object sender, EventArgs e)
         {
+            trayIconMouseWheelHandler?.Dispose();
+
             if (trayIcon is not null)
             {
                 trayIcon.Visible = false;
