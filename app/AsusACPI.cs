@@ -320,14 +320,14 @@ public class AsusACPI
             MaxGPUBoost = 5;
         }
 
-        if (AppConfig.DynamicBoost15())
-        {
-            MaxGPUBoost = 15;
-        }
-
         if (AppConfig.DynamicBoost20())
         {
             MaxGPUBoost = 20;
+        }
+
+        if (AppConfig.DynamicBoost15())
+        {
+            MaxGPUBoost = 15;
         }
 
         if (AppConfig.IsCPULight())
@@ -699,7 +699,7 @@ public class AsusACPI
 
     public bool IsXGConnected()
     {
-        return DeviceGet(GPUXGConnected) == 1;
+        return IsSupported(GPUXGConnected) && DeviceGet(GPUXGConnected) == 1;
     }
 
     public bool IsAllAmdPPT()

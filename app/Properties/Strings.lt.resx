@@ -166,7 +166,7 @@
     <value>Taikyti</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Taikyti tinkintą kreivę</value>
+    <value>Taikyti kreivę</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Taikyti galios ribas</value>
