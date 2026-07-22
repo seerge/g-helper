@@ -14,6 +14,7 @@ namespace GHelper
         public const int STATUS_NEW = 1;
         public const int STATUS_UPTODATE = -1;
         public const int STATUS_NOT_FOUND = 2;
+        public const int STATUS_HIDDEN = 3;
 
         public struct DriverUpdate
         {
@@ -135,6 +136,8 @@ namespace GHelper
                     foreach (var h in updates[n].hardwares) needStaged.Add(h);
             }
 
+            HideAbsentAdapters(updates, installed, needStaged);
+
             var staged = needStaged.Count > 0 ? BuildStagedVersions(needStaged, token) : null;
 
             HashSet<string>? packages = null;
@@ -159,6 +162,26 @@ namespace GHelper
                 }
 
                 updates[n] = u;
+            }
+        }
+
+        static void HideAbsentAdapters(List<DriverUpdate> updates, string?[] installed, HashSet<string> needStaged)
+        {
+            foreach (var keys in new[] { new[] { "Bluetooth" }, new[] { "WLAN", "Wireless LAN", "Wi-Fi", "WiFi" } })
+            {
+                var members = Enumerable.Range(0, updates.Count)
+                    .Where(n => updates[n].hardwares.Length > 0 && keys.Any(k => updates[n].title.Contains(k, StringComparison.OrdinalIgnoreCase)))
+                    .ToList();
+                if (members.Count < 2 || !members.Any(n => installed[n] is not null)) continue;
+
+                foreach (var n in members.Where(n => installed[n] is null))
+                {
+                    var u = updates[n];
+                    u.status = STATUS_HIDDEN;
+                    foreach (var h in u.hardwares) needStaged.Remove(h);
+                    Logger.WriteLine(u.title + " = hidden, device not present");
+                    updates[n] = u;
+                }
             }
         }
 

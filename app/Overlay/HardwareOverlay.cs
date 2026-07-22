@@ -148,6 +148,7 @@ namespace GHelper.Overlay
 
         // Cached drawing resources — recreated only when the scale changes
         private float _lastScale = 0f;
+        private float _charW;
         private Font? _font;
         private Font? _rpmFont;
         private Font? _fpsBold;
@@ -378,7 +379,9 @@ namespace GHelper.Overlay
                 int i = full.IndexOf(tag, StringComparison.OrdinalIgnoreCase);
                 if (i < 0) continue;
                 string[] p = full[i..].Split(' ', StringSplitOptions.RemoveEmptyEntries);
-                return p.Length >= 2 ? p[0] + " " + p[1] : p[0];
+                string s = p.Length >= 2 ? p[0] + " " + p[1] : p[0];
+                if (p.Length >= 3 && p[2] == "Ti") s += " Ti";
+                return s;
             }
             return full;
         }
@@ -640,15 +643,14 @@ namespace GHelper.Overlay
                 _fpsBold?.Dispose(); _fpsBold = new Font("Consolas", innerH / 1.15f, FontStyle.Bold, GraphicsUnit.Pixel);
                 _totalPen?.Dispose(); _totalPen = new Pen(Color.FromArgb(255, 200, 200, 200), sc * 0.75f) { DashStyle = DashStyle.Dot };
                 _axPen?.Dispose();    _axPen    = new Pen(Color.FromArgb(255, 80, 80, 80), sc * 0.5f);
+                _charW = g.MeasureString("XX", _font).Width - g.MeasureString("X", _font).Width;
             }
 
             var font    = _font!;
             var rpmFont = _rpmFont!;
             var fpsBold = _fpsBold!;
 
-            // Differential trick: MeasureString("XX") - MeasureString("X") cancels the
-            // fixed GDI+ padding, giving the true per-character advance width for Consolas.
-            float charW = g.MeasureString("XX", font).Width - g.MeasureString("X", font).Width;
+            float charW = _charW;
 
             int topY = padY;
             // Nudge per-row text down so it lines up with the vertically centered usage bars.

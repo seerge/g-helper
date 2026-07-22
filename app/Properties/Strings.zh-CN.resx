@@ -166,7 +166,7 @@
     <value>应用</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>应用自定义风扇曲线</value>
+    <value>应用风扇曲线</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>应用功率限制</value>
@@ -308,6 +308,12 @@
   </data>
   <data name="BootSound" xml:space="preserve">
     <value>开机音效</value>
+  </data>
+  <data name="BacklightDown" xml:space="preserve">
+    <value>Backlight Down</value>
+  </data>
+  <data name="BacklightUp" xml:space="preserve">
+    <value>Backlight Up</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>亮度</value>
@@ -715,6 +721,9 @@
   </data>
   <data name="RestartGPU" xml:space="preserve">
     <value>有程序正在使用独显并阻止进入集显模式。要让 G-Helper 在设备管理器中重新启动独显吗？（请自行承担风险）</value>
+  </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>转/分钟</value>

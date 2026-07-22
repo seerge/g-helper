@@ -469,6 +469,11 @@ namespace GHelper
             checkStatusLed.Checked = (statusLed > 0);
             checkStatusLed.CheckedChanged += CheckLEDStatus_CheckedChanged;
 
+            int numberPad = NumberPad.Get();
+            checkNumberPad.Visible = numberPad >= 0;
+            checkNumberPad.Checked = numberPad == 1;
+            checkNumberPad.CheckedChanged += CheckNumberPad_CheckedChanged;
+
             var optimalBrightness = ScreenControl.GetOptimalBrightness();
             if (optimalBrightness >= 0)
             {
@@ -531,6 +536,11 @@ namespace GHelper
         private void CheckLEDStatus_CheckedChanged(object? sender, EventArgs e)
         {
             InputDispatcher.SetStatusLED(checkStatusLed.Checked);
+        }
+
+        private void CheckNumberPad_CheckedChanged(object? sender, EventArgs e)
+        {
+            NumberPad.Set(checkNumberPad.Checked);
         }
 
         private void InitACPITesting()

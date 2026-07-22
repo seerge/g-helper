@@ -124,6 +124,7 @@ namespace GHelper
             checkGpuApps = new CheckBox();
             checkNVPlatform = new CheckBox();
             checkStatusLed = new CheckBox();
+            checkNumberPad = new CheckBox();
             checkAspm = new CheckBox();
             panelPower = new Panel();
             numericHibernateAfter = new NumericUpDownWithUnit();
@@ -1260,6 +1261,7 @@ namespace GHelper
             panelSettings.Controls.Add(checkUSBC);
             panelSettings.Controls.Add(checkGpuApps);
             panelSettings.Controls.Add(checkNVPlatform);
+            panelSettings.Controls.Add(checkNumberPad);
             panelSettings.Controls.Add(checkStatusLed);
             panelSettings.Controls.Add(checkAspm);
             panelSettings.Dock = DockStyle.Top;
@@ -1386,6 +1388,20 @@ namespace GHelper
             checkStatusLed.Text = "LED Status Indicators";
             checkStatusLed.UseVisualStyleBackColor = true;
             checkStatusLed.Visible = false;
+            //
+            // checkNumberPad
+            //
+            checkNumberPad.AutoSize = true;
+            checkNumberPad.Dock = DockStyle.Top;
+            checkNumberPad.Location = new Point(21, 89);
+            checkNumberPad.Margin = new Padding(5, 3, 5, 3);
+            checkNumberPad.Name = "checkNumberPad";
+            checkNumberPad.Padding = new Padding(3);
+            checkNumberPad.Size = new Size(917, 42);
+            checkNumberPad.TabIndex = 10;
+            checkNumberPad.Text = "Touchpad NumberPad";
+            checkNumberPad.UseVisualStyleBackColor = true;
+            checkNumberPad.Visible = false;
             //
             // checkAspm
             //
@@ -1891,6 +1907,7 @@ namespace GHelper
         private PictureBox pictureDebug;
         private Label labelACPITitle;
         private CheckBox checkStatusLed;
+        private CheckBox checkNumberPad;
         private CheckBox checkAspm;
         private CheckBox checkBatteryLogo;
         private CheckBox checkBattery;

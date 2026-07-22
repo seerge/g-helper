@@ -166,7 +166,7 @@
     <value>Aplicar</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Aplicar curva personalizada</value>
+    <value>Aplicar curva</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Aplicar límites de energía</value>
@@ -308,6 +308,12 @@
   </data>
   <data name="BootSound" xml:space="preserve">
     <value>Sonido al arranque</value>
+  </data>
+  <data name="BacklightDown" xml:space="preserve">
+    <value>Backlight Down</value>
+  </data>
+  <data name="BacklightUp" xml:space="preserve">
+    <value>Backlight Up</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Brillo</value>
@@ -715,6 +721,9 @@
   </data>
   <data name="RestartGPU" xml:space="preserve">
     <value>Algo está usando la dGPU e impide el modo Eco. ¿Reiniciar dGPU en el administrador de dispositivos? (Proceda bajo su propio riesgo)</value>
+  </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>

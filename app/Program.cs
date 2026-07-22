@@ -34,7 +34,7 @@ namespace GHelper
 
         public static HardwareOverlay? hardwareOverlay;
 
-        public static IntPtr unRegPowerNotify, unRegPowerNotifyLid, unRegSuspendResume;
+        public static IntPtr unRegPowerNotify, unRegPowerNotifyLid, unRegPowerNotifyEnergy, unRegSuspendResume;
         public static int WM_TASKBARCREATED = 0;
 
         private static long lastAuto;
@@ -159,6 +159,7 @@ namespace GHelper
             settingsForm.InitAura();
             settingsForm.InitMatrix();
 
+            ScreenControl.InitScreen();
             XGM.Init();
 
             SetAutoModes(init: true);
@@ -178,6 +179,7 @@ namespace GHelper
             // Subscribing for monitor power on events
             unRegPowerNotify = NativeMethods.RegisterPowerSettingNotification(settingsForm.Handle, PowerSettingGuid.ConsoleDisplayState, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
             unRegPowerNotifyLid = NativeMethods.RegisterPowerSettingNotification(settingsForm.Handle, PowerSettingGuid.LIDSWITCH_STATE_CHANGE, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
+            unRegPowerNotifyEnergy = NativeMethods.RegisterPowerSettingNotification(settingsForm.Handle, PowerSettingGuid.EnergySaverStatus, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
             unRegSuspendResume = NativeMethods.RegisterSuspendResumeNotification(settingsForm.Handle, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
 
 
@@ -246,13 +248,14 @@ namespace GHelper
 
         private static void SystemEvents_SessionSwitch(object sender, SessionSwitchEventArgs e)
         {
-            if (e.Reason == SessionSwitchReason.SessionLogon || e.Reason == SessionSwitchReason.SessionUnlock)
+            if (e.Reason == SessionSwitchReason.SessionLogon || e.Reason == SessionSwitchReason.SessionUnlock || e.Reason == SessionSwitchReason.ConsoleConnect)
             {
                 Logger.WriteLine("Session:" + e.Reason.ToString());
                 ProcessHelper.KillSmartDisplayControl();
                 bool wasLocked = Aura.sessionLock;
                 Aura.sessionLock = false;
                 ScreenControl.AutoScreen();
+                Aura.ApplyAura();
                 if (wasLocked) Task.Delay(2000).ContinueWith(_ =>
                 {
                     if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < 10000) return;
@@ -276,7 +279,7 @@ namespace GHelper
                 case UserPreferenceCategory.General:
                     bool changed = settingsForm.InitTheme();
                     settingsForm.InitContextMenuTheme();
-                    settingsForm.VisualiseIcon();
+                    settingsForm.VisualiseIcon(true);
                     settingsForm.VisualiseFnLock();
                     settingsForm.VisualiseBatteryFull();
 
@@ -334,6 +337,7 @@ namespace GHelper
 
             settingsForm.matrixControl.SetDevice(true);
             InputDispatcher.InitStatusLed();
+            if (init) NumberPad.Init();
             XGM.InitLight();
 
             if (AppConfig.IsAlly())
@@ -486,6 +490,7 @@ namespace GHelper
             clamshellControl.UnregisterDisplayEvents();
             NativeMethods.UnregisterPowerSettingNotification(unRegPowerNotify);
             NativeMethods.UnregisterPowerSettingNotification(unRegPowerNotifyLid);
+            NativeMethods.UnregisterPowerSettingNotification(unRegPowerNotifyEnergy);
             NativeMethods.UnregisterSuspendResumeNotification(unRegSuspendResume);
             Application.Exit();
         }
