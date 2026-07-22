@@ -334,6 +334,7 @@ namespace GHelper
 
             settingsForm.matrixControl.SetDevice(true);
             InputDispatcher.InitStatusLed();
+            if (init) NumberPad.Init();
             XGM.InitLight();
 
             if (AppConfig.IsAlly())
