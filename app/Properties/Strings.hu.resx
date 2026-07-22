@@ -723,7 +723,7 @@ Folytatni szeretnéd?</value>
     <value>Valami használja még a dGPU-t, ezzel megakadályozva az Eco móda lépést. Próbálja meg a G-Helper újraindítani a dGPU-t az eszközkezelőben? (Kérjük, saját felelősségére folytassa)</value>
   </data>
   <data name="RestartingNVServices" xml:space="preserve">
-    <value>Restarting NV Services...</value>
+    <value>NV szolgáltatások újraindítása...</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>Fordulatszám</value>
