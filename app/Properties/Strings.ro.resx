@@ -309,6 +309,12 @@
   <data name="BootSound" xml:space="preserve">
     <value>Sunet la pornire</value>
   </data>
+  <data name="BacklightDown" xml:space="preserve">
+    <value>Backlight Down</value>
+  </data>
+  <data name="BacklightUp" xml:space="preserve">
+    <value>Backlight Up</value>
+  </data>
   <data name="Brightness" xml:space="preserve">
     <value>Luminozitate</value>
   </data>
@@ -715,6 +721,9 @@
   </data>
   <data name="RestartGPU" xml:space="preserve">
     <value>Ceva folosește dGPU și previne modul Eco. Permiteți G-Helper să repornească dGPU în managerul de dispozitive? (Continuați pe propriul risc)</value>
+  </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>

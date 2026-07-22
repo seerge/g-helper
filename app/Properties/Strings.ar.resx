@@ -309,6 +309,12 @@
   <data name="BootSound" xml:space="preserve">
     <value>صوت الإقلاع</value>
   </data>
+  <data name="BacklightDown" xml:space="preserve">
+    <value>Backlight Down</value>
+  </data>
+  <data name="BacklightUp" xml:space="preserve">
+    <value>Backlight Up</value>
+  </data>
   <data name="Brightness" xml:space="preserve">
     <value>السطوع</value>
   </data>
@@ -715,6 +721,9 @@
   </data>
   <data name="RestartGPU" xml:space="preserve">
     <value>هناك شيء يستخدم وحدة معالجة الرسومات المنفصلة ويمنع وضع التوفير. هل تريد أن يحاول G-Helper إعادة تشغيل وحدة معالجة الرسومات في مدير الأجهزة؟ (يرجى المتابعة على مسؤوليتك الخاصة)</value>
+  </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>دورة في الدقيقة</value>

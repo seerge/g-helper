@@ -309,6 +309,12 @@
   <data name="BootSound" xml:space="preserve">
     <value>Som de inicialização</value>
   </data>
+  <data name="BacklightDown" xml:space="preserve">
+    <value>Backlight Down</value>
+  </data>
+  <data name="BacklightUp" xml:space="preserve">
+    <value>Backlight Up</value>
+  </data>
   <data name="Brightness" xml:space="preserve">
     <value>Nível do brilho</value>
   </data>
@@ -715,6 +721,9 @@ Ainda quer continuar?</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
     <value>Algo está usando dGPU e impedindo o modo Eco. Deixe G-Helper tentar reiniciar o dGPU no gerenciador de dispositivos? (Por favor, proceda por sua conta e risco)</value>
+  </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>

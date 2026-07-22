@@ -309,6 +309,12 @@
   <data name="BootSound" xml:space="preserve">
     <value>Rendszerindítási hang</value>
   </data>
+  <data name="BacklightDown" xml:space="preserve">
+    <value>Hátvilágítás ki</value>
+  </data>
+  <data name="BacklightUp" xml:space="preserve">
+    <value>Hátvilágítás be</value>
+  </data>
   <data name="Brightness" xml:space="preserve">
     <value>Fényerő</value>
   </data>
@@ -715,6 +721,9 @@ Folytatni szeretnéd?</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
     <value>Valami használja még a dGPU-t, ezzel megakadályozva az Eco móda lépést. Próbálja meg a G-Helper újraindítani a dGPU-t az eszközkezelőben? (Kérjük, saját felelősségére folytassa)</value>
+  </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>NV szolgáltatások újraindítása...</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>Fordulatszám</value>

@@ -166,7 +166,7 @@
     <value>Zastosuj</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Zastosuj krzywe</value>
+    <value>Apply Fan Curve</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Zastosuj limity</value>
@@ -308,6 +308,12 @@
   </data>
   <data name="BootSound" xml:space="preserve">
     <value>Dźwięk podczas rozruchu</value>
+  </data>
+  <data name="BacklightDown" xml:space="preserve">
+    <value>Backlight Down</value>
+  </data>
+  <data name="BacklightUp" xml:space="preserve">
+    <value>Backlight Up</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Jasność</value>
@@ -715,6 +721,9 @@ Nadal chcesz kontynuować?</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
     <value>Coś korzysta z dGPU, uniemożliwiając włączenie trybu Eco. Czy G-Helper ma zresetować dGPU w Menadżerze Urządzeń? (Korzystasz na własne ryzyko)</value>
+  </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
