@@ -315,6 +315,8 @@ namespace GHelper.Peripherals
             DetectMouse(new StrixImpact());
             DetectMouse(new TXGamingMini());
             DetectMouse(new TXGamingMiniWired());
+            DetectMouse(new TUFGamingMiniMiku());
+            DetectMouse(new TUFGamingMiniMikuWired());
             DetectMouse(new Pugio());
             DetectMouse(new MD200());
         }

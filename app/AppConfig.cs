@@ -575,12 +575,13 @@ public static class AppConfig
     public static bool DynamicBoost15()
     {
         return ContainsModel("FX507ZC4") || ContainsModel("GA403UM") || ContainsModel("GU605CP") || ContainsModel("FX608J") || ContainsModel("FX608L") || ContainsModel("FA608U") || ContainsModel("FA608P") ||
-        ContainsModel("FA401K") || ContainsModel("FA401UM") || ContainsModel("FA401UH");
+        ContainsModel("FA401K") || ContainsModel("FA401UM") || ContainsModel("FA401UH") ||
+        ContainsModel("GA403GM") || ContainsModel("GU405AM") || ContainsModel("GU405AP") || ContainsModel("GU606AM") || ContainsModel("GU606AP");
     }
 
     public static bool DynamicBoost20()
     {
-        return ContainsModel("GU605") || ContainsModel("GA605");
+        return ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("GU405");
     }
 
     public static bool IsAdvantageEdition()
@@ -736,7 +737,7 @@ public static class AppConfig
 
     public static bool IsForceMiniled()
     {
-        return ContainsModel("G834JYR") || ContainsModel("G834JZR") || ContainsModel("G634JZR") || ContainsModel("G835LW") || ContainsModel("G835LX") || ContainsModel("G635LW") || ContainsModel("G635LX") || Is("force_miniled");
+        return ContainsModel("G834JYR") || ContainsModel("G834JZR") || ContainsModel("G634JZR") || ContainsModel("G835L") || ContainsModel("G635L") || Is("force_miniled");
     }
 
     public static bool IsKeystone()

@@ -166,7 +166,7 @@
     <value>適用</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>カスタムファンカーブの適用</value>
+    <value>ファンカーブの適用</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>電力制限を適用する</value>

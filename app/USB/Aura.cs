@@ -266,6 +266,11 @@ namespace GHelper.USB
             return (mode == AuraMode.AuraBreathe || mode == AuraMode.GRADIENT) && (!isACPI || AppConfig.IsDynamicLightingOnly());
         }
 
+        public static bool HasRandomColor()
+        {
+            return mode == AuraMode.Star || mode == AuraMode.Highlight || mode == AuraMode.Laser || mode == AuraMode.Ripple;
+        }
+
         private static void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
             if (!InputDispatcher.backlightActivity)
@@ -664,7 +669,7 @@ namespace GHelper.USB
             if (init || initDirect)
             {
                 initDirect = false;
-                AsusHid.SetFeatureAura(new byte[] { AsusHid.AURA_ID, 0xBC, 1 });
+                AsusHid.SetFeatureAura(new byte[] { AsusHid.AURA_ID, 0xBC, (byte)(IsOldStrix ? 0 : 1) });
                 Thread.Sleep(50);
             }
 
@@ -1088,6 +1093,7 @@ namespace GHelper.USB
                 }
 
                 ApplyDirect(colors, true);
+                ApplyDirect(colors);
             }
 
             // Zone 0 red, 1 orange, 2 yellow, 3 green, 4 cyan, 5 blue, 6 magenta, 7 white.

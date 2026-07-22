@@ -55,6 +55,7 @@ namespace GHelper.Input
 
             hook.KeyPressed += new EventHandler<KeyPressedEventArgs>(KeyPressed);
 
+            MKeyControl.ApplyAll();
             RegisterKeys();
 
             timer.Elapsed += Timer_Elapsed;
@@ -95,6 +96,7 @@ namespace GHelper.Input
             if (listener is not null) listener.Dispose();
 
             Program.acpi.DeviceInit();
+            MKeyControl.ApplyAll();
 
             if (!AsusService.IsAsusOptimizationRunning())
             {
@@ -188,8 +190,8 @@ namespace GHelper.Input
 
             if (!AppConfig.IsZ13() && !AppConfig.IsAlly() && !AppConfig.IsVivoZenPro())
             {
-                if (actionM1 is not null && actionM1.Length > 0) hook.RegisterHotKey(ModifierKeys.None, Keys.VolumeDown);
-                if (actionM2 is not null && actionM2.Length > 0) hook.RegisterHotKey(ModifierKeys.None, Keys.VolumeUp);
+                if (actionM1 is not null && actionM1.Length > 0 && !MKeyControl.IsFirmware("m1")) hook.RegisterHotKey(ModifierKeys.NoRepeat, Keys.VolumeDown);
+                if (actionM2 is not null && actionM2.Length > 0 && !MKeyControl.IsFirmware("m2")) hook.RegisterHotKey(ModifierKeys.NoRepeat, Keys.VolumeUp);
             }
 
             if (AppConfig.IsAlly())
@@ -593,6 +595,8 @@ namespace GHelper.Input
             {
                 if (name == "m4")
                     action = "ghelper";
+                if (name == "m5")
+                    action = "performance";
                 if (name == "fnf4")
                     action = "aura";
                 if (name == "fnf5")
@@ -611,6 +615,18 @@ namespace GHelper.Input
             {
                 case "mute":
                     KeyboardHook.KeyPress(Keys.VolumeMute);
+                    break;
+                case "volume_down":
+                    KeyboardHook.KeyPress(Keys.VolumeDown);
+                    break;
+                case "volume_up":
+                    KeyboardHook.KeyPress(Keys.VolumeUp);
+                    break;
+                case "backlight_down":
+                    SetBacklight(-1);
+                    break;
+                case "backlight_up":
+                    SetBacklight(1);
                     break;
                 case "play":
                     KeyboardHook.KeyPress(Keys.MediaPlayPause);
@@ -746,7 +762,7 @@ namespace GHelper.Input
                 AsusHid.WriteInput([AsusHid.INPUT_ID, 0xF4, 0x6B], "USB Touchpad");
             } else
             {
-                KeyboardHook.KeyKeyKeyPress(Keys.LWin, Keys.LControlKey, Keys.F24, 50);
+                KeyboardHook.KeyKeyKeyPress(Keys.LWin, Keys.LControlKey, Keys.F24, 50, 50);
             }
 
         }
@@ -850,6 +866,13 @@ namespace GHelper.Input
 
         static void HandleEvent(int EventID)
         {
+            string carrier = MKeyControl.CarrierSlot(EventID);
+            if (carrier is not null)
+            {
+                KeyProcess(carrier);
+                return;
+            }
+
             // The ROG Ally uses different M-key codes.
             // We'll special-case the translation of those.
             if (AppConfig.IsAlly())
@@ -967,7 +990,8 @@ namespace GHelper.Input
                     if (Control.ModifierKeys == Keys.Shift)
                     {
                         if (AppConfig.IsDUO()) SetScreenpad(-10);
-                        else Program.settingsForm.BeginInvoke(Program.settingsForm.CycleMatrix, -1);
+                        else if (Program.settingsForm.matrixControl.IsValid) Program.settingsForm.BeginInvoke(Program.settingsForm.CycleMatrix, -1);
+                        else SetBacklight(-1);
                     }
                     else if (Control.ModifierKeys == Keys.Control && AppConfig.IsOLED())
                     {
@@ -982,7 +1006,8 @@ namespace GHelper.Input
                     if (Control.ModifierKeys == Keys.Shift)
                     {
                         if (AppConfig.IsDUO()) SetScreenpad(10);
-                        else Program.settingsForm.BeginInvoke(Program.settingsForm.CycleMatrix, 1);
+                        else if (Program.settingsForm.matrixControl.IsValid) Program.settingsForm.BeginInvoke(Program.settingsForm.CycleMatrix, 1);
+                        else SetBacklight(1);
                     }
                     else if (Control.ModifierKeys == Keys.Control && AppConfig.IsOLED())
                     {

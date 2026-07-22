@@ -166,7 +166,7 @@
     <value>Terapkan</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Terapkan Custom Fan Curve</value>
+    <value>Terapkan Fan Curve</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Terapkan Batas Daya</value>
