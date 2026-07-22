@@ -1101,9 +1101,10 @@ namespace GHelper.Input
                 }
             }
 
+            Aura.Init();
+
             if (!AppConfig.Is("skip_aura"))
             {
-                Aura.Init();
                 Aura.ApplyPower();
                 SetBacklightAuto();
                 Aura.ApplyAura();
