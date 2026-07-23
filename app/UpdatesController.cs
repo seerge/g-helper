@@ -1,4 +1,3 @@
-using GHelper.Helpers;
 using Microsoft.Win32;
 using System.Management;
 using System.Net;
@@ -66,6 +65,7 @@ namespace GHelper
 
             var groups = data.GetProperty("Result").GetProperty("Obj");
             var updates = new List<DriverUpdate>();
+            var lanBranches = new HashSet<string>();
 
             for (int i = 0; i < groups.GetArrayLength(); i++)
             {
@@ -79,10 +79,19 @@ namespace GHelper
                 {
                     var file = files[j];
                     var title = file.GetProperty("Title").ToString();
+                    var version = file.GetProperty("Version").ToString().Replace("V", "");
 
-                    if (oldTitle != title && !SkipList.Contains(title) && !title.Contains("Armoury Crate"))
+                    /*
+                     * Realtek encodes the chip family in the version major for LAN drivers (e.g. 1168.x = RTL8168,
+                     * 1125.x = RTL8125). Asus lists multiple branches under the same title, so keep the
+                     * newest of each family instead of only the first.
+                     */
+                    bool duplicate = IsRealtekLan(title)
+                        ? !lanBranches.Add(title + "|" + Major(version))
+                        : oldTitle == title;
+
+                    if (!duplicate && !SkipList.Contains(title) && !title.Contains("Armoury Crate"))
                     {
-                        var version = file.GetProperty("Version").ToString().Replace("V", "");
                         updates.Add(new DriverUpdate
                         {
                             categoryName = categoryName,
@@ -137,6 +146,7 @@ namespace GHelper
             }
 
             HideAbsentAdapters(updates, installed, needStaged);
+            HideMismatchedRealtekLan(updates, installed, needStaged);
 
             var staged = needStaged.Count > 0 ? BuildStagedVersions(needStaged, token) : null;
 
@@ -182,6 +192,26 @@ namespace GHelper
                     Logger.WriteLine(u.title + " = hidden, device not present");
                     updates[n] = u;
                 }
+            }
+        }
+
+        static bool IsRealtekLan(string title) => title.Contains("Realtek LAN", StringComparison.OrdinalIgnoreCase);
+
+        // Hide Realtek LAN drivers that don't correspond to the installed card.
+        static void HideMismatchedRealtekLan(List<DriverUpdate> updates, string?[] installed, HashSet<string> needStaged)
+        {
+            var members = Enumerable.Range(0, updates.Count)
+                .Where(n => updates[n].hardwares.Length > 0 && IsRealtekLan(updates[n].title))
+                .ToList();
+            if (members.Count < 2 || !members.Any(n => installed[n] is not null)) return;
+
+            foreach (var n in members.Where(n => installed[n] is null))
+            {
+                var u = updates[n];
+                u.status = STATUS_HIDDEN;
+                foreach (var h in u.hardwares) needStaged.Remove(h);
+                Logger.WriteLine(u.title + " = hidden, Realtek LAN chip not present");
+                updates[n] = u;
             }
         }
 
