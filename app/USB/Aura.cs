@@ -173,10 +173,10 @@ namespace GHelper.USB
             modes[AuraMode.AuraStatic] = Properties.Strings.AuraStatic;
             modes[AuraMode.AuraBreathe] = Properties.Strings.AuraBreathe;
             modes[AuraMode.AuraColorCycle] = Properties.Strings.AuraColorCycle;
-            if (!isACPI) modes[AuraMode.AuraRainbow] = Properties.Strings.AuraRainbow;
 
             if (perKey)
             {
+                modes[AuraMode.AuraRainbow] = Properties.Strings.AuraRainbow;
                 modes[AuraMode.Star] = "Star";
                 modes[AuraMode.Rain] = "Rain";
                 modes[AuraMode.Highlight] = "Highlight";
