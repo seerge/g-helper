@@ -12,9 +12,11 @@ public static class AsusLampArray
 
     struct Lamp { public int Zone; public double T; }
 
+    static HidDevice? device;
     static HidStream? stream;
     static byte ridBase;
     static int featLen;
+    static bool probed;
     static bool failLogged;
     static bool controlled;
 
@@ -26,32 +28,51 @@ public static class AsusLampArray
     static byte RidMulti => (byte)(ridBase + 0x04);
     static byte RidControl => (byte)(ridBase + 0x06);
 
-    static void Ensure()
+    public static bool Available
     {
-        if (stream != null) return;
-
-        var device = FindDevice();
-        if (device == null)
+        get
         {
-            if (!failLogged) Logger.WriteLine("LampArray: interface not found");
-            failLogged = true;
-            return;
-        }
+            if (probed) return device != null;
+            probed = true;
 
+            if (!AppConfig.IsLampArray()) return false;
+
+            device = FindDevice();
+            if (device != null && Reopen())
+            {
+                featLen = device.GetMaxFeatureReportLength();
+                ReadLamps(ReadLampCount());
+            }
+
+            if (lamps.Length == 0)
+            {
+                stream?.Dispose();
+                stream = null;
+                device = null;
+                Logger.WriteLine("LampArray: not available");
+                return false;
+            }
+
+            Logger.WriteLine($"LampArray: rid=0x{ridBase:X2} feat={featLen} lamps={lamps.Length}");
+            return true;
+        }
+    }
+
+    static bool Reopen()
+    {
+        if (stream != null) return true;
         try
         {
-            stream = device.Open();
+            stream = device!.Open();
+            failLogged = false;
+            return true;
         }
         catch (Exception ex)
         {
             if (!failLogged) Logger.WriteLine($"LampArray: open failed {ex.Message}");
             failLogged = true;
-            return;
+            return false;
         }
-        failLogged = false;
-        featLen = device.GetMaxFeatureReportLength();
-        ReadLamps(ReadLampCount());
-        Logger.WriteLine($"LampArray: opened rid=0x{ridBase:X2} feat={featLen} lamps={lamps.Length}");
     }
 
     static HidDevice? FindDevice()
@@ -90,7 +111,7 @@ public static class AsusLampArray
             if (count > 0 && count <= 512) return count;
         }
         catch (Exception ex) { Logger.WriteLine($"LampArray: attr read error {ex.Message}"); }
-        return 8;
+        return 0;
     }
 
     static void ReadLamps(int count)
@@ -162,6 +183,7 @@ public static class AsusLampArray
 
     public static void SetMode(AuraMode mode)
     {
+        if (!Available) return;
         bool streaming = mode is AuraMode.HEATMAP or AuraMode.AMBIENT or AuraMode.GRADIENT
             or AuraMode.ZONETEST or AuraMode.AUDIO or AuraMode.AUDIOPULSE;
         if (streaming) controlled = false;
@@ -170,8 +192,7 @@ public static class AsusLampArray
 
     static void Reset()
     {
-        Ensure();
-        if (stream != null) Send(new byte[] { RidControl, 0x01 });
+        if (Reopen()) Send(new byte[] { RidControl, 0x01 });
         AsusHid.SetFeatureAura(new byte[] { AsusHid.AURA_ID, 0xC0, 0x04, 0x01, 0x01 });
         controlled = false;
     }
@@ -196,8 +217,7 @@ public static class AsusLampArray
     // zones: 8-zone g-helper colors (0-3 keyboard left->right, 4-7 lightbar left->right)
     public static void SetColors(Color[] zones)
     {
-        Ensure();
-        if (stream == null || zones.Length < 8) return;
+        if (!Available || !Reopen() || zones.Length < 8) return;
         if (!controlled) Control();
 
         var arr = new Color[lamps.Length];

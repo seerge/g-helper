@@ -649,8 +649,11 @@ namespace GHelper.USB
 
             if (!backlight) return;
 
-            if (AppConfig.IsLampArray() && color.Length >= AURA_ZONES)
-                AsusLampArray.SetColors(color);
+            if (AsusLampArray.Available)
+            {
+                if (color.Length >= AURA_ZONES) AsusLampArray.SetColors(color);
+                return;
+            }
 
             const byte keySet = 167;
             const byte ledCount = 178;
@@ -734,6 +737,7 @@ namespace GHelper.USB
 
         public static void ApplyDirectLightbar(Color[] color)
         {
+            if (AsusLampArray.Available) return;
             var map = isStrix4ZoneFlipped ? packet4ZoneFlipped : packet4Zone;
             byte[] buffer = new byte[64];
             buffer[0] = AsusHid.AURA_ID;
@@ -767,6 +771,12 @@ namespace GHelper.USB
                 return;
             }
 
+            if (AsusLampArray.Available)
+            {
+                AsusLampArray.SetColor(color);
+                return;
+            }
+
             if (AppConfig.IsNoDirectRGB())
             {
                 AsusHid.SetFeatureAura(AuraMessage(AuraMode.AuraStatic, color, color, 0xeb));
@@ -777,12 +787,6 @@ namespace GHelper.USB
             if (isStrix)
             {
                 ApplyDirect(Enumerable.Repeat(color, AURA_ZONES).ToArray(), init);
-                return;
-            }
-
-            if (AppConfig.IsLampArray())
-            {
-                AsusLampArray.SetColor(color);
                 return;
             }
 
@@ -850,7 +854,7 @@ namespace GHelper.USB
 
             Logger.WriteLine($"AuraMode: {Mode}");
 
-            if (AppConfig.IsLampArray()) AsusLampArray.SetMode(Mode);
+            AsusLampArray.SetMode(Mode);
 
             if (Mode == AuraMode.AUDIO || Mode == AuraMode.AUDIOPULSE)
             {
