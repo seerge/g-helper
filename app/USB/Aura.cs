@@ -649,6 +649,9 @@ namespace GHelper.USB
 
             if (!backlight) return;
 
+            if (AppConfig.IsLampArray() && color.Length >= AURA_ZONES)
+                AsusLampArray.SetColors(color);
+
             const byte keySet = 167;
             const byte ledCount = 178;
             const ushort mapSize = 3 * ledCount;
@@ -777,6 +780,12 @@ namespace GHelper.USB
                 return;
             }
 
+            if (AppConfig.IsLampArray())
+            {
+                AsusLampArray.SetColor(color);
+                return;
+            }
+
             if (init || initDirect)
             {
                 initDirect = false;
@@ -840,6 +849,8 @@ namespace GHelper.USB
             if (Mode != AuraMode.AUDIO && Mode != AuraMode.AUDIOPULSE) StopAudio();
 
             Logger.WriteLine($"AuraMode: {Mode}");
+
+            if (AppConfig.IsLampArray()) AsusLampArray.SetMode(Mode);
 
             if (Mode == AuraMode.AUDIO || Mode == AuraMode.AUDIOPULSE)
             {

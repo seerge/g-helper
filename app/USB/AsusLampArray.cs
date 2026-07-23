@@ -1,0 +1,234 @@
+using HidSharp;
+using HidSharp.Reports;
+using System.Drawing;
+
+namespace GHelper.USB;
+
+public static class AsusLampArray
+{
+    const byte FLAG_COMPLETE = 0x01;
+    const int MULTI_MAX = 8;
+    const byte PURPOSE_CONTROL = 0x01;
+
+    struct Lamp { public int Zone; public double T; }
+
+    static HidStream? stream;
+    static byte ridBase;
+    static int featLen;
+    static bool failLogged;
+    static bool controlled;
+
+    static Lamp[] lamps = Array.Empty<Lamp>();
+
+    static byte RidAttr => (byte)(ridBase + 0x01);
+    static byte RidRequest => (byte)(ridBase + 0x02);
+    static byte RidResponse => (byte)(ridBase + 0x03);
+    static byte RidMulti => (byte)(ridBase + 0x04);
+    static byte RidControl => (byte)(ridBase + 0x06);
+
+    static void Ensure()
+    {
+        if (stream != null) return;
+
+        var device = FindDevice();
+        if (device == null)
+        {
+            if (!failLogged) Logger.WriteLine("LampArray: interface not found");
+            failLogged = true;
+            return;
+        }
+
+        try
+        {
+            stream = device.Open();
+        }
+        catch (Exception ex)
+        {
+            if (!failLogged) Logger.WriteLine($"LampArray: open failed {ex.Message}");
+            failLogged = true;
+            return;
+        }
+        failLogged = false;
+        featLen = device.GetMaxFeatureReportLength();
+        ReadLamps(ReadLampCount());
+        Logger.WriteLine($"LampArray: opened rid=0x{ridBase:X2} feat={featLen} lamps={lamps.Length}");
+    }
+
+    static HidDevice? FindDevice()
+    {
+        try
+        {
+            foreach (var device in DeviceList.Local.GetHidDevices(AsusHid.ASUS_ID))
+            {
+                if (!AsusHid.MAIN_AURA_PIDS.Contains(device.ProductID)) continue;
+                try
+                {
+                    var desc = device.GetReportDescriptor();
+                    foreach (byte b in new byte[] { 0x00, 0x40 })
+                        if (desc.TryGetReport(ReportType.Feature, (byte)(b + 0x04), out _) &&
+                            desc.TryGetReport(ReportType.Feature, (byte)(b + 0x06), out _))
+                        {
+                            ridBase = b;
+                            return device;
+                        }
+                }
+                catch { }
+            }
+        }
+        catch (Exception ex) { Logger.WriteLine($"LampArray: find error {ex.Message}"); }
+        return null;
+    }
+
+    static int ReadLampCount()
+    {
+        try
+        {
+            byte[] attr = new byte[featLen];
+            attr[0] = RidAttr;
+            stream!.GetFeature(attr);
+            int count = attr[1] | (attr[2] << 8);
+            if (count > 0 && count <= 512) return count;
+        }
+        catch (Exception ex) { Logger.WriteLine($"LampArray: attr read error {ex.Message}"); }
+        return 8;
+    }
+
+    static void ReadLamps(int count)
+    {
+        var xs = new int[count];
+        var keyboard = new bool[count];
+        for (int i = 0; i < count; i++)
+        {
+            try
+            {
+                byte[] req = new byte[featLen];
+                req[0] = RidRequest; req[1] = (byte)i; req[2] = (byte)(i >> 8);
+                stream!.SetFeature(req);
+                byte[] resp = new byte[featLen];
+                resp[0] = RidResponse;
+                stream.GetFeature(resp);
+                xs[i] = BitConverter.ToInt32(resp, 3);
+                keyboard[i] = (BitConverter.ToUInt32(resp, 19) & PURPOSE_CONTROL) != 0;
+            }
+            catch { }
+        }
+
+        int keyMin = int.MaxValue, keyMax = int.MinValue, barMin = int.MaxValue, barMax = int.MinValue;
+        for (int i = 0; i < count; i++)
+        {
+            if (keyboard[i]) { keyMin = Math.Min(keyMin, xs[i]); keyMax = Math.Max(keyMax, xs[i]); }
+            else { barMin = Math.Min(barMin, xs[i]); barMax = Math.Max(barMax, xs[i]); }
+        }
+
+        lamps = new Lamp[count];
+        for (int i = 0; i < count; i++)
+        {
+            int max = keyboard[i] ? keyMax : barMax;
+            int span = Math.Max(1, max - (keyboard[i] ? keyMin : barMin));
+            lamps[i] = new Lamp { Zone = keyboard[i] ? 0 : 4, T = (max - xs[i]) / (double)span };
+        }
+    }
+
+    static void Send(byte[] data)
+    {
+        var s = stream;
+        if (s == null) return;
+        byte[] buf = data;
+        if (featLen > 0 && data.Length != featLen)
+        {
+            buf = new byte[featLen];
+            Array.Copy(data, buf, Math.Min(data.Length, featLen));
+        }
+        try
+        {
+            s.SetFeature(buf);
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine($"LampArray: write error {ex.Message}");
+            stream = null;
+            controlled = false;
+            s.Dispose();
+        }
+    }
+
+    static void Control()
+    {
+        AsusHid.SetFeatureAura(new byte[] { AsusHid.AURA_ID, 0xC0, 0x03, 0x01 });
+        Send(new byte[] { RidControl, 0x01 });
+        Send(new byte[] { RidControl, 0x00 });
+        controlled = stream != null;
+    }
+
+    public static void SetMode(AuraMode mode)
+    {
+        bool streaming = mode is AuraMode.HEATMAP or AuraMode.AMBIENT or AuraMode.GRADIENT
+            or AuraMode.ZONETEST or AuraMode.AUDIO or AuraMode.AUDIOPULSE;
+        if (streaming) controlled = false;
+        else Reset();
+    }
+
+    static void Reset()
+    {
+        Ensure();
+        if (stream != null) Send(new byte[] { RidControl, 0x01 });
+        AsusHid.SetFeatureAura(new byte[] { AsusHid.AURA_ID, 0xC0, 0x04, 0x01, 0x01 });
+        controlled = false;
+    }
+
+    static Color Blend(Color[] zones, int off, double t)
+    {
+        double f = Math.Clamp(t, 0, 1) * 3;
+        int a = (int)f, b = Math.Min(3, a + 1);
+        double k = f - a;
+        Color ca = zones[off + a], cb = zones[off + b];
+        return Color.FromArgb(
+            (int)(ca.R + (cb.R - ca.R) * k),
+            (int)(ca.G + (cb.G - ca.G) * k),
+            (int)(ca.B + (cb.B - ca.B) * k));
+    }
+
+    public static void SetColor(Color c)
+    {
+        SetColors(Enumerable.Repeat(c, 8).ToArray());
+    }
+
+    // zones: 8-zone g-helper colors (0-3 keyboard left->right, 4-7 lightbar left->right)
+    public static void SetColors(Color[] zones)
+    {
+        Ensure();
+        if (stream == null || zones.Length < 8) return;
+        if (!controlled) Control();
+
+        var arr = new Color[lamps.Length];
+        for (int i = 0; i < lamps.Length; i++)
+            arr[i] = Blend(zones, lamps[i].Zone, lamps[i].T);
+        SendMulti(arr);
+    }
+
+    static void SendMulti(Color[] arr)
+    {
+        for (int start = 0; start < arr.Length; start += MULTI_MAX)
+        {
+            int n = Math.Min(MULTI_MAX, arr.Length - start);
+
+            byte[] report = new byte[3 + MULTI_MAX * 2 + MULTI_MAX * 4];
+            report[0] = RidMulti;
+            report[1] = (byte)n;
+            report[2] = start + n >= arr.Length ? FLAG_COMPLETE : (byte)0;
+            int idOff = 3, colOff = 3 + MULTI_MAX * 2;
+            for (int i = 0; i < n; i++)
+            {
+                int lamp = start + i;
+                report[idOff + i * 2] = (byte)(lamp & 0xFF);
+                report[idOff + i * 2 + 1] = (byte)(lamp >> 8);
+                Color c = arr[lamp];
+                report[colOff + i * 4] = c.R;
+                report[colOff + i * 4 + 1] = c.G;
+                report[colOff + i * 4 + 2] = c.B;
+                report[colOff + i * 4 + 3] = 0xFF;
+            }
+            Send(report);
+        }
+    }
+}

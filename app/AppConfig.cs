@@ -502,6 +502,11 @@ public static class AppConfig
         return IsStrix() || IsZ13();
     }
 
+    public static bool IsLampArray()
+    {
+        return ContainsModel("G614") || ContainsModel("G615") || ContainsModel("G635") || ContainsModel("G814") || ContainsModel("G815") || ContainsModel("G835") || IsSlash();
+    }
+
     public static bool IsHardwareHotkeys()
     {
         return ContainsModel("FX506");
@@ -514,7 +519,7 @@ public static class AppConfig
 
     public static bool IsNoDirectRGB()
     {
-        return ContainsModel("GA503") || ContainsModel("G533Q") || ContainsModel("GU502") || IsSlash();
+        return ContainsModel("GA503") || ContainsModel("G533Q") || ContainsModel("GU502");
     }
 
     public static bool IsStrixNumpad()
