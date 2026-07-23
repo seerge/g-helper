@@ -77,6 +77,7 @@ namespace GHelper
             buttonCalibrate.Text = Properties.Strings.Calibrate;
 
             checkFanClamp.Text = Properties.Strings.ClampToGrid;
+            checkFanSync.Text = Properties.Strings.FanSyncMaxTemp;
             labelHysteresisUp.Text = Properties.Strings.HysteresisUp;
             labelHysteresisDown.Text = Properties.Strings.HysteresisDown;
             buttonReadLimits.Text = Properties.Strings.ReadLimits;
@@ -174,6 +175,7 @@ namespace GHelper
 
             checkApplyFans.Click += CheckApplyFans_Click;
             checkApplyPower.Click += CheckApplyPower_Click;
+            checkFanSync.Click += CheckFanSync_Click;
 
             trackGPUClockLimit.Minimum = NvidiaGpuControl.MinClockLimit;
             trackGPUClockLimit.Maximum = NvidiaGpuControl.MaxClockLimit;
@@ -974,6 +976,14 @@ namespace GHelper
 
         }
 
+        private void CheckFanSync_Click(object? sender, EventArgs e)
+        {
+            AppConfig.Set("fan_sync_max_temp", checkFanSync.Checked ? 1 : 0);
+
+            FanMaxTempControl.Stop();
+            if (AppConfig.IsApplyFans()) modeControl.AutoFans(); // reapplies curves and starts/stops sync
+        }
+
         public void InitAxis()
         {
             if (this == null || this.Text == "") return;
@@ -1175,6 +1185,7 @@ namespace GHelper
             bool applyFans = AppConfig.IsApplyFans();
 
             checkApplyFans.Checked = applyFans;
+            checkFanSync.Checked = AppConfig.Is("fan_sync_max_temp");
 
             if (autoFans || applyFans)
             {

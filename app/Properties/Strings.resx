@@ -168,6 +168,9 @@
   <data name="ApplyFanCurve" xml:space="preserve">
     <value>Apply Fan Curve</value>
   </data>
+  <data name="FanSyncMaxTemp" xml:space="preserve">
+    <value>Sync Fans to Hottest Sensor</value>
+  </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Apply Power Limits</value>
   </data>
