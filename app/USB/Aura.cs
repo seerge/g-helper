@@ -173,10 +173,10 @@ namespace GHelper.USB
             modes[AuraMode.AuraStatic] = Properties.Strings.AuraStatic;
             modes[AuraMode.AuraBreathe] = Properties.Strings.AuraBreathe;
             modes[AuraMode.AuraColorCycle] = Properties.Strings.AuraColorCycle;
+            if (isStrixKb) modes[AuraMode.AuraRainbow] = Properties.Strings.AuraRainbow;
 
             if (perKey)
             {
-                modes[AuraMode.AuraRainbow] = Properties.Strings.AuraRainbow;
                 modes[AuraMode.Star] = "Star";
                 modes[AuraMode.Rain] = "Rain";
                 modes[AuraMode.Highlight] = "Highlight";
@@ -651,7 +651,7 @@ namespace GHelper.USB
 
             if (AsusLampArray.Available)
             {
-                if (color.Length >= AURA_ZONES) AsusLampArray.SetColors(color);
+                AsusLampArray.SetColors(color);
                 return;
             }
 
@@ -855,6 +855,7 @@ namespace GHelper.USB
             Logger.WriteLine($"AuraMode: {Mode}");
 
             AsusLampArray.SetMode(Mode);
+            if (AsusLampArray.Probing) return;
 
             if (Mode == AuraMode.AUDIO || Mode == AuraMode.AUDIOPULSE)
             {

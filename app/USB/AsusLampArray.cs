@@ -1,3 +1,4 @@
+using GHelper.Helpers;
 using HidSharp;
 using HidSharp.Reports;
 using System.Drawing;
@@ -16,7 +17,8 @@ public static class AsusLampArray
     static HidStream? stream;
     static byte ridBase;
     static int featLen;
-    static bool probed;
+    static volatile bool probed;
+    static bool probing;
     static bool failLogged;
     static bool controlled;
 
@@ -33,29 +35,41 @@ public static class AsusLampArray
         get
         {
             if (probed) return device != null;
-            probed = true;
-
-            if (!AppConfig.IsLampArray()) return false;
-
-            device = FindDevice();
-            if (device != null && Reopen())
+            if (!AppConfig.IsLampArray()) { probed = true; return false; }
+            if (!probing)
             {
-                featLen = device.GetMaxFeatureReportLength();
-                ReadLamps(ReadLampCount());
+                probing = true;
+                Task.Run(Probe);
             }
-
-            if (lamps.Length == 0)
-            {
-                stream?.Dispose();
-                stream = null;
-                device = null;
-                Logger.WriteLine("LampArray: not available");
-                return false;
-            }
-
-            Logger.WriteLine($"LampArray: rid=0x{ridBase:X2} feat={featLen} lamps={lamps.Length}");
-            return true;
+            return false;
         }
+    }
+
+    public static bool Probing => probing && !probed;
+
+    static void Probe()
+    {
+        device = FindDevice();
+        if (device != null && Reopen())
+        {
+            featLen = device.GetMaxFeatureReportLength();
+            ReadLamps(ReadLampCount());
+        }
+
+        if (lamps.Length == 0)
+        {
+            stream?.Dispose();
+            stream = null;
+            device = null;
+            Logger.WriteLine("LampArray: not available");
+        }
+        else
+        {
+            Logger.WriteLine($"LampArray: rid=0x{ridBase:X2} feat={featLen} lamps={lamps.Length}");
+        }
+
+        probed = true;
+        Aura.ApplyAura();
     }
 
     static bool Reopen()
@@ -77,26 +91,13 @@ public static class AsusLampArray
 
     static HidDevice? FindDevice()
     {
-        try
-        {
-            foreach (var device in DeviceList.Local.GetHidDevices(AsusHid.ASUS_ID))
-            {
-                if (!AsusHid.MAIN_AURA_PIDS.Contains(device.ProductID)) continue;
-                try
+        foreach (byte b in new byte[] { 0x00, 0x40 })
+            foreach (var device in AsusHid.FindDevices((byte)(b + 0x04), AsusHid.MAIN_AURA_PIDS))
+                if (device.GetReportDescriptor().TryGetReport(ReportType.Feature, (byte)(b + 0x06), out _))
                 {
-                    var desc = device.GetReportDescriptor();
-                    foreach (byte b in new byte[] { 0x00, 0x40 })
-                        if (desc.TryGetReport(ReportType.Feature, (byte)(b + 0x04), out _) &&
-                            desc.TryGetReport(ReportType.Feature, (byte)(b + 0x06), out _))
-                        {
-                            ridBase = b;
-                            return device;
-                        }
+                    ridBase = b;
+                    return device;
                 }
-                catch { }
-            }
-        }
-        catch (Exception ex) { Logger.WriteLine($"LampArray: find error {ex.Message}"); }
         return null;
     }
 
@@ -118,6 +119,7 @@ public static class AsusLampArray
     {
         var xs = new int[count];
         var keyboard = new bool[count];
+        int keyMin = int.MaxValue, keyMax = int.MinValue, barMin = int.MaxValue, barMax = int.MinValue;
         for (int i = 0; i < count; i++)
         {
             try
@@ -132,11 +134,6 @@ public static class AsusLampArray
                 keyboard[i] = (BitConverter.ToUInt32(resp, 19) & PURPOSE_CONTROL) != 0;
             }
             catch { }
-        }
-
-        int keyMin = int.MaxValue, keyMax = int.MinValue, barMin = int.MaxValue, barMax = int.MinValue;
-        for (int i = 0; i < count; i++)
-        {
             if (keyboard[i]) { keyMin = Math.Min(keyMin, xs[i]); keyMax = Math.Max(keyMax, xs[i]); }
             else { barMin = Math.Min(barMin, xs[i]); barMax = Math.Max(barMax, xs[i]); }
         }
@@ -154,12 +151,8 @@ public static class AsusLampArray
     {
         var s = stream;
         if (s == null) return;
-        byte[] buf = data;
-        if (featLen > 0 && data.Length != featLen)
-        {
-            buf = new byte[featLen];
-            Array.Copy(data, buf, Math.Min(data.Length, featLen));
-        }
+        byte[] buf = new byte[featLen];
+        Array.Copy(data, buf, Math.Min(data.Length, featLen));
         try
         {
             s.SetFeature(buf);
@@ -200,13 +193,8 @@ public static class AsusLampArray
     static Color Blend(Color[] zones, int off, double t)
     {
         double f = Math.Clamp(t, 0, 1) * 3;
-        int a = (int)f, b = Math.Min(3, a + 1);
-        double k = f - a;
-        Color ca = zones[off + a], cb = zones[off + b];
-        return Color.FromArgb(
-            (int)(ca.R + (cb.R - ca.R) * k),
-            (int)(ca.G + (cb.G - ca.G) * k),
-            (int)(ca.B + (cb.B - ca.B) * k));
+        int a = (int)f;
+        return ColorUtils.GetWeightedAverage(zones[off + a], zones[off + Math.Min(3, a + 1)], (float)(f - a));
     }
 
     public static void SetColor(Color c)
