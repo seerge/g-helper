@@ -58,6 +58,7 @@ namespace GHelper.USB
         ZONETEST = 25,
         AUDIO = 26,
         AUDIOPULSE = 27,
+        CPUTEMP = 28,
     }
 
     public enum AuraSpeed : int
@@ -199,6 +200,7 @@ namespace GHelper.USB
             }
 
             modes[AuraMode.HEATMAP] = "Heatmap";
+            modes[AuraMode.CPUTEMP] = "CPU Temp";
             modes[AuraMode.GPUMODE] = "GPU Mode";
             modes[AuraMode.AMBIENT] = "Ambient";
             modes[AuraMode.BATTERY] = "Battery";
@@ -279,6 +281,10 @@ namespace GHelper.USB
             if (Mode == AuraMode.HEATMAP)
             {
                 CustomRGB.ApplyHeatmap();
+            }
+            else if (Mode == AuraMode.CPUTEMP)
+            {
+                CustomRGB.ApplyCPUTemp();
             }
             else if (Mode == AuraMode.BATTERY)
             {
@@ -855,6 +861,14 @@ namespace GHelper.USB
                 return;
             }
 
+            if (Mode == AuraMode.CPUTEMP)
+            {
+                CustomRGB.ApplyCPUTemp(true);
+                timer.Interval = 2000;
+                timer.Start();
+                return;
+            }
+
             if (Mode == AuraMode.BATTERY)
             {
                 CustomRGB.ApplyBattery();
@@ -1047,10 +1061,10 @@ namespace GHelper.USB
         public static class CustomRGB
         {
 
-            static int tempFreeze = AppConfig.Get("temp_freeze", 20);
-            static int tempCold = AppConfig.Get("temp_cold", 40);
-            static int tempWarm = AppConfig.Get("temp_warm", 65);
-            static int tempHot = AppConfig.Get("temp_hot", 90);
+            static int tempFreeze = AppConfig.Get("temp_freeze", 45);
+            static int tempCold = AppConfig.Get("temp_cold", 50);
+            static int tempWarm = AppConfig.Get("temp_warm", 60);
+            static int tempHot = AppConfig.Get("temp_hot", 80);
 
             static Color colorFreeze = ColorTranslator.FromHtml(AppConfig.GetString("color_freeze", "#0000FF"));
             static Color colorCold = ColorTranslator.FromHtml(AppConfig.GetString("color_cold", "#008000"));
@@ -1141,6 +1155,10 @@ namespace GHelper.USB
 
             }
 
+            static double smoothedTemp;
+            const double tempSmoothing = 0.3;
+            static Color lastCpuColor = Color.Empty;
+
             public static void ApplyHeatmap(bool init = false)
             {
                 float cpuTemp = (float)HardwareControl.GetCPUTemp();
@@ -1152,6 +1170,41 @@ namespace GHelper.USB
                 else color = colorHot;
 
                 ApplyDirect(color, init);
+            }
+
+            // Firmware-based CPU temperature mode
+            public static void ApplyCPUTemp(bool init = false)
+            {
+                float rawTemp = (float)HardwareControl.GetCPUTemp();
+
+                if (init)
+                    smoothedTemp = rawTemp;
+                else
+                    smoothedTemp += tempSmoothing * (rawTemp - smoothedTemp);
+
+                float cpuTemp = (float)smoothedTemp;
+
+                Color color = colorFreeze;
+
+                if (cpuTemp < tempCold) color = ColorUtils.GetWeightedAverage(colorFreeze, colorCold, ((float)cpuTemp - tempFreeze) / (tempCold - tempFreeze));
+                else if (cpuTemp < tempWarm) color = ColorUtils.GetWeightedAverage(colorCold, colorWarm, ((float)cpuTemp - tempCold) / (tempWarm - tempCold));
+                else if (cpuTemp < tempHot) color = ColorUtils.GetWeightedAverage(colorWarm, colorHot, ((float)cpuTemp - tempWarm) / (tempHot - tempWarm));
+                else color = colorHot;
+
+                int _speed = 0xeb;
+
+                if (color == lastCpuColor && !init)
+                    return;
+
+                lastCpuColor = color;
+                PeripheralsProvider.StreamMouseColor(color);
+
+                if (init)
+                    AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, _speed), MESSAGE_SET, MESSAGE_APPLY }, "Aura", AsusHid.MAIN_AURA_PIDS);
+                else
+                    AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, _speed), MESSAGE_SET }, "Aura", AsusHid.MAIN_AURA_PIDS);
+
+                if (isACPI) Program.acpi.TUFKeyboardRGB(AuraMode.AuraStatic, color, _speed);
             }
 
             public static void ApplyBattery()
