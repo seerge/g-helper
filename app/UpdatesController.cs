@@ -136,7 +136,7 @@ namespace GHelper
                     foreach (var h in updates[n].hardwares) needStaged.Add(h);
             }
 
-            HideAbsentAdapters(updates, installed, needStaged);
+            HideAbsentAdapters(updates, inventory, installed, needStaged);
 
             var staged = needStaged.Count > 0 ? BuildStagedVersions(needStaged, token) : null;
 
@@ -165,21 +165,24 @@ namespace GHelper
             }
         }
 
-        static void HideAbsentAdapters(List<DriverUpdate> updates, string?[] installed, HashSet<string> needStaged)
+        static void HideAbsentAdapters(List<DriverUpdate> updates, List<LocalDriver> inventory, string?[] installed, HashSet<string> needStaged)
         {
             foreach (var keys in new[] { new[] { "Bluetooth" }, new[] { "WLAN", "Wireless LAN", "Wi-Fi", "WiFi" } })
             {
                 var members = Enumerable.Range(0, updates.Count)
                     .Where(n => updates[n].hardwares.Length > 0 && keys.Any(k => updates[n].title.Contains(k, StringComparison.OrdinalIgnoreCase)))
                     .ToList();
-                if (members.Count < 2 || !members.Any(n => installed[n] is not null)) continue;
+                if (members.Count < 2) continue;
+                var radio = inventory.Where(d => !d.isExtension && keys.Any(k => d.entry.Contains(k, StringComparison.OrdinalIgnoreCase)))
+                    .OrderBy(d => d.entry.StartsWith("Microsoft")).FirstOrDefault();
+                if (!members.Any(n => installed[n] is not null) && radio.entry is null) continue;
 
                 foreach (var n in members.Where(n => installed[n] is null))
                 {
                     var u = updates[n];
                     u.status = STATUS_HIDDEN;
                     foreach (var h in u.hardwares) needStaged.Remove(h);
-                    Logger.WriteLine(u.title + " = hidden, device not present");
+                    Logger.WriteLine(u.title + " = hidden, detected: " + radio.entry);
                     updates[n] = u;
                 }
             }
