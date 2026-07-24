@@ -126,7 +126,7 @@ namespace GHelper.USB
         static long lastAudioPresent;
         static double envBrightness;
         static double smoothedHue;
-        const double audioDecay = 0.7;
+        static readonly double audioDecay = AppConfig.Get("audio_decay", 70) / 100.0;
 
         static Aura()
         {
