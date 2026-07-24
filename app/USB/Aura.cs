@@ -58,7 +58,7 @@ namespace GHelper.USB
         ZONETEST = 25,
         AUDIO = 26,
         AUDIOPULSE = 27,
-        CPU_TEMPERATURE = 28,
+        CPUTEMP = 28,
     }
 
     public enum AuraSpeed : int
@@ -200,7 +200,7 @@ namespace GHelper.USB
             }
 
             modes[AuraMode.HEATMAP] = "Heatmap";
-            modes[AuraMode.CPU_TEMPERATURE] = "CPU Temperature";
+            modes[AuraMode.CPUTEMP] = "CPU Temp";
             modes[AuraMode.GPUMODE] = "GPU Mode";
             modes[AuraMode.AMBIENT] = "Ambient";
             modes[AuraMode.BATTERY] = "Battery";
@@ -282,9 +282,9 @@ namespace GHelper.USB
             {
                 CustomRGB.ApplyHeatmap();
             }
-            else if (Mode == AuraMode.CPU_TEMPERATURE)
+            else if (Mode == AuraMode.CPUTEMP)
             {
-                CustomRGB.ApplyCPUTemperature();
+                CustomRGB.ApplyCPUTemp();
             }
             else if (Mode == AuraMode.BATTERY)
             {
@@ -861,9 +861,9 @@ namespace GHelper.USB
                 return;
             }
 
-            if (Mode == AuraMode.CPU_TEMPERATURE)
+            if (Mode == AuraMode.CPUTEMP)
             {
-                CustomRGB.ApplyCPUTemperature(true);
+                CustomRGB.ApplyCPUTemp(true);
                 timer.Interval = 2000;
                 timer.Start();
                 return;
@@ -1155,8 +1155,9 @@ namespace GHelper.USB
 
             }
 
-            static double smoothedTemp = -1;
+            static double smoothedTemp;
             const double tempSmoothing = 0.3;
+            static Color lastCpuColor = Color.Empty;
 
             public static void ApplyHeatmap(bool init = false)
             {
@@ -1171,11 +1172,12 @@ namespace GHelper.USB
                 ApplyDirect(color, init);
             }
 
-            public static void ApplyCPUTemperature(bool init = false)
+            // Firmware-based CPU temperature mode
+            public static void ApplyCPUTemp(bool init = false)
             {
                 float rawTemp = (float)HardwareControl.GetCPUTemp();
 
-                if (smoothedTemp < 0)
+                if (init)
                     smoothedTemp = rawTemp;
                 else
                     smoothedTemp += tempSmoothing * (rawTemp - smoothedTemp);
@@ -1189,13 +1191,18 @@ namespace GHelper.USB
                 else if (cpuTemp < tempHot) color = ColorUtils.GetWeightedAverage(colorWarm, colorHot, ((float)cpuTemp - tempWarm) / (tempHot - tempWarm));
                 else color = colorHot;
 
-                PeripheralsProvider.StreamMouseColor(color);
                 int _speed = 0xeb;
+
+                if (color == lastCpuColor && !init)
+                    return;
+
+                lastCpuColor = color;
+                PeripheralsProvider.StreamMouseColor(color);
 
                 if (init)
                     AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, _speed), MESSAGE_SET, MESSAGE_APPLY }, "Aura", AsusHid.MAIN_AURA_PIDS);
                 else
-                    AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, _speed) }, "Aura", AsusHid.MAIN_AURA_PIDS);
+                    AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, _speed), MESSAGE_SET }, "Aura", AsusHid.MAIN_AURA_PIDS);
 
                 if (isACPI) Program.acpi.TUFKeyboardRGB(AuraMode.AuraStatic, color, _speed);
             }
