@@ -190,6 +190,11 @@ public static class AsusLampArray
         controlled = false;
     }
 
+    public static void Release()
+    {
+        if (controlled) Reset();
+    }
+
     static Color Blend(Color[] zones, int off, double t)
     {
         double f = Math.Clamp(t, 0, 1) * 3;
