@@ -79,10 +79,11 @@ namespace GHelper
                 {
                     var file = files[j];
                     var title = file.GetProperty("Title").ToString();
+                    var version = file.GetProperty("Version").ToString().Replace("V", "");
+                    if (title.Contains("Realtek LAN")) title += " " + Major(version);
 
                     if (oldTitle != title && !SkipList.Contains(title) && !title.Contains("Armoury Crate"))
                     {
-                        var version = file.GetProperty("Version").ToString().Replace("V", "");
                         updates.Add(new DriverUpdate
                         {
                             categoryName = categoryName,
@@ -167,7 +168,7 @@ namespace GHelper
 
         static void HideAbsentAdapters(List<DriverUpdate> updates, List<LocalDriver> inventory, string?[] installed, HashSet<string> needStaged)
         {
-            foreach (var keys in new[] { new[] { "Bluetooth" }, new[] { "WLAN", "Wireless LAN", "Wi-Fi", "WiFi" } })
+            foreach (var keys in new[] { new[] { "Bluetooth" }, new[] { "WLAN", "Wireless LAN", "Wi-Fi", "WiFi" }, new[] { "Realtek LAN" } })
             {
                 var members = Enumerable.Range(0, updates.Count)
                     .Where(n => updates[n].hardwares.Length > 0 && keys.Any(k => updates[n].title.Contains(k, StringComparison.OrdinalIgnoreCase)))
