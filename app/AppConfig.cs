@@ -502,6 +502,11 @@ public static class AppConfig
         return IsStrix() || IsZ13();
     }
 
+    public static bool IsLampArray()
+    {
+        return ContainsModel("G614") || ContainsModel("G615") || ContainsModel("G635") || ContainsModel("G814") || ContainsModel("G815") || ContainsModel("G835") || IsSlash();
+    }
+
     public static bool IsHardwareHotkeys()
     {
         return ContainsModel("FX506");
