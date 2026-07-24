@@ -15,6 +15,13 @@ namespace PawnIO
         CmdRejectedBusy   = 0xFC,
     }
 
+    public enum AmdPowerProfile
+    {
+        Default = 0,
+        PowerSaving = 1,
+        MaxPerformance = 2,
+    }
+
     public enum CpuCodeName : uint
     {
         Undefined     = 0xFFFFFFFF,
@@ -145,6 +152,8 @@ namespace PawnIO
         public bool CanSetTDP()   => _cpu is not CpuCodeName.Undefined;
         public bool CanSetCoAll() => _cpu is not CpuCodeName.Undefined;
         public bool CanSetThm()   => _cpu is not CpuCodeName.Undefined;
+        public bool CanSetPowerProfile() => Family is CpuFamily.Raven or CpuFamily.Renoir
+            or CpuFamily.Mobile or CpuFamily.StrixPoint or CpuFamily.StrixHalo;
 
         public bool SetAllLimits(int stapmW, int fastW, int slowW)
             => SetStapm(stapmW) == SmuStatus.OK & SetFast(fastW) == SmuStatus.OK & SetSlow(slowW) == SmuStatus.OK;
@@ -204,6 +213,33 @@ namespace PawnIO
                 // RyzenAdj: _do_adjust(0x3F) — MP1 only
                 CpuFamily.Raphael                        => SendMp1(0x3F, v),
                 _                                        => SmuStatus.Failed,
+            };
+        }
+
+        public SmuStatus SetPowerProfile(AmdPowerProfile profile)
+        {
+            if (profile == AmdPowerProfile.Default)
+                return SmuStatus.OK;
+
+            return profile switch
+            {
+                AmdPowerProfile.MaxPerformance => Family switch
+                {
+                    // set_max_performance
+                    CpuFamily.Raven => SendMp1(0x18, 0),
+                    CpuFamily.Renoir or CpuFamily.Mobile
+                    or CpuFamily.StrixPoint or CpuFamily.StrixHalo => SendMp1(0x11, 0),
+                    _ => SmuStatus.Failed,
+                },
+                AmdPowerProfile.PowerSaving => Family switch
+                {
+                    // set_power_saving
+                    CpuFamily.Raven => SendMp1(0x19, 0),
+                    CpuFamily.Renoir or CpuFamily.Mobile
+                    or CpuFamily.StrixPoint or CpuFamily.StrixHalo => SendMp1(0x12, 0),
+                    _ => SmuStatus.Failed,
+                },
+                _ => SmuStatus.Failed,
             };
         }
 

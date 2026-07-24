@@ -23,6 +23,7 @@
             { "cpu_temp", "_" },
             { "cpu_uv", "_" },
             { "igpu_uv", "_" },
+            { "amd_boost_profile", "int" },
             { "auto_boost", "int" },
             { "auto_apply", "int" },
             { "auto_apply_power", "int" },

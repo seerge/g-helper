@@ -156,6 +156,21 @@
   <data name="AnimeMatrix" xml:space="preserve">
     <value>Anime Matrix</value>
   </data>
+  <data name="AmdBoostProfileTitle" xml:space="preserve">
+    <value>AMD Boost Profile</value>
+  </data>
+  <data name="AmdProfileDefault" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="AmdProfileHint" xml:space="preserve">
+    <value>Default follows system AC/DC profile: max performance on charger, power saving on battery</value>
+  </data>
+  <data name="AmdProfileMaxPerformance" xml:space="preserve">
+    <value>Max Performance</value>
+  </data>
+  <data name="AmdProfilePowerSaving" xml:space="preserve">
+    <value>Power Saving</value>
+  </data>
   <data name="AppAlreadyRunning" xml:space="preserve">
     <value>App already running</value>
   </data>

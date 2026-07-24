@@ -17,6 +17,8 @@ namespace GHelper.Mode
         private int _igpuUV = 0;
         private int _cpuTemp = CpuInfo.DefaultTemp;
         private bool _ryzenPower = false;
+        private AmdPowerProfile _amdProfile = AmdPowerProfile.Default;
+        private bool _amdProfileSynced = false;
 
         private static RyzenSmuService? _smu;
         private static readonly object _smuLock = new();
@@ -43,6 +45,11 @@ namespace GHelper.Mode
 
         public static bool IsPawnAvailable()  => GetSmu() != null;
         public static bool IsPawnInstalled()   => RyzenSmuService.IsPawnInstalled();
+        public static bool IsAmdPowerProfileSupported()
+        {
+            var smu = GetSmu();
+            return smu != null && smu.CanSetPowerProfile();
+        }
 
         static System.Timers.Timer? reapplyTimer;
         static System.Timers.Timer modeToggleTimer = default!;
@@ -313,6 +320,7 @@ namespace GHelper.Mode
             Thread.Sleep(500);
             SetGPUPower();
             AutoRyzen();
+            ApplyConfiguredAmdProfile();
 
             if (IsReapplyRyzenRequired())
                 Task.Delay(5000).ContinueWith(_ => { AutoRyzen(); ReadRyzenLimits(); });
@@ -502,6 +510,87 @@ namespace GHelper.Mode
                 Logger.WriteLine($"iGPU UV: {igpuUV} {status}");
                 if (status == SmuStatus.OK) _igpuUV = igpuUV;
             }
+        }
+
+        public static AmdPowerProfile ResolveAmdProfile(AmdPowerProfile profile)
+        {
+            if (profile != AmdPowerProfile.Default) return profile;
+            return Program.ReadPowerSource() == Program.PowerSource.Battery
+                ? AmdPowerProfile.PowerSaving
+                : AmdPowerProfile.MaxPerformance;
+        }
+
+        private SmuStatus? ApplyAmdProfileInternal(AmdPowerProfile profile, bool log)
+        {
+            if (!ProcessHelper.IsUserAdministrator()) return null;
+
+            var smu = GetSmu();
+            if (smu == null || !smu.CanSetPowerProfile()) return null;
+
+            AmdPowerProfile toApply = profile == AmdPowerProfile.Default
+                ? ResolveAmdProfile(profile)
+                : profile;
+            SmuStatus status = smu.SetPowerProfile(toApply);
+            if (status == SmuStatus.OK)
+            {
+                _amdProfile = profile;
+                _amdProfileSynced = true;
+            }
+            if (log)
+            {
+                string label = profile == AmdPowerProfile.Default
+                    ? $"Default -> {toApply}"
+                    : profile.ToString();
+                Logger.WriteLine($"AMD Profile: {label} {status}");
+            }
+            return status;
+        }
+
+        public static AmdPowerProfile GetConfiguredProfile()
+        {
+            int profileValue = AppConfig.GetMode("amd_boost_profile", 0);
+            if (profileValue < 0 || profileValue > 2) profileValue = 0;
+            return (AmdPowerProfile)profileValue;
+        }
+
+        public SmuStatus? ApplyAmdProfile(bool log = false)
+        {
+            return ApplyAmdProfileInternal(GetConfiguredProfile(), log);
+        }
+
+        public void ApplyConfiguredAmdProfile(bool log = true)
+        {
+            if (!CpuInfo.IsAMD || !IsAmdPowerProfileSupported()) return;
+
+            var configured = GetConfiguredProfile();
+            if (configured == AmdPowerProfile.Default)
+            {
+                if (!_amdProfileSynced || _amdProfile != AmdPowerProfile.Default)
+                    ApplyAmdProfileInternal(AmdPowerProfile.Default, log);
+                return;
+            }
+
+            ApplyAmdProfile(log);
+        }
+
+        public string SetAmdProfile(bool launchAsAdmin = false)
+        {
+            if (!ProcessHelper.IsUserAdministrator())
+            {
+                if (launchAsAdmin) ProcessHelper.RunAsAdmin("amdprofile");
+                return string.Empty;
+            }
+
+            if (!CpuInfo.IsAMD || !IsAmdPowerProfileSupported()) return string.Empty;
+
+            SmuStatus? status = ApplyAmdProfile(true);
+            if (!status.HasValue) return string.Empty;
+
+            var profile = GetConfiguredProfile();
+            string label = profile == AmdPowerProfile.Default
+                ? $"Default -> {ResolveAmdProfile(profile)}"
+                : profile.ToString();
+            return $"AMD Profile {label}: {status}";
         }
 
         public string SetRyzen(bool launchAsAdmin = false)
