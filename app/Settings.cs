@@ -2095,7 +2095,7 @@ namespace GHelper
                         composed = ControlHelper.OverlayChargeBars(composed, level, 5, barColor, iconWidth: iw, iconHeight: ih);
                     }
 
-                    b.Image = ControlHelper.ResizeImage(composed, ControlHelper.Scale);
+b.Image = ControlHelper.ResizeImage(composed, ControlHelper.Scale);
                 }
 
                 b.Tag = state;
