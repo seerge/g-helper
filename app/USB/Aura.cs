@@ -1101,7 +1101,7 @@ namespace GHelper.USB
                     colors[z] = ColorUtils.GetWeightedAverage(Aura.Color2, Aura.Color1, t);
                 }
 
-                int[] lightbarOrder = new int[] { 7, 6, 4, 5 };
+                int[] lightbarOrder = AsusLampArray.Available ? new int[] { 4, 5, 6, 7 } : new int[] { 7, 6, 4, 5 };
                 for (int i = 0; i < lightbarOrder.Length; i++)
                 {
                     float t = i / 3f;

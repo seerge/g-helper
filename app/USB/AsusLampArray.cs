@@ -143,8 +143,7 @@ public static class AsusLampArray
         {
             int min = keyboard[i] ? keyMin : barMin;
             int span = Math.Max(1, (keyboard[i] ? keyMax : barMax) - min);
-            double t = (xs[i] - min) / (double)span;
-            lamps[i] = new Lamp { Zone = keyboard[i] ? 0 : 4, T = keyboard[i] ? t : 1 - t };
+            lamps[i] = new Lamp { Zone = keyboard[i] ? 0 : 4, T = (xs[i] - min) / (double)span };
         }
     }
 
