@@ -141,9 +141,10 @@ public static class AsusLampArray
         lamps = new Lamp[count];
         for (int i = 0; i < count; i++)
         {
-            int max = keyboard[i] ? keyMax : barMax;
-            int span = Math.Max(1, max - (keyboard[i] ? keyMin : barMin));
-            lamps[i] = new Lamp { Zone = keyboard[i] ? 0 : 4, T = (max - xs[i]) / (double)span };
+            int min = keyboard[i] ? keyMin : barMin;
+            int span = Math.Max(1, (keyboard[i] ? keyMax : barMax) - min);
+            double t = (xs[i] - min) / (double)span;
+            lamps[i] = new Lamp { Zone = keyboard[i] ? 0 : 4, T = keyboard[i] ? t : 1 - t };
         }
     }
 
