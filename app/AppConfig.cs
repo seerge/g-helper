@@ -477,7 +477,12 @@ public static class AppConfig
         try
         {
             var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\ASUS\OLEDCare");
-            return key is not null && Convert.ToInt32(key.GetValue("EnablePixelRefresh", 0)) != 0;
+            if (key is not null && Convert.ToInt32(key.GetValue("EnablePixelRefresh", 0)) != 0) return true;
+
+            key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\ASUS\ASUS System Control Interface\AsusOptimization\ASUS Keyboard Hotkeys");
+            if (key is not null && Convert.ToInt32(key.GetValue("OLEDPanel", 0)) != 0) return true;
+
+            return false;
         }
         catch { return false; }
     });
