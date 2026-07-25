@@ -175,7 +175,7 @@
     <value>自動調整 Windows 電源模式</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>分配給 GPU 的記憶體</value>
+    <value>分配給 iGPU 的記憶體</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>執行中的華碩服務</value>

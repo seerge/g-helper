@@ -175,7 +175,7 @@
     <value>Reglare automată a modului de alimentare Windows</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Memorie alocată GPU-ului</value>
+    <value>Memorie alocată iGPU-ului</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Servicii Asus în derulare</value>

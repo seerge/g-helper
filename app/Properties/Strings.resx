@@ -175,7 +175,7 @@
     <value>Auto adjust Windows Power Modes</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Memory Assigned to GPU</value>
+    <value>Memory assigned to iGPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Asus Services Running</value>

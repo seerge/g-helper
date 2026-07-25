@@ -14,6 +14,8 @@ namespace GHelper
 
         ClamshellModeControl clamshellControl = new ClamshellModeControl();
 
+        int[] vramOptions = [];
+
         const string EMPTY = "--------------";
 
 
@@ -295,17 +297,6 @@ namespace GHelper
                 checkGpuApps.Visible = false;
                 checkUSBC.Visible = false;
                 checkAutoToggleClamshellMode.Visible = false;
-
-                int apuMem = Program.acpi.GetAPUMem();
-                if (apuMem >= 0)
-                {
-                    panelAPU.Visible = true;
-                    comboAPU.DropDownStyle = ComboBoxStyle.DropDownList;
-                    comboAPU.SelectedIndex = apuMem;
-                }
-
-                comboAPU.SelectedIndexChanged += ComboAPU_SelectedIndexChanged;
-
             }
             else
             {
@@ -507,6 +498,7 @@ namespace GHelper
             InitCores();
             InitServices();
             InitHibernate();
+            InitVramMem();
 
             InitACPITesting();
 
@@ -629,10 +621,40 @@ namespace GHelper
             }.Start();
         }
 
+        private void InitVramMem()
+        {
+            int unitMb = 0;
+            if (PawnIO.CpuInfo.IsAMD) vramOptions = Program.acpi.GetVramOptions(out unitMb);
+
+            if (vramOptions.Length > 0)
+            {
+                comboAPU.Items.Clear();
+                foreach (int option in vramOptions)
+                    comboAPU.Items.Add(option == 0 ? Properties.Strings.AutoMode : ((double)option * unitMb / 1024).ToString("0.#") + "G");
+
+                comboAPU.SelectedIndex = Math.Max(0, Array.IndexOf(vramOptions, Program.acpi.GetVramMem()));
+            }
+            else
+            {
+                if (!AppConfig.IsAlly()) return;
+
+                int apuMem = Program.acpi.GetAPUMem();
+                if (apuMem < 0) return;
+
+                comboAPU.SelectedIndex = apuMem;
+            }
+
+            panelAPU.Visible = true;
+            comboAPU.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboAPU.SelectedIndexChanged += ComboAPU_SelectedIndexChanged;
+        }
+
         private void ComboAPU_SelectedIndexChanged(object? sender, EventArgs e)
         {
             int mem = comboAPU.SelectedIndex;
-            Program.acpi.SetAPUMem(mem);
+
+            if (vramOptions.Length == 0) Program.acpi.SetAPUMem(mem);
+            else Program.acpi.SetVramMem(vramOptions[mem]);
 
             DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertAPUMemoryRestart, Properties.Strings.AlertAPUMemoryRestartTitle, MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)

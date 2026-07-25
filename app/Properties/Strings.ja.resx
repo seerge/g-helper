@@ -175,7 +175,7 @@
     <value>Windows電源モードを自動調整</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>GPUに割り当てられたメモリ</value>
+    <value>iGPUに割り当てられたメモリ</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Asusサービスを実行中</value>

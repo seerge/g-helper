@@ -175,7 +175,7 @@
     <value>Automatisk justering af Windows strømtilstande</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Hukommelse tildelt til GPU</value>
+    <value>Hukommelse tildelt til iGPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Kørende ASUS-tjenester</value>

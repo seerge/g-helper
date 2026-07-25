@@ -1510,7 +1510,7 @@ namespace GHelper
             labelAPUMem.Name = "labelAPUMem";
             labelAPUMem.Size = new Size(309, 32);
             labelAPUMem.TabIndex = 0;
-            labelAPUMem.Text = "Memory Assigned to GPU";
+            labelAPUMem.Text = "Memory assigned to iGPU";
             // 
             // panelCores
             // 

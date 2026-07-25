@@ -175,7 +175,7 @@
     <value>Windows Güç Modlarını otomatik ayarla</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>GPU için Atanan Bellek</value>
+    <value>iGPU için Atanan Bellek</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Çalışan Asus Hizmetleri</value>

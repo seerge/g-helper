@@ -175,7 +175,7 @@
     <value>Ajustement auto des modes de gestion alim. Windows</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Mémoire attribuée au GPU</value>
+    <value>Mémoire attribuée à l'iGPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Services Asus actifs </value>
