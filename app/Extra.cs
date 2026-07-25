@@ -14,6 +14,9 @@ namespace GHelper
 
         ClamshellModeControl clamshellControl = new ClamshellModeControl();
 
+        int coresMinP = AsusACPI.PCoreMin;
+        int coresMinE = AsusACPI.ECoreMin;
+
         const string EMPTY = "--------------";
 
 
@@ -574,7 +577,7 @@ namespace GHelper
         private void InitCores()
         {
             (int eCores, int pCores) = Program.acpi.GetCores();
-            (int eCoresMax, int pCoresMax) = Program.acpi.GetCores(true);
+            (int eCoresMax, int pCoresMax) = Program.acpi.GetCores(AsusACPI.CORES_MAX);
 
             if (eCores < 0 || pCores < 0 || eCoresMax < 0 || pCoresMax < 0)
             {
@@ -590,16 +593,23 @@ namespace GHelper
             eCoresMax = Math.Max(4, eCoresMax);
             pCoresMax = Math.Max(4, pCoresMax);
 
+            (int eMin, int pMin) = Program.acpi.GetCores(AsusACPI.CORES_MIN);
+            if (pMin >= 1)
+            {
+                coresMinP = Math.Min(pMin, pCoresMax);
+                coresMinE = Math.Min(eMin, eCoresMax);
+            }
+
             panelCores.Visible = true;
 
             comboCoresE.DropDownStyle = ComboBoxStyle.DropDownList;
             comboCoresP.DropDownStyle = ComboBoxStyle.DropDownList;
 
-            for (int i = AsusACPI.PCoreMin; i <= pCoresMax; i++) comboCoresP.Items.Add(i.ToString() + " Pcores");
-            for (int i = AsusACPI.ECoreMin; i <= eCoresMax; i++) comboCoresE.Items.Add(i.ToString() + " Ecores");
+            for (int i = coresMinP; i <= pCoresMax; i++) comboCoresP.Items.Add(i.ToString() + " Pcores");
+            for (int i = coresMinE; i <= eCoresMax; i++) comboCoresE.Items.Add(i.ToString() + " Ecores");
 
-            comboCoresP.SelectedIndex = Math.Max(Math.Min(pCores - AsusACPI.PCoreMin, comboCoresP.Items.Count - 1), 0);
-            comboCoresE.SelectedIndex = Math.Max(Math.Min(eCores - AsusACPI.ECoreMin, comboCoresE.Items.Count - 1), 0);
+            comboCoresP.SelectedIndex = Math.Max(Math.Min(pCores - coresMinP, comboCoresP.Items.Count - 1), 0);
+            comboCoresE.SelectedIndex = Math.Max(Math.Min(eCores - coresMinE, comboCoresE.Items.Count - 1), 0);
 
             buttonCores.Click += ButtonCores_Click;
 
@@ -611,7 +621,7 @@ namespace GHelper
 
             if (dialogResult == DialogResult.Yes)
             {
-                Program.acpi.SetCores(AsusACPI.ECoreMin + comboCoresE.SelectedIndex, AsusACPI.PCoreMin + comboCoresP.SelectedIndex);
+                Program.acpi.SetCores(coresMinE + comboCoresE.SelectedIndex, coresMinP + comboCoresP.SelectedIndex);
                 Process.Start("shutdown", "/r /t 1");
             }
         }
