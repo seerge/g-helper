@@ -352,7 +352,7 @@ namespace GHelper.Gpu
 
         public void CaptureNvBootState()
         {
-            nvRestartPending = Program.acpi.DeviceGet(AsusACPI.GPUEco) == 1;
+            nvRestartPending = Program.acpi.IsNVidiaGPU() && Program.acpi.DeviceGet(AsusACPI.GPUEco) == 1;
         }
 
         public void StandardModeFix()
