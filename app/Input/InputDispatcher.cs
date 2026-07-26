@@ -1256,7 +1256,12 @@ namespace GHelper.Input
                 {
                     0 => "On",
                     1 => "Off",
-                    _ => "Toggled"
+                    _ => status switch
+                    {
+                        0 => "On",
+                        1 => "Off",
+                        _ => "Toggled"
+                    }
                 };
                 Program.toast.RunToast($"Camera {statusText}");
             }
