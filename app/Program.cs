@@ -116,7 +116,7 @@ namespace GHelper
 
             acpi = new AsusACPI();
 
-            if (!acpi.IsConnected() && AppConfig.IsASUS())
+            if (!acpi.IsConnected() && AppConfig.IsASUS() && !AppConfig.IsDesktop())
             {
                 DialogResult dialogResult = MessageBox.Show(Properties.Strings.ACPIError, Properties.Strings.StartupError, MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)

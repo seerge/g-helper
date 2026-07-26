@@ -693,6 +693,20 @@ public static class AppConfig
     {
         return ContainsModel("ROG");
     }
+    public static bool IsDesktop()
+    {
+        try
+        {
+            using var searcher = new ManagementObjectSearcher("Select * from Win32_ComputerSystem");
+            foreach (var obj in searcher.Get())
+            {
+                using (obj) return Convert.ToInt32(obj["PCSystemType"] ?? 0) == 1;
+            }
+        }
+        catch { }
+        return false;
+    }
+
     public static bool IsASUS()
     {
         return ContainsModel("ROG") || ContainsModel("TUF") || ContainsModel("Vivobook") || ContainsModel("Zenbook");
