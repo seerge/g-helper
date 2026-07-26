@@ -115,7 +115,7 @@ public static class AppConfig
             Directory.CreateDirectory(Path.GetDirectoryName(fallbackConfigFile));
             File.Copy(configFile, fallbackConfigFile, overwrite: true);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             //Logger.WriteLine("Can't sync fallback config: " + ex.Message);
         }
@@ -304,7 +304,6 @@ public static class AppConfig
     public static byte[] GetDefaultCurve(AsusFan device)
     {
         int mode = Modes.GetCurrentBase();
-        byte[] curve;
 
         switch (mode)
         {
@@ -470,7 +469,7 @@ public static class AppConfig
 
     public static bool IsOLED()
     {
-        return ContainsModel("OLED") || IsSlash() || ContainsModel("M7600") || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M340") || ContainsModel("M350") || ContainsModel("K650") || ContainsModel("UM53") || ContainsModel("K660") || ContainsModel("UX84") || ContainsModel("M650") || ContainsModel("M550") || ContainsModel("M540") || ContainsModel("K340") || ContainsModel("K350") || ContainsModel("M140") || ContainsModel("S540") || ContainsModel("S550") || ContainsModel("M7400") || ContainsModel("N650") || ContainsModel("HN7306") || ContainsModel("H760") || ContainsModel("UX5406") || ContainsModel("M5606") || ContainsModel("X513") || ContainsModel("N7400") || ContainsModel("UX760") || ContainsModel("Q530VJ") || _oledFromRegistry.Value;
+        return ContainsModel("OLED") || IsSlash() || ContainsModel("M7600") || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M340") || ContainsModel("M350") || ContainsModel("K650") || ContainsModel("UM53") || ContainsModel("K660") || ContainsModel("UX84") || ContainsModel("M650") || ContainsModel("M550") || ContainsModel("M540") || ContainsModel("K340") || ContainsModel("K350") || ContainsModel("M140") || ContainsModel("S540") || ContainsModel("S550") || ContainsModel("M7400") || ContainsModel("N650") || ContainsModel("HN7306") || ContainsModel("H760") || ContainsModel("UX5406") || ContainsModel("M5606") || ContainsModel("X513") || ContainsModel("N7400") || ContainsModel("UX760") || ContainsModel("Q530VJ") || ContainsModel("TP3407") || _oledFromRegistry.Value;
     }
 
     private static readonly Lazy<bool> _oledFromRegistry = new(() =>
@@ -501,6 +500,11 @@ public static class AppConfig
     public static bool IsBacklightZones()
     {
         return IsStrix() || IsZ13();
+    }
+
+    public static bool IsLampArray()
+    {
+        return ContainsModel("G614") || ContainsModel("G615") || ContainsModel("G634") || ContainsModel("G635") || ContainsModel("G814") || ContainsModel("G815") || ContainsModel("G834") || ContainsModel("G835") || IsSlash();
     }
 
     public static bool IsHardwareHotkeys()
@@ -576,12 +580,13 @@ public static class AppConfig
     public static bool DynamicBoost15()
     {
         return ContainsModel("FX507ZC4") || ContainsModel("GA403UM") || ContainsModel("GU605CP") || ContainsModel("FX608J") || ContainsModel("FX608L") || ContainsModel("FA608U") || ContainsModel("FA608P") ||
-        ContainsModel("FA401K") || ContainsModel("FA401UM") || ContainsModel("FA401UH");
+        ContainsModel("FA401K") || ContainsModel("FA401UM") || ContainsModel("FA401UH") ||
+        ContainsModel("GA403GM") || ContainsModel("GU405AM") || ContainsModel("GU405AP") || ContainsModel("GU606AM") || ContainsModel("GU606AP");
     }
 
     public static bool DynamicBoost20()
     {
-        return ContainsModel("GU605") || ContainsModel("GA605");
+        return ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("GU405");
     }
 
     public static bool IsAdvantageEdition()
@@ -611,7 +616,7 @@ public static class AppConfig
 
     public static bool IsFanRequired()
     {
-        return ContainsModel("GA402X") || ContainsModel("GU604") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("G634J") || ContainsModel("G834J") || ContainsModel("G614J") || ContainsModel("G814J") || ContainsModel("FX507V") || ContainsModel("FX507ZV") || ContainsModel("FX608") || ContainsModel("FA608P") || ContainsModel("G614F") || ContainsModel("G614R") || ContainsModel("G733") || ContainsModel("H7606");
+        return ContainsModel("GA402X") || ContainsModel("GU604") || ContainsModel("G513") || ContainsModel("G713R") || ContainsModel("G713P") || ContainsModel("GU605") || ContainsModel("GA605") || ContainsModel("G634J") || ContainsModel("G834J") || ContainsModel("G614J") || ContainsModel("G814J") || ContainsModel("FX507V") || ContainsModel("FX507Z") || ContainsModel("FX608") || ContainsModel("FA608P") || ContainsModel("G614F") || ContainsModel("G614R") || ContainsModel("G733") || ContainsModel("H7606");
     }
 
     public static bool IsCPULight()
@@ -688,6 +693,20 @@ public static class AppConfig
     {
         return ContainsModel("ROG");
     }
+    public static bool IsDesktop()
+    {
+        try
+        {
+            using var searcher = new ManagementObjectSearcher("Select * from Win32_ComputerSystem");
+            foreach (var obj in searcher.Get())
+            {
+                using (obj) return Convert.ToInt32(obj["PCSystemType"] ?? 0) == 1;
+            }
+        }
+        catch { }
+        return false;
+    }
+
     public static bool IsASUS()
     {
         return ContainsModel("ROG") || ContainsModel("TUF") || ContainsModel("Vivobook") || ContainsModel("Zenbook");
@@ -737,7 +756,7 @@ public static class AppConfig
 
     public static bool IsForceMiniled()
     {
-        return ContainsModel("G834JYR") || ContainsModel("G834JZR") || ContainsModel("G634JZR") || ContainsModel("G835LW") || ContainsModel("G835LX") || ContainsModel("G635LW") || ContainsModel("G635LX") || Is("force_miniled");
+        return ContainsModel("G834JYR") || ContainsModel("G834JZR") || ContainsModel("G634JZR") || ContainsModel("G835L") || ContainsModel("G635L") || Is("force_miniled");
     }
 
     public static bool IsKeystone()
@@ -749,7 +768,7 @@ public static class AppConfig
 
     public static bool IsSleepReset()
     {
-        return Is("sleep_reset") || ContainsModel("GU605MI") || ContainsModel("GU605MV");
+        return Is("sleep_reset") || ContainsModel("GU605MI") || ContainsModel("GU605MV") || ContainsModel("GU605CR");
     }
 
     public static bool SaveDimming()

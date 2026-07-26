@@ -7,7 +7,7 @@ namespace GHelper.UI
 
         // Design tokens
         private const float HoverShiftAmount = 0.04f;
-        private const float ActiveTopLighten = 0.25f;
+        private const float ActiveTopLighten = 0.15f;
         private const float RestTopLighten = 0.1f;
         private const int ActiveBgTopAlpha = 32;
         private const float ActiveBgEndFraction = 0.20f;
@@ -134,7 +134,8 @@ namespace GHelper.UI
 
                     using (GraphicsPath bgPath = GetFigurePath(borderRect, radius))
                     using (LinearGradientBrush bgBrush = new LinearGradientBrush(
-                        new PointF(0, borderRect.Y), new PointF(0, borderRect.Bottom),
+                        ControlHelper.DarkMode ? new PointF(0, borderRect.Y) : new PointF(0, borderRect.Bottom),
+                        ControlHelper.DarkMode ? new PointF(0, borderRect.Bottom) : new PointF(0, borderRect.Y),
                         bgTop, bgTransparent))
                     {
                         bgBrush.InterpolationColors = new ColorBlend
@@ -164,12 +165,21 @@ namespace GHelper.UI
                     rect.Y += Image.Height;
                     rect.Height -= Image.Height;
                 }
-                using (var brush = new SolidBrush(Parent.BackColor))
-                    pevent.Graphics.FillRectangle(brush, rect);
-                using (var brush = new SolidBrush(BackColor))
-                    pevent.Graphics.FillRectangle(brush, rect);
+                else
+                {
+                    using (var brush = new SolidBrush(Parent.BackColor))
+                        pevent.Graphics.FillRectangle(brush, rect);
+                    using (var brush = new SolidBrush(BackColor))
+                        pevent.Graphics.FillRectangle(brush, rect);
+                }
                 TextFormatFlags flags = TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.WordBreak;
                 TextRenderer.DrawText(pevent.Graphics, Text, Font, rect, Color.Gray, flags);
+            }
+
+            if (!Enabled && !Borderless && activated && borderColor.A > 0)
+            {
+                Rectangle borderRect = new Rectangle(border, border, rectSurface.Width - 2 * border, rectSurface.Height - 2 * border);
+                ControlHelper.DrawGradientBorder(pevent.Graphics, borderRect, borderColor, radius, border, PenAlignment.Outset, RForm.flatTheme ? 0f : ActiveTopLighten);
             }
 
 

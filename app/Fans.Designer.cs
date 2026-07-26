@@ -1569,6 +1569,7 @@ namespace GHelper
             panelGPUPower.Name = "panelGPUPower";
             panelGPUPower.Size = new Size(520, 124);
             panelGPUPower.TabIndex = 4;
+            panelGPUPower.Visible = false;
             // 
             // labelGPUPower
             // 
@@ -2076,7 +2077,6 @@ namespace GHelper
         private RButton buttonAdvanced;
         private Panel panelBoostTitle;
         private PictureBox pictureBoost;
-        private Label labelBoostTitle;
         private Label labelRisky;
         private Panel panelTitleTemp;
         private PictureBox pictureTemp;

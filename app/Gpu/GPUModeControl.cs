@@ -104,6 +104,13 @@ namespace GHelper.Gpu
             }
             else if (GPUMode == AsusACPI.GPUModeUltimate)
             {
+                if (Program.acpi.DeviceGet(AsusACPI.GPUMux) < 0)
+                {
+                    Logger.WriteLine("Mux not supported");
+                    settings.VisualiseGPUMode();
+                    return;
+                }
+
                 DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertUltimateOn, Properties.Strings.AlertUltimateTitle, MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
@@ -162,6 +169,8 @@ namespace GHelper.Gpu
 
                 int status = 1;
 
+                Program.modeControl.WaitForApply();
+
                 if (eco == 1)
                 {
                     HardwareControl.KillGPUApps();
@@ -185,19 +194,15 @@ namespace GHelper.Gpu
 
                     if (eco == 0)
                     {
-                        if (AppConfig.IsNVPlatform())
+                        if (AppConfig.IsNVPlatform() || nvRestartPending)
                         {
-                            settings.LockGPUModes(Properties.Strings.GPUMode +": Restarting NV Services...");
+                            settings.LockGPUModes(Properties.Strings.RestartingNVServices);
                             await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("nv_delay", 5000)));
-                            NvidiaGpuControl.RestartNVService();
-                            settings.Invoke(delegate { InitGPUMode(); });
-                            await Task.Delay(TimeSpan.FromMilliseconds(1000));
-                        } else if (nvRestartPending) {
-                            settings.LockGPUModes(Properties.Strings.GPUMode +": Restarting NV Service...");
-                            await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("nv_delay", 5000)));
-                            NvidiaGpuControl.RestartNvContainer();
+                            if (AppConfig.IsNVPlatform()) NvidiaGpuControl.RestartNVService();
+                            else NvidiaGpuControl.RestartNvContainer();
                             nvRestartPending = false;
                             settings.Invoke(delegate { InitGPUMode(); });
+                            await Task.Delay(TimeSpan.FromMilliseconds(1000));
                         }
 
                         for (int i = 0; i < 3; i++)
@@ -347,7 +352,7 @@ namespace GHelper.Gpu
 
         public void CaptureNvBootState()
         {
-            nvRestartPending = Program.acpi.DeviceGet(AsusACPI.GPUEco) == 1;
+            nvRestartPending = Program.acpi.IsNVidiaGPU() && Program.acpi.DeviceGet(AsusACPI.GPUEco) == 1;
         }
 
         public void StandardModeFix()

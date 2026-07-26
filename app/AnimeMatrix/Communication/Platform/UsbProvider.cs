@@ -15,6 +15,7 @@ namespace GHelper.AnimeMatrix.Communication.Platform
         public abstract byte[] Get(byte[] data);
         public abstract void Read(byte[] data);
         public abstract void Write(byte[] data);
+        public virtual void Drain(int packetSize) { }
 
         public abstract void Dispose();
     }

@@ -166,7 +166,7 @@
     <value>Použít</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Použít vlastní křivky vent.</value>
+    <value>Použít křivky vent.</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Použít výkonové limity</value>

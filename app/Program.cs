@@ -34,10 +34,11 @@ namespace GHelper
 
         public static HardwareOverlay? hardwareOverlay;
 
-        public static IntPtr unRegPowerNotify, unRegPowerNotifyLid, unRegSuspendResume;
+        public static IntPtr unRegPowerNotify, unRegPowerNotifyLid, unRegPowerNotifyEnergy, unRegSuspendResume;
         public static int WM_TASKBARCREATED = 0;
 
         private static long lastAuto;
+        private static readonly object autoLock = new();
         private static long lastTheme;
 
         public static InputDispatcher? inputDispatcher;
@@ -45,6 +46,10 @@ namespace GHelper
         // The main entry point for the application
         public static void Main(string[] args)
         {
+            Application.SetHighDpiMode(HighDpiMode.SystemAware);
+
+            AppDomain.CurrentDomain.UnhandledException += (s, e) => Logger.WriteLine("Unhandled: " + e.ExceptionObject);
+            TaskScheduler.UnobservedTaskException += (s, e) => { Logger.WriteLine("Unobserved: " + e.Exception); e.SetObserved(); };
 
             string action = "";
             if (args.Length > 0) action = args[0];
@@ -111,7 +116,7 @@ namespace GHelper
 
             acpi = new AsusACPI();
 
-            if (!acpi.IsConnected() && AppConfig.IsASUS())
+            if (!acpi.IsConnected() && AppConfig.IsASUS() && !AppConfig.IsDesktop())
             {
                 DialogResult dialogResult = MessageBox.Show(Properties.Strings.ACPIError, Properties.Strings.StartupError, MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
@@ -154,6 +159,7 @@ namespace GHelper
             settingsForm.InitAura();
             settingsForm.InitMatrix();
 
+            ScreenControl.InitScreen();
             XGM.Init();
 
             SetAutoModes(init: true);
@@ -173,6 +179,7 @@ namespace GHelper
             // Subscribing for monitor power on events
             unRegPowerNotify = NativeMethods.RegisterPowerSettingNotification(settingsForm.Handle, PowerSettingGuid.ConsoleDisplayState, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
             unRegPowerNotifyLid = NativeMethods.RegisterPowerSettingNotification(settingsForm.Handle, PowerSettingGuid.LIDSWITCH_STATE_CHANGE, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
+            unRegPowerNotifyEnergy = NativeMethods.RegisterPowerSettingNotification(settingsForm.Handle, PowerSettingGuid.EnergySaverStatus, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
             unRegSuspendResume = NativeMethods.RegisterSuspendResumeNotification(settingsForm.Handle, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
 
 
@@ -241,13 +248,14 @@ namespace GHelper
 
         private static void SystemEvents_SessionSwitch(object sender, SessionSwitchEventArgs e)
         {
-            if (e.Reason == SessionSwitchReason.SessionLogon || e.Reason == SessionSwitchReason.SessionUnlock)
+            if (e.Reason == SessionSwitchReason.SessionLogon || e.Reason == SessionSwitchReason.SessionUnlock || e.Reason == SessionSwitchReason.ConsoleConnect)
             {
                 Logger.WriteLine("Session:" + e.Reason.ToString());
                 ProcessHelper.KillSmartDisplayControl();
                 bool wasLocked = Aura.sessionLock;
                 Aura.sessionLock = false;
                 ScreenControl.AutoScreen();
+                Aura.ApplyAura();
                 if (wasLocked) Task.Delay(2000).ContinueWith(_ =>
                 {
                     if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < 10000) return;
@@ -271,7 +279,7 @@ namespace GHelper
                 case UserPreferenceCategory.General:
                     bool changed = settingsForm.InitTheme();
                     settingsForm.InitContextMenuTheme();
-                    settingsForm.VisualiseIcon();
+                    settingsForm.VisualiseIcon(true);
                     settingsForm.VisualiseFnLock();
                     settingsForm.VisualiseBatteryFull();
 
@@ -308,8 +316,11 @@ namespace GHelper
 
             if (init) gpuControl.CaptureNvBootState();
 
-            if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < skipDelay) return false;
-            lastAuto = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            lock (autoLock)
+            {
+                if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < skipDelay) return false;
+                lastAuto = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            }
 
             currentSource = ReadPowerSource();
             Logger.WriteLine("AutoSetting for " + SystemInformation.PowerStatus.PowerLineStatus.ToString());
@@ -326,6 +337,7 @@ namespace GHelper
 
             settingsForm.matrixControl.SetDevice(true);
             InputDispatcher.InitStatusLed();
+            if (init) NumberPad.Init();
             XGM.InitLight();
 
             if (AppConfig.IsAlly())
@@ -434,6 +446,8 @@ namespace GHelper
                 var screen = Screen.PrimaryScreen;
                 if (screen is null) screen = Screen.FromControl(settingsForm);
 
+                settingsForm.WindowState = FormWindowState.Normal;
+
                 settingsForm.Location = screen.WorkingArea.Location;
                 settingsForm.Left = screen.WorkingArea.Width - 10 - settingsForm.Width;
                 settingsForm.Top = screen.WorkingArea.Height - 10 - settingsForm.Height;
@@ -476,6 +490,7 @@ namespace GHelper
             clamshellControl.UnregisterDisplayEvents();
             NativeMethods.UnregisterPowerSettingNotification(unRegPowerNotify);
             NativeMethods.UnregisterPowerSettingNotification(unRegPowerNotifyLid);
+            NativeMethods.UnregisterPowerSettingNotification(unRegPowerNotifyEnergy);
             NativeMethods.UnregisterSuspendResumeNotification(unRegSuspendResume);
             Application.Exit();
         }

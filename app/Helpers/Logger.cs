@@ -7,25 +7,27 @@ public static class Logger
     public static string logFile = appPath + "\\log.txt";
 
     private static readonly Random _random = new Random();
+    private static readonly object _lock = new object();
 
     public static void WriteLine(string logMessage)
     {
         Debug.WriteLine($"{DateTime.Now}: {logMessage}");
-        if (!Directory.Exists(appPath)) Directory.CreateDirectory(appPath);
 
-        try
+        lock (_lock)
         {
-            using (StreamWriter w = File.AppendText(logFile))
+            try
             {
-                w.WriteLine($"{DateTime.Now}: {logMessage}");
-                w.Close();
+                if (!Directory.Exists(appPath)) Directory.CreateDirectory(appPath);
+                using (StreamWriter w = File.AppendText(logFile))
+                {
+                    w.WriteLine($"{DateTime.Now}: {logMessage}");
+                    w.Close();
+                }
             }
+            catch { }
+
+            if (_random.Next(100) == 1) Cleanup();
         }
-        catch { }
-
-        if (_random.Next(100) == 1) Cleanup();
-
-
     }
 
     public static void Cleanup()

@@ -281,6 +281,9 @@ namespace GHelper
 
             if (!Program.acpi.IsSupported(AsusACPI.DevsCPUFanCurve)) buttonCalibrate.Visible = false;
 
+            gpuPowerBase = Program.acpi.DeviceGet(AsusACPI.GPU_BASE);
+            panelGPUPower.Visible = isGPUPower;
+
             FormClosed += Fans_FormClosed;
             Activated  += (_, _) => VisualiseAdvanced();
 
@@ -582,10 +585,6 @@ namespace GHelper
 
         private void InitGPUPower()
         {
-            gpuPowerBase = Program.acpi.DeviceGet(AsusACPI.GPU_BASE);
-            if (gpuPowerBase >= 0) Logger.WriteLine($"ReadGPUPowerBase: {gpuPowerBase}");
-
-            panelGPUPower.Visible = isGPUPower;
             if (!isGPUPower) return;
 
             int maxGPUPower = NvidiaSmi.GetMaxGPUPower();
@@ -600,7 +599,7 @@ namespace GHelper
             {
                 await Task.Delay(TimeSpan.FromMilliseconds(200));
                 int gpuPowerVar = Program.acpi.DeviceGet(AsusACPI.GPU_POWER);
-                Logger.WriteLine($"ReadGPUPower ({Modes.GetCurrentBase()}): {gpuPowerVar}");
+                Logger.WriteLine($"ReadGPUPower ({Modes.GetCurrentBase()}): {gpuPowerBase} + {gpuPowerVar}");
 
                 int gpu_power = AppConfig.GetMode("gpu_power");
                 if (gpu_power < 0) gpu_power = (gpuPowerVar >= 0) ? gpuPowerVar : AsusACPI.MaxGPUPower;

@@ -1,117 +1,139 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 
+namespace GHelper.Helpers;
+
 public static class RestrictedProcessHelper
 {
-    /// Runs a process as a non-elevated version of the current user.
-    public static Process? RunAsRestrictedUser(string fileName, string? args = null)
+    /// Runs a command via cmd.exe as a non-elevated version of the current user.
+    public static void RunAsRestrictedUser(string command)
     {
-        if (string.IsNullOrWhiteSpace(fileName))
-            throw new ArgumentException("Value cannot be null or whitespace.", nameof(fileName));
+        if (string.IsNullOrWhiteSpace(command)) return;
 
-        if (!GetRestrictedSessionUserToken(out var hRestrictedToken))
+        string system32 = Environment.GetFolderPath(Environment.SpecialFolder.System);
+        string shell = Path.Combine(system32, "cmd.exe");
+        var cmd = new StringBuilder().Append('"').Append(shell).Append("\" /C ").Append(command);
+
+        Logger.WriteLine($"Launching {cmd}");
+
+        if (!ProcessHelper.IsUserAdministrator())
         {
-            return null;
+            Process.Start(new ProcessStartInfo(shell, "/C " + command)
+            {
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                WorkingDirectory = system32
+            })?.Dispose();
+            return;
         }
+
+        var si = new STARTUPINFO();
+        si.cb = Marshal.SizeOf(si);
+        si.dwFlags = 0x1;
+        si.wShowWindow = 0x00; // Set the window to be hidden
+
+        if (GetShellUserToken(out var hToken))
+        {
+            try
+            {
+                if (CreateProcessWithTokenW(hToken, 0, null, cmd, 0, IntPtr.Zero, system32, ref si, out var pi))
+                {
+                    CloseHandle(pi.hProcess);
+                    CloseHandle(pi.hThread);
+                    return;
+                }
+                Logger.WriteLine($"CreateProcessWithTokenW failed: {Marshal.GetLastWin32Error()}");
+            }
+            finally
+            {
+                CloseHandle(hToken);
+            }
+        }
+
+        if (!GetRestrictedSessionUserToken(out hToken)) return;
 
         try
         {
-            var si = new STARTUPINFO();
-            si.cb = Marshal.SizeOf(si);
-            si.dwFlags = 0x1;
-            si.wShowWindow = 0x00; // Set the window to be hidden
-
-            var pi = new PROCESS_INFORMATION();
-            var cmd = new StringBuilder();
-            cmd.Append('"').Append(fileName).Append('"');
-            if (!string.IsNullOrWhiteSpace(args))
+            if (CreateProcessAsUser(hToken, null, cmd, IntPtr.Zero, IntPtr.Zero, false, 0, IntPtr.Zero, system32, ref si, out var pi))
             {
-                cmd.Append(' ').Append(args);
+                CloseHandle(pi.hProcess);
+                CloseHandle(pi.hThread);
             }
-
-            Logger.WriteLine($"Launching {cmd}");
-
-            if (!CreateProcessAsUser(
-                hRestrictedToken,
-                null,
-                cmd,
-                IntPtr.Zero,
-                IntPtr.Zero,
-                true, // inherit handle
-                0,
-                IntPtr.Zero,
-                Path.GetDirectoryName(fileName),
-                ref si,
-                out pi))
-            {
-                return null;
-            }
-
-            return Process.GetProcessById(pi.dwProcessId);
         }
         finally
         {
-            CloseHandle(hRestrictedToken);
+            CloseHandle(hToken);
+        }
+    }
+
+    private static bool GetShellUserToken(out IntPtr token)
+    {
+        token = IntPtr.Zero;
+        GetWindowThreadProcessId(GetShellWindow(), out var shellPid);
+        if (shellPid == 0) return false;
+
+        IntPtr hProcess = OpenProcess(0x1000, false, shellPid);
+        if (hProcess == IntPtr.Zero) return false;
+
+        try
+        {
+            if (!OpenProcessToken(hProcess, 0x0002, out var hShellToken)) return false;
+            try
+            {
+                if (!DuplicateTokenEx(hShellToken, 0x018B, IntPtr.Zero, 2, 1, out token)) return false;
+
+                // if UAC is off or explorer was restarted elevated, its token is full admin - don't use it
+                if (GetTokenInformation(token, TokenElevation, out int elevated, 4, out _) && elevated == 0) return true;
+
+                CloseHandle(token);
+                token = IntPtr.Zero;
+                return false;
+            }
+            finally
+            {
+                CloseHandle(hShellToken);
+            }
+        }
+        finally
+        {
+            CloseHandle(hProcess);
         }
     }
 
     private static bool GetRestrictedSessionUserToken(out IntPtr token)
     {
         token = IntPtr.Zero;
-        if (!SaferCreateLevel(SaferScope.User, SaferLevel.NormalUser, SaferOpenFlags.Open, out var hLevel, IntPtr.Zero))
-        {
-            return false;
-        }
+        if (!SaferCreateLevel(SAFER_SCOPEID_USER, SAFER_LEVELID_NORMALUSER, SAFER_LEVEL_OPEN, out var hLevel, IntPtr.Zero)) return false;
 
-        IntPtr hRestrictedToken = IntPtr.Zero;
-        TOKEN_MANDATORY_LABEL tml = default;
-        tml.Label.Sid = IntPtr.Zero;
-        IntPtr tmlPtr = IntPtr.Zero;
-
+        var tml = new TOKEN_MANDATORY_LABEL { Attributes = SE_GROUP_INTEGRITY };
         try
         {
-            if (!SaferComputeTokenFromLevel(hLevel, IntPtr.Zero, out hRestrictedToken, 0, IntPtr.Zero))
-            {
-                return false;
-            }
+            if (!SaferComputeTokenFromLevel(hLevel, IntPtr.Zero, out token, 0, IntPtr.Zero)) return false;
 
             // Set the token to medium integrity.
-            tml.Label.Attributes = SE_GROUP_INTEGRITY;
-            tml.Label.Sid = IntPtr.Zero;
-            if (!ConvertStringSidToSid("S-1-16-8192", out tml.Label.Sid))
+            if (!ConvertStringSidToSid("S-1-16-8192", out tml.Sid) ||
+                !SetTokenInformation(token, TokenIntegrityLevel, ref tml, (uint)Marshal.SizeOf(tml)))
             {
+                CloseHandle(token);
+                token = IntPtr.Zero;
                 return false;
             }
-
-            tmlPtr = Marshal.AllocHGlobal(Marshal.SizeOf(tml));
-            Marshal.StructureToPtr(tml, tmlPtr, false);
-            if (!SetTokenInformation(hRestrictedToken,
-                TOKEN_INFORMATION_CLASS.TokenIntegrityLevel,
-                tmlPtr, (uint)Marshal.SizeOf(tml)))
-            {
-                return false;
-            }
-
-            token = hRestrictedToken;
-            hRestrictedToken = IntPtr.Zero; // make sure finally() doesn't close the handle
+            return true;
         }
         finally
         {
             SaferCloseLevel(hLevel);
-            SafeCloseHandle(hRestrictedToken);
-            if (tml.Label.Sid != IntPtr.Zero)
-            {
-                LocalFree(tml.Label.Sid);
-            }
-            if (tmlPtr != IntPtr.Zero)
-            {
-                Marshal.FreeHGlobal(tmlPtr);
-            }
+            if (tml.Sid != IntPtr.Zero) LocalFree(tml.Sid);
         }
-
-        return true;
     }
+
+    const uint SAFER_SCOPEID_USER = 2;
+    const uint SAFER_LEVELID_NORMALUSER = 0x20000;
+    const uint SAFER_LEVEL_OPEN = 1;
+    const int TokenIntegrityLevel = 25;
+    const int TokenElevation = 20;
+    const uint SE_GROUP_INTEGRITY = 0x00000020;
 
     [StructLayout(LayoutKind.Sequential)]
     private struct PROCESS_INFORMATION
@@ -146,231 +168,54 @@ public static class RestrictedProcessHelper
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    private struct SID_AND_ATTRIBUTES
+    private struct TOKEN_MANDATORY_LABEL
     {
         public IntPtr Sid;
         public uint Attributes;
     }
 
-    [StructLayout(LayoutKind.Sequential)]
-    private struct TOKEN_MANDATORY_LABEL
-    {
-        public SID_AND_ATTRIBUTES Label;
-    }
+    [DllImport("advapi32.dll", SetLastError = true)]
+    private static extern bool SaferCreateLevel(uint scope, uint level, uint openFlags, out IntPtr pLevelHandle, IntPtr lpReserved);
 
-    public enum SaferLevel : uint
-    {
-        Disallowed = 0,
-        Untrusted = 0x1000,
-        Constrained = 0x10000,
-        NormalUser = 0x20000,
-        FullyTrusted = 0x40000
-    }
-
-    public enum SaferScope : uint
-    {
-        Machine = 1,
-        User = 2
-    }
-
-    [Flags]
-    public enum SaferOpenFlags : uint
-    {
-        Open = 1
-    }
-
-    [DllImport("advapi32", SetLastError = true, CallingConvention = CallingConvention.StdCall)]
-    private static extern bool SaferCreateLevel(SaferScope scope, SaferLevel level, SaferOpenFlags openFlags, out IntPtr pLevelHandle, IntPtr lpReserved);
-
-    [DllImport("advapi32", SetLastError = true, CallingConvention = CallingConvention.StdCall)]
+    [DllImport("advapi32.dll", SetLastError = true)]
     private static extern bool SaferComputeTokenFromLevel(IntPtr LevelHandle, IntPtr InAccessToken, out IntPtr OutAccessToken, int dwFlags, IntPtr lpReserved);
 
-    [DllImport("advapi32", SetLastError = true)]
+    [DllImport("advapi32.dll")]
     private static extern bool SaferCloseLevel(IntPtr hLevelHandle);
 
     [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
     private static extern bool ConvertStringSidToSid(string StringSid, out IntPtr ptrSid);
 
-    [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    private static extern bool CloseHandle(IntPtr hObject);
-
-    private static bool SafeCloseHandle(IntPtr hObject)
-    {
-        return (hObject == IntPtr.Zero) ? true : CloseHandle(hObject);
-    }
-
-    [DllImport("kernel32.dll", SetLastError = true)]
-    static extern IntPtr LocalFree(IntPtr hMem);
-
-    enum TOKEN_INFORMATION_CLASS
-    {
-        /// <summary>
-        /// The buffer receives a TOKEN_USER structure that contains the user account of the token.
-        /// </summary>
-        TokenUser = 1,
-
-        /// <summary>
-        /// The buffer receives a TOKEN_GROUPS structure that contains the group accounts associated with the token.
-        /// </summary>
-        TokenGroups,
-
-        /// <summary>
-        /// The buffer receives a TOKEN_PRIVILEGES structure that contains the privileges of the token.
-        /// </summary>
-        TokenPrivileges,
-
-        /// <summary>
-        /// The buffer receives a TOKEN_OWNER structure that contains the default owner security identifier (SID) for newly created objects.
-        /// </summary>
-        TokenOwner,
-
-        /// <summary>
-        /// The buffer receives a TOKEN_PRIMARY_GROUP structure that contains the default primary group SID for newly created objects.
-        /// </summary>
-        TokenPrimaryGroup,
-
-        /// <summary>
-        /// The buffer receives a TOKEN_DEFAULT_DACL structure that contains the default DACL for newly created objects.
-        /// </summary>
-        TokenDefaultDacl,
-
-        /// <summary>
-        /// The buffer receives a TOKEN_SOURCE structure that contains the source of the token. TOKEN_QUERY_SOURCE access is needed to retrieve this information.
-        /// </summary>
-        TokenSource,
-
-        /// <summary>
-        /// The buffer receives a TOKEN_TYPE value that indicates whether the token is a primary or impersonation token.
-        /// </summary>
-        TokenType,
-
-        /// <summary>
-        /// The buffer receives a SECURITY_IMPERSONATION_LEVEL value that indicates the impersonation level of the token. If the access token is not an impersonation token, the function fails.
-        /// </summary>
-        TokenImpersonationLevel,
-
-        /// <summary>
-        /// The buffer receives a TOKEN_STATISTICS structure that contains various token statistics.
-        /// </summary>
-        TokenStatistics,
-
-        /// <summary>
-        /// The buffer receives a TOKEN_GROUPS structure that contains the list of restricting SIDs in a restricted token.
-        /// </summary>
-        TokenRestrictedSids,
-
-        /// <summary>
-        /// The buffer receives a DWORD value that indicates the Terminal Services session identifier that is associated with the token.
-        /// </summary>
-        TokenSessionId,
-
-        /// <summary>
-        /// The buffer receives a TOKEN_GROUPS_AND_PRIVILEGES structure that contains the user SID, the group accounts, the restricted SIDs, and the authentication ID associated with the token.
-        /// </summary>
-        TokenGroupsAndPrivileges,
-
-        /// <summary>
-        /// Reserved.
-        /// </summary>
-        TokenSessionReference,
-
-        /// <summary>
-        /// The buffer receives a DWORD value that is nonzero if the token includes the SANDBOX_INERT flag.
-        /// </summary>
-        TokenSandBoxInert,
-
-        /// <summary>
-        /// Reserved.
-        /// </summary>
-        TokenAuditPolicy,
-
-        /// <summary>
-        /// The buffer receives a TOKEN_ORIGIN value.
-        /// </summary>
-        TokenOrigin,
-
-        /// <summary>
-        /// The buffer receives a TOKEN_ELEVATION_TYPE value that specifies the elevation level of the token.
-        /// </summary>
-        TokenElevationType,
-
-        /// <summary>
-        /// The buffer receives a TOKEN_LINKED_TOKEN structure that contains a handle to another token that is linked to this token.
-        /// </summary>
-        TokenLinkedToken,
-
-        /// <summary>
-        /// The buffer receives a TOKEN_ELEVATION structure that specifies whether the token is elevated.
-        /// </summary>
-        TokenElevation,
-
-        /// <summary>
-        /// The buffer receives a DWORD value that is nonzero if the token has ever been filtered.
-        /// </summary>
-        TokenHasRestrictions,
-
-        /// <summary>
-        /// The buffer receives a TOKEN_ACCESS_INFORMATION structure that specifies security information contained in the token.
-        /// </summary>
-        TokenAccessInformation,
-
-        /// <summary>
-        /// The buffer receives a DWORD value that is nonzero if virtualization is allowed for the token.
-        /// </summary>
-        TokenVirtualizationAllowed,
-
-        /// <summary>
-        /// The buffer receives a DWORD value that is nonzero if virtualization is enabled for the token.
-        /// </summary>
-        TokenVirtualizationEnabled,
-
-        /// <summary>
-        /// The buffer receives a TOKEN_MANDATORY_LABEL structure that specifies the token's integrity level.
-        /// </summary>
-        TokenIntegrityLevel,
-
-        /// <summary>
-        /// The buffer receives a DWORD value that is nonzero if the token has the UIAccess flag set.
-        /// </summary>
-        TokenUIAccess,
-
-        /// <summary>
-        /// The buffer receives a TOKEN_MANDATORY_POLICY structure that specifies the token's mandatory integrity policy.
-        /// </summary>
-        TokenMandatoryPolicy,
-
-        /// <summary>
-        /// The buffer receives the token's logon security identifier (SID).
-        /// </summary>
-        TokenLogonSid,
-
-        /// <summary>
-        /// The maximum value for this enumeration
-        /// </summary>
-        MaxTokenInfoClass
-    }
+    [DllImport("advapi32.dll", SetLastError = true)]
+    private static extern bool SetTokenInformation(IntPtr TokenHandle, int TokenInformationClass, ref TOKEN_MANDATORY_LABEL TokenInformation, uint TokenInformationLength);
 
     [DllImport("advapi32.dll", SetLastError = true)]
-    static extern Boolean SetTokenInformation(
-        IntPtr TokenHandle,
-        TOKEN_INFORMATION_CLASS TokenInformationClass,
-        IntPtr TokenInformation,
-        UInt32 TokenInformationLength);
+    private static extern bool GetTokenInformation(IntPtr TokenHandle, int TokenInformationClass, out int TokenInformation, uint TokenInformationLength, out uint ReturnLength);
 
-    const uint SE_GROUP_INTEGRITY = 0x00000020;
+    [DllImport("advapi32.dll", SetLastError = true)]
+    private static extern bool OpenProcessToken(IntPtr ProcessHandle, uint DesiredAccess, out IntPtr TokenHandle);
+
+    [DllImport("advapi32.dll", SetLastError = true)]
+    private static extern bool DuplicateTokenEx(IntPtr hExistingToken, uint dwDesiredAccess, IntPtr lpTokenAttributes, int ImpersonationLevel, int TokenType, out IntPtr phNewToken);
 
     [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-    static extern bool CreateProcessAsUser(
-        IntPtr hToken,
-        string? lpApplicationName,
-        StringBuilder? lpCommandLine,
-        IntPtr lpProcessAttributes,
-        IntPtr lpThreadAttributes,
-        bool bInheritHandles,
-        uint dwCreationFlags,
-        IntPtr lpEnvironment,
-        string? lpCurrentDirectory,
-        ref STARTUPINFO lpStartupInfo,
-        out PROCESS_INFORMATION lpProcessInformation);
+    private static extern bool CreateProcessAsUser(IntPtr hToken, string? lpApplicationName, StringBuilder? lpCommandLine, IntPtr lpProcessAttributes, IntPtr lpThreadAttributes, bool bInheritHandles, uint dwCreationFlags, IntPtr lpEnvironment, string? lpCurrentDirectory, ref STARTUPINFO lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation);
+
+    [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+    private static extern bool CreateProcessWithTokenW(IntPtr hToken, uint dwLogonFlags, string? lpApplicationName, StringBuilder? lpCommandLine, uint dwCreationFlags, IntPtr lpEnvironment, string? lpCurrentDirectory, ref STARTUPINFO lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern bool CloseHandle(IntPtr hObject);
+
+    [DllImport("kernel32.dll")]
+    private static extern IntPtr LocalFree(IntPtr hMem);
+
+    [DllImport("user32.dll")]
+    private static extern IntPtr GetShellWindow();
+
+    [DllImport("user32.dll")]
+    private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern IntPtr OpenProcess(uint dwDesiredAccess, bool bInheritHandle, uint dwProcessId);
 }

@@ -27,6 +27,7 @@ namespace GHelper.UI
         };
 
         private readonly Color originalColor;
+        private readonly bool allowRandom;
         private float scale;
         private float hue, sat, val;
 
@@ -43,10 +44,11 @@ namespace GHelper.UI
 
         private int S(int v) => (int)Math.Round(v * scale);
 
-        public RColorPicker(Color initial)
+        public RColorPicker(Color initial, bool allowRandom = false)
         {
             Color = initial;
             originalColor = initial;
+            this.allowRandom = allowRandom;
             (hue, sat, val) = RgbToHsv(initial);
 
             Font = new Font("Segoe UI", 9F);
@@ -117,6 +119,13 @@ namespace GHelper.UI
             var cancel = new RButton { Text = "Cancel", Size = new Size(S(84), S(28)), DialogResult = DialogResult.Cancel };
             cancel.Location = new Point(S(formW - pad - 84), S(buttonsY));
             ok.Location = new Point(S(formW - pad - 84 - 8 - 84), S(buttonsY));
+
+            if (allowRandom)
+            {
+                var random = new RButton { Text = Properties.Strings.AuraRandomColor, Size = new Size(S(84), S(28)), Location = new Point(S(pad), S(buttonsY)) };
+                random.Click += (s, e) => Apply(Color.Black);
+                Controls.Add(random);
+            }
 
             Controls.AddRange(new Control[] { svPanel, huePanel, preview, hexLabel, hexBox, rgbLabel, ok, cancel });
 

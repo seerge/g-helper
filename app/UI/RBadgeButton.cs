@@ -40,14 +40,25 @@ namespace GHelper.UI
                 pevent.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
                 pevent.Graphics.FillEllipse(brush, badgeRect);
 
-                using (Font badgeFont = new Font("Arial", (float)(0.8 * Font.Size), FontStyle.Bold))
+                using (GraphicsPath path = new GraphicsPath())
+                using (FontFamily family = new FontFamily("Segoe UI"))
                 using (StringFormat sf = StringFormat.GenericTypographic)
                 {
-                    string text = badge.ToString();
-                    SizeF textSize = pevent.Graphics.MeasureString(text, badgeFont, PointF.Empty, sf);
-                    float x = badgeRect.X + (badgeRect.Width - textSize.Width) / 2f;
-                    float y = badgeRect.Y + (badgeRect.Height - textSize.Height) / 2f;
-                    pevent.Graphics.DrawString(text, badgeFont, Brushes.White, x, y, sf);
+                    path.AddString(badge.ToString(), family, (int)FontStyle.Bold, 100f, PointF.Empty, sf);
+                    path.Flatten();
+
+                    RectangleF ink = path.GetBounds();
+                    float scale = radius * 1.1f / ink.Height;
+                    float anchorX = ink.X + ink.Width / 2f + (badge == 1 ? ink.Width * 0.10f : 0f);
+
+                    using (System.Drawing.Drawing2D.Matrix m = new System.Drawing.Drawing2D.Matrix())
+                    {
+                        m.Translate(badgeRect.X + badgeRect.Width / 2f, badgeRect.Y + badgeRect.Height / 2f);
+                        m.Scale(scale, scale);
+                        m.Translate(-anchorX, -(ink.Y + ink.Height / 2f));
+                        path.Transform(m);
+                    }
+                    pevent.Graphics.FillPath(Brushes.White, path);
                 }
             }
         }

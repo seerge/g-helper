@@ -64,10 +64,12 @@ public sealed class KeyboardHook : IDisposable
         keybd_event((byte)key, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, IntPtr.Zero);
     }
 
-    public static void KeyKeyKeyPress(Keys key, Keys key2, Keys key3, int sleep = 1)
+    public static void KeyKeyKeyPress(Keys key, Keys key2, Keys key3, int sleep = 1, int interSleep = 0)
     {
         keybd_event((byte)key, 0, KEYEVENTF_EXTENDEDKEY, IntPtr.Zero);
+        Thread.Sleep(interSleep);
         keybd_event((byte)key2, 0, KEYEVENTF_EXTENDEDKEY, IntPtr.Zero);
+        Thread.Sleep(interSleep);
         keybd_event((byte)key3, 0, KEYEVENTF_EXTENDEDKEY, IntPtr.Zero);
 
         Thread.Sleep(sleep);
@@ -98,7 +100,6 @@ public sealed class KeyboardHook : IDisposable
     private class Window : NativeWindow, IDisposable
     {
         private static int WM_HOTKEY = 0x0312;
-        public static Keys? fakeKey;
 
         public Window()
         {
@@ -181,6 +182,7 @@ public sealed class KeyboardHook : IDisposable
         {
             UnregisterHotKey(_window.Handle, i);
         }
+        _currentId = 0;
     }
 
     public void Dispose()
@@ -228,5 +230,6 @@ public enum ModifierKeys : uint
     Alt = 1,
     Control = 2,
     Shift = 4,
-    Win = 8
+    Win = 8,
+    NoRepeat = 0x4000
 }

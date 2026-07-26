@@ -76,7 +76,7 @@ public static class AsusHid
             {
                 isValid = device.GetReportDescriptor().TryGetReport(ReportType.Feature, reportId, out _);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //Logger.WriteLine($"Error getting report descriptor for device {device.ProductID.ToString("X")}: {ex.Message}");
             }

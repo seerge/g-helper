@@ -166,7 +166,7 @@
     <value>Застосувати</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Застосувати профілі кулерів</value>
+    <value>Apply Fan Curve</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Застосувати потужність</value>
@@ -309,6 +309,12 @@
   <data name="BootSound" xml:space="preserve">
     <value>Звук завантаження</value>
   </data>
+  <data name="BacklightDown" xml:space="preserve">
+    <value>Backlight Down</value>
+  </data>
+  <data name="BacklightUp" xml:space="preserve">
+    <value>Backlight Up</value>
+  </data>
   <data name="Brightness" xml:space="preserve">
     <value>Яскравість</value>
   </data>
@@ -444,7 +450,7 @@
     <value>FN-Lock Увімк.</value>
   </data>
   <data name="WinLockToggle" xml:space="preserve">
-    <value>Win-Lock Toggle</value>
+    <value>Перемикач утримання Win</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Dynamic Boost</value>
@@ -716,6 +722,9 @@
   <data name="RestartGPU" xml:space="preserve">
     <value>Щось використовує dGPU та запобігає Еко-режиму. Дозвольте G-Helper спробувати перезапустити dGPU у менеджері пристрою? (Будь ласка, продовжуйте на власний ризик)</value>
   </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
+  </data>
   <data name="RPM" xml:space="preserve">
     <value>Оберти</value>
   </data>
@@ -882,7 +891,7 @@
     <value>Завантаження</value>
   </data>
   <data name="SlashBitStream" xml:space="preserve">
-    <value>Bit Stream</value>
+    <value>Бітовий потік</value>
   </data>
   <data name="SlashTransmission" xml:space="preserve">
     <value>Трансмісія</value>
@@ -894,31 +903,31 @@
     <value>Flux</value>
   </data>
   <data name="SlashPhantom" xml:space="preserve">
-    <value>Phantom</value>
+    <value>Фантом</value>
   </data>
   <data name="SlashSpectrum" xml:space="preserve">
-    <value>Spectrum</value>
+    <value>Спектр</value>
   </data>
   <data name="SlashHazard" xml:space="preserve">
-    <value>Hazard</value>
+    <value>Небезпека</value>
   </data>
   <data name="SlashInterfacing" xml:space="preserve">
-    <value>Interfacing</value>
+    <value>Взаємодія</value>
   </data>
   <data name="SlashRamp" xml:space="preserve">
-    <value>Ramp</value>
+    <value>Рампа</value>
   </data>
   <data name="SlashGameOver" xml:space="preserve">
-    <value>Game Over</value>
+    <value>Кінець гри</value>
   </data>
   <data name="SlashStart" xml:space="preserve">
     <value>Запустити</value>
   </data>
   <data name="SlashBuzzer" xml:space="preserve">
-    <value>Buzzer</value>
+    <value>Дзвінок</value>
   </data>
   <data name="SlashStatic" xml:space="preserve">
-    <value>Static</value>
+    <value>Фіксовано</value>
   </data>
   <data name="SlashBatteryLevel" xml:space="preserve">
     <value>Заряд батареї</value>
