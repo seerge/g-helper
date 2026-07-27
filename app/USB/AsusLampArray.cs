@@ -107,7 +107,7 @@ public static class AsusLampArray
         {
             byte[] attr = new byte[featLen];
             attr[0] = RidAttr;
-            stream!.GetFeature(attr);
+            lock (AsusHid.hidLock) stream!.GetFeature(attr);
             int count = attr[1] | (attr[2] << 8);
             if (count > 0 && count <= 512) return count;
         }
@@ -126,10 +126,13 @@ public static class AsusLampArray
             {
                 byte[] req = new byte[featLen];
                 req[0] = RidRequest; req[1] = (byte)i; req[2] = (byte)(i >> 8);
-                stream!.SetFeature(req);
                 byte[] resp = new byte[featLen];
                 resp[0] = RidResponse;
-                stream.GetFeature(resp);
+                lock (AsusHid.hidLock)
+                {
+                    stream!.SetFeature(req);
+                    stream.GetFeature(resp);
+                }
                 xs[i] = BitConverter.ToInt32(resp, 3);
                 keyboard[i] = (BitConverter.ToUInt32(resp, 19) & PURPOSE_CONTROL) != 0;
             }
@@ -155,7 +158,7 @@ public static class AsusLampArray
         Array.Copy(data, buf, Math.Min(data.Length, featLen));
         try
         {
-            s.SetFeature(buf);
+            lock (AsusHid.hidLock) s.SetFeature(buf);
         }
         catch (Exception ex)
         {
@@ -168,9 +171,12 @@ public static class AsusLampArray
 
     static void Control()
     {
-        AsusHid.SetFeatureAura(new byte[] { AsusHid.AURA_ID, 0xC0, 0x03, 0x01 });
-        Send(new byte[] { RidControl, 0x01 });
-        Send(new byte[] { RidControl, 0x00 });
+        lock (AsusHid.hidLock)
+        {
+            AsusHid.SetFeatureAura(new byte[] { AsusHid.AURA_ID, 0xC0, 0x03, 0x01 });
+            Send(new byte[] { RidControl, 0x01 });
+            Send(new byte[] { RidControl, 0x00 });
+        }
         controlled = stream != null;
     }
 
@@ -185,8 +191,11 @@ public static class AsusLampArray
 
     static void Reset()
     {
-        if (Reopen()) Send(new byte[] { RidControl, 0x01 });
-        AsusHid.SetFeatureAura(new byte[] { AsusHid.AURA_ID, 0xC0, 0x04, 0x01, 0x01 });
+        lock (AsusHid.hidLock)
+        {
+            if (Reopen()) Send(new byte[] { RidControl, 0x01 });
+            AsusHid.SetFeatureAura(new byte[] { AsusHid.AURA_ID, 0xC0, 0x04, 0x01, 0x01 });
+        }
         controlled = false;
     }
 
