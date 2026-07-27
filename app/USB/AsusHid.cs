@@ -14,6 +14,8 @@ public static class AsusHid
     public static int[] REAR_LIGHT_PIDS = { 0x18c6 };
     public static int[] ALL_PIDS = MAIN_AURA_PIDS.Concat(REAR_LIGHT_PIDS).ToArray();
 
+    public static readonly object hidLock = new();
+
     static HidStream? auraStream;
     static int auraFeatLen;
     static byte[]? auraScratch;
@@ -118,6 +120,7 @@ public static class AsusHid
 
     public static void WriteInput(byte[] data, string? log = "USB")
     {
+        lock (hidLock)
         foreach (var device in FindDevices(INPUT_ID))
         {
             try
@@ -153,6 +156,7 @@ public static class AsusHid
         var devices = FindDevices(AURA_ID, pids);
         if (devices is null) return;
 
+        lock (hidLock)
         foreach (var device in devices)
             try
             {
@@ -192,7 +196,7 @@ public static class AsusHid
                 Array.Copy(data, auraScratch, data.Length);
                 payload = auraScratch;
             }
-            auraStream.SetFeature(payload);
+            lock (hidLock) auraStream.SetFeature(payload);
         }
         catch (Exception ex)
         {

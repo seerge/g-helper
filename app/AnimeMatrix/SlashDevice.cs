@@ -1,4 +1,5 @@
 ﻿using GHelper.AnimeMatrix.Communication;
+using GHelper.USB;
 using HidSharp.Reports;
 using System.Management;
 using System.Text;
@@ -277,7 +278,7 @@ namespace GHelper.AnimeMatrix
 
         public void Set(Packet packet, string? log = null)
         {
-            _usbProvider?.Set(packet.Data);
+            lock (AsusHid.hidLock) _usbProvider?.Set(packet.Data);
             if (log is not null) Logger.WriteLine($"{log}:" + BitConverter.ToString(packet.Data).Substring(0, 48));
         }
     }
