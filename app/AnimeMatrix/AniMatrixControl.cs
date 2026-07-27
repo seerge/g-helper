@@ -81,6 +81,7 @@ namespace GHelper.AnimeMatrix
                 try
                 {
                     deviceSlash.SetProvider();
+                    deviceSlash.DetectLength();
                 }
                 catch (Exception ex)
                 {

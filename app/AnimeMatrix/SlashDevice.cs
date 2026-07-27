@@ -114,7 +114,7 @@ namespace GHelper.AnimeMatrix
             { SlashMode.FX3, 0x62},
         };
 
-        protected int Length { get; private set; }
+        protected int Length { get; set; }
 
         public SlashDevice(ushort productId = 0x193B) : base(0x0B05, productId, 128)
         {
@@ -154,6 +154,20 @@ namespace GHelper.AnimeMatrix
             catch
             {
                 return false;
+            }
+        }
+
+        public void DetectLength()
+        {
+            lock (AsusHid.hidLock)
+            {
+                var query = CreatePacket([0xD1, 0x01, 0x00, 0x02]);
+                Set(query);
+                var response = _usbProvider?.Get(query.Data);
+                if (response is null || (response[5] & 1) == 0) return;
+
+                Logger.WriteLine($"SlashLength: {response[6]}");
+                if (response[6] > 0) Length = response[6];
             }
         }
 
@@ -249,6 +263,8 @@ namespace GHelper.AnimeMatrix
         {
             lock (AsusHid.hidLock)
             {
+                Set(CreatePacket([0xD2, 0x02, 0x01, 0x08, 0xAB]), null);
+                Set(CreatePacket([0xD3, 0x03, 0x01, 0x08, 0xAB, 0xFF, 0x01, 0x00, 0x06, 0xFF, 0xFF]), null);
                 Set(CreatePacket([0xD2, 0x02, 0x01, 0x08, 0xAC]), null);
                 Set(CreatePacket([0xD3, 0x03, 0x01, 0x08, 0xAC, 0xFF, 0xFF, 0x01, 0x05, 0xFF, 0xFF]), null);
                 Set(CreatePacket([0xD4, 0x00, 0x00, 0x01, 0xAC]), null);
