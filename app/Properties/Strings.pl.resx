@@ -310,10 +310,10 @@
     <value>Dźwięk podczas rozruchu</value>
   </data>
   <data name="BacklightDown" xml:space="preserve">
-    <value>Backlight Down</value>
+    <value>Podświetlenie –</value>
   </data>
   <data name="BacklightUp" xml:space="preserve">
-    <value>Backlight Up</value>
+    <value>Podświetlenie +</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Jasność</value>
@@ -450,7 +450,7 @@ Nadal chcesz kontynuować?</value>
     <value>Fn-Lock wł.</value>
   </data>
   <data name="WinLockToggle" xml:space="preserve">
-    <value>Win-Lock Toggle</value>
+    <value>Blokada klawisza Windows</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Dynamic Boost</value>
@@ -723,7 +723,7 @@ Nadal chcesz kontynuować?</value>
     <value>Coś korzysta z dGPU, uniemożliwiając włączenie trybu Eco. Czy G-Helper ma zresetować dGPU w Menadżerze Urządzeń? (Korzystasz na własne ryzyko)</value>
   </data>
   <data name="RestartingNVServices" xml:space="preserve">
-    <value>Restarting NV Services...</value>
+    <value>Restartowanie usług NV...</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
@@ -882,7 +882,7 @@ Nadal chcesz kontynuować?</value>
     <comment>Updated</comment>
   </data>
   <data name="SlashBounce" xml:space="preserve">
-    <value>Skaczący</value>
+    <value>Odbicia</value>
   </data>
   <data name="SlashMode" xml:space="preserve">
     <value>Slash</value>
@@ -891,13 +891,13 @@ Nadal chcesz kontynuować?</value>
     <value>Ładowanie</value>
   </data>
   <data name="SlashBitStream" xml:space="preserve">
-    <value>Strumień bitów</value>
+    <value>Strumień danych</value>
   </data>
   <data name="SlashTransmission" xml:space="preserve">
     <value>Transmisja</value>
   </data>
   <data name="SlashFlow" xml:space="preserve">
-    <value>Płynny</value>
+    <value>Przepływ</value>
   </data>
   <data name="SlashFlux" xml:space="preserve">
     <value>Strumień</value>
@@ -912,7 +912,7 @@ Nadal chcesz kontynuować?</value>
     <value>Zagrożenie</value>
   </data>
   <data name="SlashInterfacing" xml:space="preserve">
-    <value>Interfacing</value>
+    <value>Przeplatanie</value>
   </data>
   <data name="SlashRamp" xml:space="preserve">
     <value>Rampa</value>
@@ -945,10 +945,10 @@ Nadal chcesz kontynuować?</value>
     <value>Tryb ambient może zwiększyć zużycie zasobów</value>
   </data>
   <data name="MouseMotionSync" xml:space="preserve">
-    <value>Motion Sync</value>
+    <value>Synchronizacja ruchu</value>
   </data>
   <data name="MouseZoneMode" xml:space="preserve">
-    <value>Zone Mode</value>
+    <value>Tryb Zone</value>
   </data>
   <data name="DisablePCIeASPM" xml:space="preserve">
     <value>Wyłącz zarządzanie stanem łącza PCIe (po podłączeniu zasilania)</value>
@@ -968,9 +968,9 @@ i automatycznie je uruchamia, gdy GPU jest włączony</value>
 Zalecane, jeśli występują losowe zawieszenia lub niereagujący sprzęt.</value>
   </data>
   <data name="Overlay" xml:space="preserve">
-    <value>Overlay</value>
+    <value>Nakładka</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
-    <value>Overlay only in games</value>
+    <value>Nakładka tylko w grach</value>
   </data>
 </root>
