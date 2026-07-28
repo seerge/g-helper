@@ -123,13 +123,22 @@ namespace GHelper.AnimeMatrix
 
         public static SlashDevice? Detect()
         {
-            if (HasSlashInterface(0x19B6, 0x5D))
-                return new SlashDeviceAura();
+            SlashDevice? device = null;
 
-            if (HasSlashInterface(0x193B, 0x5E))
-                return new SlashDevice();
+            if (HasSlashInterface(0x19B6, 0x5D)) device = new SlashDeviceAura();
+            else if (HasSlashInterface(0x193B, 0x5E)) device = new SlashDevice();
 
-            return null;
+            try
+            {
+                device?.SetProvider();
+                device?.DetectLength();
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine($"SlashLength: {ex.Message}");
+            }
+
+            return device;
         }
 
         private static bool HasSlashInterface(ushort productId, byte reportId)

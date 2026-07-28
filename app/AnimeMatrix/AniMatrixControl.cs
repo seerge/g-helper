@@ -81,7 +81,6 @@ namespace GHelper.AnimeMatrix
                 try
                 {
                     deviceSlash.SetProvider();
-                    deviceSlash.DetectLength();
                 }
                 catch (Exception ex)
                 {
@@ -106,13 +105,19 @@ namespace GHelper.AnimeMatrix
                         _wakeUp = false;
                     }
 
-                    deviceSlash.SetEnabled(true);
-                    deviceSlash.Init();
+                    var custom = AppConfig.GetString("slash_custom");
+                    bool isCustom = (SlashMode)running is SlashMode.BatteryLevel or SlashMode.Audio or SlashMode.AudioSpectrum
+                        || ((SlashMode)running is SlashMode.Static && custom is not null && custom.Length > 0);
+
+                    if (!isCustom)
+                    {
+                        deviceSlash.SetEnabled(true);
+                        deviceSlash.Init();
+                    }
 
                     switch ((SlashMode)running)
                     {
                         case SlashMode.Static:
-                            var custom = AppConfig.GetString("slash_custom");
                             if (custom is not null && custom.Length > 0)
                             {
                                 Logger.WriteLine("Slash: Static");
@@ -361,7 +366,7 @@ namespace GHelper.AnimeMatrix
 
             if (deviceMatrix is null && deviceSlash is null) return;
 
-            if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastPresent) < 30)   return;
+            if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastPresent) < (deviceSlash is not null ? 60 : 30))   return;
             lastPresent = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
             int size = 20;
