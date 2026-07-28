@@ -308,9 +308,11 @@ namespace GHelper.Overlay
         {
             _flushTimer?.Dispose();
             _flushTimer = null;
-            CloseTrace(_traceHandle);
+            long session = _sessionHandle;
+            _sessionHandle = 0;
             var props = BuildSessionProperties();
-            StopTrace(_sessionHandle, SessionName, ref props);
+            StopTrace(session, SessionName, ref props);
+            CloseTrace(_traceHandle);
         }
 
         // Flush fast while a game renders, else once a second (the floor keeps the gate unstuck).

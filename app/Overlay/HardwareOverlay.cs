@@ -1107,8 +1107,6 @@ namespace GHelper.Overlay
             _dragging = false;
             _dragKey = false;
 
-            // Dispose triggers CloseTrace + StopTrace inside EtwFpsMonitor, which unblocks
-            // ProcessTrace so the background task thread can exit.
             _fps?.Dispose();
             _fps = null;
             _currentFps = 0;
