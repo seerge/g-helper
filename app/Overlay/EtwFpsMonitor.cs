@@ -15,15 +15,21 @@ namespace GHelper.Overlay
         private const uint PROCESS_TRACE_MODE_RAW_TIMESTAMP = 0x00001000; // EventHeader.TimeStamp = raw QPC ticks
         private const uint WNODE_FLAG_TRACED_GUID = 0x00020000;
 
+        // Win10 dxgkrnl has no Present_Info — count DXGI presents + kernel flips instead
+        private static readonly bool IsWin10 = Environment.OSVersion.Version.Build < 22000;
+
         // Microsoft-Windows-DxgKrnl provider — kernel present path shared by every graphics API
-        private static readonly Guid DxgKrnlProviderId =
+        private static readonly Guid DxgKrnlProviderId = IsWin10
+            ? new("CA11C036-0102-4A2D-A6AD-F03CFED5D3C9")
+            : new("802EC45A-1E99-4B83-9920-87C98277BA9D");
+        private static readonly Guid FlipProviderId =
             new("802EC45A-1E99-4B83-9920-87C98277BA9D");
 
         // DxgKrnl Present_Info — kernel D3DKMTPresent, once per frame for every present path
-        private const ushort EVENT_DXGKRNL_PRESENT_INFO = 184;
+        private static readonly ushort EVENT_DXGKRNL_PRESENT_INFO = (ushort)(IsWin10 ? 42 : 184);
 
         // Keyword bit carrying Present_Info — keeps high-volume kernel GPU events out
-        private const ulong DXGKRNL_KEYWORD_PRESENT = 0x0000000008000000UL;
+        private static readonly ulong DXGKRNL_KEYWORD_PRESENT = IsWin10 ? 0UL : 0x0000000008000000UL;
 
         // Kernel-side event-id filter — only Present_Info is delivered to the session.
         // (EVENT_FILTER_TYPE_PID is ignored by kernel-mode providers — PID is matched in the callback.)
@@ -172,6 +178,7 @@ namespace GHelper.Overlay
         private System.Threading.Timer? _flushTimer;
         private long _lastFlushTick;             // ≥1 s flush floor
         private volatile int _targetPid = -1;
+        private volatile bool _dxgiActiveForCurrentPid;
 
         // Rolling window of EventHeader.TimeStamp (kernel QPC at Present time) — ETW delivers
         // events in batches, so callback-time timestamps would collapse to fps = N/~0.
@@ -193,6 +200,7 @@ namespace GHelper.Overlay
                 _targetPid = value;
                 _frameHead = 0;
                 _framesFilled = 0;
+                _dxgiActiveForCurrentPid = false;
                 if (_sessionHandle == 0) return;
                 if (value == 0)
                     EnableTraceEx2(_sessionHandle, DxgKrnlProviderId, EVENT_CONTROL_CODE_DISABLE_PROVIDER, 0, 0, 0, 0, IntPtr.Zero);
@@ -204,6 +212,10 @@ namespace GHelper.Overlay
         // ETW copies the filter buffers internally — they're freed immediately in the finally.
         private void EnableProvider()
         {
+            if (IsWin10)
+                EnableTraceEx2(_sessionHandle, FlipProviderId, EVENT_CONTROL_CODE_ENABLE_PROVIDER,
+                    TRACE_LEVEL_INFORMATION, 0x0000040000000000UL, 0, 0, IntPtr.Zero);
+
             IntPtr desc       = Marshal.AllocHGlobal(Marshal.SizeOf<EVENT_FILTER_DESCRIPTOR>());
             IntPtr eventIdBuf = Marshal.AllocHGlobal(8);
             IntPtr paramsPtr  = Marshal.AllocHGlobal(Marshal.SizeOf<ENABLE_TRACE_PARAMETERS>());
@@ -333,11 +345,16 @@ namespace GHelper.Overlay
 
         private void OnEventRecord(ref EVENT_RECORD record)
         {
-            if (record.EventHeader.ProviderId != DxgKrnlProviderId
-                || record.EventHeader.Id != EVENT_DXGKRNL_PRESENT_INFO) return;
+            bool flip = IsWin10 && record.EventHeader.ProviderId == FlipProviderId
+                && record.EventHeader.Task == 14 && record.EventHeader.Opcode == 1; // DxgKrnl Flip_Start
+            if (!flip && (record.EventHeader.ProviderId != DxgKrnlProviderId
+                || record.EventHeader.Id != EVENT_DXGKRNL_PRESENT_INFO)) return;
 
             int targetPid = _targetPid;
             if (targetPid <= 0 || (int)record.EventHeader.ProcessId != targetPid) return;
+
+            if (flip && _dxgiActiveForCurrentPid) return;
+            if (IsWin10 && !flip) _dxgiActiveForCurrentPid = true;
 
             _frameTimes[_frameHead] = record.EventHeader.TimeStamp;
             _frameHead = (_frameHead + 1) % RollingWindowSize;
