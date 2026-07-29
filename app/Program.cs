@@ -486,6 +486,7 @@ namespace GHelper
                 trayIcon.Dispose();
             }
 
+            GdiDimmer.Shutdown();
             PeripheralsProvider.UnregisterForDeviceEvents();
             clamshellControl.UnregisterDisplayEvents();
             NativeMethods.UnregisterPowerSettingNotification(unRegPowerNotify);
