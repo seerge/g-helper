@@ -32,6 +32,7 @@ namespace GHelper.Display
         DimmingDuo = 109,
 
         GamutMode = 200,
+        GamutModeDuo = 201,
 
         Default = 11,
         Racing = 21,
@@ -42,6 +43,8 @@ namespace GHelper.Display
         Vivid = 13,
         Eyecare = 17,
         EReading = 212,
+        EReadingVivo = 210,
+        EReadingVivoDuo = 211,
         Disabled = 18,
     }
     public static class VisualControl
@@ -248,6 +251,7 @@ namespace GHelper.Display
 
             AppConfig.Set("gamut", mode);
 
+            if (AppConfig.IsDUO()) RunSplendid(SplendidCommand.GamutModeDuo, 0, mode);
             var result = RunSplendid(SplendidCommand.GamutMode, 0, mode);
             if (result == 0) return;
             if (result == -1)
@@ -316,6 +320,10 @@ namespace GHelper.Display
                         param2 = whiteBalance;
                         break;
                 }
+
+                bool isDuo = AppConfig.IsDUO() && AppConfig.IsVivoZenPro();
+                if (isDuo && mode == SplendidCommand.EReading) mode = SplendidCommand.EReadingVivo;
+                if (isDuo) RunSplendid(mode == SplendidCommand.EReadingVivo ? SplendidCommand.EReadingVivoDuo : mode + 100, param1, param2, param3);
 
                 int result = RunSplendid(mode, param1, param2, param3);
                 if (result == 0) return;
