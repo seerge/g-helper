@@ -646,6 +646,7 @@ namespace GHelper
 
                 int current = Program.acpi.GetVramMem();
                 if (current == 0) current = (int)((HardwareControl.AmdApu().GetVramInfo()?.totalMb ?? 0) / unitMb);
+                if (current == 0) current = AppConfig.Get("vram_mem", 0);
 
                 comboAPU.SelectedIndex = Math.Max(0, Array.IndexOf(vramOptions, current));
             }
@@ -669,7 +670,11 @@ namespace GHelper
             int mem = comboAPU.SelectedIndex;
 
             if (vramOptions.Length == 0) Program.acpi.SetAPUMem(mem);
-            else Program.acpi.SetVramMem(vramOptions[mem]);
+            else
+            {
+                Program.acpi.SetVramMem(vramOptions[mem]);
+                AppConfig.Set("vram_mem", vramOptions[mem]);
+            }
 
             DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertAPUMemoryRestart, Properties.Strings.AlertAPUMemoryRestartTitle, MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
