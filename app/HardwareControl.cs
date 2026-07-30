@@ -46,6 +46,9 @@ public static class HardwareControl
     public static int? vramUsedMb;
     public static int? ramUsedMb;
 
+    // Intel Raptor Lake VID telemetry (from IA32_PERF_STATUS MSR 0x198)
+    public static float? cpuVid;
+
     // Set by the overlay so ReadSensorsOverlay skips sensors that won't be
     // displayed in the current mode (fan ACPI calls and CPU usage counter).
     public static bool readFans;
@@ -787,25 +790,41 @@ public static class HardwareControl
     private static PawnIO.IntelMsr? _intelMsr;
     private static bool _intelMsrPowerFailed;
 
-    private static float? GetIntelMsrPower()
+    private static PawnIO.IntelMsr? EnsureIntelMsr()
     {
         if (_intelMsrPowerFailed || PawnIO.CpuInfo.IsAMD) return null;
+        if (_intelMsr != null) return _intelMsr;
+        
         try
         {
-            if (_intelMsr == null)
+            var msr = new PawnIO.IntelMsr();
+            if (!msr.Initialize(typeof(HardwareControl).Assembly))
             {
-                var msr = new PawnIO.IntelMsr();
-                if (!msr.Initialize(typeof(HardwareControl).Assembly))
-                {
-                    msr.Dispose();
-                    _intelMsrPowerFailed = true;
-                    Logger.WriteLine("Intel MSR: PawnIO/IntelMSR module unavailable (not installed?)");
-                    return null;
-                }
-                _intelMsr = msr;
-                Logger.WriteLine("CPU Power source: Intel RAPL MSR (PawnIO)");
+                msr.Dispose();
+                _intelMsrPowerFailed = true;
+                Logger.WriteLine("Intel MSR: PawnIO/IntelMSR module unavailable (not installed?)");
+                return null;
             }
-            float? power = _intelMsr.GetPackagePower();
+            _intelMsr = msr;
+            Logger.WriteLine("CPU Power/VID source: Intel RAPL MSR (PawnIO)");
+            return _intelMsr;
+        }
+        catch (Exception ex)
+        {
+            _intelMsrPowerFailed = true;
+            Logger.WriteLine("Intel MSR init failed: " + ex.Message);
+            return null;
+        }
+    }
+
+    private static float? GetIntelMsrPower()
+    {
+        var msr = EnsureIntelMsr();
+        if (msr == null) return null;
+        
+        try
+        {
+            float? power = msr.GetPackagePower();
             return power > 0 ? power : null;
         }
         catch (Exception ex)
@@ -947,11 +966,18 @@ public static class HardwareControl
             }
 
             gpuPower = iGpuPower ?? GetGPUPower();
+
+            // Intel Raptor Lake VID telemetry
+            if (PawnIO.CpuInfo.IsIntel && PawnIO.IntelMicrocodeCheck.IsRaptorLake)
+                cpuVid = EnsureIntelMsr()?.GetCoreVoltage();
+            else
+                cpuVid = null;
         }
         else
         {
             cpuPower = null;
             gpuPower = null;
+            cpuVid = null;
         }
 
         if (readBattery) ReadBatteryState();

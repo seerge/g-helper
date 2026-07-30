@@ -1,4 +1,4 @@
-﻿using GHelper.Ally;
+using GHelper.Ally;
 using GHelper.AnimeMatrix;
 using GHelper.AutoUpdate;
 using GHelper.Battery;
@@ -1603,8 +1603,51 @@ namespace GHelper
             gpuControl.KillGPUApps();
         }
 
+        private bool _intelBannerChecked = false;
+
+        private void CheckIntelMicrocodeBanner()
+        {
+            if (_intelBannerChecked) return;
+            // StatusSummary is empty until the async initialization in Program.cs completes
+            if (PawnIO.CpuInfo.IsIntel && !string.IsNullOrEmpty(PawnIO.IntelMicrocodeCheck.StatusSummary))
+            {
+                if (InvokeRequired)
+                {
+                    Invoke(delegate { CheckIntelMicrocodeBanner(); });
+                    return;
+                }
+
+                _intelBannerChecked = true;
+                if (PawnIO.IntelMicrocodeCheck.IsVulnerable)
+                {
+                    var panelIntelWarning = new Panel
+                    {
+                        Dock = DockStyle.Top,
+                        Height = 40,
+                        BackColor = colorTurbo, // Use the red turbo color for alert
+                        Padding = new Padding(10)
+                    };
+
+                    var labelWarning = new Label
+                    {
+                        Text = PawnIO.IntelMicrocodeCheck.StatusSummary + ". Please update your BIOS immediately.",
+                        ForeColor = Color.White,
+                        Dock = DockStyle.Fill,
+                        TextAlign = ContentAlignment.MiddleLeft,
+                        Font = new Font("Segoe UI", 9F, FontStyle.Bold)
+                    };
+
+                    panelIntelWarning.Controls.Add(labelWarning);
+                    Controls.Add(panelIntelWarning);
+                    panelIntelWarning.BringToFront();
+                }
+            }
+        }
+
         public async void RefreshSensors(bool force = false)
         {
+            CheckIntelMicrocodeBanner();
+
             int throttle = (!Visible && sensorsAlways) ? 6000 : 2000;
             if (!force && Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastRefresh) < throttle) return;
             lastRefresh = DateTimeOffset.Now.ToUnixTimeMilliseconds();
