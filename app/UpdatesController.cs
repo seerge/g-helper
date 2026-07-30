@@ -14,6 +14,7 @@ namespace GHelper
         public const int STATUS_NEW = 1;
         public const int STATUS_UPTODATE = -1;
         public const int STATUS_NOT_FOUND = 2;
+        public const int STATUS_HIDDEN = 3;
 
         public struct DriverUpdate
         {
@@ -78,10 +79,11 @@ namespace GHelper
                 {
                     var file = files[j];
                     var title = file.GetProperty("Title").ToString();
+                    var version = file.GetProperty("Version").ToString().Replace("V", "");
+                    if (title.Contains("Realtek LAN")) title += " " + Major(version);
 
                     if (oldTitle != title && !SkipList.Contains(title) && !title.Contains("Armoury Crate"))
                     {
-                        var version = file.GetProperty("Version").ToString().Replace("V", "");
                         updates.Add(new DriverUpdate
                         {
                             categoryName = categoryName,
@@ -135,6 +137,8 @@ namespace GHelper
                     foreach (var h in updates[n].hardwares) needStaged.Add(h);
             }
 
+            HideAbsentAdapters(updates, inventory, installed, needStaged);
+
             var staged = needStaged.Count > 0 ? BuildStagedVersions(needStaged, token) : null;
 
             HashSet<string>? packages = null;
@@ -143,7 +147,7 @@ namespace GHelper
                 var u = updates[n];
                 var version = installed[n];
                 if (version is null && staged is not null && u.hardwares.Length > 0)
-                    version = MaxVersion(u.hardwares.Where(staged.ContainsKey).Select(h => staged[h]));
+                    version = MaxVersion(u.hardwares.Where(staged.ContainsKey).Select(h => staged[h]).Where(v => Major(v) == Major(u.version)));
 
                 if (version is not null && Version.TryParse(u.version, out var sv) && Version.TryParse(version, out var iv))
                 {
@@ -159,6 +163,29 @@ namespace GHelper
                 }
 
                 updates[n] = u;
+            }
+        }
+
+        static void HideAbsentAdapters(List<DriverUpdate> updates, List<LocalDriver> inventory, string?[] installed, HashSet<string> needStaged)
+        {
+            foreach (var keys in new[] { new[] { "Bluetooth" }, new[] { "WLAN", "Wireless LAN", "Wi-Fi", "WiFi" }, new[] { "Realtek LAN" } })
+            {
+                var members = Enumerable.Range(0, updates.Count)
+                    .Where(n => updates[n].hardwares.Length > 0 && keys.Any(k => updates[n].title.Contains(k, StringComparison.OrdinalIgnoreCase)))
+                    .ToList();
+                if (members.Count < 2) continue;
+                var radio = inventory.Where(d => !d.isExtension && keys.Any(k => d.entry.Contains(k, StringComparison.OrdinalIgnoreCase)))
+                    .OrderBy(d => d.entry.StartsWith("Microsoft")).FirstOrDefault();
+                if (!members.Any(n => installed[n] is not null) && radio.entry is null) continue;
+
+                foreach (var n in members.Where(n => installed[n] is null))
+                {
+                    var u = updates[n];
+                    u.status = STATUS_HIDDEN;
+                    foreach (var h in u.hardwares) needStaged.Remove(h);
+                    Logger.WriteLine(u.title + " = hidden, detected: " + radio.entry);
+                    updates[n] = u;
+                }
             }
         }
 

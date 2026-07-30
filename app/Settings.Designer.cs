@@ -2014,6 +2014,7 @@ namespace GHelper
             buttonEnergySaver.TabIndex = 39;
             buttonEnergySaver.Text = "Energy Saver";
             buttonEnergySaver.UseVisualStyleBackColor = false;
+            buttonEnergySaver.Visible = false;
             // 
             // buttonAmdOled
             // 

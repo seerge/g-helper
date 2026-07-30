@@ -223,7 +223,6 @@ namespace GHelper.UI
         }
 
         bool _moving = false;
-        SizeF _delta;
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
@@ -231,17 +230,10 @@ namespace GHelper.UI
 
             Focus();
 
-            // Difference between tumb and mouse position.
-            _delta = new SizeF(e.Location.X - _thumbPos.X, e.Location.Y - _thumbPos.Y);
-            if (_delta.Width * _delta.Width + _delta.Height * _delta.Height <= _radius * _radius)
-            {
-                // Clicking inside thumb.
-                _moving = true;
-            }
-
             AnimateInner(InnerPressed);
             _calculateValue(e);
 
+            _moving = true;
         }
 
         private void _calculateValue(MouseEventArgs e)

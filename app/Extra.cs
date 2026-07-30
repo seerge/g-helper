@@ -14,6 +14,9 @@ namespace GHelper
 
         ClamshellModeControl clamshellControl = new ClamshellModeControl();
 
+        int coresMinP = AsusACPI.PCoreMin;
+        int coresMinE = AsusACPI.ECoreMin;
+
         const string EMPTY = "--------------";
 
 
@@ -24,6 +27,10 @@ namespace GHelper
             Dictionary<string, string> customActions = new Dictionary<string, string>
             {
               {"", EMPTY},
+              {"volume_down", Properties.Strings.VolumeDown},
+              {"volume_up", Properties.Strings.VolumeUp},
+              {"backlight_down", Properties.Strings.BacklightDown},
+              {"backlight_up", Properties.Strings.BacklightUp},
               {"mute", Properties.Strings.VolumeMute},
               {"screenshot", Properties.Strings.PrintScreen},
               {"play", Properties.Strings.PlayPause},
@@ -58,9 +65,11 @@ namespace GHelper
             {
                 case "m1":
                     customActions[""] = Properties.Strings.VolumeDown;
+                    customActions.Remove("volume_down");
                     break;
                 case "m2":
                     customActions[""] = Properties.Strings.VolumeUp;
+                    customActions.Remove("volume_up");
                     break;
                 case "m3":
                     customActions[""] = Properties.Strings.MuteMic;
@@ -69,6 +78,10 @@ namespace GHelper
                 case "m4":
                     customActions[""] = Properties.Strings.OpenGHelper;
                     customActions.Remove("ghelper");
+                    break;
+                case "m5":
+                    customActions[""] = Properties.Strings.PerformanceMode;
+                    customActions.Remove("performance");
                     break;
                 case "fnf4":
                     customActions[""] = Properties.Strings.ToggleAura;
@@ -108,8 +121,11 @@ namespace GHelper
                 if (combo.SelectedValue is not null)
                     AppConfig.Set(name, combo.SelectedValue.ToString());
 
-                if (name == "m1" || name == "m2")
+                if (name == "m1" || name == "m2" || name == "m3" || name == "m4" || name == "m5")
+                {
+                    MKeyControl.ApplyAll();
                     Program.inputDispatcher.RegisterKeys();
+                }
 
             };
 
@@ -125,6 +141,7 @@ namespace GHelper
             InitializeComponent();
 
             labelBindings.Text = Properties.Strings.KeyBindings;
+            buttonResetBindings.Text = Properties.Strings.Reset;
             labelBacklightTitle.Text = Properties.Strings.LaptopBacklight;
             labelSettings.Text = Properties.Strings.Other;
 
@@ -182,6 +199,9 @@ namespace GHelper
             comboM2.AccessibleName = "M2 Action";
             comboM3.AccessibleName = "M3 Action";
             comboM4.AccessibleName = "M4 Action";
+            comboM5.AccessibleName = "M5 Action";
+
+            labelM5.Visible = comboM5.Visible = textM5.Visible = false;
             comboFNF4.AccessibleName = "Fn+F4 Action";
             comboFNC.AccessibleName = "Fn+C Action";
             comboFNV.AccessibleName = "Fn+V Action";
@@ -308,6 +328,8 @@ namespace GHelper
             if (AppConfig.IsStrix())
             {
                 labelM4.Text = "M5/ROG";
+                labelM5.Visible = comboM5.Visible = textM5.Visible = true;
+                SetKeyCombo(comboM5, textM5, "m5");
             }
 
 
@@ -455,6 +477,11 @@ namespace GHelper
             checkStatusLed.Checked = (statusLed > 0);
             checkStatusLed.CheckedChanged += CheckLEDStatus_CheckedChanged;
 
+            int numberPad = AppConfig.IsStrix() ? NumberPad.Get() : -1;
+            checkNumberPad.Visible = numberPad >= 0;
+            checkNumberPad.Checked = numberPad == 1;
+            checkNumberPad.CheckedChanged += CheckNumberPad_CheckedChanged;
+
             var optimalBrightness = ScreenControl.GetOptimalBrightness();
             if (optimalBrightness >= 0)
             {
@@ -465,6 +492,7 @@ namespace GHelper
             }
 
             pictureHelp.Click += PictureHelp_Click;
+            buttonResetBindings.Click += ButtonResetBindings_Click;
             buttonServices.Click += ButtonServices_Click;
 
             pictureLog.Click += PictureLog_Click;
@@ -518,6 +546,11 @@ namespace GHelper
             InputDispatcher.SetStatusLED(checkStatusLed.Checked);
         }
 
+        private void CheckNumberPad_CheckedChanged(object? sender, EventArgs e)
+        {
+            NumberPad.Set(checkNumberPad.Checked);
+        }
+
         private void InitACPITesting()
         {
             pictureScan.Visible = true;
@@ -548,8 +581,10 @@ namespace GHelper
 
         private void InitCores()
         {
+            if (PawnIO.CpuInfo.IsAMD) return;
+
             (int eCores, int pCores) = Program.acpi.GetCores();
-            (int eCoresMax, int pCoresMax) = Program.acpi.GetCores(true);
+            (int eCoresMax, int pCoresMax) = Program.acpi.GetCores(AsusACPI.CORES_MAX);
 
             if (eCores < 0 || pCores < 0 || eCoresMax < 0 || pCoresMax < 0)
             {
@@ -565,16 +600,23 @@ namespace GHelper
             eCoresMax = Math.Max(4, eCoresMax);
             pCoresMax = Math.Max(4, pCoresMax);
 
+            (int eMin, int pMin) = Program.acpi.GetCores(AsusACPI.CORES_MIN);
+            if (pMin >= 1)
+            {
+                coresMinP = Math.Min(pMin, pCoresMax);
+                coresMinE = Math.Min(eMin, eCoresMax);
+            }
+
             panelCores.Visible = true;
 
             comboCoresE.DropDownStyle = ComboBoxStyle.DropDownList;
             comboCoresP.DropDownStyle = ComboBoxStyle.DropDownList;
 
-            for (int i = AsusACPI.PCoreMin; i <= pCoresMax; i++) comboCoresP.Items.Add(i.ToString() + " Pcores");
-            for (int i = AsusACPI.ECoreMin; i <= eCoresMax; i++) comboCoresE.Items.Add(i.ToString() + " Ecores");
+            for (int i = coresMinP; i <= pCoresMax; i++) comboCoresP.Items.Add(i.ToString() + " Pcores");
+            for (int i = coresMinE; i <= eCoresMax; i++) comboCoresE.Items.Add(i.ToString() + " Ecores");
 
-            comboCoresP.SelectedIndex = Math.Max(Math.Min(pCores - AsusACPI.PCoreMin, comboCoresP.Items.Count - 1), 0);
-            comboCoresE.SelectedIndex = Math.Max(Math.Min(eCores - AsusACPI.ECoreMin, comboCoresE.Items.Count - 1), 0);
+            comboCoresP.SelectedIndex = Math.Max(Math.Min(pCores - coresMinP, comboCoresP.Items.Count - 1), 0);
+            comboCoresE.SelectedIndex = Math.Max(Math.Min(eCores - coresMinE, comboCoresE.Items.Count - 1), 0);
 
             buttonCores.Click += ButtonCores_Click;
 
@@ -586,7 +628,7 @@ namespace GHelper
 
             if (dialogResult == DialogResult.Yes)
             {
-                Program.acpi.SetCores(AsusACPI.ECoreMin + comboCoresE.SelectedIndex, AsusACPI.PCoreMin + comboCoresP.SelectedIndex);
+                Program.acpi.SetCores(coresMinE + comboCoresE.SelectedIndex, coresMinP + comboCoresP.SelectedIndex);
                 Process.Start("shutdown", "/r /t 1");
             }
         }
@@ -773,6 +815,20 @@ namespace GHelper
         private void PictureHelp_Click(object? sender, EventArgs e)
         {
             Process.Start(new ProcessStartInfo("https://github.com/seerge/g-helper/wiki/Power-user-settings#custom-hotkey-actions") { UseShellExecute = true });
+        }
+
+        private void ButtonResetBindings_Click(object? sender, EventArgs e)
+        {
+            comboM1.SelectedValue = "";
+            comboM2.SelectedValue = "";
+            comboM3.SelectedValue = "";
+            comboM4.SelectedValue = "";
+            comboM5.SelectedValue = "";
+
+            textM1.Text = textM2.Text = textM3.Text = textM4.Text = textM5.Text = "";
+
+            MKeyControl.Reset();
+            Program.inputDispatcher.RegisterKeys();
         }
 
         private void CheckNoOverdrive_CheckedChanged(object? sender, EventArgs e)

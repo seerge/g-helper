@@ -7,7 +7,7 @@ namespace GHelper.UI
 
         // Design tokens
         private const float HoverShiftAmount = 0.04f;
-        private const float ActiveTopLighten = 0.25f;
+        private const float ActiveTopLighten = 0.15f;
         private const float RestTopLighten = 0.1f;
         private const int ActiveBgTopAlpha = 32;
         private const float ActiveBgEndFraction = 0.20f;
