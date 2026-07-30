@@ -71,6 +71,8 @@ namespace GHelper.Gpu
 
             Aura.CustomRGB.ApplyGPUColor(gpuMode);
 
+            Task.Run(CheckGpuError);
+
         }
 
 
@@ -362,6 +364,19 @@ namespace GHelper.Gpu
 
             Logger.WriteLine("Forcing Standard Mode on shutdown");
             Program.acpi.SetGPUEco(0);
+        }
+
+        public static string? gpuError = null;
+
+        void CheckGpuError()
+        {
+            string? error = DeviceHelper.GetGpuError();
+
+            if (gpuError != error)
+            {
+                gpuError = error;
+                settings.VisualiseGPUMode();
+            }
         }
 
     }
