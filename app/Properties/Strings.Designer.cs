@@ -1053,6 +1053,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy from CPU.
+        /// </summary>
+        internal static string FanCopyCpu {
+            get {
+                return ResourceManager.GetString("FanCopyCpu", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Fan Profiles.
         /// </summary>
         internal static string FanProfiles {
