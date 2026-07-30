@@ -102,6 +102,7 @@ namespace GHelper.Input
             {
                 Program.acpi.DeviceGet(AsusACPI.CameraShutter);
                 listener = new KeyboardListener(HandleEvent);
+                InitCamera();
             }
             else
             {
@@ -110,7 +111,6 @@ namespace GHelper.Input
 
             InitBacklightTimer();
             MuteLEDInit();
-            InitCamera();
         }
 
         public static void InitFNLock()
@@ -1249,7 +1249,7 @@ namespace GHelper.Input
             var result = ProcessHelper.RunCMD($"{asusPath}\\AsusHotkey.exe", $"-MFCameraCommand {status} 1 0", asusPath);
             var cameraLedStatus = Program.acpi.DeviceGet(AsusACPI.CameraLed);
             Logger.WriteLine("Camera LED: " + cameraLedStatus);
-            AppConfig.Set("camera_status", cameraLedStatus);
+            AppConfig.Set("camera_status", status);
             if (toast)
             {
                 string statusText = cameraLedStatus switch

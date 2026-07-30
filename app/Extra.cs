@@ -463,7 +463,7 @@ namespace GHelper
             checkStatusLed.Checked = (statusLed > 0);
             checkStatusLed.CheckedChanged += CheckLEDStatus_CheckedChanged;
 
-            int numberPad = NumberPad.Get();
+            int numberPad = AppConfig.IsStrix() ? NumberPad.Get() : -1;
             checkNumberPad.Visible = numberPad >= 0;
             checkNumberPad.Checked = numberPad == 1;
             checkNumberPad.CheckedChanged += CheckNumberPad_CheckedChanged;
@@ -568,6 +568,8 @@ namespace GHelper
 
         private void InitCores()
         {
+            if (PawnIO.CpuInfo.IsAMD) return;
+
             (int eCores, int pCores) = Program.acpi.GetCores();
             (int eCoresMax, int pCoresMax) = Program.acpi.GetCores(AsusACPI.CORES_MAX);
 
