@@ -576,8 +576,6 @@ namespace GHelper
 
         private void InitCores()
         {
-            if (PawnIO.CpuInfo.IsAMD) return;
-
             (int eCores, int pCores) = Program.acpi.GetCores();
             (int eCoresMax, int pCoresMax) = Program.acpi.GetCores(AsusACPI.CORES_MAX);
 
