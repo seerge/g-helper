@@ -103,6 +103,21 @@
             return -1;
         }
 
+        public static void InitFullSpeed()
+        {
+            if (!Program.acpi.IsSupported(AsusACPI.VivoBookMode)) return;
+
+            for (int i = 3; i < maxModes; i++)
+                if (GetBase(i) == AsusACPI.PerformanceFullSpeed) return;
+
+            for (int i = 3; i < maxModes; i++)
+            {
+                if (Exists(i)) continue;
+                AppConfig.Set("mode_base_" + i, AsusACPI.PerformanceFullSpeed);
+                AppConfig.Set("mode_name_" + i, "Full Speed");
+                return;
+            }
+        }
 
         public static int GetCurrent()
         {

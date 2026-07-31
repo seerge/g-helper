@@ -156,6 +156,7 @@ public class AsusACPI
     public const int PerformanceBalanced = 0;
     public const int PerformanceTurbo = 1;
     public const int PerformanceSilent = 2;
+    public const int PerformanceFullSpeed = 3;
     public const int PerformanceManual = 4;
 
     public const int GPUModeEco = 0;
