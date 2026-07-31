@@ -796,13 +796,27 @@ namespace GHelper
         {
             if (percentage == 0) return "OFF";
 
-            int Min = FanSensorControl.GetFanMin(device);
-            int Max = FanSensorControl.GetFanMax(device);
+            if (!fanRpm) return percentage + "%";
 
-            if (fanRpm)
-                return (200 * Math.Floor((float)(Min * 100 + (Max - Min) * percentage) / 200)).ToString() + unit;
+            // Measured duty->RPM table beats the linear Min..Max guess when present;
+            // values are shown at the tach quantum (100), coarser rounding would
+            // reintroduce label-vs-tach mismatches
+            string rpm;
+            var lut = FanSensorControl.GetLut(device);
+            if (lut != null)
+            {
+                rpm = (100 * (int)Math.Round(FanSensorControl.EvalLut(lut, percentage) / 100.0, MidpointRounding.AwayFromZero)).ToString();
+            }
             else
-                return percentage + "%";
+            {
+                int Min = FanSensorControl.GetFanMin(device);
+                int Max = FanSensorControl.GetFanMax(device);
+                rpm = (200 * Math.Floor((float)(Min * 100 + (Max - Min) * percentage) / 200)).ToString();
+            }
+
+            // The drag tooltip (unit != "") also shows the duty: RPM is what you hear,
+            // duty is what actually gets written to the EC curve
+            return unit == "" ? rpm : rpm + unit + " (" + percentage + "%)";
         }
 
         void SetAxis(Chart chart, AsusFan device)
