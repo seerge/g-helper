@@ -127,7 +127,7 @@ namespace GHelper.USB
         static long lastAudioPresent;
         static double envBrightness;
         static double smoothedHue;
-        const double audioDecay = 0.7;
+        static readonly double audioDecay = AppConfig.Get("audio_decay", 70) / 100.0;
 
         static Aura()
         {
@@ -174,7 +174,7 @@ namespace GHelper.USB
             modes[AuraMode.AuraStatic] = Properties.Strings.AuraStatic;
             modes[AuraMode.AuraBreathe] = Properties.Strings.AuraBreathe;
             modes[AuraMode.AuraColorCycle] = Properties.Strings.AuraColorCycle;
-            if (!isACPI) modes[AuraMode.AuraRainbow] = Properties.Strings.AuraRainbow;
+            if (isStrixKb) modes[AuraMode.AuraRainbow] = Properties.Strings.AuraRainbow;
 
             if (perKey)
             {
@@ -655,6 +655,12 @@ namespace GHelper.USB
 
             if (!backlight) return;
 
+            if (AsusLampArray.Available)
+            {
+                AsusLampArray.SetColors(color);
+                return;
+            }
+
             const byte keySet = 167;
             const byte ledCount = 178;
             const ushort mapSize = 3 * ledCount;
@@ -737,6 +743,7 @@ namespace GHelper.USB
 
         public static void ApplyDirectLightbar(Color[] color)
         {
+            if (AsusLampArray.Available) return;
             var map = isStrix4ZoneFlipped ? packet4ZoneFlipped : packet4Zone;
             byte[] buffer = new byte[64];
             buffer[0] = AsusHid.AURA_ID;
@@ -767,6 +774,12 @@ namespace GHelper.USB
             if (isACPI)
             {
                 Program.acpi.TUFKeyboardRGB(0, color, 0, null);
+                return;
+            }
+
+            if (AsusLampArray.Available)
+            {
+                AsusLampArray.SetColor(color);
                 return;
             }
 
@@ -846,6 +859,9 @@ namespace GHelper.USB
             if (Mode != AuraMode.AUDIO && Mode != AuraMode.AUDIOPULSE) StopAudio();
 
             Logger.WriteLine($"AuraMode: {Mode}");
+
+            AsusLampArray.SetMode(Mode);
+            if (AsusLampArray.Probing) return;
 
             if (Mode == AuraMode.AUDIO || Mode == AuraMode.AUDIOPULSE)
             {
@@ -997,7 +1013,7 @@ namespace GHelper.USB
 
             audioMaxes.Add(max);
             if (audioMaxes.Count > 100) audioMaxes.RemoveAt(0);
-            double maxAvg = audioMaxes.Average();
+            double maxAvg = audioMaxes.OrderByDescending(x => x).ElementAt(audioMaxes.Count / 10);
             if (maxAvg < 1) maxAvg = 1;
 
             envBrightness = Math.Max(envBrightness * audioDecay, max);
@@ -1099,7 +1115,7 @@ namespace GHelper.USB
                     colors[z] = ColorUtils.GetWeightedAverage(Aura.Color2, Aura.Color1, t);
                 }
 
-                int[] lightbarOrder = new int[] { 7, 6, 4, 5 };
+                int[] lightbarOrder = AsusLampArray.Available ? new int[] { 4, 5, 6, 7 } : new int[] { 7, 6, 4, 5 };
                 for (int i = 0; i < lightbarOrder.Length; i++)
                 {
                     float t = i / 3f;
