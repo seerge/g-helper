@@ -158,7 +158,7 @@ public static class AsusLampArray
         Array.Copy(data, buf, Math.Min(data.Length, featLen));
         try
         {
-            lock (AsusHid.hidLock) s.SetFeature(buf);
+            AsusHid.SetFeature(s, buf);
         }
         catch (Exception ex)
         {

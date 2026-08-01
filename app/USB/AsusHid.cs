@@ -16,6 +16,31 @@ public static class AsusHid
 
     public static readonly object hidLock = new();
 
+    const int WRITE_GAP = 3;
+    static long lastWrite;
+
+    public static void SetFeature(HidStream stream, byte[] data)
+    {
+        lock (hidLock)
+        {
+            int wait = WRITE_GAP - (int)(Environment.TickCount64 - lastWrite);
+            if (wait > 0) Thread.Sleep(wait);
+            stream.SetFeature(data);
+            lastWrite = Environment.TickCount64;
+        }
+    }
+
+    public static void Write(HidStream stream, byte[] data)
+    {
+        lock (hidLock)
+        {
+            int wait = WRITE_GAP - (int)(Environment.TickCount64 - lastWrite);
+            if (wait > 0) Thread.Sleep(wait);
+            stream.Write(data);
+            lastWrite = Environment.TickCount64;
+        }
+    }
+
     static HidStream? auraStream;
     static int auraFeatLen;
     static byte[]? auraScratch;
@@ -129,7 +154,7 @@ public static class AsusHid
                 {
                     var payload = new byte[device.GetMaxFeatureReportLength()];
                     Array.Copy(data, payload, data.Length);
-                    stream.SetFeature(payload);
+                    SetFeature(stream, payload);
                     if (log is not null) Logger.WriteLine($"{log} {device.ProductID.ToString("X")}|{device.GetMaxFeatureReportLength()}: {BitConverter.ToString(data)}");
                 }
             }
@@ -164,7 +189,7 @@ public static class AsusHid
                     foreach (var data in dataList)
                         try
                         {
-                            stream.Write(data);
+                            Write(stream, data);
                             if (log is not null) Logger.WriteLine($"{log} {device.ProductID.ToString("X")}: {BitConverter.ToString(data)}");
                         }
                         catch (Exception ex)
@@ -196,7 +221,7 @@ public static class AsusHid
                 Array.Copy(data, auraScratch, data.Length);
                 payload = auraScratch;
             }
-            lock (hidLock) auraStream.SetFeature(payload);
+            SetFeature(auraStream, payload);
         }
         catch (Exception ex)
         {

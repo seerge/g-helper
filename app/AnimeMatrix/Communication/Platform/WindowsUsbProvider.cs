@@ -56,7 +56,7 @@ namespace GHelper.AnimeMatrix.Communication.Platform
         {
             WrapException(() =>
             {
-                HidStream.SetFeature(data);
+                GHelper.USB.AsusHid.SetFeature(HidStream, data);
                 HidStream.Flush();
             });
         }
