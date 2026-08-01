@@ -105,7 +105,10 @@
 
         public static void InitFullSpeed()
         {
-            if (!Program.acpi.IsSupported(AsusACPI.VivoBookMode)) return;
+            int vivoMode = Program.acpi.DeviceGet(AsusACPI.VivoBookMode);
+            if (vivoMode < 0) return;
+            Logger.WriteLine($"VivoBookMode: {vivoMode} (0x{vivoMode:X})");
+            if ((vivoMode & 0x40000) == 0) return;
 
             for (int i = 3; i < maxModes; i++)
                 if (GetBase(i) == AsusACPI.PerformanceFullSpeed) return;
