@@ -175,7 +175,7 @@
     <value>Automatiškai derinti Windows energijos režimus</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Atmintis priskirta vaizdo plokštei</value>
+    <value>Atmintis priskirta integruotai vaizdo plokštei</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Veikiančios Asus tarnybos</value>

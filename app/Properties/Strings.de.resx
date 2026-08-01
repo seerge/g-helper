@@ -175,7 +175,7 @@
     <value>Windows Leistungsmodus automatisch anpassen</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>GPU zugewiesener Speicher</value>
+    <value>iGPU zugewiesener Speicher</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>ASUS Dienste laufen</value>
