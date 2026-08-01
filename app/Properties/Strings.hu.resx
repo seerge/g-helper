@@ -175,7 +175,7 @@
     <value>A Windows energiagazdálkodási módok automatikus beállítása</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>A GPU-nak kiosztott memória</value>
+    <value>Az iGPU-nak kiosztott memória</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Asus szolgáltatások futnak</value>

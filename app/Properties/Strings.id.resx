@@ -175,7 +175,7 @@
     <value>Otomatis sesuaikan Mode Daya Windows</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Memory Assigned to GPU</value>
+    <value>Memori yang dialokasikan ke iGPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Layanan Asus Berjalan</value>

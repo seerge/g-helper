@@ -309,7 +309,7 @@ namespace GHelper.Display
                         param2 = null;
                         break;
                     case SplendidCommand.VivoEycare:
-                        param2 = Math.Abs(whiteBalance - 50) * 4 / 50;
+                        param2 = Math.Abs(whiteBalance - 50) * 3 / 50 + (whiteBalance < 50 ? 1 : 0);
                         break;
                     case SplendidCommand.EReading:
                         if (AppConfig.IsDUO() && AppConfig.IsVivoZenPro()) mode = SplendidCommand.EReadingVivo;

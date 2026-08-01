@@ -175,7 +175,7 @@
     <value>Ajuste automático dos modos de energia do Windows</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Memória Alocada à GPU</value>
+    <value>Memória Alocada à iGPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Serviços da Asus em execução</value>

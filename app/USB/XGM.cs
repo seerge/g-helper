@@ -78,7 +78,7 @@ namespace GHelper.USB
                 if (IsConnected())
                 {
                     Write(Encoding.ASCII.GetBytes("^ASUS Tech.Inc."));
-                    Write([XGM_REPORT_ID, 0xE6]);
+                    Write([XGM_REPORT_ID, 0xE4, 0x02]);
                     Light(AppConfig.Is("xmg_light"));
                 }
             });

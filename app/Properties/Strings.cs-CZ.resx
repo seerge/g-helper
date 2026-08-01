@@ -175,7 +175,7 @@
     <value>Auto. upravit režimy napájení Windows</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Paměť přidělená GPU</value>
+    <value>Paměť přidělená iGPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Služeb Asus spuštěno</value>

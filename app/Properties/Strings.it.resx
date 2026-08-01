@@ -175,7 +175,7 @@
     <value>Regola Piano Energetico di Windows in automatico</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Memoria assegnata alla GPU</value>
+    <value>Memoria assegnata all'iGPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Servizi Asus in Esecuzione</value>
