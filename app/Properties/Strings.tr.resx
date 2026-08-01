@@ -310,10 +310,10 @@
     <value>Açılış sesi</value>
   </data>
   <data name="BacklightDown" xml:space="preserve">
-    <value>Backlight Down</value>
+    <value>Arka Işığı Azalt</value>
   </data>
   <data name="BacklightUp" xml:space="preserve">
-    <value>Backlight Up</value>
+    <value>Arka Işığı Artır</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Parlaklık</value>
@@ -723,7 +723,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Bir şey harici GPU'yu kullanıyor ve Eco modunu engelliyor. G-Helper aygıt yöneticisinde harici GPU'yu yeniden başlatmayı denesin mi? (Kendi sorumluluğunuzdadır)</value>
   </data>
   <data name="RestartingNVServices" xml:space="preserve">
-    <value>Restarting NV Services...</value>
+    <value>NV Servisleri Yeniden Başlatılıyor...</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
@@ -948,7 +948,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Hareket Eşitlemesi</value>
   </data>
   <data name="MouseZoneMode" xml:space="preserve">
-    <value>Zone Mode</value>
+    <value>Fare Alan Modu</value>
   </data>
   <data name="DisablePCIeASPM" xml:space="preserve">
     <value>PCIe Bağlantı Durumu Yönetimini devre dışı bırak (şarjda)</value>
@@ -968,9 +968,9 @@ ve GPU etkinleştirildiğinde otomatik olarak yeniden başlatır</value>
 Rastgele takılmalar veya yanıt vermeyen donanım yaşıyorsanız önerilir.</value>
   </data>
   <data name="Overlay" xml:space="preserve">
-    <value>Overlay</value>
+    <value>Yer Paylaşımı</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
-    <value>Overlay only in games</value>
+    <value>Yer paylaşımını sadece oyunlarda aç</value>
   </data>
 </root>
