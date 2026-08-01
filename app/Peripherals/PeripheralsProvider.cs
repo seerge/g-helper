@@ -465,7 +465,7 @@ namespace GHelper.Peripherals
             timer.Stop();
             Logger.WriteLine("HID Device Event: Checking for new ASUS Mice");
             DetectAllAsusMice();
-            if (AppConfig.IsZ13()) Program.inputDispatcher.Init();
+            if (AppConfig.IsDetachableKeyboard()) Program.inputDispatcher.Init();
         }
     }
 }

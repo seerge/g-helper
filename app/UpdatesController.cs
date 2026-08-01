@@ -168,7 +168,7 @@ namespace GHelper
 
         static void HideAbsentAdapters(List<DriverUpdate> updates, List<LocalDriver> inventory, string?[] installed, HashSet<string> needStaged)
         {
-            foreach (var keys in new[] { new[] { "Bluetooth" }, new[] { "WLAN", "Wireless LAN", "Wi-Fi", "WiFi" }, new[] { "Realtek LAN" } })
+            foreach (var keys in new[] { new[] { "Bluetooth" }, new[] { "WLAN", "Wireless LAN", "Wi-Fi", "WiFi" }, new[] { "Realtek LAN" }, new[] { "Card Reader", "CardReader" } })
             {
                 var members = Enumerable.Range(0, updates.Count)
                     .Where(n => updates[n].hardwares.Length > 0 && keys.Any(k => updates[n].title.Contains(k, StringComparison.OrdinalIgnoreCase)))

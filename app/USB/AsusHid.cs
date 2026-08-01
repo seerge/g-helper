@@ -10,7 +10,7 @@ public static class AsusHid
     public const byte INPUT_ID = 0x5a;
     public const byte AURA_ID = 0x5d;
 
-    public static int[] MAIN_AURA_PIDS = { 0x1a30, 0x1854, 0x1869, 0x1866, 0x19b6, 0x1822, 0x1837, 0x1854, 0x184a, 0x183d, 0x8502, 0x1807, 0x17e0, 0x1abe, 0x1b4c, 0x1b6e, 0x1b2c, 0x8854, 0x1CE7, 0x1bf2 };
+    public static int[] MAIN_AURA_PIDS = { 0x1a30, 0x1854, 0x1869, 0x1866, 0x19b6, 0x1822, 0x1837, 0x1854, 0x184a, 0x183d, 0x8502, 0x1807, 0x17e0, 0x1abe, 0x1b4c, 0x1b6e, 0x1b2c, 0x8854, 0x1CE7, 0x1bf2, 0x1cd7, 0x1cd8 };
     public static int[] REAR_LIGHT_PIDS = { 0x18c6 };
     public static int[] ALL_PIDS = MAIN_AURA_PIDS.Concat(REAR_LIGHT_PIDS).ToArray();
 
@@ -128,6 +128,12 @@ public static class AsusHid
             {
                 var s17 = devices.Where(device => device.ProductID == 0x18c6).FirstOrDefault();
                 if (s17 is not null) return s17.Open();
+            }
+
+            if (AppConfig.IsDUO())
+            {
+                var duo = devices.Where(device => device.ProductID == 0x1cd7 || device.ProductID == 0x1cd8).FirstOrDefault();
+                if (duo is not null) return duo.Open();
             }
 
             foreach (var device in devices)
