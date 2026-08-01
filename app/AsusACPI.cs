@@ -479,6 +479,16 @@ public class AsusACPI
         return Program.acpi.DeviceSet(VivoBookMode, mode, "VivoMode");
     }
 
+    public int SetPerformanceMode(int mode, string log = "Mode")
+    {
+        if (IsSupported(PerformanceMode)) return DeviceSet(PerformanceMode, mode, log);
+        if (IsSupported(VivoBookMode)) return SetVivoMode(mode);
+
+        int status = DeviceSet(PerformanceMode, mode, log);
+        if (status != 1) status = SetVivoMode(mode);
+        return status;
+    }
+
     public int SetGPUEco(int eco)
     {
         uint ecoEndpoint = GPUEco;
