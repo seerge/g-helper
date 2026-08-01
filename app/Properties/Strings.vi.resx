@@ -175,7 +175,7 @@
     <value>Tự động điều chỉnh Kế hoạch nguồn của Windows</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Bộ nhớ chuyển cho GPU</value>
+    <value>Bộ nhớ chuyển cho iGPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Dịch vụ Asus đang chạy</value>

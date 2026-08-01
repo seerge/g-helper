@@ -175,7 +175,7 @@
     <value>윈도우 전원 모드 자동조절</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>GPU에 할당된 메모리</value>
+    <value>iGPU에 할당된 메모리</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>실행 중인 Asus 서비스</value>

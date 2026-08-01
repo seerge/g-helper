@@ -767,7 +767,7 @@ public static class HardwareControl
     private static AmdGpuControl? _amdApuControl;
     private static bool _amdApuPowerFailed;
 
-    private static AmdGpuControl AmdApu() => GpuControl as AmdGpuControl ?? (_amdApuControl ??= new AmdGpuControl());
+    public static AmdGpuControl AmdApu() => GpuControl as AmdGpuControl ?? (_amdApuControl ??= new AmdGpuControl());
 
     private static float? GetAmdApuPower()
     {

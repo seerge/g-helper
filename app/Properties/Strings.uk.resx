@@ -175,7 +175,7 @@
     <value>Автоматично застосовувати Windows Power Modes</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Пам'ять призначена на GPU</value>
+    <value>Пам'ять призначена на iGPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Кількість запущених сервісів Asus</value>
