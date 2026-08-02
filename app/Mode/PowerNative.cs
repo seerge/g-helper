@@ -64,6 +64,10 @@ namespace GHelper.Mode
 
         private static Guid GUID_SYSTEM_BUTTON_SUBGROUP = new Guid("4f971e89-eebd-4455-a8de-9e59040e7347");
         private static Guid GUID_LIDACTION = new Guid("5CA83367-6E45-459F-A27B-476B1D01C936");
+        private static Guid GUID_POWERBUTTONACTION = new Guid("7648EFA3-DD9C-4E3E-B566-50F929386280");
+        private static Guid GUID_STANDBYIDLE = new Guid("29F6C1DB-86DA-48C5-9FDB-F2B67B1F44DA");
+        private static Guid GUID_VIDEO_SUBGROUP = new Guid("7516B95F-F776-4464-8C53-06167F40CC99");
+        private static Guid GUID_VIDEOIDLE = new Guid("3C0BC021-C8A8-4E07-A973-6B14CBCB2B7E");
 
         private static Guid GUID_SUB_PCIEXPRESS = new Guid("501a4d13-42af-4429-9fd1-a8218c268e20");
         private static Guid GUID_PCI_EXPRESS_ASPM = new Guid("ee12f906-d277-404b-b6da-e5fa1a576df5");
@@ -313,6 +317,29 @@ namespace GHelper.Mode
             }
 
             Logger.WriteLine("Changed Lid Action to " + action);
+        }
+
+        static int ReadDCValue(Guid scheme, Guid subgroup, Guid setting)
+        {
+            PowerReadDCValueIndex(IntPtr.Zero, scheme, subgroup, setting, out IntPtr value);
+            return value.ToInt32();
+        }
+
+        static byte ButtonActionCode(int action) => action switch { 0 => 1, 1 => 2, 2 => 3, 3 => 6, _ => 0xFF };
+
+        public static (byte, byte, ushort) GetHibernateHelperParams()
+        {
+            Guid scheme = GetActiveScheme();
+
+            int sleep = ReadDCValue(scheme, GUID_SLEEP_SUBGROUP, GUID_STANDBYIDLE) / 60;
+            int monitor = ReadDCValue(scheme, GUID_VIDEO_SUBGROUP, GUID_VIDEOIDLE) / 60;
+
+            ushort idle = (sleep == 0 || monitor == 0) ? (ushort)0xFFFF : (ushort)Math.Max(sleep - monitor, 0);
+            byte lid = ButtonActionCode(GetLidAction(false));
+            byte power = ButtonActionCode(ReadDCValue(scheme, GUID_SYSTEM_BUTTON_SUBGROUP, GUID_POWERBUTTONACTION));
+
+            Logger.WriteLine($"HibernateHelper: lid={lid}, power={power}, idle={idle}, sleep={sleep}, monitor={monitor}");
+            return (lid, power, idle);
         }
 
         public static int GetHibernateAfter()

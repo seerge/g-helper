@@ -465,9 +465,8 @@ public class AsusACPI
     {
         if (DeviceGet(HibernateHelper) < 0) return -1;
 
-        byte[] args = enabled
-            ? new byte[] { 0x02, 0x02, 0x00, 0x00, 0x01 }
-            : new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 };
+        var (lid, power, idle) = GHelper.Mode.PowerNative.GetHibernateHelperParams();
+        byte[] args = { lid, power, (byte)idle, (byte)(idle >> 8), (byte)(enabled ? 1 : 0) };
 
         return DeviceSet(HibernateHelper, args, "HibernateHelper");
     }
