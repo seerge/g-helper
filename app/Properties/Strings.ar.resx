@@ -175,7 +175,7 @@
     <value>ضبط أوضاع طاقة ويندوز تلقائيًا</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>الذاكرة المخصصة لوحدة معالجة الرسومات</value>
+    <value>الذاكرة المخصصة لوحدة معالجة الرسومات المدمجة</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>خدمات أسوس قيد التشغيل</value>

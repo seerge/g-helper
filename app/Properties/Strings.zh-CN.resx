@@ -175,7 +175,7 @@
     <value>自动调整Windows电源模式</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>分配给 GPU 的内存</value>
+    <value>分配给 iGPU 的内存</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>正在运行的 Asus 服务</value>

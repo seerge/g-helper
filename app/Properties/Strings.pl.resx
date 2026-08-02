@@ -175,7 +175,7 @@
     <value>Dostosuj systemowy Tryb Zasilania</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Pamięć przypisana do GPU</value>
+    <value>Pamięć przypisana do iGPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Uruchomione usługi Asus</value>

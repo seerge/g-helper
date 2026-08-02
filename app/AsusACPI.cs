@@ -122,6 +122,7 @@ public class AsusACPI
     public const uint GPU_POWER = 0x00120098;  // Additonal part of GPU TGP
 
     public const int APU_MEM = 0x000600C1;
+    public const int VRAM_MEM = 0x000600C4;
 
     public const int TUF_KB_BRIGHTNESS = 0x00050021;
     public const int KBD_BACKLIGHT_OOBE = 0x0005002F;
@@ -744,6 +745,36 @@ public class AsusACPI
 
         int index = Array.IndexOf(apuMemEnum, memory - 0x100);
         return index < 0 ? 4 : index;
+    }
+
+    public int[] GetVramOptions(out int unitMb)
+    {
+        unitMb = 0;
+        byte[] buf = DeviceGetLarge(VRAM_MEM);
+        int status = BitConverter.ToInt32(buf, 0);
+
+        if ((status & 0x10000) == 0 || (status & 0x80000) != 0) return [];
+
+        int count = status & 0xFFFF;
+        if (count > 16) count = 17;
+        if (count < 2) return [];
+
+        unitMb = (status & 0x20000) != 0 ? 512 : 1;
+
+        int[] options = new int[count];
+        for (int i = 1; i < count; i++) options[i] = BitConverter.ToUInt16(buf, 6 + i * 2);
+
+        return options;
+    }
+
+    public int GetVramMem()
+    {
+        return (int)BitConverter.ToUInt32(DeviceGetLarge(VRAM_MEM), 4);
+    }
+
+    public void SetVramMem(int value)
+    {
+        DeviceSet(VRAM_MEM, value, "VRAM Mem");
     }
 
     public (int, int) GetCores(uint device = CORES_CPU)

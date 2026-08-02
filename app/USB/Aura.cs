@@ -99,7 +99,7 @@ namespace GHelper.USB
         public static AuraMode RearMode
         {
             get { return rearMode; }
-            set { rearMode = GetModes().ContainsKey(value) ? value : AuraMode.AuraStatic; }
+            set { rearMode = GetRearModes().ContainsKey(value) ? value : AuraMode.AuraStatic; }
         }
 
         static bool isACPI = AppConfig.IsTUF() || AppConfig.IsVivoZenPro();
