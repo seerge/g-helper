@@ -310,10 +310,10 @@
     <value>Sonido al arranque</value>
   </data>
   <data name="BacklightDown" xml:space="preserve">
-    <value>Backlight Down</value>
+    <value>Bajar retroiluminación</value>
   </data>
   <data name="BacklightUp" xml:space="preserve">
-    <value>Backlight Up</value>
+    <value>Subir retroiluminación</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Brillo</value>
@@ -723,7 +723,7 @@
     <value>Algo está usando la dGPU e impide el modo Eco. ¿Reiniciar dGPU en el administrador de dispositivos? (Proceda bajo su propio riesgo)</value>
   </data>
   <data name="RestartingNVServices" xml:space="preserve">
-    <value>Restarting NV Services...</value>
+    <value>Reiniciando servicios NV...</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
