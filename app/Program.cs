@@ -149,6 +149,7 @@ namespace GHelper
             WM_TASKBARCREATED = RegisterWindowMessage("TaskbarCreated");
             Logger.WriteLine($"Tray Icon: {trayIcon.Visible} | {WM_TASKBARCREATED}");
 
+            Modes.InitFullSpeed();
             settingsForm.SetContextMenu();
             trayIcon.MouseClick += TrayIcon_MouseClick;
             trayIcon.MouseMove += TrayIcon_MouseMove;

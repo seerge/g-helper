@@ -105,7 +105,7 @@ namespace GHelper.Mode
         {
             ResetRyzen();
 
-            Program.acpi.DeviceSet(AsusACPI.PerformanceMode, Modes.GetCurrentBase(), "Mode");
+            Program.acpi.SetPerformanceMode(Modes.GetCurrentBase());
 
             // Default power mode
             AppConfig.RemoveMode("powermode");
@@ -155,9 +155,7 @@ namespace GHelper.Mode
                     ct.ThrowIfCancellationRequested();
 
                     if (AppConfig.Is("status_mode")) Program.acpi.DeviceSet(AsusACPI.StatusMode, [0x00, Modes.GetBase(mode) == AsusACPI.PerformanceSilent ? (byte)0x02 : (byte)0x03], "StatusMode");
-                    int status = Program.acpi.DeviceSet(AsusACPI.PerformanceMode, AppConfig.IsManualModeRequired() ? AsusACPI.PerformanceManual : Modes.GetBase(mode), "Mode");
-                    // Vivobook fallback
-                    if (status != 1) Program.acpi.SetVivoMode(Modes.GetBase(mode));
+                    Program.acpi.SetPerformanceMode(AppConfig.IsManualModeRequired() ? AsusACPI.PerformanceManual : Modes.GetBase(mode));
 
                     SetGPUClocks();
 

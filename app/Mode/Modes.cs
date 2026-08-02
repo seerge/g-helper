@@ -103,6 +103,24 @@
             return -1;
         }
 
+        public static void InitFullSpeed()
+        {
+            int vivoMode = Program.acpi.DeviceGet(AsusACPI.VivoBookMode);
+            if (vivoMode < 0) return;
+            Logger.WriteLine($"VivoBookMode: {vivoMode} (0x{vivoMode:X})");
+            if ((vivoMode & 0x40000) == 0) return;
+
+            for (int i = 3; i < maxModes; i++)
+                if (GetBase(i) == AsusACPI.PerformanceFullSpeed) return;
+
+            for (int i = 3; i < maxModes; i++)
+            {
+                if (Exists(i)) continue;
+                AppConfig.Set("mode_base_" + i, AsusACPI.PerformanceFullSpeed);
+                AppConfig.Set("mode_name_" + i, "Full Speed");
+                return;
+            }
+        }
 
         public static int GetCurrent()
         {
