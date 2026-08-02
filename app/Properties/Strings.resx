@@ -449,6 +449,15 @@ Do you still want to continue?</value>
   <data name="FnLockOn" xml:space="preserve">
     <value>FN-Lock On</value>
   </data>
+  <data name="NumLockOff" xml:space="preserve">
+    <value>Num Lock OFF</value>
+  </data>
+  <data name="NumLockOn" xml:space="preserve">
+    <value>Num Lock ON</value>
+  </data>
+  <data name="NumLockOSD" xml:space="preserve">
+    <value>Enable NumLock OSD</value>
+  </data>
   <data name="WinLockToggle" xml:space="preserve">
     <value>Win-Lock Toggle</value>
   </data>

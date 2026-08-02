@@ -50,6 +50,7 @@ namespace GHelper.Helpers
         Microphone,
         MicrophoneMute,
         FnLock,
+        NumLock,
         Battery,
         Charger,
         Controller
@@ -94,6 +95,7 @@ namespace GHelper.Helpers
                 ToastIcon.MicrophoneMute => Properties.Resources.icons8_mute_unmute_96,
                 ToastIcon.Touchpad       => Properties.Resources.icons8_touchpad_96,
                 ToastIcon.FnLock         => Properties.Resources.icons8_function,
+                ToastIcon.NumLock        => Properties.Resources.icons8_numlock_96,
                 ToastIcon.Battery        => Properties.Resources.icons8_charged_battery_96,
                 ToastIcon.Charger        => Properties.Resources.icons8_charging_battery_96,
                 ToastIcon.Controller     => Properties.Resources.icons8_controller_96,

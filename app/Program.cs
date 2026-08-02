@@ -103,6 +103,16 @@ namespace GHelper
             clamshellControl = new ClamshellModeControl();
             toast = new ToastForm();
 
+            // Opt-in: only install the hook if the user enabled the OSD. Defaults
+            // to off (key unset) so we don't add a system-wide keyboard hook for
+            // users who never asked for it.
+            if (AppConfig.Is("numlock_osd")) LockKeyOsd.Start();
+            // Guarantee the low-level keyboard hook is removed when the message
+            // loop ends, no matter which Application.Exit() path is taken. Leaving
+            // it installed lets the OS keep calling into an unloaded callback,
+            // which can crash or destabilise the system after we're gone.
+            Application.ApplicationExit += (_, _) => LockKeyOsd.Stop();
+
             hardwareOverlay = new HardwareOverlay();
 
             ProcessHelper.CheckAlreadyRunning();
