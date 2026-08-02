@@ -166,7 +166,7 @@
     <value>Застосувати</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Застосувати профілі кулерів</value>
+    <value>Apply Fan Curve</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Застосувати потужність</value>
@@ -175,7 +175,7 @@
     <value>Автоматично застосовувати Windows Power Modes</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Пам'ять призначена на GPU</value>
+    <value>Пам'ять призначена на iGPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Кількість запущених сервісів Asus</value>
@@ -265,7 +265,7 @@
     <value>Вимкнена</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Тайм-аут підсвічування на зарядці / на батареї</value>
+    <value>Тайм-аут підсвічування: зарядка / батарея</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Тайм-аут підсвітки на батареї</value>
@@ -308,6 +308,12 @@
   </data>
   <data name="BootSound" xml:space="preserve">
     <value>Звук завантаження</value>
+  </data>
+  <data name="BacklightDown" xml:space="preserve">
+    <value>Backlight Down</value>
+  </data>
+  <data name="BacklightUp" xml:space="preserve">
+    <value>Backlight Up</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Яскравість</value>
@@ -444,7 +450,7 @@
     <value>FN-Lock Увімк.</value>
   </data>
   <data name="WinLockToggle" xml:space="preserve">
-    <value>Win-Lock Toggle</value>
+    <value>Перемикач утримання Win</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Dynamic Boost</value>
@@ -716,6 +722,9 @@
   <data name="RestartGPU" xml:space="preserve">
     <value>Щось використовує dGPU та запобігає Еко-режиму. Дозвольте G-Helper спробувати перезапустити dGPU у менеджері пристрою? (Будь ласка, продовжуйте на власний ризик)</value>
   </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
+  </data>
   <data name="RPM" xml:space="preserve">
     <value>Оберти</value>
   </data>
@@ -882,7 +891,7 @@
     <value>Завантаження</value>
   </data>
   <data name="SlashBitStream" xml:space="preserve">
-    <value>Bit Stream</value>
+    <value>Бітовий потік</value>
   </data>
   <data name="SlashTransmission" xml:space="preserve">
     <value>Трансмісія</value>
@@ -894,31 +903,31 @@
     <value>Flux</value>
   </data>
   <data name="SlashPhantom" xml:space="preserve">
-    <value>Phantom</value>
+    <value>Фантом</value>
   </data>
   <data name="SlashSpectrum" xml:space="preserve">
-    <value>Spectrum</value>
+    <value>Спектр</value>
   </data>
   <data name="SlashHazard" xml:space="preserve">
-    <value>Hazard</value>
+    <value>Небезпека</value>
   </data>
   <data name="SlashInterfacing" xml:space="preserve">
-    <value>Interfacing</value>
+    <value>Взаємодія</value>
   </data>
   <data name="SlashRamp" xml:space="preserve">
-    <value>Ramp</value>
+    <value>Рампа</value>
   </data>
   <data name="SlashGameOver" xml:space="preserve">
-    <value>Game Over</value>
+    <value>Кінець гри</value>
   </data>
   <data name="SlashStart" xml:space="preserve">
     <value>Запустити</value>
   </data>
   <data name="SlashBuzzer" xml:space="preserve">
-    <value>Buzzer</value>
+    <value>Дзвінок</value>
   </data>
   <data name="SlashStatic" xml:space="preserve">
-    <value>Static</value>
+    <value>Фіксовано</value>
   </data>
   <data name="SlashBatteryLevel" xml:space="preserve">
     <value>Заряд батареї</value>
@@ -957,5 +966,11 @@
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>Не дозволяє пристроям PCIe переходити в режими низького енергоспоживання.
 Рекомендується, якщо ви стикаєтеся з випадковими зависаннями або відсутністю реакції апаратного забезпечення.</value>
+  </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
   </data>
 </root>

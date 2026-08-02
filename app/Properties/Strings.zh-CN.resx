@@ -166,7 +166,7 @@
     <value>应用</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>应用自定义风扇曲线</value>
+    <value>应用风扇曲线</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>应用功率限制</value>
@@ -175,7 +175,7 @@
     <value>自动调整Windows电源模式</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>分配给 GPU 的内存</value>
+    <value>分配给 iGPU 的内存</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>正在运行的 Asus 服务</value>
@@ -308,6 +308,12 @@
   </data>
   <data name="BootSound" xml:space="preserve">
     <value>开机音效</value>
+  </data>
+  <data name="BacklightDown" xml:space="preserve">
+    <value>Backlight Down</value>
+  </data>
+  <data name="BacklightUp" xml:space="preserve">
+    <value>Backlight Up</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>亮度</value>
@@ -716,6 +722,9 @@
   <data name="RestartGPU" xml:space="preserve">
     <value>有程序正在使用独显并阻止进入集显模式。要让 G-Helper 在设备管理器中重新启动独显吗？（请自行承担风险）</value>
   </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
+  </data>
   <data name="RPM" xml:space="preserve">
     <value>转/分钟</value>
   </data>
@@ -957,5 +966,11 @@
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>防止 PCIe 设备进入低功耗空闲状态。
 如遇随机卡死或硬件无响应，建议启用。</value>
+  </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
   </data>
 </root>

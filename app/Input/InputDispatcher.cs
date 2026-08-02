@@ -32,6 +32,7 @@ namespace GHelper.Input
         public static Keys keyProfile3 = (Keys)AppConfig.Get("keybind_profile_3", (int)Keys.F19);
         public static Keys keyProfile4 = (Keys)AppConfig.Get("keybind_profile_4", (int)Keys.F20);
         public static Keys keyXGM = (Keys)AppConfig.Get("keybind_xgm", (int)Keys.F21);
+        public static Keys keyOverlay = (Keys)AppConfig.Get("keybind_overlay", (int)Keys.O);
 
         public static ModifierKeys keyModifier = GetModifierKeys("modifier_keybind", ModifierKeys.Shift | ModifierKeys.Control);
         public static ModifierKeys keyModifierAlt = GetModifierKeys("modifier_keybind_alt", ModifierKeys.Shift | ModifierKeys.Control | ModifierKeys.Alt);
@@ -54,6 +55,7 @@ namespace GHelper.Input
 
             hook.KeyPressed += new EventHandler<KeyPressedEventArgs>(KeyPressed);
 
+            MKeyControl.ApplyAll();
             RegisterKeys();
 
             timer.Elapsed += Timer_Elapsed;
@@ -94,11 +96,13 @@ namespace GHelper.Input
             if (listener is not null) listener.Dispose();
 
             Program.acpi.DeviceInit();
+            MKeyControl.ApplyAll();
 
             if (!AsusService.IsAsusOptimizationRunning())
             {
                 Program.acpi.DeviceGet(AsusACPI.CameraShutter);
                 listener = new KeyboardListener(HandleEvent);
+                InitCamera();
             }
             else
             {
@@ -107,7 +111,6 @@ namespace GHelper.Input
 
             InitBacklightTimer();
             MuteLEDInit();
-            InitCamera();
         }
 
         public static void InitFNLock()
@@ -181,13 +184,14 @@ namespace GHelper.Input
                 hook.RegisterHotKey(ModifierKeys.Shift, Keys.VolumeDown);
                 hook.RegisterHotKey(ModifierKeys.Shift, Keys.VolumeUp);
                 hook.RegisterHotKey(keyModifier, Keys.F20);
-                hook.RegisterHotKey(keyModifierAlt, Keys.O);
             }
+
+            if (keyOverlay != Keys.None) hook.RegisterHotKey(keyModifierAlt, keyOverlay);
 
             if (!AppConfig.IsZ13() && !AppConfig.IsAlly() && !AppConfig.IsVivoZenPro())
             {
-                if (actionM1 is not null && actionM1.Length > 0) hook.RegisterHotKey(ModifierKeys.None, Keys.VolumeDown);
-                if (actionM2 is not null && actionM2.Length > 0) hook.RegisterHotKey(ModifierKeys.None, Keys.VolumeUp);
+                if (actionM1 is not null && actionM1.Length > 0 && !MKeyControl.IsFirmware("m1")) hook.RegisterHotKey(ModifierKeys.NoRepeat, Keys.VolumeDown);
+                if (actionM2 is not null && actionM2.Length > 0 && !MKeyControl.IsFirmware("m2")) hook.RegisterHotKey(ModifierKeys.NoRepeat, Keys.VolumeUp);
             }
 
             if (AppConfig.IsAlly())
@@ -496,6 +500,7 @@ namespace GHelper.Input
                 if (e.Key == keyProfile3) modeControl.SetPerformanceMode(3, true);
                 if (e.Key == keyProfile4) modeControl.SetPerformanceMode(4, true);
                 if (e.Key == keyXGM) Program.settingsForm.gpuControl.ToggleXGM(true);
+                if (e.Key == keyOverlay) Program.settingsForm.BeginInvoke(() => Program.settingsForm.ToggleOverlay(true));
 
                 switch (e.Key)
                 {
@@ -536,9 +541,6 @@ namespace GHelper.Input
                         Program.toast.RunToast(Properties.Strings.StandardMode);
                         Program.settingsForm.gpuControl.SetGPUMode(AsusACPI.GPUModeStandard);
                         break;
-                    case Keys.O:
-                        Program.settingsForm.BeginInvoke(Program.settingsForm.ToggleOverlay);
-                        break;
                 }
             }
 
@@ -576,12 +578,25 @@ namespace GHelper.Input
 
         public static void KeyProcess(string name = "m3")
         {
+            if (name == "m4" && Control.ModifierKeys == (Keys.Control | Keys.Shift | Keys.Alt))
+            {
+                Thread.Sleep(3000);
+                if ((User32.GetAsyncKeyState(0x11) & User32.GetAsyncKeyState(0x10) & User32.GetAsyncKeyState(0x12) & 0x8000) != 0)
+                {
+                    Program.acpi.DeviceSet(AsusACPI.GPUMux, 1, "MUX hybrid recovery");
+                    Process.Start(new ProcessStartInfo("shutdown", "/r /t 1") { CreateNoWindow = true, UseShellExecute = false });
+                }
+                return;
+            }
+
             string action = AppConfig.GetString(name);
 
             if (action is null || action.Length <= 1)
             {
                 if (name == "m4")
                     action = "ghelper";
+                if (name == "m5")
+                    action = "performance";
                 if (name == "fnf4")
                     action = "aura";
                 if (name == "fnf5")
@@ -600,6 +615,18 @@ namespace GHelper.Input
             {
                 case "mute":
                     KeyboardHook.KeyPress(Keys.VolumeMute);
+                    break;
+                case "volume_down":
+                    KeyboardHook.KeyPress(Keys.VolumeDown);
+                    break;
+                case "volume_up":
+                    KeyboardHook.KeyPress(Keys.VolumeUp);
+                    break;
+                case "backlight_down":
+                    SetBacklight(-1);
+                    break;
+                case "backlight_up":
+                    SetBacklight(1);
                     break;
                 case "play":
                     KeyboardHook.KeyPress(Keys.MediaPlayPause);
@@ -646,7 +673,7 @@ namespace GHelper.Input
                     ToggleFnLock();
                     break;
                 case "overlay":
-                    Program.settingsForm.BeginInvoke(Program.settingsForm.ToggleOverlay);
+                    Program.settingsForm.BeginInvoke(() => Program.settingsForm.ToggleOverlay(true));
                     break;
                 case "micmute":
                     ToggleMic();
@@ -735,7 +762,7 @@ namespace GHelper.Input
                 AsusHid.WriteInput([AsusHid.INPUT_ID, 0xF4, 0x6B], "USB Touchpad");
             } else
             {
-                KeyboardHook.KeyKeyKeyPress(Keys.LWin, Keys.LControlKey, Keys.F24, 50);
+                KeyboardHook.KeyKeyKeyPress(Keys.LWin, Keys.LControlKey, Keys.F24, 50, 50);
             }
 
         }
@@ -839,6 +866,13 @@ namespace GHelper.Input
 
         static void HandleEvent(int EventID)
         {
+            string carrier = MKeyControl.CarrierSlot(EventID);
+            if (carrier is not null)
+            {
+                KeyProcess(carrier);
+                return;
+            }
+
             // The ROG Ally uses different M-key codes.
             // We'll special-case the translation of those.
             if (AppConfig.IsAlly())
@@ -849,7 +883,11 @@ namespace GHelper.Input
                     // This is both the M1 and M2 keys.
                     // There's a way to differentiate, apparently, but it isn't over USB or any other obvious protocol.
                     case 165:
+                        Program.settingsForm.BeginInvoke(() => Program.hardwareOverlay?.SetDragKey(true));
                         KeyProcess("paddle");
+                        return;
+                    case 0:
+                        Program.settingsForm.BeginInvoke(() => Program.hardwareOverlay?.SetDragKey(false));
                         return;
                     // The Command Center ("play-looking") button below the select key.
                     case 166:
@@ -894,6 +932,7 @@ namespace GHelper.Input
                     case 181:    // FN + Numpad Enter
                         KeyProcess("fne");
                         return;
+                    case 93:    // GoPro key
                     case 174:   // FN+F5
                     case 153:   // FN+F5 OLD MODELS
                         modeControl.CyclePerformanceMode(Control.ModifierKeys == Keys.Shift);
@@ -951,7 +990,8 @@ namespace GHelper.Input
                     if (Control.ModifierKeys == Keys.Shift)
                     {
                         if (AppConfig.IsDUO()) SetScreenpad(-10);
-                        else Program.settingsForm.BeginInvoke(Program.settingsForm.CycleMatrix, -1);
+                        else if (Program.settingsForm.matrixControl.IsValid) Program.settingsForm.BeginInvoke(Program.settingsForm.CycleMatrix, -1);
+                        else SetBacklight(-1);
                     }
                     else if (Control.ModifierKeys == Keys.Control && AppConfig.IsOLED())
                     {
@@ -966,7 +1006,8 @@ namespace GHelper.Input
                     if (Control.ModifierKeys == Keys.Shift)
                     {
                         if (AppConfig.IsDUO()) SetScreenpad(10);
-                        else Program.settingsForm.BeginInvoke(Program.settingsForm.CycleMatrix, 1);
+                        else if (Program.settingsForm.matrixControl.IsValid) Program.settingsForm.BeginInvoke(Program.settingsForm.CycleMatrix, 1);
+                        else SetBacklight(1);
                     }
                     else if (Control.ModifierKeys == Keys.Control && AppConfig.IsOLED())
                     {
@@ -1060,9 +1101,10 @@ namespace GHelper.Input
                 }
             }
 
+            Aura.Init();
+
             if (!AppConfig.Is("skip_aura"))
             {
-                Aura.Init();
                 Aura.ApplyPower();
                 SetBacklightAuto();
                 Aura.ApplyAura();
@@ -1103,6 +1145,9 @@ namespace GHelper.Input
                 AppConfig.Set("keyboard_brightness_ac", backlight);
             else
                 AppConfig.Set("keyboard_brightness", backlight);
+
+            var extraForm = Program.settingsForm.extraForm;
+            if (extraForm != null && extraForm.Text != "") extraForm.VisualiseBacklight(backlight);
 
             if (force || !AsusService.IsAsusOptimizationRunning())
             {
@@ -1204,14 +1249,19 @@ namespace GHelper.Input
             var result = ProcessHelper.RunCMD($"{asusPath}\\AsusHotkey.exe", $"-MFCameraCommand {status} 1 0", asusPath);
             var cameraLedStatus = Program.acpi.DeviceGet(AsusACPI.CameraLed);
             Logger.WriteLine("Camera LED: " + cameraLedStatus);
-            AppConfig.Set("camera_status", cameraLedStatus);
+            AppConfig.Set("camera_status", status);
             if (toast)
             {
                 string statusText = cameraLedStatus switch
                 {
                     0 => "On",
                     1 => "Off",
-                    _ => "Toggled"
+                    _ => status switch
+                    {
+                        0 => "On",
+                        1 => "Off",
+                        _ => "Toggled"
+                    }
                 };
                 Program.toast.RunToast($"Camera {statusText}");
             }
@@ -1309,10 +1359,7 @@ namespace GHelper.Input
             if (string.IsNullOrEmpty(command)) return;
             try
             {
-                if (command.StartsWith("shutdown"))
-                    ProcessHelper.RunCMD("cmd", "/C " + command);
-                else
-                    RestrictedProcessHelper.RunAsRestrictedUser(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "cmd.exe"), "/C " + command);
+                RestrictedProcessHelper.RunAsRestrictedUser(command);
             }
             catch (Exception ex)
             {
@@ -1322,14 +1369,21 @@ namespace GHelper.Input
 
         static void WatcherEventArrived(object sender, EventArrivedEventArgs e)
         {
-            if (e.NewEvent is null) return;
-            int EventID = int.Parse(e.NewEvent["EventID"].ToString());
-            Logger.WriteLine("WMI event " + EventID);
-            if (AppConfig.NoWMI()) return;
+            try
+            {
+                if (e.NewEvent is null) return;
+                int EventID = int.Parse(e.NewEvent["EventID"].ToString());
+                Logger.WriteLine("WMI event " + EventID);
+                if (AppConfig.NoWMI()) return;
 
-            if (EventID == 123) Program.OnChargerEvent();
+                if (EventID == 123) Program.OnChargerEvent();
 
-            HandleEvent(EventID);
+                HandleEvent(EventID);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine("WMI event error: " + ex.Message);
+            }
         }
     }
 }

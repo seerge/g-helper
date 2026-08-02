@@ -84,7 +84,7 @@ namespace GHelper.Helpers
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             e.Graphics.FillRoundedRectangle(_toastBrush, Bound, 10);
 
-            Bitmap? icon = toastIcon switch
+            using Bitmap? icon = toastIcon switch
             {
                 ToastIcon.BrightnessUp   => Properties.Resources.brightness_up,
                 ToastIcon.BrightnessDown => Properties.Resources.brightness_down,
@@ -135,6 +135,8 @@ namespace GHelper.Helpers
                 toastText = text;
                 toastIcon = icon;
 
+                nint dpiContext = User32.SetThreadDpiAwarenessContext(User32.DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
+
                 Screen screen1 = Screen.FromHandle(Handle);
 
                 Width = Math.Max(300, 100 + toastText.Length * 22);
@@ -143,6 +145,8 @@ namespace GHelper.Helpers
                 Y = screen1.Bounds.Height - 300 - Height;
 
                 Show();
+                User32.SetThreadDpiAwarenessContext(dpiContext);
+
                 timer.Start();
 
                 //if (AppConfig.Is("narrator")) ReadText(text);

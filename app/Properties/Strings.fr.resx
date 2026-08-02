@@ -166,7 +166,7 @@
     <value>Appliquer</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Appliquer la courbe</value>
+    <value>Apply Fan Curve</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Appliquer les limites</value>
@@ -175,7 +175,7 @@
     <value>Ajustement auto des modes de gestion alim. Windows</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Mémoire attribuée au GPU</value>
+    <value>Mémoire attribuée à l'iGPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Services Asus actifs </value>
@@ -265,7 +265,7 @@
     <value>Désactivé</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Délai d'extinction du rétroéclairage branché / sur batterie</value>
+    <value>Délai rétroéclairage branché / batterie</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Délai de rétro-éclairage sur batterie</value>
@@ -308,6 +308,12 @@
   </data>
   <data name="BootSound" xml:space="preserve">
     <value>Son au démarrage</value>
+  </data>
+  <data name="BacklightDown" xml:space="preserve">
+    <value>Backlight Down</value>
+  </data>
+  <data name="BacklightUp" xml:space="preserve">
+    <value>Backlight Up</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Luminosité</value>
@@ -716,6 +722,9 @@ Voulez-vous continuer ?</value>
   <data name="RestartGPU" xml:space="preserve">
     <value>Un programme utilise le dGPU et empêche le passage en mode Éco. Laissez G-Helper tenter un redémarrage du dGPU dans le gestionnaire de tâches ? (Procéder à vos propres risques)</value>
   </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
+  </data>
   <data name="RPM" xml:space="preserve">
     <value> RPM</value>
   </data>
@@ -957,5 +966,11 @@ et les redémarre automatiquement lorsqu'il est activé</value>
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>Empêche les périphériques PCIe d'entrer dans des états d'inactivité à faible consommation.
 Recommandé en cas de blocages aléatoires ou de matériel qui ne répond plus.</value>
+  </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
   </data>
 </root>

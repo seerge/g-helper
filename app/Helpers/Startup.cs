@@ -10,13 +10,35 @@ public class Startup
     static string taskName = "GHelper";
     static string chargeTaskName = taskName + "Charge";
     static string strExeFilePath = Application.ExecutablePath.Trim();
+    static string userTaskName = taskName + "_" + WindowsIdentity.GetCurrent().User.Value;
+
+    static Microsoft.Win32.TaskScheduler.Task? GetUserTask(TaskService taskService)
+    {
+        try
+        {
+            var task = taskService.GetTask(userTaskName);
+            if (task != null) return task;
+
+            var legacy = taskService.GetTask(taskName);
+            var owner = legacy?.Definition.Principal.UserId ?? "";
+            if (owner == WindowsIdentity.GetCurrent().User.Value ||
+                string.Equals(owner.Split('\\').Last(), Environment.UserName, StringComparison.OrdinalIgnoreCase))
+                return legacy;
+        }
+        catch (Exception e)
+        {
+            Logger.WriteLine("Can't read startup task: " + e.Message);
+        }
+
+        return null;
+    }
 
     public static bool IsScheduled()
     {
         try
         {
             using (TaskService taskService = new TaskService())
-                return (taskService.RootFolder.AllTasks.Any(t => t.Name == taskName));
+                return GetUserTask(taskService) != null;
         }
         catch (Exception e)
         {
@@ -38,7 +60,7 @@ public class Startup
     {
         using (TaskService taskService = new TaskService())
         {
-            var task = taskService.RootFolder.AllTasks.FirstOrDefault(t => t.Name == taskName);
+            var task = GetUserTask(taskService);
             if (task != null)
             {
                 try
@@ -159,7 +181,9 @@ public class Startup
         {
 
             td.RegistrationInfo.Description = "G-Helper Auto Start";
-            td.Triggers.Add(new LogonTrigger { Delay = TimeSpan.FromSeconds(1) });
+            td.Triggers.Add(new LogonTrigger { UserId = WindowsIdentity.GetCurrent().Name, Delay = TimeSpan.FromSeconds(1) });
+            // ConsoleConnect = fast user switch back; no SessionUnlock, it fires on every unlock
+            td.Triggers.Add(new SessionStateChangeTrigger { StateChange = TaskSessionStateChangeType.ConsoleConnect, UserId = WindowsIdentity.GetCurrent().Name, Delay = TimeSpan.FromSeconds(1) });
             td.Actions.Add(strExeFilePath);
 
             td.Principal.LogonType = TaskLogonType.InteractiveToken;
@@ -172,17 +196,17 @@ public class Startup
 
             try
             {
-                TaskService.Instance.RootFolder.RegisterTaskDefinition(taskName, td);
+                TaskService.Instance.RootFolder.RegisterTaskDefinition(userTaskName, td);
+                Logger.WriteLine("Startup task scheduled: " + strExeFilePath);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
+                Logger.WriteLine("Can't create startup task: " + ex.Message);
                 if (ProcessHelper.IsUserAdministrator())
                     MessageBox.Show("Can't create a start up task. Try running Task Scheduler by hand and manually deleting GHelper task if it exists there.", "Scheduler Error", MessageBoxButtons.OK);
                 else
                     ProcessHelper.RunAsAdmin();
             }
-
-            Logger.WriteLine("Startup task scheduled: " + strExeFilePath);
         }
 
         ScheduleCharge();
@@ -195,9 +219,10 @@ public class Startup
         {
             try
             {
-                taskService.RootFolder.DeleteTask(taskName);
+                taskService.RootFolder.DeleteTask(userTaskName, false);
+                if (GetUserTask(taskService) != null) taskService.RootFolder.DeleteTask(taskName);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 if (ProcessHelper.IsUserAdministrator())
                     MessageBox.Show("Can't remove task. Try running Task Scheduler by hand and manually deleting GHelper task if it exists there.", "Scheduler Error", MessageBoxButtons.OK);

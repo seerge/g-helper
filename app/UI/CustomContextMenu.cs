@@ -76,6 +76,11 @@ namespace GHelper.UI
                                                             ref DWM_WINDOW_CORNER_PREFERENCE pvAttribute,
                                                             uint cbAttribute);
 
+        protected override CreateParams CreateParams
+        {
+            get { var cp = base.CreateParams; cp.ExStyle |= 0x00000008; return cp; }
+        }
+
         public CustomContextMenu()
         {
             try

@@ -1,5 +1,6 @@
 ﻿using GHelper.Peripherals.Mouse;
 using GHelper.Peripherals.Mouse.Models;
+using GHelper.USB;
 using HidSharp;
 using System.Runtime.CompilerServices;
 
@@ -268,6 +269,7 @@ namespace GHelper.Peripherals
             DetectMouse(new GladiusIIIAimpointWired());
             DetectMouse(new GladiusIIOrigin());
             DetectMouse(new GladiusIIOriginPink());
+            DetectMouse(new GladiusIIOriginCOD());
             DetectMouse(new GladiusII());
             DetectMouse(new GladiusIIWireless());
             DetectMouse(new KerisWireless());
@@ -298,10 +300,12 @@ namespace GHelper.Peripherals
             DetectMouse(new KerisWirelssAimpointWired());
             DetectMouse(new KerisIIAceWired());
             DetectMouse(new KerisIIOriginWired());
+            DetectMouse(new KerisIIOriginKJPWired());
             DetectMouse(new PugioII());
             DetectMouse(new PugioIIWired());
             DetectMouse(new StrixImpactII());
             DetectMouse(new StrixImpactIIElectroPunk());
+            DetectMouse(new StrixImpactIIMoonlightWhite());
             DetectMouse(new Chakram());
             DetectMouse(new ChakramWired());
             DetectMouse(new ChakramCore());
@@ -312,18 +316,33 @@ namespace GHelper.Peripherals
             DetectMouse(new StrixImpact());
             DetectMouse(new TXGamingMini());
             DetectMouse(new TXGamingMiniWired());
+            DetectMouse(new TUFGamingMiniMiku());
+            DetectMouse(new TUFGamingMiniMikuWired());
             DetectMouse(new Pugio());
             DetectMouse(new MD200());
         }
 
         public static void DedectOmniMouse()
         {
+            var omnis = DeviceList.Local.GetHidDevices(0x0B05, 0x1ACE).Where(x => x.DevicePath.Contains("mi_02&col01"));
+            var devices = DeviceList.Local.GetHidDevices(0x0B05, 0x1ACE).Where(x => x.DevicePath.Contains("mi_02&col03")).ToList();
+            foreach (var omni in omnis)
+                DedectOmniMouse(omni, devices.FirstOrDefault(x => OmniInstance(x.DevicePath) == OmniInstance(omni.DevicePath)));
+        }
+
+        private static string OmniInstance(string devicePath)
+        {
+            var parts = devicePath.Split('#');
+            if (parts.Length < 3) return devicePath;
+            int cut = parts[2].LastIndexOf('&');
+            return cut > 0 ? parts[2][..cut] : parts[2];
+        }
+
+        private static void DedectOmniMouse(HidDevice omni, HidDevice? device)
+        {
             try
             {
-
-                var omni = DeviceList.Local.GetHidDevices(0x0B05, 0x1ACE).FirstOrDefault(x => x.DevicePath.Contains("mi_02&col01"));
-                var device = DeviceList.Local.GetHidDevices(0x0B05, 0x1ACE).FirstOrDefault(x => x.DevicePath.Contains("mi_02&col03"));
-                if (omni is null || device is null) return;
+                if (device is null) return;
 
                 var config = new OpenConfiguration();
                 config.SetOption(OpenOption.Interruptible, true);
@@ -347,6 +366,8 @@ namespace GHelper.Peripherals
                 }
 
                 if (omniMouse is null) return;
+
+                omniMouse.SetPath(device.DevicePath);
 
                 using (var stream = device.Open(config))
                 {
@@ -406,6 +427,7 @@ namespace GHelper.Peripherals
         {
             0x1B65 => new HarpeAceMiniOmni(),
             0x1C0E => new KerisIIOriginOmni(),
+            0x1D4E => new KerisIIOriginKJPOmni(),
             0x1A94 => new HarpeAceAimLabEditionOmni(),
             0x1AD7 => new StrixImpactIIIWirelessOmni(),
             0x1A72 => new GladiusIIIAimpointOmni(),
@@ -444,7 +466,8 @@ namespace GHelper.Peripherals
             timer.Stop();
             Logger.WriteLine("HID Device Event: Checking for new ASUS Mice");
             DetectAllAsusMice();
-            if (AppConfig.IsZ13()) Program.inputDispatcher.Init();
+            if (AppConfig.IsDetachableKeyboard()) Program.inputDispatcher.Init();
+            XGM.Init();
         }
     }
 }

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2268 1492" width="2268" height="1492" font-family="'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, 'Microsoft YaHei', 'Hiragino Kaku Gothic ProN', 'Noto Sans CJK SC', 'Malgun Gothic', sans-serif">
+  <rect x="80" y="80" width="2108" height="1332" rx="28" fill="#202020"/>
+
+  <g fill="none" stroke="#ffffff" stroke-width="6" stroke-linejoin="round">
+    <path d="M1159 520 V878"/>
+    <path d="M479 520 V1119 H749"/>
+    <path d="M1839 520 V1119 H1569"/>
+  </g>
+  <g fill="#ffffff">
+    <polygon points="479,502 465,520 493,520"/>
+    <polygon points="1159,502 1145,520 1173,520"/>
+    <polygon points="1839,502 1825,520 1853,520"/>
+  </g>
+
+  <rect x="222" y="172" width="514" height="302" rx="20" fill="#06b48a"/>
+  <rect x="902" y="172" width="514" height="302" rx="20" fill="#4ab8f5"/>
+  <rect x="1582" y="172" width="514" height="302" rx="20" fill="#ff2020"/>
+  <g fill="#ffffff" text-anchor="middle">
+    <text x="479" y="318" font-size="88" font-weight="700">iGPU</text>
+    <text x="479" y="404" font-size="58">AMD / Intel</text>
+    <text x="1159" y="300" font-size="60" font-weight="700">NVidia</text>
+    <text x="1159" y="380" font-size="60" font-weight="700">Optimus</text>
+    <text x="1839" y="318" font-size="88" font-weight="700">dGPU</text>
+    <text x="1839" y="404" font-size="58">NVidia</text>
+  </g>
+
+  <g fill="#ffffff" stroke="#ffffff" stroke-width="6">
+    <line x1="793" y1="320" x2="870" y2="320"/>
+    <polygon points="767,320 793,303 793,337" stroke="none"/>
+    <line x1="1448" y1="320" x2="1524" y2="320"/>
+    <polygon points="1550,320 1524,303 1524,337" stroke="none"/>
+  </g>
+
+  <rect x="279" y="592" width="400" height="141" rx="32" fill="#3f3f3f"/>
+  <rect x="959" y="592" width="400" height="141" rx="32" fill="#3f3f3f"/>
+  <rect x="1639" y="592" width="400" height="141" rx="32" fill="#3f3f3f"/>
+  <g fill="#ffffff" text-anchor="middle">
+    <text x="479" y="679" font-size="50">Eco</text>
+    <text x="1159" y="679" font-size="50">Standard</text>
+    <text x="1839" y="679" font-size="50">Ultimate</text>
+  </g>
+
+  <rect x="749" y="878" width="820" height="482" rx="40" fill="#3f3f3f"/>
+  <g fill="#ffffff" text-anchor="middle" font-weight="700">
+    <text x="1159" y="1089" font-size="80">Laptop</text>
+    <text x="1159" y="1205" font-size="80">Display</text>
+  </g>
+
+  <rect x="80" y="10" width="140" height="58" rx="14" fill="#202020"/>
+  <text x="150" y="47" font-size="24" fill="#e8e8e8" text-anchor="middle">GPU Modes</text>
+</svg>

@@ -166,7 +166,7 @@
     <value>Anvend</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Anvend blæserkurve</value>
+    <value>Apply Fan Curve</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Anvend strømgrænser</value>
@@ -175,7 +175,7 @@
     <value>Automatisk justering af Windows strømtilstande</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Hukommelse tildelt til GPU</value>
+    <value>Hukommelse tildelt til iGPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Kørende ASUS-tjenester</value>
@@ -265,7 +265,7 @@
     <value>Slukket</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Baggrundslys timeout tilsluttet / på batteri</value>
+    <value>Baggrundslys timeout tilsluttet / batteri</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Baggrundslys timeout på batteri</value>
@@ -308,6 +308,12 @@
   </data>
   <data name="BootSound" xml:space="preserve">
     <value>Opstarts-lyd</value>
+  </data>
+  <data name="BacklightDown" xml:space="preserve">
+    <value>Backlight Down</value>
+  </data>
+  <data name="BacklightUp" xml:space="preserve">
+    <value>Backlight Up</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Lysstyrke</value>
@@ -716,6 +722,9 @@ Vil du stadig fortsætte?</value>
   <data name="RestartGPU" xml:space="preserve">
     <value>Noget bruger dGPU og forhindrer Øko-tilstand. Lad G-Helper forsøge at genstarte dGPU i enhedshåndtering? (fortsæt på egen risiko)</value>
   </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
+  </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
   </data>
@@ -957,5 +966,11 @@ og genstarter dem automatisk, når GPU'en er aktiveret</value>
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>Forhindrer PCIe-enheder i at gå i lavenergi-inaktive tilstande.
 Anbefales, hvis du oplever tilfældige hængninger eller hardware, der ikke reagerer.</value>
+  </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
   </data>
 </root>

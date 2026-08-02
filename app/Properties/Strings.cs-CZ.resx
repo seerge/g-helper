@@ -166,7 +166,7 @@
     <value>Použít</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Použít vlastní křivky vent.</value>
+    <value>Použít křivky vent.</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Použít výkonové limity</value>
@@ -175,7 +175,7 @@
     <value>Auto. upravit režimy napájení Windows</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Paměť přidělená GPU</value>
+    <value>Paměť přidělená iGPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Služeb Asus spuštěno</value>
@@ -265,7 +265,7 @@
     <value>Vypnuto</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Časový limit podsvícení v síti / na baterii</value>
+    <value>Časový limit podsvícení: síť / baterie</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Časový limit podsvícení na baterii</value>

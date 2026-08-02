@@ -166,7 +166,7 @@
     <value>Uygula</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Özel Fan Eğrisini Uygula</value>
+    <value>Fan Eğrisini Uygula</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Güç Sınırlarını Uygula</value>
@@ -175,7 +175,7 @@
     <value>Windows Güç Modlarını otomatik ayarla</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>GPU için Atanan Bellek</value>
+    <value>iGPU için Atanan Bellek</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Çalışan Asus Hizmetleri</value>
@@ -265,7 +265,7 @@
     <value>Kapalı</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Klavye arka ışığı kapanma süresi (Şarj / Pil)</value>
+    <value>Arka ışığı kapanma süresi (Şarj / Pil)</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Pildeyken Arka Işık Zaman Aşımı</value>
@@ -308,6 +308,12 @@
   </data>
   <data name="BootSound" xml:space="preserve">
     <value>Açılış sesi</value>
+  </data>
+  <data name="BacklightDown" xml:space="preserve">
+    <value>Arka Işığı Azalt</value>
+  </data>
+  <data name="BacklightUp" xml:space="preserve">
+    <value>Arka Işığı Artır</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Parlaklık</value>
@@ -716,6 +722,9 @@ Yine de devam etmek istiyor musunuz?</value>
   <data name="RestartGPU" xml:space="preserve">
     <value>Bir şey harici GPU'yu kullanıyor ve Eco modunu engelliyor. G-Helper aygıt yöneticisinde harici GPU'yu yeniden başlatmayı denesin mi? (Kendi sorumluluğunuzdadır)</value>
   </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>NV Servisleri Yeniden Başlatılıyor...</value>
+  </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
   </data>
@@ -939,7 +948,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Hareket Eşitlemesi</value>
   </data>
   <data name="MouseZoneMode" xml:space="preserve">
-    <value>Zone Mode</value>
+    <value>Fare Alan Modu</value>
   </data>
   <data name="DisablePCIeASPM" xml:space="preserve">
     <value>PCIe Bağlantı Durumu Yönetimini devre dışı bırak (şarjda)</value>
@@ -957,5 +966,11 @@ ve GPU etkinleştirildiğinde otomatik olarak yeniden başlatır</value>
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>PCIe aygıtlarının düşük güçlü boşta durumlarına geçmesini engeller.
 Rastgele takılmalar veya yanıt vermeyen donanım yaşıyorsanız önerilir.</value>
+  </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Yer Paylaşımı</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Yer paylaşımını sadece oyunlarda aç</value>
   </data>
 </root>

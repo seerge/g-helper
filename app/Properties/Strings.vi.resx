@@ -166,7 +166,7 @@
     <value>Áp dụng</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Áp dụng Đường cong quạt tuỳ chỉnh</value>
+    <value>Áp dụng Đường cong quạt</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Áp dụng Giới hạn công suất</value>
@@ -175,7 +175,7 @@
     <value>Tự động điều chỉnh Kế hoạch nguồn của Windows</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Bộ nhớ chuyển cho GPU</value>
+    <value>Bộ nhớ chuyển cho iGPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Dịch vụ Asus đang chạy</value>
@@ -308,6 +308,12 @@
   </data>
   <data name="BootSound" xml:space="preserve">
     <value>Tiếng ROG khi bật máy</value>
+  </data>
+  <data name="BacklightDown" xml:space="preserve">
+    <value>Backlight Down</value>
+  </data>
+  <data name="BacklightUp" xml:space="preserve">
+    <value>Backlight Up</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Độ sáng</value>
@@ -716,6 +722,9 @@ Bạn có muốn tiếp tục không?</value>
   <data name="RestartGPU" xml:space="preserve">
     <value>Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk)</value>
   </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
+  </data>
   <data name="RPM" xml:space="preserve">
     <value>VTP</value>
   </data>
@@ -957,5 +966,11 @@ và tự khởi động lại khi GPU được bật</value>
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>Ngăn các thiết bị PCIe vào trạng thái nhàn rỗi tiết kiệm điện.
 Khuyến nghị nếu bạn gặp tình trạng treo ngẫu nhiên hoặc phần cứng không phản hồi.</value>
+  </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
   </data>
 </root>

@@ -164,7 +164,9 @@ namespace GHelper.Mode
             else
             {
                 // Power plan from config or defaulting to balanced
-                SetPowerPlan(AppConfig.GetModeString("scheme"));
+                string plan = AppConfig.GetModeString("scheme");
+                if (Program.currentSource == Program.PowerSource.USBC && AppConfig.GetModeString("scheme_usbc") is string usbc) plan = usbc;
+                SetPowerPlan(plan);            
             }
 
             if (!overlays.Contains(scheme)) return;
@@ -208,6 +210,8 @@ namespace GHelper.Mode
                     return POWER_TURBO;
                 case 2: //silent
                     return POWER_SILENT;
+                case 3:
+                    return PLAN_HIGH_PERFORMANCE;
                 default: // balanced
                     return POWER_BALANCED;
             }

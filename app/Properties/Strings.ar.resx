@@ -166,7 +166,7 @@
     <value>تطبيق</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>تطبيق منحنى المروحة المخصص</value>
+    <value>تطبيق منحنى المروحة</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>تطبيق حدود الطاقة</value>
@@ -175,7 +175,7 @@
     <value>ضبط أوضاع طاقة ويندوز تلقائيًا</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>الذاكرة المخصصة لوحدة معالجة الرسومات</value>
+    <value>الذاكرة المخصصة لوحدة معالجة الرسومات المدمجة</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>خدمات أسوس قيد التشغيل</value>
@@ -308,6 +308,12 @@
   </data>
   <data name="BootSound" xml:space="preserve">
     <value>صوت الإقلاع</value>
+  </data>
+  <data name="BacklightDown" xml:space="preserve">
+    <value>Backlight Down</value>
+  </data>
+  <data name="BacklightUp" xml:space="preserve">
+    <value>Backlight Up</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>السطوع</value>
@@ -716,6 +722,9 @@
   <data name="RestartGPU" xml:space="preserve">
     <value>هناك شيء يستخدم وحدة معالجة الرسومات المنفصلة ويمنع وضع التوفير. هل تريد أن يحاول G-Helper إعادة تشغيل وحدة معالجة الرسومات في مدير الأجهزة؟ (يرجى المتابعة على مسؤوليتك الخاصة)</value>
   </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
+  </data>
   <data name="RPM" xml:space="preserve">
     <value>دورة في الدقيقة</value>
   </data>
@@ -957,5 +966,11 @@
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>يمنع أجهزة PCIe من الدخول في حالات الخمول منخفضة الطاقة.
 موصى به في حال حدوث تعليق عشوائي أو عدم استجابة الأجهزة.</value>
+  </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
   </data>
 </root>

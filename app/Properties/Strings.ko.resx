@@ -166,7 +166,7 @@
     <value>적용</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>커스텀 팬커브 적용</value>
+    <value>팬커브 적용</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>전력 제한 적용</value>
@@ -175,7 +175,7 @@
     <value>윈도우 전원 모드 자동조절</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>GPU에 할당된 메모리</value>
+    <value>iGPU에 할당된 메모리</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>실행 중인 Asus 서비스</value>
@@ -308,6 +308,12 @@
   </data>
   <data name="BootSound" xml:space="preserve">
     <value>부팅 사운드</value>
+  </data>
+  <data name="BacklightDown" xml:space="preserve">
+    <value>Backlight Down</value>
+  </data>
+  <data name="BacklightUp" xml:space="preserve">
+    <value>Backlight Up</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>밝기</value>
@@ -716,6 +722,9 @@
   <data name="RestartGPU" xml:space="preserve">
     <value>dGPU가 사용중이기 때문에 Eco 모드로 전환할 수 없습니다. 장치 관리자에서 dGPU를 재시작하시겠습니까?</value>
   </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
+  </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
   </data>
@@ -957,5 +966,11 @@ GPU가 활성화될 때 자동으로 다시 시작합니다</value>
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>PCIe 장치가 저전력 유휴 상태로 진입하는 것을 방지합니다.
 무작위 멈춤이나 응답하지 않는 하드웨어가 발생하는 경우 권장됩니다.</value>
+  </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
   </data>
 </root>

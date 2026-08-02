@@ -132,6 +132,30 @@
         {
             return "ROG Keris II Origin (OMNI)";
         }
- 
+
+    }
+
+    public class KerisIIOriginKJPWired : KerisIIOriginWired
+    {
+        public KerisIIOriginKJPWired() : base(0x1D4C, true, "mi_00", 0x00)
+        {
+        }
+
+        public override string GetDisplayName()
+        {
+            return "ROG Keris II Origin KJP (Wired)";
+        }
+    }
+
+    public class KerisIIOriginKJPOmni : KerisIIOriginWired
+    {
+        public KerisIIOriginKJPOmni() : base(0x1ACE, true, "mi_02&col03", 0x03)
+        {
+        }
+
+        public override string GetDisplayName()
+        {
+            return "ROG Keris II Origin KJP (OMNI)";
+        }
     }
 }

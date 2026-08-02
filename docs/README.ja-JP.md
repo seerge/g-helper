@@ -96,14 +96,14 @@ Asus ノートパソコン向けの小型・軽量な Armoury Crate 代替ツー
 3. **アルティメット**：iGPU と dGPU が有効で、dGPU が内蔵ディスプレイを駆動します（2022 年以降のモデルで対応）
 4. **オプティマイズド**：バッテリー駆動時は dGPU を無効化（エコ）、電源接続時に有効化（スタンダード）
 
-<img width="1134" alt="GPU モード" src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/gpu-modes-ja.png" />
+<img width="1134" alt="GPU モード" src="https://raw.githubusercontent.com/seerge/g-helper/main/docs/gpu-modes-ja.svg" />
 
 ### 💿 ドライバ更新
 本アプリには、お使いのモデル向けに Asus 公式サイトから直接取得する BIOS / ドライバの自動更新チェッカーが含まれており、新しいダウンロードが利用可能になるとハイライト表示します。`Updates` セクションのすべてのリンクは Asus 公式のダウンロードを指しています。
 <img width="2302" alt="Driver Updates" src="https://github.com/user-attachments/assets/303dfce9-fbbd-4d15-b6d7-f21e7c2c59a4" />
 
 ### 🎮 メトリクスオーバーレイ
-ゲーム画面の上に **FPS、CPU / GPU の温度・使用率・電力** をリアルタイムで表示する内蔵のゲーム内オーバーレイ（OSD）です。RTSS などの追加ツールは不要です。DX10 以降のゲームに対応します。排他的フルスクリーンを使用する古いタイトルでは表示されない場合があるため、ゲームをウィンドウ / ボーダーレスフルスクリーンモードに設定してください。
+ゲーム画面の上に **FPS、CPU / GPU の温度・使用率・電力** をリアルタイムで表示する内蔵のゲーム内オーバーレイ（OSD）です。追加ツールは不要です。DX10 以降のゲームに対応します。排他的フルスクリーンを使用する古いタイトルでは表示されない場合があるため、ゲームをウィンドウ / ボーダーレスフルスクリーンモードに設定してください。
 
 - ``Ctrl + Shift + Alt + O`` - ゲーム内オーバーレイの ON / OFF を切り替え
 - ``Ctrl + Shift + Alt + マウスドラッグ`` - オーバーレイを移動

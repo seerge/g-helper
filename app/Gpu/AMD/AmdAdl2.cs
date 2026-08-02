@@ -654,5 +654,55 @@ public class Adl2
             nint context,
             int adapterIndex,
             ref ADLODNPerformanceLevels performanceLevels);
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct ADLODNPerformanceStatus
+        {
+            public int iCoreClock;
+            public int iMemoryClock;
+            public int iDCEFClock;
+            public int iGFXClock;
+            public int iUVDClock;
+            public int iVCEClock;
+            public int iGPUActivityPercent;
+            public int iCurrentCorePerformanceLevel;
+            public int iCurrentMemoryPerformanceLevel;
+            public int iCurrentDCEFPerformanceLevel;
+            public int iCurrentGFXPerformanceLevel;
+            public int iUVDPerformanceLevel;
+            public int iVCEPerformanceLevel;
+            public int iCurrentBusSpeed;
+            public int iCurrentBusLanes;
+            public int iMaximumBusLanes;
+            public int iVDDC;
+            public int iVDDCI;
+        }
+
+        [DllImport(Atiadlxx_FileName)]
+        public static extern int ADL2_OverdriveN_Temperature_Get(nint context, int adapterIndex, int temperatureType, out int temperature);
+
+        [DllImport(Atiadlxx_FileName)]
+        public static extern int ADL2_OverdriveN_PerformanceStatus_Get(nint context, int adapterIndex, out ADLODNPerformanceStatus status);
+
+        [DllImport(Atiadlxx_FileName)]
+        public static extern int ADL2_Overdrive6_CurrentPower_Get(nint context, int adapterIndex, int powerType, out int currentValue);
+
+        [DllImport(Atiadlxx_FileName)]
+        public static extern int ADL2_Adapter_DedicatedVRAMUsage_Get(nint context, int iAdapterIndex, out int iVRAMUsageInMB);
+
+        [DllImport(Atiadlxx_FileName)]
+        public static extern int ADL2_Adapter_MemoryInfo2_Get(nint context, int iAdapterIndex, out ADLMemoryInfo2 lpMemoryInfo2);
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct ADLMemoryInfo2
+        {
+            public long iMemorySize;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
+            public string strMemoryType;
+            public long iMemoryBandwidth;
+            public long iHyperMemorySize;
+            public long iInvisibleMemorySize;
+            public long iVisibleMemorySize;
+        }
     }
 }

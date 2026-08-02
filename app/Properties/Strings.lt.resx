@@ -166,7 +166,7 @@
     <value>Taikyti</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Taikyti tinkintą kreivę</value>
+    <value>Taikyti kreivę</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Taikyti galios ribas</value>
@@ -175,7 +175,7 @@
     <value>Automatiškai derinti Windows energijos režimus</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Atmintis priskirta vaizdo plokštei</value>
+    <value>Atmintis priskirta integruotai vaizdo plokštei</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Veikiančios Asus tarnybos</value>
@@ -265,7 +265,7 @@
     <value>Išjungta</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Apšvietimo laikas įkraunant / akumuliatoriaus režimu</value>
+    <value>Apšvietimo laikas: įkraunant / baterijoje</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Foninio apšvietimo laikas akumuliatoriaus režimu</value>
@@ -308,6 +308,12 @@
   </data>
   <data name="BootSound" xml:space="preserve">
     <value>Paleidimo garsas</value>
+  </data>
+  <data name="BacklightDown" xml:space="preserve">
+    <value>Backlight Down</value>
+  </data>
+  <data name="BacklightUp" xml:space="preserve">
+    <value>Backlight Up</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Ryškumas</value>
@@ -716,6 +722,9 @@ Vis tiek norite tęsti?</value>
   <data name="RestartGPU" xml:space="preserve">
     <value>Kažkas naudoja dGPU ir neleidžia įjungti ekonomiško režimo. Norite leisti G-Helper bandyti iš naujo paleisti dGPU įrenginių tvarkytuvėje? (Tęskite savo rizika)</value>
   </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
+  </data>
   <data name="RPM" xml:space="preserve">
     <value>aps.</value>
   </data>
@@ -957,5 +966,11 @@ ir automatiškai jas paleidžia, kai GPU yra įjungtas</value>
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>Neleidžia PCIe įrenginiams pereiti į mažo energijos suvartojimo budėjimo būsenas.
 Rekomenduojama, jei pastebėjote atsitiktinius užstrigimus ar nereaguojančią aparatinę įrangą.</value>
+  </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
   </data>
 </root>

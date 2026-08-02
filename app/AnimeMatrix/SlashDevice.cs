@@ -1,4 +1,5 @@
 ﻿using GHelper.AnimeMatrix.Communication;
+using GHelper.USB;
 using HidSharp.Reports;
 using System.Management;
 using System.Text;
@@ -165,8 +166,11 @@ namespace GHelper.AnimeMatrix
 
         public void Init()
         {
-            Set(CreatePacket([0xD7, 0x00, 0x00, 0x01, 0xAC]), "SlashInit");
-            Set(CreatePacket([0xD2, 0x02, 0x01, 0x08, 0xAB]), "SlashInit");
+            lock (AsusHid.hidLock)
+            {
+                Set(CreatePacket([0xD7, 0x00, 0x00, 0x01, 0xAC]), "SlashInit");
+                Set(CreatePacket([0xD2, 0x02, 0x01, 0x08, 0xAB]), "SlashInit");
+            }
         }
 
         public void SetEnabled(bool status = true)
@@ -192,9 +196,12 @@ namespace GHelper.AnimeMatrix
                 modeByte = 0x00;
             }
 
-            Set(CreatePacket([0xD2, 0x03, 0x00, 0x0C]), "SlashMode");
-            //Set(CreatePacket([0xD3, 0x04, 0x00, 0x0C, 0x01, modeByte, 0x02, 0x19, 0x03, 0x13, 0x04, 0x11, 0x05, 0x12, 0x06, 0x13]), "SlashMode");
-            Set(CreatePacket([0xD3, 0x04, 0x00, 0x0C, 0x01, modeByte, 0x02, 0x42, 0x03, 0x13, 0x04, 0x11, 0x05, 0x12, 0x06, 0x13]), "SlashMode");
+            lock (AsusHid.hidLock)
+            {
+                Set(CreatePacket([0xD2, 0x03, 0x00, 0x0C]), "SlashMode");
+                //Set(CreatePacket([0xD3, 0x04, 0x00, 0x0C, 0x01, modeByte, 0x02, 0x19, 0x03, 0x13, 0x04, 0x11, 0x05, 0x12, 0x06, 0x13]), "SlashMode");
+                Set(CreatePacket([0xD3, 0x04, 0x00, 0x0C, 0x01, modeByte, 0x02, 0x42, 0x03, 0x13, 0x04, 0x11, 0x05, 0x12, 0x06, 0x13]), "SlashMode");
+            }
         }
 
         private byte[] GetPercentagePattern(int brightness, double percentage)
@@ -240,10 +247,13 @@ namespace GHelper.AnimeMatrix
 
         public void SetCustom(byte[] data, string? log = "Static Data")
         {
-            Set(CreatePacket([0xD2, 0x02, 0x01, 0x08, 0xAC]), null);
-            Set(CreatePacket([0xD3, 0x03, 0x01, 0x08, 0xAC, 0xFF, 0xFF, 0x01, 0x05, 0xFF, 0xFF]), null);
-            Set(CreatePacket([0xD4, 0x00, 0x00, 0x01, 0xAC]), null);
-            ContinueCustom(data, log);
+            lock (AsusHid.hidLock)
+            {
+                Set(CreatePacket([0xD2, 0x02, 0x01, 0x08, 0xAC]), null);
+                Set(CreatePacket([0xD3, 0x03, 0x01, 0x08, 0xAC, 0xFF, 0xFF, 0x01, 0x05, 0xFF, 0xFF]), null);
+                Set(CreatePacket([0xD4, 0x00, 0x00, 0x01, 0xAC]), null);
+                ContinueCustom(data, log);
+            }
         }
 
         public void ContinueCustom(byte[] data, string? log)
@@ -271,13 +281,16 @@ namespace GHelper.AnimeMatrix
 
         public void SetSleepActive(bool status)
         {
-            Set(CreatePacket([0xD2, 0x02, 0x01, 0x08, 0xA1]), "SlashSleepInit");
-            Set(CreatePacket([0xD3, 0x03, 0x01, 0x08, 0xA1, 0x00, 0xFF, status ? (byte)0x01 : (byte)0x00, 0x02, 0xFF, 0xFF]), $"SlashSleep {status}");
+            lock (AsusHid.hidLock)
+            {
+                Set(CreatePacket([0xD2, 0x02, 0x01, 0x08, 0xA1]), "SlashSleepInit");
+                Set(CreatePacket([0xD3, 0x03, 0x01, 0x08, 0xA1, 0x00, 0xFF, status ? (byte)0x01 : (byte)0x00, 0x02, 0xFF, 0xFF]), $"SlashSleep {status}");
+            }
         }
 
         public void Set(Packet packet, string? log = null)
         {
-            _usbProvider?.Set(packet.Data);
+            lock (AsusHid.hidLock) _usbProvider?.Set(packet.Data);
             if (log is not null) Logger.WriteLine($"{log}:" + BitConverter.ToString(packet.Data).Substring(0, 48));
         }
     }

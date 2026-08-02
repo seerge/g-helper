@@ -166,7 +166,7 @@
     <value>適用</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>カスタムファンカーブの適用</value>
+    <value>ファンカーブの適用</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>電力制限を適用する</value>
@@ -175,7 +175,7 @@
     <value>Windows電源モードを自動調整</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>GPUに割り当てられたメモリ</value>
+    <value>iGPUに割り当てられたメモリ</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Asusサービスを実行中</value>
@@ -308,6 +308,12 @@
   </data>
   <data name="BootSound" xml:space="preserve">
     <value>起動音</value>
+  </data>
+  <data name="BacklightDown" xml:space="preserve">
+    <value>Backlight Down</value>
+  </data>
+  <data name="BacklightUp" xml:space="preserve">
+    <value>Backlight Up</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>明るさ</value>
@@ -716,6 +722,9 @@
   <data name="RestartGPU" xml:space="preserve">
     <value>何らかの問題が dGPU を使用しており、エコモードを防止しています。G-Helper をデバイスマネージャーで dGPU を再起動させてください。(自己責任で進んでください)</value>
   </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
+  </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
   </data>
@@ -957,5 +966,11 @@ GPU が有効化されたときに自動的に再起動します</value>
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>PCIe デバイスが低電力アイドル状態に入るのを防ぎます。
 ランダムなフリーズやハードウェアの無応答が発生する場合に推奨されます。</value>
+  </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
   </data>
 </root>

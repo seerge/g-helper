@@ -475,6 +475,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Backlight Down.
+        /// </summary>
+        internal static string BacklightDown {
+            get {
+                return ResourceManager.GetString("BacklightDown", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Low.
         /// </summary>
         internal static string BacklightLow {
@@ -510,6 +519,15 @@ namespace GHelper.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to Backlight Up.
+        /// </summary>
+        internal static string BacklightUp {
+            get {
+                return ResourceManager.GetString("BacklightUp", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Backlight timeout plugged / on battery.
         /// </summary>
@@ -1971,6 +1989,24 @@ namespace GHelper.Properties {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Overlay.
+        /// </summary>
+        internal static string Overlay {
+            get {
+                return ResourceManager.GetString("Overlay", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Overlay only in games.
+        /// </summary>
+        internal static string OverlayOnlyInGames {
+            get {
+                return ResourceManager.GetString("OverlayOnlyInGames", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Read Limits.
         /// </summary>
         internal static string ReadLimits {
@@ -1994,6 +2030,15 @@ namespace GHelper.Properties {
         internal static string RestartGPU {
             get {
                 return ResourceManager.GetString("RestartGPU", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Restarting NV Services....
+        /// </summary>
+        internal static string RestartingNVServices {
+            get {
+                return ResourceManager.GetString("RestartingNVServices", resourceCulture);
             }
         }
         

@@ -37,6 +37,7 @@ namespace GHelper
             labelServices = new Label();
             buttonServices = new RButton();
             panelBindingsHeader = new Panel();
+            buttonResetBindings = new RButton();
             pictureBindings = new PictureBox();
             pictureHelp = new PictureBox();
             labelBindings = new Label();
@@ -57,6 +58,9 @@ namespace GHelper
             comboM4 = new RComboBox();
             textM4 = new RTextBox();
             labelM4 = new Label();
+            comboM5 = new RComboBox();
+            textM5 = new RTextBox();
+            labelM5 = new Label();
             comboM3 = new RComboBox();
             textM3 = new RTextBox();
             labelM3 = new Label();
@@ -121,6 +125,7 @@ namespace GHelper
             checkGpuApps = new CheckBox();
             checkNVPlatform = new CheckBox();
             checkStatusLed = new CheckBox();
+            checkNumberPad = new CheckBox();
             checkAspm = new CheckBox();
             panelPower = new Panel();
             numericHibernateAfter = new NumericUpDownWithUnit();
@@ -233,6 +238,7 @@ namespace GHelper
             // 
             panelBindingsHeader.AutoSize = true;
             panelBindingsHeader.BackColor = SystemColors.ControlLight;
+            panelBindingsHeader.Controls.Add(buttonResetBindings);
             panelBindingsHeader.Controls.Add(pictureBindings);
             panelBindingsHeader.Controls.Add(pictureHelp);
             panelBindingsHeader.Controls.Add(labelBindings);
@@ -252,9 +258,26 @@ namespace GHelper
             pictureBindings.Size = new Size(32, 32);
             pictureBindings.TabIndex = 1;
             pictureBindings.TabStop = false;
-            // 
+            //
+            // buttonResetBindings
+            //
+            buttonResetBindings.Activated = false;
+            buttonResetBindings.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            buttonResetBindings.BackColor = SystemColors.ButtonHighlight;
+            buttonResetBindings.BorderColor = Color.Transparent;
+            buttonResetBindings.BorderRadius = 2;
+            buttonResetBindings.FlatStyle = FlatStyle.Flat;
+            buttonResetBindings.Location = new Point(727, 5);
+            buttonResetBindings.Margin = new Padding(5, 3, 5, 3);
+            buttonResetBindings.Name = "buttonResetBindings";
+            buttonResetBindings.Secondary = true;
+            buttonResetBindings.Size = new Size(150, 41);
+            buttonResetBindings.TabIndex = 12;
+            buttonResetBindings.Text = "Reset";
+            buttonResetBindings.UseVisualStyleBackColor = false;
+            //
             // pictureHelp
-            // 
+            //
             pictureHelp.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             pictureHelp.BackgroundImage = Resources.icons8_help_32;
             pictureHelp.BackgroundImageLayout = ImageLayout.Zoom;
@@ -298,21 +321,24 @@ namespace GHelper
             tableBindings.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
             tableBindings.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
             tableBindings.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
-            tableBindings.Controls.Add(labelFNE, 0, 7);
-            tableBindings.Controls.Add(comboFNE, 0, 7);
-            tableBindings.Controls.Add(textFNE, 0, 7);
-            tableBindings.Controls.Add(labelFNV, 0, 6);
-            tableBindings.Controls.Add(comboFNV, 1, 6);
-            tableBindings.Controls.Add(textFNV, 2, 6);
-            tableBindings.Controls.Add(labelFNC, 0, 5);
-            tableBindings.Controls.Add(comboFNC, 1, 5);
-            tableBindings.Controls.Add(textFNC, 2, 5);
-            tableBindings.Controls.Add(labelFNF4, 0, 4);
-            tableBindings.Controls.Add(comboFNF4, 1, 4);
-            tableBindings.Controls.Add(textFNF4, 2, 4);
-            tableBindings.Controls.Add(comboM4, 1, 3);
-            tableBindings.Controls.Add(textM4, 2, 3);
-            tableBindings.Controls.Add(labelM4, 0, 3);
+            tableBindings.Controls.Add(labelFNE, 0, 8);
+            tableBindings.Controls.Add(comboFNE, 0, 8);
+            tableBindings.Controls.Add(textFNE, 0, 8);
+            tableBindings.Controls.Add(labelFNV, 0, 7);
+            tableBindings.Controls.Add(comboFNV, 1, 7);
+            tableBindings.Controls.Add(textFNV, 2, 7);
+            tableBindings.Controls.Add(labelFNC, 0, 6);
+            tableBindings.Controls.Add(comboFNC, 1, 6);
+            tableBindings.Controls.Add(textFNC, 2, 6);
+            tableBindings.Controls.Add(labelFNF4, 0, 5);
+            tableBindings.Controls.Add(comboFNF4, 1, 5);
+            tableBindings.Controls.Add(textFNF4, 2, 5);
+            tableBindings.Controls.Add(comboM4, 1, 4);
+            tableBindings.Controls.Add(textM4, 2, 4);
+            tableBindings.Controls.Add(labelM4, 0, 4);
+            tableBindings.Controls.Add(comboM5, 1, 3);
+            tableBindings.Controls.Add(textM5, 2, 3);
+            tableBindings.Controls.Add(labelM5, 0, 3);
             tableBindings.Controls.Add(comboM3, 1, 2);
             tableBindings.Controls.Add(textM3, 2, 2);
             tableBindings.Controls.Add(labelM3, 0, 2);
@@ -327,7 +353,8 @@ namespace GHelper
             tableBindings.Margin = new Padding(0, 3, 5, 3);
             tableBindings.Name = "tableBindings";
             tableBindings.Padding = new Padding(16, 11, 0, 11);
-            tableBindings.RowCount = 8;
+            tableBindings.RowCount = 9;
+            tableBindings.RowStyles.Add(new RowStyle());
             tableBindings.RowStyles.Add(new RowStyle());
             tableBindings.RowStyles.Add(new RowStyle());
             tableBindings.RowStyles.Add(new RowStyle());
@@ -509,9 +536,43 @@ namespace GHelper
             labelM4.Size = new Size(116, 43);
             labelM4.TabIndex = 2;
             labelM4.Text = "M4/ROG:";
-            // 
+            //
+            // comboM5
+            //
+            comboM5.BorderColor = Color.White;
+            comboM5.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboM5.Dock = DockStyle.Top;
+            comboM5.FormattingEnabled = true;
+            comboM5.Location = new Point(205, 152);
+            comboM5.Margin = new Padding(5, 3, 5, 3);
+            comboM5.Name = "comboM5";
+            comboM5.Size = new Size(358, 40);
+            comboM5.TabIndex = 6;
+            //
+            // textM5
+            //
+            textM5.Dock = DockStyle.Top;
+            textM5.Location = new Point(573, 152);
+            textM5.Margin = new Padding(5, 3, 5, 3);
+            textM5.Name = "textM5";
+            textM5.PlaceholderText = "action";
+            textM5.Size = new Size(360, 39);
+            textM5.TabIndex = 7;
+            textM5.TabStop = false;
+            //
+            // labelM5
+            //
+            labelM5.AutoSize = true;
+            labelM5.Location = new Point(16, 149);
+            labelM5.Margin = new Padding(0);
+            labelM5.Name = "labelM5";
+            labelM5.Padding = new Padding(5, 11, 0, 0);
+            labelM5.Size = new Size(59, 43);
+            labelM5.TabIndex = 2;
+            labelM5.Text = "M4:";
+            //
             // comboM3
-            // 
+            //
             comboM3.BorderColor = Color.White;
             comboM3.ButtonColor = Color.FromArgb(255, 255, 255);
             comboM3.Dock = DockStyle.Top;
@@ -645,7 +706,7 @@ namespace GHelper
             panelBacklightHeader.Name = "panelBacklightHeader";
             panelBacklightHeader.Padding = new Padding(11, 5, 11, 5);
             panelBacklightHeader.Size = new Size(949, 51);
-            panelBacklightHeader.TabIndex = 44;
+            panelBacklightHeader.TabIndex = 2;
             // 
             // sliderBrightness
             // 
@@ -658,7 +719,7 @@ namespace GHelper
             sliderBrightness.Size = new Size(501, 40);
             sliderBrightness.Step = 1;
             sliderBrightness.TabIndex = 50;
-            sliderBrightness.TabStop = false;
+            sliderBrightness.TabStop = true;
             sliderBrightness.Text = "sliderBrightness";
             sliderBrightness.Value = 3;
             // 
@@ -693,7 +754,7 @@ namespace GHelper
             panelBacklight.Name = "panelBacklight";
             panelBacklight.Padding = new Padding(0, 5, 0, 5);
             panelBacklight.Size = new Size(949, 444);
-            panelBacklight.TabIndex = 2;
+            panelBacklight.TabIndex = 3;
             // 
             // panelBacklightExtra
             // 
@@ -762,7 +823,6 @@ namespace GHelper
             comboKeyboardSpeed.FlatStyle = FlatStyle.Flat;
             comboKeyboardSpeed.Font = new Font("Segoe UI", 9F);
             comboKeyboardSpeed.FormattingEnabled = true;
-            comboKeyboardSpeed.ItemHeight = 32;
             comboKeyboardSpeed.Items.AddRange(new object[] { "Slow", "Normal", "Fast" });
             comboKeyboardSpeed.Location = new Point(634, 13);
             comboKeyboardSpeed.Margin = new Padding(5, 11, 5, 9);
@@ -1203,6 +1263,7 @@ namespace GHelper
             panelSettings.Controls.Add(checkUSBC);
             panelSettings.Controls.Add(checkGpuApps);
             panelSettings.Controls.Add(checkNVPlatform);
+            panelSettings.Controls.Add(checkNumberPad);
             panelSettings.Controls.Add(checkStatusLed);
             panelSettings.Controls.Add(checkAspm);
             panelSettings.Dock = DockStyle.Top;
@@ -1210,7 +1271,7 @@ namespace GHelper
             panelSettings.Name = "panelSettings";
             panelSettings.Padding = new Padding(21, 5, 11, 5);
             panelSettings.Size = new Size(949, 472);
-            panelSettings.TabIndex = 3;
+            panelSettings.TabIndex = 50;
             // 
             // checkAutoToggleClamshellMode
             // 
@@ -1220,7 +1281,7 @@ namespace GHelper
             checkAutoToggleClamshellMode.Name = "checkAutoToggleClamshellMode";
             checkAutoToggleClamshellMode.Padding = new Padding(3);
             checkAutoToggleClamshellMode.Size = new Size(917, 42);
-            checkAutoToggleClamshellMode.TabIndex = 8;
+            checkAutoToggleClamshellMode.TabIndex = 9;
             checkAutoToggleClamshellMode.Text = "Auto Toggle Clamshell Mode";
             checkAutoToggleClamshellMode.UseVisualStyleBackColor = true;
             //
@@ -1246,7 +1307,7 @@ namespace GHelper
             checkTopmost.Name = "checkTopmost";
             checkTopmost.Padding = new Padding(3);
             checkTopmost.Size = new Size(917, 42);
-            checkTopmost.TabIndex = 6;
+            checkTopmost.TabIndex = 8;
             checkTopmost.Text = Strings.WindowTop;
             checkTopmost.UseVisualStyleBackColor = true;
             // 
@@ -1259,7 +1320,7 @@ namespace GHelper
             checkNoOverdrive.Name = "checkNoOverdrive";
             checkNoOverdrive.Padding = new Padding(3);
             checkNoOverdrive.Size = new Size(917, 42);
-            checkNoOverdrive.TabIndex = 5;
+            checkNoOverdrive.TabIndex = 7;
             checkNoOverdrive.Text = Strings.DisableOverdrive;
             checkNoOverdrive.UseVisualStyleBackColor = true;
             // 
@@ -1272,7 +1333,7 @@ namespace GHelper
             checkBootSound.Name = "checkBootSound";
             checkBootSound.Padding = new Padding(3);
             checkBootSound.Size = new Size(917, 42);
-            checkBootSound.TabIndex = 10;
+            checkBootSound.TabIndex = 5;
             checkBootSound.Text = "Boot Sound";
             checkBootSound.UseVisualStyleBackColor = true;
             //
@@ -1285,7 +1346,7 @@ namespace GHelper
             checkKeystoneSound.Name = "checkKeystoneSound";
             checkKeystoneSound.Padding = new Padding(3);
             checkKeystoneSound.Size = new Size(917, 42);
-            checkKeystoneSound.TabIndex = 16;
+            checkKeystoneSound.TabIndex = 6;
             checkKeystoneSound.Text = "Keystone Sound";
             checkKeystoneSound.UseVisualStyleBackColor = true;
             checkKeystoneSound.Visible = false;
@@ -1312,7 +1373,7 @@ namespace GHelper
             checkGpuApps.Name = "checkGpuApps";
             checkGpuApps.Padding = new Padding(3);
             checkGpuApps.Size = new Size(917, 42);
-            checkGpuApps.TabIndex = 2;
+            checkGpuApps.TabIndex = 3;
             checkGpuApps.Text = "Stop all apps using GPU when switching to Eco";
             checkGpuApps.UseVisualStyleBackColor = true;
             //
@@ -1325,7 +1386,7 @@ namespace GHelper
             checkNVPlatform.Name = "checkNVPlatform";
             checkNVPlatform.Padding = new Padding(3);
             checkNVPlatform.Size = new Size(917, 42);
-            checkNVPlatform.TabIndex = 15;
+            checkNVPlatform.TabIndex = 2;
             checkNVPlatform.Text = "Stop/Start NVIDIA services based on dGPU state";
             checkNVPlatform.UseVisualStyleBackColor = true;
             // 
@@ -1338,10 +1399,24 @@ namespace GHelper
             checkStatusLed.Name = "checkStatusLed";
             checkStatusLed.Padding = new Padding(3);
             checkStatusLed.Size = new Size(917, 42);
-            checkStatusLed.TabIndex = 12;
+            checkStatusLed.TabIndex = 1;
             checkStatusLed.Text = "LED Status Indicators";
             checkStatusLed.UseVisualStyleBackColor = true;
             checkStatusLed.Visible = false;
+            //
+            // checkNumberPad
+            //
+            checkNumberPad.AutoSize = true;
+            checkNumberPad.Dock = DockStyle.Top;
+            checkNumberPad.Location = new Point(21, 89);
+            checkNumberPad.Margin = new Padding(5, 3, 5, 3);
+            checkNumberPad.Name = "checkNumberPad";
+            checkNumberPad.Padding = new Padding(3);
+            checkNumberPad.Size = new Size(917, 42);
+            checkNumberPad.TabIndex = 10;
+            checkNumberPad.Text = "Touchpad NumberPad";
+            checkNumberPad.UseVisualStyleBackColor = true;
+            checkNumberPad.Visible = false;
             //
             // checkAspm
             //
@@ -1352,7 +1427,7 @@ namespace GHelper
             checkAspm.Name = "checkAspm";
             checkAspm.Padding = new Padding(3);
             checkAspm.Size = new Size(917, 42);
-            checkAspm.TabIndex = 13;
+            checkAspm.TabIndex = 0;
             checkAspm.Text = "Disable PCIe Link State Management (plugged in)";
             checkAspm.UseVisualStyleBackColor = true;
             checkAspm.Visible = true;
@@ -1424,7 +1499,6 @@ namespace GHelper
             comboAPU.FlatStyle = FlatStyle.Flat;
             comboAPU.Font = new Font("Segoe UI", 9F);
             comboAPU.FormattingEnabled = true;
-            comboAPU.ItemHeight = 32;
             comboAPU.Items.AddRange(new object[] { "Auto", "1G", "2G", "3G", "4G", "5G", "6G", "7G", "8G" });
             comboAPU.Location = new Point(618, 8);
             comboAPU.Margin = new Padding(5, 11, 5, 9);
@@ -1451,7 +1525,7 @@ namespace GHelper
             labelAPUMem.Name = "labelAPUMem";
             labelAPUMem.Size = new Size(309, 32);
             labelAPUMem.TabIndex = 0;
-            labelAPUMem.Text = "Memory Assigned to GPU";
+            labelAPUMem.Text = "Memory assigned to iGPU";
             // 
             // panelCores
             // 
@@ -1481,7 +1555,7 @@ namespace GHelper
             buttonCores.Margin = new Padding(5, 3, 5, 3);
             buttonCores.Name = "buttonCores";
             buttonCores.Secondary = false;
-            buttonCores.Size = new Size(106, 44);
+            buttonCores.Size = new Size(106, 48);
             buttonCores.TabIndex = 20;
             buttonCores.Text = "Apply";
             buttonCores.UseVisualStyleBackColor = false;
@@ -1494,7 +1568,6 @@ namespace GHelper
             comboCoresP.FlatStyle = FlatStyle.Flat;
             comboCoresP.Font = new Font("Segoe UI", 9F);
             comboCoresP.FormattingEnabled = true;
-            comboCoresP.ItemHeight = 32;
             comboCoresP.Location = new Point(513, 10);
             comboCoresP.Margin = new Padding(5, 11, 5, 9);
             comboCoresP.Name = "comboCoresP";
@@ -1510,7 +1583,6 @@ namespace GHelper
             comboCoresE.FlatStyle = FlatStyle.Flat;
             comboCoresE.Font = new Font("Segoe UI", 9F);
             comboCoresE.FormattingEnabled = true;
-            comboCoresE.ItemHeight = 32;
             comboCoresE.Location = new Point(674, 10);
             comboCoresE.Margin = new Padding(5, 11, 5, 9);
             comboCoresE.Name = "comboCoresE";
@@ -1633,7 +1705,6 @@ namespace GHelper
             comboOptimalBrightness.FlatStyle = FlatStyle.Flat;
             comboOptimalBrightness.Font = new Font("Segoe UI", 9F);
             comboOptimalBrightness.FormattingEnabled = true;
-            comboOptimalBrightness.ItemHeight = 32;
             comboOptimalBrightness.Items.AddRange(new object[] { "Off", "On Always", "On Battery" });
             comboOptimalBrightness.Location = new Point(618, 11);
             comboOptimalBrightness.Margin = new Padding(5, 11, 5, 9);
@@ -1747,6 +1818,7 @@ namespace GHelper
         private RButton buttonServices;
         private Label labelServices;
         private Panel panelBindingsHeader;
+        private RButton buttonResetBindings;
         private Panel panelBindings;
         private TableLayoutPanel tableBindings;
         private Label labelFNC;
@@ -1761,6 +1833,9 @@ namespace GHelper
         private RTextBox textM3;
         private Label labelM4;
         private Label labelM3;
+        private RComboBox comboM5;
+        private RTextBox textM5;
+        private Label labelM5;
         private Label labelM2;
         private RComboBox comboM2;
         private Label labelFNF4;
@@ -1823,7 +1898,6 @@ namespace GHelper
         private Label labelFNE;
         private RComboBox comboFNE;
         private RTextBox textFNE;
-        private Slider slider1;
         private Panel panelPower;
         private PictureBox pictureHibernate;
         private Label labelHibernateAfter;
@@ -1849,6 +1923,7 @@ namespace GHelper
         private PictureBox pictureDebug;
         private Label labelACPITitle;
         private CheckBox checkStatusLed;
+        private CheckBox checkNumberPad;
         private CheckBox checkAspm;
         private CheckBox checkBatteryLogo;
         private CheckBox checkBattery;

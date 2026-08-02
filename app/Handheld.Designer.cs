@@ -126,7 +126,7 @@ namespace GHelper
             panelDeadzones.Dock = DockStyle.Top;
             panelDeadzones.Location = new Point(10, 527);
             panelDeadzones.Name = "panelDeadzones";
-            panelDeadzones.Size = new Size(1200, 258);
+            panelDeadzones.Size = new Size(1380, 258);
             panelDeadzones.TabIndex = 0;
             // 
             // panelRight
@@ -135,10 +135,10 @@ namespace GHelper
             panelRight.Controls.Add(panelRT);
             panelRight.Controls.Add(panelRS);
             panelRight.Dock = DockStyle.Left;
-            panelRight.Location = new Point(600, 0);
-            panelRight.MinimumSize = new Size(600, 0);
+            panelRight.Location = new Point(690, 0);
+            panelRight.MinimumSize = new Size(690, 0);
             panelRight.Name = "panelRight";
-            panelRight.Size = new Size(600, 258);
+            panelRight.Size = new Size(690, 258);
             panelRight.TabIndex = 48;
             // 
             // panelRT
@@ -173,13 +173,13 @@ namespace GHelper
             // 
             // trackRTMax
             // 
-            trackRTMax.Location = new Point(294, 48);
+            trackRTMax.Location = new Point(339, 48);
             trackRTMax.Margin = new Padding(4, 2, 4, 2);
             trackRTMax.Maximum = 100;
             trackRTMax.Minimum = 50;
             trackRTMax.Name = "trackRTMax";
             trackRTMax.RightToLeft = RightToLeft.No;
-            trackRTMax.Size = new Size(300, 90);
+            trackRTMax.Size = new Size(345, 90);
             trackRTMax.TabIndex = 30;
             trackRTMax.TickFrequency = 5;
             trackRTMax.TickStyle = TickStyle.TopLeft;
@@ -188,7 +188,7 @@ namespace GHelper
             // labelRT
             // 
             labelRT.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            labelRT.Location = new Point(402, 13);
+            labelRT.Location = new Point(492, 13);
             labelRT.Margin = new Padding(4, 0, 4, 0);
             labelRT.Name = "labelRT";
             labelRT.Size = new Size(176, 32);
@@ -204,7 +204,7 @@ namespace GHelper
             trackRTMin.Maximum = 50;
             trackRTMin.Name = "trackRTMin";
             trackRTMin.RightToLeft = RightToLeft.No;
-            trackRTMin.Size = new Size(300, 90);
+            trackRTMin.Size = new Size(345, 90);
             trackRTMin.SmallChange = 10;
             trackRTMin.TabIndex = 18;
             trackRTMin.TickFrequency = 5;
@@ -252,13 +252,13 @@ namespace GHelper
             // 
             // trackRSMax
             // 
-            trackRSMax.Location = new Point(294, 48);
+            trackRSMax.Location = new Point(339, 48);
             trackRSMax.Margin = new Padding(4, 2, 4, 2);
             trackRSMax.Maximum = 100;
             trackRSMax.Minimum = 50;
             trackRSMax.Name = "trackRSMax";
             trackRSMax.RightToLeft = RightToLeft.No;
-            trackRSMax.Size = new Size(300, 90);
+            trackRSMax.Size = new Size(345, 90);
             trackRSMax.TabIndex = 30;
             trackRSMax.TickFrequency = 5;
             trackRSMax.TickStyle = TickStyle.TopLeft;
@@ -267,7 +267,7 @@ namespace GHelper
             // labelRS
             // 
             labelRS.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            labelRS.Location = new Point(402, 13);
+            labelRS.Location = new Point(492, 13);
             labelRS.Margin = new Padding(4, 0, 4, 0);
             labelRS.Name = "labelRS";
             labelRS.Size = new Size(176, 32);
@@ -283,7 +283,7 @@ namespace GHelper
             trackRSMin.Maximum = 50;
             trackRSMin.Name = "trackRSMin";
             trackRSMin.RightToLeft = RightToLeft.No;
-            trackRSMin.Size = new Size(300, 90);
+            trackRSMin.Size = new Size(345, 90);
             trackRSMin.SmallChange = 10;
             trackRSMin.TabIndex = 18;
             trackRSMin.TickFrequency = 5;
@@ -307,10 +307,10 @@ namespace GHelper
             panelLeft.Dock = DockStyle.Left;
             panelLeft.Location = new Point(0, 0);
             panelLeft.Margin = new Padding(4);
-            panelLeft.MinimumSize = new Size(600, 0);
+            panelLeft.MinimumSize = new Size(690, 0);
             panelLeft.Name = "panelLeft";
             panelLeft.Padding = new Padding(0, 0, 0, 18);
-            panelLeft.Size = new Size(600, 258);
+            panelLeft.Size = new Size(690, 258);
             panelLeft.TabIndex = 47;
             // 
             // panelLT
@@ -345,13 +345,13 @@ namespace GHelper
             // 
             // trackLTMax
             // 
-            trackLTMax.Location = new Point(295, 48);
+            trackLTMax.Location = new Point(340, 48);
             trackLTMax.Margin = new Padding(4, 2, 4, 2);
             trackLTMax.Maximum = 100;
             trackLTMax.Minimum = 50;
             trackLTMax.Name = "trackLTMax";
             trackLTMax.RightToLeft = RightToLeft.No;
-            trackLTMax.Size = new Size(300, 90);
+            trackLTMax.Size = new Size(345, 90);
             trackLTMax.TabIndex = 30;
             trackLTMax.TickFrequency = 5;
             trackLTMax.TickStyle = TickStyle.TopLeft;
@@ -360,7 +360,7 @@ namespace GHelper
             // labelLT
             // 
             labelLT.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            labelLT.Location = new Point(402, 13);
+            labelLT.Location = new Point(492, 13);
             labelLT.Margin = new Padding(4, 0, 4, 0);
             labelLT.Name = "labelLT";
             labelLT.Size = new Size(176, 32);
@@ -376,7 +376,7 @@ namespace GHelper
             trackLTMin.Maximum = 50;
             trackLTMin.Name = "trackLTMin";
             trackLTMin.RightToLeft = RightToLeft.No;
-            trackLTMin.Size = new Size(300, 90);
+            trackLTMin.Size = new Size(345, 90);
             trackLTMin.SmallChange = 10;
             trackLTMin.TabIndex = 18;
             trackLTMin.TickFrequency = 5;
@@ -424,13 +424,13 @@ namespace GHelper
             // 
             // trackLSMax
             // 
-            trackLSMax.Location = new Point(295, 48);
+            trackLSMax.Location = new Point(340, 48);
             trackLSMax.Margin = new Padding(4, 2, 4, 2);
             trackLSMax.Maximum = 100;
             trackLSMax.Minimum = 50;
             trackLSMax.Name = "trackLSMax";
             trackLSMax.RightToLeft = RightToLeft.No;
-            trackLSMax.Size = new Size(300, 90);
+            trackLSMax.Size = new Size(345, 90);
             trackLSMax.TabIndex = 30;
             trackLSMax.TickFrequency = 5;
             trackLSMax.TickStyle = TickStyle.TopLeft;
@@ -439,7 +439,7 @@ namespace GHelper
             // labelLS
             // 
             labelLS.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            labelLS.Location = new Point(402, 13);
+            labelLS.Location = new Point(492, 13);
             labelLS.Margin = new Padding(4, 0, 4, 0);
             labelLS.Name = "labelLS";
             labelLS.Size = new Size(176, 32);
@@ -455,7 +455,7 @@ namespace GHelper
             trackLSMin.Maximum = 50;
             trackLSMin.Name = "trackLSMin";
             trackLSMin.RightToLeft = RightToLeft.No;
-            trackLSMin.Size = new Size(300, 90);
+            trackLSMin.Size = new Size(345, 90);
             trackLSMin.SmallChange = 10;
             trackLSMin.TabIndex = 18;
             trackLSMin.TickFrequency = 5;
@@ -479,7 +479,7 @@ namespace GHelper
             buttonReset.BorderColor = Color.Transparent;
             buttonReset.BorderRadius = 2;
             buttonReset.FlatStyle = FlatStyle.Flat;
-            buttonReset.Location = new Point(1011, 38);
+            buttonReset.Location = new Point(1191, 38);
             buttonReset.Margin = new Padding(4, 2, 4, 2);
             buttonReset.Name = "buttonReset";
             buttonReset.Secondary = true;
@@ -513,7 +513,7 @@ namespace GHelper
             panelBindings.Dock = DockStyle.Top;
             panelBindings.Location = new Point(10, 10);
             panelBindings.Name = "panelBindings";
-            panelBindings.Size = new Size(1200, 517);
+            panelBindings.Size = new Size(1380, 517);
             panelBindings.TabIndex = 1;
             // 
             // panelBinding
@@ -526,9 +526,9 @@ namespace GHelper
             panelBinding.Controls.Add(labelTurbo);
             panelBinding.Controls.Add(comboTurboPrimary);
             panelBinding.Controls.Add(comboTurboSecondary);
-            panelBinding.Location = new Point(363, 160);
+            panelBinding.Location = new Point(397, 192);
             panelBinding.Name = "panelBinding";
-            panelBinding.Size = new Size(483, 203);
+            panelBinding.Size = new Size(583, 203);
             panelBinding.TabIndex = 37;
             panelBinding.Visible = false;
             // 
@@ -567,11 +567,10 @@ namespace GHelper
             comboSecondary.FlatStyle = FlatStyle.Flat;
             comboSecondary.Font = new Font("Segoe UI", 9F);
             comboSecondary.FormattingEnabled = true;
-            comboSecondary.ItemHeight = 32;
             comboSecondary.Location = new Point(138, 121);
             comboSecondary.Margin = new Padding(4, 11, 4, 8);
             comboSecondary.Name = "comboSecondary";
-            comboSecondary.Size = new Size(235, 40);
+            comboSecondary.Size = new Size(295, 40);
             comboSecondary.TabIndex = 28;
             // 
             // comboPrimary
@@ -581,11 +580,10 @@ namespace GHelper
             comboPrimary.FlatStyle = FlatStyle.Flat;
             comboPrimary.Font = new Font("Segoe UI", 9F);
             comboPrimary.FormattingEnabled = true;
-            comboPrimary.ItemHeight = 32;
             comboPrimary.Location = new Point(138, 60);
             comboPrimary.Margin = new Padding(4, 11, 4, 8);
             comboPrimary.Name = "comboPrimary";
-            comboPrimary.Size = new Size(235, 40);
+            comboPrimary.Size = new Size(295, 40);
             comboPrimary.TabIndex = 27;
             // 
             // labelTurbo
@@ -593,7 +591,7 @@ namespace GHelper
             labelTurbo.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             labelTurbo.AutoSize = true;
             labelTurbo.ForeColor = SystemColors.ControlDarkDark;
-            labelTurbo.Location = new Point(329, 14);
+            labelTurbo.Location = new Point(429, 14);
             labelTurbo.Name = "labelTurbo";
             labelTurbo.Size = new Size(139, 32);
             labelTurbo.TabIndex = 35;
@@ -607,11 +605,10 @@ namespace GHelper
             comboTurboPrimary.FlatStyle = FlatStyle.Flat;
             comboTurboPrimary.Font = new Font("Segoe UI", 9F);
             comboTurboPrimary.FormattingEnabled = true;
-            comboTurboPrimary.ItemHeight = 32;
-            comboTurboPrimary.Location = new Point(381, 60);
+            comboTurboPrimary.Location = new Point(441, 60);
             comboTurboPrimary.Margin = new Padding(4, 11, 4, 8);
             comboTurboPrimary.Name = "comboTurboPrimary";
-            comboTurboPrimary.Size = new Size(87, 40);
+            comboTurboPrimary.Size = new Size(127, 40);
             comboTurboPrimary.TabIndex = 36;
             // 
             // comboTurboSecondary
@@ -621,11 +618,10 @@ namespace GHelper
             comboTurboSecondary.FlatStyle = FlatStyle.Flat;
             comboTurboSecondary.Font = new Font("Segoe UI", 9F);
             comboTurboSecondary.FormattingEnabled = true;
-            comboTurboSecondary.ItemHeight = 32;
-            comboTurboSecondary.Location = new Point(381, 121);
+            comboTurboSecondary.Location = new Point(441, 121);
             comboTurboSecondary.Margin = new Padding(4, 11, 4, 8);
             comboTurboSecondary.Name = "comboTurboSecondary";
-            comboTurboSecondary.Size = new Size(87, 40);
+            comboTurboSecondary.Size = new Size(127, 40);
             comboTurboSecondary.TabIndex = 37;
             // 
             // buttonView
@@ -818,7 +814,7 @@ namespace GHelper
             buttonM1.FlatStyle = FlatStyle.Flat;
             buttonM1.ForeColor = SystemColors.ControlText;
             buttonM1.ImageAlign = ContentAlignment.MiddleRight;
-            buttonM1.Location = new Point(717, 26);
+            buttonM1.Location = new Point(897, 26);
             buttonM1.Margin = new Padding(4);
             buttonM1.Name = "buttonM1";
             buttonM1.Secondary = true;
@@ -838,7 +834,7 @@ namespace GHelper
             buttonRS.FlatStyle = FlatStyle.Flat;
             buttonRS.ForeColor = SystemColors.ControlText;
             buttonRS.ImageAlign = ContentAlignment.MiddleRight;
-            buttonRS.Location = new Point(1029, 403);
+            buttonRS.Location = new Point(1209, 403);
             buttonRS.Margin = new Padding(4);
             buttonRS.Name = "buttonRS";
             buttonRS.Secondary = true;
@@ -858,7 +854,7 @@ namespace GHelper
             buttonMenu.FlatStyle = FlatStyle.Flat;
             buttonMenu.ForeColor = SystemColors.ControlText;
             buttonMenu.ImageAlign = ContentAlignment.MiddleRight;
-            buttonMenu.Location = new Point(872, 26);
+            buttonMenu.Location = new Point(1052, 26);
             buttonMenu.Margin = new Padding(4);
             buttonMenu.Name = "buttonMenu";
             buttonMenu.Secondary = true;
@@ -878,7 +874,7 @@ namespace GHelper
             buttonRT.FlatStyle = FlatStyle.Flat;
             buttonRT.ForeColor = SystemColors.ControlText;
             buttonRT.ImageAlign = ContentAlignment.MiddleRight;
-            buttonRT.Location = new Point(1029, 88);
+            buttonRT.Location = new Point(1209, 88);
             buttonRT.Margin = new Padding(4);
             buttonRT.Name = "buttonRT";
             buttonRT.Secondary = true;
@@ -898,7 +894,7 @@ namespace GHelper
             buttonRB.FlatStyle = FlatStyle.Flat;
             buttonRB.ForeColor = SystemColors.ControlText;
             buttonRB.ImageAlign = ContentAlignment.MiddleRight;
-            buttonRB.Location = new Point(1029, 25);
+            buttonRB.Location = new Point(1209, 25);
             buttonRB.Margin = new Padding(4);
             buttonRB.Name = "buttonRB";
             buttonRB.Secondary = true;
@@ -918,7 +914,7 @@ namespace GHelper
             buttonB.FlatStyle = FlatStyle.Flat;
             buttonB.ForeColor = SystemColors.ControlText;
             buttonB.ImageAlign = ContentAlignment.MiddleRight;
-            buttonB.Location = new Point(1029, 340);
+            buttonB.Location = new Point(1209, 340);
             buttonB.Margin = new Padding(4);
             buttonB.Name = "buttonB";
             buttonB.Secondary = true;
@@ -938,7 +934,7 @@ namespace GHelper
             buttonA.FlatStyle = FlatStyle.Flat;
             buttonA.ForeColor = SystemColors.ControlText;
             buttonA.ImageAlign = ContentAlignment.MiddleRight;
-            buttonA.Location = new Point(1029, 277);
+            buttonA.Location = new Point(1209, 277);
             buttonA.Margin = new Padding(4);
             buttonA.Name = "buttonA";
             buttonA.Secondary = true;
@@ -958,7 +954,7 @@ namespace GHelper
             buttonY.FlatStyle = FlatStyle.Flat;
             buttonY.ForeColor = SystemColors.ControlText;
             buttonY.ImageAlign = ContentAlignment.MiddleRight;
-            buttonY.Location = new Point(1029, 214);
+            buttonY.Location = new Point(1209, 214);
             buttonY.Margin = new Padding(4);
             buttonY.Name = "buttonY";
             buttonY.Secondary = true;
@@ -978,7 +974,7 @@ namespace GHelper
             buttonX.FlatStyle = FlatStyle.Flat;
             buttonX.ForeColor = SystemColors.ControlText;
             buttonX.ImageAlign = ContentAlignment.MiddleRight;
-            buttonX.Location = new Point(1029, 151);
+            buttonX.Location = new Point(1209, 151);
             buttonX.Margin = new Padding(4);
             buttonX.Name = "buttonX";
             buttonX.Secondary = true;
@@ -992,9 +988,9 @@ namespace GHelper
             // 
             pictureAlly.BackgroundImage = Properties.Resources.ally;
             pictureAlly.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureAlly.Location = new Point(185, 97);
+            pictureAlly.Location = new Point(174, 85);
             pictureAlly.Name = "pictureAlly";
-            pictureAlly.Size = new Size(834, 354);
+            pictureAlly.Size = new Size(1028, 424);
             pictureAlly.TabIndex = 0;
             pictureAlly.TabStop = false;
             // 
@@ -1013,7 +1009,7 @@ namespace GHelper
             panelVibra.Margin = new Padding(4);
             panelVibra.MaximumSize = new Size(0, 124);
             panelVibra.Name = "panelVibra";
-            panelVibra.Size = new Size(1200, 124);
+            panelVibra.Size = new Size(1380, 124);
             panelVibra.TabIndex = 47;
             // 
             // checkController
@@ -1021,7 +1017,7 @@ namespace GHelper
             checkController.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             checkController.AutoSize = true;
             checkController.BackColor = SystemColors.ControlLight;
-            checkController.Location = new Point(717, 40);
+            checkController.Location = new Point(897, 40);
             checkController.Margin = new Padding(0);
             checkController.Name = "checkController";
             checkController.Padding = new Padding(16, 6, 16, 6);
@@ -1046,7 +1042,7 @@ namespace GHelper
             // labelVibra
             // 
             labelVibra.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            labelVibra.Location = new Point(408, 14);
+            labelVibra.Location = new Point(498, 14);
             labelVibra.Margin = new Padding(4, 0, 4, 0);
             labelVibra.Name = "labelVibra";
             labelVibra.Size = new Size(124, 32);
@@ -1070,7 +1066,7 @@ namespace GHelper
             trackVibra.Margin = new Padding(4, 2, 4, 2);
             trackVibra.Maximum = 100;
             trackVibra.Name = "trackVibra";
-            trackVibra.Size = new Size(589, 90);
+            trackVibra.Size = new Size(679, 90);
             trackVibra.TabIndex = 42;
             trackVibra.TickFrequency = 5;
             trackVibra.TickStyle = TickStyle.TopLeft;
@@ -1081,7 +1077,7 @@ namespace GHelper
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
-            ClientSize = new Size(1220, 912);
+            ClientSize = new Size(1400, 912);
             Controls.Add(panelVibra);
             Controls.Add(panelDeadzones);
             Controls.Add(panelBindings);

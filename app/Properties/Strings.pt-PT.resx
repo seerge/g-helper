@@ -166,7 +166,7 @@
     <value>Aplicar</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Aplicar a curva personalizada</value>
+    <value>Aplicar a curva</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Aplicar as limitações de energia</value>
@@ -175,7 +175,7 @@
     <value>Ajuste automático dos modos de energia do Windows</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Memória Alocada à GPU</value>
+    <value>Memória Alocada à iGPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Serviços da Asus em execução</value>
@@ -265,7 +265,7 @@
     <value>Desligado</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Tempo limite de retroiluminação ligado à corrente / na bateria</value>
+    <value>Tempo de retroiluminação ligado / bateria</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Desligar o ecrã após (em Bateria)</value>
@@ -308,6 +308,12 @@
   </data>
   <data name="BootSound" xml:space="preserve">
     <value>Som de ligar</value>
+  </data>
+  <data name="BacklightDown" xml:space="preserve">
+    <value>Backlight Down</value>
+  </data>
+  <data name="BacklightUp" xml:space="preserve">
+    <value>Backlight Up</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Nível do brilho</value>
@@ -716,6 +722,9 @@ Quer prosseguir?</value>
   <data name="RestartGPU" xml:space="preserve">
     <value>Algum processo está a utilizar a dGPU, impedindo o modo Eco. Deixar o G-Helper tentar reiniciar a dGPU no gestor de dispositivos? (Proceda por sua conta e risco)</value>
   </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
+  </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
   </data>
@@ -957,5 +966,11 @@ e reinicia-os automaticamente quando a GPU é ativada</value>
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>Impede que os dispositivos PCIe entrem em estados de inatividade de baixa energia.
 Recomendado se ocorrerem bloqueios aleatórios ou hardware que não responde.</value>
+  </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
   </data>
 </root>

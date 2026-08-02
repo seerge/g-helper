@@ -159,6 +159,7 @@ namespace GHelper.Peripherals.Mouse.Models
                 (0x01F0, "Mouse Left"    ),
                 (0x01F1, "Mouse Right"   ),
                 (0x01F2, "Mouse Middle"  ),
+                (0x01E3, "Double Click"  ),
                 (0x01E4, "Back (L)"      ),
                 (0x01E5, "Forward (L)"   ),
                 (0x01E1, "Back (R)"      ),
@@ -183,6 +184,7 @@ namespace GHelper.Peripherals.Mouse.Models
                 (0x01DB, "Joystick +X"   ),
                 (0x0000, "Disabled"      ),
             }),
+            ("Combos",     AsusMouse.MouseCombos.Select(c => (c.PassthroughCode, c.Label)).ToList()),
             ("Multimedia", AsusMouse.MultimediaBindings),
             ("Keyboard",   AsusMouse.KeyboardBindings  ),
         };

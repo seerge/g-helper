@@ -154,7 +154,7 @@
     <value>Animáció sebessége</value>
   </data>
   <data name="AnimeMatrix" xml:space="preserve">
-    <value>AniMe Matrix kijelző</value>
+    <value>Anime Mátrix</value>
   </data>
   <data name="AppAlreadyRunning" xml:space="preserve">
     <value>Az alkalmazás már el lett indítva</value>
@@ -166,7 +166,7 @@
     <value>Alkalmaz</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Egyedi ventigörbe használata</value>
+    <value>Ventigörbe használata</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Teljesítménykorlátok alkalmazása</value>
@@ -175,7 +175,7 @@
     <value>A Windows energiagazdálkodási módok automatikus beállítása</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>A GPU-nak kiosztott memória</value>
+    <value>Az iGPU-nak kiosztott memória</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Asus szolgáltatások futnak</value>
@@ -265,7 +265,7 @@
     <value>Ki</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Háttérvilágítás késleltetése töltés / akku módban</value>
+    <value>Háttérvilágítás késleltetése töltés / akku</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Háttérvilágítás időkorlátja akkumulátoros üzemmódban</value>
@@ -308,6 +308,12 @@
   </data>
   <data name="BootSound" xml:space="preserve">
     <value>Rendszerindítási hang</value>
+  </data>
+  <data name="BacklightDown" xml:space="preserve">
+    <value>Hátvilágítás ki</value>
+  </data>
+  <data name="BacklightUp" xml:space="preserve">
+    <value>Hátvilágítás be</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Fényerő</value>
@@ -716,6 +722,9 @@ Folytatni szeretnéd?</value>
   <data name="RestartGPU" xml:space="preserve">
     <value>Valami használja még a dGPU-t, ezzel megakadályozva az Eco móda lépést. Próbálja meg a G-Helper újraindítani a dGPU-t az eszközkezelőben? (Kérjük, saját felelősségére folytassa)</value>
   </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>NV szolgáltatások újraindítása...</value>
+  </data>
   <data name="RPM" xml:space="preserve">
     <value>Fordulatszám</value>
   </data>
@@ -957,5 +966,11 @@ Folytatni szeretnéd?</value>
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>Megakadályozza, hogy a PCIe eszközök alacsony fogyasztású tétlen állapotba lépjenek.
 Ajánlott, ha véletlenszerű lefagyásokat vagy nem reagáló hardvert tapasztal.</value>
+  </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Átfedés</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Csak a játékokban jelenítse meg</value>
   </data>
 </root>

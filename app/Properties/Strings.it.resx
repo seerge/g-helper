@@ -166,7 +166,7 @@
     <value>Applica</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Applica Curve Ventola</value>
+    <value>Apply Fan Curve</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Applica Limiti di Potenza</value>
@@ -175,7 +175,7 @@
     <value>Regola Piano Energetico di Windows in automatico</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Memoria assegnata alla GPU</value>
+    <value>Memoria assegnata all'iGPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Servizi Asus in Esecuzione</value>
@@ -265,7 +265,7 @@
     <value>Spento</value>
   </data>
   <data name="BacklightTimeout" xml:space="preserve">
-    <value>Timeout retroilluminazione in carica / a batteria</value>
+    <value>Timeout retroilluminazione carica / batteria</value>
   </data>
   <data name="BacklightTimeoutBattery" xml:space="preserve">
     <value>Timeout retroilluminazione quando in batteria</value>
@@ -308,6 +308,12 @@
   </data>
   <data name="BootSound" xml:space="preserve">
     <value>Suono Di Avvio</value>
+  </data>
+  <data name="BacklightDown" xml:space="preserve">
+    <value>Backlight Down</value>
+  </data>
+  <data name="BacklightUp" xml:space="preserve">
+    <value>Backlight Up</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Luminosità</value>
@@ -716,6 +722,9 @@ Sei sicuro di voler continuare?</value>
   <data name="RestartGPU" xml:space="preserve">
     <value>Qualcosa sta utilizzando la dGPU e impedisce il passaggio alla modalità Eco. Vuoi che G-Helper provi a riavviare la dGPU in gestione dispositivi? (Procedi a tuo rischio)</value>
   </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
+  </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
   </data>
@@ -957,5 +966,11 @@ e li riavvia automaticamente quando la GPU viene attivata</value>
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>Impedisce ai dispositivi PCIe di entrare in stati di inattività a basso consumo.
 Consigliato in caso di blocchi casuali o hardware non rispondente.</value>
+  </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayOnlyInGames" xml:space="preserve">
+    <value>Overlay only in games</value>
   </data>
 </root>

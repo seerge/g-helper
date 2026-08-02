@@ -447,8 +447,6 @@ namespace GHelper.AnimeMatrix
             int dx = pos * 2;
             int dy = 20;
 
-            byte color;
-
             for (int y = 0; y < h - (h % 2); y++)
                 for (int x = 0; x < 2 - (y % 2); x++)
                 {

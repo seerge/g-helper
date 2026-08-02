@@ -349,6 +349,7 @@ namespace GHelper.Helpers
         public const uint AW_ACTIVATE = 0x20000;
         public const uint AW_SLIDE = 0x40000;
         public const uint AW_BLEND = 0x80000;
+        public const nint DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2 = -4;
         // Methods
         private User32()
         {
@@ -367,6 +368,8 @@ namespace GHelper.Helpers
         internal static extern nint GetFocus();
         [DllImport("User32.dll", CharSet = CharSet.Auto)]
         internal static extern ushort GetKeyState(int virtKey);
+        [DllImport("User32.dll", CharSet = CharSet.Auto)]
+        internal static extern short GetAsyncKeyState(int virtKey);
         [DllImport("User32.dll", CharSet = CharSet.Auto)]
         internal static extern bool GetMessage(ref MSG msg, int hWnd, uint wFilterMin, uint wFilterMax);
         [DllImport("User32.dll", CharSet = CharSet.Auto)]
@@ -405,6 +408,8 @@ namespace GHelper.Helpers
         internal static extern nint SetCursor(nint hCursor);
         [DllImport("User32.dll", CharSet = CharSet.Auto)]
         internal static extern nint SetFocus(nint hWnd);
+        [DllImport("User32.dll", CharSet = CharSet.Auto)]
+        internal static extern nint SetThreadDpiAwarenessContext(nint dpiContext);
         [DllImport("User32.dll", CharSet = CharSet.Auto)]
         internal static extern int SetWindowLong(nint hWnd, int nIndex, int newLong);
         [DllImport("User32.dll", CharSet = CharSet.Auto)]

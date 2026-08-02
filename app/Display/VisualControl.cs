@@ -32,6 +32,7 @@ namespace GHelper.Display
         DimmingDuo = 109,
 
         GamutMode = 200,
+        GamutModeDuo = 201,
 
         Default = 11,
         Racing = 21,
@@ -42,6 +43,8 @@ namespace GHelper.Display
         Vivid = 13,
         Eyecare = 17,
         EReading = 212,
+        EReadingVivo = 210,
+        EReadingVivoDuo = 211,
         Disabled = 18,
     }
     public static class VisualControl
@@ -257,7 +260,7 @@ namespace GHelper.Display
                 if (ProcessHelper.IsUserAdministrator() && _download)
                 {
                     _download = false;
-                    ColorProfileHelper.InstallProfile();
+                    _ = ColorProfileHelper.InstallProfile();
                 }
             }
             if (result == 1 && _init)
@@ -270,7 +273,7 @@ namespace GHelper.Display
 
         public static void SetVisual(SplendidCommand mode = SplendidCommand.Default, int whiteBalance = DefaultColorTemp, bool init = false)
         {
-            Task.Run(async () =>
+            Task.Run(() =>
             {
                 if (AmdDisplay.IsOledPowerOptimization()) Program.settingsForm.VisualiseAmdOled(true);
             });
@@ -282,9 +285,9 @@ namespace GHelper.Display
             AppConfig.Set("visual", (int)mode);
             AppConfig.Set("color_temp", whiteBalance);
 
-            Task.Run(async () =>
+            Task.Run(() =>
             {
-                if (!forceVisual && ScreenCCD.GetHDRStatus(true)) return;
+                if (!forceVisual && (ScreenCCD.GetHDRStatus(out bool acm, true) || acm)) return;
                 if (!forceVisual && ScreenNative.GetRefreshRate(ScreenNative.FindLaptopScreen(true)) < 0) return;
 
                 if (!init && mode == SplendidCommand.EReading && !ProcessHelper.IsUserAdministrator() && !IsEReading()) ProcessHelper.RunAsAdmin();
@@ -306,9 +309,10 @@ namespace GHelper.Display
                         param2 = null;
                         break;
                     case SplendidCommand.VivoEycare:
-                        param2 = Math.Abs(whiteBalance - 50) * 4 / 50;
+                        param2 = Math.Abs(whiteBalance - 50) * 3 / 50 + (whiteBalance < 50 ? 1 : 0);
                         break;
                     case SplendidCommand.EReading:
+                        if (AppConfig.IsDUO() && AppConfig.IsVivoZenPro()) mode = SplendidCommand.EReadingVivo;
                         param2 = 2;            // Contrast
                         param3 = whiteBalance; // Color Temp
                         break;
@@ -326,7 +330,7 @@ namespace GHelper.Display
                     if (ProcessHelper.IsUserAdministrator() && _download)
                     {
                         _download = false;
-                        ColorProfileHelper.InstallProfile();
+                        _ = ColorProfileHelper.InstallProfile();
                     }
                 }
                 if (result == 1 && _init)
@@ -363,6 +367,29 @@ namespace GHelper.Display
             return _splendidPath;
         }
 
+        private static SplendidCommand GetDuoCommand(SplendidCommand command)
+        {
+            if (!AppConfig.IsDUO()) return SplendidCommand.None;
+
+            switch (command)
+            {
+                case SplendidCommand.VivoNormal:
+                case SplendidCommand.VivoVivid:
+                case SplendidCommand.VivoManual:
+                case SplendidCommand.VivoEycare:
+                    return command + 100;
+                case SplendidCommand.DimmingVivo:
+                case SplendidCommand.DimmingVisual:
+                    return SplendidCommand.DimmingDuo;
+                case SplendidCommand.GamutMode:
+                    return SplendidCommand.GamutModeDuo;
+                case SplendidCommand.EReadingVivo:
+                    return SplendidCommand.EReadingVivoDuo;
+                default:
+                    return SplendidCommand.None;
+            }
+        }
+
         private static int RunSplendid(SplendidCommand command, int? param1 = null, int? param2 = null, int? param3 = null)
         {
             string splendidPath = GetSplendidPath();
@@ -385,6 +412,9 @@ namespace GHelper.Display
 
             if (isSplenddid)
             {
+                var duoCommand = GetDuoCommand(command);
+                if (duoCommand != SplendidCommand.None) ProcessHelper.RunCMD(splendidExe, (int)duoCommand + " " + param1 + " " + param2 + " " + param3, splendidPath);
+
                 var result = ProcessHelper.RunCMD(splendidExe, (int)command + " " + param1 + " " + param2 + " " + param3, splendidPath);
                 if (result.Contains("file not exist") || (result.Length == 0 && !isVivo)) return 1;
                 if (result.Contains("return code: -1")) return -1;
@@ -405,7 +435,6 @@ namespace GHelper.Display
             var dimmingCommand = AppConfig.IsVivoZenPro() ? SplendidCommand.DimmingVivo : SplendidCommand.DimmingVisual;
             var dimmingLevel = (int)(40 + _brightness * 0.6);
 
-            if (AppConfig.IsDUO()) RunSplendid(SplendidCommand.DimmingDuo, 0, dimmingLevel);
             if (RunSplendid(dimmingCommand, 0, dimmingLevel) == 0) return;
 
             if (_init)
@@ -445,6 +474,7 @@ namespace GHelper.Display
             _brightness = Math.Max(0, Math.Min(100, brightness + delta));
             AppConfig.Set(IsOnBattery() ? "brightness_battery" : "brightness", _brightness);
 
+            brightnessTimer.Stop();
             brightnessTimer.Start();
 
             Program.settingsForm.VisualiseBrightness();
