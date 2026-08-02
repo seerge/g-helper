@@ -411,7 +411,7 @@
     <value>Valores de fábrica</value>
   </data>
   <data name="FanCurves" xml:space="preserve">
-    <value>Curvas de ventiladores</value>
+    <value>Curvas ventiladores</value>
   </data>
   <data name="FanDragAll" xml:space="preserve">
     <value>Mantén SHIFT para arrastrar todos los puntos a la vez</value>
