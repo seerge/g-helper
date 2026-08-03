@@ -34,10 +34,7 @@ namespace GHelper.Helpers
                         if (CM_Locate_DevNodeW(out uint devInst, id, 0) == 0 &&
                             CM_Get_DevNode_Status(out uint status, out uint problem, devInst, 0) == 0 &&
                             (status & DN_HAS_PROBLEM) != 0)
-                        {
                             error = $"GPU Error {problem}: {id}";
-                            Logger.WriteLine(error);
-                        }
             }
 
             return error;

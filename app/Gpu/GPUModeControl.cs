@@ -375,6 +375,7 @@ namespace GHelper.Gpu
             if (gpuError != error)
             {
                 gpuError = error;
+                if (error != null) Logger.WriteLine(error);
                 settings.VisualiseGPUMode();
             }
         }
