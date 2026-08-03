@@ -1875,6 +1875,13 @@ namespace GHelper
         public void VisualiseGPUMode(int GPUMode = -1)
         {
             if (InvokeRequired) { Invoke(() => VisualiseGPUMode(GPUMode)); return; }
+
+            if (toolTip.GetToolTip(pictureGPU) != (GPUModeControl.gpuError ?? ""))
+            {
+                pictureGPU.BackgroundImage = GPUModeControl.gpuError is null ? Properties.Resources.icons8_video_card_32 : SystemIcons.Warning.ToBitmap();
+                toolTip.SetToolTip(pictureGPU, GPUModeControl.gpuError);
+            }
+
             if (AppConfig.IsAlly())
             {
                 tableGPU.Visible = false;

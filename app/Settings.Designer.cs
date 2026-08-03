@@ -30,6 +30,8 @@ namespace GHelper
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
+            toolTip = new ToolTip(components);
             panelMatrix = new Panel();
             panelMatrixAuto = new Panel();
             checkMatrixLid = new CheckBox();
@@ -2234,6 +2236,7 @@ namespace GHelper
         private Slider sliderBattery;
         private Panel panelGPUTitle;
         private PictureBox pictureGPU;
+        private ToolTip toolTip;
         private Label labelGPU;
         private Label labelGPUFan;
         private Panel panelCPUTitle;
