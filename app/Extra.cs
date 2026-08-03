@@ -463,7 +463,7 @@ namespace GHelper
             checkStatusLed.Checked = (statusLed > 0);
             checkStatusLed.CheckedChanged += CheckLEDStatus_CheckedChanged;
 
-            int numberPad = AppConfig.IsStrix() ? NumberPad.Get() : -1;
+            int numberPad = AppConfig.IsNumberPad() ? NumberPad.Get() : -1;
             checkNumberPad.Visible = numberPad >= 0;
             checkNumberPad.Checked = numberPad == 1;
             checkNumberPad.CheckedChanged += CheckNumberPad_CheckedChanged;
