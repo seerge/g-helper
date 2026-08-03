@@ -157,6 +157,7 @@ public class AsusACPI
     public const int PerformanceBalanced = 0;
     public const int PerformanceTurbo = 1;
     public const int PerformanceSilent = 2;
+    public const int PerformanceFullSpeed = 3;
     public const int PerformanceManual = 4;
 
     public const int GPUModeEco = 0;
@@ -476,6 +477,16 @@ public class AsusACPI
         if (mode == 1) mode = 2;
         else if (mode == 2) mode = 1;
         return Program.acpi.DeviceSet(VivoBookMode, mode, "VivoMode");
+    }
+
+    public int SetPerformanceMode(int mode, string log = "Mode")
+    {
+        if (IsSupported(PerformanceMode)) return DeviceSet(PerformanceMode, mode, log);
+        if (IsSupported(VivoBookMode)) return SetVivoMode(mode);
+
+        int status = DeviceSet(PerformanceMode, mode, log);
+        if (status != 1) status = SetVivoMode(mode);
+        return status;
     }
 
     public int SetGPUEco(int eco)

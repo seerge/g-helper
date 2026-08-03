@@ -209,6 +209,8 @@ namespace GHelper.Mode
                     return POWER_TURBO;
                 case 2: //silent
                     return POWER_SILENT;
+                case 3:
+                    return PLAN_HIGH_PERFORMANCE;
                 default: // balanced
                     return POWER_BALANCED;
             }
