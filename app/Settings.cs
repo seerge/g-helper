@@ -37,6 +37,7 @@ namespace GHelper
         private readonly System.Windows.Forms.Timer batteryTimer = new() { Interval = 200 };
 
         public Matrix? matrixForm;
+        public Slash? slashForm;
         public Fans? fansForm;
         public Extra? extraForm;
         public Updates? updatesForm;
@@ -195,11 +196,9 @@ namespace GHelper
 
             comboMatrix.DropDownStyle = ComboBoxStyle.DropDownList;
             comboMatrixRunning.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboInterval.DropDownStyle = ComboBoxStyle.DropDownList;
 
             comboMatrix.DropDownClosed += ComboMatrix_SelectedValueChanged;
             comboMatrixRunning.DropDownClosed += ComboMatrixRunning_SelectedValueChanged;
-            comboInterval.DropDownClosed += ComboInterval_DropDownClosed;
 
             buttonMatrix.Click += ButtonMatrix_Click;
 
@@ -1067,6 +1066,27 @@ namespace GHelper
         private void ButtonMatrix_Click(object? sender, EventArgs e)
         {
 
+            if (matrixControl.IsSlash)
+            {
+                if (slashForm == null || slashForm.Text == "")
+                {
+                    slashForm = new Slash();
+                    AddOwnedForm(slashForm);
+                }
+
+                if (slashForm.Visible)
+                {
+                    slashForm.Close();
+                }
+                else
+                {
+                    slashForm.FormPosition();
+                    slashForm.Show();
+                }
+
+                return;
+            }
+
             if (matrixForm == null || matrixForm.Text == "")
             {
                 matrixForm = new Matrix();
@@ -1090,12 +1110,6 @@ namespace GHelper
             if (InvokeRequired) { Invoke(() => VisualiseMatrixRunning(mode)); return; }
             comboMatrixRunning.SelectedIndex = mode;
             if (comboMatrix.SelectedIndex == 0) comboMatrix.SelectedIndex = 3;
-        }
-
-        private void ComboInterval_DropDownClosed(object? sender, EventArgs e)
-        {
-            AppConfig.Set("matrix_interval", comboInterval.SelectedIndex);
-            matrixControl.SetDevice();
         }
 
         private void ComboMatrixRunning_SelectedValueChanged(object? sender, EventArgs e)
@@ -1320,16 +1334,12 @@ namespace GHelper
                     comboMatrixRunning.Items.Add(item.Value);
                 }
 
-                comboInterval.Visible = true;
-                comboInterval.Items.Add(Properties.Strings.IntervalOff);
-                for (int i = 1; i <= 5; i++) comboInterval.Items.Add(string.Format(Properties.Strings.IntervalSeconds, i));
-
-                buttonMatrix.Visible = false;
+                buttonMatrix.Text = "Slash";
+                panelMatrixAuto.Visible = false;
             }
 
             comboMatrix.SelectedIndex = Math.Max(0, Math.Min(AppConfig.Get("matrix_brightness", 0), comboMatrix.Items.Count - 1));
             comboMatrixRunning.SelectedIndex = Math.Min(AppConfig.Get("matrix_running", 0), comboMatrixRunning.Items.Count - 1);
-            comboInterval.SelectedIndex = Math.Min(AppConfig.Get("matrix_interval", 0), comboInterval.Items.Count - 1);
 
             checkMatrix.Checked = AppConfig.Is("matrix_auto");
             checkMatrix.CheckedChanged += CheckMatrix_CheckedChanged;
@@ -1537,6 +1547,7 @@ namespace GHelper
             if (extraForm != null && extraForm.Text != "") extraForm.Close();
             if (updatesForm != null && updatesForm.Text != "") updatesForm.Close();
             if (matrixForm != null && matrixForm.Text != "") matrixForm.Close();
+            if (slashForm != null && slashForm.Text != "") slashForm.Close();
             if (handheldForm != null && handheldForm.Text != "") handheldForm.Close();
             if (mouseSettings != null && mouseSettings.Text != "") mouseSettings.Close();
             MemoryHelper.TrimAfter();
@@ -1562,6 +1573,7 @@ namespace GHelper
                    (extraForm != null && extraForm.ContainsFocus) ||
                    (updatesForm != null && updatesForm.ContainsFocus) ||
                    (matrixForm != null && matrixForm.ContainsFocus) ||
+                   (slashForm != null && slashForm.ContainsFocus) ||
                    (handheldForm != null && handheldForm.ContainsFocus) ||
                    this.ContainsFocus ||
                    (lostFocusCheck && Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastLostFocus) < 300);

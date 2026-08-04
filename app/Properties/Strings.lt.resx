@@ -973,4 +973,34 @@ Rekomenduojama, jei pastebėjote atsitiktinius užstrigimus ar nereaguojančią 
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Overlay only in games</value>
   </data>
+  <data name="Power" xml:space="preserve">
+    <value>Maitinimas</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>Animacijos</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>Įjungimo ir išjungimo animacija</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>Miego režimo animacija</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>Įspėjimas apie senkančią bateriją</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>Baterijos lygio indikatorius</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>Pritemdyti senkant baterijai</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>Sistemos numatytasis</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>Animacijos raštas</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>Visada</value>
+  </data>
 </root>

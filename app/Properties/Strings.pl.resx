@@ -973,4 +973,34 @@ Zalecane, jeśli występują losowe zawieszenia lub niereagujący sprzęt.</valu
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Nakładka tylko w grach</value>
   </data>
+  <data name="Power" xml:space="preserve">
+    <value>Zasilanie</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>Animacje</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>Animacja uruchamiania i wyłączania</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>Animacja uśpienia</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>Alert niskiego poziomu baterii</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>Wskaźnik poziomu baterii</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>Przyciemnij przy słabej baterii</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>Domyślne systemowe</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>Wzór animacji</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>Zawsze</value>
+  </data>
 </root>

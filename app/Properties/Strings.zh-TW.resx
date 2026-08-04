@@ -973,4 +973,34 @@
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>僅遊戲時顯示OSD</value>
   </data>
+  <data name="Power" xml:space="preserve">
+    <value>電源</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>動畫</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>開機與關機動畫</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>睡眠動畫</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>低電量提醒</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>電量指示</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>低電量時降低亮度</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>系統預設</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>動畫圖案</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>一律</value>
+  </data>
 </root>
