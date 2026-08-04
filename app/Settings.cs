@@ -94,7 +94,7 @@ namespace GHelper
             checkMatrixLid.Text = Properties.Strings.DisableOnLidClose;
             checkStartup.Text = Properties.Strings.RunOnStartup;
 
-            buttonMatrix.Text = Properties.Strings.PictureGif;
+            buttonMatrix.Text = "Matrix";
             buttonQuit.Text = Properties.Strings.Quit;
             buttonUpdates.Text = Properties.Strings.Updates;
             buttonDonate.Text = Properties.Strings.Donate;
@@ -1092,6 +1092,14 @@ namespace GHelper
             if (comboMatrix.SelectedIndex == 0) comboMatrix.SelectedIndex = 3;
         }
 
+        public void SetMatrixRunning(int mode)
+        {
+            VisualiseMatrixRunning(mode);
+            AppConfig.Set("matrix_running", mode);
+            matrixControl.SetDevice();
+            if (!matrixControl.IsSlash && matrixForm != null && matrixForm.Text != "") matrixForm.VisualiseMode();
+        }
+
         private void ComboInterval_DropDownClosed(object? sender, EventArgs e)
         {
             AppConfig.Set("matrix_interval", comboInterval.SelectedIndex);
@@ -1100,8 +1108,8 @@ namespace GHelper
 
         private void ComboMatrixRunning_SelectedValueChanged(object? sender, EventArgs e)
         {
-            AppConfig.Set("matrix_running", comboMatrixRunning.SelectedIndex);
-            matrixControl.SetDevice();
+            SetMatrixRunning(comboMatrixRunning.SelectedIndex);
+            if (!matrixControl.IsSlash && comboMatrixRunning.SelectedIndex == (int)MatrixMode.Text && (matrixForm == null || !matrixForm.Visible)) ButtonMatrix_Click(sender, e);
         }
 
 

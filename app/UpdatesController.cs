@@ -36,7 +36,7 @@ namespace GHelper
             public string entry;
         }
 
-        static readonly string[] SkipList = { "Armoury Crate & Aura Creator Installer", "MyASUS", "ASUS Smart Display Control", "Aura Wallpaper", "Virtual Pet", "Virtual Pet- Ultimate Edition", "ROG Font V1.5", "Armoury Crate Control Interface", "Virtual Assistant" };
+        static readonly string[] SkipList = { "Armoury Crate & Aura Creator Installer", "MyASUS", "ASUS Smart Display Control", "Aura Wallpaper", "Virtual Pet", "Virtual Pet- Ultimate Edition", "Armoury Crate Control Interface", "Virtual Assistant" };
 
         static readonly HttpClient _httpClient = CreateHttpClient();
 
