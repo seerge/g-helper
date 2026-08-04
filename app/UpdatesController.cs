@@ -38,14 +38,17 @@ namespace GHelper
 
         static readonly string[] SkipList = { "Armoury Crate & Aura Creator Installer", "MyASUS", "ASUS Smart Display Control", "Aura Wallpaper", "Virtual Pet", "Virtual Pet- Ultimate Edition", "ROG Font V1.5", "Armoury Crate Control Interface", "Virtual Assistant" };
 
-        static readonly HttpClient _httpClient = CreateHttpClient();
+        static HttpClient _httpClient = CreateHttpClient();
 
         static HttpClient CreateHttpClient()
         {
-            var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.All });
-            client.DefaultRequestHeaders.AcceptEncoding.ParseAdd("gzip, deflate, br");
-            client.DefaultRequestHeaders.Add("User-Agent", "C# App");
-            return client;
+            return ProxyHelper.CreateHttpClient("C# App", autoDecompression: true);
+        }
+
+        public static void RefreshHttpClient()
+        {
+            _httpClient?.Dispose();
+            _httpClient = CreateHttpClient();
         }
 
         public async Task<List<DriverUpdate>> FetchUpdates(string url, CancellationToken token = default)
