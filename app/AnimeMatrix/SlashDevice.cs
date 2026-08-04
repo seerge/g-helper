@@ -114,6 +114,11 @@ namespace GHelper.AnimeMatrix
             { SlashMode.FX3, 0x62},
         };
 
+        public static byte GetModeCode(SlashMode mode)
+        {
+            return modeCodes.TryGetValue(mode, out var code) ? code : (byte)0x00;
+        }
+
         protected int Length { get; private set; }
 
         public SlashDevice(ushort productId = 0x193B) : base(0x0B05, productId, 128)

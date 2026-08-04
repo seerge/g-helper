@@ -138,7 +138,11 @@ namespace GHelper
         {
             try
             {
-                slash?.SetRecordByte(0xA1, 6, comboSleepPattern.SelectedIndex == 0 ? (byte)0x00 : (byte)0x42);
+                byte pattern = comboSleepPattern.SelectedIndex == 0
+                    ? (byte)0x00
+                    : SlashDevice.GetModeCode((SlashMode)AppConfig.Get("matrix_running", 0));
+
+                slash?.SetRecordByte(0xA1, 6, pattern);
             }
             catch (Exception ex)
             {
