@@ -19,7 +19,6 @@ namespace GHelper.AnimeMatrix
         public SlashDevice? deviceSlash;
 
         public static bool lidClose = false;
-        private static bool _wakeUp = false;
 
         public bool IsValid => deviceMatrix != null || deviceSlash != null;
         public bool IsSlash => deviceSlash != null;
@@ -85,7 +84,7 @@ namespace GHelper.AnimeMatrix
                     return;
                 }
 
-                if (wakeUp) _wakeUp = true;
+                if (wakeUp) deviceSlash.WakeUp();
 
                 if (brightness == 0)
                 {
@@ -93,14 +92,7 @@ namespace GHelper.AnimeMatrix
                 }
                 else
                 {
-                    if (_wakeUp)
-                    {
-                        deviceSlash.WakeUp();
-                        _wakeUp = false;
-                    }
-
                     deviceSlash.SetEnabled(true);
-                    deviceSlash.Init();
 
                     switch ((SlashMode)running)
                     {
@@ -113,6 +105,7 @@ namespace GHelper.AnimeMatrix
                             }
                             else
                             {
+                                deviceSlash.Init();
                                 deviceSlash.SetMode((SlashMode)running);
                                 deviceSlash.SetOptions(true, brightness, inteval);
                                 deviceSlash.Save();
@@ -131,6 +124,7 @@ namespace GHelper.AnimeMatrix
                             SetAudio();
                             break;
                         default:
+                            deviceSlash.Init();
                             deviceSlash.SetMode((SlashMode)running);
                             deviceSlash.SetOptions(true, brightness, inteval);
                             deviceSlash.Save();

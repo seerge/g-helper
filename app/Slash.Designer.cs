@@ -222,7 +222,6 @@ namespace GHelper
             comboDim.ButtonColor = Color.FromArgb(255, 255, 255);
             comboDim.Font = new Font("Segoe UI", 9F);
             comboDim.FormattingEnabled = true;
-            comboDim.Items.AddRange(new object[] { "10 %", "20 %", "30 %", "40 %", "50 %", "Always" });
             comboDim.Location = new Point(438, 3);
             comboDim.Name = "comboDim";
             comboDim.Size = new Size(300, 40);
@@ -285,7 +284,6 @@ namespace GHelper
             comboSleepPattern.ButtonColor = Color.FromArgb(255, 255, 255);
             comboSleepPattern.Font = new Font("Segoe UI", 9F);
             comboSleepPattern.FormattingEnabled = true;
-            comboSleepPattern.Items.AddRange(new object[] { "System Default", "Animation Pattern" });
             comboSleepPattern.Location = new Point(438, 3);
             comboSleepPattern.Name = "comboSleepPattern";
             comboSleepPattern.Size = new Size(300, 40);

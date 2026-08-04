@@ -973,4 +973,34 @@ Rastgele takılmalar veya yanıt vermeyen donanım yaşıyorsanız önerilir.</v
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Yer paylaşımını sadece oyunlarda aç</value>
   </data>
+  <data name="Power" xml:space="preserve">
+    <value>Güç</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>Animasyonlar</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>Başlangıç ve kapanış animasyonu</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>Uyku modu animasyonu</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>Düşük pil uyarısı</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>Pil seviyesi göstergesi</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>Düşük pilde parlaklığı azalt</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>Sistem Varsayılanı</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>Animasyon Deseni</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>Her zaman</value>
+  </data>
 </root>

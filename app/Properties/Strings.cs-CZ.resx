@@ -955,4 +955,34 @@ a automaticky je spustí, jakmile je GPU zapnuté</value>
     <value>Zabraňuje zařízením PCIe vstoupit do nízkoenergetických nečinných stavů.
 Doporučeno, pokud zaznamenáváte náhodné zaseknutí nebo nereagující hardware.</value>
   </data>
+  <data name="Power" xml:space="preserve">
+    <value>Napájení</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>Animace</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>Animace při spuštění a vypnutí</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>Animace režimu spánku</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>Upozornění na slabou baterii</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>Indikátor stavu baterie</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>Ztlumit při slabé baterii</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>Výchozí systémové</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>Vzor animace</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>Vždy</value>
+  </data>
 </root>

@@ -198,9 +198,22 @@ namespace GHelper.AnimeMatrix
 
             lock (AsusHid.hidLock)
             {
-                Set(CreatePacket([0xD2, 0x03, 0x00, 0x0C]), "SlashMode");
-                //Set(CreatePacket([0xD3, 0x04, 0x00, 0x0C, 0x01, modeByte, 0x02, 0x19, 0x03, 0x13, 0x04, 0x11, 0x05, 0x12, 0x06, 0x13]), "SlashMode");
-                Set(CreatePacket([0xD3, 0x04, 0x00, 0x0C, 0x01, modeByte, 0x02, 0x42, 0x03, 0x13, 0x04, 0x11, 0x05, 0x12, 0x06, 0x13]), "SlashMode");
+                var packet = CreatePacket([0xD2, 0x03, 0x00, 0x0C]);
+                Set(packet);
+                var pool = _usbProvider?.Get(packet.Data);
+
+                if (pool is not null && pool[5] == 0x01)
+                {
+                    pool[1] = 0xD3;
+                    pool[2] = 0x04;
+                    pool[6] = modeByte;
+                    _usbProvider?.Set(pool);
+                    Logger.WriteLine("SlashMode:" + BitConverter.ToString(pool, 0, 17));
+                }
+                else
+                {
+                    Set(CreatePacket([0xD3, 0x04, 0x00, 0x0C, 0x01, modeByte, 0x02, 0x42, 0x03, 0x13, 0x04, 0x11, 0x05, 0x12, 0x06, 0x13]), "SlashMode");
+                }
             }
         }
 

@@ -14,7 +14,16 @@ namespace GHelper
             InitializeComponent();
             InitTheme(true);
 
+            labelPower.Text = Properties.Strings.Power;
+            labelAnimations.Text = Properties.Strings.Animations;
             checkAutoOff.Text = Properties.Strings.TurnOffOnBattery;
+            checkLidOff.Text = Properties.Strings.DisableOnLidClose;
+            checkBoot.Text = Properties.Strings.SlashBootAnimation;
+            checkSleepAnimation.Text = Properties.Strings.SlashSleepAnimation;
+            checkLowBattery.Text = Properties.Strings.SlashLowBatteryAlert;
+            checkBatteryLevel.Text = Properties.Strings.SlashBatteryIndicator;
+            checkPowerSaving.Text = Properties.Strings.SlashDimOnLowBattery;
+
             checkAutoOff.Checked = AppConfig.Is("matrix_auto");
             checkLidOff.Checked = AppConfig.Is("matrix_lid");
 
@@ -22,7 +31,10 @@ namespace GHelper
             VisualiseInterval();
 
             comboSleepPattern.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboSleepPattern.Items.AddRange(new object[] { Properties.Strings.SystemDefault, Properties.Strings.AnimationPattern });
+
             comboDim.DropDownStyle = ComboBoxStyle.DropDownList;
+            foreach (int level in dimLevels) comboDim.Items.Add(level == 100 ? Properties.Strings.Always : $"{level} %");
             comboDim.SelectedIndex = Math.Max(0, Array.IndexOf(dimLevels, AppConfig.Get("slash_dim", 20)));
 
             LoadFlags();
