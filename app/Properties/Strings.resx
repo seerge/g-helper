@@ -988,4 +988,34 @@ Recommended if you experience random hangs or unresponsive hardware.</value>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Overlay only in games</value>
   </data>
+  <data name="Power" xml:space="preserve">
+    <value>Power</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>Animations</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>Startup and shutdown animation</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>Sleep animation</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>Low battery alert</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>Battery level indicator</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>Dim on low battery</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>System Default</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>Animation Pattern</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>Always</value>
+  </data>
 </root>

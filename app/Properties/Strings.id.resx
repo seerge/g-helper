@@ -973,4 +973,34 @@ Direkomendasikan jika Anda mengalami hang acak atau perangkat keras tidak respon
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Overlay only in games</value>
   </data>
+  <data name="Power" xml:space="preserve">
+    <value>Daya</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>Animasi</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>Animasi saat menyala dan mati</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>Animasi mode tidur</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>Peringatan baterai lemah</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>Indikator level baterai</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>Redupkan saat baterai lemah</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>Bawaan sistem</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>Pola animasi</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>Selalu</value>
+  </data>
 </root>

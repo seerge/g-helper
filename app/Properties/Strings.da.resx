@@ -973,4 +973,34 @@ Anbefales, hvis du oplever tilfældige hængninger eller hardware, der ikke reag
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Overlay only in games</value>
   </data>
+  <data name="Power" xml:space="preserve">
+    <value>Strøm</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>Animationer</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>Start- og lukningsanimation</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>Slumreanimation</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>Advarsel om lavt batteri</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>Batteriniveauindikator</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>Dæmp ved lavt batteri</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>Systemstandard</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>Animationsmønster</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>Altid</value>
+  </data>
 </root>

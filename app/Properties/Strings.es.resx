@@ -973,4 +973,34 @@ Recomendado si experimenta cuelgues aleatorios o hardware que no responde.</valu
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Interfaz superpuesta solo juegos</value>
   </data>
+  <data name="Power" xml:space="preserve">
+    <value>Energía</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>Animaciones</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>Animación de inicio y apagado</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>Animación de suspensión</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>Alerta de batería baja</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>Indicador de nivel de batería</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>Atenuar con batería baja</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>Predeterminado</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>Patrón de animación</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>Siempre</value>
+  </data>
 </root>

@@ -973,4 +973,34 @@
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Overlay only in games</value>
   </data>
+  <data name="Power" xml:space="preserve">
+    <value>الطاقة</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>الرسوم المتحركة</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>رسوم بدء التشغيل وإيقاف التشغيل</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>رسوم وضع السكون</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>تنبيه انخفاض البطارية</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>مؤشر مستوى البطارية</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>تخفيت الإضاءة عند انخفاض البطارية</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>افتراضي النظام</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>نمط الرسوم المتحركة</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>دائمًا</value>
+  </data>
 </root>

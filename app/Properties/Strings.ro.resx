@@ -973,4 +973,34 @@ Recomandat dacă întâmpinați blocaje aleatorii sau hardware care nu răspunde
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Overlay only in games</value>
   </data>
+  <data name="Power" xml:space="preserve">
+    <value>Alimentare</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>Animații</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>Animație la pornire și oprire</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>Animație în repaus</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>Alertă baterie descărcată</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>Indicator nivel baterie</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>Estompare la baterie descărcată</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>Implicit sistem</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>Model de animație</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>Întotdeauna</value>
+  </data>
 </root>

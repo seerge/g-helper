@@ -2653,5 +2653,95 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("Zoom", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Power.
+        /// </summary>
+        internal static string Power {
+            get {
+                return ResourceManager.GetString("Power", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Animations.
+        /// </summary>
+        internal static string Animations {
+            get {
+                return ResourceManager.GetString("Animations", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Startup and shutdown animation.
+        /// </summary>
+        internal static string SlashBootAnimation {
+            get {
+                return ResourceManager.GetString("SlashBootAnimation", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Sleep animation.
+        /// </summary>
+        internal static string SlashSleepAnimation {
+            get {
+                return ResourceManager.GetString("SlashSleepAnimation", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Low battery alert.
+        /// </summary>
+        internal static string SlashLowBatteryAlert {
+            get {
+                return ResourceManager.GetString("SlashLowBatteryAlert", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Battery level indicator.
+        /// </summary>
+        internal static string SlashBatteryIndicator {
+            get {
+                return ResourceManager.GetString("SlashBatteryIndicator", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Dim on low battery.
+        /// </summary>
+        internal static string SlashDimOnLowBattery {
+            get {
+                return ResourceManager.GetString("SlashDimOnLowBattery", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to System Default.
+        /// </summary>
+        internal static string SystemDefault {
+            get {
+                return ResourceManager.GetString("SystemDefault", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Animation Pattern.
+        /// </summary>
+        internal static string AnimationPattern {
+            get {
+                return ResourceManager.GetString("AnimationPattern", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Always.
+        /// </summary>
+        internal static string Always {
+            get {
+                return ResourceManager.GetString("Always", resourceCulture);
+            }
+        }
     }
 }

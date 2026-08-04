@@ -29,7 +29,6 @@ namespace GHelper.AnimeMatrix
         public SlashDevice? deviceSlash;
 
         public static bool lidClose = false;
-        private static bool _wakeUp = false;
 
         public bool IsValid => deviceMatrix != null || deviceSlash != null;
         public bool IsSlash => deviceSlash != null;
@@ -95,9 +94,6 @@ namespace GHelper.AnimeMatrix
             int running = AppConfig.Get("matrix_running", 0);
             int inteval = AppConfig.Get("matrix_interval", 0);
 
-            bool auto = AppConfig.Is("matrix_auto");
-            bool lid = AppConfig.Is("matrix_lid");
-
             StopAudio();
 
             Task.Run(() =>
@@ -112,25 +108,15 @@ namespace GHelper.AnimeMatrix
                     return;
                 }
 
-                if (wakeUp) _wakeUp = true;
+                if (wakeUp) deviceSlash.WakeUp();
 
-                if (brightness == 0 || (auto && SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online) || (lid && lidClose))
+                if (brightness == 0)
                 {
-                    deviceSlash.SetSleepActive(false);
                     deviceSlash.SetEnabled(false);
-                    //deviceSlash.Init();
-                    //deviceSlash.SetOptions(false, 0, 0);
                 }
                 else
                 {
-                    if (_wakeUp)
-                    {
-                        deviceSlash.WakeUp();
-                        _wakeUp = false;
-                    }
-
                     deviceSlash.SetEnabled(true);
-                    deviceSlash.Init();
 
                     switch ((SlashMode)running)
                     {
@@ -143,6 +129,7 @@ namespace GHelper.AnimeMatrix
                             }
                             else
                             {
+                                deviceSlash.Init();
                                 deviceSlash.SetMode((SlashMode)running);
                                 deviceSlash.SetOptions(true, brightness, inteval);
                                 deviceSlash.Save();
@@ -161,29 +148,19 @@ namespace GHelper.AnimeMatrix
                             SetAudio();
                             break;
                         default:
+                            deviceSlash.Init();
                             deviceSlash.SetMode((SlashMode)running);
                             deviceSlash.SetOptions(true, brightness, inteval);
                             deviceSlash.Save();
                             break;
                     }
-
-                    // kill the timer if we are not displaying battery pattern
-
-                    deviceSlash.SetSleepActive(AppConfig.IsNotFalse("slash_sleep"));
                 }
             });
         }
 
         public void SetLidMode(bool force = false)
         {
-            bool matrixLid = AppConfig.Is("matrix_lid");
-
-            if (deviceSlash is not null)
-            {
-                deviceSlash.SetLidCloseAnimation(!matrixLid && !AppConfig.Is("slash_sleep"));
-            }
-
-            if (matrixLid || force)
+            if (deviceMatrix is not null && (AppConfig.Is("matrix_lid") || force))
             {
                 Logger.WriteLine($"Matrix LidClosed: {lidClose}");
                 SetDevice(true);
@@ -192,13 +169,6 @@ namespace GHelper.AnimeMatrix
 
         public void SetBatteryAuto()
         {
-            if (deviceSlash is not null)
-            {
-                bool auto = AppConfig.Is("matrix_auto");
-                deviceSlash.SetBatterySaver(auto);
-                if (!auto) SetSlash();
-            }
-
             if (deviceMatrix is not null) SetMatrix();
         }
 
