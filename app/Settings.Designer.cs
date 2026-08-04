@@ -39,7 +39,6 @@ namespace GHelper
             tableLayoutMatrix = new TableLayoutPanel();
             comboMatrix = new RComboBox();
             comboMatrixRunning = new RComboBox();
-            comboInterval = new RComboBox();
             buttonMatrix = new RButton();
             panelMatrixTitle = new Panel();
             pictureMatrix = new PictureBox();
@@ -259,7 +258,6 @@ namespace GHelper
             tableLayoutMatrix.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             tableLayoutMatrix.Controls.Add(comboMatrix, 0, 0);
             tableLayoutMatrix.Controls.Add(comboMatrixRunning, 1, 0);
-            tableLayoutMatrix.Controls.Add(comboInterval, 2, 0);
             tableLayoutMatrix.Controls.Add(buttonMatrix, 2, 0);
             tableLayoutMatrix.Dock = DockStyle.Top;
             tableLayoutMatrix.Location = new Point(20, 60);
@@ -299,20 +297,6 @@ namespace GHelper
             comboMatrixRunning.Name = "comboMatrixRunning";
             comboMatrixRunning.Size = new Size(246, 40);
             comboMatrixRunning.TabIndex = 17;
-            // 
-            // comboInterval
-            // 
-            comboInterval.BorderColor = Color.White;
-            comboInterval.ButtonColor = Color.FromArgb(255, 255, 255);
-            comboInterval.Dock = DockStyle.Top;
-            comboInterval.Font = new Font("Segoe UI", 9F);
-            comboInterval.FormattingEnabled = true;
-            comboInterval.Location = new Point(10, 60);
-            comboInterval.Margin = new Padding(7, 8, 7, 4);
-            comboInterval.Name = "comboInterval";
-            comboInterval.Size = new Size(246, 40);
-            comboInterval.TabIndex = 19;
-            comboInterval.Visible = false;
             // 
             // buttonMatrix
             // 
@@ -2281,7 +2265,6 @@ namespace GHelper
         private RButton buttonFPS;
         private RButton buttonController;
         private RButton buttonOverlay;
-        private RComboBox comboInterval;
         private Panel panelGamma;
         private Slider sliderGamma;
         private Panel panelGammaTitle;

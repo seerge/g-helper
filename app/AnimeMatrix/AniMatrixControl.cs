@@ -71,9 +71,6 @@ namespace GHelper.AnimeMatrix
             int running = AppConfig.Get("matrix_running", 0);
             int inteval = AppConfig.Get("matrix_interval", 0);
 
-            bool auto = AppConfig.Is("matrix_auto");
-            bool lid = AppConfig.Is("matrix_lid");
-
             StopAudio();
 
             Task.Run(() =>
@@ -90,12 +87,9 @@ namespace GHelper.AnimeMatrix
 
                 if (wakeUp) _wakeUp = true;
 
-                if (brightness == 0 || (auto && SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online) || (lid && lidClose))
+                if (brightness == 0)
                 {
-                    deviceSlash.SetSleepActive(false);
                     deviceSlash.SetEnabled(false);
-                    //deviceSlash.Init();
-                    //deviceSlash.SetOptions(false, 0, 0);
                 }
                 else
                 {
@@ -142,24 +136,13 @@ namespace GHelper.AnimeMatrix
                             deviceSlash.Save();
                             break;
                     }
-
-                    // kill the timer if we are not displaying battery pattern
-
-                    deviceSlash.SetSleepActive(AppConfig.IsNotFalse("slash_sleep"));
                 }
             });
         }
 
         public void SetLidMode(bool force = false)
         {
-            bool matrixLid = AppConfig.Is("matrix_lid");
-
-            if (deviceSlash is not null)
-            {
-                deviceSlash.SetLidCloseAnimation(!matrixLid && !AppConfig.Is("slash_sleep"));
-            }
-
-            if (matrixLid || force)
+            if (deviceMatrix is not null && (AppConfig.Is("matrix_lid") || force))
             {
                 Logger.WriteLine($"Matrix LidClosed: {lidClose}");
                 SetDevice(true);
@@ -168,13 +151,6 @@ namespace GHelper.AnimeMatrix
 
         public void SetBatteryAuto()
         {
-            if (deviceSlash is not null)
-            {
-                bool auto = AppConfig.Is("matrix_auto");
-                deviceSlash.SetBatterySaver(auto);
-                if (!auto) SetSlash();
-            }
-
             if (deviceMatrix is not null) SetMatrix();
         }
 
