@@ -973,4 +973,34 @@ GPU가 활성화될 때 자동으로 다시 시작합니다</value>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Overlay only in games</value>
   </data>
+  <data name="Power" xml:space="preserve">
+    <value>전원</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>애니메이션</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>시작 및 종료 애니메이션</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>절전 모드 애니메이션</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>배터리 부족 알림</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>배터리 잔량 표시</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>배터리 부족 시 밝기 낮춤</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>시스템 기본값</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>애니메이션 패턴</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>항상</value>
+  </data>
 </root>
