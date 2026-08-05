@@ -982,6 +982,13 @@ GPU が有効化されたときに自動的に再起動します</value>
     <value>PCIe デバイスが低電力アイドル状態に入るのを防ぎます。
 ランダムなフリーズやハードウェアの無応答が発生する場合に推奨されます。</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>モダンスタンバイ中のネットワークを無効化</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Windows Update などのバックグラウンドタスクによる
+スリープ中の発熱やバッテリー消耗を防ぎます。</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
@@ -1017,12 +1024,5 @@ GPU が有効化されたときに自動的に再起動します</value>
   </data>
   <data name="Always" xml:space="preserve">
     <value>常時</value>
-  </data>
-  <data name="DisableStandbyNetworking" xml:space="preserve">
-    <value>モダンスタンバイ中のネットワークを無効化</value>
-  </data>
-  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
-    <value>Windows Update などのバックグラウンドタスクによる
-スリープ中の発熱やバッテリー消耗を防ぎます。</value>
   </data>
 </root>
