@@ -91,11 +91,9 @@ namespace GHelper
             labelMatrix.Text = Properties.Strings.AnimeMatrix;
             labelBatteryTitle.Text = Properties.Strings.BatteryChargeLimit;
 
-            checkMatrix.Text = Properties.Strings.TurnOffOnBattery;
-            checkMatrixLid.Text = Properties.Strings.DisableOnLidClose;
             checkStartup.Text = Properties.Strings.RunOnStartup;
 
-            buttonMatrix.Text = Properties.Strings.PictureGif;
+            buttonMatrix.Text = "Matrix";
             buttonQuit.Text = Properties.Strings.Quit;
             buttonUpdates.Text = Properties.Strings.Updates;
             buttonDonate.Text = Properties.Strings.Donate;
@@ -1050,19 +1048,6 @@ namespace GHelper
                 Startup.UnSchedule();
         }
 
-        private void CheckMatrix_CheckedChanged(object? sender, EventArgs e)
-        {
-            AppConfig.Set("matrix_auto", checkMatrix.Checked ? 1 : 0);
-            matrixControl.SetBatteryAuto();
-        }
-
-        private void CheckMatrixLid_CheckedChanged(object? sender, EventArgs e)
-        {
-            AppConfig.Set("matrix_lid", checkMatrixLid.Checked ? 1 : 0);
-            matrixControl.SetLidMode(true);
-        }
-
-
         private void ButtonMatrix_Click(object? sender, EventArgs e)
         {
 
@@ -1112,10 +1097,18 @@ namespace GHelper
             if (comboMatrix.SelectedIndex == 0) comboMatrix.SelectedIndex = 3;
         }
 
+        public void SetMatrixRunning(int mode)
+        {
+            VisualiseMatrixRunning(mode);
+            AppConfig.Set("matrix_running", mode);
+            matrixControl.SetDevice();
+            if (!matrixControl.IsSlash && matrixForm != null && matrixForm.Text != "") matrixForm.VisualiseMode();
+        }
+
         private void ComboMatrixRunning_SelectedValueChanged(object? sender, EventArgs e)
         {
-            AppConfig.Set("matrix_running", comboMatrixRunning.SelectedIndex);
-            matrixControl.SetDevice();
+            SetMatrixRunning(comboMatrixRunning.SelectedIndex);
+            if (!matrixControl.IsSlash && comboMatrixRunning.SelectedIndex == (int)MatrixMode.Text && (matrixForm == null || !matrixForm.Visible)) ButtonMatrix_Click(sender, e);
         }
 
 
@@ -1336,19 +1329,10 @@ namespace GHelper
                 }
 
                 buttonMatrix.Text = "Slash";
-                panelMatrixAuto.Visible = false;
             }
 
             comboMatrix.SelectedIndex = Math.Max(0, Math.Min(AppConfig.Get("matrix_brightness", 0), comboMatrix.Items.Count - 1));
             comboMatrixRunning.SelectedIndex = Math.Min(AppConfig.Get("matrix_running", 0), comboMatrixRunning.Items.Count - 1);
-
-            checkMatrix.Checked = AppConfig.Is("matrix_auto");
-            checkMatrix.CheckedChanged += CheckMatrix_CheckedChanged;
-
-            checkMatrixLid.Checked = AppConfig.Is("matrix_lid");
-            checkMatrixLid.CheckedChanged += CheckMatrixLid_CheckedChanged;
-
-
         }
 
 

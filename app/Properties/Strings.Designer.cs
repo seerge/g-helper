@@ -1494,7 +1494,7 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Audio Visualizer.
+        ///   Looks up a localized string similar to Audio.
         /// </summary>
         internal static string MatrixAudio {
             get {
@@ -1502,6 +1502,15 @@ namespace GHelper.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to Visualizer Mode.
+        /// </summary>
+        internal static string MatrixAudioMode {
+            get {
+                return ResourceManager.GetString("MatrixAudioMode", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Binary Banner.
         /// </summary>
@@ -1573,7 +1582,43 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("MatrixPicture", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Running Text.
+        /// </summary>
+        internal static string MatrixRunningText {
+            get {
+                return ResourceManager.GetString("MatrixRunningText", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Text.
+        /// </summary>
+        internal static string MatrixText {
+            get {
+                return ResourceManager.GetString("MatrixText", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Time Format.
+        /// </summary>
+        internal static string MatrixTimeFormat {
+            get {
+                return ResourceManager.GetString("MatrixTimeFormat", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Date Format.
+        /// </summary>
+        internal static string MatrixDateFormat {
+            get {
+                return ResourceManager.GetString("MatrixDateFormat", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Max refresh rate for lower latency.
         /// </summary>
