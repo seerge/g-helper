@@ -939,7 +939,7 @@ Voulez-vous continuer ?</value>
     <value>Intervalle {0}s</value>
   </data>
   <data name="DisableDynamicLighting" xml:space="preserve">
-    <value>Veuillez désactiver l'Éclairage dynamique Windows &gt;</value>
+    <value>Désactivez l'Éclairage dynamique Windows &gt;</value>
   </data>
   <data name="AmbientModeResources" xml:space="preserve">
     <value>Le mode Ambiant peut augmenter l'utilisation des ressources</value>
@@ -972,5 +972,35 @@ Recommandé en cas de blocages aléatoires ou de matériel qui ne répond plus.<
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Overlay only in games</value>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>Alimentation</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>Animations</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>Animation de démarrage et d'arrêt</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>Animation de veille</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>Alerte de batterie faible</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>Indicateur de niveau de batterie</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>Atténuer si batterie faible</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>Par défaut du système</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>Motif d'animation</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>Toujours</value>
   </data>
 </root>

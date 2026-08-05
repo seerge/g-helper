@@ -508,7 +508,7 @@ public static class HardwareControl
             //Debug.WriteLine("Failed reading GPU temp :" + ex.Message);
         }
 
-        if (gpuTemp is null || gpuTemp < 0)
+        if (gpuTemp is null || gpuTemp < 0 || gpuTemp >= 125)
         {
             int acpiTemp = Program.acpi.DeviceGet(AsusACPI.Temp_GPU);
             gpuTemp = (acpiTemp > 0 && acpiTemp < 125) ? acpiTemp : null;

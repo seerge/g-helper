@@ -470,7 +470,7 @@ namespace GHelper
             checkStatusLed.Checked = (statusLed > 0);
             checkStatusLed.CheckedChanged += CheckLEDStatus_CheckedChanged;
 
-            int numberPad = AppConfig.IsStrix() ? NumberPad.Get() : -1;
+            int numberPad = AppConfig.IsNumberPad() ? NumberPad.Get() : -1;
             checkNumberPad.Visible = numberPad >= 0;
             checkNumberPad.Checked = numberPad == 1;
             checkNumberPad.CheckedChanged += CheckNumberPad_CheckedChanged;
@@ -590,7 +590,6 @@ namespace GHelper
             if (AppConfig.Is8Ecores()) eCoresMax = Math.Max(8, eCoresMax);
 
             eCoresMax = Math.Max(4, eCoresMax);
-            pCoresMax = Math.Max(4, pCoresMax);
 
             (int eMin, int pMin) = Program.acpi.GetCores(AsusACPI.CORES_MIN);
             if (pMin >= 1)

@@ -525,7 +525,7 @@ Sei sicuro di voler continuare?</value>
     <value>Tastiera Laptop</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Schermo Laptop</value>
+    <value>Schermo</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>Indicatori Di Stato LED</value>
@@ -972,5 +972,35 @@ Consigliato in caso di blocchi casuali o hardware non rispondente.</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Overlay only in games</value>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>Alimentazione</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>Animazioni</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>Animazione di avvio e spegnimento</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>Animazione sospensione</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>Avviso batteria scarica</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>Indicatore livello batteria</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>Attenua con batteria scarica</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>Predefinito di sistema</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>Motivo animazione</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>Sempre</value>
   </data>
 </root>

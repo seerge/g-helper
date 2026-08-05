@@ -525,7 +525,7 @@
     <value>Клавіатура</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Дисплей</value>
+    <value>Screen</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>LED-Індикатори стану</value>
@@ -972,5 +972,35 @@
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Overlay only in games</value>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>Живлення</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>Анімації</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>Анімація ввімкнення та вимкнення</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>Анімація режиму сну</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>Сповіщення про низький заряд</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>Індикатор рівня заряду</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>Затемнення при низькому заряді</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>За замовчуванням</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>Шаблон анімації</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>Завжди</value>
   </data>
 </root>

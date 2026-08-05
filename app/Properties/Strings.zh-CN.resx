@@ -525,7 +525,7 @@
     <value>笔记本键盘</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>笔记本屏幕</value>
+    <value>屏幕</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>LED 状态指示器</value>
@@ -972,5 +972,35 @@
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Overlay only in games</value>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>电源</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>动画</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>开机和关机动画</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>睡眠动画</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>低电量提醒</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>电量指示</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>低电量时降低亮度</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>系统默认</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>动画图案</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>始终</value>
   </data>
 </root>

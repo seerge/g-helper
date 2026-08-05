@@ -525,7 +525,7 @@ Ainda quer continuar?</value>
     <value>Teclado</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Tela</value>
+    <value>Screen</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>Indicadores de estado do LED</value>
@@ -972,5 +972,35 @@ Recomendado se você sofrer travamentos aleatórios ou hardware sem resposta.</v
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Overlay only in games</value>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>Energia</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>Animações</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>Animação de inicialização e desligamento</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>Animação de suspensão</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>Alerta de bateria fraca</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>Indicador de nível da bateria</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>Esmaecer com bateria fraca</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>Padrão do sistema</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>Padrão de animação</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>Sempre</value>
   </data>
 </root>

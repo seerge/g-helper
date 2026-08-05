@@ -310,10 +310,10 @@
     <value>Sonido al arranque</value>
   </data>
   <data name="BacklightDown" xml:space="preserve">
-    <value>Backlight Down</value>
+    <value>Bajar retroiluminación</value>
   </data>
   <data name="BacklightUp" xml:space="preserve">
-    <value>Backlight Up</value>
+    <value>Subir retroiluminación</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Brillo</value>
@@ -411,7 +411,7 @@
     <value>Valores de fábrica</value>
   </data>
   <data name="FanCurves" xml:space="preserve">
-    <value>Curvas de ventiladores</value>
+    <value>Curvas ventiladores</value>
   </data>
   <data name="FanDragAll" xml:space="preserve">
     <value>Mantén SHIFT para arrastrar todos los puntos a la vez</value>
@@ -525,7 +525,7 @@
     <value>Teclado del portátil</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Pantalla del portátil</value>
+    <value>Pantalla</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>Indicadores de estado LED</value>
@@ -723,7 +723,7 @@
     <value>Algo está usando la dGPU e impide el modo Eco. ¿Reiniciar dGPU en el administrador de dispositivos? (Proceda bajo su propio riesgo)</value>
   </data>
   <data name="RestartingNVServices" xml:space="preserve">
-    <value>Restarting NV Services...</value>
+    <value>Reiniciando servicios NV...</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
@@ -972,5 +972,35 @@ Recomendado si experimenta cuelgues aleatorios o hardware que no responde.</valu
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Interfaz superpuesta solo juegos</value>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>Energía</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>Animaciones</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>Animación de inicio y apagado</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>Animación de suspensión</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>Alerta de batería baja</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>Indicador de nivel de batería</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>Atenuar con batería baja</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>Predeterminado</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>Patrón de animación</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>Siempre</value>
   </data>
 </root>

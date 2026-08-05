@@ -114,6 +114,11 @@ namespace GHelper.AnimeMatrix
             { SlashMode.FX3, 0x62},
         };
 
+        public static byte GetModeCode(SlashMode mode)
+        {
+            return modeCodes.TryGetValue(mode, out var code) ? code : (byte)0x00;
+        }
+
         protected int Length { get; private set; }
 
         public SlashDevice(ushort productId = 0x193B) : base(0x0B05, productId, 128)
@@ -198,9 +203,22 @@ namespace GHelper.AnimeMatrix
 
             lock (AsusHid.hidLock)
             {
-                Set(CreatePacket([0xD2, 0x03, 0x00, 0x0C]), "SlashMode");
-                //Set(CreatePacket([0xD3, 0x04, 0x00, 0x0C, 0x01, modeByte, 0x02, 0x19, 0x03, 0x13, 0x04, 0x11, 0x05, 0x12, 0x06, 0x13]), "SlashMode");
-                Set(CreatePacket([0xD3, 0x04, 0x00, 0x0C, 0x01, modeByte, 0x02, 0x42, 0x03, 0x13, 0x04, 0x11, 0x05, 0x12, 0x06, 0x13]), "SlashMode");
+                var packet = CreatePacket([0xD2, 0x03, 0x00, 0x0C]);
+                Set(packet);
+                var pool = _usbProvider?.Get(packet.Data);
+
+                if (pool is not null && pool[5] == 0x01)
+                {
+                    pool[1] = 0xD3;
+                    pool[2] = 0x04;
+                    pool[6] = modeByte;
+                    _usbProvider?.Set(pool);
+                    Logger.WriteLine("SlashMode:" + BitConverter.ToString(pool, 0, 17));
+                }
+                else
+                {
+                    Set(CreatePacket([0xD3, 0x04, 0x00, 0x0C, 0x01, modeByte, 0x02, 0x42, 0x03, 0x13, 0x04, 0x11, 0x05, 0x12, 0x06, 0x13]), "SlashMode");
+                }
             }
         }
 
@@ -269,22 +287,65 @@ namespace GHelper.AnimeMatrix
             Set(CreatePacket([0xD3, 0x03, 0x01, 0x08, 0xAB, 0xFF, 0x01, status ? (byte)0x01 : (byte)0x00, 0x06, brightnessByte, 0xFF, (byte)interval]), "SlashOptions");
         }
 
-        public void SetBatterySaver(bool status)
+        public void SetPowerSaving(bool status, int percentage = 20)
         {
-            Set(CreatePacket([0xD8, 0x01, 0x00, 0x01, status ? (byte)0x80 : (byte)0x00]), $"SlashBatterySaver {status}");
+            byte pct = percentage >= 100 ? (byte)0xFF : (byte)percentage;
+            Set(CreatePacket([0xD5, 0x00, 0x00, 0x03, status ? (byte)0x00 : (byte)0x80, pct]), $"SlashPowerSaving {status} {percentage}");
         }
 
-        public void SetLidCloseAnimation(bool status)
+        public void SetLightingOnBattery(bool status)
         {
-            Set(CreatePacket([0xD8, 0x00, 0x00, 0x02, 0xA5, status ? (byte)0x00 : (byte)0x80]), $"SlashLidCloseAnimation {status}");
+            Set(CreatePacket([0xD8, 0x01, 0x00, 0x01, status ? (byte)0x00 : (byte)0x80]), $"SlashLightingOnBattery {status}");
         }
 
-        public void SetSleepActive(bool status)
+        public void SetLightingOnLidClose(bool status)
+        {
+            Set(CreatePacket([0xD8, 0x00, 0x00, 0x02, 0xA5, status ? (byte)0x00 : (byte)0x80]), $"SlashLightingOnLidClose {status}");
+        }
+
+        public byte[]? GetRecord(byte region)
         {
             lock (AsusHid.hidLock)
             {
-                Set(CreatePacket([0xD2, 0x02, 0x01, 0x08, 0xA1]), "SlashSleepInit");
-                Set(CreatePacket([0xD3, 0x03, 0x01, 0x08, 0xA1, 0x00, 0xFF, status ? (byte)0x01 : (byte)0x00, 0x02, 0xFF, 0xFF]), $"SlashSleep {status}");
+                var packet = CreatePacket([0xD2, 0x02, 0x01, 0x08, region]);
+                Set(packet);
+                var record = _usbProvider?.Get(packet.Data);
+                if (record is null || (record[6] | record[7] | record[8] | record[9] | record[10] | record[11]) == 0) return null;
+                return record;
+            }
+        }
+
+        public bool GetFlag(byte region)
+        {
+            var record = GetRecord(region);
+            return record is not null && record[8] == 0x01;
+        }
+
+        public void SetFlag(byte region, bool status)
+        {
+            SetRecordByte(region, 8, status ? (byte)0x01 : (byte)0x00);
+        }
+
+        public void SetRecordByte(byte region, int index, byte value)
+        {
+            lock (AsusHid.hidLock)
+            {
+                var record = GetRecord(region);
+                if (record is null) return;
+                record[1] = 0xD3;
+                record[2] = 0x03;
+                record[index] = value;
+                _usbProvider?.Set(record);
+                Logger.WriteLine($"SlashRecord {region:X2}:" + BitConverter.ToString(record).Substring(0, 48));
+            }
+        }
+
+        public void SetBatteryAnimation(bool status)
+        {
+            lock (AsusHid.hidLock)
+            {
+                Set(CreatePacket([0xD2, 0x02, 0x01, 0x08, 0xA3]), "SlashBatteryInit");
+                Set(CreatePacket([0xD3, 0x03, 0x01, 0x08, 0xA3, 0x02, 0xFF, status ? (byte)0x01 : (byte)0x00, 0x02, 0xFF, 0x02]), $"SlashBattery {status}");
             }
         }
 

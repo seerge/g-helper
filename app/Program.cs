@@ -336,7 +336,8 @@ namespace GHelper
 
             modeControl.AutoPerformance(powerChanged);
 
-            settingsForm.matrixControl.SetDevice(true);
+            if (powerChanged) settingsForm.matrixControl.SetMatrix(true);
+            else settingsForm.matrixControl.SetDevice(true);
             InputDispatcher.InitStatusLed();
             if (init) NumberPad.Init();
             XGM.InitLight();

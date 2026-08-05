@@ -405,6 +405,11 @@ public static class AppConfig
         return ContainsModel("Vivobook") || ContainsModel("Zenbook") || ContainsModel("ProArt") || ContainsModel("EXPERTBOOK") || ContainsModel(" V16") || ContainsModel("ASUSLaptop");
     }
 
+    public static bool IsNumberPad()
+    {
+        return IsStrix() || IsVivoZenPro() || IsDUO();
+    }
+
     public static bool IsHardwareFnLock()
     {
         return IsVivoZenPro() || ContainsModel("GZ302EA");
