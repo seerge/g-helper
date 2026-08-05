@@ -525,7 +525,7 @@
     <value>لوحة مفاتيح الحاسوب المحمول</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>شاشة الحاسوب المحمول</value>
+    <value>الشاشة</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>مؤشرات حالة LED</value>

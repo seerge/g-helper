@@ -525,7 +525,7 @@ Bạn có muốn tiếp tục không?</value>
     <value>Bàn phím Laptop</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Màn hình Laptop</value>
+    <value>Màn hình</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>Đèn báo LED</value>

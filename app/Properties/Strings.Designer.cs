@@ -1368,7 +1368,7 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Laptop Screen.
+        ///   Looks up a localized string similar to Screen.
         /// </summary>
         internal static string LaptopScreen {
             get {

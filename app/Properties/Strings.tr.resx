@@ -525,7 +525,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Laptop Klavyesi</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Laptop Ekranı</value>
+    <value>Ekran</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>LED Durum Göstergeleri</value>

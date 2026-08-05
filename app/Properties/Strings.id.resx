@@ -525,7 +525,7 @@ Apakah Anda masih ingin melanjutkan?</value>
     <value>Laptop Keyboard</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Layar Laptop</value>
+    <value>Layar</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>LED Status Indicators</value>

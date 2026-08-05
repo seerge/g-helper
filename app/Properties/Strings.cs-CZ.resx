@@ -516,7 +516,7 @@ Chcete přesto pokračovat?</value>
     <value>Klávesnice notebooku</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Displej ntb</value>
+    <value>Displej</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>LED indikátory sdtavu</value>

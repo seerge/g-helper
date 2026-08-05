@@ -525,7 +525,7 @@ Nadal chcesz kontynuować?</value>
     <value>Klawiatura laptopa</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Ekran laptopa</value>
+    <value>Ekran</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>Wskaźniki stanu</value>

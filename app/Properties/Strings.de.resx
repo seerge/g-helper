@@ -525,7 +525,7 @@ Trotzdem fortfahren?</value>
     <value>Laptoptastatur</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Laptopbildschirm</value>
+    <value>Bildschirm</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>LED-Statusanzeige</value>

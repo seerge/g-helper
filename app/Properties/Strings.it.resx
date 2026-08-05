@@ -525,7 +525,7 @@ Sei sicuro di voler continuare?</value>
     <value>Tastiera Laptop</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Schermo Laptop</value>
+    <value>Schermo</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>Indicatori Di Stato LED</value>

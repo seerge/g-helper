@@ -1246,7 +1246,7 @@ namespace GHelper
             labelSreen.Name = "labelSreen";
             labelSreen.Size = new Size(176, 32);
             labelSreen.TabIndex = 26;
-            labelSreen.Text = "Laptop Screen";
+            labelSreen.Text = "Screen";
             // 
             // panelKeyboard
             // 

@@ -411,7 +411,7 @@ Voulez-vous continuer ?</value>
     <value>Paramètres d'usine</value>
   </data>
   <data name="FanCurves" xml:space="preserve">
-    <value>Courbes des ventilateurs</value>
+    <value>Courbes ventilos</value>
   </data>
   <data name="FanDragAll" xml:space="preserve">
     <value>Maintenez SHIFT pour déplacer tous les points ensemble</value>
@@ -861,7 +861,7 @@ Voulez-vous continuer ?</value>
     <value>Zoom</value>
   </data>
   <data name="Donate" xml:space="preserve">
-    <value>Faire un don</value>
+    <value>Don</value>
   </data>
   <data name="ThankYou" xml:space="preserve">
     <value>Merci</value>
@@ -939,7 +939,7 @@ Voulez-vous continuer ?</value>
     <value>Intervalle {0}s</value>
   </data>
   <data name="DisableDynamicLighting" xml:space="preserve">
-    <value>Veuillez désactiver l'Éclairage dynamique Windows &gt;</value>
+    <value>Désactivez l'Éclairage dynamique Windows &gt;</value>
   </data>
   <data name="AmbientModeResources" xml:space="preserve">
     <value>Le mode Ambiant peut augmenter l'utilisation des ressources</value>

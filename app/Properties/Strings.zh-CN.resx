@@ -525,7 +525,7 @@
     <value>笔记本键盘</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>笔记本屏幕</value>
+    <value>屏幕</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>LED 状态指示器</value>

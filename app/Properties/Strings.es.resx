@@ -525,7 +525,7 @@
     <value>Teclado del portátil</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Pantalla del portátil</value>
+    <value>Pantalla</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>Indicadores de estado LED</value>

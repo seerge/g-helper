@@ -525,7 +525,7 @@
     <value>Tastatură Laptop</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Ecran Laptop</value>
+    <value>Ecran</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>LED Status Indicators</value>

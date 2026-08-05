@@ -525,7 +525,7 @@ Folytatni szeretnéd?</value>
     <value>Laptop billentyűzet</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Laptop kijelző</value>
+    <value>Kijelző</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>LED Állapotjelzők</value>
