@@ -982,6 +982,13 @@ et les redémarre automatiquement lorsqu'il est activé</value>
     <value>Empêche les périphériques PCIe d'entrer dans des états d'inactivité à faible consommation.
 Recommandé en cas de blocages aléatoires ou de matériel qui ne répond plus.</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Désactiver le réseau en veille Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Empêche les tâches en arrière-plan comme Windows Update
+de chauffer l'ordinateur en veille et de vider la batterie.</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
@@ -1017,12 +1024,5 @@ Recommandé en cas de blocages aléatoires ou de matériel qui ne répond plus.<
   </data>
   <data name="Always" xml:space="preserve">
     <value>Toujours</value>
-  </data>
-  <data name="DisableStandbyNetworking" xml:space="preserve">
-    <value>Désactiver le réseau en veille Modern Standby</value>
-  </data>
-  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
-    <value>Empêche les tâches en arrière-plan comme Windows Update
-de chauffer l'ordinateur en veille et de vider la batterie.</value>
   </data>
 </root>
