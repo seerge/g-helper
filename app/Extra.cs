@@ -149,8 +149,7 @@ namespace GHelper
 
             checkAwake.Text = Properties.Strings.Awake;
             checkSleep.Text = Properties.Strings.Sleep;
-            checkBoot.Text = Properties.Strings.Boot;
-            checkShutdown.Text = Properties.Strings.Shutdown;
+            checkBoot.Text = checkBootLogo.Text = checkBootBar.Text = checkBootLid.Text = Properties.Strings.Boot + "/" + Properties.Strings.Shutdown;
             checkBattery.Text = checkBatteryLogo.Text = checkBatteryBar.Text = checkBatteryLid.Text = Properties.Strings.Battery;
             checkBootSound.Text = Properties.Strings.BootSound;
             checkKeystoneSound.Text = Properties.Strings.KeystoneSound;
@@ -215,10 +214,9 @@ namespace GHelper
             comboKeyboardSpeed.AccessibleName = Properties.Strings.LaptopBacklight + " " + Properties.Strings.AnimationSpeed;
             comboAPU.AccessibleName = Properties.Strings.LaptopBacklight + " " + Properties.Strings.AnimationSpeed;
 
-            checkBoot.AccessibleName = Properties.Strings.Boot + " " + Properties.Strings.LaptopBacklight;
+            checkBoot.AccessibleName = Properties.Strings.Boot + "/" + Properties.Strings.Shutdown + " " + Properties.Strings.LaptopBacklight;
             checkAwake.AccessibleName = Properties.Strings.Awake + " " + Properties.Strings.LaptopBacklight;
             checkSleep.AccessibleName = Properties.Strings.Sleep + " " + Properties.Strings.LaptopBacklight;
-            checkShutdown.AccessibleName = Properties.Strings.Shutdown + " " + Properties.Strings.LaptopBacklight;
 
             panelSettings.AccessibleName = Properties.Strings.ExtraSettings;
             numericHibernateAfter.AccessibleName = Properties.Strings.HibernateAfter;
@@ -339,52 +337,44 @@ namespace GHelper
             checkBattery.Checked = AppConfig.IsOnBattery("keyboard_awake");
             checkBoot.Checked = AppConfig.IsNotFalse("keyboard_boot");
             checkSleep.Checked = AppConfig.IsNotFalse("keyboard_sleep");
-            checkShutdown.Checked = AppConfig.IsNotFalse("keyboard_shutdown");
 
             // Lightbar
             checkAwakeBar.Checked = AppConfig.IsNotFalse("keyboard_awake_bar");
             checkBatteryBar.Checked = AppConfig.IsOnBattery("keyboard_awake_bar");
             checkBootBar.Checked = AppConfig.IsNotFalse("keyboard_boot_bar");
             checkSleepBar.Checked = AppConfig.IsNotFalse("keyboard_sleep_bar");
-            checkShutdownBar.Checked = AppConfig.IsNotFalse("keyboard_shutdown_bar");
 
             // Lid
             checkAwakeLid.Checked = AppConfig.IsNotFalse("keyboard_awake_lid");
             checkBatteryLid.Checked = AppConfig.IsOnBattery("keyboard_awake_lid");
             checkBootLid.Checked = AppConfig.IsNotFalse("keyboard_boot_lid");
             checkSleepLid.Checked = AppConfig.IsNotFalse("keyboard_sleep_lid");
-            checkShutdownLid.Checked = AppConfig.IsNotFalse("keyboard_shutdown_lid");
 
             // Logo
             checkAwakeLogo.Checked = AppConfig.IsNotFalse("keyboard_awake_logo");
             checkBatteryLogo.Checked = AppConfig.IsOnBattery("keyboard_awake_logo");
             checkBootLogo.Checked = AppConfig.IsNotFalse("keyboard_boot_logo");
             checkSleepLogo.Checked = AppConfig.IsNotFalse("keyboard_sleep_logo");
-            checkShutdownLogo.Checked = AppConfig.IsNotFalse("keyboard_shutdown_logo");
 
             checkAwake.CheckedChanged += CheckPower_CheckedChanged;
             checkBattery.CheckedChanged += CheckPower_CheckedChanged;
             checkBoot.CheckedChanged += CheckPower_CheckedChanged;
             checkSleep.CheckedChanged += CheckPower_CheckedChanged;
-            checkShutdown.CheckedChanged += CheckPower_CheckedChanged;
 
             checkAwakeBar.CheckedChanged += CheckPower_CheckedChanged;
             checkBatteryBar.CheckedChanged += CheckPower_CheckedChanged;
             checkBootBar.CheckedChanged += CheckPower_CheckedChanged;
             checkSleepBar.CheckedChanged += CheckPower_CheckedChanged;
-            checkShutdownBar.CheckedChanged += CheckPower_CheckedChanged;
 
             checkAwakeLid.CheckedChanged += CheckPower_CheckedChanged;
             checkBatteryLid.CheckedChanged += CheckPower_CheckedChanged;
             checkBootLid.CheckedChanged += CheckPower_CheckedChanged;
             checkSleepLid.CheckedChanged += CheckPower_CheckedChanged;
-            checkShutdownLid.CheckedChanged += CheckPower_CheckedChanged;
 
             checkAwakeLogo.CheckedChanged += CheckPower_CheckedChanged;
             checkBatteryLogo.CheckedChanged += CheckPower_CheckedChanged;
             checkBootLogo.CheckedChanged += CheckPower_CheckedChanged;
             checkSleepLogo.CheckedChanged += CheckPower_CheckedChanged;
-            checkShutdownLogo.CheckedChanged += CheckPower_CheckedChanged;
 
             if (!AppConfig.IsBacklightZones() || AppConfig.IsARCNM())
             {
@@ -399,7 +389,6 @@ namespace GHelper
                 checkBatteryBar.Visible = false;
                 checkBootBar.Visible = false;
                 checkSleepBar.Visible = false;
-                checkShutdownBar.Visible = false;
             }
 
             if (!Aura.HasLogo)
@@ -409,7 +398,6 @@ namespace GHelper
                 checkBatteryLogo.Visible = false;
                 checkBootLogo.Visible = false;
                 checkSleepLogo.Visible = false;
-                checkShutdownLogo.Visible = false;
             }
 
             if (!Aura.HasRearglow)
@@ -419,7 +407,6 @@ namespace GHelper
                 checkBatteryLid.Visible = false;
                 checkBootLid.Visible = false;
                 checkSleepLid.Visible = false;
-                checkShutdownLid.Visible = false;
             }
 
             //checkAutoToggleClamshellMode.Visible = clamshellControl.IsExternalDisplayConnected();
@@ -875,22 +862,22 @@ namespace GHelper
             AppConfig.Set("keyboard_awake", (checkAwake.Checked ? 1 : 0));
             AppConfig.Set("keyboard_boot", (checkBoot.Checked ? 1 : 0));
             AppConfig.Set("keyboard_sleep", (checkSleep.Checked ? 1 : 0));
-            AppConfig.Set("keyboard_shutdown", (checkShutdown.Checked ? 1 : 0));
+            AppConfig.Set("keyboard_shutdown", (checkBoot.Checked ? 1 : 0));
 
             AppConfig.Set("keyboard_awake_bar", (checkAwakeBar.Checked ? 1 : 0));
             AppConfig.Set("keyboard_boot_bar", (checkBootBar.Checked ? 1 : 0));
             AppConfig.Set("keyboard_sleep_bar", (checkSleepBar.Checked ? 1 : 0));
-            AppConfig.Set("keyboard_shutdown_bar", (checkShutdownBar.Checked ? 1 : 0));
+            AppConfig.Set("keyboard_shutdown_bar", (checkBootBar.Checked ? 1 : 0));
 
             AppConfig.Set("keyboard_awake_lid", (checkAwakeLid.Checked ? 1 : 0));
             AppConfig.Set("keyboard_boot_lid", (checkBootLid.Checked ? 1 : 0));
             AppConfig.Set("keyboard_sleep_lid", (checkSleepLid.Checked ? 1 : 0));
-            AppConfig.Set("keyboard_shutdown_lid", (checkShutdownLid.Checked ? 1 : 0));
+            AppConfig.Set("keyboard_shutdown_lid", (checkBootLid.Checked ? 1 : 0));
 
             AppConfig.Set("keyboard_awake_logo", (checkAwakeLogo.Checked ? 1 : 0));
             AppConfig.Set("keyboard_boot_logo", (checkBootLogo.Checked ? 1 : 0));
             AppConfig.Set("keyboard_sleep_logo", (checkSleepLogo.Checked ? 1 : 0));
-            AppConfig.Set("keyboard_shutdown_logo", (checkShutdownLogo.Checked ? 1 : 0));
+            AppConfig.Set("keyboard_shutdown_logo", (checkBootLogo.Checked ? 1 : 0));
 
             if (AppConfig.IsBacklightZones())
             {

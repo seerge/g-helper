@@ -534,7 +534,7 @@ Sei sicuro di voler continuare?</value>
     <value>Coperchio</value>
   </data>
   <data name="Lightbar" xml:space="preserve">
-    <value>Barra Luminosa</value>
+    <value>Barra LED</value>
   </data>
   <data name="Lighting" xml:space="preserve">
     <value>Illuminazione</value>
@@ -762,7 +762,7 @@ Sei sicuro di voler continuare?</value>
     <value>Aumenta luminosità Screenpad</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
-    <value>Spegnimento</value>
+    <value>Arresto</value>
   </data>
   <data name="Silent" xml:space="preserve">
     <value>Silenzioso</value>

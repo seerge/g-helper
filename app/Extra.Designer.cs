@@ -89,25 +89,21 @@ namespace GHelper
             checkAwake = new CheckBox();
             checkBoot = new CheckBox();
             checkSleep = new CheckBox();
-            checkShutdown = new CheckBox();
             checkBattery = new CheckBox();
             labelBacklightLogo = new Label();
             checkAwakeLogo = new CheckBox();
             checkBootLogo = new CheckBox();
             checkSleepLogo = new CheckBox();
-            checkShutdownLogo = new CheckBox();
             checkBatteryLogo = new CheckBox();
             labelBacklightBar = new Label();
             checkAwakeBar = new CheckBox();
             checkBootBar = new CheckBox();
             checkSleepBar = new CheckBox();
-            checkShutdownBar = new CheckBox();
             checkBatteryBar = new CheckBox();
             labelBacklightLid = new Label();
             checkAwakeLid = new CheckBox();
             checkBootLid = new CheckBox();
             checkSleepLid = new CheckBox();
-            checkShutdownLid = new CheckBox();
             checkBatteryLid = new CheckBox();
             panelSettingsHeader = new Panel();
             pictureScan = new PictureBox();
@@ -856,8 +852,7 @@ namespace GHelper
             // tableBacklight
             // 
             tableBacklight.AutoSize = true;
-            tableBacklight.ColumnCount = 6;
-            tableBacklight.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+            tableBacklight.ColumnCount = 5;
             tableBacklight.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
             tableBacklight.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
             tableBacklight.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
@@ -867,26 +862,22 @@ namespace GHelper
             tableBacklight.Controls.Add(checkAwake, 1, 0);
             tableBacklight.Controls.Add(checkSleep, 2, 0);
             tableBacklight.Controls.Add(checkBoot, 3, 0);
-            tableBacklight.Controls.Add(checkShutdown, 4, 0);
-            tableBacklight.Controls.Add(checkBattery, 5, 0);
+            tableBacklight.Controls.Add(checkBattery, 4, 0);
             tableBacklight.Controls.Add(labelBacklightLogo, 0, 1);
             tableBacklight.Controls.Add(checkAwakeLogo, 1, 1);
             tableBacklight.Controls.Add(checkSleepLogo, 2, 1);
             tableBacklight.Controls.Add(checkBootLogo, 3, 1);
-            tableBacklight.Controls.Add(checkShutdownLogo, 4, 1);
-            tableBacklight.Controls.Add(checkBatteryLogo, 5, 1);
+            tableBacklight.Controls.Add(checkBatteryLogo, 4, 1);
             tableBacklight.Controls.Add(labelBacklightBar, 0, 2);
             tableBacklight.Controls.Add(checkAwakeBar, 1, 2);
             tableBacklight.Controls.Add(checkSleepBar, 2, 2);
             tableBacklight.Controls.Add(checkBootBar, 3, 2);
-            tableBacklight.Controls.Add(checkShutdownBar, 4, 2);
-            tableBacklight.Controls.Add(checkBatteryBar, 5, 2);
+            tableBacklight.Controls.Add(checkBatteryBar, 4, 2);
             tableBacklight.Controls.Add(labelBacklightLid, 0, 3);
             tableBacklight.Controls.Add(checkAwakeLid, 1, 3);
             tableBacklight.Controls.Add(checkSleepLid, 2, 3);
             tableBacklight.Controls.Add(checkBootLid, 3, 3);
-            tableBacklight.Controls.Add(checkShutdownLid, 4, 3);
-            tableBacklight.Controls.Add(checkBatteryLid, 5, 3);
+            tableBacklight.Controls.Add(checkBatteryLid, 4, 3);
             tableBacklight.Dock = DockStyle.Top;
             tableBacklight.Location = new Point(0, 5);
             tableBacklight.Margin = new Padding(0);
@@ -947,18 +938,6 @@ namespace GHelper
             checkSleep.TabIndex = 3;
             checkSleep.Text = "Sleep";
             checkSleep.UseVisualStyleBackColor = true;
-            // 
-            // checkShutdown
-            // 
-            checkShutdown.AutoSize = true;
-            checkShutdown.Location = new Point(5, 174);
-            checkShutdown.Margin = new Padding(5, 0, 5, 0);
-            checkShutdown.Name = "checkShutdown";
-            checkShutdown.Padding = new Padding(16, 3, 7, 3);
-            checkShutdown.Size = new Size(227, 43);
-            checkShutdown.TabIndex = 4;
-            checkShutdown.Text = Strings.Shutdown;
-            checkShutdown.UseVisualStyleBackColor = true;
             // 
             // checkBattery
             // 
@@ -1021,18 +1000,6 @@ namespace GHelper
             checkSleepLogo.Text = Strings.Sleep;
             checkSleepLogo.UseVisualStyleBackColor = true;
             // 
-            // checkShutdownLogo
-            // 
-            checkShutdownLogo.AutoSize = true;
-            checkShutdownLogo.Location = new Point(242, 174);
-            checkShutdownLogo.Margin = new Padding(5, 0, 5, 0);
-            checkShutdownLogo.Name = "checkShutdownLogo";
-            checkShutdownLogo.Padding = new Padding(16, 3, 7, 3);
-            checkShutdownLogo.Size = new Size(227, 43);
-            checkShutdownLogo.TabIndex = 20;
-            checkShutdownLogo.Text = Strings.Shutdown;
-            checkShutdownLogo.UseVisualStyleBackColor = true;
-            // 
             // checkBatteryLogo
             // 
             checkBatteryLogo.AutoSize = true;
@@ -1094,18 +1061,6 @@ namespace GHelper
             checkSleepBar.Text = Strings.Sleep;
             checkSleepBar.UseVisualStyleBackColor = true;
             // 
-            // checkShutdownBar
-            // 
-            checkShutdownBar.AutoSize = true;
-            checkShutdownBar.Location = new Point(479, 174);
-            checkShutdownBar.Margin = new Padding(5, 0, 5, 0);
-            checkShutdownBar.Name = "checkShutdownBar";
-            checkShutdownBar.Padding = new Padding(16, 3, 7, 3);
-            checkShutdownBar.Size = new Size(227, 43);
-            checkShutdownBar.TabIndex = 10;
-            checkShutdownBar.Text = Strings.Shutdown;
-            checkShutdownBar.UseVisualStyleBackColor = true;
-            // 
             // checkBatteryBar
             // 
             checkBatteryBar.AutoSize = true;
@@ -1166,18 +1121,6 @@ namespace GHelper
             checkSleepLid.TabIndex = 14;
             checkSleepLid.Text = Strings.Sleep;
             checkSleepLid.UseVisualStyleBackColor = true;
-            // 
-            // checkShutdownLid
-            // 
-            checkShutdownLid.AutoSize = true;
-            checkShutdownLid.Location = new Point(716, 174);
-            checkShutdownLid.Margin = new Padding(5, 0, 5, 0);
-            checkShutdownLid.Name = "checkShutdownLid";
-            checkShutdownLid.Padding = new Padding(16, 3, 7, 3);
-            checkShutdownLid.Size = new Size(228, 43);
-            checkShutdownLid.TabIndex = 15;
-            checkShutdownLid.Text = Strings.Shutdown;
-            checkShutdownLid.UseVisualStyleBackColor = true;
             // 
             // checkBatteryLid
             // 
@@ -1926,10 +1869,6 @@ namespace GHelper
         private CheckBox checkNumberPad;
         private CheckBox checkAspm;
         private CheckBox checkStandbyNetworking;
-        private CheckBox checkShutdown;
-        private CheckBox checkShutdownLogo;
-        private CheckBox checkShutdownBar;
-        private CheckBox checkShutdownLid;
         private CheckBox checkBatteryLogo;
         private CheckBox checkBattery;
         private CheckBox checkBatteryLid;
