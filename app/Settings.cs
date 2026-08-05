@@ -1327,6 +1327,7 @@ namespace GHelper
             if (matrixControl.IsSlash)
             {
                 labelMatrix.Text = "Slash Lighting";
+                pictureMatrix.BackgroundImage = ControlHelper.TintImage(Properties.Resources.slash_32, foreMain);
                 comboMatrixRunning.Items.Clear();
 
                 foreach (var item in SlashDevice.Modes)
