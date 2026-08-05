@@ -555,7 +555,10 @@
     <value>左扳机死区</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
-    <value>音频可视化器</value>
+    <value>Audio</value>
+  </data>
+  <data name="MatrixAudioMode" xml:space="preserve">
+    <value>Visualizer Mode</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Anime Matrix 标识</value>
@@ -580,6 +583,18 @@
   </data>
   <data name="MatrixPicture" xml:space="preserve">
     <value>图片</value>
+  </data>
+  <data name="MatrixRunningText" xml:space="preserve">
+    <value>Running Text</value>
+  </data>
+  <data name="MatrixText" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="MatrixTimeFormat" xml:space="preserve">
+    <value>Time Format</value>
+  </data>
+  <data name="MatrixDateFormat" xml:space="preserve">
+    <value>Date Format</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>更高的刷新率和更低的延迟</value>
