@@ -581,24 +581,24 @@ namespace GHelper.AnimeMatrix
 
         public int HitTestText(int plX, int plY)
         {
-            bool InBox(int line)
+            long Distance(int line)
             {
                 var (offX, offY) = TextOffset(line);
-                int minX = int.MaxValue, maxX = int.MinValue, minY = int.MaxValue, maxY = int.MinValue;
+                long best = long.MaxValue;
 
                 foreach (var (x, y, _) in GetTextPixels(line, out _))
                 {
                     var (tX, tY) = Planar(x, y, textDeltaX, textDeltaY);
-                    if (tX < minX) minX = tX;
-                    if (tX > maxX) maxX = tX;
-                    if (tY < minY) minY = tY;
-                    if (tY > maxY) maxY = tY;
+                    long dX = plX - tX - offX;
+                    long dY = plY - tY - offY;
+                    long dist = dX * dX + dY * dY;
+                    if (dist < best) best = dist;
                 }
 
-                return plX >= minX + offX && plX <= maxX + offX && plY >= minY + offY && plY <= maxY + offY;
+                return best;
             }
 
-            return InBox(2) ? 2 : 1;
+            return Distance(2) < Distance(1) ? 2 : 1;
         }
 
         public byte[,] LedSnapshot()
