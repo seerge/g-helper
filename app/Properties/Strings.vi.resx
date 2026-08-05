@@ -555,7 +555,10 @@ Bạn có muốn tiếp tục không?</value>
     <value>Deadzone trigger trái</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
-    <value>Sóng nhạc</value>
+    <value>Audio</value>
+  </data>
+  <data name="MatrixAudioMode" xml:space="preserve">
+    <value>Visualizer Mode</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Nhị phân</value>
@@ -580,6 +583,18 @@ Bạn có muốn tiếp tục không?</value>
   </data>
   <data name="MatrixPicture" xml:space="preserve">
     <value>Hình ảnh</value>
+  </data>
+  <data name="MatrixRunningText" xml:space="preserve">
+    <value>Running Text</value>
+  </data>
+  <data name="MatrixText" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="MatrixTimeFormat" xml:space="preserve">
+    <value>Time Format</value>
+  </data>
+  <data name="MatrixDateFormat" xml:space="preserve">
+    <value>Date Format</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Tần số quét tối đa để có độ trễ thấp</value>

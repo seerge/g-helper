@@ -555,7 +555,10 @@ Sei sicuro di voler continuare?</value>
     <value>Zona morta dell'interruttore sinistro</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
-    <value>Visualizzatore Audio</value>
+    <value>Audio</value>
+  </data>
+  <data name="MatrixAudioMode" xml:space="preserve">
+    <value>Visualizer Mode</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Banner Binario</value>
@@ -580,6 +583,18 @@ Sei sicuro di voler continuare?</value>
   </data>
   <data name="MatrixPicture" xml:space="preserve">
     <value>Immagine</value>
+  </data>
+  <data name="MatrixRunningText" xml:space="preserve">
+    <value>Running Text</value>
+  </data>
+  <data name="MatrixText" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="MatrixTimeFormat" xml:space="preserve">
+    <value>Time Format</value>
+  </data>
+  <data name="MatrixDateFormat" xml:space="preserve">
+    <value>Date Format</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Massimo refresh rate per latenza ridotta</value>
