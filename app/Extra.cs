@@ -654,7 +654,6 @@ namespace GHelper
                     comboAPU.Items.Add(option == 0 ? Properties.Strings.AutoMode : ((double)option * unitMb / 1024).ToString("0.#") + "G");
 
                 int current = Program.acpi.GetVramMem();
-                if (current == 0) current = (int)((HardwareControl.AmdApu().GetVramInfo()?.totalMb ?? 0) / unitMb);
                 if (current == 0) current = AppConfig.Get("vram_mem", 0);
 
                 comboAPU.SelectedIndex = Math.Max(0, Array.IndexOf(vramOptions, current));
