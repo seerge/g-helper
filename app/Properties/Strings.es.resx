@@ -982,6 +982,13 @@ y los reinicia automáticamente cuando se activa</value>
     <value>Evita que los dispositivos PCIe entren en estados de inactividad de bajo consumo.
 Recomendado si experimenta cuelgues aleatorios o hardware que no responde.</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Desactivar la red en Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Evita que tareas en segundo plano como Windows Update
+calienten el portátil dormido y agoten la batería.</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
     <value>Interfaz superpuesta</value>
   </data>
@@ -1017,12 +1024,5 @@ Recomendado si experimenta cuelgues aleatorios o hardware que no responde.</valu
   </data>
   <data name="Always" xml:space="preserve">
     <value>Siempre</value>
-  </data>
-  <data name="DisableStandbyNetworking" xml:space="preserve">
-    <value>Desactivar la red en Modern Standby</value>
-  </data>
-  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
-    <value>Evita que tareas en segundo plano como Windows Update
-calienten el portátil dormido y agoten la batería.</value>
   </data>
 </root>
