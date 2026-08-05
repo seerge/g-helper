@@ -11,8 +11,7 @@ namespace GHelper.Helpers
 
         public static void Init()
         {
-            int state = GetState();
-            if (state >= 0) Set(state >= 1);
+            if (GetState() >= 1) Set(true);
         }
 
         public static void Set(bool enabled)
