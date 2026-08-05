@@ -982,6 +982,13 @@ Folytatni szeretnéd?</value>
     <value>Megakadályozza, hogy a PCIe eszközök alacsony fogyasztású tétlen állapotba lépjenek.
 Ajánlott, ha véletlenszerű lefagyásokat vagy nem reagáló hardvert tapasztal.</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Hálózat letiltása Modern Standby módban</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Megakadályozza, hogy a háttérfeladatok, mint a Windows Update,
+felmelegítsék az alvó laptopot és lemerítsék az akkumulátort.</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
     <value>Átfedés</value>
   </data>
@@ -1017,12 +1024,5 @@ Ajánlott, ha véletlenszerű lefagyásokat vagy nem reagáló hardvert tapaszta
   </data>
   <data name="Always" xml:space="preserve">
     <value>Mindig</value>
-  </data>
-  <data name="DisableStandbyNetworking" xml:space="preserve">
-    <value>Hálózat letiltása Modern Standby módban</value>
-  </data>
-  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
-    <value>Megakadályozza, hogy a háttérfeladatok, mint a Windows Update,
-felmelegítsék az alvó laptopot és lemerítsék az akkumulátort.</value>
   </data>
 </root>
