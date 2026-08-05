@@ -525,7 +525,7 @@
     <value>Клавіатура</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Дисплей</value>
+    <value>Screen</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>LED-Індикатори стану</value>
