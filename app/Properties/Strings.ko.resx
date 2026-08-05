@@ -525,7 +525,7 @@
     <value>키보드</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>화면</value>
+    <value>Screen</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>LED 상태 표시등</value>
