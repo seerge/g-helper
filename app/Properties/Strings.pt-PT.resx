@@ -982,6 +982,13 @@ e reinicia-os automaticamente quando a GPU é ativada</value>
     <value>Impede que os dispositivos PCIe entrem em estados de inatividade de baixa energia.
 Recomendado se ocorrerem bloqueios aleatórios ou hardware que não responde.</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Desativar rede no Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Impede que tarefas em segundo plano como o Windows Update
+aqueçam o portátil adormecido e esgotem a bateria.</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
@@ -1017,12 +1024,5 @@ Recomendado se ocorrerem bloqueios aleatórios ou hardware que não responde.</v
   </data>
   <data name="Always" xml:space="preserve">
     <value>Sempre</value>
-  </data>
-  <data name="DisableStandbyNetworking" xml:space="preserve">
-    <value>Desativar rede no Modern Standby</value>
-  </data>
-  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
-    <value>Impede que tarefas em segundo plano como o Windows Update
-aqueçam o portátil adormecido e esgotem a bateria.</value>
   </data>
 </root>
