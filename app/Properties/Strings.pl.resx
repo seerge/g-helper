@@ -982,6 +982,13 @@ i automatycznie je uruchamia, gdy GPU jest włączony</value>
     <value>Zapobiega przechodzeniu urządzeń PCIe w stany niskiego poboru mocy.
 Zalecane, jeśli występują losowe zawieszenia lub niereagujący sprzęt.</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Wyłącz sieć w trybie Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Zapobiega nagrzewaniu uśpionego laptopa i rozładowywaniu
+baterii przez zadania w tle, takie jak Windows Update.</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
     <value>Nakładka</value>
   </data>
@@ -1017,12 +1024,5 @@ Zalecane, jeśli występują losowe zawieszenia lub niereagujący sprzęt.</valu
   </data>
   <data name="Always" xml:space="preserve">
     <value>Zawsze</value>
-  </data>
-  <data name="DisableStandbyNetworking" xml:space="preserve">
-    <value>Wyłącz sieć w trybie Modern Standby</value>
-  </data>
-  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
-    <value>Zapobiega nagrzewaniu uśpionego laptopa i rozładowywaniu
-baterii przez zadania w tle, takie jak Windows Update.</value>
   </data>
 </root>
