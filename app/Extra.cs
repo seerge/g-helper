@@ -426,7 +426,7 @@ namespace GHelper
             checkAutoToggleClamshellMode.Checked = AppConfig.Is("toggle_clamshell_mode");
             checkAutoToggleClamshellMode.CheckedChanged += checkAutoToggleClamshellMode_CheckedChanged;
 
-            int hibernateHelper = Program.acpi.GetHibernateHelper();
+            int hibernateHelper = HibernateHelper.GetState();
             Logger.WriteLine($"Modern Standby Assist = {hibernateHelper}");
             checkHibernateHelper.Visible = hibernateHelper >= 0;
             checkHibernateHelper.Checked = hibernateHelper >= 1;
@@ -697,7 +697,7 @@ namespace GHelper
 
         private void CheckHibernateHelper_CheckedChanged(object? sender, EventArgs e)
         {
-            Program.acpi.SetHibernateHelper(checkHibernateHelper.Checked);
+            HibernateHelper.Set(checkHibernateHelper.Checked);
         }
 
         private void InitHibernate()

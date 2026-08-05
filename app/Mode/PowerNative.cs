@@ -325,21 +325,14 @@ namespace GHelper.Mode
             return value.ToInt32();
         }
 
-        static byte ButtonActionCode(int action) => action switch { 0 => 1, 1 => 2, 2 => 3, 3 => 6, _ => 0xFF };
-
-        public static (byte, byte, ushort) GetHibernateHelperParams()
+        public static (int Lid, int PowerButton, int Sleep, int Monitor) GetSleepPolicy()
         {
             Guid scheme = GetActiveScheme();
 
-            int sleep = ReadDCValue(scheme, GUID_SLEEP_SUBGROUP, GUID_STANDBYIDLE) / 60;
-            int monitor = ReadDCValue(scheme, GUID_VIDEO_SUBGROUP, GUID_VIDEOIDLE) / 60;
-
-            ushort idle = (sleep == 0 || monitor == 0) ? (ushort)0xFFFF : (ushort)Math.Max(sleep - monitor, 0);
-            byte lid = ButtonActionCode(GetLidAction(false));
-            byte power = ButtonActionCode(ReadDCValue(scheme, GUID_SYSTEM_BUTTON_SUBGROUP, GUID_POWERBUTTONACTION));
-
-            Logger.WriteLine($"HibernateHelper: lid={lid}, power={power}, idle={idle}, sleep={sleep}, monitor={monitor}");
-            return (lid, power, idle);
+            return (ReadDCValue(scheme, GUID_SYSTEM_BUTTON_SUBGROUP, GUID_LIDACTION),
+                    ReadDCValue(scheme, GUID_SYSTEM_BUTTON_SUBGROUP, GUID_POWERBUTTONACTION),
+                    ReadDCValue(scheme, GUID_SLEEP_SUBGROUP, GUID_STANDBYIDLE) / 60,
+                    ReadDCValue(scheme, GUID_VIDEO_SUBGROUP, GUID_VIDEOIDLE) / 60);
         }
 
         public static int GetHibernateAfter()

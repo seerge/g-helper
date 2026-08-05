@@ -456,22 +456,6 @@ public class AsusACPI
         return CallMethod(DSTS, args);
     }
 
-    public int GetHibernateHelper()
-    {
-        return DeviceGet(HibernateHelper);
-    }
-
-    public int SetHibernateHelper(bool enabled)
-    {
-        if (DeviceGet(HibernateHelper) < 0) return -1;
-
-        var (lid, power, idle) = GHelper.Mode.PowerNative.GetHibernateHelperParams();
-        byte[] args = { lid, power, (byte)idle, (byte)(idle >> 8), (byte)(enabled ? 1 : 0) };
-
-        return DeviceSet(HibernateHelper, args, "HibernateHelper");
-    }
-
-
     public decimal? GetBatteryDischarge()
     {
         var buffer = DeviceGetBuffer(BatteryDischarge);
