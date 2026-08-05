@@ -43,6 +43,11 @@ namespace GHelper
             panelButtons = new Panel();
             buttonPicture = new UI.RButton();
             buttonReset = new UI.RButton();
+            panelPower = new Panel();
+            checkLidOff = new RCheckBox();
+            panelPowerSpacer = new Panel();
+            checkAutoOff = new RCheckBox();
+            panelSliders = new TableLayoutPanel();
             panelGamma = new Panel();
             labelGamma = new Label();
             labelGammaTitle = new Label();
@@ -95,6 +100,8 @@ namespace GHelper
             panelTextSettings.SuspendLayout();
             panelClockSettings.SuspendLayout();
             panelButtons.SuspendLayout();
+            panelPower.SuspendLayout();
+            panelSliders.SuspendLayout();
             panelGamma.SuspendLayout();
             panelContrast.SuspendLayout();
             panelRotation.SuspendLayout();
@@ -241,8 +248,7 @@ namespace GHelper
             // panelPictureSettings
             //
             panelPictureSettings.AutoSize = true;
-            panelPictureSettings.Controls.Add(panelGamma);
-            panelPictureSettings.Controls.Add(panelContrast);
+            panelPictureSettings.Controls.Add(panelSliders);
             panelPictureSettings.Controls.Add(panelRotation);
             panelPictureSettings.Controls.Add(panelScaling);
             panelPictureSettings.Controls.Add(panelZoom);
@@ -323,6 +329,56 @@ namespace GHelper
             buttonReset.TextAlign = ContentAlignment.MiddleRight;
             buttonReset.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonReset.UseVisualStyleBackColor = false;
+            //
+            // panelPower
+            //
+            panelPower.Controls.Add(checkLidOff);
+            panelPower.Controls.Add(panelPowerSpacer);
+            panelPower.Controls.Add(checkAutoOff);
+            panelPower.Dock = DockStyle.Bottom;
+            panelPower.Location = new Point(20, 1268);
+            panelPower.Name = "panelPower";
+            panelPower.Padding = new Padding(16, 5, 11, 5);
+            panelPower.Size = new Size(834, 58);
+            panelPower.TabIndex = 16;
+            //
+            // checkLidOff
+            //
+            checkLidOff.AutoSize = true;
+            checkLidOff.BackColor = SystemColors.ControlLight;
+            checkLidOff.Dock = DockStyle.Left;
+            checkLidOff.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            checkLidOff.Location = new Point(332, 5);
+            checkLidOff.Margin = new Padding(0);
+            checkLidOff.Name = "checkLidOff";
+            checkLidOff.Padding = new Padding(16, 6, 16, 6);
+            checkLidOff.Size = new Size(300, 48);
+            checkLidOff.TabIndex = 1;
+            checkLidOff.Text = "Disable on lid close";
+            checkLidOff.UseVisualStyleBackColor = false;
+            //
+            // panelPowerSpacer
+            //
+            panelPowerSpacer.Dock = DockStyle.Left;
+            panelPowerSpacer.Location = new Point(316, 5);
+            panelPowerSpacer.Name = "panelPowerSpacer";
+            panelPowerSpacer.Size = new Size(16, 48);
+            panelPowerSpacer.TabIndex = 2;
+            //
+            // checkAutoOff
+            //
+            checkAutoOff.AutoSize = true;
+            checkAutoOff.BackColor = SystemColors.ControlLight;
+            checkAutoOff.Dock = DockStyle.Left;
+            checkAutoOff.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            checkAutoOff.Location = new Point(16, 5);
+            checkAutoOff.Margin = new Padding(0);
+            checkAutoOff.Name = "checkAutoOff";
+            checkAutoOff.Padding = new Padding(16, 6, 16, 6);
+            checkAutoOff.Size = new Size(300, 48);
+            checkAutoOff.TabIndex = 0;
+            checkAutoOff.Text = "Disable on battery";
+            checkAutoOff.UseVisualStyleBackColor = false;
             //
             // panelText
             //
@@ -550,23 +606,38 @@ namespace GHelper
             labelAudioMode.TabIndex = 4;
             labelAudioMode.Text = "Visualizer Mode";
             //
+            // panelSliders
+            //
+            panelSliders.ColumnCount = 2;
+            panelSliders.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            panelSliders.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            panelSliders.Controls.Add(panelContrast, 0, 0);
+            panelSliders.Controls.Add(panelGamma, 1, 0);
+            panelSliders.Dock = DockStyle.Top;
+            panelSliders.Location = new Point(0, 301);
+            panelSliders.Name = "panelSliders";
+            panelSliders.RowCount = 1;
+            panelSliders.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            panelSliders.Size = new Size(834, 145);
+            panelSliders.TabIndex = 9;
+            //
             // panelGamma
             //
-            panelGamma.AutoSize = true;
             panelGamma.Controls.Add(labelGamma);
             panelGamma.Controls.Add(labelGammaTitle);
             panelGamma.Controls.Add(trackGamma);
-            panelGamma.Dock = DockStyle.Top;
-            panelGamma.Location = new Point(0, 446);
+            panelGamma.Dock = DockStyle.Fill;
+            panelGamma.Location = new Point(417, 0);
+            panelGamma.Margin = new Padding(0);
             panelGamma.Name = "panelGamma";
-            panelGamma.Size = new Size(834, 145);
+            panelGamma.Size = new Size(417, 145);
             panelGamma.TabIndex = 7;
             //
             // labelGamma
             //
             labelGamma.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             labelGamma.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            labelGamma.Location = new Point(673, 17);
+            labelGamma.Location = new Point(276, 17);
             labelGamma.Name = "labelGamma";
             labelGamma.Size = new Size(125, 32);
             labelGamma.TabIndex = 4;
@@ -585,12 +656,13 @@ namespace GHelper
             //
             // trackGamma
             //
+            trackGamma.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             trackGamma.LargeChange = 50;
             trackGamma.Location = new Point(16, 52);
             trackGamma.Maximum = 100;
             trackGamma.Minimum = -100;
             trackGamma.Name = "trackGamma";
-            trackGamma.Size = new Size(782, 90);
+            trackGamma.Size = new Size(385, 90);
             trackGamma.SmallChange = 10;
             trackGamma.TabIndex = 2;
             trackGamma.TickFrequency = 20;
@@ -598,21 +670,21 @@ namespace GHelper
             //
             // panelContrast
             //
-            panelContrast.AutoSize = true;
             panelContrast.Controls.Add(labelContrast);
             panelContrast.Controls.Add(labelContrastTitle);
             panelContrast.Controls.Add(trackContrast);
-            panelContrast.Dock = DockStyle.Top;
-            panelContrast.Location = new Point(0, 301);
+            panelContrast.Dock = DockStyle.Fill;
+            panelContrast.Location = new Point(0, 0);
+            panelContrast.Margin = new Padding(0);
             panelContrast.Name = "panelContrast";
-            panelContrast.Size = new Size(834, 145);
+            panelContrast.Size = new Size(417, 145);
             panelContrast.TabIndex = 6;
             //
             // labelContrast
             //
             labelContrast.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             labelContrast.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            labelContrast.Location = new Point(701, 17);
+            labelContrast.Location = new Point(298, 17);
             labelContrast.Name = "labelContrast";
             labelContrast.Size = new Size(103, 32);
             labelContrast.TabIndex = 4;
@@ -631,12 +703,13 @@ namespace GHelper
             //
             // trackContrast
             //
+            trackContrast.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             trackContrast.LargeChange = 50;
             trackContrast.Location = new Point(16, 52);
             trackContrast.Maximum = 200;
             trackContrast.Minimum = 10;
             trackContrast.Name = "trackContrast";
-            trackContrast.Size = new Size(782, 90);
+            trackContrast.Size = new Size(385, 90);
             trackContrast.SmallChange = 10;
             trackContrast.TabIndex = 2;
             trackContrast.TickFrequency = 20;
@@ -744,6 +817,7 @@ namespace GHelper
             //
             // trackZoom
             //
+            trackZoom.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             trackZoom.LargeChange = 50;
             trackZoom.Location = new Point(16, 52);
             trackZoom.Maximum = 200;
@@ -763,6 +837,7 @@ namespace GHelper
             AutoSize = true;
             ClientSize = new Size(874, 1340);
             Controls.Add(panelMain);
+            Controls.Add(panelPower);
             MaximizeBox = false;
             MinimizeBox = false;
             MinimumSize = new Size(900, 0);
@@ -788,6 +863,9 @@ namespace GHelper
             panelClockSettings.ResumeLayout(false);
             panelClockSettings.PerformLayout();
             panelButtons.ResumeLayout(false);
+            panelPower.ResumeLayout(false);
+            panelPower.PerformLayout();
+            panelSliders.ResumeLayout(false);
             panelGamma.ResumeLayout(false);
             panelGamma.PerformLayout();
             panelContrast.ResumeLayout(false);
@@ -836,6 +914,11 @@ namespace GHelper
         private Panel panelButtons;
         private UI.RButton buttonPicture;
         private UI.RButton buttonReset;
+        private Panel panelPower;
+        private RCheckBox checkAutoOff;
+        private RCheckBox checkLidOff;
+        private Panel panelPowerSpacer;
+        private TableLayoutPanel panelSliders;
         private Panel panelScaling;
         private Label labelScaling;
         private UI.RComboBox comboScaling;

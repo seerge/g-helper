@@ -57,6 +57,8 @@ namespace GHelper
             buttonReset.Text = Properties.Strings.Reset;
             checkTextRunning.Text = Properties.Strings.MatrixRunningText;
             checkClockBattery.Text = Properties.Strings.SlashBatteryLevel;
+            checkAutoOff.Text = Properties.Strings.TurnOffOnBattery;
+            checkLidOff.Text = Properties.Strings.DisableOnLidClose;
 
             buttonPictureMode.Text = Properties.Strings.MatrixPicture;
             buttonClockMode.Text = Properties.Strings.MatrixClock;
@@ -136,6 +138,12 @@ namespace GHelper
             checkClockBattery.CheckedChanged += CheckClockBattery_CheckedChanged;
             textClockDate.Enabled = !checkClockBattery.Checked;
 
+            checkAutoOff.Checked = AppConfig.Is("matrix_auto");
+            checkAutoOff.CheckedChanged += CheckAutoOff_CheckedChanged;
+
+            checkLidOff.Checked = AppConfig.Is("matrix_lid");
+            checkLidOff.CheckedChanged += CheckLidOff_CheckedChanged;
+
             int columns = matrixControl.deviceMatrix.MaxColumns + 1;
             int rows = matrixControl.deviceMatrix.MaxRows + 1;
 
@@ -183,7 +191,7 @@ namespace GHelper
             buttonReset.Left = pic ? resetLeft : buttonPicture.Left;
 
             panelMain.PerformLayout();
-            ClientSize = new Size(ClientSize.Width, panelMain.Height + Padding.Vertical);
+            ClientSize = new Size(ClientSize.Width, panelMain.Height + panelPower.Height + Padding.Vertical);
             FormPosition();
 
             VisualisePicture();
@@ -501,6 +509,18 @@ namespace GHelper
 
             if (AniMatrixControl.Mode != MatrixMode.Text) SetRunningMode(MatrixMode.Text);
             else matrixControl.SetMatrixText();
+        }
+
+        private void CheckAutoOff_CheckedChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("matrix_auto", checkAutoOff.Checked ? 1 : 0);
+            matrixControl.SetBatteryAuto();
+        }
+
+        private void CheckLidOff_CheckedChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("matrix_lid", checkLidOff.Checked ? 1 : 0);
+            matrixControl.SetLidMode(true);
         }
 
         private void CheckClockBattery_CheckedChanged(object? sender, EventArgs e)
