@@ -1018,4 +1018,11 @@
   <data name="Always" xml:space="preserve">
     <value>始终</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>在新式待机时禁用网络</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>防止 Windows Update 等后台任务
+使睡眠中的笔记本发热并消耗电池。</value>
+  </data>
 </root>

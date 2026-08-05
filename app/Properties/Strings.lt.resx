@@ -1018,4 +1018,11 @@ Rekomenduojama, jei pastebėjote atsitiktinius užstrigimus ar nereaguojančią 
   <data name="Always" xml:space="preserve">
     <value>Visada</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Išjungti tinklą Modern Standby režimu</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Neleidžia fono užduotims, tokioms kaip „Windows Update“,
+kaitinti miegančio kompiuterio ir eikvoti akumuliatoriaus.</value>
+  </data>
 </root>

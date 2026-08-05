@@ -982,6 +982,13 @@ and restarts them automatically when the GPU is enabled</value>
     <value>Prevents PCIe devices from entering low-power idle states.
 Recommended if you experience random hangs or unresponsive hardware.</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Disable networking in Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Stops background tasks like Windows Update
+from heating up the sleeping laptop and draining the battery.</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>

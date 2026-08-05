@@ -853,6 +853,24 @@ namespace GHelper.Properties {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Disable networking in Modern Standby.
+        /// </summary>
+        internal static string DisableStandbyNetworking {
+            get {
+                return ResourceManager.GetString("DisableStandbyNetworking", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Stops background tasks like Windows Update.
+        /// </summary>
+        internal static string DisableStandbyNetworkingTooltip {
+            get {
+                return ResourceManager.GetString("DisableStandbyNetworkingTooltip", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Stops NVIDIA services when the discrete GPU is disabled.
         /// </summary>
         internal static string NVPlatformTooltip {

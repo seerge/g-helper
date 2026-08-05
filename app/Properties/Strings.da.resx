@@ -1018,4 +1018,11 @@ Anbefales, hvis du oplever tilfældige hængninger eller hardware, der ikke reag
   <data name="Always" xml:space="preserve">
     <value>Altid</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Deaktiver netværk i Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Forhindrer baggrundsopgaver som Windows Update
+i at opvarme den sovende bærbare og dræne batteriet.</value>
+  </data>
 </root>

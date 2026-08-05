@@ -1018,4 +1018,11 @@ Empfohlen, wenn zufällige Hänger oder nicht reagierende Hardware auftreten.</v
   <data name="Always" xml:space="preserve">
     <value>Immer</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Netzwerk im Modern Standby deaktivieren</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Verhindert, dass Hintergrundaufgaben wie Windows Update
+den schlafenden Laptop aufheizen und den Akku entladen.</value>
+  </data>
 </root>

@@ -1018,4 +1018,11 @@ GPU が有効化されたときに自動的に再起動します</value>
   <data name="Always" xml:space="preserve">
     <value>常時</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>モダンスタンバイ中のネットワークを無効化</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Windows Update などのバックグラウンドタスクによる
+スリープ中の発熱やバッテリー消耗を防ぎます。</value>
+  </data>
 </root>

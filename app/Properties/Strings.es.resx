@@ -1018,4 +1018,11 @@ Recomendado si experimenta cuelgues aleatorios o hardware que no responde.</valu
   <data name="Always" xml:space="preserve">
     <value>Siempre</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Desactivar la red en Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Evita que tareas en segundo plano como Windows Update
+calienten el portátil dormido y agoten la batería.</value>
+  </data>
 </root>

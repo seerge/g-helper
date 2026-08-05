@@ -1018,4 +1018,11 @@ Rastgele takılmalar veya yanıt vermeyen donanım yaşıyorsanız önerilir.</v
   <data name="Always" xml:space="preserve">
     <value>Her zaman</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Modern Standby sırasında ağı devre dışı bırak</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Windows Update gibi arka plan görevlerinin uyuyan
+dizüstünü ısıtmasını ve pili tüketmesini engeller.</value>
+  </data>
 </root>

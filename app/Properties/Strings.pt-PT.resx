@@ -1018,4 +1018,11 @@ Recomendado se ocorrerem bloqueios aleatórios ou hardware que não responde.</v
   <data name="Always" xml:space="preserve">
     <value>Sempre</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Desativar rede no Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Impede que tarefas em segundo plano como o Windows Update
+aqueçam o portátil adormecido e esgotem a bateria.</value>
+  </data>
 </root>
