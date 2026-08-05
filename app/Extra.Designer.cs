@@ -856,52 +856,53 @@ namespace GHelper
             // tableBacklight
             // 
             tableBacklight.AutoSize = true;
-            tableBacklight.ColumnCount = 4;
-            tableBacklight.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tableBacklight.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tableBacklight.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tableBacklight.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tableBacklight.ColumnCount = 6;
+            tableBacklight.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+            tableBacklight.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+            tableBacklight.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+            tableBacklight.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+            tableBacklight.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+            tableBacklight.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
             tableBacklight.Controls.Add(labelBacklightKeyboard, 0, 0);
-            tableBacklight.Controls.Add(checkAwake, 0, 1);
-            tableBacklight.Controls.Add(checkBoot, 0, 2);
-            tableBacklight.Controls.Add(checkSleep, 0, 3);
-            tableBacklight.Controls.Add(checkShutdown, 0, 4);
-            tableBacklight.Controls.Add(checkBattery, 0, 5);
-            tableBacklight.Controls.Add(labelBacklightLogo, 1, 0);
+            tableBacklight.Controls.Add(checkAwake, 1, 0);
+            tableBacklight.Controls.Add(checkSleep, 2, 0);
+            tableBacklight.Controls.Add(checkBoot, 3, 0);
+            tableBacklight.Controls.Add(checkShutdown, 4, 0);
+            tableBacklight.Controls.Add(checkBattery, 5, 0);
+            tableBacklight.Controls.Add(labelBacklightLogo, 0, 1);
             tableBacklight.Controls.Add(checkAwakeLogo, 1, 1);
-            tableBacklight.Controls.Add(checkBootLogo, 1, 2);
-            tableBacklight.Controls.Add(checkSleepLogo, 1, 3);
-            tableBacklight.Controls.Add(checkShutdownLogo, 1, 4);
-            tableBacklight.Controls.Add(checkBatteryLogo, 1, 5);
-            tableBacklight.Controls.Add(labelBacklightBar, 2, 0);
-            tableBacklight.Controls.Add(checkAwakeBar, 2, 1);
-            tableBacklight.Controls.Add(checkBootBar, 2, 2);
-            tableBacklight.Controls.Add(checkSleepBar, 2, 3);
-            tableBacklight.Controls.Add(checkShutdownBar, 2, 4);
-            tableBacklight.Controls.Add(checkBatteryBar, 2, 5);
-            tableBacklight.Controls.Add(labelBacklightLid, 3, 0);
-            tableBacklight.Controls.Add(checkAwakeLid, 3, 1);
-            tableBacklight.Controls.Add(checkBootLid, 3, 2);
-            tableBacklight.Controls.Add(checkSleepLid, 3, 3);
-            tableBacklight.Controls.Add(checkShutdownLid, 3, 4);
-            tableBacklight.Controls.Add(checkBatteryLid, 3, 5);
+            tableBacklight.Controls.Add(checkSleepLogo, 2, 1);
+            tableBacklight.Controls.Add(checkBootLogo, 3, 1);
+            tableBacklight.Controls.Add(checkShutdownLogo, 4, 1);
+            tableBacklight.Controls.Add(checkBatteryLogo, 5, 1);
+            tableBacklight.Controls.Add(labelBacklightBar, 0, 2);
+            tableBacklight.Controls.Add(checkAwakeBar, 1, 2);
+            tableBacklight.Controls.Add(checkSleepBar, 2, 2);
+            tableBacklight.Controls.Add(checkBootBar, 3, 2);
+            tableBacklight.Controls.Add(checkShutdownBar, 4, 2);
+            tableBacklight.Controls.Add(checkBatteryBar, 5, 2);
+            tableBacklight.Controls.Add(labelBacklightLid, 0, 3);
+            tableBacklight.Controls.Add(checkAwakeLid, 1, 3);
+            tableBacklight.Controls.Add(checkSleepLid, 2, 3);
+            tableBacklight.Controls.Add(checkBootLid, 3, 3);
+            tableBacklight.Controls.Add(checkShutdownLid, 4, 3);
+            tableBacklight.Controls.Add(checkBatteryLid, 5, 3);
             tableBacklight.Dock = DockStyle.Top;
             tableBacklight.Location = new Point(0, 5);
             tableBacklight.Margin = new Padding(0);
             tableBacklight.Name = "tableBacklight";
-            tableBacklight.RowCount = 6;
+            tableBacklight.RowCount = 4;
             tableBacklight.RowStyles.Add(new RowStyle());
             tableBacklight.RowStyles.Add(new RowStyle());
             tableBacklight.RowStyles.Add(new RowStyle());
             tableBacklight.RowStyles.Add(new RowStyle());
-            tableBacklight.RowStyles.Add(new RowStyle());
-            tableBacklight.RowStyles.Add(new RowStyle());
-            tableBacklight.Size = new Size(949, 260);
+            tableBacklight.Size = new Size(949, 172);
             tableBacklight.TabIndex = 44;
             // 
             // labelBacklightKeyboard
             // 
-            labelBacklightKeyboard.Dock = DockStyle.Fill;
+            labelBacklightKeyboard.Anchor = AnchorStyles.Left;
+            labelBacklightKeyboard.AutoSize = true;
             labelBacklightKeyboard.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             labelBacklightKeyboard.Location = new Point(5, 0);
             labelBacklightKeyboard.Margin = new Padding(5, 0, 5, 0);
@@ -913,7 +914,7 @@ namespace GHelper
             // 
             // checkAwake
             // 
-            checkAwake.Dock = DockStyle.Fill;
+            checkAwake.AutoSize = true;
             checkAwake.Location = new Point(5, 45);
             checkAwake.Margin = new Padding(5, 0, 5, 0);
             checkAwake.Name = "checkAwake";
@@ -925,7 +926,7 @@ namespace GHelper
             // 
             // checkBoot
             // 
-            checkBoot.Dock = DockStyle.Fill;
+            checkBoot.AutoSize = true;
             checkBoot.Location = new Point(5, 88);
             checkBoot.Margin = new Padding(5, 0, 5, 0);
             checkBoot.Name = "checkBoot";
@@ -937,7 +938,7 @@ namespace GHelper
             // 
             // checkSleep
             // 
-            checkSleep.Dock = DockStyle.Fill;
+            checkSleep.AutoSize = true;
             checkSleep.Location = new Point(5, 131);
             checkSleep.Margin = new Padding(5, 0, 5, 0);
             checkSleep.Name = "checkSleep";
@@ -949,7 +950,7 @@ namespace GHelper
             // 
             // checkShutdown
             // 
-            checkShutdown.Dock = DockStyle.Fill;
+            checkShutdown.AutoSize = true;
             checkShutdown.Location = new Point(5, 174);
             checkShutdown.Margin = new Padding(5, 0, 5, 0);
             checkShutdown.Name = "checkShutdown";
@@ -961,8 +962,8 @@ namespace GHelper
             // 
             // checkBattery
             // 
-            checkBattery.Dock = DockStyle.Fill;
-            checkBattery.Location = new Point(5, 217);
+            checkBattery.AutoSize = true;
+            checkBattery.Location = new Point(5, 174);
             checkBattery.Margin = new Padding(5, 0, 5, 0);
             checkBattery.Name = "checkBattery";
             checkBattery.Padding = new Padding(16, 3, 7, 3);
@@ -973,7 +974,8 @@ namespace GHelper
             // 
             // labelBacklightLogo
             // 
-            labelBacklightLogo.Dock = DockStyle.Fill;
+            labelBacklightLogo.Anchor = AnchorStyles.Left;
+            labelBacklightLogo.AutoSize = true;
             labelBacklightLogo.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             labelBacklightLogo.Location = new Point(242, 0);
             labelBacklightLogo.Margin = new Padding(5, 0, 5, 0);
@@ -985,7 +987,7 @@ namespace GHelper
             // 
             // checkAwakeLogo
             // 
-            checkAwakeLogo.Dock = DockStyle.Fill;
+            checkAwakeLogo.AutoSize = true;
             checkAwakeLogo.Location = new Point(242, 45);
             checkAwakeLogo.Margin = new Padding(5, 0, 5, 0);
             checkAwakeLogo.Name = "checkAwakeLogo";
@@ -997,7 +999,7 @@ namespace GHelper
             // 
             // checkBootLogo
             // 
-            checkBootLogo.Dock = DockStyle.Fill;
+            checkBootLogo.AutoSize = true;
             checkBootLogo.Location = new Point(242, 88);
             checkBootLogo.Margin = new Padding(5, 0, 5, 0);
             checkBootLogo.Name = "checkBootLogo";
@@ -1009,7 +1011,7 @@ namespace GHelper
             // 
             // checkSleepLogo
             // 
-            checkSleepLogo.Dock = DockStyle.Fill;
+            checkSleepLogo.AutoSize = true;
             checkSleepLogo.Location = new Point(242, 131);
             checkSleepLogo.Margin = new Padding(5, 0, 5, 0);
             checkSleepLogo.Name = "checkSleepLogo";
@@ -1021,7 +1023,7 @@ namespace GHelper
             // 
             // checkShutdownLogo
             // 
-            checkShutdownLogo.Dock = DockStyle.Fill;
+            checkShutdownLogo.AutoSize = true;
             checkShutdownLogo.Location = new Point(242, 174);
             checkShutdownLogo.Margin = new Padding(5, 0, 5, 0);
             checkShutdownLogo.Name = "checkShutdownLogo";
@@ -1033,8 +1035,8 @@ namespace GHelper
             // 
             // checkBatteryLogo
             // 
-            checkBatteryLogo.Dock = DockStyle.Fill;
-            checkBatteryLogo.Location = new Point(242, 217);
+            checkBatteryLogo.AutoSize = true;
+            checkBatteryLogo.Location = new Point(242, 174);
             checkBatteryLogo.Margin = new Padding(5, 0, 5, 0);
             checkBatteryLogo.Name = "checkBatteryLogo";
             checkBatteryLogo.Padding = new Padding(16, 3, 7, 3);
@@ -1045,7 +1047,8 @@ namespace GHelper
             // 
             // labelBacklightBar
             // 
-            labelBacklightBar.Dock = DockStyle.Fill;
+            labelBacklightBar.Anchor = AnchorStyles.Left;
+            labelBacklightBar.AutoSize = true;
             labelBacklightBar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             labelBacklightBar.Location = new Point(479, 0);
             labelBacklightBar.Margin = new Padding(5, 0, 5, 0);
@@ -1057,7 +1060,7 @@ namespace GHelper
             // 
             // checkAwakeBar
             // 
-            checkAwakeBar.Dock = DockStyle.Fill;
+            checkAwakeBar.AutoSize = true;
             checkAwakeBar.Location = new Point(479, 45);
             checkAwakeBar.Margin = new Padding(5, 0, 5, 0);
             checkAwakeBar.Name = "checkAwakeBar";
@@ -1069,7 +1072,7 @@ namespace GHelper
             // 
             // checkBootBar
             // 
-            checkBootBar.Dock = DockStyle.Fill;
+            checkBootBar.AutoSize = true;
             checkBootBar.Location = new Point(479, 88);
             checkBootBar.Margin = new Padding(5, 0, 5, 0);
             checkBootBar.Name = "checkBootBar";
@@ -1081,7 +1084,7 @@ namespace GHelper
             // 
             // checkSleepBar
             // 
-            checkSleepBar.Dock = DockStyle.Fill;
+            checkSleepBar.AutoSize = true;
             checkSleepBar.Location = new Point(479, 131);
             checkSleepBar.Margin = new Padding(5, 0, 5, 0);
             checkSleepBar.Name = "checkSleepBar";
@@ -1093,7 +1096,7 @@ namespace GHelper
             // 
             // checkShutdownBar
             // 
-            checkShutdownBar.Dock = DockStyle.Fill;
+            checkShutdownBar.AutoSize = true;
             checkShutdownBar.Location = new Point(479, 174);
             checkShutdownBar.Margin = new Padding(5, 0, 5, 0);
             checkShutdownBar.Name = "checkShutdownBar";
@@ -1105,8 +1108,8 @@ namespace GHelper
             // 
             // checkBatteryBar
             // 
-            checkBatteryBar.Dock = DockStyle.Fill;
-            checkBatteryBar.Location = new Point(479, 217);
+            checkBatteryBar.AutoSize = true;
+            checkBatteryBar.Location = new Point(479, 174);
             checkBatteryBar.Margin = new Padding(5, 0, 5, 0);
             checkBatteryBar.Name = "checkBatteryBar";
             checkBatteryBar.Padding = new Padding(16, 3, 7, 3);
@@ -1117,7 +1120,8 @@ namespace GHelper
             // 
             // labelBacklightLid
             // 
-            labelBacklightLid.Dock = DockStyle.Fill;
+            labelBacklightLid.Anchor = AnchorStyles.Left;
+            labelBacklightLid.AutoSize = true;
             labelBacklightLid.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             labelBacklightLid.Location = new Point(716, 0);
             labelBacklightLid.Margin = new Padding(5, 0, 5, 0);
@@ -1129,7 +1133,7 @@ namespace GHelper
             // 
             // checkAwakeLid
             // 
-            checkAwakeLid.Dock = DockStyle.Fill;
+            checkAwakeLid.AutoSize = true;
             checkAwakeLid.Location = new Point(716, 45);
             checkAwakeLid.Margin = new Padding(5, 0, 5, 0);
             checkAwakeLid.Name = "checkAwakeLid";
@@ -1141,7 +1145,7 @@ namespace GHelper
             // 
             // checkBootLid
             // 
-            checkBootLid.Dock = DockStyle.Fill;
+            checkBootLid.AutoSize = true;
             checkBootLid.Location = new Point(716, 88);
             checkBootLid.Margin = new Padding(5, 0, 5, 0);
             checkBootLid.Name = "checkBootLid";
@@ -1153,7 +1157,7 @@ namespace GHelper
             // 
             // checkSleepLid
             // 
-            checkSleepLid.Dock = DockStyle.Fill;
+            checkSleepLid.AutoSize = true;
             checkSleepLid.Location = new Point(716, 131);
             checkSleepLid.Margin = new Padding(5, 0, 5, 0);
             checkSleepLid.Name = "checkSleepLid";
@@ -1165,7 +1169,7 @@ namespace GHelper
             // 
             // checkShutdownLid
             // 
-            checkShutdownLid.Dock = DockStyle.Fill;
+            checkShutdownLid.AutoSize = true;
             checkShutdownLid.Location = new Point(716, 174);
             checkShutdownLid.Margin = new Padding(5, 0, 5, 0);
             checkShutdownLid.Name = "checkShutdownLid";
@@ -1177,8 +1181,8 @@ namespace GHelper
             // 
             // checkBatteryLid
             // 
-            checkBatteryLid.Dock = DockStyle.Fill;
-            checkBatteryLid.Location = new Point(716, 217);
+            checkBatteryLid.AutoSize = true;
+            checkBatteryLid.Location = new Point(716, 174);
             checkBatteryLid.Margin = new Padding(5, 0, 5, 0);
             checkBatteryLid.Name = "checkBatteryLid";
             checkBatteryLid.Padding = new Padding(16, 3, 7, 3);
@@ -1865,22 +1869,18 @@ namespace GHelper
         private CheckBox checkAwake;
         private CheckBox checkBoot;
         private CheckBox checkSleep;
-        private CheckBox checkShutdown;
         private Label labelBacklightLogo;
         private CheckBox checkAwakeLogo;
         private CheckBox checkBootLogo;
         private CheckBox checkSleepLogo;
-        private CheckBox checkShutdownLogo;
         private Label labelBacklightBar;
         private CheckBox checkAwakeBar;
         private CheckBox checkBootBar;
         private CheckBox checkSleepBar;
-        private CheckBox checkShutdownBar;
         private Label labelBacklightLid;
         private CheckBox checkAwakeLid;
         private CheckBox checkBootLid;
         private CheckBox checkSleepLid;
-        private CheckBox checkShutdownLid;
         private Panel panelSettingsHeader;
         private PictureBox pictureSettings;
         private Label labelSettings;
@@ -1926,6 +1926,10 @@ namespace GHelper
         private CheckBox checkNumberPad;
         private CheckBox checkAspm;
         private CheckBox checkStandbyNetworking;
+        private CheckBox checkShutdown;
+        private CheckBox checkShutdownLogo;
+        private CheckBox checkShutdownBar;
+        private CheckBox checkShutdownLid;
         private CheckBox checkBatteryLogo;
         private CheckBox checkBattery;
         private CheckBox checkBatteryLid;
