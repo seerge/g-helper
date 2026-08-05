@@ -1,4 +1,4 @@
-﻿using GHelper.Ally;
+using GHelper.Ally;
 using GHelper.AnimeMatrix;
 using GHelper.AutoUpdate;
 using GHelper.Battery;
@@ -26,7 +26,7 @@ namespace GHelper
 
         public GPUModeControl gpuControl;
         public AllyControl allyControl;
-        AutoUpdateControl updateControl;
+        internal AutoUpdateControl updateControl;
 
         AsusMouseSettings? mouseSettings;
 
@@ -205,6 +205,9 @@ namespace GHelper
 
             labelVersion.Click += LabelVersion_Click;
             labelVersion.ForeColor = Color.FromArgb(128, Color.Gray);
+
+            linkLabelProxy.LinkClicked += LinkLabelProxy_LinkClicked;
+            UpdateProxyLabel();
 
             buttonOptimized.MouseMove += ButtonOptimized_MouseHover;
             buttonOptimized.MouseLeave += ButtonGPU_MouseLeave;
@@ -959,6 +962,22 @@ namespace GHelper
         private void LabelVersion_Click(object? sender, EventArgs e)
         {
             updateControl.Update();
+        }
+
+
+        private void LinkLabelProxy_LinkClicked(object? sender, LinkLabelLinkClickedEventArgs e)
+        {
+            using var form = new ProxySettingsForm(this);
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                UpdateProxyLabel();
+            }
+        }
+
+        public void UpdateProxyLabel()
+        {
+            string proxyText = ProxyHelper.IsConfigured() ? $"代理: {ProxyHelper.GetDisplayText()}" : "代理设置";
+            linkLabelProxy.Text = proxyText;
         }
 
 
