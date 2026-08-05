@@ -583,7 +583,6 @@ namespace GHelper
             if (AppConfig.Is8Ecores()) eCoresMax = Math.Max(8, eCoresMax);
 
             eCoresMax = Math.Max(4, eCoresMax);
-            pCoresMax = Math.Max(4, pCoresMax);
 
             (int eMin, int pMin) = Program.acpi.GetCores(AsusACPI.CORES_MIN);
             if (pMin >= 1)
