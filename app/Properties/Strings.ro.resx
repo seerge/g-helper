@@ -555,7 +555,7 @@
     <value>Left Trigger Deadzones</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
-    <value>Audio</value>
+    <value>Vizualizator audio</value>
   </data>
   <data name="MatrixAudioMode" xml:space="preserve">
     <value>Visualizer Mode</value>
