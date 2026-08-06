@@ -337,8 +337,7 @@ namespace GHelper.Gpu
                         await Task.Delay(TimeSpan.FromSeconds(5));
                     }
 
-                    if (AppConfig.IsApplyFans())
-                        XGM.SetFan(AppConfig.GetFanConfig(AsusFan.XGM));
+                    Program.modeControl.AutoPerformance();
 
                 }
 
