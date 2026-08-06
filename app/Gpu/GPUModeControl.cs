@@ -330,10 +330,15 @@ namespace GHelper.Gpu
 
                     await Task.Delay(TimeSpan.FromSeconds(15));
 
+                    for (int i = 0; i < 6; i++)
+                    {
+                        HardwareControl.RecreateGpuControl();
+                        if (HardwareControl.GpuControl is not null) break;
+                        await Task.Delay(TimeSpan.FromSeconds(5));
+                    }
+
                     if (AppConfig.IsApplyFans())
                         XGM.SetFan(AppConfig.GetFanConfig(AsusFan.XGM));
-
-                    HardwareControl.RecreateGpuControl();
 
                 }
 
