@@ -982,6 +982,13 @@ e li riavvia automaticamente quando la GPU viene attivata</value>
     <value>Impedisce ai dispositivi PCIe di entrare in stati di inattività a basso consumo.
 Consigliato in caso di blocchi casuali o hardware non rispondente.</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Disattiva la rete in Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Impedisce alle attività in background come Windows Update
+di riscaldare il laptop in sospensione e scaricare la batteria.</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
@@ -1017,12 +1024,5 @@ Consigliato in caso di blocchi casuali o hardware non rispondente.</value>
   </data>
   <data name="Always" xml:space="preserve">
     <value>Sempre</value>
-  </data>
-  <data name="DisableStandbyNetworking" xml:space="preserve">
-    <value>Disattiva la rete in Modern Standby</value>
-  </data>
-  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
-    <value>Impedisce alle attività in background come Windows Update
-di riscaldare il laptop in sospensione e scaricare la batteria.</value>
   </data>
 </root>

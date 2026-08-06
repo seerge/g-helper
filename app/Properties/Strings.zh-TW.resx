@@ -982,6 +982,13 @@
     <value>防止 PCIe 裝置進入低功耗閒置狀態。
 若遇隨機當機或硬體無回應，建議啟用。</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>在新式待命時停用網路</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>防止 Windows Update 等背景工作
+使睡眠中的筆電發熱並消耗電池。</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
     <value>效能監控(OSD)</value>
   </data>
@@ -1017,12 +1024,5 @@
   </data>
   <data name="Always" xml:space="preserve">
     <value>一律</value>
-  </data>
-  <data name="DisableStandbyNetworking" xml:space="preserve">
-    <value>在新式待命時停用網路</value>
-  </data>
-  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
-    <value>防止 Windows Update 等背景工作
-使睡眠中的筆電發熱並消耗電池。</value>
   </data>
 </root>

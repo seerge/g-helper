@@ -982,6 +982,13 @@ dan menjalankannya kembali secara otomatis saat GPU diaktifkan</value>
     <value>Mencegah perangkat PCIe memasuki status idle hemat daya.
 Direkomendasikan jika Anda mengalami hang acak atau perangkat keras tidak responsif.</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Nonaktifkan jaringan saat Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Mencegah tugas latar belakang seperti Windows Update
+memanaskan laptop yang tertidur dan menguras baterai.</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
@@ -1017,12 +1024,5 @@ Direkomendasikan jika Anda mengalami hang acak atau perangkat keras tidak respon
   </data>
   <data name="Always" xml:space="preserve">
     <value>Selalu</value>
-  </data>
-  <data name="DisableStandbyNetworking" xml:space="preserve">
-    <value>Nonaktifkan jaringan saat Modern Standby</value>
-  </data>
-  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
-    <value>Mencegah tugas latar belakang seperti Windows Update
-memanaskan laptop yang tertidur dan menguras baterai.</value>
   </data>
 </root>

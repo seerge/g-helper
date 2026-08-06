@@ -982,6 +982,13 @@
     <value>Împiedică dispozitivele PCIe să intre în stări inactive cu consum redus.
 Recomandat dacă întâmpinați blocaje aleatorii sau hardware care nu răspunde.</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Dezactivează rețeaua în Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Împiedică sarcinile din fundal, precum Windows Update,
+să încălzească laptopul adormit și să descarce bateria.</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
@@ -1017,12 +1024,5 @@ Recomandat dacă întâmpinați blocaje aleatorii sau hardware care nu răspunde
   </data>
   <data name="Always" xml:space="preserve">
     <value>Întotdeauna</value>
-  </data>
-  <data name="DisableStandbyNetworking" xml:space="preserve">
-    <value>Dezactivează rețeaua în Modern Standby</value>
-  </data>
-  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
-    <value>Împiedică sarcinile din fundal, precum Windows Update,
-să încălzească laptopul adormit și să descarce bateria.</value>
   </data>
 </root>

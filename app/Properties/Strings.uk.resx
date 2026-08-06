@@ -982,6 +982,13 @@
     <value>Не дозволяє пристроям PCIe переходити в режими низького енергоспоживання.
 Рекомендується, якщо ви стикаєтеся з випадковими зависаннями або відсутністю реакції апаратного забезпечення.</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Вимкнути мережу в режимі Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Не дозволяє фоновим завданням, як-от Windows Update,
+нагрівати сплячий ноутбук і розряджати акумулятор.</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
@@ -1017,12 +1024,5 @@
   </data>
   <data name="Always" xml:space="preserve">
     <value>Завжди</value>
-  </data>
-  <data name="DisableStandbyNetworking" xml:space="preserve">
-    <value>Вимкнути мережу в режимі Modern Standby</value>
-  </data>
-  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
-    <value>Не дозволяє фоновим завданням, як-от Windows Update,
-нагрівати сплячий ноутбук і розряджати акумулятор.</value>
   </data>
 </root>

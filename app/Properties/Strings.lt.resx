@@ -982,6 +982,13 @@ ir automatiškai jas paleidžia, kai GPU yra įjungtas</value>
     <value>Neleidžia PCIe įrenginiams pereiti į mažo energijos suvartojimo budėjimo būsenas.
 Rekomenduojama, jei pastebėjote atsitiktinius užstrigimus ar nereaguojančią aparatinę įrangą.</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Išjungti tinklą Modern Standby režimu</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Neleidžia fono užduotims, tokioms kaip „Windows Update“,
+kaitinti miegančio kompiuterio ir eikvoti akumuliatoriaus.</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
@@ -1017,12 +1024,5 @@ Rekomenduojama, jei pastebėjote atsitiktinius užstrigimus ar nereaguojančią 
   </data>
   <data name="Always" xml:space="preserve">
     <value>Visada</value>
-  </data>
-  <data name="DisableStandbyNetworking" xml:space="preserve">
-    <value>Išjungti tinklą Modern Standby režimu</value>
-  </data>
-  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
-    <value>Neleidžia fono užduotims, tokioms kaip „Windows Update“,
-kaitinti miegančio kompiuterio ir eikvoti akumuliatoriaus.</value>
   </data>
 </root>

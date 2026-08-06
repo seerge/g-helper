@@ -982,6 +982,13 @@
     <value>يمنع أجهزة PCIe من الدخول في حالات الخمول منخفضة الطاقة.
 موصى به في حال حدوث تعليق عشوائي أو عدم استجابة الأجهزة.</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>تعطيل الشبكة في وضع Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>يمنع مهام الخلفية مثل Windows Update
+من تسخين الجهاز أثناء السكون واستنزاف البطارية.</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
@@ -1017,12 +1024,5 @@
   </data>
   <data name="Always" xml:space="preserve">
     <value>دائمًا</value>
-  </data>
-  <data name="DisableStandbyNetworking" xml:space="preserve">
-    <value>تعطيل الشبكة في وضع Modern Standby</value>
-  </data>
-  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
-    <value>يمنع مهام الخلفية مثل Windows Update
-من تسخين الجهاز أثناء السكون واستنزاف البطارية.</value>
   </data>
 </root>
