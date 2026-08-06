@@ -166,7 +166,7 @@
     <value>Застосувати</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Apply Fan Curve</value>
+    <value>Застосувати профілі кулерів</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Застосувати потужність</value>
@@ -525,7 +525,7 @@
     <value>Клавіатура</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Screen</value>
+    <value>Дисплей</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>LED-Індикатори стану</value>
