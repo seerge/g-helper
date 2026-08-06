@@ -555,7 +555,7 @@ Apakah Anda masih ingin melanjutkan?</value>
     <value>Left Trigger Deadzones</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
-    <value>Audio</value>
+    <value>Visualisasi Audio</value>
   </data>
   <data name="MatrixAudioMode" xml:space="preserve">
     <value>Visualizer Mode</value>
