@@ -555,7 +555,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Sol Tetik Ölü Bölgeleri</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
-    <value>Audio</value>
+    <value>Ses Görselleştirici</value>
   </data>
   <data name="MatrixAudioMode" xml:space="preserve">
     <value>Visualizer Mode</value>
