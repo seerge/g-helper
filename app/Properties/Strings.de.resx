@@ -166,7 +166,7 @@
     <value>Anwenden</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Apply Fan Curve</value>
+    <value>Lüfterkurve anwenden</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Leistungsgrenzen anwenden</value>
@@ -555,7 +555,7 @@ Trotzdem fortfahren?</value>
     <value>Left Trigger Deadzones</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
-    <value>Audio</value>
+    <value>Audio Visualisierung</value>
   </data>
   <data name="MatrixAudioMode" xml:space="preserve">
     <value>Visualizer Mode</value>
