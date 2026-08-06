@@ -525,7 +525,7 @@ Ainda quer continuar?</value>
     <value>Teclado</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Screen</value>
+    <value>Tela</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>Indicadores de estado do LED</value>

@@ -555,7 +555,7 @@ Nadal chcesz kontynuować?</value>
     <value>Martwe strefy lewego triggera</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
-    <value>Audio</value>
+    <value>Wizualizer muzyki</value>
   </data>
   <data name="MatrixAudioMode" xml:space="preserve">
     <value>Visualizer Mode</value>

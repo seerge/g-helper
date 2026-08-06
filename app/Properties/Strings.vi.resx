@@ -555,7 +555,7 @@ Bạn có muốn tiếp tục không?</value>
     <value>Deadzone trigger trái</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
-    <value>Audio</value>
+    <value>Sóng nhạc</value>
   </data>
   <data name="MatrixAudioMode" xml:space="preserve">
     <value>Visualizer Mode</value>

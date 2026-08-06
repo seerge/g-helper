@@ -555,7 +555,7 @@
     <value>左トリガーデッドゾーン</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
-    <value>Audio</value>
+    <value>オーディオビジュアライザー</value>
   </data>
   <data name="MatrixAudioMode" xml:space="preserve">
     <value>Visualizer Mode</value>

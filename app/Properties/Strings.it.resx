@@ -166,7 +166,7 @@
     <value>Applica</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Apply Fan Curve</value>
+    <value>Applica Curve Ventola</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Applica Limiti di Potenza</value>
@@ -555,7 +555,7 @@ Sei sicuro di voler continuare?</value>
     <value>Zona morta dell'interruttore sinistro</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
-    <value>Audio</value>
+    <value>Visualizzatore Audio</value>
   </data>
   <data name="MatrixAudioMode" xml:space="preserve">
     <value>Visualizer Mode</value>

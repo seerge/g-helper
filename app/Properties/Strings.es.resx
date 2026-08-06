@@ -555,7 +555,7 @@
     <value>Punto muerto gatillo izquierdo</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
-    <value>Audio</value>
+    <value>Visualizador de audio</value>
   </data>
   <data name="MatrixAudioMode" xml:space="preserve">
     <value>Visualizer Mode</value>

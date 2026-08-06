@@ -555,7 +555,7 @@
     <value>مناطق الخمول للزناد الأيسر</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
-    <value>Audio</value>
+    <value>مؤثرات الصوت المرئية</value>
   </data>
   <data name="MatrixAudioMode" xml:space="preserve">
     <value>Visualizer Mode</value>
