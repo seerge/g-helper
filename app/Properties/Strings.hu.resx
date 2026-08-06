@@ -555,7 +555,7 @@ Folytatni szeretnéd?</value>
     <value>Bal ravasz holtjátékai</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
-    <value>Audió</value>
+    <value>Hang vizualizáció</value>
   </data>
   <data name="MatrixAudioMode" xml:space="preserve">
     <value>Vizualizáló mód</value>
