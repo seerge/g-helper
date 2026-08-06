@@ -982,6 +982,13 @@ và tự khởi động lại khi GPU được bật</value>
     <value>Ngăn các thiết bị PCIe vào trạng thái nhàn rỗi tiết kiệm điện.
 Khuyến nghị nếu bạn gặp tình trạng treo ngẫu nhiên hoặc phần cứng không phản hồi.</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Tắt mạng khi ở Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Ngăn các tác vụ nền như Windows Update
+làm nóng máy khi ngủ và làm cạn pin.</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
@@ -1017,12 +1024,5 @@ Khuyến nghị nếu bạn gặp tình trạng treo ngẫu nhiên hoặc phần
   </data>
   <data name="Always" xml:space="preserve">
     <value>Luôn luôn</value>
-  </data>
-  <data name="DisableStandbyNetworking" xml:space="preserve">
-    <value>Tắt mạng khi ở Modern Standby</value>
-  </data>
-  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
-    <value>Ngăn các tác vụ nền như Windows Update
-làm nóng máy khi ngủ và làm cạn pin.</value>
   </data>
 </root>

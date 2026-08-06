@@ -558,7 +558,7 @@ Folytatni szeretnéd?</value>
     <value>Hang vizualizáció</value>
   </data>
   <data name="MatrixAudioMode" xml:space="preserve">
-    <value>Visualizer Mode</value>
+    <value>Vizualizáló mód</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Bináris logó</value>
@@ -585,16 +585,16 @@ Folytatni szeretnéd?</value>
     <value>Kép</value>
   </data>
   <data name="MatrixRunningText" xml:space="preserve">
-    <value>Running Text</value>
+    <value>Futó szöveg</value>
   </data>
   <data name="MatrixText" xml:space="preserve">
-    <value>Text</value>
+    <value>Szöveg</value>
   </data>
   <data name="MatrixTimeFormat" xml:space="preserve">
-    <value>Time Format</value>
+    <value>Időformátum</value>
   </data>
   <data name="MatrixDateFormat" xml:space="preserve">
-    <value>Date Format</value>
+    <value>Dátum formátum</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Max frissítési gyakoriság kevés késleltetéshez</value>
@@ -982,6 +982,13 @@ Folytatni szeretnéd?</value>
     <value>Megakadályozza, hogy a PCIe eszközök alacsony fogyasztású tétlen állapotba lépjenek.
 Ajánlott, ha véletlenszerű lefagyásokat vagy nem reagáló hardvert tapasztal.</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Hálózat letiltása Modern Standby módban</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Megakadályozza, hogy a háttérfeladatok, mint a Windows Update,
+felmelegítsék az alvó laptopot és lemerítsék az akkumulátort.</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
     <value>Átfedés</value>
   </data>
@@ -1017,12 +1024,5 @@ Ajánlott, ha véletlenszerű lefagyásokat vagy nem reagáló hardvert tapaszta
   </data>
   <data name="Always" xml:space="preserve">
     <value>Mindig</value>
-  </data>
-  <data name="DisableStandbyNetworking" xml:space="preserve">
-    <value>Hálózat letiltása Modern Standby módban</value>
-  </data>
-  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
-    <value>Megakadályozza, hogy a háttérfeladatok, mint a Windows Update,
-felmelegítsék az alvó laptopot és lemerítsék az akkumulátort.</value>
   </data>
 </root>

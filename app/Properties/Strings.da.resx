@@ -982,6 +982,13 @@ og genstarter dem automatisk, når GPU'en er aktiveret</value>
     <value>Forhindrer PCIe-enheder i at gå i lavenergi-inaktive tilstande.
 Anbefales, hvis du oplever tilfældige hængninger eller hardware, der ikke reagerer.</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Deaktiver netværk i Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Forhindrer baggrundsopgaver som Windows Update
+i at opvarme den sovende bærbare og dræne batteriet.</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
@@ -1017,12 +1024,5 @@ Anbefales, hvis du oplever tilfældige hængninger eller hardware, der ikke reag
   </data>
   <data name="Always" xml:space="preserve">
     <value>Altid</value>
-  </data>
-  <data name="DisableStandbyNetworking" xml:space="preserve">
-    <value>Deaktiver netværk i Modern Standby</value>
-  </data>
-  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
-    <value>Forhindrer baggrundsopgaver som Windows Update
-i at opvarme den sovende bærbare og dræne batteriet.</value>
   </data>
 </root>

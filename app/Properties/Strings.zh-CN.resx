@@ -982,6 +982,13 @@
     <value>防止 PCIe 设备进入低功耗空闲状态。
 如遇随机卡死或硬件无响应，建议启用。</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>在新式待机时禁用网络</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>防止 Windows Update 等后台任务
+使睡眠中的笔记本发热并消耗电池。</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
@@ -1017,12 +1024,5 @@
   </data>
   <data name="Always" xml:space="preserve">
     <value>始终</value>
-  </data>
-  <data name="DisableStandbyNetworking" xml:space="preserve">
-    <value>在新式待机时禁用网络</value>
-  </data>
-  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
-    <value>防止 Windows Update 等后台任务
-使睡眠中的笔记本发热并消耗电池。</value>
   </data>
 </root>
