@@ -250,7 +250,7 @@
     <value>60Hz im Batteriebetrieb. Maximal, wenn eingesteckt.</value>
   </data>
   <data name="Awake" xml:space="preserve">
-    <value>Aktiv</value>
+    <value>Im Betrieb</value>
   </data>
   <data name="BacklightLow" xml:space="preserve">
     <value>Niedrig</value>
@@ -304,7 +304,7 @@
     <value>BIOS und Treiber Updates</value>
   </data>
   <data name="Boot" xml:space="preserve">
-    <value>Start</value>
+    <value>Hochfahren</value>
   </data>
   <data name="BootSound" xml:space="preserve">
     <value>Boot-Sound</value>
@@ -762,7 +762,7 @@ Trotzdem fortfahren?</value>
     <value>Screenpad-Helligkeit erhöhen</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
-    <value>Ausschalten</value>
+    <value>Herunterfahren</value>
   </data>
   <data name="Silent" xml:space="preserve">
     <value>Leise</value>
@@ -993,7 +993,7 @@ den schlafenden Laptop aufheizen und den Akku entladen.</value>
     <value>Overlay</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
-    <value>Overlay only in games</value>
+    <value>Overlay nur in Spielen</value>
   </data>
   <data name="Power" xml:space="preserve">
     <value>Energie</value>
