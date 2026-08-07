@@ -315,6 +315,8 @@ namespace GHelper.Gpu
                         {
                             Program.acpi.DeviceSet(AsusACPI.GPUXG, 0, "GPU XGM");
                             await Task.Delay(TimeSpan.FromSeconds(15));
+                            HardwareControl.RecreateGpuControl();
+                            Program.modeControl.AutoPerformance();
                         }
                     }
                 }
@@ -330,10 +332,15 @@ namespace GHelper.Gpu
 
                     await Task.Delay(TimeSpan.FromSeconds(15));
 
-                    if (AppConfig.IsApplyFans())
-                        XGM.SetFan(AppConfig.GetFanConfig(AsusFan.XGM));
+                    for (int i = 0; i < 6; i++)
+                    {
+                        HardwareControl.RecreateGpuControl();
+                        if (HardwareControl.GpuControl is not null) break;
+                        await Task.Delay(TimeSpan.FromSeconds(5));
+                    }
+                    if (HardwareControl.GpuControl is not null) XGM.NotifyGPUReady();
 
-                    HardwareControl.RecreateGpuControl();
+                    Program.modeControl.AutoPerformance();
 
                 }
 
