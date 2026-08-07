@@ -945,7 +945,7 @@ Trotzdem fortfahren?</value>
     <value>Static</value>
   </data>
   <data name="SlashBatteryLevel" xml:space="preserve">
-    <value>Battery Level</value>
+    <value>Ladezustand</value>
   </data>
   <data name="IntervalOff" xml:space="preserve">
     <value>Interval Off</value>
