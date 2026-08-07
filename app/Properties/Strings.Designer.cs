@@ -151,6 +151,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ambient light sensor.
+        /// </summary>
+        internal static string AmbientBacklight {
+            get {
+                return ResourceManager.GetString("AmbientBacklight", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Ambient mode may increase resource usage.
         /// </summary>
         internal static string AmbientModeResources {

@@ -959,6 +959,9 @@ Do you still want to continue?</value>
   <data name="AmbientModeResources" xml:space="preserve">
     <value>Ambient mode may increase resource usage</value>
   </data>
+  <data name="AmbientBacklight" xml:space="preserve">
+    <value>Ambient light sensor</value>
+  </data>
   <data name="MouseMotionSync" xml:space="preserve">
     <value>Motion Sync</value>
   </data>
