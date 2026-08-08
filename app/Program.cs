@@ -59,9 +59,7 @@ namespace GHelper
                 if (AppConfig.IsZ13())
                 {
                     AsusHid.Write([
-                        [AsusHid.AURA_ID, 0xB9],
                         Encoding.ASCII.GetBytes("]ASUS Tech.Inc."),
-                        [AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0, 0x1A],
                         [AsusHid.AURA_ID, 0xC0, 0x03, 0x01]
                     ], "Init");
                 }
