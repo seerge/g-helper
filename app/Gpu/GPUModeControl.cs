@@ -316,7 +316,7 @@ namespace GHelper.Gpu
                             Program.acpi.DeviceSet(AsusACPI.GPUXG, 0, "GPU XGM");
                             await Task.Delay(TimeSpan.FromSeconds(15));
                             HardwareControl.RecreateGpuControl();
-                            Program.modeControl.AutoPerformance();
+                            Program.modeControl.SetPerformanceMode();
                         }
                     }
                 }
@@ -340,7 +340,7 @@ namespace GHelper.Gpu
                     }
                     if (HardwareControl.GpuControl is not null) XGM.NotifyGPUReady();
 
-                    Program.modeControl.AutoPerformance();
+                    Program.modeControl.SetPerformanceMode();
 
                 }
 
