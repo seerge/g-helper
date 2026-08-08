@@ -474,17 +474,22 @@ public static class AppConfig
 
     public static bool IsOLED()
     {
-        return ContainsModel("OLED") || IsSlash() || ContainsModel("M7600") || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M340") || ContainsModel("M350") || ContainsModel("K650") || ContainsModel("UM53") || ContainsModel("K660") || ContainsModel("UX84") || ContainsModel("M650") || ContainsModel("M550") || ContainsModel("M540") || ContainsModel("K340") || ContainsModel("K350") || ContainsModel("M140") || ContainsModel("S540") || ContainsModel("S550") || ContainsModel("M7400") || ContainsModel("N650") || ContainsModel("HN7306") || ContainsModel("H760") || ContainsModel("UX5406") || ContainsModel("M5606") || ContainsModel("X513") || ContainsModel("N7400") || ContainsModel("UX760") || ContainsModel("Q530VJ") || ContainsModel("TP3407") || _oledFromRegistry.Value;
+        return ContainsModel("OLED") || IsSlash() || ContainsModel("M7600") || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M340") || ContainsModel("M350") || ContainsModel("K650") || ContainsModel("UM53") || ContainsModel("K660") || ContainsModel("UX84") || ContainsModel("M650") || ContainsModel("M550") || ContainsModel("M540") || ContainsModel("K340") || ContainsModel("K350") || ContainsModel("M140") || ContainsModel("S540") || ContainsModel("S550") || ContainsModel("M7400") || ContainsModel("N650") || ContainsModel("HN7306") || ContainsModel("H760") || ContainsModel("UX5406") || ContainsModel("M5606") || ContainsModel("X513") || ContainsModel("N7400") || ContainsModel("UX760") || ContainsModel("Q530VJ") || ContainsModel("TP3407") || _oledFromEdid.Value;
     }
 
-    private static readonly Lazy<bool> _oledFromRegistry = new(() =>
+    private static readonly Lazy<bool> _oledFromEdid = new(() =>
     {
-        try
+        uint panelID = GHelper.Program.acpi.GetPanelId();
+        bool oled = (panelID >> 16) switch
         {
-            var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\ASUS\OLEDCare");
-            return key is not null && Convert.ToInt32(key.GetValue("EnablePixelRefresh", 0)) != 0;
-        }
-        catch { return false; }
+            0x834C => true,
+            0xE509 => (panelID & 0xFFFF) is 0x9C40 or 0x0D7B or 0x386D or 0x0DE4,
+            0x8F14 => (panelID & 0xFFFF) == 0x1410,
+            _ => false
+        };
+
+        Logger.WriteLine($"Panel ID: {panelID:X8} OLED: {oled}");
+        return oled;
     });
 
     public static bool IsNoOverdrive()
