@@ -35,6 +35,7 @@ public class AsusACPI
     const uint DEVS = 0x53564544;
     const uint INIT = 0x54494E49;
     const uint WDOG = 0x474F4457;
+    const uint GLCD = 0x44434C47;
 
     public const uint UniversalControl = 0x00100021;
 
@@ -402,6 +403,12 @@ public class AsusACPI
         byte[] args = new byte[8];
         return CallMethod(WDOG, args);
 
+    }
+
+    public uint GetPanelId()
+    {
+        byte[] args = new byte[4];
+        return BitConverter.ToUInt32(CallMethod(GLCD, args), 0);
     }
 
     public int DeviceSet(uint DeviceID, int Status, string? logName)
