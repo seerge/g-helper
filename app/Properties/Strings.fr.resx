@@ -304,7 +304,7 @@
     <value>Mises à jour BIOS et pilotes </value>
   </data>
   <data name="Boot" xml:space="preserve">
-    <value>Démarrage</value>
+    <value>Au démarrage</value>
   </data>
   <data name="BootSound" xml:space="preserve">
     <value>Son au démarrage</value>
@@ -762,7 +762,7 @@ Voulez-vous continuer ?</value>
     <value>Augmenter la luminosité du Screenpad</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
-    <value>Arrêt</value>
+    <value>Arrêter</value>
   </data>
   <data name="Silent" xml:space="preserve">
     <value>Silencieux</value>
