@@ -213,6 +213,9 @@ namespace GHelper.Gpu
                             if (HardwareControl.GpuControl is not null) break;
                             await Task.Delay(TimeSpan.FromSeconds(2));
                         }
+
+                        CheckStandardHalfState();
+
                         Program.modeControl.SetGPUClocks(false);
                     }
 
@@ -355,6 +358,21 @@ namespace GHelper.Gpu
         public void CaptureNvBootState()
         {
             nvRestartPending = Program.acpi.IsNVidiaGPU() && Program.acpi.DeviceGet(AsusACPI.GPUEco) == 1;
+        }
+
+        public void CheckStandardHalfState()
+        {
+            if (gpuMode != AsusACPI.GPUModeStandard || HardwareControl.GpuControl is not null) return;
+
+            Logger.WriteLine("Standard half-state");
+            if (!AppConfig.IsStandardForceFix()) return;
+
+            Task.Run(async () =>
+            {
+                Program.acpi.DeviceSet(AsusACPI.GPUEco, 0, "GPUStandard Force Fix");
+                await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("nv_delay", 5000)));
+                HardwareControl.RecreateGpuControl();
+            });
         }
 
         public void StandardModeFix()
