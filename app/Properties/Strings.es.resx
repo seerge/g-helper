@@ -250,7 +250,7 @@
     <value>Establece 60Hz con batería y revierte cuando está enchufado</value>
   </data>
   <data name="Awake" xml:space="preserve">
-    <value>Encendida</value>
+    <value>Activa</value>
   </data>
   <data name="BacklightLow" xml:space="preserve">
     <value>Bajo</value>
@@ -304,7 +304,7 @@
     <value>Actualizaciones de BIOS y Drivers</value>
   </data>
   <data name="Boot" xml:space="preserve">
-    <value>Al arrancar</value>
+    <value>Arranque</value>
   </data>
   <data name="BootSound" xml:space="preserve">
     <value>Sonido al arranque</value>
@@ -762,13 +762,13 @@
     <value>Subir brillo ScreenPad</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
-    <value>Al apagar</value>
+    <value>Apagado</value>
   </data>
   <data name="Silent" xml:space="preserve">
     <value>Silencio</value>
   </data>
   <data name="Sleep" xml:space="preserve">
-    <value>En suspensión</value>
+    <value>Suspensión</value>
   </data>
   <data name="StandardGPUTooltip" xml:space="preserve">
     <value>Habilita la dGPU para uso estándar</value>
