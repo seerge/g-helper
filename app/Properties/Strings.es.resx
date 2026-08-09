@@ -250,7 +250,7 @@
     <value>Establece 60Hz con batería y revierte cuando está enchufado</value>
   </data>
   <data name="Awake" xml:space="preserve">
-    <value>Activa</value>
+    <value>Encendida</value>
   </data>
   <data name="BacklightLow" xml:space="preserve">
     <value>Bajo</value>
@@ -304,7 +304,7 @@
     <value>Actualizaciones de BIOS y Drivers</value>
   </data>
   <data name="Boot" xml:space="preserve">
-    <value>Arranque</value>
+    <value>Al arrancar</value>
   </data>
   <data name="BootSound" xml:space="preserve">
     <value>Sonido al arranque</value>
@@ -558,7 +558,7 @@
     <value>Visualizador de audio</value>
   </data>
   <data name="MatrixAudioMode" xml:space="preserve">
-    <value>Visualizer Mode</value>
+    <value>Modo visual</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Banner binario</value>
@@ -585,16 +585,16 @@
     <value>Imagen</value>
   </data>
   <data name="MatrixRunningText" xml:space="preserve">
-    <value>Running Text</value>
+    <value>Texto en curso</value>
   </data>
   <data name="MatrixText" xml:space="preserve">
-    <value>Text</value>
+    <value>Texto</value>
   </data>
   <data name="MatrixTimeFormat" xml:space="preserve">
-    <value>Time Format</value>
+    <value>Formato de hora</value>
   </data>
   <data name="MatrixDateFormat" xml:space="preserve">
-    <value>Date Format</value>
+    <value>Formato de fecha</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Frecuencia de actualización máxima para una latencia más baja</value>
@@ -762,13 +762,13 @@
     <value>Subir brillo ScreenPad</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
-    <value>Apagado</value>
+    <value>Al apagar</value>
   </data>
   <data name="Silent" xml:space="preserve">
     <value>Silencio</value>
   </data>
   <data name="Sleep" xml:space="preserve">
-    <value>Suspensión</value>
+    <value>En suspensión</value>
   </data>
   <data name="StandardGPUTooltip" xml:space="preserve">
     <value>Habilita la dGPU para uso estándar</value>
