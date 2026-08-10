@@ -310,6 +310,7 @@ namespace GHelper.Gpu
                         {
                             Program.acpi.DeviceSet(AsusACPI.GPUXG, 0, "GPU XGM");
                             await Task.Delay(TimeSpan.FromSeconds(15));
+                            HardwareControl.RecreateGpuControl();
                         }
                     }
                 }
