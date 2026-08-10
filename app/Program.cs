@@ -159,7 +159,6 @@ namespace GHelper
             settingsForm.InitMatrix();
 
             ScreenControl.InitScreen();
-            XGM.Init();
 
             SetAutoModes(init: true);
 
@@ -339,7 +338,7 @@ namespace GHelper
             else settingsForm.matrixControl.SetDevice(true);
             InputDispatcher.InitStatusLed();
             if (init) NumberPad.Init();
-            XGM.InitLight();
+            XGM.Init();
 
             if (AppConfig.IsAlly())
             {
