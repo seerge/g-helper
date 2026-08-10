@@ -414,6 +414,7 @@ namespace GHelper
                 gpuControl.StandardModeFix();
                 modeControl.ShutdownReset();
                 InputDispatcher.ShutdownStatusLed();
+                XGM.NotifyShutdown();
                 return;
             }
 
