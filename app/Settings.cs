@@ -1,4 +1,4 @@
-﻿using GHelper.Ally;
+using GHelper.Ally;
 using GHelper.AnimeMatrix;
 using GHelper.AutoUpdate;
 using GHelper.Battery;
@@ -29,6 +29,8 @@ namespace GHelper
         AutoUpdateControl updateControl;
 
         AsusMouseSettings? mouseSettings;
+
+        AudioSettingsForm? audioSettingsForm;
 
         public AniMatrixControl matrixControl;
 
@@ -1263,9 +1265,35 @@ namespace GHelper
                 comboKeyboard.Visible = false;
             }
 
+            // 音频律动参数设置入口（动态加入表格空闲列，不动 Designer）
+            var buttonAudio = new RButton
+            {
+                Text = "Audio",
+                Dock = DockStyle.Fill,
+                Margin = new Padding(4),
+                Secondary = true,
+                TabIndex = 99
+            };
+            buttonAudio.Click += ButtonAudio_Click;
+            tableLayoutKeyboard.Controls.Add(buttonAudio, 2, 0);
+
             VisualiseAura();
 
             InitRearLight();
+        }
+
+        private void ButtonAudio_Click(object? sender, EventArgs e)
+        {
+            if (audioSettingsForm is null || audioSettingsForm.IsDisposed)
+            {
+                audioSettingsForm = new AudioSettingsForm { Owner = this };
+                audioSettingsForm.FormClosed += (_, _) => audioSettingsForm = null;
+                audioSettingsForm.Show();
+            }
+            else
+            {
+                audioSettingsForm.Activate();
+            }
         }
 
         public void SetAura()
