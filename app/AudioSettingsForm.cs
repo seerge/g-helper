@@ -25,6 +25,8 @@ namespace GHelper
             new("audio_color_speed", "Color Speed",  "颜色切换速度。越大音乐高潮时切换越急促", 30),
         };
 
+        private readonly List<(SliderDef Def, Slider Slider, NumericUpDown Numeric)> rows = new();
+
         public AudioSettingsForm()
         {
             Text = "Audio";
@@ -67,6 +69,16 @@ namespace GHelper
                 ForeColor = Color.FromArgb(140, 140, 140),
                 Location = new Point(2, 28)
             };
+            var resetButton = new RButton
+            {
+                Text = "Reset",
+                Dock = DockStyle.Right,
+                Size = new Size(88, 30),
+                Margin = new Padding(8, 12, 0, 0),
+                Secondary = true
+            };
+            resetButton.Click += (_, _) => ResetAll();
+            header.Controls.Add(resetButton);
             header.Controls.Add(title);
             header.Controls.Add(tip);
             layout.Controls.Add(header, 0, 0);
@@ -164,10 +176,23 @@ namespace GHelper
                 row.Controls.Add(numeric, 2, 0);
                 layout.Controls.Add(row, 0, rowIndex);
 
+                rows.Add((def, slider, numeric));
+
                 rowIndex++;
             }
 
             Controls.Add(layout);
+        }
+
+        private void ResetAll()
+        {
+            foreach (var (def, slider, numeric) in rows)
+            {
+                AppConfig.Set(def.Key, def.Default);
+                slider.Value = def.Default;
+                numeric.Value = def.Default;
+            }
+            Aura.RefreshAudioParams();
         }
     }
 }
