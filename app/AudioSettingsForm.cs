@@ -6,7 +6,7 @@ namespace GHelper
 {
     /// <summary>
     /// 音频律动（Audio Spectrum / Audio Pulse）参数设置面板。
-    /// 全部参数实时写入 AppConfig 并刷新 Aura 的音频处理参数。
+    /// TableLayoutPanel 自动布局避免重叠；滑块与数值输入框双向同步，实时生效。
     /// </summary>
     public class AudioSettingsForm : RForm
     {
@@ -34,98 +34,140 @@ namespace GHelper
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;
             AutoScroll = true;
+            ClientSize = new Size(500, 680);
 
             InitTheme(true);
 
+            var layout = new TableLayoutPanel
+            {
+                Dock = DockStyle.Top,
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                ColumnCount = 1,
+                Margin = new Padding(14, 10, 14, 10)
+            };
+            layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+
+            // 标题区
+            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 52F));
+            var header = new Panel { Dock = DockStyle.Fill, Margin = new Padding(0) };
             var title = new Label
             {
                 Text = "Audio 律动设置",
                 AutoSize = true,
                 Font = new Font(Font.FontFamily, 10f, FontStyle.Bold),
                 ForeColor = foreMain,
-                Location = new Point(20, 12)
+                Location = new Point(2, 4)
             };
-            Controls.Add(title);
-
             var tip = new Label
             {
-                Text = "拖动滑块实时生效，可边听歌边调节",
+                Text = "拖动滑块或直接输入数值，实时生效",
                 AutoSize = true,
                 Font = new Font(Font.FontFamily, 8.5f),
                 ForeColor = Color.FromArgb(140, 140, 140),
-                Location = new Point(20, 34)
+                Location = new Point(2, 28)
             };
-            Controls.Add(tip);
+            header.Controls.Add(title);
+            header.Controls.Add(tip);
+            layout.Controls.Add(header, 0, 0);
 
-            int y = 60;
+            // 每个参数一行：名称+说明 | 滑块 | 数值输入
+            int rowIndex = 1;
             foreach (var def in Defs)
             {
-                int value = AppConfig.Get(def.Key, def.Default);
-                value = Math.Clamp(value, 0, 100);
+                layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 64F));
 
-                var panel = new Panel
+                int value = Math.Clamp(AppConfig.Get(def.Key, def.Default), 0, 100);
+
+                var row = new TableLayoutPanel
                 {
-                    Size = new Size(430, 64),
-                    Location = new Point(10, y),
-                    Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right
+                    Dock = DockStyle.Fill,
+                    ColumnCount = 3,
+                    Margin = new Padding(0, 4, 0, 4)
                 };
-                y += 68;
+                row.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 190F));
+                row.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+                row.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 72F));
 
+                var infoPanel = new Panel { Dock = DockStyle.Fill, Margin = new Padding(0) };
                 var info = new Label
                 {
                     Text = def.Label,
-                    AutoSize = true,
+                    Dock = DockStyle.Top,
+                    Height = 22,
                     Font = new Font(Font.FontFamily, 9f),
                     ForeColor = foreMain,
-                    Location = new Point(10, 2)
+                    Margin = new Padding(0)
                 };
-                panel.Controls.Add(info);
-
                 var help = new Label
                 {
                     Text = def.Help,
-                    AutoSize = true,
-                    Font = new Font(Font.FontFamily, 8f),
+                    Dock = DockStyle.Top,
+                    Height = 34,
+                    Font = new Font(Font.FontFamily, 7.5f),
                     ForeColor = Color.FromArgb(140, 140, 140),
-                    Location = new Point(10, 22)
+                    Margin = new Padding(0)
                 };
-                panel.Controls.Add(help);
+                infoPanel.Controls.Add(info);
+                infoPanel.Controls.Add(help);
 
+                var sliderHost = new Panel { Dock = DockStyle.Fill, Margin = new Padding(6, 0, 6, 0) };
                 var slider = new Slider
                 {
                     Min = 0,
                     Max = 100,
                     Step = 1,
                     Value = value,
-                    Size = new Size(340, 30),
-                    Location = new Point(10, 38),
-                    Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right,
+                    Dock = DockStyle.None,
+                    Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top,
+                    Height = 30,
                     AccessibleName = def.Label
                 };
-                panel.Controls.Add(slider);
+                sliderHost.Controls.Add(slider);
+                sliderHost.Resize += (_, _) => slider.Top = Math.Max(0, (sliderHost.Height - slider.Height) / 2);
 
-                var valueLabel = new Label
+                var numeric = new NumericUpDown
                 {
-                    Text = value.ToString(),
-                    Size = new Size(50, 30),
-                    Location = new Point(370, 38),
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    ForeColor = foreMain,
-                    Anchor = AnchorStyles.Top | AnchorStyles.Right
+                    Minimum = 0,
+                    Maximum = 100,
+                    Value = value,
+                    Dock = DockStyle.Fill,
+                    TextAlign = HorizontalAlignment.Center,
+                    Margin = new Padding(0, 14, 0, 14)
                 };
-                panel.Controls.Add(valueLabel);
 
+                bool syncing = false;
+                void ApplyValue(int v)
+                {
+                    AppConfig.Set(def.Key, v);
+                    Aura.RefreshAudioParams();
+                }
                 slider.ValueChanged += (_, _) =>
                 {
-                    AppConfig.Set(def.Key, slider.Value);
-                    valueLabel.Text = slider.Value.ToString();
-                    Aura.RefreshAudioParams();
+                    if (syncing) return;
+                    syncing = true;
+                    numeric.Value = slider.Value;
+                    syncing = false;
+                    ApplyValue(slider.Value);
+                };
+                numeric.ValueChanged += (_, _) =>
+                {
+                    if (syncing) return;
+                    syncing = true;
+                    slider.Value = (int)numeric.Value;
+                    syncing = false;
+                    ApplyValue((int)numeric.Value);
                 };
 
-                Controls.Add(panel);
+                row.Controls.Add(infoPanel, 0, 0);
+                row.Controls.Add(sliderHost, 1, 0);
+                row.Controls.Add(numeric, 2, 0);
+                layout.Controls.Add(row, 0, rowIndex);
+
+                rowIndex++;
             }
 
-            ClientSize = new Size(450, Math.Min(y + 16, 660));
+            Controls.Add(layout);
         }
     }
 }
