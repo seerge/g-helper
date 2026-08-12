@@ -310,10 +310,10 @@
     <value>开机音效</value>
   </data>
   <data name="BacklightDown" xml:space="preserve">
-    <value>Backlight Down</value>
+    <value>调暗背光</value>
   </data>
   <data name="BacklightUp" xml:space="preserve">
-    <value>Backlight Up</value>
+    <value>调亮背光</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>亮度</value>
@@ -558,7 +558,7 @@
     <value>音频可视化器</value>
   </data>
   <data name="MatrixAudioMode" xml:space="preserve">
-    <value>Visualizer Mode</value>
+    <value>可视化模式</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Anime Matrix 标识</value>
@@ -585,7 +585,7 @@
     <value>图片</value>
   </data>
   <data name="MatrixRunningText" xml:space="preserve">
-    <value>Running Text</value>
+    <value>流动文本</value>
   </data>
   <data name="MatrixText" xml:space="preserve">
     <value>文本</value>
@@ -900,13 +900,13 @@
     <value>Bounce</value>
   </data>
   <data name="SlashMode" xml:space="preserve">
-    <value>Slash</value>
+    <value>光线矩阵</value>
   </data>
   <data name="SlashLoading" xml:space="preserve">
     <value>加载中</value>
   </data>
   <data name="SlashBitStream" xml:space="preserve">
-    <value>Bit Stream</value>
+    <value>数据流</value>
   </data>
   <data name="SlashTransmission" xml:space="preserve">
     <value>Transmission</value>
