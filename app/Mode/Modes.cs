@@ -22,6 +22,7 @@
             { "gpu_clock_limit", "int" },
             { "cpu_temp", "_" },
             { "cpu_uv", "_" },
+            { "cpu_uv_cores", "_" },
             { "igpu_uv", "_" },
             { "auto_boost", "int" },
             { "auto_apply", "int" },

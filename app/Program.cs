@@ -59,9 +59,7 @@ namespace GHelper
                 if (AppConfig.IsZ13())
                 {
                     AsusHid.Write([
-                        [AsusHid.AURA_ID, 0xB9],
                         Encoding.ASCII.GetBytes("]ASUS Tech.Inc."),
-                        [AsusHid.AURA_ID, 0x05, 0x20, 0x31, 0, 0x1A],
                         [AsusHid.AURA_ID, 0xC0, 0x03, 0x01]
                     ], "Init");
                 }
@@ -161,7 +159,6 @@ namespace GHelper
             settingsForm.InitMatrix();
 
             ScreenControl.InitScreen();
-            XGM.Init();
 
             SetAutoModes(init: true);
 
@@ -245,6 +242,7 @@ namespace GHelper
             modeControl.ShutdownReset();
             BatteryControl.AutoBattery();
             InputDispatcher.ShutdownStatusLed();
+            XGM.NotifyShutdown();
         }
 
         private static void SystemEvents_SessionSwitch(object sender, SessionSwitchEventArgs e)
@@ -340,7 +338,7 @@ namespace GHelper
             else settingsForm.matrixControl.SetDevice(true);
             InputDispatcher.InitStatusLed();
             if (init) NumberPad.Init();
-            XGM.InitLight();
+            XGM.Init();
 
             if (AppConfig.IsAlly())
             {
@@ -415,6 +413,7 @@ namespace GHelper
                 gpuControl.StandardModeFix();
                 modeControl.ShutdownReset();
                 InputDispatcher.ShutdownStatusLed();
+                XGM.NotifyShutdown();
                 return;
             }
 
@@ -505,11 +504,11 @@ namespace GHelper
                 if (limit > 0 && limit < 100)
                 {
                     Logger.WriteLine($"------- Startup Battery Limit {limit} -------");
-                    ProcessHelper.StartEnableService("ATKWMIACPIIO", false);
                     Logger.WriteLine($"Connecting to ACPI");
                     acpi = new AsusACPI();
                     Logger.WriteLine($"Setting Limit");
-                    acpi.DeviceSet(AsusACPI.BatteryLimit, limit, "Limit");
+                    if (acpi.IsConnected()) acpi.DeviceSet(AsusACPI.BatteryLimit, limit, "Limit");
+                    else AsusACPI.DeviceSetWmi(AsusACPI.BatteryLimit, limit);
                 }
             }
             catch (Exception ex)

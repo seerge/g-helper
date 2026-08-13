@@ -520,8 +520,24 @@ namespace GHelper.Mode
                 int cpuUV   = AppConfig.GetMode("cpu_uv",   0);
                 int igpuUV  = AppConfig.GetMode("igpu_uv",  0);
                 int cpuTemp = AppConfig.GetMode("cpu_temp");
+                string? cpuUVCores = AppConfig.GetModeString("cpu_uv_cores");
 
-                if (CpuInfo.IsSupportedUV() && cpuUV >= CpuInfo.MinCPUUV && cpuUV <= CpuInfo.MaxCPUUV)
+                if (CpuInfo.IsSupportedUV() && cpuUVCores is not null)
+                {
+                    int core = 0;
+                    foreach (var token in cpuUVCores.Split('-', StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        if (int.TryParse(token, out int uv) && -uv >= CpuInfo.MinCPUUV && -uv <= CpuInfo.MaxCPUUV)
+                        {
+                            SmuStatus s = smu.SetCoPer(core, -uv);
+                            Logger.WriteLine($"UV core {core}: {-uv} {s}");
+                            if (s == SmuStatus.OK) _cpuUV = -uv;
+                        }
+                        core++;
+                    }
+                    lines.AppendLine($"CPU UV cores {cpuUVCores}");
+                }
+                else if (CpuInfo.IsSupportedUV() && cpuUV >= CpuInfo.MinCPUUV && cpuUV <= CpuInfo.MaxCPUUV)
                 {
                     SmuStatus s = smu.SetCoAll(cpuUV);
                     Logger.WriteLine($"UV: {cpuUV} {s}");

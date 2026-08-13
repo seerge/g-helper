@@ -436,6 +436,23 @@ public class AsusACPI
     }
 
 
+    public static void DeviceSetWmi(uint DeviceID, int Status)
+    {
+        try
+        {
+            using var wmi = new ManagementObjectSearcher(@"root\wmi", "SELECT * FROM AsusAtkWmi_WMNB").Get().Cast<ManagementObject>().First();
+            var inParams = wmi.GetMethodParameters("DEVS");
+            inParams["Device_ID"] = DeviceID;
+            inParams["Control_status"] = (uint)Status;
+            var result = Convert.ToInt32(wmi.InvokeMethod("DEVS", inParams, null)["result"]);
+            Logger.WriteLine("WMI DEVS = " + Status + " : " + (result == 1 ? "OK" : result));
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine("WMI DEVS: " + ex.Message);
+        }
+    }
+
     public int DeviceGet(uint DeviceID)
     {
         byte[] args = new byte[8];

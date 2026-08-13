@@ -207,12 +207,7 @@ namespace GHelper.Gpu
                             await Task.Delay(TimeSpan.FromMilliseconds(1000));
                         }
 
-                        for (int i = 0; i < 3; i++)
-                        {
-                            HardwareControl.RecreateGpuControl();
-                            if (HardwareControl.GpuControl is not null) break;
-                            await Task.Delay(TimeSpan.FromSeconds(2));
-                        }
+                        await HardwareControl.RecreateGpuControlWithRetry(3, 2);
                         Program.modeControl.SetGPUClocks(false);
                     }
 
@@ -331,13 +326,8 @@ namespace GHelper.Gpu
                     XGM.Init();
 
                     await Task.Delay(TimeSpan.FromSeconds(15));
+                    await HardwareControl.RecreateGpuControlWithRetry(6, 5);
 
-                    for (int i = 0; i < 6; i++)
-                    {
-                        HardwareControl.RecreateGpuControl();
-                        if (HardwareControl.GpuControl is not null) break;
-                        await Task.Delay(TimeSpan.FromSeconds(5));
-                    }
                     if (HardwareControl.GpuControl is not null) XGM.NotifyGPUReady();
 
                     Program.modeControl.SetPerformanceMode();

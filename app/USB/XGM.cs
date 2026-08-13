@@ -131,6 +131,11 @@ namespace GHelper.USB
             });
         }
 
+        public static void NotifyShutdown()
+        {
+            if (IsConnected()) Write([XGM_REPORT_ID, 0xE4, 0x01]);
+        }
+
         public static void Reset()
         {
             Task.Run(() =>
