@@ -1280,7 +1280,7 @@ namespace GHelper
             // 音频律动参数设置入口（仅 Audio Spectrum / Audio Pulse 模式可见）
             buttonAudio = new RButton
             {
-                Text = "Audio",
+                Text = Strings.AudioButton,
                 Dock = DockStyle.Fill,
                 Margin = new Padding(4),
                 Secondary = true,
@@ -1298,7 +1298,8 @@ namespace GHelper
         private void UpdateAudioButtonVisibility()
         {
             if (buttonAudio is null) return;
-            bool show = Aura.Mode == AuraMode.AUDIO || Aura.Mode == AuraMode.AUDIOPULSE;
+            bool show = !AppConfig.NoAura()
+                && (Aura.Mode == AuraMode.AUDIO || Aura.Mode == AuraMode.AUDIOPULSE);
             if (buttonAudio.Visible != show) buttonAudio.Visible = show;
         }
 

@@ -1,4 +1,5 @@
 using GHelper.Helpers;
+using GHelper.Properties;
 using GHelper.UI;
 using GHelper.USB;
 
@@ -14,15 +15,15 @@ namespace GHelper
 
         private static readonly SliderDef[] Defs =
         {
-            new("audio_sensitivity", "Sensitivity", "整体响应增益。调低可抑制乱闪，调高更活泼", 50),
-            new("audio_attack",    "Attack",    "对声音上升的平滑程度。越小越稳定，越大越跟手", 40),
-            new("audio_decay",     "Decay",     "声音消失后灯光渐灭的速度。越大余辉越久", 70),
-            new("audio_reference", "Reference", "音量基准的跟随快慢。越小越不容易整体全亮", 30),
-            new("audio_threshold", "Threshold", "低于此电平不响应。可压制环境噪音与轻微旋律乱闪", 15),
-            new("audio_curve",     "Curve",     "亮度响应曲线指数。越大层次越分明、暗部越暗", 60),
-            new("audio_min",       "Min Brightness", "灯光最低亮度，防止完全熄灭", 0),
-            new("audio_max",       "Max Brightness", "灯光最高亮度，防止长时间全亮没有层次", 100),
-            new("audio_color_speed", "Color Speed",  "颜色切换速度。越大音乐高潮时切换越急促", 30),
+            new("audio_sensitivity", Strings.AudioParamSensitivity, Strings.AudioParamSensitivityHelp, 50),
+            new("audio_attack",    Strings.AudioParamAttack,    Strings.AudioParamAttackHelp,    40),
+            new("audio_decay",     Strings.AudioParamDecay,     Strings.AudioParamDecayHelp,     70),
+            new("audio_reference", Strings.AudioParamReference, Strings.AudioParamReferenceHelp, 30),
+            new("audio_threshold", Strings.AudioParamThreshold, Strings.AudioParamThresholdHelp, 15),
+            new("audio_curve",     Strings.AudioParamCurve,     Strings.AudioParamCurveHelp,     60),
+            new("audio_min",       Strings.AudioParamMinBrightness, Strings.AudioParamMinBrightnessHelp, 0),
+            new("audio_max",       Strings.AudioParamMaxBrightness, Strings.AudioParamMaxBrightnessHelp, 100),
+            new("audio_color_speed", Strings.AudioParamColorSpeed, Strings.AudioParamColorSpeedHelp, 30),
         };
 
         private readonly List<(SliderDef Def, Slider Slider, NumericUpDown Numeric)> rows = new();
@@ -55,7 +56,7 @@ namespace GHelper
             var header = new Panel { Dock = DockStyle.Fill, Margin = new Padding(0) };
             var title = new Label
             {
-                Text = "Audio 律动设置",
+                Text = Strings.AudioSettingsTitle,
                 AutoSize = true,
                 Font = new Font(Font.FontFamily, 10f, FontStyle.Bold),
                 ForeColor = foreMain,
@@ -63,7 +64,7 @@ namespace GHelper
             };
             var tip = new Label
             {
-                Text = "拖动滑块或直接输入数值，实时生效",
+                Text = Strings.AudioSettingsTip,
                 AutoSize = true,
                 Font = new Font(Font.FontFamily, 8.5f),
                 ForeColor = Color.FromArgb(140, 140, 140),
@@ -71,7 +72,7 @@ namespace GHelper
             };
             var resetButton = new RButton
             {
-                Text = "Reset",
+                Text = Strings.AudioReset,
                 Dock = DockStyle.Right,
                 Size = new Size(88, 30),
                 Margin = new Padding(8, 12, 0, 0),
