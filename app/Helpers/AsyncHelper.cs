@@ -4,17 +4,36 @@ namespace GHelper.Helpers
     {
         // Polls `condition` at `intervalMs` until it's true, instead of guessing a fixed delay.
         // Always bounded by `timeoutMs` as a safety net for hardware that never reports the expected state.
-        public static async Task<bool> PollUntilAsync(Func<bool> condition, int intervalMs, int timeoutMs)
+        // `token` lets an in-flight poll bail out immediately when superseded by a newer request,
+        // instead of running to completion (or timeout) against a target that's already stale.
+        public static async Task<bool> PollUntilAsync(Func<bool> condition, int intervalMs, int timeoutMs, CancellationToken token = default)
         {
             var deadline = Environment.TickCount64 + timeoutMs;
 
             while (Environment.TickCount64 < deadline)
             {
+                token.ThrowIfCancellationRequested();
                 if (condition()) return true;
-                await Task.Delay(intervalMs);
+                await Task.Delay(intervalMs, token);
             }
 
             return condition();
+        }
+
+        // Same as above, for conditions that are themselves genuinely async (e.g. awaiting a
+        // real process/service operation) rather than a cheap synchronous state check.
+        public static async Task<bool> PollUntilAsync(Func<CancellationToken, Task<bool>> condition, int intervalMs, int timeoutMs, CancellationToken token = default)
+        {
+            var deadline = Environment.TickCount64 + timeoutMs;
+
+            while (Environment.TickCount64 < deadline)
+            {
+                token.ThrowIfCancellationRequested();
+                if (await condition(token)) return true;
+                await Task.Delay(intervalMs, token);
+            }
+
+            return await condition(token);
         }
     }
 }

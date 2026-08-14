@@ -243,6 +243,21 @@ public class NvidiaGpuControl : IGpuControl
 
     }
 
+    private static async Task<bool> RunPowershellCommandAsync(string script, int timeoutMs = 0, CancellationToken token = default)
+    {
+        try
+        {
+            await ProcessHelper.RunCMDAsync("powershell", script, timeoutMs: timeoutMs, token: token);
+            return true;
+        }
+        catch (OperationCanceledException) { throw; }
+        catch (Exception ex)
+        {
+            Logger.WriteLine(ex.ToString());
+            return false;
+        }
+    }
+
     public int GetMaxGPUCLock()
     {
         PhysicalGPU internalGpu = _internalGpu!;
@@ -296,6 +311,26 @@ public class NvidiaGpuControl : IGpuControl
         if (!ProcessHelper.IsUserAdministrator()) return;
         RunPowershellCommand(@"Stop-Service -Name 'NvContainerLocalSystem' -Force", 30000);
         RunPowershellCommand(@"Stop-Service -Name 'NVDisplay.ContainerLocalSystem' -Force", 30000);
+    }
+
+    public static async Task RestartNvContainerAsync(CancellationToken token = default)
+    {
+        if (!ProcessHelper.IsUserAdministrator()) return;
+        await RunPowershellCommandAsync(@"Restart-Service -Name 'NvContainerLocalSystem' -Force", 30000, token);
+    }
+
+    public static async Task RestartNVServiceAsync(CancellationToken token = default)
+    {
+        if (!ProcessHelper.IsUserAdministrator()) return;
+        await RunPowershellCommandAsync(@"Restart-Service -Name 'NVDisplay.ContainerLocalSystem' -Force", 30000, token);
+        await RunPowershellCommandAsync(@"Restart-Service -Name 'NvContainerLocalSystem' -Force", 30000, token);
+    }
+
+    public static async Task StopNVServiceAsync(CancellationToken token = default)
+    {
+        if (!ProcessHelper.IsUserAdministrator()) return;
+        await RunPowershellCommandAsync(@"Stop-Service -Name 'NvContainerLocalSystem' -Force", 30000, token);
+        await RunPowershellCommandAsync(@"Stop-Service -Name 'NVDisplay.ContainerLocalSystem' -Force", 30000, token);
     }
 
     public int SetClocks(int core, int memory)

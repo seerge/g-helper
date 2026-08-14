@@ -433,8 +433,25 @@ namespace GHelper
             if (source == currentSource) return;
 
             Logger.WriteLine($"Power source: {currentSource} -> {source}");
-            currentSource = source;
-            SetAutoModes(powerChanged: true);
+
+            // SetAutoModes can decline to run (its own lastAuto lockout - a separate cascade
+            // is still in flight). currentSource must NOT be updated in that case: it's what
+            // this method compares against next time, so committing it here even though
+            // nothing was actually applied would make a future identical reading look like
+            // "no change" and the transition would never be retried - i.e. permanently stuck
+            // in the old state. Only commit once the change has actually been applied, and
+            // re-arm the settle timer to retry shortly if it wasn't.
+            bool applied = SetAutoModes(powerChanged: true);
+            if (applied)
+            {
+                currentSource = source;
+            }
+            else
+            {
+                Logger.WriteLine("SetAutoModes busy - retrying power source change shortly");
+                powerSettleTimer.Stop();
+                powerSettleTimer.Start();
+            }
         }
 
         public static void OnChargerEvent() => SchedulePowerCheck();

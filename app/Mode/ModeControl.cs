@@ -89,6 +89,19 @@ namespace GHelper.Mode
             try { _modeTask.Wait(5000); } catch { }
         }
 
+        // Awaits the same in-flight task without blocking a thread on it, and observes
+        // cancellation so a superseded caller (e.g. an eco switch dropped by a replug) can
+        // abandon the wait instead of sitting through the full 5s timeout.
+        public async Task WaitForApplyAsync(CancellationToken token = default)
+        {
+            // Task.WhenAny itself never throws for a faulted/canceled inner task - it just
+            // resolves with whichever finished first - so cancellation must be checked
+            // explicitly afterward to actually propagate to the caller.
+            try { await Task.WhenAny(_modeTask, Task.Delay(5000, token)); }
+            catch { }
+            token.ThrowIfCancellationRequested();
+        }
+
         public void AutoPerformance(bool powerChanged = false)
         {
             int mode = AppConfig.Get("performance_" + Program.PerformanceKey());

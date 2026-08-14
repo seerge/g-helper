@@ -206,6 +206,52 @@ namespace GHelper.Helpers
             }
         }
 
+        // Genuine async I/O, not Task.Run over the sync version: Process.WaitForExitAsync is
+        // backed by a real OS wait registration, so the awaiting thread is freed for the
+        // duration of the external process (useful here since Nvidia service restarts can
+        // take up to 30s) instead of a thread-pool thread sitting blocked on WaitForExit.
+        public static async Task<string> RunCMDAsync(string name, string args, string? directory = null, int timeoutMs = 0, CancellationToken token = default)
+        {
+            using var cmd = new Process();
+            cmd.StartInfo.UseShellExecute = false;
+            cmd.StartInfo.CreateNoWindow = true;
+            cmd.StartInfo.RedirectStandardOutput = true;
+            cmd.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            cmd.StartInfo.FileName = name;
+            cmd.StartInfo.Arguments = args;
+            if (directory != null) cmd.StartInfo.WorkingDirectory = directory;
+            cmd.Start();
+
+            var watch = Stopwatch.StartNew();
+
+            using var timeoutCts = timeoutMs > 0 ? new CancellationTokenSource(timeoutMs) : null;
+            using var linkedCts = timeoutCts is null
+                ? CancellationTokenSource.CreateLinkedTokenSource(token)
+                : CancellationTokenSource.CreateLinkedTokenSource(token, timeoutCts.Token);
+
+            string result;
+            try
+            {
+                result = (await cmd.StandardOutput.ReadToEndAsync(linkedCts.Token))
+                    .Replace(Environment.NewLine, " ").Trim(' ');
+                await cmd.WaitForExitAsync(linkedCts.Token);
+            }
+            catch (OperationCanceledException) when (!token.IsCancellationRequested)
+            {
+                try { cmd.Kill(entireProcessTree: true); } catch { }
+                watch.Stop();
+                Logger.WriteLine(name + " " + args);
+                Logger.WriteLine($"{watch.ElapsedMilliseconds} ms: TIMEOUT after {timeoutMs} ms");
+                return string.Empty;
+            }
+
+            watch.Stop();
+            Logger.WriteLine(name + " " + args);
+            Logger.WriteLine(watch.ElapsedMilliseconds + " ms: " + result);
+
+            return result;
+        }
+
         public static string RunCMD(string name, string args, string? directory = null, int timeoutMs = 0)
         {
             using var cmd = new Process();

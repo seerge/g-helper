@@ -15,6 +15,11 @@ namespace GHelper.Gpu
 
         static bool nvRestartPending;
 
+        // Owned here rather than threaded through every caller: any two overlapping eco
+        // switches are wrong regardless of what triggered them (power event, manual toggle,
+        // Optimized-mode auto-apply), so SetGPUEco always supersedes its own previous run.
+        private static CancellationTokenSource? ecoCts;
+
 
         public GPUModeControl(SettingsForm settingsForm)
         {
@@ -161,10 +166,17 @@ namespace GHelper.Gpu
 
 
 
-        public void SetGPUEco(int eco)
+        // Cancelling the previous run whenever a new one starts is what lets an in-flight eco
+        // switch (e.g. mid Nvidia-service-stop after an unplug) abandon itself cleanly instead
+        // of racing a fresher switch triggered by an immediate replug - whatever triggered it.
+        public void SetGPUEco(int eco, int delay = 0)
         {
 
             settings.LockGPUModes();
+
+            ecoCts?.Cancel();
+            var cts = new CancellationTokenSource();
+            ecoCts = cts;
 
             // Screen refresh only depends on power line status, not on GPU/eco state, so it
             // runs as an independent sibling task instead of being sequenced behind, or bolted
@@ -173,30 +185,35 @@ namespace GHelper.Gpu
             // marshals its own narrow UI update internally, so forcing the whole call onto the
             // UI thread here would freeze the window for the duration of the mode change.
             Task.Run(() => ScreenControl.AutoScreen());
-            Task.Run(() => RunGPUEcoSequence(eco));
+            Task.Run(() => RunGPUEcoSequence(eco, delay, cts.Token));
         }
 
-        private async Task RunGPUEcoSequence(int eco)
+        private async Task RunGPUEcoSequence(int eco, int delay, CancellationToken token)
         {
-            int status = 1;
-
-            Program.modeControl.WaitForApply();
-
-            if (eco == 1)
-            {
-                HardwareControl.KillGPUApps();
-                HardwareControl.DisposeGpuControl();
-                // Stop-Service blocks until the service has actually stopped, so this line
-                // itself is the "wait" - no extra guessed delay needed after it.
-                if (AppConfig.IsNVPlatform()) NvidiaGpuControl.StopNVService();
-            }
-
-            Logger.WriteLine($"Running eco command {eco}");
-
             try
             {
+                // Was previously a blocking Thread.Sleep on the caller's thread; now an
+                // awaitable delay that a superseding request can cancel outright instead of
+                // letting a now-pointless switch fire after the fact.
+                if (delay > 0) await Task.Delay(delay, token);
+                token.ThrowIfCancellationRequested();
 
-                status = Program.acpi.SetGPUEco(eco);
+                await Program.modeControl.WaitForApplyAsync(token);
+
+                if (eco == 1)
+                {
+                    HardwareControl.KillGPUApps();
+                    HardwareControl.DisposeGpuControl();
+                    // Awaited via Process.WaitForExitAsync internally - frees this thread for
+                    // the duration of the service stop instead of blocking it synchronously.
+                    if (AppConfig.IsNVPlatform()) await NvidiaGpuControl.StopNVServiceAsync(token);
+                }
+
+                token.ThrowIfCancellationRequested();
+
+                Logger.WriteLine($"Running eco command {eco}");
+
+                int status = Program.acpi.SetGPUEco(eco);
 
                 // Wait for the ACPI eco flag to actually reflect the change instead of
                 // guessing how long that takes. refresh_delay is now only the safety-net
@@ -204,12 +221,15 @@ namespace GHelper.Gpu
                 await AsyncHelper.PollUntilAsync(
                     () => Program.acpi.DeviceGet(AsusACPI.GPUEco) == eco,
                     intervalMs: 100,
-                    timeoutMs: AppConfig.Get("refresh_delay", 500));
+                    timeoutMs: AppConfig.Get("refresh_delay", 500),
+                    token: token);
 
-                settings.Invoke(delegate
-                {
-                    InitGPUMode();
-                });
+                // Fire-and-forget: InitGPUMode() calls Aura.CustomRGB.ApplyGPUColor(), which does
+                // a synchronous USB HID write + ACPI call - real blocking I/O that nothing below
+                // depends on finishing, so it shouldn't hold up the Nvidia restart step. Its own
+                // UI-touching calls (VisualiseGPUButtons/VisualiseGPUMode) already self-marshal
+                // via InvokeRequired, so this is safe to run off the UI thread too.
+                _ = Task.Run(InitGPUMode, token);
 
                 if (eco == 0)
                 {
@@ -217,18 +237,20 @@ namespace GHelper.Gpu
                     {
                         settings.LockGPUModes(Properties.Strings.RestartingNVServices);
 
-                        // Restart-Service blocks until it has actually restarted; on failure
-                        // (GPU/PCIe link not re-enumerated yet) it throws quickly, so retry
-                        // with backoff instead of a single flat wait-then-try.
+                        // Restart-Service awaits until it has actually restarted (via
+                        // Process.WaitForExitAsync, not a blocked thread); on failure (GPU/PCIe
+                        // link not re-enumerated yet) it returns quickly, so retry with backoff
+                        // instead of a single flat wait-then-try.
                         bool restarted = await AsyncHelper.PollUntilAsync(
-                            () =>
+                            async ct =>
                             {
                                 try
                                 {
-                                    if (AppConfig.IsNVPlatform()) NvidiaGpuControl.RestartNVService();
-                                    else NvidiaGpuControl.RestartNvContainer();
+                                    if (AppConfig.IsNVPlatform()) await NvidiaGpuControl.RestartNVServiceAsync(ct);
+                                    else await NvidiaGpuControl.RestartNvContainerAsync(ct);
                                     return true;
                                 }
+                                catch (OperationCanceledException) { throw; }
                                 catch (Exception ex)
                                 {
                                     Logger.WriteLine("NV service restart attempt failed: " + ex.Message);
@@ -236,24 +258,32 @@ namespace GHelper.Gpu
                                 }
                             },
                             intervalMs: 500,
-                            timeoutMs: AppConfig.Get("nv_delay", 5000));
+                            timeoutMs: AppConfig.Get("nv_delay", 5000),
+                            token: token);
 
                         if (!restarted) Logger.WriteLine("NV service did not restart within timeout");
 
                         nvRestartPending = false;
-                        settings.Invoke(delegate { InitGPUMode(); });
+                        _ = Task.Run(InitGPUMode, token);
                     }
 
-                    await HardwareControl.RecreateGpuControlWithRetry(3, 2);
+                    token.ThrowIfCancellationRequested();
+
+                    await HardwareControl.RecreateGpuControlWithRetry(3, 2, token);
                     CheckStandardHalfState();
                     Program.modeControl.SetGPUClocks(false);
                 }
 
                 if (AppConfig.IsModeReapplyRequired())
                 {
-                    await Task.Delay(TimeSpan.FromMilliseconds(3000));
+                    await Task.Delay(TimeSpan.FromMilliseconds(3000), token);
                     Program.modeControl.AutoPerformance();
                 }
+            }
+            catch (OperationCanceledException)
+            {
+                // Superseded by a newer eco switch - not an error, the newer run owns the target state now.
+                Logger.WriteLine($"Eco command {eco} superseded, abandoning");
             }
             catch (Exception ex)
             {
@@ -297,8 +327,9 @@ namespace GHelper.Gpu
                 if (eco == 1)
                     if ((GpuAuto && IsPlugged()) || (ForceGPU && GpuMode == AsusACPI.GPUModeStandard))
                     {
-                        if (delay > 0) Thread.Sleep(delay);
-                        SetGPUEco(0);
+                        // Delay no longer blocks this thread - it's handed to the eco
+                        // sequence itself, which awaits it and can be cancelled mid-wait.
+                        SetGPUEco(0, delay);
                         return true;
                     }
                 if (eco == 0)
@@ -312,8 +343,7 @@ namespace GHelper.Gpu
                             if (dialogResult == DialogResult.No) return false;
                         }
 
-                        if (delay > 0) Thread.Sleep(delay);
-                        SetGPUEco(1);
+                        SetGPUEco(1, delay);
                         return true;
                     }
             }
@@ -347,7 +377,7 @@ namespace GHelper.Gpu
                         {
                             dialogResult = MessageBox.Show(settings, "Did you close all applications running on XG Mobile?", "Disabling XG Mobile", MessageBoxButtons.YesNo);
                         });
-                        
+
                         if (dialogResult == DialogResult.Yes)
                         {
                             Program.acpi.DeviceSet(AsusACPI.GPUXG, 0, "GPU XGM");

@@ -1846,6 +1846,8 @@ namespace GHelper
 
         public void HideGPUModes(bool gpuExists)
         {
+            if (InvokeRequired) { Invoke(() => HideGPUModes(gpuExists)); return; }
+
             isGpuSection = false;
 
             buttonEco.Visible = false;

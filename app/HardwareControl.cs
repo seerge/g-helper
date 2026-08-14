@@ -1027,13 +1027,14 @@ public static class HardwareControl
         });
     }
 
-    public static async Task RecreateGpuControlWithRetry(int retries, int delay)
+    public static async Task RecreateGpuControlWithRetry(int retries, int delay, CancellationToken token = default)
     {
         for (int i = 0; i < retries; i++)
         {
+            token.ThrowIfCancellationRequested();
             RecreateGpuControl();
             if (GpuControl is not null) break;
-            await Task.Delay(TimeSpan.FromSeconds(delay));
+            await Task.Delay(TimeSpan.FromSeconds(delay), token);
         }
     }
 
