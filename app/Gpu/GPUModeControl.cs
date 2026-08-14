@@ -323,13 +323,16 @@ namespace GHelper.Gpu
             }
             finally
             {
-                IsSwitching = false;
                 // Only clear if nothing superseded us in the meantime (a newer SetGPUEco call
                 // would have already replaced ecoCts with its own source and set its own
                 // target) - otherwise we'd wipe out the newer, still-pending target.
                 lock (ecoCtsLock)
                 {
-                    if (ReferenceEquals(ecoCts, cts)) pendingEcoTarget = null;
+                    if (ReferenceEquals(ecoCts, cts))
+                    {
+                        pendingEcoTarget = null;
+                        IsSwitching = false;
+                    }
                 }
             }
         }

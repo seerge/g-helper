@@ -316,6 +316,8 @@ namespace GHelper
 
         public static bool SetAutoModes(bool powerChanged = false, bool init = false, bool wakeup = false)
         {
+            if (wakeup && powerSettleTimer.Enabled) return false;
+            
             int skipDelay = wakeup ? 10000 : 3000;
 
             if (init) gpuControl.CaptureNvBootState();
@@ -435,25 +437,7 @@ namespace GHelper
             Logger.WriteLine($"Power source: {currentSource} -> {source}");
             currentSource = source;
 
-            // Screen refresh and GPU eco react immediately here, independent of SetAutoModes's
-            // cascade-wide rate limit below - they only depend on currentSource (just
-            // committed above from an already-settled reading), not on the rest of the
-            // cascade, and users notice a slow refresh-rate/eco switch immediately. Routing
-            // them through the lockout-gated SetAutoModes call instead delayed both by up to
-            // its 3s lockout, and - worse - let a quick unplug-then-replug leave the laptop
-            // stuck in Eco: AutoGPUMode's decision reads the live ACPI eco flag, which can lag
-            // several seconds behind an in-flight switch (Nvidia service stop/restart), so by
-            // the time a lockout-delayed replug evaluation ran, it could see a stale flag that
-            // still looked "already correct" and skip cancelling the stale in-flight switch,
-            // which then committed the wrong state moments later uncontested. delay:0 here
-            // since the settle-poll above already confirmed the reading is stable - no need
-            // for AutoGPUMode's own additional pre-switch delay on top of it.
-            ScreenControl.AutoScreen();
-            gpuControl.AutoGPUMode(delay: 0);
-
-            // The rest of the cascade (battery, lighting, keyboard, etc.) stays behind the
-            // lockout - it's fine for this slower-moving state to wait for a still-in-flight
-            // cascade to finish rather than run concurrently with it.
+            // Force CPU mode (and the rest of the cascade) to change BEFORE the GPU profile
             bool applied = SetAutoModes(powerChanged: true);
             if (!applied)
             {
@@ -461,6 +445,9 @@ namespace GHelper
                 powerSettleTimer.Stop();
                 powerSettleTimer.Start();
             }
+
+            ScreenControl.AutoScreen();
+            gpuControl.AutoGPUMode(delay: 0);
         }
 
         public static void OnChargerEvent() => SchedulePowerCheck();
