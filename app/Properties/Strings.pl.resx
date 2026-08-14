@@ -175,7 +175,7 @@
     <value>Dostosuj systemowy Tryb Zasilania</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Pamięć przypisana do GPU</value>
+    <value>Pamięć przypisana do iGPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Uruchomione usługi Asus</value>
@@ -525,7 +525,7 @@ Nadal chcesz kontynuować?</value>
     <value>Klawiatura laptopa</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Ekran laptopa</value>
+    <value>Ekran</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>Wskaźniki stanu</value>
@@ -557,6 +557,9 @@ Nadal chcesz kontynuować?</value>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Wizualizer muzyki</value>
   </data>
+  <data name="MatrixAudioMode" xml:space="preserve">
+    <value>Visualizer Mode</value>
+  </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Binarny</value>
   </data>
@@ -580,6 +583,18 @@ Nadal chcesz kontynuować?</value>
   </data>
   <data name="MatrixPicture" xml:space="preserve">
     <value>Obraz</value>
+  </data>
+  <data name="MatrixRunningText" xml:space="preserve">
+    <value>Running Text</value>
+  </data>
+  <data name="MatrixText" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="MatrixTimeFormat" xml:space="preserve">
+    <value>Time Format</value>
+  </data>
+  <data name="MatrixDateFormat" xml:space="preserve">
+    <value>Date Format</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Maksymalna częstotliwość odświeżania dla mniejszych opóźnień</value>
@@ -967,10 +982,47 @@ i automatycznie je uruchamia, gdy GPU jest włączony</value>
     <value>Zapobiega przechodzeniu urządzeń PCIe w stany niskiego poboru mocy.
 Zalecane, jeśli występują losowe zawieszenia lub niereagujący sprzęt.</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Wyłącz sieć w trybie Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Zapobiega nagrzewaniu uśpionego laptopa i rozładowywaniu
+baterii przez zadania w tle, takie jak Windows Update.</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
     <value>Nakładka</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Nakładka tylko w grach</value>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>Zasilanie</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>Animacje</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>Animacja uruchamiania i wyłączania</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>Animacja uśpienia</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>Alert niskiego poziomu baterii</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>Wskaźnik poziomu baterii</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>Przyciemnij przy słabej baterii</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>Domyślne systemowe</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>Wzór animacji</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>Zawsze</value>
   </data>
 </root>

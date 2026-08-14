@@ -175,7 +175,7 @@
     <value>Windows電源モードを自動調整</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>GPUに割り当てられたメモリ</value>
+    <value>iGPUに割り当てられたメモリ</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Asusサービスを実行中</value>
@@ -525,7 +525,7 @@
     <value>ラップトップキーボード</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>ラップトップ画面</value>
+    <value>画面</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>LEDステータス表示</value>
@@ -557,6 +557,9 @@
   <data name="MatrixAudio" xml:space="preserve">
     <value>オーディオビジュアライザー</value>
   </data>
+  <data name="MatrixAudioMode" xml:space="preserve">
+    <value>Visualizer Mode</value>
+  </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Binary Banner</value>
   </data>
@@ -580,6 +583,18 @@
   </data>
   <data name="MatrixPicture" xml:space="preserve">
     <value>画像</value>
+  </data>
+  <data name="MatrixRunningText" xml:space="preserve">
+    <value>Running Text</value>
+  </data>
+  <data name="MatrixText" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="MatrixTimeFormat" xml:space="preserve">
+    <value>Time Format</value>
+  </data>
+  <data name="MatrixDateFormat" xml:space="preserve">
+    <value>Date Format</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>最大リフレッシュレートで低遅延を実現</value>
@@ -967,10 +982,47 @@ GPU が有効化されたときに自動的に再起動します</value>
     <value>PCIe デバイスが低電力アイドル状態に入るのを防ぎます。
 ランダムなフリーズやハードウェアの無応答が発生する場合に推奨されます。</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>モダンスタンバイ中のネットワークを無効化</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Windows Update などのバックグラウンドタスクによる
+スリープ中の発熱やバッテリー消耗を防ぎます。</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Overlay only in games</value>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>電源</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>アニメーション</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>起動・シャットダウン時のアニメーション</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>スリープアニメーション</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>バッテリー低下の警告</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>バッテリー残量インジケーター</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>バッテリー低下時に減光</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>システム既定</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>アニメーションパターン</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>常時</value>
   </data>
 </root>

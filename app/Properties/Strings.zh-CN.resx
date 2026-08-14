@@ -175,7 +175,7 @@
     <value>自动调整Windows电源模式</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>分配给 GPU 的内存</value>
+    <value>分配给 iGPU 的内存</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>正在运行的 Asus 服务</value>
@@ -525,7 +525,7 @@
     <value>笔记本键盘</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>笔记本屏幕</value>
+    <value>屏幕</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>LED 状态指示器</value>
@@ -557,6 +557,9 @@
   <data name="MatrixAudio" xml:space="preserve">
     <value>音频可视化器</value>
   </data>
+  <data name="MatrixAudioMode" xml:space="preserve">
+    <value>Visualizer Mode</value>
+  </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Anime Matrix 标识</value>
   </data>
@@ -580,6 +583,18 @@
   </data>
   <data name="MatrixPicture" xml:space="preserve">
     <value>图片</value>
+  </data>
+  <data name="MatrixRunningText" xml:space="preserve">
+    <value>Running Text</value>
+  </data>
+  <data name="MatrixText" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="MatrixTimeFormat" xml:space="preserve">
+    <value>Time Format</value>
+  </data>
+  <data name="MatrixDateFormat" xml:space="preserve">
+    <value>Date Format</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>更高的刷新率和更低的延迟</value>
@@ -967,10 +982,47 @@
     <value>防止 PCIe 设备进入低功耗空闲状态。
 如遇随机卡死或硬件无响应，建议启用。</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>在新式待机时禁用网络</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>防止 Windows Update 等后台任务
+使睡眠中的笔记本发热并消耗电池。</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Overlay only in games</value>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>电源</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>动画</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>开机和关机动画</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>睡眠动画</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>低电量提醒</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>电量指示</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>低电量时降低亮度</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>系统默认</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>动画图案</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>始终</value>
   </data>
 </root>

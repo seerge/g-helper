@@ -105,7 +105,7 @@ namespace GHelper.Mode
         {
             ResetRyzen();
 
-            Program.acpi.DeviceSet(AsusACPI.PerformanceMode, Modes.GetCurrentBase(), "Mode");
+            Program.acpi.SetPerformanceMode(Modes.GetCurrentBase());
 
             // Default power mode
             AppConfig.RemoveMode("powermode");
@@ -155,9 +155,7 @@ namespace GHelper.Mode
                     ct.ThrowIfCancellationRequested();
 
                     if (AppConfig.Is("status_mode")) Program.acpi.DeviceSet(AsusACPI.StatusMode, [0x00, Modes.GetBase(mode) == AsusACPI.PerformanceSilent ? (byte)0x02 : (byte)0x03], "StatusMode");
-                    int status = Program.acpi.DeviceSet(AsusACPI.PerformanceMode, AppConfig.IsManualModeRequired() ? AsusACPI.PerformanceManual : Modes.GetBase(mode), "Mode");
-                    // Vivobook fallback
-                    if (status != 1) Program.acpi.SetVivoMode(Modes.GetBase(mode));
+                    Program.acpi.SetPerformanceMode(AppConfig.IsManualModeRequired() ? AsusACPI.PerformanceManual : Modes.GetBase(mode));
 
                     SetGPUClocks();
 
@@ -195,6 +193,7 @@ namespace GHelper.Mode
                     PowerNative.SetPowerMode(Modes.GetBase(mode));
 
                 if (AppConfig.IsAutoASPM()) PowerNative.SetBalancedASPM();
+                if (AppConfig.IsAutoStandbyNetworking()) PowerNative.SetConnectivityInStandby();
             }
 
             // CPU Boost setting override
@@ -521,8 +520,24 @@ namespace GHelper.Mode
                 int cpuUV   = AppConfig.GetMode("cpu_uv",   0);
                 int igpuUV  = AppConfig.GetMode("igpu_uv",  0);
                 int cpuTemp = AppConfig.GetMode("cpu_temp");
+                string? cpuUVCores = AppConfig.GetModeString("cpu_uv_cores");
 
-                if (CpuInfo.IsSupportedUV() && cpuUV >= CpuInfo.MinCPUUV && cpuUV <= CpuInfo.MaxCPUUV)
+                if (CpuInfo.IsSupportedUV() && cpuUVCores is not null)
+                {
+                    int core = 0;
+                    foreach (var token in cpuUVCores.Split('-', StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        if (int.TryParse(token, out int uv) && -uv >= CpuInfo.MinCPUUV && -uv <= CpuInfo.MaxCPUUV)
+                        {
+                            SmuStatus s = smu.SetCoPer(core, -uv);
+                            Logger.WriteLine($"UV core {core}: {-uv} {s}");
+                            if (s == SmuStatus.OK) _cpuUV = -uv;
+                        }
+                        core++;
+                    }
+                    lines.AppendLine($"CPU UV cores {cpuUVCores}");
+                }
+                else if (CpuInfo.IsSupportedUV() && cpuUV >= CpuInfo.MinCPUUV && cpuUV <= CpuInfo.MaxCPUUV)
                 {
                     SmuStatus s = smu.SetCoAll(cpuUV);
                     Logger.WriteLine($"UV: {cpuUV} {s}");

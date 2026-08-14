@@ -175,7 +175,7 @@
     <value>Otomatis sesuaikan Mode Daya Windows</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Memory Assigned to GPU</value>
+    <value>Memori yang dialokasikan ke iGPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Layanan Asus Berjalan</value>
@@ -525,7 +525,7 @@ Apakah Anda masih ingin melanjutkan?</value>
     <value>Laptop Keyboard</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Layar Laptop</value>
+    <value>Layar</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>LED Status Indicators</value>
@@ -557,6 +557,9 @@ Apakah Anda masih ingin melanjutkan?</value>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Visualisasi Audio</value>
   </data>
+  <data name="MatrixAudioMode" xml:space="preserve">
+    <value>Visualizer Mode</value>
+  </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Binary Banner</value>
   </data>
@@ -580,6 +583,18 @@ Apakah Anda masih ingin melanjutkan?</value>
   </data>
   <data name="MatrixPicture" xml:space="preserve">
     <value>Gambar</value>
+  </data>
+  <data name="MatrixRunningText" xml:space="preserve">
+    <value>Running Text</value>
+  </data>
+  <data name="MatrixText" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="MatrixTimeFormat" xml:space="preserve">
+    <value>Time Format</value>
+  </data>
+  <data name="MatrixDateFormat" xml:space="preserve">
+    <value>Date Format</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Maks refresh rate untuk mengurangi latensi</value>
@@ -967,10 +982,47 @@ dan menjalankannya kembali secara otomatis saat GPU diaktifkan</value>
     <value>Mencegah perangkat PCIe memasuki status idle hemat daya.
 Direkomendasikan jika Anda mengalami hang acak atau perangkat keras tidak responsif.</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Nonaktifkan jaringan saat Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Mencegah tugas latar belakang seperti Windows Update
+memanaskan laptop yang tertidur dan menguras baterai.</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Overlay only in games</value>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>Daya</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>Animasi</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>Animasi saat menyala dan mati</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>Animasi mode tidur</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>Peringatan baterai lemah</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>Indikator level baterai</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>Redupkan saat baterai lemah</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>Bawaan sistem</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>Pola animasi</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>Selalu</value>
   </data>
 </root>
