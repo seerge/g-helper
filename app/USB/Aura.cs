@@ -880,7 +880,8 @@ namespace GHelper.USB
             if (Mode == AuraMode.CPUTEMP)
             {
                 CustomRGB.ApplyCPUTemp(true);
-                timer.Interval = 2000;
+                CustomRGB.tempSmoothing = Speed == AuraSpeed.Slow ? 0.3 : Speed == AuraSpeed.Fast ? 1.0 : 0.5;
+                timer.Interval = Speed == AuraSpeed.Slow ? 2000 : Speed == AuraSpeed.Fast ? 500 : 1500;
                 timer.Start();
                 return;
             }
@@ -1078,9 +1079,9 @@ namespace GHelper.USB
         {
 
             static int tempFreeze = AppConfig.Get("temp_freeze", 45);
-            static int tempCold = AppConfig.Get("temp_cold", 50);
-            static int tempWarm = AppConfig.Get("temp_warm", 60);
-            static int tempHot = AppConfig.Get("temp_hot", 80);
+            static int tempCold = AppConfig.Get("temp_cold", 55);
+            static int tempWarm = AppConfig.Get("temp_warm", 70);
+            static int tempHot = AppConfig.Get("temp_hot", 85);
 
             static Color colorFreeze = ColorTranslator.FromHtml(AppConfig.GetString("color_freeze", "#0000FF"));
             static Color colorCold = ColorTranslator.FromHtml(AppConfig.GetString("color_cold", "#008000"));
@@ -1172,7 +1173,7 @@ namespace GHelper.USB
             }
 
             static double smoothedTemp;
-            const double tempSmoothing = 0.3;
+            public static double tempSmoothing = 0.5;
             static Color lastCpuColor = Color.Empty;
 
             public static void ApplyHeatmap(bool init = false)
