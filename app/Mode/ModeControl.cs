@@ -311,6 +311,7 @@ namespace GHelper.Mode
 
             Thread.Sleep(500);
             SetGPUPower();
+            if (applyPower) SetCrossPower();
             AutoRyzen();
 
             if (IsReapplyRyzenRequired())
@@ -402,6 +403,22 @@ namespace GHelper.Mode
 
             SetModeLabel();
 
+        }
+
+        public void SetCrossPower()
+        {
+            int gpucpu = AppConfig.GetMode("limit_gpucpu");
+            int crossload = AppConfig.GetMode("limit_crossload");
+            int cputemp = AppConfig.GetMode("limit_cputemp");
+
+            if (gpucpu >= AsusACPI.MinGPUtoCPU && gpucpu <= AsusACPI.MaxGPUtoCPU && Program.acpi.IsSupported(AsusACPI.PPT_GPUCPU9C))
+                Program.acpi.DeviceSet(AsusACPI.PPT_GPUCPU9C, gpucpu, "PowerLimit 9C (GPU to CPU)");
+
+            if (crossload >= AsusACPI.MinCrossLoad && crossload <= AsusACPI.MaxCrossLoad && Program.acpi.IsSupported(AsusACPI.PPT_CROSS9F))
+                Program.acpi.DeviceSet(AsusACPI.PPT_CROSS9F, crossload, "PowerLimit 9F (Cross Loading)");
+
+            if (cputemp >= AsusACPI.MinCPUTemp && cputemp <= AsusACPI.MaxCPUTemp && Program.acpi.IsSupported(AsusACPI.PPT_TEMP9E))
+                Program.acpi.DeviceSet(AsusACPI.PPT_TEMP9E, cputemp, "PowerLimit 9E (CPU Temp)");
         }
 
         public void SetGPUClocks(bool launchAsAdmin = true, bool reset = false)
