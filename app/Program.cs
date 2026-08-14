@@ -366,7 +366,11 @@ namespace GHelper
 
         public static PowerSource currentSource = PowerSource.Battery;
         private static PowerLineStatus lastLineStatus = SystemInformation.PowerStatus.PowerLineStatus;
-        private static readonly System.Timers.Timer powerSettleTimer = new() { AutoReset = false };
+
+        // Short, fixed debounce: only coalesces the burst of duplicate OS/WMI events that
+        // fire for a single physical plug/unplug. Not a hardware settle wait.
+        private static readonly System.Timers.Timer powerSettleTimer = new(100) { AutoReset = false };
+        private static int powerSettleGeneration;
 
         public static PowerSource ReadPowerSource()
         {
@@ -388,14 +392,38 @@ namespace GHelper
         public static void SchedulePowerCheck()
         {
             if (AppConfig.Is("disable_power_event")) return;
-            powerSettleTimer.Interval = Math.Max(AppConfig.Get("charger_delay"), 2000);
             powerSettleTimer.Stop();
             powerSettleTimer.Start();
         }
 
         private static void OnPowerSettled(object? sender, System.Timers.ElapsedEventArgs e)
         {
-            PowerSource source = ReadPowerSource();
+            _ = SettlePowerSourceAsync();
+        }
+
+        // Instead of guessing how long the ACPI ChargerMode register takes to update, poll it
+        // until two consecutive reads agree (i.e. it has actually stopped changing), capped by
+        // charger_delay as a safety-net timeout rather than a guaranteed wait.
+        private static async Task SettlePowerSourceAsync()
+        {
+            int generation = System.Threading.Interlocked.Increment(ref powerSettleGeneration);
+
+            PowerSource? lastReading = null;
+            await AsyncHelper.PollUntilAsync(
+                () =>
+                {
+                    PowerSource reading = ReadPowerSource();
+                    bool stable = lastReading == reading;
+                    lastReading = reading;
+                    return stable;
+                },
+                intervalMs: 100,
+                timeoutMs: Math.Max(AppConfig.Get("charger_delay"), 2000));
+
+            // A newer power event superseded this one while we were polling - let that one win.
+            if (generation != powerSettleGeneration) return;
+
+            PowerSource source = lastReading ?? ReadPowerSource();
             if (source == currentSource) return;
 
             Logger.WriteLine($"Power source: {currentSource} -> {source}");

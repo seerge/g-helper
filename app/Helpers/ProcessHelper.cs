@@ -74,12 +74,12 @@ namespace GHelper.Helpers
 
                     if (failed.Count > 0)
                     {
-                        Thread.Sleep(2000);
-
                         foreach (var p in failed)
                         {
                             bool stillAlive;
-                            try { stillAlive = !p.HasExited; }
+                            // Wait for the actual exit signal instead of a blind sleep - returns
+                            // as soon as the process exits, 2000ms is only the fallback timeout.
+                            try { stillAlive = !p.WaitForExit(2000); }
                             catch { stillAlive = true; }
 
                             if (stillAlive)

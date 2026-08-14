@@ -166,65 +166,98 @@ namespace GHelper.Gpu
 
             settings.LockGPUModes();
 
-            Task.Run(async () =>
+            // Screen refresh only depends on power line status, not on GPU/eco state, so it
+            // runs as an independent sibling task instead of being sequenced behind, or bolted
+            // onto, the GPU/nvidia work below. Called directly (not via settings.Invoke) since
+            // ChangeDisplaySettingsEx is a slow blocking OS call - InitScreen() already
+            // marshals its own narrow UI update internally, so forcing the whole call onto the
+            // UI thread here would freeze the window for the duration of the mode change.
+            Task.Run(() => ScreenControl.AutoScreen());
+            Task.Run(() => RunGPUEcoSequence(eco));
+        }
+
+        private async Task RunGPUEcoSequence(int eco)
+        {
+            int status = 1;
+
+            Program.modeControl.WaitForApply();
+
+            if (eco == 1)
+            {
+                HardwareControl.KillGPUApps();
+                HardwareControl.DisposeGpuControl();
+                // Stop-Service blocks until the service has actually stopped, so this line
+                // itself is the "wait" - no extra guessed delay needed after it.
+                if (AppConfig.IsNVPlatform()) NvidiaGpuControl.StopNVService();
+            }
+
+            Logger.WriteLine($"Running eco command {eco}");
+
+            try
             {
 
-                int status = 1;
+                status = Program.acpi.SetGPUEco(eco);
 
-                Program.modeControl.WaitForApply();
+                // Wait for the ACPI eco flag to actually reflect the change instead of
+                // guessing how long that takes. refresh_delay is now only the safety-net
+                // timeout, not the wait itself.
+                await AsyncHelper.PollUntilAsync(
+                    () => Program.acpi.DeviceGet(AsusACPI.GPUEco) == eco,
+                    intervalMs: 100,
+                    timeoutMs: AppConfig.Get("refresh_delay", 500));
 
-                if (eco == 1)
+                settings.Invoke(delegate
                 {
-                    HardwareControl.KillGPUApps();
-                    HardwareControl.DisposeGpuControl();
-                    if (AppConfig.IsNVPlatform()) NvidiaGpuControl.StopNVService();
-                }
+                    InitGPUMode();
+                });
 
-                Logger.WriteLine($"Running eco command {eco}");
-
-                try
+                if (eco == 0)
                 {
-
-                    status = Program.acpi.SetGPUEco(eco);
-                    await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("refresh_delay", 500)));
-
-                    settings.Invoke(delegate
+                    if (AppConfig.IsNVPlatform() || nvRestartPending)
                     {
-                        InitGPUMode();
-                        ScreenControl.AutoScreen();
-                    });
+                        settings.LockGPUModes(Properties.Strings.RestartingNVServices);
 
-                    if (eco == 0)
-                    {
-                        if (AppConfig.IsNVPlatform() || nvRestartPending)
-                        {
-                            settings.LockGPUModes(Properties.Strings.RestartingNVServices);
-                            await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("nv_delay", 5000)));
-                            if (AppConfig.IsNVPlatform()) NvidiaGpuControl.RestartNVService();
-                            else NvidiaGpuControl.RestartNvContainer();
-                            nvRestartPending = false;
-                            settings.Invoke(delegate { InitGPUMode(); });
-                            await Task.Delay(TimeSpan.FromMilliseconds(1000));
-                        }
+                        // Restart-Service blocks until it has actually restarted; on failure
+                        // (GPU/PCIe link not re-enumerated yet) it throws quickly, so retry
+                        // with backoff instead of a single flat wait-then-try.
+                        bool restarted = await AsyncHelper.PollUntilAsync(
+                            () =>
+                            {
+                                try
+                                {
+                                    if (AppConfig.IsNVPlatform()) NvidiaGpuControl.RestartNVService();
+                                    else NvidiaGpuControl.RestartNvContainer();
+                                    return true;
+                                }
+                                catch (Exception ex)
+                                {
+                                    Logger.WriteLine("NV service restart attempt failed: " + ex.Message);
+                                    return false;
+                                }
+                            },
+                            intervalMs: 500,
+                            timeoutMs: AppConfig.Get("nv_delay", 5000));
 
-                        await HardwareControl.RecreateGpuControlWithRetry(3, 2);
-                        Program.modeControl.SetGPUClocks(false);
+                        if (!restarted) Logger.WriteLine("NV service did not restart within timeout");
+
+                        nvRestartPending = false;
+                        settings.Invoke(delegate { InitGPUMode(); });
                     }
 
-                    if (AppConfig.IsModeReapplyRequired())
-                    {
-                        await Task.Delay(TimeSpan.FromMilliseconds(3000));
-                        Program.modeControl.AutoPerformance();
-                    }
+                    await HardwareControl.RecreateGpuControlWithRetry(3, 2);
+                    Program.modeControl.SetGPUClocks(false);
                 }
-                catch (Exception ex)
+
+                if (AppConfig.IsModeReapplyRequired())
                 {
-                    Logger.WriteLine("Error setting GPU Eco: " + ex.Message);
+                    await Task.Delay(TimeSpan.FromMilliseconds(3000));
+                    Program.modeControl.AutoPerformance();
                 }
-
-            });
-
-
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine("Error setting GPU Eco: " + ex.Message);
+            }
         }
 
         public static bool IsPlugged() =>
