@@ -433,18 +433,27 @@ namespace GHelper
             if (source == currentSource) return;
 
             Logger.WriteLine($"Power source: {currentSource} -> {source}");
+            currentSource = source;
 
-            // SetAutoModes can decline to run (its own lastAuto lockout - a separate cascade
-            // is still in flight). currentSource must NOT be updated in that case: it's what
-            // this method compares against next time, so committing it here even though
-            // nothing was actually applied would make a future identical reading look like
-            // "no change" and the transition would never be retried - i.e. permanently stuck
-            // in the old state. Only commit once the change has actually been applied, and
-            // re-arm the settle timer to retry shortly if it wasn't.
-            // Not assigned here on success: SetAutoModes itself re-reads and commits
-            // currentSource internally (with a fresher live read) when it actually runs, so
-            // writing the `source` value captured before that call would risk clobbering it
-            // with stale data if the power line flipped again while SetAutoModes was busy.
+            // Screen refresh and GPU eco react immediately here, independent of SetAutoModes's
+            // cascade-wide rate limit below - they only depend on currentSource (just
+            // committed above from an already-settled reading), not on the rest of the
+            // cascade, and users notice a slow refresh-rate/eco switch immediately. Routing
+            // them through the lockout-gated SetAutoModes call instead delayed both by up to
+            // its 3s lockout, and - worse - let a quick unplug-then-replug leave the laptop
+            // stuck in Eco: AutoGPUMode's decision reads the live ACPI eco flag, which can lag
+            // several seconds behind an in-flight switch (Nvidia service stop/restart), so by
+            // the time a lockout-delayed replug evaluation ran, it could see a stale flag that
+            // still looked "already correct" and skip cancelling the stale in-flight switch,
+            // which then committed the wrong state moments later uncontested. delay:0 here
+            // since the settle-poll above already confirmed the reading is stable - no need
+            // for AutoGPUMode's own additional pre-switch delay on top of it.
+            ScreenControl.AutoScreen();
+            gpuControl.AutoGPUMode(delay: 0);
+
+            // The rest of the cascade (battery, lighting, keyboard, etc.) stays behind the
+            // lockout - it's fine for this slower-moving state to wait for a still-in-flight
+            // cascade to finish rather than run concurrently with it.
             bool applied = SetAutoModes(powerChanged: true);
             if (!applied)
             {

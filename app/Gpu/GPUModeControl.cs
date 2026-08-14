@@ -30,6 +30,15 @@ namespace GHelper.Gpu
         private static CancellationTokenSource? ecoCts;
         private static readonly Lock ecoCtsLock = new();
 
+        // The eco value an in-flight RunGPUEcoSequence is driving toward, or null once it has
+        // either committed the ACPI write or been abandoned. AutoGPUMode must trust this over
+        // a live ACPI read: a sequence can take seconds (Nvidia service stop/restart) before it
+        // actually writes the eco flag, and during that window the live flag still reads the
+        // OLD value - a caller deciding "no switch needed" from that stale read would let the
+        // stale in-flight sequence commit its (by-then-wrong) target uncontested, e.g. a quick
+        // unplug-then-replug leaving the laptop stuck in Eco after the replug.
+        private static int? pendingEcoTarget;
+
 
         public GPUModeControl(SettingsForm settingsForm)
         {
@@ -191,6 +200,7 @@ namespace GHelper.Gpu
                 ecoCts?.Dispose();
                 cts = new CancellationTokenSource();
                 ecoCts = cts;
+                pendingEcoTarget = eco;
             }
 
             // Screen refresh only depends on power line status, not on GPU/eco state, so it
@@ -200,11 +210,12 @@ namespace GHelper.Gpu
             // marshals its own narrow UI update internally, so forcing the whole call onto the
             // UI thread here would freeze the window for the duration of the mode change.
             Task.Run(() => ScreenControl.AutoScreen());
-            Task.Run(() => RunGPUEcoSequence(eco, delay, cts.Token));
+            Task.Run(() => RunGPUEcoSequence(eco, delay, cts));
         }
 
-        private async Task RunGPUEcoSequence(int eco, int delay, CancellationToken token)
+        private async Task RunGPUEcoSequence(int eco, int delay, CancellationTokenSource cts)
         {
+            var token = cts.Token;
             try
             {
                 // Was previously a blocking Thread.Sleep on the caller's thread; now an
@@ -304,6 +315,16 @@ namespace GHelper.Gpu
             {
                 Logger.WriteLine("Error setting GPU Eco: " + ex.Message);
             }
+            finally
+            {
+                // Only clear if nothing superseded us in the meantime (a newer SetGPUEco call
+                // would have already replaced ecoCts with its own source and set its own
+                // target) - otherwise we'd wipe out the newer, still-pending target.
+                lock (ecoCtsLock)
+                {
+                    if (ReferenceEquals(ecoCts, cts)) pendingEcoTarget = null;
+                }
+            }
         }
 
         public static bool IsPlugged() =>
@@ -328,7 +349,11 @@ namespace GHelper.Gpu
                 return false;
             }
 
-            int eco = Program.acpi.DeviceGet(AsusACPI.GPUEco);
+            // Trust an in-flight sequence's target over the live ACPI flag: the flag can lag
+            // several seconds behind (Nvidia service stop/restart) while a switch is already
+            // underway, and deciding "no change needed" from that stale read would let a now-
+            // stale in-flight switch commit uncontested moments later.
+            int eco = pendingEcoTarget ?? Program.acpi.DeviceGet(AsusACPI.GPUEco);
             int mux = Program.acpi.DeviceGet(AsusACPI.GPUMux);
 
             if (mux == 0)
