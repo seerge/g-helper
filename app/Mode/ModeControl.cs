@@ -49,6 +49,10 @@ namespace GHelper.Mode
         static CancellationTokenSource _modeCts = new();
         static Task _modeTask = Task.CompletedTask;
 
+        // Avoids a duplicate toast when SetPerformanceMode is called twice for the same mode in quick succession.
+        static long lastNotifiedAt;
+        static int lastNotifiedMode = -1;
+
         public ModeControl()
         {
             int reapplyTime = AppConfig.Get("reapply_time", IsReapplyTempRequired() ? 30 : 0);
@@ -195,7 +199,17 @@ namespace GHelper.Mode
                 }
             }, ct);
 
-            if (notify) Toast();
+            if (notify)
+            {
+                long now = Environment.TickCount64;
+                bool isDuplicateNotify = mode == lastNotifiedMode && (now - lastNotifiedAt) < 1000;
+                if (!isDuplicateNotify)
+                {
+                    lastNotifiedAt = now;
+                    lastNotifiedMode = mode;
+                    Toast();
+                }
+            }
 
             if (!AppConfig.Is("skip_powermode"))
             {

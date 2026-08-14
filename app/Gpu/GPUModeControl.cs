@@ -303,7 +303,13 @@ namespace GHelper.Gpu
                 if (AppConfig.IsModeReapplyRequired())
                 {
                     await Task.Delay(TimeSpan.FromMilliseconds(3000), token);
-                    Program.modeControl.AutoPerformance();
+
+                    // Reapply the currently active mode's settings (power limits reset by the
+                    // GPU eco switch on these models) - not AutoPerformance(), which re-derives
+                    // the mode from the power-source config and can switch away from whatever
+                    // mode is actually active (e.g. reverting a manual pick made in the
+                    // meantime). Mode selection stays isolated from GPU state changes.
+                    Program.modeControl.SetPerformanceMode();
                 }
             }
             catch (OperationCanceledException)
