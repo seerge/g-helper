@@ -15,10 +15,20 @@ namespace GHelper.Gpu
 
         static bool nvRestartPending;
 
+        // InitGPUMode() is normally run fire-and-forget in the background (see call sites
+        // below) - wrap it so a failure is logged like every other error path in this file
+        // instead of becoming a silent unobserved task exception.
+        private void InitGPUModeLogged()
+        {
+            try { InitGPUMode(); }
+            catch (Exception ex) { Logger.WriteLine("Error initializing GPU mode UI: " + ex.Message); }
+        }
+
         // Owned here rather than threaded through every caller: any two overlapping eco
         // switches are wrong regardless of what triggered them (power event, manual toggle,
         // Optimized-mode auto-apply), so SetGPUEco always supersedes its own previous run.
         private static CancellationTokenSource? ecoCts;
+        private static readonly Lock ecoCtsLock = new();
 
 
         public GPUModeControl(SettingsForm settingsForm)
@@ -174,9 +184,14 @@ namespace GHelper.Gpu
 
             settings.LockGPUModes();
 
-            ecoCts?.Cancel();
-            var cts = new CancellationTokenSource();
-            ecoCts = cts;
+            CancellationTokenSource cts;
+            lock (ecoCtsLock)
+            {
+                ecoCts?.Cancel();
+                ecoCts?.Dispose();
+                cts = new CancellationTokenSource();
+                ecoCts = cts;
+            }
 
             // Screen refresh only depends on power line status, not on GPU/eco state, so it
             // runs as an independent sibling task instead of being sequenced behind, or bolted
@@ -229,7 +244,7 @@ namespace GHelper.Gpu
                 // depends on finishing, so it shouldn't hold up the Nvidia restart step. Its own
                 // UI-touching calls (VisualiseGPUButtons/VisualiseGPUMode) already self-marshal
                 // via InvokeRequired, so this is safe to run off the UI thread too.
-                _ = Task.Run(InitGPUMode, token);
+                _ = Task.Run(InitGPUModeLogged, token);
 
                 if (eco == 0)
                 {
@@ -264,7 +279,7 @@ namespace GHelper.Gpu
                         if (!restarted) Logger.WriteLine("NV service did not restart within timeout");
 
                         nvRestartPending = false;
-                        _ = Task.Run(InitGPUMode, token);
+                        _ = Task.Run(InitGPUModeLogged, token);
                     }
 
                     token.ThrowIfCancellationRequested();

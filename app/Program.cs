@@ -441,12 +441,12 @@ namespace GHelper
             // "no change" and the transition would never be retried - i.e. permanently stuck
             // in the old state. Only commit once the change has actually been applied, and
             // re-arm the settle timer to retry shortly if it wasn't.
+            // Not assigned here on success: SetAutoModes itself re-reads and commits
+            // currentSource internally (with a fresher live read) when it actually runs, so
+            // writing the `source` value captured before that call would risk clobbering it
+            // with stale data if the power line flipped again while SetAutoModes was busy.
             bool applied = SetAutoModes(powerChanged: true);
-            if (applied)
-            {
-                currentSource = source;
-            }
-            else
+            if (!applied)
             {
                 Logger.WriteLine("SetAutoModes busy - retrying power source change shortly");
                 powerSettleTimer.Stop();

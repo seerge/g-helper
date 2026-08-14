@@ -591,6 +591,8 @@ namespace GHelper
 
         public void VisualiseController(ControllerMode mode)
         {
+            if (InvokeRequired) { Invoke(() => VisualiseController(mode)); return; }
+
             switch (mode)
             {
                 case ControllerMode.Gamepad:

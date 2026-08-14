@@ -323,14 +323,18 @@ public class NvidiaGpuControl : IGpuControl
     {
         if (!ProcessHelper.IsUserAdministrator()) return;
         await RunPowershellCommandAsync(@"Restart-Service -Name 'NVDisplay.ContainerLocalSystem' -Force", 30000, token);
-        await RunPowershellCommandAsync(@"Restart-Service -Name 'NvContainerLocalSystem' -Force", 30000, token);
+        // Once the first call has run, finish the pair even if superseded meanwhile - leaving
+        // one service restarted and the other untouched is a worse state than a late cancel.
+        await RunPowershellCommandAsync(@"Restart-Service -Name 'NvContainerLocalSystem' -Force", 30000, CancellationToken.None);
     }
 
     public static async Task StopNVServiceAsync(CancellationToken token = default)
     {
         if (!ProcessHelper.IsUserAdministrator()) return;
         await RunPowershellCommandAsync(@"Stop-Service -Name 'NvContainerLocalSystem' -Force", 30000, token);
-        await RunPowershellCommandAsync(@"Stop-Service -Name 'NVDisplay.ContainerLocalSystem' -Force", 30000, token);
+        // Once the first call has run, finish the pair even if superseded meanwhile - leaving
+        // one service stopped and the other untouched is a worse state than a late cancel.
+        await RunPowershellCommandAsync(@"Stop-Service -Name 'NVDisplay.ContainerLocalSystem' -Force", 30000, CancellationToken.None);
     }
 
     public int SetClocks(int core, int memory)
