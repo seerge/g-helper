@@ -681,7 +681,7 @@ public static class AppConfig
 
     public static bool IsHardwareTouchpadToggle()
     {
-        return ContainsModel("FA507");
+        return GetModelShort().Contains("FA507");
     }
 
     public static bool IsIntelHX()
