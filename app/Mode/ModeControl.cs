@@ -174,8 +174,6 @@ namespace GHelper.Mode
                     if (AppConfig.Is("status_mode")) Program.acpi.DeviceSet(AsusACPI.StatusMode, [0x00, Modes.GetBase(mode) == AsusACPI.PerformanceSilent ? (byte)0x02 : (byte)0x03], "StatusMode");
                     Program.acpi.SetPerformanceMode(AppConfig.IsManualModeRequired() ? AsusACPI.PerformanceManual : Modes.GetBase(mode));
 
-                    SetGPUClocks();
-
                     await Task.Delay(TimeSpan.FromMilliseconds(100), ct);
                     ct.ThrowIfCancellationRequested();
                     AutoFans();
@@ -187,6 +185,11 @@ namespace GHelper.Mode
                     if (command is not null)
                     {   Logger.WriteLine("Running mode command: " + command);
                         RestrictedProcessHelper.RunAsRestrictedUser(command);
+                    }
+
+                    if (!Program.gpuControl.IsSwitching)
+                    {
+                        _ = ApplyGPUSettingsAsync();
                     }
                 }
                 catch (OperationCanceledException)
@@ -337,7 +340,6 @@ namespace GHelper.Mode
             if (applyPower) SetPower(launchAsAdmin);
 
             Thread.Sleep(500);
-            SetGPUPower();
             if (applyPower) SetCrossPower();
             AutoRyzen();
 
@@ -446,6 +448,15 @@ namespace GHelper.Mode
 
             if (cputemp >= AsusACPI.MinCPUTemp && cputemp <= AsusACPI.MaxCPUTemp && Program.acpi.IsSupported(AsusACPI.PPT_TEMP9E))
                 Program.acpi.DeviceSet(AsusACPI.PPT_TEMP9E, cputemp, "PowerLimit 9E (CPU Temp)");
+        }
+
+        public Task ApplyGPUSettingsAsync()
+        {
+            return Task.Run(() =>
+            {
+                SetGPUPower();
+                SetGPUClocks(true, false);
+            });
         }
 
         public void SetGPUClocks(bool launchAsAdmin = true, bool reset = false)

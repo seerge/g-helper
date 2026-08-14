@@ -14,6 +14,7 @@ namespace GHelper.Gpu
         public static bool? gpuExists = null;
 
         static bool nvRestartPending;
+        public bool IsSwitching { get; private set; }
 
         // InitGPUMode() is normally run fire-and-forget in the background (see call sites
         // below) - wrap it so a failure is logged like every other error path in this file
@@ -218,13 +219,12 @@ namespace GHelper.Gpu
             var token = cts.Token;
             try
             {
+                IsSwitching = true;
                 // Was previously a blocking Thread.Sleep on the caller's thread; now an
                 // awaitable delay that a superseding request can cancel outright instead of
                 // letting a now-pointless switch fire after the fact.
                 if (delay > 0) await Task.Delay(delay, token);
                 token.ThrowIfCancellationRequested();
-
-                await Program.modeControl.WaitForApplyAsync(token);
 
                 if (eco == 1)
                 {
@@ -297,7 +297,7 @@ namespace GHelper.Gpu
 
                     await HardwareControl.RecreateGpuControlWithRetry(3, 2, token);
                     CheckStandardHalfState();
-                    Program.modeControl.SetGPUClocks(false);
+                    _ = Program.modeControl.ApplyGPUSettingsAsync();
                 }
 
                 if (AppConfig.IsModeReapplyRequired())
@@ -323,6 +323,7 @@ namespace GHelper.Gpu
             }
             finally
             {
+                IsSwitching = false;
                 // Only clear if nothing superseded us in the meantime (a newer SetGPUEco call
                 // would have already replaced ecoCts with its own source and set its own
                 // target) - otherwise we'd wipe out the newer, still-pending target.

@@ -1,4 +1,4 @@
-﻿using GHelper.Ally;
+using GHelper.Ally;
 using GHelper.AnimeMatrix;
 using GHelper.AutoUpdate;
 using GHelper.Battery;
@@ -784,7 +784,7 @@ namespace GHelper
                     Logger.WriteLine("Battery Saver: " + settings.Data);
                     buttonEnergySaver.Visible = settings.Data != 0;
                 }
-                else
+                else if (settings.PowerSetting == NativeMethods.PowerSettingGuid.ConsoleDisplayState)
                 {
                     switch (settings.Data)
                     {

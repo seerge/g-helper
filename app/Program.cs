@@ -322,7 +322,7 @@ namespace GHelper
 
             lock (autoLock)
             {
-                if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < skipDelay) return false;
+                if (!powerChanged && Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < skipDelay) return false;
                 lastAuto = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             }
 
@@ -393,7 +393,7 @@ namespace GHelper
         public static bool usbcProfile = AppConfig.Is("usbc_profile");
 
         public static int PerformanceKey() =>
-            usbcProfile ? (int)ReadPowerSource() : (int)SystemInformation.PowerStatus.PowerLineStatus;
+            usbcProfile ? (int)currentSource : (currentSource == PowerSource.Battery ? 0 : 1);
 
         public static void SchedulePowerCheck()
         {
