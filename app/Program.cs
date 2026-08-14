@@ -159,7 +159,6 @@ namespace GHelper
             settingsForm.InitMatrix();
 
             ScreenControl.InitScreen();
-            XGM.Init();
 
             SetAutoModes(init: true);
 
@@ -243,6 +242,7 @@ namespace GHelper
             modeControl.ShutdownReset();
             BatteryControl.AutoBattery();
             InputDispatcher.ShutdownStatusLed();
+            XGM.NotifyShutdown();
         }
 
         private static void SystemEvents_SessionSwitch(object sender, SessionSwitchEventArgs e)
@@ -338,7 +338,7 @@ namespace GHelper
             else settingsForm.matrixControl.SetDevice(true);
             InputDispatcher.InitStatusLed();
             if (init) NumberPad.Init();
-            XGM.InitLight();
+            XGM.Init();
 
             if (AppConfig.IsAlly())
             {
@@ -414,6 +414,7 @@ namespace GHelper
                 gpuControl.StandardModeFix();
                 modeControl.ShutdownReset();
                 InputDispatcher.ShutdownStatusLed();
+                XGM.NotifyShutdown();
                 return;
             }
 
