@@ -110,6 +110,10 @@ public class AsusACPI
     public const int PPT_CPUB0 = 0x001200B0;  // CPU PPT on 2022 (PPT_LIMIT_APU)
     public const int PPT_CPUB1 = 0x001200B1;  // Total PPT on 2022 (PPT_LIMIT_SLOW)
 
+    public const int PPT_GPUCPU9C = 0x0012009C;  // GPU to CPU Dynamic Boost, 5W steps
+    public const int PPT_TEMP9E = 0x0012009E;  // CPU Temperature Limit
+    public const int PPT_CROSS9F = 0x0012009F;  // Cross Loading Processor Power
+
     public const int PPT_GPUC0 = 0x001200C0;  // NVIDIA GPU Boost
     public const int PPT_APUC1 = 0x001200C1;  // fPPT (fast boost limit)
     public const int PPT_GPUC2 = 0x001200C2;  // NVIDIA GPU Temp Target (75.. 87 C) 
@@ -181,6 +185,16 @@ public class AsusACPI
 
     public const int MinGPUTemp = 75;
     public const int MaxGPUTemp = 87;
+
+    public const int MinGPUtoCPU = 0;
+    public const int StepGPUtoCPU = 5;
+    public const int MaxGPUtoCPU = 10;
+
+    public const int MinCrossLoad = 0;
+    public static int MaxCrossLoad = 40;
+
+    public const int MinCPUTemp = 75;
+    public static int MaxCPUTemp = 97;
 
     public const int PCoreMin = 4;
     public const int ECoreMin = 0;
@@ -316,6 +330,13 @@ public class AsusACPI
         if (AppConfig.IsIntelHX())
         {
             MaxTotal = 175;
+            MaxCrossLoad = 125;
+            MaxCPUTemp = 103;
+        }
+
+        if (AppConfig.ContainsModel("GU606"))
+        {
+            MaxCrossLoad = 50;
         }
 
         if (AppConfig.DynamicBoost5())
