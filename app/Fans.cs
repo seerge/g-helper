@@ -1135,9 +1135,9 @@ namespace GHelper
             AppConfig.SetMode("limit_cpu", trackCPU.Value);
             AppConfig.SetMode("limit_fast", trackFast.Value);
 
-            AppConfig.SetMode("limit_crossload", trackCrossLoad.Value);
-            AppConfig.SetMode("limit_gpucpu", trackGPUtoCPU.Value);
-            AppConfig.SetMode("limit_cputemp", trackCPUTemp.Value);
+            if (Program.acpi.IsSupported(AsusACPI.PPT_CROSS9F)) AppConfig.SetMode("limit_crossload", trackCrossLoad.Value);
+            if (Program.acpi.IsSupported(AsusACPI.PPT_GPUCPU9C)) AppConfig.SetMode("limit_gpucpu", trackGPUtoCPU.Value);
+            if (Program.acpi.IsSupported(AsusACPI.PPT_TEMP9E)) AppConfig.SetMode("limit_cputemp", trackCPUTemp.Value);
         }
 
         private void TrackTotal_Scroll(object? sender, EventArgs e)
