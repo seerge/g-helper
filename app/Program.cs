@@ -353,6 +353,7 @@ namespace GHelper
             if (!switched)
             {
                 gpuControl.InitGPUMode();
+                if (init) gpuControl.CheckStandardHalfState();
                 ScreenControl.AutoScreen();
             }
 
