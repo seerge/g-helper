@@ -166,7 +166,7 @@
     <value>Alkalmaz</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Egyedi ventigörbe használata</value>
+    <value>Ventigörbe használata</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Teljesítménykorlátok alkalmazása</value>
@@ -175,7 +175,7 @@
     <value>A Windows energiagazdálkodási módok automatikus beállítása</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>A GPU-nak kiosztott memória</value>
+    <value>Az iGPU-nak kiosztott memória</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Asus szolgáltatások futnak</value>
@@ -304,10 +304,16 @@
     <value>BIOS és illesztőprogram frissítések</value>
   </data>
   <data name="Boot" xml:space="preserve">
-    <value>Rendszerbetöltés</value>
+    <value>Indítás</value>
   </data>
   <data name="BootSound" xml:space="preserve">
     <value>Rendszerindítási hang</value>
+  </data>
+  <data name="BacklightDown" xml:space="preserve">
+    <value>Hátvilágítás ki</value>
+  </data>
+  <data name="BacklightUp" xml:space="preserve">
+    <value>Hátvilágítás be</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Fényerő</value>
@@ -519,7 +525,7 @@ Folytatni szeretnéd?</value>
     <value>Laptop billentyűzet</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Laptop kijelző</value>
+    <value>Kijelző</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>LED Állapotjelzők</value>
@@ -551,6 +557,9 @@ Folytatni szeretnéd?</value>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Hang vizualizáció</value>
   </data>
+  <data name="MatrixAudioMode" xml:space="preserve">
+    <value>Vizualizáló mód</value>
+  </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Bináris logó</value>
   </data>
@@ -574,6 +583,18 @@ Folytatni szeretnéd?</value>
   </data>
   <data name="MatrixPicture" xml:space="preserve">
     <value>Kép</value>
+  </data>
+  <data name="MatrixRunningText" xml:space="preserve">
+    <value>Futó szöveg</value>
+  </data>
+  <data name="MatrixText" xml:space="preserve">
+    <value>Szöveg</value>
+  </data>
+  <data name="MatrixTimeFormat" xml:space="preserve">
+    <value>Időformátum</value>
+  </data>
+  <data name="MatrixDateFormat" xml:space="preserve">
+    <value>Dátum formátum</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Max frissítési gyakoriság kevés késleltetéshez</value>
@@ -699,7 +720,7 @@ Folytatni szeretnéd?</value>
     <value>A Teljesítménykorlát egy kísérleti funkció. Használja körültekintően és saját felelősségére!</value>
   </data>
   <data name="PrintScreen" xml:space="preserve">
-    <value>PrintScreen</value>
+    <value>Képernyő-másolás</value>
   </data>
   <data name="Profile" xml:space="preserve">
     <value>Profil</value>
@@ -715,6 +736,9 @@ Folytatni szeretnéd?</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
     <value>Valami használja még a dGPU-t, ezzel megakadályozva az Eco móda lépést. Próbálja meg a G-Helper újraindítani a dGPU-t az eszközkezelőben? (Kérjük, saját felelősségére folytassa)</value>
+  </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>NV szolgáltatások újraindítása...</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>Fordulatszám</value>
@@ -750,7 +774,7 @@ Folytatni szeretnéd?</value>
     <value>Általános használathoz engedélyezi a dGPU-t</value>
   </data>
   <data name="StandardMode" xml:space="preserve">
-    <value>Standard</value>
+    <value>Szabványos</value>
   </data>
   <data name="Start" xml:space="preserve">
     <value>Indítás</value>
@@ -958,10 +982,47 @@ Folytatni szeretnéd?</value>
     <value>Megakadályozza, hogy a PCIe eszközök alacsony fogyasztású tétlen állapotba lépjenek.
 Ajánlott, ha véletlenszerű lefagyásokat vagy nem reagáló hardvert tapasztal.</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Hálózat letiltása Modern Standby módban</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Megakadályozza, hogy a háttérfeladatok, mint a Windows Update,
+felmelegítsék az alvó laptopot és lemerítsék az akkumulátort.</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
     <value>Átfedés</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Csak a játékokban jelenítse meg</value>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>Energiaellátás</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>Animációk</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>Indítási és leállítási animáció</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>Alvó mód animáció</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>Alacsony töltöttség figyelmeztetés</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>Töltöttségjelző</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>Halványítás alacsony töltöttségnél</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>Alapértelmezett</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>Animációs minta</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>Mindig</value>
   </data>
 </root>

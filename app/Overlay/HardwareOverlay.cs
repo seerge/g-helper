@@ -148,6 +148,7 @@ namespace GHelper.Overlay
 
         // Cached drawing resources — recreated only when the scale changes
         private float _lastScale = 0f;
+        private float _charW;
         private Font? _font;
         private Font? _rpmFont;
         private Font? _fpsBold;
@@ -207,6 +208,7 @@ namespace GHelper.Overlay
         private IntPtr _fgHook;
         private WinEventProc? _fgHookProc; // keep delegate alive
         private const int MinGameFps = 6;
+        private int _gameTicks;
 
         private static readonly HashSet<string> DesktopApps = new(StringComparer.OrdinalIgnoreCase)
         {
@@ -217,7 +219,8 @@ namespace GHelper.Overlay
             "steam", "steamwebhelper", "EpicGamesLauncher", "Battle.net", "GalaxyClient", "EADesktop", "UbisoftConnect",
             "vlc", "mpv", "mpc-hc64", "mpc-be64", "PotPlayerMini64", "wmplayer", "smplayer", "foobar2000", "aimp",
             "WINWORD", "EXCEL", "POWERPNT", "OUTLOOK", "Acrobat", "AcroRd32", "SumatraPDF", "thunderbird", "Mailspring", "OneNote", "GitHubDesktop", "7zFM", "WinRAR", "SnippingTool",
-            "explorer", "ShellExperienceHost", "SearchHost", "StartMenuExperienceHost", "ApplicationFrameHost", "SystemSettings", "Taskmgr",
+            "explorer", "ShellExperienceHost", "ShellHost", "SearchHost", "StartMenuExperienceHost", "ApplicationFrameHost", "SystemSettings", "Taskmgr",
+            "PowerToys.PowerLauncher", "PowerToys.Settings", "PowerToys.ColorPickerUI", "PowerToys.FancyZonesEditor", "PowerToys.Peek.UI", "PowerToys.PowerOCR", "PowerToys.MeasureToolUI", "PowerToys.ImageResizer", "PowerToys.PowerRename", "PowerToys.AdvancedPaste", "Microsoft.CmdPal.UI",
         };
 
         [DllImport("user32.dll")]
@@ -377,7 +380,9 @@ namespace GHelper.Overlay
                 int i = full.IndexOf(tag, StringComparison.OrdinalIgnoreCase);
                 if (i < 0) continue;
                 string[] p = full[i..].Split(' ', StringSplitOptions.RemoveEmptyEntries);
-                return p.Length >= 2 ? p[0] + " " + p[1] : p[0];
+                string s = p.Length >= 2 ? p[0] + " " + p[1] : p[0];
+                if (p.Length >= 3 && p[2] == "Ti") s += " Ti";
+                return s;
             }
             return full;
         }
@@ -517,7 +522,8 @@ namespace GHelper.Overlay
 
         private void UpdateGameVisibility(int fgPid)
         {
-            if (_currentFps >= MinGameFps && !_fgDesktop) _shownPid = fgPid;
+            _gameTicks = _currentFps >= MinGameFps && !_fgDesktop ? _gameTicks + 1 : 0;
+            if (_gameTicks >= 2) _shownPid = fgPid;
             bool show = fgPid == _shownPid;
             if (show != _hidden) return;
             _hidden = !show;
@@ -638,15 +644,14 @@ namespace GHelper.Overlay
                 _fpsBold?.Dispose(); _fpsBold = new Font("Consolas", innerH / 1.15f, FontStyle.Bold, GraphicsUnit.Pixel);
                 _totalPen?.Dispose(); _totalPen = new Pen(Color.FromArgb(255, 200, 200, 200), sc * 0.75f) { DashStyle = DashStyle.Dot };
                 _axPen?.Dispose();    _axPen    = new Pen(Color.FromArgb(255, 80, 80, 80), sc * 0.5f);
+                _charW = g.MeasureString("XX", _font).Width - g.MeasureString("X", _font).Width;
             }
 
             var font    = _font!;
             var rpmFont = _rpmFont!;
             var fpsBold = _fpsBold!;
 
-            // Differential trick: MeasureString("XX") - MeasureString("X") cancels the
-            // fixed GDI+ padding, giving the true per-character advance width for Consolas.
-            float charW = g.MeasureString("XX", font).Width - g.MeasureString("X", font).Width;
+            float charW = _charW;
 
             int topY = padY;
             // Nudge per-row text down so it lines up with the vertically centered usage bars.
@@ -1103,8 +1108,6 @@ namespace GHelper.Overlay
             _dragging = false;
             _dragKey = false;
 
-            // Dispose triggers CloseTrace + StopTrace inside EtwFpsMonitor, which unblocks
-            // ProcessTrace so the background task thread can exit.
             _fps?.Dispose();
             _fps = null;
             _currentFps = 0;

@@ -166,7 +166,7 @@
     <value>Aplicar</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Aplicar a curva personalizada</value>
+    <value>Aplicar a curva</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Aplicar as limitações de energia</value>
@@ -175,7 +175,7 @@
     <value>Ajuste automático dos modos de energia do Windows</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Memória Atribuída à GPU</value>
+    <value>Memória Atribuída à iGPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Serviços da Asus em execução</value>
@@ -308,6 +308,12 @@
   </data>
   <data name="BootSound" xml:space="preserve">
     <value>Som de inicialização</value>
+  </data>
+  <data name="BacklightDown" xml:space="preserve">
+    <value>Backlight Down</value>
+  </data>
+  <data name="BacklightUp" xml:space="preserve">
+    <value>Backlight Up</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Nível do brilho</value>
@@ -551,6 +557,9 @@ Ainda quer continuar?</value>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Visualizador de áudio</value>
   </data>
+  <data name="MatrixAudioMode" xml:space="preserve">
+    <value>Visualizer Mode</value>
+  </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Bandeira Binária</value>
   </data>
@@ -574,6 +583,18 @@ Ainda quer continuar?</value>
   </data>
   <data name="MatrixPicture" xml:space="preserve">
     <value>Imagem</value>
+  </data>
+  <data name="MatrixRunningText" xml:space="preserve">
+    <value>Running Text</value>
+  </data>
+  <data name="MatrixText" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="MatrixTimeFormat" xml:space="preserve">
+    <value>Time Format</value>
+  </data>
+  <data name="MatrixDateFormat" xml:space="preserve">
+    <value>Date Format</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Taxa de atualização máxima e menor latência</value>
@@ -715,6 +736,9 @@ Ainda quer continuar?</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
     <value>Algo está usando dGPU e impedindo o modo Eco. Deixe G-Helper tentar reiniciar o dGPU no gerenciador de dispositivos? (Por favor, proceda por sua conta e risco)</value>
+  </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
@@ -958,10 +982,47 @@ e os reinicia automaticamente quando a GPU é ativada</value>
     <value>Impede que dispositivos PCIe entrem em estados de inatividade de baixa energia.
 Recomendado se você sofrer travamentos aleatórios ou hardware sem resposta.</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Desativar rede no Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Impede que tarefas em segundo plano como o Windows Update
+aqueçam o notebook adormecido e drenem a bateria.</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Overlay only in games</value>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>Energia</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>Animações</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>Animação de inicialização e desligamento</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>Animação de suspensão</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>Alerta de bateria fraca</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>Indicador de nível da bateria</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>Esmaecer com bateria fraca</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>Padrão do sistema</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>Padrão de animação</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>Sempre</value>
   </data>
 </root>

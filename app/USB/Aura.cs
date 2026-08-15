@@ -100,7 +100,7 @@ namespace GHelper.USB
         public static AuraMode RearMode
         {
             get { return rearMode; }
-            set { rearMode = GetModes().ContainsKey(value) ? value : AuraMode.AuraStatic; }
+            set { rearMode = GetRearModes().ContainsKey(value) ? value : AuraMode.AuraStatic; }
         }
 
         static bool isACPI = AppConfig.IsTUF() || AppConfig.IsVivoZenPro();
@@ -174,7 +174,7 @@ namespace GHelper.USB
             modes[AuraMode.AuraStatic] = Properties.Strings.AuraStatic;
             modes[AuraMode.AuraBreathe] = Properties.Strings.AuraBreathe;
             modes[AuraMode.AuraColorCycle] = Properties.Strings.AuraColorCycle;
-            if (!isACPI) modes[AuraMode.AuraRainbow] = Properties.Strings.AuraRainbow;
+            if (isStrixKb) modes[AuraMode.AuraRainbow] = Properties.Strings.AuraRainbow;
 
             if (perKey)
             {
@@ -266,6 +266,11 @@ namespace GHelper.USB
         public static bool HasSecondColor()
         {
             return (mode == AuraMode.AuraBreathe || mode == AuraMode.GRADIENT) && (!isACPI || AppConfig.IsDynamicLightingOnly());
+        }
+
+        public static bool HasRandomColor()
+        {
+            return mode == AuraMode.Star || mode == AuraMode.Highlight || mode == AuraMode.Laser || mode == AuraMode.Ripple;
         }
 
         private static void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
@@ -690,6 +695,12 @@ namespace GHelper.USB
 
             if (!backlight) return;
 
+            if (AsusLampArray.Available)
+            {
+                AsusLampArray.SetColors(color);
+                return;
+            }
+
             const byte keySet = 167;
             const byte ledCount = 178;
             const ushort mapSize = 3 * ledCount;
@@ -772,6 +783,7 @@ namespace GHelper.USB
 
         public static void ApplyDirectLightbar(Color[] color)
         {
+            if (AsusLampArray.Available) return;
             var map = isStrix4ZoneFlipped ? packet4ZoneFlipped : packet4Zone;
             byte[] buffer = new byte[64];
             buffer[0] = AsusHid.AURA_ID;
@@ -802,6 +814,12 @@ namespace GHelper.USB
             if (isACPI)
             {
                 Program.acpi.TUFKeyboardRGB(0, color, 0, null);
+                return;
+            }
+
+            if (AsusLampArray.Available)
+            {
+                AsusLampArray.SetColor(color);
                 return;
             }
 
@@ -1326,7 +1344,7 @@ namespace GHelper.USB
                     colors[z] = ColorUtils.GetWeightedAverage(Aura.Color2, Aura.Color1, t);
                 }
 
-                int[] lightbarOrder = new int[] { 7, 6, 4, 5 };
+                int[] lightbarOrder = AsusLampArray.Available ? new int[] { 4, 5, 6, 7 } : new int[] { 7, 6, 4, 5 };
                 for (int i = 0; i < lightbarOrder.Length; i++)
                 {
                     float t = i / 3f;
@@ -1334,6 +1352,7 @@ namespace GHelper.USB
                 }
 
                 ApplyDirect(colors, true);
+                ApplyDirect(colors);
             }
 
             // Zone 0 red, 1 orange, 2 yellow, 3 green, 4 cyan, 5 blue, 6 magenta, 7 white.
@@ -1429,6 +1448,7 @@ namespace GHelper.USB
             public static void ApplyAmbient(bool init = false)
             {
                 if (!backlight || sessionLock) return;
+                if (AmbientData.IsMoveSize()) return;
 
                 var bound = Screen.GetBounds(Point.Empty);
                 bound.Y += bound.Height / 3;
@@ -1482,6 +1502,15 @@ namespace GHelper.USB
 
             static class AmbientData
             {
+                [DllImport("user32.dll")]
+                private static extern bool GetGUIThreadInfo(uint idThread, int[] gui);
+
+                public static bool IsMoveSize()
+                {
+                    int[] gui = new int[18];
+                    gui[0] = 72;
+                    return GetGUIThreadInfo(0, gui) && (gui[1] & 0x2) != 0; 
+                }
 
                 public enum StretchMode
                 {

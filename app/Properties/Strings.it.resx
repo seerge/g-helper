@@ -175,7 +175,7 @@
     <value>Regola Piano Energetico di Windows in automatico</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Memoria assegnata alla GPU</value>
+    <value>Memoria assegnata all'iGPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Servizi Asus in Esecuzione</value>
@@ -308,6 +308,12 @@
   </data>
   <data name="BootSound" xml:space="preserve">
     <value>Suono Di Avvio</value>
+  </data>
+  <data name="BacklightDown" xml:space="preserve">
+    <value>Backlight Down</value>
+  </data>
+  <data name="BacklightUp" xml:space="preserve">
+    <value>Backlight Up</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Luminosità</value>
@@ -519,7 +525,7 @@ Sei sicuro di voler continuare?</value>
     <value>Tastiera Laptop</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Schermo Laptop</value>
+    <value>Schermo</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>Indicatori Di Stato LED</value>
@@ -528,7 +534,7 @@ Sei sicuro di voler continuare?</value>
     <value>Coperchio</value>
   </data>
   <data name="Lightbar" xml:space="preserve">
-    <value>Barra Luminosa</value>
+    <value>Barra LED</value>
   </data>
   <data name="Lighting" xml:space="preserve">
     <value>Illuminazione</value>
@@ -550,6 +556,9 @@ Sei sicuro di voler continuare?</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Visualizzatore Audio</value>
+  </data>
+  <data name="MatrixAudioMode" xml:space="preserve">
+    <value>Visualizer Mode</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Banner Binario</value>
@@ -574,6 +583,18 @@ Sei sicuro di voler continuare?</value>
   </data>
   <data name="MatrixPicture" xml:space="preserve">
     <value>Immagine</value>
+  </data>
+  <data name="MatrixRunningText" xml:space="preserve">
+    <value>Running Text</value>
+  </data>
+  <data name="MatrixText" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="MatrixTimeFormat" xml:space="preserve">
+    <value>Time Format</value>
+  </data>
+  <data name="MatrixDateFormat" xml:space="preserve">
+    <value>Date Format</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Massimo refresh rate per latenza ridotta</value>
@@ -716,6 +737,9 @@ Sei sicuro di voler continuare?</value>
   <data name="RestartGPU" xml:space="preserve">
     <value>Qualcosa sta utilizzando la dGPU e impedisce il passaggio alla modalità Eco. Vuoi che G-Helper provi a riavviare la dGPU in gestione dispositivi? (Procedi a tuo rischio)</value>
   </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
+  </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
   </data>
@@ -738,7 +762,7 @@ Sei sicuro di voler continuare?</value>
     <value>Aumenta luminosità Screenpad</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
-    <value>Spegnimento</value>
+    <value>Arresto</value>
   </data>
   <data name="Silent" xml:space="preserve">
     <value>Silenzioso</value>
@@ -958,10 +982,47 @@ e li riavvia automaticamente quando la GPU viene attivata</value>
     <value>Impedisce ai dispositivi PCIe di entrare in stati di inattività a basso consumo.
 Consigliato in caso di blocchi casuali o hardware non rispondente.</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Disattiva la rete in Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Impedisce alle attività in background come Windows Update
+di riscaldare il laptop in sospensione e scaricare la batteria.</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Overlay only in games</value>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>Alimentazione</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>Animazioni</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>Animazione di avvio e spegnimento</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>Animazione sospensione</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>Avviso batteria scarica</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>Indicatore livello batteria</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>Attenua con batteria scarica</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>Predefinito di sistema</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>Motivo animazione</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>Sempre</value>
   </data>
 </root>

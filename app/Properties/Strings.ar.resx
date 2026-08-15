@@ -166,7 +166,7 @@
     <value>تطبيق</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>تطبيق منحنى المروحة المخصص</value>
+    <value>تطبيق منحنى المروحة</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>تطبيق حدود الطاقة</value>
@@ -175,7 +175,7 @@
     <value>ضبط أوضاع طاقة ويندوز تلقائيًا</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>الذاكرة المخصصة لوحدة معالجة الرسومات</value>
+    <value>الذاكرة المخصصة لوحدة معالجة الرسومات المدمجة</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>خدمات أسوس قيد التشغيل</value>
@@ -308,6 +308,12 @@
   </data>
   <data name="BootSound" xml:space="preserve">
     <value>صوت الإقلاع</value>
+  </data>
+  <data name="BacklightDown" xml:space="preserve">
+    <value>Backlight Down</value>
+  </data>
+  <data name="BacklightUp" xml:space="preserve">
+    <value>Backlight Up</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>السطوع</value>
@@ -519,7 +525,7 @@
     <value>لوحة مفاتيح الحاسوب المحمول</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>شاشة الحاسوب المحمول</value>
+    <value>الشاشة</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>مؤشرات حالة LED</value>
@@ -551,6 +557,9 @@
   <data name="MatrixAudio" xml:space="preserve">
     <value>مؤثرات الصوت المرئية</value>
   </data>
+  <data name="MatrixAudioMode" xml:space="preserve">
+    <value>Visualizer Mode</value>
+  </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>لافتة ثنائية</value>
   </data>
@@ -574,6 +583,18 @@
   </data>
   <data name="MatrixPicture" xml:space="preserve">
     <value>صورة</value>
+  </data>
+  <data name="MatrixRunningText" xml:space="preserve">
+    <value>Running Text</value>
+  </data>
+  <data name="MatrixText" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="MatrixTimeFormat" xml:space="preserve">
+    <value>Time Format</value>
+  </data>
+  <data name="MatrixDateFormat" xml:space="preserve">
+    <value>Date Format</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>أعلى معدل تحديث لأقل تأخير</value>
@@ -715,6 +736,9 @@
   </data>
   <data name="RestartGPU" xml:space="preserve">
     <value>هناك شيء يستخدم وحدة معالجة الرسومات المنفصلة ويمنع وضع التوفير. هل تريد أن يحاول G-Helper إعادة تشغيل وحدة معالجة الرسومات في مدير الأجهزة؟ (يرجى المتابعة على مسؤوليتك الخاصة)</value>
+  </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>دورة في الدقيقة</value>
@@ -958,10 +982,47 @@
     <value>يمنع أجهزة PCIe من الدخول في حالات الخمول منخفضة الطاقة.
 موصى به في حال حدوث تعليق عشوائي أو عدم استجابة الأجهزة.</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>تعطيل الشبكة في وضع Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>يمنع مهام الخلفية مثل Windows Update
+من تسخين الجهاز أثناء السكون واستنزاف البطارية.</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Overlay only in games</value>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>الطاقة</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>الرسوم المتحركة</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>رسوم بدء التشغيل وإيقاف التشغيل</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>رسوم وضع السكون</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>تنبيه انخفاض البطارية</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>مؤشر مستوى البطارية</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>تخفيت الإضاءة عند انخفاض البطارية</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>افتراضي النظام</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>نمط الرسوم المتحركة</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>دائمًا</value>
   </data>
 </root>

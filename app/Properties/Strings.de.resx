@@ -175,7 +175,7 @@
     <value>Windows Leistungsmodus automatisch anpassen</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>GPU zugewiesener Speicher</value>
+    <value>iGPU zugewiesener Speicher</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>ASUS Dienste laufen</value>
@@ -250,7 +250,7 @@
     <value>60Hz im Batteriebetrieb. Maximal, wenn eingesteckt.</value>
   </data>
   <data name="Awake" xml:space="preserve">
-    <value>Im Betrieb</value>
+    <value>Aktiv</value>
   </data>
   <data name="BacklightLow" xml:space="preserve">
     <value>Niedrig</value>
@@ -304,10 +304,16 @@
     <value>BIOS und Treiber Updates</value>
   </data>
   <data name="Boot" xml:space="preserve">
-    <value>Hochfahren</value>
+    <value>Start</value>
   </data>
   <data name="BootSound" xml:space="preserve">
     <value>Boot-Sound</value>
+  </data>
+  <data name="BacklightDown" xml:space="preserve">
+    <value>Backlight Down</value>
+  </data>
+  <data name="BacklightUp" xml:space="preserve">
+    <value>Backlight Up</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Helligkeit</value>
@@ -519,7 +525,7 @@ Trotzdem fortfahren?</value>
     <value>Laptoptastatur</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Laptopbildschirm</value>
+    <value>Bildschirm</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>LED-Statusanzeige</value>
@@ -551,6 +557,9 @@ Trotzdem fortfahren?</value>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Audio Visualisierung</value>
   </data>
+  <data name="MatrixAudioMode" xml:space="preserve">
+    <value>Visualizer Mode</value>
+  </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Binäres Banner</value>
   </data>
@@ -574,6 +583,18 @@ Trotzdem fortfahren?</value>
   </data>
   <data name="MatrixPicture" xml:space="preserve">
     <value>Bild</value>
+  </data>
+  <data name="MatrixRunningText" xml:space="preserve">
+    <value>Running Text</value>
+  </data>
+  <data name="MatrixText" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="MatrixTimeFormat" xml:space="preserve">
+    <value>Time Format</value>
+  </data>
+  <data name="MatrixDateFormat" xml:space="preserve">
+    <value>Date Format</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Maximale Wiederholrate für niedrigste Latenz</value>
@@ -716,6 +737,9 @@ Trotzdem fortfahren?</value>
   <data name="RestartGPU" xml:space="preserve">
     <value>Ein Prozess verhindert den Wechsel in den Eco-Modus. dGPU neu starten? Fortfahren auf eigene Gefahr.</value>
   </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
+  </data>
   <data name="RPM" xml:space="preserve">
     <value>U/Min</value>
   </data>
@@ -738,7 +762,7 @@ Trotzdem fortfahren?</value>
     <value>Screenpad-Helligkeit erhöhen</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
-    <value>Herunterfahren</value>
+    <value>Ausschalten</value>
   </data>
   <data name="Silent" xml:space="preserve">
     <value>Leise</value>
@@ -921,7 +945,7 @@ Trotzdem fortfahren?</value>
     <value>Static</value>
   </data>
   <data name="SlashBatteryLevel" xml:space="preserve">
-    <value>Battery Level</value>
+    <value>Ladezustand</value>
   </data>
   <data name="IntervalOff" xml:space="preserve">
     <value>Interval Off</value>
@@ -958,10 +982,47 @@ und startet sie automatisch neu, wenn die GPU aktiviert wird</value>
     <value>Verhindert, dass PCIe-Geräte in energiesparende Leerlaufzustände wechseln.
 Empfohlen, wenn zufällige Hänger oder nicht reagierende Hardware auftreten.</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Netzwerk im Modern Standby deaktivieren</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Verhindert, dass Hintergrundaufgaben wie Windows Update
+den schlafenden Laptop aufheizen und den Akku entladen.</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
-    <value>Overlay only in games</value>
+    <value>Overlay nur in Spielen</value>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>Energie</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>Animationen</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>Start- und Herunterfahranimation</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>Standby-Animation</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>Warnung bei niedrigem Akkustand</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>Akkustand-Anzeige</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>Bei niedrigem Akkustand dimmen</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>Systemstandard</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>Animationsmuster</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>Immer</value>
   </data>
 </root>

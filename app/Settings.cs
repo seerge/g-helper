@@ -37,6 +37,7 @@ namespace GHelper
         private readonly System.Windows.Forms.Timer batteryTimer = new() { Interval = 200 };
 
         public Matrix? matrixForm;
+        public Slash? slashForm;
         public Fans? fansForm;
         public Extra? extraForm;
         public Updates? updatesForm;
@@ -90,11 +91,9 @@ namespace GHelper
             labelMatrix.Text = Properties.Strings.AnimeMatrix;
             labelBatteryTitle.Text = Properties.Strings.BatteryChargeLimit;
 
-            checkMatrix.Text = Properties.Strings.TurnOffOnBattery;
-            checkMatrixLid.Text = Properties.Strings.DisableOnLidClose;
             checkStartup.Text = Properties.Strings.RunOnStartup;
 
-            buttonMatrix.Text = Properties.Strings.PictureGif;
+            buttonMatrix.Text = "Matrix";
             buttonQuit.Text = Properties.Strings.Quit;
             buttonUpdates.Text = Properties.Strings.Updates;
             buttonDonate.Text = Properties.Strings.Donate;
@@ -170,6 +169,7 @@ namespace GHelper
             buttonUltimate.Click += ButtonUltimate_Click;
             buttonOptimized.Click += ButtonOptimized_Click;
             buttonStopGPU.Click += ButtonStopGPU_Click;
+            pictureGPU.Click += PictureGPU_Click;
 
             VisibleChanged += SettingsForm_VisibleChanged;
 
@@ -194,11 +194,9 @@ namespace GHelper
 
             comboMatrix.DropDownStyle = ComboBoxStyle.DropDownList;
             comboMatrixRunning.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboInterval.DropDownStyle = ComboBoxStyle.DropDownList;
 
             comboMatrix.DropDownClosed += ComboMatrix_SelectedValueChanged;
             comboMatrixRunning.DropDownClosed += ComboMatrixRunning_SelectedValueChanged;
-            comboInterval.DropDownClosed += ComboInterval_DropDownClosed;
 
             buttonMatrix.Click += ButtonMatrix_Click;
 
@@ -319,7 +317,6 @@ namespace GHelper
         private void ButtonEnergySaver_Click(object? sender, EventArgs e)
         {
             KeyboardHook.KeyKeyPress(Keys.LWin, Keys.A);
-            activateCheck = true;
         }
 
         private void LabelBacklight_Click(object? sender, EventArgs e)
@@ -631,7 +628,6 @@ namespace GHelper
         {
             if (activateCheck)
             {
-                buttonEnergySaver.Visible = PowerNative.GetBatterySaverStatus();
                 buttonAmdOled.Visible = AmdDisplay.IsOledPowerOptimization();
                 activateCheck = false;
             }
@@ -704,12 +700,6 @@ namespace GHelper
             {
                 Task.Run((Action)RefreshPeripheralsBattery);
                 updateControl.CheckForUpdates();
-                BeginInvoke(new Action(() =>
-                {
-                    ScreenControl.InitScreen();
-                    VisualizeXGM();
-                    buttonEnergySaver.Visible = PowerNative.GetBatterySaverStatus();
-                }));
             }
         }
 
@@ -783,6 +773,11 @@ namespace GHelper
                     }
 
                 }
+                else if (settings.PowerSetting == NativeMethods.PowerSettingGuid.EnergySaverStatus)
+                {
+                    Logger.WriteLine("Battery Saver: " + settings.Data);
+                    buttonEnergySaver.Visible = settings.Data != 0;
+                }
                 else
                 {
                     switch (settings.Data)
@@ -790,6 +785,7 @@ namespace GHelper
                         case 0:
                             Logger.WriteLine("Monitor Power Off");
                             Aura.SleepBrightness();
+                            XGM.NotifyShutdown();
                             Program.hardwareOverlay?.SuspendForDisplayOff();
                             break;
                         case 1:
@@ -1053,21 +1049,29 @@ namespace GHelper
                 Startup.UnSchedule();
         }
 
-        private void CheckMatrix_CheckedChanged(object? sender, EventArgs e)
-        {
-            AppConfig.Set("matrix_auto", checkMatrix.Checked ? 1 : 0);
-            matrixControl.SetBatteryAuto();
-        }
-
-        private void CheckMatrixLid_CheckedChanged(object? sender, EventArgs e)
-        {
-            AppConfig.Set("matrix_lid", checkMatrixLid.Checked ? 1 : 0);
-            matrixControl.SetLidMode(true);
-        }
-
-
         private void ButtonMatrix_Click(object? sender, EventArgs e)
         {
+
+            if (matrixControl.IsSlash)
+            {
+                if (slashForm == null || slashForm.Text == "")
+                {
+                    slashForm = new Slash();
+                    AddOwnedForm(slashForm);
+                }
+
+                if (slashForm.Visible)
+                {
+                    slashForm.Close();
+                }
+                else
+                {
+                    slashForm.FormPosition();
+                    slashForm.Show();
+                }
+
+                return;
+            }
 
             if (matrixForm == null || matrixForm.Text == "")
             {
@@ -1094,16 +1098,18 @@ namespace GHelper
             if (comboMatrix.SelectedIndex == 0) comboMatrix.SelectedIndex = 3;
         }
 
-        private void ComboInterval_DropDownClosed(object? sender, EventArgs e)
+        public void SetMatrixRunning(int mode)
         {
-            AppConfig.Set("matrix_interval", comboInterval.SelectedIndex);
+            VisualiseMatrixRunning(mode);
+            AppConfig.Set("matrix_running", mode);
             matrixControl.SetDevice();
+            if (!matrixControl.IsSlash && matrixForm != null && matrixForm.Text != "") matrixForm.VisualiseMode();
         }
 
         private void ComboMatrixRunning_SelectedValueChanged(object? sender, EventArgs e)
         {
-            AppConfig.Set("matrix_running", comboMatrixRunning.SelectedIndex);
-            matrixControl.SetDevice();
+            SetMatrixRunning(comboMatrixRunning.SelectedIndex);
+            if (!matrixControl.IsSlash && comboMatrixRunning.SelectedIndex == (int)MatrixMode.Text && (matrixForm == null || !matrixForm.Visible)) ButtonMatrix_Click(sender, e);
         }
 
 
@@ -1183,7 +1189,7 @@ namespace GHelper
 
         private void SetColorPicker(string colorField, Color initial)
         {
-            RColorPicker colorDlg = new RColorPicker(initial);
+            RColorPicker colorDlg = new RColorPicker(initial, colorField == "aura_color" && Aura.HasRandomColor());
             colorDlg.ColorChanged += c =>
             {
                 AppConfig.Set(colorField, c.ToArgb());
@@ -1232,7 +1238,7 @@ namespace GHelper
         public void InitAura()
         {
             comboKeyboard.DropDownStyle = ComboBoxStyle.DropDownList;
-            if (!Aura.IsBacklightDetected && !AppConfig.Is("skip_aura"))
+            if (!Aura.IsBacklightDetected)
                 Aura.Init();
 
             Aura.Mode = (AuraMode)AppConfig.Get("aura_mode");
@@ -1315,6 +1321,7 @@ namespace GHelper
             if (matrixControl.IsSlash)
             {
                 labelMatrix.Text = "Slash Lighting";
+                pictureMatrix.BackgroundImage = ControlHelper.TintImage(Properties.Resources.slash_32, foreMain);
                 comboMatrixRunning.Items.Clear();
 
                 foreach (var item in SlashDevice.Modes)
@@ -1322,24 +1329,11 @@ namespace GHelper
                     comboMatrixRunning.Items.Add(item.Value);
                 }
 
-                comboInterval.Visible = true;
-                comboInterval.Items.Add(Properties.Strings.IntervalOff);
-                for (int i = 1; i <= 5; i++) comboInterval.Items.Add(string.Format(Properties.Strings.IntervalSeconds, i));
-
-                buttonMatrix.Visible = false;
+                buttonMatrix.Text = "Slash";
             }
 
             comboMatrix.SelectedIndex = Math.Max(0, Math.Min(AppConfig.Get("matrix_brightness", 0), comboMatrix.Items.Count - 1));
             comboMatrixRunning.SelectedIndex = Math.Min(AppConfig.Get("matrix_running", 0), comboMatrixRunning.Items.Count - 1);
-            comboInterval.SelectedIndex = Math.Min(AppConfig.Get("matrix_interval", 0), comboInterval.Items.Count - 1);
-
-            checkMatrix.Checked = AppConfig.Is("matrix_auto");
-            checkMatrix.CheckedChanged += CheckMatrix_CheckedChanged;
-
-            checkMatrixLid.Checked = AppConfig.Is("matrix_lid");
-            checkMatrixLid.CheckedChanged += CheckMatrixLid_CheckedChanged;
-
-
         }
 
 
@@ -1522,6 +1516,7 @@ namespace GHelper
 
         private void ButtonQuit_Click(object? sender, EventArgs e)
         {
+            AsusLampArray.Release();
             matrixControl.Dispose();
             Close();
             Program.trayIcon.Visible = false;
@@ -1538,6 +1533,7 @@ namespace GHelper
             if (extraForm != null && extraForm.Text != "") extraForm.Close();
             if (updatesForm != null && updatesForm.Text != "") updatesForm.Close();
             if (matrixForm != null && matrixForm.Text != "") matrixForm.Close();
+            if (slashForm != null && slashForm.Text != "") slashForm.Close();
             if (handheldForm != null && handheldForm.Text != "") handheldForm.Close();
             if (mouseSettings != null && mouseSettings.Text != "") mouseSettings.Close();
             MemoryHelper.TrimAfter();
@@ -1563,6 +1559,7 @@ namespace GHelper
                    (extraForm != null && extraForm.ContainsFocus) ||
                    (updatesForm != null && updatesForm.ContainsFocus) ||
                    (matrixForm != null && matrixForm.ContainsFocus) ||
+                   (slashForm != null && slashForm.ContainsFocus) ||
                    (handheldForm != null && handheldForm.ContainsFocus) ||
                    this.ContainsFocus ||
                    (lostFocusCheck && Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastLostFocus) < 300);
@@ -1740,6 +1737,7 @@ namespace GHelper
                     {
                         AsusACPI.PerformanceSilent => colorEco,
                         AsusACPI.PerformanceTurbo => colorTurbo,
+                        AsusACPI.PerformanceFullSpeed => Color.Orange,
                         _ => colorStandard,
                     };
                     break;
@@ -1779,6 +1777,12 @@ namespace GHelper
         {
 
             bool connected = Program.acpi.IsXGConnected();
+            int activated = connected ? Program.acpi.DeviceGet(AsusACPI.GPUXG) : -1;
+            Invoke(() => VisualizeXGM(connected, activated, GPUMode));
+        }
+
+        void VisualizeXGM(bool connected, int activated, int GPUMode)
+        {
             buttonXGM.Enabled = buttonXGM.Visible = connected;
 
             if (!connected) return;
@@ -1787,7 +1791,6 @@ namespace GHelper
                 ButtonEnabled(buttonXGM, AppConfig.IsAMDiGPU() || GPUMode != AsusACPI.GPUModeEco);
 
 
-            int activated = Program.acpi.DeviceGet(AsusACPI.GPUXG);
             Logger.WriteLine("XGM Activated flag: " + activated);
 
             buttonXGM.Activated = activated == 1;
@@ -1871,6 +1874,14 @@ namespace GHelper
         public void VisualiseGPUMode(int GPUMode = -1)
         {
             if (InvokeRequired) { Invoke(() => VisualiseGPUMode(GPUMode)); return; }
+
+            if (toolTip.GetToolTip(pictureGPU) != (GPUModeControl.gpuError ?? ""))
+            {
+                pictureGPU.BackgroundImage = GPUModeControl.gpuError is null ? Properties.Resources.icons8_video_card_32 : SystemIcons.Warning.ToBitmap();
+                pictureGPU.Cursor = GPUModeControl.gpuError is null ? Cursors.Default : Cursors.Hand;
+                toolTip.SetToolTip(pictureGPU, GPUModeControl.gpuError);
+            }
+
             if (AppConfig.IsAlly())
             {
                 tableGPU.Visible = false;
@@ -1944,22 +1955,36 @@ namespace GHelper
         }
 
 
-        public void VisualiseIcon()
+        private (int, bool, bool)? lastIcon;
+        private bool isDark = CheckSystemDarkModeStatus();
+
+        public void VisualiseIcon(bool themeChange = false)
         {
             if (Program.trayIcon is null) return;
+            if (themeChange) isDark = CheckSystemDarkModeStatus();
+
             int GPUMode = AppConfig.Get("gpu_mode");
-            bool isDark = CheckSystemDarkModeStatus();
+            bool bw = AppConfig.IsBWIcon();
+
+            if (lastIcon == (GPUMode, isDark, bw)) return;
+            lastIcon = (GPUMode, isDark, bw);
 
             Icon newIcon = GPUMode switch
             {
-                AsusACPI.GPUModeEco => AppConfig.IsBWIcon() ? (!isDark ? Properties.Resources.dark_eco : Properties.Resources.light_eco) : Properties.Resources.eco,
-                AsusACPI.GPUModeUltimate => AppConfig.IsBWIcon() ? (!isDark ? Properties.Resources.dark_standard : Properties.Resources.light_standard) : Properties.Resources.ultimate,
-                _ => AppConfig.IsBWIcon() ? (!isDark ? Properties.Resources.dark_standard : Properties.Resources.light_standard) : Properties.Resources.standard,
+                AsusACPI.GPUModeEco => bw ? (isDark ? Properties.Resources.light_eco : Properties.Resources.dark_eco) : Properties.Resources.eco,
+                AsusACPI.GPUModeUltimate => bw ? (isDark ? Properties.Resources.light_standard : Properties.Resources.dark_standard) : Properties.Resources.ultimate,
+                _ => bw ? (isDark ? Properties.Resources.light_standard : Properties.Resources.dark_standard) : Properties.Resources.standard,
             };
 
             Icon? oldIcon = Program.trayIcon.Icon;
             Program.trayIcon.Icon = newIcon;
             oldIcon?.Dispose();
+        }
+
+        private void PictureGPU_Click(object? sender, EventArgs e)
+        {
+            if (GPUModeControl.gpuError is not null)
+                Process.Start(new ProcessStartInfo("devmgmt.msc") { UseShellExecute = true });
         }
 
         private void ButtonSilent_Click(object? sender, EventArgs e)

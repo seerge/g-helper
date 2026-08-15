@@ -175,7 +175,7 @@
     <value>Ajustement auto des modes de gestion alim. Windows</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Mémoire attribuée au GPU</value>
+    <value>Mémoire attribuée à l'iGPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Services Asus actifs </value>
@@ -304,10 +304,16 @@
     <value>Mises à jour BIOS et pilotes </value>
   </data>
   <data name="Boot" xml:space="preserve">
-    <value>Au démarrage</value>
+    <value>Démarrage</value>
   </data>
   <data name="BootSound" xml:space="preserve">
     <value>Son au démarrage</value>
+  </data>
+  <data name="BacklightDown" xml:space="preserve">
+    <value>Backlight Down</value>
+  </data>
+  <data name="BacklightUp" xml:space="preserve">
+    <value>Backlight Up</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Luminosité</value>
@@ -551,6 +557,9 @@ Voulez-vous continuer ?</value>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Visualiseur Audio</value>
   </data>
+  <data name="MatrixAudioMode" xml:space="preserve">
+    <value>Visualizer Mode</value>
+  </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Bannière binaire</value>
   </data>
@@ -574,6 +583,18 @@ Voulez-vous continuer ?</value>
   </data>
   <data name="MatrixPicture" xml:space="preserve">
     <value>Images</value>
+  </data>
+  <data name="MatrixRunningText" xml:space="preserve">
+    <value>Running Text</value>
+  </data>
+  <data name="MatrixText" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="MatrixTimeFormat" xml:space="preserve">
+    <value>Time Format</value>
+  </data>
+  <data name="MatrixDateFormat" xml:space="preserve">
+    <value>Date Format</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Rafraîchissement maximum, faible latence</value>
@@ -716,6 +737,9 @@ Voulez-vous continuer ?</value>
   <data name="RestartGPU" xml:space="preserve">
     <value>Un programme utilise le dGPU et empêche le passage en mode Éco. Laissez G-Helper tenter un redémarrage du dGPU dans le gestionnaire de tâches ? (Procéder à vos propres risques)</value>
   </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
+  </data>
   <data name="RPM" xml:space="preserve">
     <value> RPM</value>
   </data>
@@ -738,7 +762,7 @@ Voulez-vous continuer ?</value>
     <value>Augmenter la luminosité du Screenpad</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
-    <value>Arrêter</value>
+    <value>Arrêt</value>
   </data>
   <data name="Silent" xml:space="preserve">
     <value>Silencieux</value>
@@ -930,7 +954,7 @@ Voulez-vous continuer ?</value>
     <value>Intervalle {0}s</value>
   </data>
   <data name="DisableDynamicLighting" xml:space="preserve">
-    <value>Veuillez désactiver l'Éclairage dynamique Windows &gt;</value>
+    <value>Désactivez l'Éclairage dynamique Windows &gt;</value>
   </data>
   <data name="AmbientModeResources" xml:space="preserve">
     <value>Le mode Ambiant peut augmenter l'utilisation des ressources</value>
@@ -958,10 +982,47 @@ et les redémarre automatiquement lorsqu'il est activé</value>
     <value>Empêche les périphériques PCIe d'entrer dans des états d'inactivité à faible consommation.
 Recommandé en cas de blocages aléatoires ou de matériel qui ne répond plus.</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Désactiver le réseau en veille Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Empêche les tâches en arrière-plan comme Windows Update
+de chauffer l'ordinateur en veille et de vider la batterie.</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Overlay only in games</value>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>Alimentation</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>Animations</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>Animation de démarrage et d'arrêt</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>Animation de veille</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>Alerte de batterie faible</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>Indicateur de niveau de batterie</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>Atténuer si batterie faible</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>Par défaut du système</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>Motif d'animation</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>Toujours</value>
   </data>
 </root>

@@ -166,7 +166,7 @@
     <value>Použít</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Použít vlastní křivky vent.</value>
+    <value>Použít křivky vent.</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Použít výkonové limity</value>
@@ -175,7 +175,7 @@
     <value>Auto. upravit režimy napájení Windows</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Paměť přidělená GPU</value>
+    <value>Paměť přidělená iGPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Služeb Asus spuštěno</value>
@@ -250,7 +250,7 @@
     <value>Nastaví 60 Hz na baterii a max. hz v síti</value>
   </data>
   <data name="Awake" xml:space="preserve">
-    <value>V provozu</value>
+    <value>Aktivní</value>
   </data>
   <data name="BacklightLow" xml:space="preserve">
     <value>Nízké</value>
@@ -516,7 +516,7 @@ Chcete přesto pokračovat?</value>
     <value>Klávesnice notebooku</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Displej ntb</value>
+    <value>Displej</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>LED indikátory sdtavu</value>
@@ -954,5 +954,35 @@ a automaticky je spustí, jakmile je GPU zapnuté</value>
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>Zabraňuje zařízením PCIe vstoupit do nízkoenergetických nečinných stavů.
 Doporučeno, pokud zaznamenáváte náhodné zaseknutí nebo nereagující hardware.</value>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>Napájení</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>Animace</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>Animace při spuštění a vypnutí</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>Animace režimu spánku</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>Upozornění na slabou baterii</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>Indikátor stavu baterie</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>Ztlumit při slabé baterii</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>Výchozí systémové</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>Vzor animace</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>Vždy</value>
   </data>
 </root>
