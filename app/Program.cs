@@ -253,10 +253,11 @@ namespace GHelper
                 ProcessHelper.KillSmartDisplayControl();
                 bool wasLocked = Aura.sessionLock;
                 Aura.sessionLock = false;
-                ScreenControl.AutoScreen();
                 Aura.ApplyAura();
-                if (wasLocked) Task.Delay(2000).ContinueWith(_ =>
+                Task.Delay(2000).ContinueWith(_ =>
                 {
+                    ScreenControl.AutoScreen();
+                    if (!wasLocked) return;
                     if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < 10000) return;
                     modeControl.AutoCPUTemp();
                 });
