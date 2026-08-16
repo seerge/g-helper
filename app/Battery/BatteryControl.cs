@@ -54,6 +54,11 @@ namespace GHelper.Battery
             try
             {
                 using var key = Registry.LocalMachine.OpenSubKey(keyPath, writable: true);
+                if (key is null)
+                {
+                    Logger.WriteLine("Failed to set ChargingRate: registry key not found");
+                    return;
+                }
                 key.SetValue("ChargingRate", value, RegistryValueKind.DWord);
             }
             catch (Exception ex)
