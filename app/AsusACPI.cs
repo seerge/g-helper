@@ -83,6 +83,7 @@ public class AsusACPI
     public const uint BatteryLimit = 0x00120057;
 
     public const uint ScreenOverdrive = 0x00050019;
+    public const uint ScreenOverdriveSupport = 0x00050020;
     public const uint ScreenMiniled1 = 0x0005001E;
     public const uint ScreenMiniled2 = 0x0005002E;
     public const uint ScreenFHD = 0x0005001C;
@@ -203,6 +204,7 @@ public class AsusACPI
     public const int ECoreMax = 16;
 
     private bool? _allAMD = null;
+    private bool? _overdrive = null;
     private readonly Dictionary<uint, bool> _supportCache = new();
 
     public static uint GPUEco => AppConfig.IsVivoZenPro() ? GPUEcoVivo : GPUEcoROG;
@@ -761,7 +763,8 @@ public class AsusACPI
 
     public bool IsOverdriveSupported()
     {
-        return IsSupported(ScreenOverdrive);
+        if (_overdrive is null) _overdrive = DeviceGet(ScreenOverdriveSupport) == 1;
+        return (bool)_overdrive;
     }
 
     public bool IsSupported(uint DeviceID)
