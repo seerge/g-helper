@@ -671,6 +671,11 @@ namespace GHelper
             numericUpDownCurrentDPI.Maximum = mouse.MaxDPI();
             numericUpDownCurrentDPI.Increment = mouse.DPIIncrements();
 
+            sliderZoneModeDPI.Max = mouse.MaxDPI();
+            sliderZoneModeDPI.Step = mouse.DPIIncrements();
+            numericUpDownZoneModeDPI.Maximum = mouse.MaxDPI();
+            numericUpDownZoneModeDPI.Increment = mouse.DPIIncrements();
+
             if (!mouse.HasDebounceSetting())
             {
                 panelDebounce.Visible = false;

@@ -1797,8 +1797,8 @@ namespace GHelper.Peripherals.Mouse
 
         protected virtual byte[] GetUpdateZoneModePacket(bool enabled)
         {
-            // DPI formula: ((DPI - 50) / 50) - using 2 bytes
-            int dpiVal = (ZoneModeDPI - 50) / 50;
+            // DPI formula: ((DPI - increment) / increment) - using 2 bytes
+            int dpiVal = (ZoneModeDPI - DPIIncrements()) / DPIIncrements();
             byte dpiLow = (byte)(dpiVal & 0xFF);
             byte dpiHigh = (byte)((dpiVal >> 8) & 0xFF);
 
@@ -1861,15 +1861,15 @@ namespace GHelper.Peripherals.Mouse
             {
                 ZoneMode = packet[5] == 0x01;
                 ZoneModePollingRate = (PollingRate)packet[6];
-                // DPI formula: (byteL + byteH * 256) * 50 + 50
+                // DPI formula: (byteL + byteH * 256) * increment + increment
                 if (packet.Length > 8)
                 {
                     int dpiVal = packet[7] | (packet[8] << 8);
-                    ZoneModeDPI = dpiVal * 50 + 50;
+                    ZoneModeDPI = dpiVal * DPIIncrements() + DPIIncrements();
                 }
                 else
                 {
-                    ZoneModeDPI = packet[7] * 50 + 50;
+                    ZoneModeDPI = packet[7] * DPIIncrements() + DPIIncrements();
                 }
             }
         }
