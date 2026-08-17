@@ -2434,19 +2434,6 @@ namespace GHelper.Peripherals.Mouse
 
             ButtonBindingsReady = true;
             Logger.WriteLine(GetDisplayName() + ": ── End Button Bindings ──");
-
-            ReadAndLogSpeedShiftBindings();
-        }
-
-        public void ReadAndLogSpeedShiftBindings()
-        {
-            if (!HasSpeedShift) return;
-
-            byte[]? response = QueryAllButtonBindings(1);
-            if (response is null) return;
-
-            Logger.WriteLine(GetDisplayName() + ": Speed Shift RAW: "
-                + BitConverter.ToString(response, 0, Math.Min(21, response.Length)).Replace("-", " "));
         }
 
         protected virtual byte[]? QueryAllButtonBindings(int group = 0)

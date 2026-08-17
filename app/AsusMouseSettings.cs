@@ -895,10 +895,8 @@ namespace GHelper
 
             float s = DeviceDpi / 192f;
 
-            // Start below whichever is lower: the header, the mouse layout picture or the layer tabs
-            int startY = Math.Max(panelBindingsHeader.Bottom,
-                Math.Max(pictureMouseLayout.Bottom, tableBindingsNav.Visible ? tableBindingsNav.Bottom : 0))
-                + (int)(12 * s);
+            // Start below whichever is lower: the header or the mouse layout picture
+            int startY = Math.Max(panelBindingsHeader.Bottom, pictureMouseLayout.Bottom) + (int)(12 * s);
             int rowHeight = (int)(52 * s);
             int row = 0;
             foreach (var (slot, (_, name)) in slots)
