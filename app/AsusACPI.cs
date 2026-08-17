@@ -807,8 +807,7 @@ public class AsusACPI
 
         if ((status & 0x10000) == 0 || (status & 0x80000) != 0) return [];
 
-        int count = status & 0xFFFF;
-        if (count > 16) count = 17;
+        int count = Math.Min(status & 0xFFFF, (buf.Length - 6) / 2);
         if (count < 2) return [];
 
         unitMb = (status & 0x20000) != 0 ? 512 : 1;
@@ -889,7 +888,7 @@ public class AsusACPI
 
     }
 
-    private byte[] DeviceGetLarge(uint DeviceID, int extraIn = 8, int outSize = 40)
+    private byte[] DeviceGetLarge(uint DeviceID, int extraIn = 8, int outSize = 64)
     {
         byte[] acpiBuf = new byte[8 + 4 + extraIn];
         byte[] outBuffer = new byte[outSize];
