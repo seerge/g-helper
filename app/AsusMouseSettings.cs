@@ -869,6 +869,7 @@ namespace GHelper
         }
 
         private bool _updatingBindings;
+        private bool _shiftLayer;
         private readonly List<UI.RComboBox> _bindingCombos = new();
         private object[] _bindingComboItems = [];
 
@@ -888,6 +889,9 @@ namespace GHelper
         {
             var slots = mouse.ButtonSlots;
             _bindingComboItems = BuildBindingComboItems();
+            tableBindingsNav.Visible = mouse.HasSpeedShift;
+            buttonBindingsNormal.BorderColor = RForm.colorStandard;
+            buttonBindingsShift.BorderColor = RForm.colorStandard;
 
             float s = DeviceDpi / 192f;
 
@@ -953,6 +957,20 @@ namespace GHelper
             panelLeft.Controls.Add(btnReset);
         }
 
+        private void ButtonBindingsNormal_Click(object? sender, EventArgs e) => SetBindingLayer(false);
+
+        private void ButtonBindingsShift_Click(object? sender, EventArgs e) => SetBindingLayer(true);
+
+        private void SetBindingLayer(bool shift)
+        {
+            _shiftLayer = shift;
+            buttonBindingsNormal.Activated = !shift;
+            buttonBindingsNormal.Secondary = shift;
+            buttonBindingsShift.Activated = shift;
+            buttonBindingsShift.Secondary = !shift;
+            VisualizeButtonBindings();
+        }
+
         private static void BindingCombo_DrawItem(object? sender, DrawItemEventArgs e)
         {
             if (e.Index < 0 || sender is not ComboBox cmb) return;
@@ -1005,6 +1023,12 @@ namespace GHelper
             }
             if (cmb.SelectedItem is BindingItem item)
             {
+                if (_shiftLayer)
+                {
+                    if (item.Code == AsusMouse.SpeedShiftCode) VisualizeButtonBindings();
+                    else mouse.SetSpeedShiftBinding(slot, item.Code);
+                    return;
+                }
                 mouse.SetButtonBinding(slot, item.Code);
                 Program.inputDispatcher?.RegisterKeys();
             }
@@ -1020,7 +1044,11 @@ namespace GHelper
             {
                 if (row >= _bindingCombos.Count) break;
                 var cmb = _bindingCombos[row];
-                ushort code = mouse.ButtonBindings[slot];
+
+                bool locked = _shiftLayer && mouse.ButtonBindings[slot] == AsusMouse.SpeedShiftCode;
+                ushort code = _shiftLayer && !locked ? mouse.GetSpeedShiftBinding(slot) : mouse.ButtonBindings[slot];
+                cmb.Enabled = !locked;
+
                 for (int j = 0; j < cmb.Items.Count; j++)
                 {
                     if (cmb.Items[j] is BindingItem item && item.Code == code)

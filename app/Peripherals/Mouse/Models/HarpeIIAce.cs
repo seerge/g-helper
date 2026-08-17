@@ -141,6 +141,9 @@
         {
             return true;
         }
+
+        public override IReadOnlyList<(string GroupLabel, IReadOnlyList<(ushort Code, string Name)> Items)>
+            BindingGroups => SpeedShiftBindingGroups;
     }
 
     public class HarpeIIExtremeEdition20 : HarpeIIAceWireless
@@ -159,5 +162,8 @@
         {
             return 1;
         }
+
+        public override IReadOnlyList<(string GroupLabel, IReadOnlyList<(ushort Code, string Name)> Items)>
+            BindingGroups => SpeedShiftBindingGroups;
     }
 }
