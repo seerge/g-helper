@@ -232,6 +232,8 @@ namespace GHelper.Gpu
             Program.currentSource == Program.PowerSource.Barrel ||
             (Program.currentSource == Program.PowerSource.USBC && !AppConfig.Is("optimized_usbc"));
 
+        public static bool suspended = false;
+
         public bool AutoGPUMode(bool optimized = false, int delay = 0)
         {
 
@@ -241,6 +243,12 @@ namespace GHelper.Gpu
             int GpuMode = AppConfig.Get("gpu_mode");
 
             if (!GpuAuto && !ForceGPU) return false;
+
+            if (suspended)
+            {
+                Logger.WriteLine("Skipping GPU Mode switch: Suspend");
+                return false;
+            }
 
             int eco = Program.acpi.DeviceGet(AsusACPI.GPUEco);
             int mux = Program.acpi.DeviceGet(AsusACPI.GPUMux);
