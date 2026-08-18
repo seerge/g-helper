@@ -45,6 +45,11 @@ namespace GHelper.Display
             try
             {
                 using var key = Registry.LocalMachine.OpenSubKey(keyPath, writable: true);
+                if (key is null)
+                {
+                    Logger.WriteLine("Failed to set RefreshFlag: registry key not found");
+                    return;
+                }
                 key.SetValue("RefreshFlag", value, RegistryValueKind.DWord);
             }
             catch (Exception ex)
