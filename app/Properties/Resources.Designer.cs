@@ -549,6 +549,16 @@ namespace GHelper.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap slash_32 {
+            get {
+                object obj = ResourceManager.GetObject("slash-32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
@@ -887,16 +897,6 @@ namespace GHelper.Properties {
             get {
                 object obj = ResourceManager.GetObject("lighting_dot_48", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] MFont {
-            get {
-                object obj = ResourceManager.GetObject("MFont", resourceCulture);
-                return ((byte[])(obj));
             }
         }
         

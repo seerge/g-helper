@@ -71,6 +71,8 @@ namespace GHelper.Gpu
 
             Aura.CustomRGB.ApplyGPUColor(gpuMode);
 
+            Task.Run(CheckGpuError);
+
         }
 
 
@@ -205,12 +207,8 @@ namespace GHelper.Gpu
                             await Task.Delay(TimeSpan.FromMilliseconds(1000));
                         }
 
-                        for (int i = 0; i < 3; i++)
-                        {
-                            HardwareControl.RecreateGpuControl();
-                            if (HardwareControl.GpuControl is not null) break;
-                            await Task.Delay(TimeSpan.FromSeconds(2));
-                        }
+                        await HardwareControl.RecreateGpuControlWithRetry(3, 2);
+                        CheckStandardHalfState();
                         Program.modeControl.SetGPUClocks(false);
                     }
 
@@ -313,6 +311,7 @@ namespace GHelper.Gpu
                         {
                             Program.acpi.DeviceSet(AsusACPI.GPUXG, 0, "GPU XGM");
                             await Task.Delay(TimeSpan.FromSeconds(15));
+                            HardwareControl.RecreateGpuControl();
                         }
                     }
                 }
@@ -327,11 +326,10 @@ namespace GHelper.Gpu
                     XGM.Init();
 
                     await Task.Delay(TimeSpan.FromSeconds(15));
+                    await HardwareControl.RecreateGpuControlWithRetry(6, 5);
 
                     if (AppConfig.IsApplyFans())
                         XGM.SetFan(AppConfig.GetFanConfig(AsusFan.XGM));
-
-                    HardwareControl.RecreateGpuControl();
 
                 }
 
@@ -355,6 +353,21 @@ namespace GHelper.Gpu
             nvRestartPending = Program.acpi.IsNVidiaGPU() && Program.acpi.DeviceGet(AsusACPI.GPUEco) == 1;
         }
 
+        public void CheckStandardHalfState()
+        {
+            if (gpuMode != AsusACPI.GPUModeStandard || HardwareControl.GpuControl is not null) return;
+
+            Logger.WriteLine("Standard half-state");
+            if (!AppConfig.IsStandardForceFix()) return;
+
+            Task.Run(async () =>
+            {
+                Program.acpi.DeviceSet(AsusACPI.GPUEco, 0, "GPUStandard Force Fix");
+                await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("nv_delay", 5000)));
+                HardwareControl.RecreateGpuControl();
+            });
+        }
+
         public void StandardModeFix()
         {
             if (!AppConfig.IsStandardModeFix()) return;
@@ -362,6 +375,20 @@ namespace GHelper.Gpu
 
             Logger.WriteLine("Forcing Standard Mode on shutdown");
             Program.acpi.SetGPUEco(0);
+        }
+
+        public static string? gpuError = null;
+
+        void CheckGpuError()
+        {
+            string? error = DeviceHelper.GetGpuError();
+
+            if (gpuError != error)
+            {
+                gpuError = error;
+                if (error != null) Logger.WriteLine(error);
+                settings.VisualiseGPUMode();
+            }
         }
 
     }

@@ -1,5 +1,6 @@
 ﻿using GHelper.Peripherals.Mouse;
 using GHelper.Peripherals.Mouse.Models;
+using GHelper.USB;
 using HidSharp;
 using System.Runtime.CompilerServices;
 
@@ -262,6 +263,7 @@ namespace GHelper.Peripherals
         {
             //Add one line for every supported mouse class here to support them.
             DedectOmniMouse();
+            DetectHarpeIIWireless();
             DetectMouse(new ChakramX());
             DetectMouse(new ChakramXWired());
             DetectMouse(new GladiusIIIAimpoint());
@@ -290,7 +292,6 @@ namespace GHelper.Peripherals
             DetectMouse(new HarpeAceAimLabEditionWired());
             DetectMouse(new HarpeAceExtremeWeird());
             DetectMouse(new HarpeAceMiniWired());
-            DetectMouse(new HarpeIIAceWireless());
             DetectMouse(new HarpeIIAceWired());
             DetectMouse(new TUFM3());
             DetectMouse(new TUFM3GenII());
@@ -422,6 +423,21 @@ namespace GHelper.Peripherals
             return null;
         }
 
+        public static void DetectHarpeIIWireless()
+        {
+            var device = DeviceList.Local.GetHidDevices(0x0B05, 0x1AD0).FirstOrDefault();
+            if (device is null) return;
+
+            string product = "";
+            try { product = device.GetProductName() ?? ""; } catch { }
+            Logger.WriteLine("0x1AD0 mouse: " + product);
+
+            if (product.Contains("EXTREME", StringComparison.OrdinalIgnoreCase))
+                DetectMouse(new HarpeIIExtremeEdition20());
+            else
+                DetectMouse(new HarpeIIAceWireless());
+        }
+
         private static AsusMouse? MouseFromOmniPid(int pid) => pid switch
         {
             0x1B65 => new HarpeAceMiniOmni(),
@@ -466,6 +482,7 @@ namespace GHelper.Peripherals
             Logger.WriteLine("HID Device Event: Checking for new ASUS Mice");
             DetectAllAsusMice();
             if (AppConfig.IsDetachableKeyboard()) Program.inputDispatcher.Init();
+            XGM.Init();
         }
     }
 }

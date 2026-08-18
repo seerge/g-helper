@@ -1379,6 +1379,7 @@ namespace GHelper.Input
                 if (AppConfig.NoWMI()) return;
 
                 if (EventID == 123) Program.OnChargerEvent();
+                if (EventID == 186 || EventID == 194) Program.settingsForm.VisualizeXGM();
 
                 HandleEvent(EventID);
             }

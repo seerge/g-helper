@@ -83,6 +83,7 @@ public class AsusACPI
     public const uint BatteryLimit = 0x00120057;
 
     public const uint ScreenOverdrive = 0x00050019;
+    public const uint ScreenOverdriveSupport = 0x00050020;
     public const uint ScreenMiniled1 = 0x0005001E;
     public const uint ScreenMiniled2 = 0x0005002E;
     public const uint ScreenFHD = 0x0005001C;
@@ -110,6 +111,10 @@ public class AsusACPI
     public const int PPT_CPUB0 = 0x001200B0;  // CPU PPT on 2022 (PPT_LIMIT_APU)
     public const int PPT_CPUB1 = 0x001200B1;  // Total PPT on 2022 (PPT_LIMIT_SLOW)
 
+    public const int PPT_GPUCPU9C = 0x0012009C;  // GPU to CPU Dynamic Boost, 5W steps
+    public const int PPT_TEMP9E = 0x0012009E;  // CPU Temperature Limit
+    public const int PPT_CROSS9F = 0x0012009F;  // Cross Loading Processor Power
+
     public const int PPT_GPUC0 = 0x001200C0;  // NVIDIA GPU Boost
     public const int PPT_APUC1 = 0x001200C1;  // fPPT (fast boost limit)
     public const int PPT_GPUC2 = 0x001200C2;  // NVIDIA GPU Temp Target (75.. 87 C) 
@@ -122,6 +127,7 @@ public class AsusACPI
     public const uint GPU_POWER = 0x00120098;  // Additonal part of GPU TGP
 
     public const int APU_MEM = 0x000600C1;
+    public const int VRAM_MEM = 0x000600C4;
 
     public const int TUF_KB_BRIGHTNESS = 0x00050021;
     public const int KBD_BACKLIGHT_OOBE = 0x0005002F;
@@ -156,6 +162,7 @@ public class AsusACPI
     public const int PerformanceBalanced = 0;
     public const int PerformanceTurbo = 1;
     public const int PerformanceSilent = 2;
+    public const int PerformanceFullSpeed = 3;
     public const int PerformanceManual = 4;
 
     public const int GPUModeEco = 0;
@@ -180,6 +187,16 @@ public class AsusACPI
     public const int MinGPUTemp = 75;
     public const int MaxGPUTemp = 87;
 
+    public const int MinGPUtoCPU = 0;
+    public const int StepGPUtoCPU = 5;
+    public const int MaxGPUtoCPU = 10;
+
+    public const int MinCrossLoad = 0;
+    public static int MaxCrossLoad = 40;
+
+    public const int MinCPUTemp = 75;
+    public static int MaxCPUTemp = 97;
+
     public const int PCoreMin = 4;
     public const int ECoreMin = 0;
 
@@ -187,6 +204,7 @@ public class AsusACPI
     public const int ECoreMax = 16;
 
     private bool? _allAMD = null;
+    private bool? _overdrive = null;
     private readonly Dictionary<uint, bool> _supportCache = new();
 
     public static uint GPUEco => AppConfig.IsVivoZenPro() ? GPUEcoVivo : GPUEcoROG;
@@ -314,6 +332,13 @@ public class AsusACPI
         if (AppConfig.IsIntelHX())
         {
             MaxTotal = 175;
+            MaxCrossLoad = 125;
+            MaxCPUTemp = 103;
+        }
+
+        if (AppConfig.ContainsModel("GU606"))
+        {
+            MaxCrossLoad = 50;
         }
 
         if (AppConfig.DynamicBoost5())
@@ -434,6 +459,23 @@ public class AsusACPI
     }
 
 
+    public static void DeviceSetWmi(uint DeviceID, int Status)
+    {
+        try
+        {
+            using var wmi = new ManagementObjectSearcher(@"root\wmi", "SELECT * FROM AsusAtkWmi_WMNB").Get().Cast<ManagementObject>().First();
+            var inParams = wmi.GetMethodParameters("DEVS");
+            inParams["Device_ID"] = DeviceID;
+            inParams["Control_status"] = (uint)Status;
+            var result = Convert.ToInt32(wmi.InvokeMethod("DEVS", inParams, null)["result"]);
+            Logger.WriteLine("WMI DEVS = " + Status + " : " + (result == 1 ? "OK" : result));
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine("WMI DEVS: " + ex.Message);
+        }
+    }
+
     public int DeviceGet(uint DeviceID)
     {
         byte[] args = new byte[8];
@@ -475,6 +517,16 @@ public class AsusACPI
         if (mode == 1) mode = 2;
         else if (mode == 2) mode = 1;
         return Program.acpi.DeviceSet(VivoBookMode, mode, "VivoMode");
+    }
+
+    public int SetPerformanceMode(int mode, string log = "Mode")
+    {
+        if (IsSupported(PerformanceMode)) return DeviceSet(PerformanceMode, mode, log);
+        if (IsSupported(VivoBookMode)) return SetVivoMode(mode);
+
+        int status = DeviceSet(PerformanceMode, mode, log);
+        if (status != 1) status = SetVivoMode(mode);
+        return status;
     }
 
     public int SetGPUEco(int eco)
@@ -711,7 +763,8 @@ public class AsusACPI
 
     public bool IsOverdriveSupported()
     {
-        return IsSupported(ScreenOverdrive);
+        if (_overdrive is null) _overdrive = DeviceGet(ScreenOverdriveSupport) == 1;
+        return (bool)_overdrive;
     }
 
     public bool IsSupported(uint DeviceID)
@@ -744,6 +797,35 @@ public class AsusACPI
 
         int index = Array.IndexOf(apuMemEnum, memory - 0x100);
         return index < 0 ? 4 : index;
+    }
+
+    public int[] GetVramOptions(out int unitMb)
+    {
+        unitMb = 0;
+        byte[] buf = DeviceGetLarge(VRAM_MEM);
+        int status = BitConverter.ToInt32(buf, 0);
+
+        if ((status & 0x10000) == 0 || (status & 0x80000) != 0) return [];
+
+        int count = Math.Min(status & 0xFFFF, (buf.Length - 6) / 2);
+        if (count < 2) return [];
+
+        unitMb = (status & 0x20000) != 0 ? 512 : 1;
+
+        int[] options = new int[count];
+        for (int i = 1; i < count; i++) options[i] = BitConverter.ToUInt16(buf, 6 + i * 2);
+
+        return options;
+    }
+
+    public int GetVramMem()
+    {
+        return (int)BitConverter.ToUInt32(DeviceGetLarge(VRAM_MEM), 4);
+    }
+
+    public void SetVramMem(int value)
+    {
+        DeviceSet(VRAM_MEM, value, "VRAM Mem");
     }
 
     public (int, int) GetCores(uint device = CORES_CPU)
@@ -806,7 +888,7 @@ public class AsusACPI
 
     }
 
-    private byte[] DeviceGetLarge(uint DeviceID, int extraIn = 8, int outSize = 40)
+    private byte[] DeviceGetLarge(uint DeviceID, int extraIn = 8, int outSize = 64)
     {
         byte[] acpiBuf = new byte[8 + 4 + extraIn];
         byte[] outBuffer = new byte[outSize];

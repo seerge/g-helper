@@ -1797,8 +1797,8 @@ namespace GHelper.Peripherals.Mouse
 
         protected virtual byte[] GetUpdateZoneModePacket(bool enabled)
         {
-            // DPI formula: ((DPI - 50) / 50) - using 2 bytes
-            int dpiVal = (ZoneModeDPI - 50) / 50;
+            // DPI formula: ((DPI - increment) / increment) - using 2 bytes
+            int dpiVal = (ZoneModeDPI - DPIIncrements()) / DPIIncrements();
             byte dpiLow = (byte)(dpiVal & 0xFF);
             byte dpiHigh = (byte)((dpiVal >> 8) & 0xFF);
 
@@ -1861,15 +1861,15 @@ namespace GHelper.Peripherals.Mouse
             {
                 ZoneMode = packet[5] == 0x01;
                 ZoneModePollingRate = (PollingRate)packet[6];
-                // DPI formula: (byteL + byteH * 256) * 50 + 50
+                // DPI formula: (byteL + byteH * 256) * increment + increment
                 if (packet.Length > 8)
                 {
                     int dpiVal = packet[7] | (packet[8] << 8);
-                    ZoneModeDPI = dpiVal * 50 + 50;
+                    ZoneModeDPI = dpiVal * DPIIncrements() + DPIIncrements();
                 }
                 else
                 {
-                    ZoneModeDPI = packet[7] * 50 + 50;
+                    ZoneModeDPI = packet[7] * DPIIncrements() + DPIIncrements();
                 }
             }
         }
@@ -2303,6 +2303,11 @@ namespace GHelper.Peripherals.Mouse
             (0x0000, "Disabled"     ),
         };
 
+        public const ushort SpeedShiftCode = 0x00FD;
+
+        public static readonly IReadOnlyList<(ushort, string)> SpeedShiftMouseBindings =
+            MouseBindings.Append((SpeedShiftCode, "Speed Shift")).ToList();
+
         public sealed record ComboDef(ushort PassthroughCode, string Label, string DefaultCommand)
         {
             public string ConfigKey => $"mouse_combo_F{13 + (PassthroughCode - 0x0068)}";
@@ -2340,8 +2345,13 @@ namespace GHelper.Peripherals.Mouse
             ("Keyboard",   KeyboardBindings),
         };
 
+        public static readonly IReadOnlyList<(string GroupLabel, IReadOnlyList<(ushort Code, string Name)> Items)>
+        SpeedShiftBindingGroups = DefaultBindingGroups
+            .Select(g => g.GroupLabel == "Mouse" ? (g.GroupLabel, SpeedShiftMouseBindings) : g)
+            .ToList();
+
         public static readonly Dictionary<ushort, string> BindingCodes =
-            DefaultBindingGroups.SelectMany(g => g.Items)
+            SpeedShiftBindingGroups.SelectMany(g => g.Items)
                 .DistinctBy(e => e.Code)
                 .ToDictionary(e => e.Code, e => e.Name);
 
@@ -2453,6 +2463,28 @@ namespace GHelper.Peripherals.Mouse
             FlushSettings();
         }
 
+        public bool HasSpeedShift => BindingGroups == SpeedShiftBindingGroups;
+
+        private string SpeedShiftSlotConfigKey(int slot) =>
+            $"mouse_shift_binding_{_productId:X4}_{slot}";
+
+        public ushort GetSpeedShiftBinding(int slot) =>
+            (ushort)AppConfig.Get(SpeedShiftSlotConfigKey(slot),
+                ButtonSlots.TryGetValue(slot, out var def) ? def.SourceCode : 0);
+
+        public void SetSpeedShiftBinding(int slot, ushort actionCode)
+        {
+            if (!ButtonSlots.TryGetValue(slot, out var slotDef)) return;
+
+            WriteForResponse(GetSetButtonBindingPacket(slotDef.SourceCode, actionCode, 0x23));
+            FlushSettings();
+            AppConfig.Set(SpeedShiftSlotConfigKey(slot), (int)actionCode);
+
+            Logger.WriteLine(GetDisplayName()
+                + $": Shift Slot {slot} ({slotDef.Name}) → {LabelForActionCode(actionCode)}"
+                + $" (src=0x{slotDef.SourceCode:X4}, dst=0x{actionCode:X4})");
+        }
+
         public virtual void SetButtonBinding(int slot, ushort actionCode)
         {
             if (!HasButtonBindings()) return;
@@ -2478,13 +2510,13 @@ namespace GHelper.Peripherals.Mouse
             if (WriteOnlySlots.Contains(slot)) SaveWriteOnlySlot(slot, actionCode);
         }
 
-        protected virtual byte[] GetSetButtonBindingPacket(ushort sourceCode, ushort destCode)
+        protected virtual byte[] GetSetButtonBindingPacket(ushort sourceCode, ushort destCode, byte subCommand = 0x21)
         {
             return new byte[]
             {
                 reportId,
                 0x51,                              // command: Set Binding
-                0x21,                              // sub-command (constant 0x21)
+                subCommand,                        // 0x21 normal layer, 0x23 Speed Shift layer
                 0x00,                              // profile / flags (always 0)
                 0x00,
                 (byte)( sourceCode        & 0xFF), // src low  byte

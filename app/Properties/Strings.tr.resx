@@ -175,7 +175,7 @@
     <value>Windows Güç Modlarını otomatik ayarla</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>GPU için Atanan Bellek</value>
+    <value>iGPU için Atanan Bellek</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Çalışan Asus Hizmetleri</value>
@@ -310,10 +310,10 @@
     <value>Açılış sesi</value>
   </data>
   <data name="BacklightDown" xml:space="preserve">
-    <value>Backlight Down</value>
+    <value>Arka Işığı Azalt</value>
   </data>
   <data name="BacklightUp" xml:space="preserve">
-    <value>Backlight Up</value>
+    <value>Arka Işığı Artır</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Parlaklık</value>
@@ -525,7 +525,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Laptop Klavyesi</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Laptop Ekranı</value>
+    <value>Ekran</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>LED Durum Göstergeleri</value>
@@ -557,6 +557,9 @@ Yine de devam etmek istiyor musunuz?</value>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Ses Görselleştirici</value>
   </data>
+  <data name="MatrixAudioMode" xml:space="preserve">
+    <value>Visualizer Mode</value>
+  </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>İkili Afiş</value>
   </data>
@@ -580,6 +583,18 @@ Yine de devam etmek istiyor musunuz?</value>
   </data>
   <data name="MatrixPicture" xml:space="preserve">
     <value>Resim</value>
+  </data>
+  <data name="MatrixRunningText" xml:space="preserve">
+    <value>Running Text</value>
+  </data>
+  <data name="MatrixText" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="MatrixTimeFormat" xml:space="preserve">
+    <value>Time Format</value>
+  </data>
+  <data name="MatrixDateFormat" xml:space="preserve">
+    <value>Date Format</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>En düşük gecikme için en yüksek yenileme hızı</value>
@@ -723,7 +738,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Bir şey harici GPU'yu kullanıyor ve Eco modunu engelliyor. G-Helper aygıt yöneticisinde harici GPU'yu yeniden başlatmayı denesin mi? (Kendi sorumluluğunuzdadır)</value>
   </data>
   <data name="RestartingNVServices" xml:space="preserve">
-    <value>Restarting NV Services...</value>
+    <value>NV Servisleri Yeniden Başlatılıyor...</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
@@ -948,7 +963,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Hareket Eşitlemesi</value>
   </data>
   <data name="MouseZoneMode" xml:space="preserve">
-    <value>Zone Mode</value>
+    <value>Fare Alan Modu</value>
   </data>
   <data name="DisablePCIeASPM" xml:space="preserve">
     <value>PCIe Bağlantı Durumu Yönetimini devre dışı bırak (şarjda)</value>
@@ -967,10 +982,47 @@ ve GPU etkinleştirildiğinde otomatik olarak yeniden başlatır</value>
     <value>PCIe aygıtlarının düşük güçlü boşta durumlarına geçmesini engeller.
 Rastgele takılmalar veya yanıt vermeyen donanım yaşıyorsanız önerilir.</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Modern Standby sırasında ağı devre dışı bırak</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Windows Update gibi arka plan görevlerinin uyuyan
+dizüstünü ısıtmasını ve pili tüketmesini engeller.</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
-    <value>Overlay</value>
+    <value>Yer Paylaşımı</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
-    <value>Overlay only in games</value>
+    <value>Yer paylaşımını sadece oyunlarda aç</value>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>Güç</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>Animasyonlar</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>Başlangıç ve kapanış animasyonu</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>Uyku modu animasyonu</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>Düşük pil uyarısı</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>Pil seviyesi göstergesi</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>Düşük pilde parlaklığı azalt</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>Sistem Varsayılanı</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>Animasyon Deseni</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>Her zaman</value>
   </data>
 </root>

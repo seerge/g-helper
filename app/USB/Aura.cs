@@ -99,7 +99,7 @@ namespace GHelper.USB
         public static AuraMode RearMode
         {
             get { return rearMode; }
-            set { rearMode = GetModes().ContainsKey(value) ? value : AuraMode.AuraStatic; }
+            set { rearMode = GetRearModes().ContainsKey(value) ? value : AuraMode.AuraStatic; }
         }
 
         static bool isACPI = AppConfig.IsTUF() || AppConfig.IsVivoZenPro();
@@ -1205,6 +1205,7 @@ namespace GHelper.USB
             public static void ApplyAmbient(bool init = false)
             {
                 if (!backlight || sessionLock) return;
+                if (AmbientData.IsMoveSize()) return;
 
                 var bound = Screen.GetBounds(Point.Empty);
                 bound.Y += bound.Height / 3;
@@ -1258,6 +1259,15 @@ namespace GHelper.USB
 
             static class AmbientData
             {
+                [DllImport("user32.dll")]
+                private static extern bool GetGUIThreadInfo(uint idThread, int[] gui);
+
+                public static bool IsMoveSize()
+                {
+                    int[] gui = new int[18];
+                    gui[0] = 72;
+                    return GetGUIThreadInfo(0, gui) && (gui[1] & 0x2) != 0; 
+                }
 
                 public enum StretchMode
                 {

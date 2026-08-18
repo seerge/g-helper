@@ -8,6 +8,11 @@ namespace GHelper.Display
 
         public static bool GetHDRStatus(bool log = true) => GetHDRStatus(out _, log);
 
+        public static bool IsHDR()
+        {
+            try { return GetHDRStatus(false); } catch { return false; }
+        }
+
         public static bool GetHDRStatus(out bool acm, bool log = true)
         {
             acm = false;

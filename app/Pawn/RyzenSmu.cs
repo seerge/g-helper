@@ -174,6 +174,21 @@ namespace PawnIO
             };
         }
 
+        public SmuStatus SetCoPer(int core, int value)
+        {
+            // UXTU: ((ccd << 8 | core) << 20) | (offset & 0xFFFF); ccd bits only on DragonRange
+            uint sel = Family == CpuFamily.Raphael ? (uint)(core / 8 << 8 | core % 8) : (uint)core;
+            uint v = sel << 20 | ((uint)value & 0xFFFF);
+            return Family switch
+            {
+                CpuFamily.Renoir                         => SendMp1(0x54, v),
+                CpuFamily.Mobile or CpuFamily.StrixPoint
+                or CpuFamily.StrixHalo                   => SendMp1(0x4B, v),
+                CpuFamily.Raphael                        => SendPsmu(0x06, v),
+                _                                        => SmuStatus.Failed,
+            };
+        }
+
         public SmuStatus SetCoGfx(int value)
         {
             uint v = EncodeCurve(value);
