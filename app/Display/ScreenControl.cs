@@ -45,7 +45,7 @@ namespace GHelper.Display
             try
             {
                 using var key = Registry.LocalMachine.OpenSubKey(keyPath, writable: true);
-                key.SetValue("RefreshFlag", value, RegistryValueKind.DWord);
+                key?.SetValue("RefreshFlag", value, RegistryValueKind.DWord);
             }
             catch (Exception ex)
             {
