@@ -45,7 +45,7 @@ namespace GHelper.Display
             try
             {
                 using var key = Registry.LocalMachine.OpenSubKey(keyPath, writable: true);
-                key.SetValue("RefreshFlag", value, RegistryValueKind.DWord);
+                key?.SetValue("RefreshFlag", value, RegistryValueKind.DWord);
             }
             catch (Exception ex)
             {
@@ -113,8 +113,8 @@ namespace GHelper.Display
         {
             if (AppConfig.IsForceMiniled())
             {
-                SetHDRControl(AppConfig.Get("hdr_control"));
-                SetMiniled(AppConfig.Get("miniled"));
+                if (ScreenCCD.IsHDR()) SetHDRControl(AppConfig.Get("hdr_control"));
+                else SetMiniled(AppConfig.Get("miniled"));
             }
         }
 

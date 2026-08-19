@@ -166,7 +166,7 @@
     <value>Applica</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Apply Fan Curve</value>
+    <value>Applica Curve Ventola</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Applica Limiti di Potenza</value>
@@ -534,7 +534,7 @@ Sei sicuro di voler continuare?</value>
     <value>Coperchio</value>
   </data>
   <data name="Lightbar" xml:space="preserve">
-    <value>Barra Luminosa</value>
+    <value>Barra LED</value>
   </data>
   <data name="Lighting" xml:space="preserve">
     <value>Illuminazione</value>
@@ -556,6 +556,9 @@ Sei sicuro di voler continuare?</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Visualizzatore Audio</value>
+  </data>
+  <data name="MatrixAudioMode" xml:space="preserve">
+    <value>Visualizer Mode</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Banner Binario</value>
@@ -580,6 +583,18 @@ Sei sicuro di voler continuare?</value>
   </data>
   <data name="MatrixPicture" xml:space="preserve">
     <value>Immagine</value>
+  </data>
+  <data name="MatrixRunningText" xml:space="preserve">
+    <value>Running Text</value>
+  </data>
+  <data name="MatrixText" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="MatrixTimeFormat" xml:space="preserve">
+    <value>Time Format</value>
+  </data>
+  <data name="MatrixDateFormat" xml:space="preserve">
+    <value>Date Format</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Massimo refresh rate per latenza ridotta</value>
@@ -747,7 +762,7 @@ Sei sicuro di voler continuare?</value>
     <value>Aumenta luminosità Screenpad</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
-    <value>Spegnimento</value>
+    <value>Arresto</value>
   </data>
   <data name="Silent" xml:space="preserve">
     <value>Silenzioso</value>
@@ -966,6 +981,13 @@ e li riavvia automaticamente quando la GPU viene attivata</value>
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>Impedisce ai dispositivi PCIe di entrare in stati di inattività a basso consumo.
 Consigliato in caso di blocchi casuali o hardware non rispondente.</value>
+  </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Disattiva la rete in Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Impedisce alle attività in background come Windows Update
+di riscaldare il laptop in sospensione e scaricare la batteria.</value>
   </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>

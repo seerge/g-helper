@@ -141,5 +141,29 @@
         {
             return true;
         }
+
+        public override IReadOnlyList<(string GroupLabel, IReadOnlyList<(ushort Code, string Name)> Items)>
+            BindingGroups => SpeedShiftBindingGroups;
+    }
+
+    public class HarpeIIExtremeEdition20 : HarpeIIAceWireless
+    {
+        public override string GetDisplayName()
+        {
+            return "HARPE II EXTREME EDITION 20 (Wireless)";
+        }
+
+        public override int MaxDPI()
+        {
+            return 65_000;
+        }
+
+        public override int DPIIncrements()
+        {
+            return 1;
+        }
+
+        public override IReadOnlyList<(string GroupLabel, IReadOnlyList<(ushort Code, string Name)> Items)>
+            BindingGroups => SpeedShiftBindingGroups;
     }
 }

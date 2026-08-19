@@ -193,6 +193,7 @@ namespace GHelper.Mode
                     PowerNative.SetPowerMode(Modes.GetBase(mode));
 
                 if (AppConfig.IsAutoASPM()) PowerNative.SetBalancedASPM();
+                if (AppConfig.IsAutoStandbyNetworking()) PowerNative.SetConnectivityInStandby();
             }
 
             // CPU Boost setting override
@@ -310,6 +311,7 @@ namespace GHelper.Mode
 
             Thread.Sleep(500);
             SetGPUPower();
+            if (applyPower) SetCrossPower();
             AutoRyzen();
 
             if (IsReapplyRyzenRequired())
@@ -401,6 +403,22 @@ namespace GHelper.Mode
 
             SetModeLabel();
 
+        }
+
+        public void SetCrossPower()
+        {
+            int gpucpu = AppConfig.GetMode("limit_gpucpu");
+            int crossload = AppConfig.GetMode("limit_crossload");
+            int cputemp = AppConfig.GetMode("limit_cputemp");
+
+            if (gpucpu >= AsusACPI.MinGPUtoCPU && gpucpu <= AsusACPI.MaxGPUtoCPU && Program.acpi.IsSupported(AsusACPI.PPT_GPUCPU9C))
+                Program.acpi.DeviceSet(AsusACPI.PPT_GPUCPU9C, gpucpu, "PowerLimit 9C (GPU to CPU)");
+
+            if (crossload >= AsusACPI.MinCrossLoad && crossload <= AsusACPI.MaxCrossLoad && Program.acpi.IsSupported(AsusACPI.PPT_CROSS9F))
+                Program.acpi.DeviceSet(AsusACPI.PPT_CROSS9F, crossload, "PowerLimit 9F (Cross Loading)");
+
+            if (cputemp >= AsusACPI.MinCPUTemp && cputemp <= AsusACPI.MaxCPUTemp && Program.acpi.IsSupported(AsusACPI.PPT_TEMP9E))
+                Program.acpi.DeviceSet(AsusACPI.PPT_TEMP9E, cputemp, "PowerLimit 9E (CPU Temp)");
         }
 
         public void SetGPUClocks(bool launchAsAdmin = true, bool reset = false)
@@ -519,8 +537,24 @@ namespace GHelper.Mode
                 int cpuUV   = AppConfig.GetMode("cpu_uv",   0);
                 int igpuUV  = AppConfig.GetMode("igpu_uv",  0);
                 int cpuTemp = AppConfig.GetMode("cpu_temp");
+                string? cpuUVCores = AppConfig.GetModeString("cpu_uv_cores");
 
-                if (CpuInfo.IsSupportedUV() && cpuUV >= CpuInfo.MinCPUUV && cpuUV <= CpuInfo.MaxCPUUV)
+                if (CpuInfo.IsSupportedUV() && cpuUVCores is not null)
+                {
+                    int core = 0;
+                    foreach (var token in cpuUVCores.Split('-', StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        if (int.TryParse(token, out int uv) && -uv >= CpuInfo.MinCPUUV && -uv <= CpuInfo.MaxCPUUV)
+                        {
+                            SmuStatus s = smu.SetCoPer(core, -uv);
+                            Logger.WriteLine($"UV core {core}: {-uv} {s}");
+                            if (s == SmuStatus.OK) _cpuUV = -uv;
+                        }
+                        core++;
+                    }
+                    lines.AppendLine($"CPU UV cores {cpuUVCores}");
+                }
+                else if (CpuInfo.IsSupportedUV() && cpuUV >= CpuInfo.MinCPUUV && cpuUV <= CpuInfo.MaxCPUUV)
                 {
                     SmuStatus s = smu.SetCoAll(cpuUV);
                     Logger.WriteLine($"UV: {cpuUV} {s}");

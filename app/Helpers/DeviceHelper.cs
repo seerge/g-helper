@@ -46,7 +46,8 @@ namespace GHelper.Helpers
                 var buffer = new char[len];
                 if (CM_Get_Device_ID_ListW(GUID_DEVCLASS_DISPLAY, buffer, len, flags) == 0)
                     foreach (var id in new string(buffer).Split('\0', StringSplitOptions.RemoveEmptyEntries))
-                        if (CM_Locate_DevNodeW(out uint devInst, id, 0) == 0 &&
+                        if ((id.StartsWith("PCI\\VEN_10DE", StringComparison.OrdinalIgnoreCase) || id.StartsWith("PCI\\VEN_1002", StringComparison.OrdinalIgnoreCase)) &&
+                            CM_Locate_DevNodeW(out uint devInst, id, 0) == 0 &&
                             CM_Get_DevNode_Status(out uint status, out uint problem, devInst, 0) == 0 &&
                             (status & DN_HAS_PROBLEM) != 0)
                         {

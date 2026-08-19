@@ -1027,6 +1027,16 @@ public static class HardwareControl
         });
     }
 
+    public static async Task RecreateGpuControlWithRetry(int retries, int delay)
+    {
+        for (int i = 0; i < retries; i++)
+        {
+            RecreateGpuControl();
+            if (GpuControl is not null) break;
+            await Task.Delay(TimeSpan.FromSeconds(delay));
+        }
+    }
+
     public static void RecreateGpuControl()
     {
         if (AppConfig.NoGpu()) return;

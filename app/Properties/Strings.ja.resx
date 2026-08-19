@@ -557,6 +557,9 @@
   <data name="MatrixAudio" xml:space="preserve">
     <value>オーディオビジュアライザー</value>
   </data>
+  <data name="MatrixAudioMode" xml:space="preserve">
+    <value>Visualizer Mode</value>
+  </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Binary Banner</value>
   </data>
@@ -580,6 +583,18 @@
   </data>
   <data name="MatrixPicture" xml:space="preserve">
     <value>画像</value>
+  </data>
+  <data name="MatrixRunningText" xml:space="preserve">
+    <value>Running Text</value>
+  </data>
+  <data name="MatrixText" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="MatrixTimeFormat" xml:space="preserve">
+    <value>Time Format</value>
+  </data>
+  <data name="MatrixDateFormat" xml:space="preserve">
+    <value>Date Format</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>最大リフレッシュレートで低遅延を実現</value>
@@ -966,6 +981,13 @@ GPU が有効化されたときに自動的に再起動します</value>
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>PCIe デバイスが低電力アイドル状態に入るのを防ぎます。
 ランダムなフリーズやハードウェアの無応答が発生する場合に推奨されます。</value>
+  </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>モダンスタンバイ中のネットワークを無効化</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Windows Update などのバックグラウンドタスクによる
+スリープ中の発熱やバッテリー消耗を防ぎます。</value>
   </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>

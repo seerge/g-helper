@@ -534,7 +534,7 @@ Vis tiek norite tęsti?</value>
     <value>Dangtis</value>
   </data>
   <data name="Lightbar" xml:space="preserve">
-    <value>Šviesos juosta</value>
+    <value>LED juosta</value>
   </data>
   <data name="Lighting" xml:space="preserve">
     <value>Apšvietimas</value>
@@ -556,6 +556,9 @@ Vis tiek norite tęsti?</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Garso vizualizatorius</value>
+  </data>
+  <data name="MatrixAudioMode" xml:space="preserve">
+    <value>Visualizer Mode</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Dvejetainė vėliava</value>
@@ -580,6 +583,18 @@ Vis tiek norite tęsti?</value>
   </data>
   <data name="MatrixPicture" xml:space="preserve">
     <value>Paveikslėlis</value>
+  </data>
+  <data name="MatrixRunningText" xml:space="preserve">
+    <value>Running Text</value>
+  </data>
+  <data name="MatrixText" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="MatrixTimeFormat" xml:space="preserve">
+    <value>Time Format</value>
+  </data>
+  <data name="MatrixDateFormat" xml:space="preserve">
+    <value>Date Format</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Maksimalus kadrų dažnis (mažesnė delsa)</value>
@@ -966,6 +981,13 @@ ir automatiškai jas paleidžia, kai GPU yra įjungtas</value>
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>Neleidžia PCIe įrenginiams pereiti į mažo energijos suvartojimo budėjimo būsenas.
 Rekomenduojama, jei pastebėjote atsitiktinius užstrigimus ar nereaguojančią aparatinę įrangą.</value>
+  </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Išjungti tinklą Modern Standby režimu</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Neleidžia fono užduotims, tokioms kaip „Windows Update“,
+kaitinti miegančio kompiuterio ir eikvoti akumuliatoriaus.</value>
   </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>

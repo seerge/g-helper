@@ -166,7 +166,7 @@
     <value>Anwenden</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Apply Fan Curve</value>
+    <value>Lüfterkurve anwenden</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Leistungsgrenzen anwenden</value>
@@ -250,7 +250,7 @@
     <value>60Hz im Batteriebetrieb. Maximal, wenn eingesteckt.</value>
   </data>
   <data name="Awake" xml:space="preserve">
-    <value>Im Betrieb</value>
+    <value>Aktiv</value>
   </data>
   <data name="BacklightLow" xml:space="preserve">
     <value>Niedrig</value>
@@ -304,7 +304,7 @@
     <value>BIOS und Treiber Updates</value>
   </data>
   <data name="Boot" xml:space="preserve">
-    <value>Hochfahren</value>
+    <value>Start</value>
   </data>
   <data name="BootSound" xml:space="preserve">
     <value>Boot-Sound</value>
@@ -557,6 +557,9 @@ Trotzdem fortfahren?</value>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Audio Visualisierung</value>
   </data>
+  <data name="MatrixAudioMode" xml:space="preserve">
+    <value>Visualizer Mode</value>
+  </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Binäres Banner</value>
   </data>
@@ -580,6 +583,18 @@ Trotzdem fortfahren?</value>
   </data>
   <data name="MatrixPicture" xml:space="preserve">
     <value>Bild</value>
+  </data>
+  <data name="MatrixRunningText" xml:space="preserve">
+    <value>Running Text</value>
+  </data>
+  <data name="MatrixText" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="MatrixTimeFormat" xml:space="preserve">
+    <value>Time Format</value>
+  </data>
+  <data name="MatrixDateFormat" xml:space="preserve">
+    <value>Date Format</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Maximale Wiederholrate für niedrigste Latenz</value>
@@ -747,7 +762,7 @@ Trotzdem fortfahren?</value>
     <value>Screenpad-Helligkeit erhöhen</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
-    <value>Herunterfahren</value>
+    <value>Ausschalten</value>
   </data>
   <data name="Silent" xml:space="preserve">
     <value>Leise</value>
@@ -930,7 +945,7 @@ Trotzdem fortfahren?</value>
     <value>Static</value>
   </data>
   <data name="SlashBatteryLevel" xml:space="preserve">
-    <value>Battery Level</value>
+    <value>Ladezustand</value>
   </data>
   <data name="IntervalOff" xml:space="preserve">
     <value>Interval Off</value>
@@ -967,11 +982,18 @@ und startet sie automatisch neu, wenn die GPU aktiviert wird</value>
     <value>Verhindert, dass PCIe-Geräte in energiesparende Leerlaufzustände wechseln.
 Empfohlen, wenn zufällige Hänger oder nicht reagierende Hardware auftreten.</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Netzwerk im Modern Standby deaktivieren</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Verhindert, dass Hintergrundaufgaben wie Windows Update
+den schlafenden Laptop aufheizen und den Akku entladen.</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
-    <value>Overlay only in games</value>
+    <value>Overlay nur in Spielen</value>
   </data>
   <data name="Power" xml:space="preserve">
     <value>Energie</value>

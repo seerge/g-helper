@@ -115,6 +115,18 @@ namespace GHelper
             labelSlow = new Label();
             labelLeftSlow = new Label();
             trackSlow = new RTrackBar();
+            panelCrossLoad = new Panel();
+            labelCrossLoad = new Label();
+            labelLeftCrossLoad = new Label();
+            trackCrossLoad = new RTrackBar();
+            panelGPUtoCPU = new Panel();
+            labelGPUtoCPU = new Label();
+            labelLeftGPUtoCPU = new Label();
+            trackGPUtoCPU = new RTrackBar();
+            panelCPUTemp = new Panel();
+            labelCPUTemp = new Label();
+            labelLeftCPUTemp = new Label();
+            trackCPUTemp = new RTrackBar();
             panelTotal = new Panel();
             labelTotal = new Label();
             labelLeftTotal = new Label();
@@ -203,6 +215,12 @@ namespace GHelper
             ((System.ComponentModel.ISupportInitialize)trackFast).BeginInit();
             panelSlow.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackSlow).BeginInit();
+            panelCrossLoad.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackCrossLoad).BeginInit();
+            panelGPUtoCPU.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackGPUtoCPU).BeginInit();
+            panelCPUTemp.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackCPUTemp).BeginInit();
             panelTotal.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackTotal).BeginInit();
             panelTitleCPU.SuspendLayout();
@@ -1060,6 +1078,9 @@ namespace GHelper
             panelPower.AutoSize = true;
             panelPower.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelPower.Controls.Add(panelApplyPower);
+            panelPower.Controls.Add(panelCPUTemp);
+            panelPower.Controls.Add(panelGPUtoCPU);
+            panelPower.Controls.Add(panelCrossLoad);
             panelPower.Controls.Add(panelCPU);
             panelPower.Controls.Add(panelFast);
             panelPower.Controls.Add(panelSlow);
@@ -1073,7 +1094,7 @@ namespace GHelper
             panelPower.Location = new Point(10, 888);
             panelPower.Margin = new Padding(4);
             panelPower.Name = "panelPower";
-            panelPower.Size = new Size(520, 880);
+            panelPower.Size = new Size(520, 1252);
             panelPower.TabIndex = 2;
             // 
             // panelApplyPower
@@ -1246,6 +1267,154 @@ namespace GHelper
             trackSlow.TickFrequency = 5;
             trackSlow.TickStyle = TickStyle.TopLeft;
             trackSlow.Value = 125;
+            // 
+            // panelCrossLoad
+            // 
+            panelCrossLoad.AutoSize = true;
+            panelCrossLoad.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelCrossLoad.Controls.Add(labelCrossLoad);
+            panelCrossLoad.Controls.Add(labelLeftCrossLoad);
+            panelCrossLoad.Controls.Add(trackCrossLoad);
+            panelCrossLoad.Dock = DockStyle.Top;
+            panelCrossLoad.Location = new Point(0, 804);
+            panelCrossLoad.Margin = new Padding(4);
+            panelCrossLoad.MaximumSize = new Size(0, 124);
+            panelCrossLoad.Name = "panelCrossLoad";
+            panelCrossLoad.Size = new Size(520, 124);
+            panelCrossLoad.TabIndex = 10;
+            // 
+            // labelCrossLoad
+            // 
+            labelCrossLoad.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            labelCrossLoad.Location = new Point(396, 10);
+            labelCrossLoad.Margin = new Padding(4, 0, 4, 0);
+            labelCrossLoad.Name = "labelCrossLoad";
+            labelCrossLoad.Size = new Size(116, 32);
+            labelCrossLoad.TabIndex = 12;
+            labelCrossLoad.Text = "Cross Loading";
+            labelCrossLoad.TextAlign = ContentAlignment.TopRight;
+            // 
+            // labelLeftCrossLoad
+            // 
+            labelLeftCrossLoad.AutoSize = true;
+            labelLeftCrossLoad.Location = new Point(10, 10);
+            labelLeftCrossLoad.Margin = new Padding(4, 0, 4, 0);
+            labelLeftCrossLoad.Name = "labelLeftCrossLoad";
+            labelLeftCrossLoad.Size = new Size(66, 32);
+            labelLeftCrossLoad.TabIndex = 11;
+            labelLeftCrossLoad.Text = "Cross Loading Processor Power";
+            // 
+            // trackCrossLoad
+            // 
+            trackCrossLoad.Location = new Point(6, 48);
+            trackCrossLoad.Margin = new Padding(4, 2, 4, 2);
+            trackCrossLoad.Maximum = 40;
+            trackCrossLoad.Minimum = 0;
+            trackCrossLoad.Name = "trackCrossLoad";
+            trackCrossLoad.Size = new Size(508, 90);
+            trackCrossLoad.TabIndex = 10;
+            trackCrossLoad.TickFrequency = 5;
+            trackCrossLoad.TickStyle = TickStyle.TopLeft;
+            trackCrossLoad.Value = 40;
+            // 
+            // panelGPUtoCPU
+            // 
+            panelGPUtoCPU.AutoSize = true;
+            panelGPUtoCPU.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelGPUtoCPU.Controls.Add(labelGPUtoCPU);
+            panelGPUtoCPU.Controls.Add(labelLeftGPUtoCPU);
+            panelGPUtoCPU.Controls.Add(trackGPUtoCPU);
+            panelGPUtoCPU.Dock = DockStyle.Top;
+            panelGPUtoCPU.Location = new Point(0, 928);
+            panelGPUtoCPU.Margin = new Padding(4);
+            panelGPUtoCPU.MaximumSize = new Size(0, 124);
+            panelGPUtoCPU.Name = "panelGPUtoCPU";
+            panelGPUtoCPU.Size = new Size(520, 124);
+            panelGPUtoCPU.TabIndex = 11;
+            // 
+            // labelGPUtoCPU
+            // 
+            labelGPUtoCPU.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            labelGPUtoCPU.Location = new Point(396, 10);
+            labelGPUtoCPU.Margin = new Padding(4, 0, 4, 0);
+            labelGPUtoCPU.Name = "labelGPUtoCPU";
+            labelGPUtoCPU.Size = new Size(116, 32);
+            labelGPUtoCPU.TabIndex = 12;
+            labelGPUtoCPU.Text = "GPU to CPU";
+            labelGPUtoCPU.TextAlign = ContentAlignment.TopRight;
+            // 
+            // labelLeftGPUtoCPU
+            // 
+            labelLeftGPUtoCPU.AutoSize = true;
+            labelLeftGPUtoCPU.Location = new Point(10, 10);
+            labelLeftGPUtoCPU.Margin = new Padding(4, 0, 4, 0);
+            labelLeftGPUtoCPU.Name = "labelLeftGPUtoCPU";
+            labelLeftGPUtoCPU.Size = new Size(66, 32);
+            labelLeftGPUtoCPU.TabIndex = 11;
+            labelLeftGPUtoCPU.Text = "GPU to CPU Dynamic Boost";
+            // 
+            // trackGPUtoCPU
+            // 
+            trackGPUtoCPU.Location = new Point(6, 48);
+            trackGPUtoCPU.Margin = new Padding(4, 2, 4, 2);
+            trackGPUtoCPU.Maximum = 10;
+            trackGPUtoCPU.Minimum = 0;
+            trackGPUtoCPU.Name = "trackGPUtoCPU";
+            trackGPUtoCPU.Size = new Size(508, 90);
+            trackGPUtoCPU.SmallChange = 5;
+            trackGPUtoCPU.TabIndex = 10;
+            trackGPUtoCPU.TickFrequency = 5;
+            trackGPUtoCPU.TickStyle = TickStyle.TopLeft;
+            trackGPUtoCPU.Value = 10;
+            // 
+            // panelCPUTemp
+            // 
+            panelCPUTemp.AutoSize = true;
+            panelCPUTemp.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelCPUTemp.Controls.Add(labelCPUTemp);
+            panelCPUTemp.Controls.Add(labelLeftCPUTemp);
+            panelCPUTemp.Controls.Add(trackCPUTemp);
+            panelCPUTemp.Dock = DockStyle.Top;
+            panelCPUTemp.Location = new Point(0, 1052);
+            panelCPUTemp.Margin = new Padding(4);
+            panelCPUTemp.MaximumSize = new Size(0, 124);
+            panelCPUTemp.Name = "panelCPUTemp";
+            panelCPUTemp.Size = new Size(520, 124);
+            panelCPUTemp.TabIndex = 12;
+            // 
+            // labelCPUTemp
+            // 
+            labelCPUTemp.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            labelCPUTemp.Location = new Point(396, 10);
+            labelCPUTemp.Margin = new Padding(4, 0, 4, 0);
+            labelCPUTemp.Name = "labelCPUTemp";
+            labelCPUTemp.Size = new Size(116, 32);
+            labelCPUTemp.TabIndex = 12;
+            labelCPUTemp.Text = "CPU Temp";
+            labelCPUTemp.TextAlign = ContentAlignment.TopRight;
+            // 
+            // labelLeftCPUTemp
+            // 
+            labelLeftCPUTemp.AutoSize = true;
+            labelLeftCPUTemp.Location = new Point(10, 10);
+            labelLeftCPUTemp.Margin = new Padding(4, 0, 4, 0);
+            labelLeftCPUTemp.Name = "labelLeftCPUTemp";
+            labelLeftCPUTemp.Size = new Size(66, 32);
+            labelLeftCPUTemp.TabIndex = 11;
+            labelLeftCPUTemp.Text = "CPU Temperature Limit";
+            // 
+            // trackCPUTemp
+            // 
+            trackCPUTemp.Location = new Point(6, 48);
+            trackCPUTemp.Margin = new Padding(4, 2, 4, 2);
+            trackCPUTemp.Maximum = 97;
+            trackCPUTemp.Minimum = 75;
+            trackCPUTemp.Name = "trackCPUTemp";
+            trackCPUTemp.Size = new Size(508, 90);
+            trackCPUTemp.TabIndex = 10;
+            trackCPUTemp.TickFrequency = 5;
+            trackCPUTemp.TickStyle = TickStyle.TopLeft;
+            trackCPUTemp.Value = 97;
             // 
             // panelTotal
             // 
@@ -1950,6 +2119,15 @@ namespace GHelper
             panelSlow.ResumeLayout(false);
             panelSlow.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)trackSlow).EndInit();
+            panelCrossLoad.ResumeLayout(false);
+            panelCrossLoad.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackCrossLoad).EndInit();
+            panelGPUtoCPU.ResumeLayout(false);
+            panelGPUtoCPU.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackGPUtoCPU).EndInit();
+            panelCPUTemp.ResumeLayout(false);
+            panelCPUTemp.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackCPUTemp).EndInit();
             panelTotal.ResumeLayout(false);
             panelTotal.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)trackTotal).EndInit();
@@ -2101,6 +2279,18 @@ namespace GHelper
         private Label labelSlow;
         private Label labelLeftSlow;
         private RTrackBar trackSlow;
+        private Panel panelCrossLoad;
+        private Label labelCrossLoad;
+        private Label labelLeftCrossLoad;
+        private RTrackBar trackCrossLoad;
+        private Panel panelGPUtoCPU;
+        private Label labelGPUtoCPU;
+        private Label labelLeftGPUtoCPU;
+        private RTrackBar trackGPUtoCPU;
+        private Panel panelCPUTemp;
+        private Label labelCPUTemp;
+        private Label labelLeftCPUTemp;
+        private RTrackBar trackCPUTemp;
         private Panel panelDownload;
         private RButton buttonDownload;
         private Panel panelPawnIO;

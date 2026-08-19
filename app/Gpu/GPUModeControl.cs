@@ -207,12 +207,8 @@ namespace GHelper.Gpu
                             await Task.Delay(TimeSpan.FromMilliseconds(1000));
                         }
 
-                        for (int i = 0; i < 3; i++)
-                        {
-                            HardwareControl.RecreateGpuControl();
-                            if (HardwareControl.GpuControl is not null) break;
-                            await Task.Delay(TimeSpan.FromSeconds(2));
-                        }
+                        await HardwareControl.RecreateGpuControlWithRetry(3, 2);
+                        CheckStandardHalfState();
                         Program.modeControl.SetGPUClocks(false);
                     }
 
@@ -236,6 +232,8 @@ namespace GHelper.Gpu
             Program.currentSource == Program.PowerSource.Barrel ||
             (Program.currentSource == Program.PowerSource.USBC && !AppConfig.Is("optimized_usbc"));
 
+        public static bool suspended = false;
+
         public bool AutoGPUMode(bool optimized = false, int delay = 0)
         {
 
@@ -245,6 +243,12 @@ namespace GHelper.Gpu
             int GpuMode = AppConfig.Get("gpu_mode");
 
             if (!GpuAuto && !ForceGPU) return false;
+
+            if (suspended)
+            {
+                Logger.WriteLine("Skipping GPU Mode switch: Suspend");
+                return false;
+            }
 
             int eco = Program.acpi.DeviceGet(AsusACPI.GPUEco);
             int mux = Program.acpi.DeviceGet(AsusACPI.GPUMux);
@@ -315,6 +319,7 @@ namespace GHelper.Gpu
                         {
                             Program.acpi.DeviceSet(AsusACPI.GPUXG, 0, "GPU XGM");
                             await Task.Delay(TimeSpan.FromSeconds(15));
+                            HardwareControl.RecreateGpuControl();
                         }
                     }
                 }
@@ -329,11 +334,10 @@ namespace GHelper.Gpu
                     XGM.Init();
 
                     await Task.Delay(TimeSpan.FromSeconds(15));
+                    await HardwareControl.RecreateGpuControlWithRetry(6, 5);
 
                     if (AppConfig.IsApplyFans())
                         XGM.SetFan(AppConfig.GetFanConfig(AsusFan.XGM));
-
-                    HardwareControl.RecreateGpuControl();
 
                 }
 
@@ -355,6 +359,21 @@ namespace GHelper.Gpu
         public void CaptureNvBootState()
         {
             nvRestartPending = Program.acpi.IsNVidiaGPU() && Program.acpi.DeviceGet(AsusACPI.GPUEco) == 1;
+        }
+
+        public void CheckStandardHalfState()
+        {
+            if (gpuMode != AsusACPI.GPUModeStandard || HardwareControl.GpuControl is not null) return;
+
+            Logger.WriteLine("Standard half-state");
+            if (!AppConfig.IsStandardForceFix()) return;
+
+            Task.Run(async () =>
+            {
+                Program.acpi.DeviceSet(AsusACPI.GPUEco, 0, "GPUStandard Force Fix");
+                await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("nv_delay", 5000)));
+                HardwareControl.RecreateGpuControl();
+            });
         }
 
         public void StandardModeFix()
