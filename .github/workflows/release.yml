@@ -15,6 +15,7 @@ jobs:
     runs-on: windows-2022
     steps:
     - uses: actions/checkout@v7
+
     - name: Setup dotnet
       uses: actions/setup-dotnet@v5
       with:
@@ -27,45 +28,101 @@ jobs:
         $tag = "${{ github.event.release.tag_name }}"
         if ($tag -ne "v$version") { throw "Tag $tag does not match AssemblyVersion $version" }
 
-    - name: Publish
+    - name: Publish standard
       run: |
-        dotnet publish app/GHelper.sln --configuration Release --runtime win-x64 -p:PublishSingleFile=true --no-self-contained
+        dotnet publish app/GHelper.sln `
+          --configuration Release `
+          --runtime win-x64 `
+          -p:PublishSingleFile=true `
+          --no-self-contained
 
-    - name: Upload unsigned EXE
-      id: upload-unsigned
+    - name: Publish standalone
+      run: |
+        dotnet publish app/GHelper.sln `
+          --configuration Release `
+          --runtime win-x64 `
+          --self-contained true `
+          -p:PublishSingleFile=true `
+          -p:IncludeNativeLibrariesForSelfExtract=true `
+          -o ./standalone
+
+    - name: Upload unsigned standard EXE
+      id: upload-unsigned-standard
       uses: actions/upload-artifact@v7
       with:
+        name: GHelper-standard-unsigned
         path: app/bin/x64/Release/net10.0-windows/win-x64/publish/GHelper.exe
 
-    - id: sign-exe
+    - name: Sign standard EXE
+      id: sign-standard-exe
       uses: signpath/github-action-submit-signing-request@v2
       with:
         api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
         organization-id: ${{ secrets.SIGNPATH_ORG_ID }}
         project-slug: ${{ secrets.SIGNPATH_PROJECT }}
         signing-policy-slug: ${{ secrets.SIGNPATH_POLICY }}
-        github-artifact-id: ${{ steps.upload-unsigned.outputs.artifact-id }}
+        github-artifact-id: ${{ steps.upload-unsigned-standard.outputs.artifact-id }}
         wait-for-completion: true
-        output-artifact-directory: './signed'
+        output-artifact-directory: './signed/standard'
 
-    - name: Create ZIP from signed EXE
-      run: powershell Compress-Archive ./signed/GHelper.exe ./signed/GHelper.zip
-
-    - name: Upload signed EXE as workflow artifact
+    - name: Upload unsigned standalone EXE
+      id: upload-unsigned-standalone
       uses: actions/upload-artifact@v7
       with:
-        name: GHelper-signed
-        path: ./signed/GHelper.exe
+        name: GHelper-standalone-unsigned
+        path: ./standalone/GHelper.exe
 
-    - name: Upload signed EXE and ZIP
+    - name: Sign standalone EXE
+      id: sign-standalone-exe
+      uses: signpath/github-action-submit-signing-request@v2
+      with:
+        api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+        organization-id: ${{ secrets.SIGNPATH_ORG_ID }}
+        project-slug: ${{ secrets.SIGNPATH_PROJECT }}
+        signing-policy-slug: ${{ secrets.SIGNPATH_POLICY }}
+        github-artifact-id: ${{ steps.upload-unsigned-standalone.outputs.artifact-id }}
+        wait-for-completion: true
+        output-artifact-directory: './signed/standalone'
+
+    - name: Rename signed executables
+      run: |
+        Rename-Item ./signed/standard/GHelper.exe GHelper-standard.exe
+        Rename-Item ./signed/standalone/GHelper.exe GHelper-standalone.exe
+
+    - name: Create ZIPs
+      run: |
+        Compress-Archive ./signed/standard/GHelper-standard.exe ./signed/standard/GHelper-standard.zip
+        Compress-Archive ./signed/standalone/GHelper-standalone.exe ./signed/standalone/GHelper-standalone.zip
+
+    - name: Upload signed standard EXE as workflow artifact
+      uses: actions/upload-artifact@v7
+      with:
+        name: GHelper-standard
+        path: ./signed/standard/GHelper-standard.exe
+
+    - name: Upload signed standalone EXE as workflow artifact
+      uses: actions/upload-artifact@v7
+      with:
+        name: GHelper-standalone
+        path: ./signed/standalone/GHelper-standalone.exe
+
+    - name: Upload signed EXEs and ZIPs to release
       if: github.event_name == 'release'
       env:
         GH_TOKEN: ${{ github.token }}
       run: |
-        gh release upload "${{ github.event.release.tag_name }}" ./signed/GHelper.exe ./signed/GHelper.zip --clobber
+        gh release upload "${{ github.event.release.tag_name }}" `
+          ./signed/standard/GHelper-standard.exe `
+          ./signed/standard/GHelper-standard.zip `
+          ./signed/standalone/GHelper-standalone.exe `
+          ./signed/standalone/GHelper-standalone.zip `
+          --clobber
+
     - name: Generate SLSA build provenance attestation
       uses: actions/attest-build-provenance@v4
       with:
         subject-path: |
-          ./signed/GHelper.exe
-          ./signed/GHelper.zip
+          ./signed/standard/GHelper-standard.exe
+          ./signed/standard/GHelper-standard.zip
+          ./signed/standalone/GHelper-standalone.exe
+          ./signed/standalone/GHelper-standalone.zip
