@@ -9,6 +9,7 @@ using GHelper.Helpers;
 using GHelper.Input;
 using GHelper.Mode;
 using GHelper.Peripherals;
+using GHelper.Peripherals.Keyboard;
 using GHelper.Peripherals.Mouse;
 using GHelper.Properties;
 using GHelper.UI;
@@ -29,6 +30,7 @@ namespace GHelper
         AutoUpdateControl updateControl;
 
         AsusMouseSettings? mouseSettings;
+        AsusKeyboardSettings? keyboardSettings;
 
         public AniMatrixControl matrixControl;
 
@@ -1539,6 +1541,7 @@ namespace GHelper
             if (slashForm != null && slashForm.Text != "") slashForm.Close();
             if (handheldForm != null && handheldForm.Text != "") handheldForm.Close();
             if (mouseSettings != null && mouseSettings.Text != "") mouseSettings.Close();
+            if (keyboardSettings != null && keyboardSettings.Text != "") keyboardSettings.Close();
             MemoryHelper.TrimAfter();
         }
 
@@ -2088,14 +2091,15 @@ namespace GHelper
                 Image? baseIcon = m.DeviceType() switch
                 {
                     PeripheralType.Mouse => Properties.Resources.icons8_maus_48,
-                    PeripheralType.Keyboard => Properties.Resources.icons8_keyboard_32,
+                    PeripheralType.Keyboard => Properties.Resources.icons8_keyboard_48,
                     _ => null,
                 };
 
                 if (baseIcon is not null)
                 {
-                    int iw = baseIcon.Width;
                     int ih = baseIcon.Height;
+                    // icon PNG may be wider than tall (baked-in right text padding); badge/bars anchor to the glyph square
+                    int iw = Math.Min(baseIcon.Width, ih);
                     Image composed = ControlHelper.TintImage(baseIcon, b.ForeColor);
                     if (!ready)
                     {
@@ -2155,6 +2159,12 @@ namespace GHelper
                 return;
             }
 
+            if (keyboardSettings is not null)
+            {
+                keyboardSettings.Close();
+                return;
+            }
+
             int index = 0;
             if (sender == buttonPeripheral2) index = 1;
             if (sender == buttonPeripheral3) index = 2;
@@ -2189,6 +2199,43 @@ namespace GHelper
                 }
 
             }
+
+            if (iph.DeviceType() == PeripheralType.Keyboard)
+            {
+                AsusKeyboard? kb = iph as AsusKeyboard;
+                if (kb is null || !kb.IsDeviceReady)
+                {
+                    return;
+                }
+                ShowKeyboardSettings(kb);
+            }
+        }
+
+        private void ShowKeyboardSettings(AsusKeyboard kb)
+        {
+            AsusKeyboardSettings.RequestReopen = ShowKeyboardSettings;
+            keyboardSettings = new AsusKeyboardSettings(kb);
+            keyboardSettings.TopMost = AppConfig.Is("topmost");
+            keyboardSettings.FormClosed += KeyboardSettings_FormClosed;
+            keyboardSettings.Disposed += KeyboardSettings_Disposed;
+            if (!keyboardSettings.IsDisposed)
+            {
+                keyboardSettings.Show();
+            }
+            else
+            {
+                keyboardSettings = null;
+            }
+        }
+
+        private void KeyboardSettings_Disposed(object? sender, EventArgs e)
+        {
+            keyboardSettings = null;
+        }
+
+        private void KeyboardSettings_FormClosed(object? sender, FormClosedEventArgs e)
+        {
+            keyboardSettings = null;
         }
 
         private void MouseSettings_Disposed(object? sender, EventArgs e)

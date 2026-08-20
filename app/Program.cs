@@ -181,7 +181,11 @@ namespace GHelper
             unRegSuspendResume = NativeMethods.RegisterSuspendResumeNotification(settingsForm.Handle, NativeMethods.DEVICE_NOTIFY_WINDOW_HANDLE);
 
 
-            Task task = Task.Run((Action)PeripheralsProvider.DetectAllAsusMice);
+            Task task = Task.Run(() =>
+            {
+                PeripheralsProvider.DetectAllAsusMice();
+                PeripheralsProvider.DetectAllAsusKeyboards();
+            });
             PeripheralsProvider.RegisterForDeviceEvents();
 
             if (Environment.CurrentDirectory.Trim('\\') == Application.StartupPath.Trim('\\') || action.Length > 0)

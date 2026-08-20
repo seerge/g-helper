@@ -369,6 +369,11 @@ public static class AppConfig
         return Is("mouse_aura_sync");
     }
 
+    public static bool IsKeyboardAuraSync()
+    {
+        return Is("keyboard_aura_sync");
+    }
+
     public static bool NoMKeys()
     {
         return (ContainsModel("Z13") && !IsARCNM()) ||
