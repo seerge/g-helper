@@ -280,6 +280,20 @@ namespace GHelper.Properties {
             }
         }
 
+        internal static System.Drawing.Bitmap icons8_fill_color_48 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-fill-color-48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+
+        internal static System.Drawing.Bitmap icons8_refresh_48 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-refresh-48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
@@ -476,6 +490,16 @@ namespace GHelper.Properties {
         internal static System.Drawing.Bitmap icons8_keyboard_32 {
             get {
                 object obj = ResourceManager.GetObject("icons8-keyboard-32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_keyboard_48 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-keyboard-48", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

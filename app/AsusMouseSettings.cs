@@ -928,7 +928,7 @@ namespace GHelper
                 };
                 cmb.Items.AddRange(_bindingComboItems);
                 cmb.Tag = slot;
-                cmb.DrawItem += BindingCombo_DrawItem;
+                cmb.DrawItem += RComboBox.DrawBindingItem;
                 cmb.SelectedIndexChanged += BindingCombo_Changed;
                 panelLeft.Controls.Add(lbl);
                 panelLeft.Controls.Add(cmb);
@@ -969,38 +969,6 @@ namespace GHelper
             buttonBindingsShift.Activated = shift;
             buttonBindingsShift.Secondary = !shift;
             VisualizeButtonBindings();
-        }
-
-        private static void BindingCombo_DrawItem(object? sender, DrawItemEventArgs e)
-        {
-            if (e.Index < 0 || sender is not ComboBox cmb) return;
-
-            object obj = cmb.Items[e.Index];
-            bool isSep = obj is BindingSeparator;
-
-            Color back = isSep ? RForm.buttonSecond : RForm.buttonMain;
-            Color fore = isSep ? RForm.foreMain     : RForm.foreMain;
-
-            if (!isSep && (e.State & DrawItemState.Selected) != 0)
-                back = RForm.borderMain;
-
-            using var backBrush = new SolidBrush(back);
-            e.Graphics.FillRectangle(backBrush, e.Bounds);
-
-            string text = obj.ToString() ?? string.Empty;
-            Font font = isSep
-                ? new Font(e.Font ?? SystemFonts.DefaultFont, FontStyle.Bold)
-                : (e.Font ?? SystemFonts.DefaultFont);
-
-            int indent = isSep ? 6 : 14;
-            var textRect = new Rectangle(e.Bounds.X + indent, e.Bounds.Y,
-                                         e.Bounds.Width - indent, e.Bounds.Height);
-
-            using var foreBrush = new SolidBrush(fore);
-            e.Graphics.DrawString(text, font, foreBrush, textRect,
-                new StringFormat { LineAlignment = StringAlignment.Center });
-
-            if (isSep) font.Dispose();
         }
 
         private void ButtonResetBindings_Click(object? sender, EventArgs e)
@@ -1057,21 +1025,6 @@ namespace GHelper
                 row++;
             }
             _updatingBindings = false;
-        }
-
-        private sealed class BindingItem
-        {
-            public ushort Code        { get; }
-            public string DisplayName { get; }
-            public BindingItem(ushort code, string name) { Code = code; DisplayName = name; }
-            public override string ToString() => DisplayName;
-        }
-
-        private sealed class BindingSeparator
-        {
-            public string Label { get; }
-            public BindingSeparator(string label) { Label = label; }
-            public override string ToString() => Label;
         }
 
         private void InitLightingModes()
