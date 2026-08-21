@@ -1,5 +1,6 @@
 ﻿using GHelper;
 using GHelper.USB;
+using System.Collections.Concurrent;
 using System.Management;
 using System.Runtime.InteropServices;
 
@@ -205,7 +206,7 @@ public class AsusACPI
 
     private bool? _allAMD = null;
     private bool? _overdrive = null;
-    private readonly Dictionary<uint, bool> _supportCache = new();
+    private readonly ConcurrentDictionary<uint, bool> _supportCache = new();
 
     public static uint GPUEco => AppConfig.IsVivoZenPro() ? GPUEcoVivo : GPUEcoROG;
     public static uint GPUMux => AppConfig.IsVivoZenPro() ? GPUMuxVivo : GPUMuxROG;
