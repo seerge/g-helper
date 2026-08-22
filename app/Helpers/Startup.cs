@@ -142,6 +142,7 @@ public class Startup
     {
 
         if (strExeFilePath is null) return;
+        if (!ProcessHelper.IsUserAdministrator()) return;
 
         using (TaskDefinition td = TaskService.Instance.NewTask())
         {
