@@ -585,7 +585,7 @@ Nadal chcesz kontynuować?</value>
     <value>Obraz</value>
   </data>
   <data name="MatrixRunningText" xml:space="preserve">
-    <value>Running Text</value>
+    <value>Tekst przewijany</value>
   </data>
   <data name="MatrixText" xml:space="preserve">
     <value>Tekst</value>
