@@ -1025,4 +1025,71 @@
   <data name="Always" xml:space="preserve">
     <value>始终</value>
   </data>
+
+  <data name="AudioButton" xml:space="preserve">
+    <value>Audio</value>
+  </data>
+  <data name="AudioSettingsTitle" xml:space="preserve">
+    <value>Audio 律动设置</value>
+  </data>
+  <data name="AudioSettingsTip" xml:space="preserve">
+    <value>拖动滑块或直接输入数值，实时生效</value>
+  </data>
+  <data name="AudioReset" xml:space="preserve">
+    <value>重置</value>
+  </data>
+  <data name="AudioParamSensitivity" xml:space="preserve">
+    <value>灵敏度</value>
+  </data>
+  <data name="AudioParamAttack" xml:space="preserve">
+    <value>攻击</value>
+  </data>
+  <data name="AudioParamDecay" xml:space="preserve">
+    <value>衰减</value>
+  </data>
+  <data name="AudioParamReference" xml:space="preserve">
+    <value>基准</value>
+  </data>
+  <data name="AudioParamThreshold" xml:space="preserve">
+    <value>阈值</value>
+  </data>
+  <data name="AudioParamCurve" xml:space="preserve">
+    <value>曲线</value>
+  </data>
+  <data name="AudioParamMinBrightness" xml:space="preserve">
+    <value>最低亮度</value>
+  </data>
+  <data name="AudioParamMaxBrightness" xml:space="preserve">
+    <value>最高亮度</value>
+  </data>
+  <data name="AudioParamColorSpeed" xml:space="preserve">
+    <value>颜色速度</value>
+  </data>
+  <data name="AudioParamSensitivityHelp" xml:space="preserve">
+    <value>整体响应增益。调低可抑制乱闪，调高更活泼</value>
+  </data>
+  <data name="AudioParamAttackHelp" xml:space="preserve">
+    <value>对声音上升的平滑程度。越小越稳定，越大越跟手</value>
+  </data>
+  <data name="AudioParamDecayHelp" xml:space="preserve">
+    <value>声音消失后灯光渐灭的速度。越大余辉越久</value>
+  </data>
+  <data name="AudioParamReferenceHelp" xml:space="preserve">
+    <value>音量基准的跟随快慢。越小越不容易整体全亮</value>
+  </data>
+  <data name="AudioParamThresholdHelp" xml:space="preserve">
+    <value>低于此电平不响应。可压制环境噪音与轻微旋律乱闪</value>
+  </data>
+  <data name="AudioParamCurveHelp" xml:space="preserve">
+    <value>亮度响应曲线指数。越大层次越分明、暗部越暗</value>
+  </data>
+  <data name="AudioParamMinBrightnessHelp" xml:space="preserve">
+    <value>灯光最低亮度，防止完全熄灭</value>
+  </data>
+  <data name="AudioParamMaxBrightnessHelp" xml:space="preserve">
+    <value>灯光最高亮度，防止长时间全亮没有层次</value>
+  </data>
+  <data name="AudioParamColorSpeedHelp" xml:space="preserve">
+    <value>颜色切换速度。越大音乐高潮时切换越急促</value>
+  </data>
 </root>

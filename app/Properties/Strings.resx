@@ -1025,4 +1025,71 @@ from heating up the sleeping laptop and draining the battery.</value>
   <data name="Always" xml:space="preserve">
     <value>Always</value>
   </data>
+
+  <data name="AudioButton" xml:space="preserve">
+    <value>Audio</value>
+  </data>
+  <data name="AudioSettingsTitle" xml:space="preserve">
+    <value>Audio Effects Settings</value>
+  </data>
+  <data name="AudioSettingsTip" xml:space="preserve">
+    <value>Adjust sliders or type values - applies immediately</value>
+  </data>
+  <data name="AudioReset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="AudioParamSensitivity" xml:space="preserve">
+    <value>Sensitivity</value>
+  </data>
+  <data name="AudioParamAttack" xml:space="preserve">
+    <value>Attack</value>
+  </data>
+  <data name="AudioParamDecay" xml:space="preserve">
+    <value>Decay</value>
+  </data>
+  <data name="AudioParamReference" xml:space="preserve">
+    <value>Reference</value>
+  </data>
+  <data name="AudioParamThreshold" xml:space="preserve">
+    <value>Threshold</value>
+  </data>
+  <data name="AudioParamCurve" xml:space="preserve">
+    <value>Curve</value>
+  </data>
+  <data name="AudioParamMinBrightness" xml:space="preserve">
+    <value>Min Brightness</value>
+  </data>
+  <data name="AudioParamMaxBrightness" xml:space="preserve">
+    <value>Max Brightness</value>
+  </data>
+  <data name="AudioParamColorSpeed" xml:space="preserve">
+    <value>Color Speed</value>
+  </data>
+  <data name="AudioParamSensitivityHelp" xml:space="preserve">
+    <value>Overall gain. Lower suppresses flicker, higher is livelier</value>
+  </data>
+  <data name="AudioParamAttackHelp" xml:space="preserve">
+    <value>Smoothing on level rise. Lower is steadier, higher is snappier</value>
+  </data>
+  <data name="AudioParamDecayHelp" xml:space="preserve">
+    <value>How fast light fades after sound. Higher = longer afterglow</value>
+  </data>
+  <data name="AudioParamReferenceHelp" xml:space="preserve">
+    <value>How fast volume baseline follows. Lower avoids always-full brightness</value>
+  </data>
+  <data name="AudioParamThresholdHelp" xml:space="preserve">
+    <value>Ignore levels below this. Suppresses noise and faint melody flicker</value>
+  </data>
+  <data name="AudioParamCurveHelp" xml:space="preserve">
+    <value>Brightness response curve exponent. Higher = more contrast</value>
+  </data>
+  <data name="AudioParamMinBrightnessHelp" xml:space="preserve">
+    <value>Minimum brightness, prevents fully off</value>
+  </data>
+  <data name="AudioParamMaxBrightnessHelp" xml:space="preserve">
+    <value>Maximum brightness, prevents always-full with no contrast</value>
+  </data>
+  <data name="AudioParamColorSpeedHelp" xml:space="preserve">
+    <value>Color switch speed. Higher = faster shifts at climax</value>
+  </data>
 </root>
