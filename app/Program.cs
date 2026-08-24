@@ -56,22 +56,7 @@ namespace GHelper
 
             if (action == "charge")
             {
-                if (AppConfig.IsZ13())
-                {
-                    AsusHid.Write([
-                        Encoding.ASCII.GetBytes("]ASUS Tech.Inc."),
-                        [AsusHid.AURA_ID, 0xC0, 0x03, 0x01]
-                    ], "Init");
-                }
-
-                BatteryLimit();
-                try
-                {
-                    InputDispatcher.StartupBacklight();
-                } catch (Exception ex) { 
-                    Logger.WriteLine($"Startup Backlight: {ex.Message}");
-                }
-                Application.Exit();
+                Charge();
                 return;
             }
 
@@ -236,6 +221,7 @@ namespace GHelper
             if (AppConfig.IsOverlay())
                 hardwareOverlay?.StartOverlay();
 
+            Application.ApplicationExit += OnExit;
             Application.Run();
         }
 
@@ -499,20 +485,25 @@ namespace GHelper
             NativeMethods.UnregisterPowerSettingNotification(unRegPowerNotifyLid);
             NativeMethods.UnregisterPowerSettingNotification(unRegPowerNotifyEnergy);
             NativeMethods.UnregisterSuspendResumeNotification(unRegSuspendResume);
-            Application.Exit();
         }
 
-        static void BatteryLimit()
+        static void Charge()
         {
+            if (AppConfig.IsZ13())
+            {
+                AsusHid.Write([
+                    Encoding.ASCII.GetBytes("]ASUS Tech.Inc."),
+                    [AsusHid.AURA_ID, 0xC0, 0x03, 0x01]
+                ], "Init");
+            }
+
             try
             {
                 int limit = AppConfig.Get("charge_limit");
+                acpi = new AsusACPI();
                 if (limit > 0 && limit < 100)
                 {
                     Logger.WriteLine($"------- Startup Battery Limit {limit} -------");
-                    Logger.WriteLine($"Connecting to ACPI");
-                    acpi = new AsusACPI();
-                    Logger.WriteLine($"Setting Limit");
                     if (acpi.IsConnected()) acpi.DeviceSet(AsusACPI.BatteryLimit, limit, "Limit");
                     else AsusACPI.DeviceSetWmi(AsusACPI.BatteryLimit, limit);
                 }
@@ -521,6 +512,17 @@ namespace GHelper
             {
                 Logger.WriteLine("Startup Battery Limit Error: " + ex.Message);
             }
+
+            try
+            {
+                InputDispatcher.StartupBacklight();
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine($"Startup Backlight: {ex.Message}");
+            }
+
+            Application.Exit();
         }
 
         static void CleanupLegacyFiles()

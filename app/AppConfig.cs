@@ -36,7 +36,7 @@ public static class AppConfig
         : ProcessHelper.IsRunningAsSystem() && File.Exists(fallbackConfigFile) ? fallbackConfigFile
         : Path.Combine(appPath, configName);
 
-        Directory.CreateDirectory(appPath);
+        Directory.CreateDirectory(Path.GetDirectoryName(configFile));
 
         if (!TryLoadConfig(configFile) && !TryRecoverConfig(configFile) && !TryLoadConfig(configFile + ".bak") && !TryLoadConfig(fallbackConfigFile)) Init();
 
