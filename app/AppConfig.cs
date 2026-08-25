@@ -651,7 +651,7 @@ public static class AppConfig
 
     public static bool IsModeReapplyRequired()
     {
-        return Is("mode_reapply") || ContainsModel("FA401") || ContainsModel("GA403");
+        return Is("mode_reapply") || ContainsModel("FA401") || ContainsModel("GA403") || ContainsModel("GV601");
     }
 
     public static bool IsStandardModeFix()
