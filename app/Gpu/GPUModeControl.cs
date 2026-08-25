@@ -209,13 +209,15 @@ namespace GHelper.Gpu
 
                         await HardwareControl.RecreateGpuControlWithRetry(3, 2);
                         CheckStandardHalfState();
-                        Program.modeControl.SetGPUClocks(false);
                     }
 
-                    if (AppConfig.IsModeReapplyRequired())
+                    if (AppConfig.IsModeReapply())
                     {
-                        await Task.Delay(TimeSpan.FromMilliseconds(3000));
+                        await Task.Delay(TimeSpan.FromMilliseconds(1000));
                         Program.modeControl.AutoPerformance();
+                    } else
+                    {
+                        Program.modeControl.SetGPUClocks(false);
                     }
                 }
                 catch (Exception ex)
