@@ -596,6 +596,9 @@
   <data name="MatrixDateFormat" xml:space="preserve">
     <value>Formato de fecha</value>
   </data>
+  <data name="MatrixFlip" xml:space="preserve">
+    <value>Rotate 180°</value>
+  </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Frecuencia de actualización máxima para una latencia más baja</value>
   </data>
