@@ -19,6 +19,7 @@ namespace GHelper.Helpers
         private readonly object _lock = new();
         private volatile bool _running;
         private volatile bool _stopping;
+        private CancellationTokenSource? _deviceChangeCts;
 
         public bool IsRunning => _running;
 
@@ -88,6 +89,12 @@ namespace GHelper.Helpers
 
         private void Cleanup()
         {
+            if (_deviceChangeCts is not null)
+            {
+                try { _deviceChangeCts.Cancel(); _deviceChangeCts.Dispose(); } catch { }
+                _deviceChangeCts = null;
+            }
+
             if (enumerator is not null)
             {
                 try { enumerator.UnregisterEndpointNotificationCallback(this); }
@@ -164,7 +171,17 @@ namespace GHelper.Helpers
             Logger.WriteLine("AudioVisualizer: default output changed -> " + defaultDeviceId);
             captureDeviceId = defaultDeviceId;
 
-            Task.Delay(50).ContinueWith(_ =>
+            lock (_lock)
+            {
+                if (_deviceChangeCts is not null)
+                {
+                    try { _deviceChangeCts.Cancel(); _deviceChangeCts.Dispose(); } catch { }
+                }
+                _deviceChangeCts = new CancellationTokenSource();
+            }
+            var token = _deviceChangeCts.Token;
+
+            Task.Delay(50, token).ContinueWith(_ =>
             {
                 lock (_lock)
                 {
@@ -172,7 +189,7 @@ namespace GHelper.Helpers
                     StopCapture();
                     StartCapture();
                 }
-            });
+            }, token);
         }
     }
 }

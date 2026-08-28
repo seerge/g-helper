@@ -296,13 +296,13 @@ namespace GHelper.Gpu
                     token.ThrowIfCancellationRequested();
 
                     await HardwareControl.RecreateGpuControlWithRetry(3, 2, token);
-                    CheckStandardHalfState();
+                    CheckStandardHalfState(token);
                     _ = Program.modeControl.ApplyGPUSettingsAsync();
                 }
 
                 if (AppConfig.IsModeReapplyRequired())
                 {
-                    await Task.Delay(TimeSpan.FromMilliseconds(3000), token);
+                    await Task.Delay(TimeSpan.FromMilliseconds(1000), token);
 
                     // Reapply the currently active mode's settings (power limits reset by the
                     // GPU eco switch on these models) - not AutoPerformance(), which re-derives
@@ -408,62 +408,80 @@ namespace GHelper.Gpu
         }
 
 
-        public void ToggleXGM(bool silent = false)
+        private static CancellationTokenSource? xgmCts;
+        private static readonly Lock xgmCtsLock = new();
+
+        public void ToggleXGM(bool silent = false, CancellationToken token = default)
         {
+            CancellationTokenSource cts;
+            lock (xgmCtsLock)
+            {
+                xgmCts?.Cancel();
+                xgmCts = CancellationTokenSource.CreateLinkedTokenSource(token);
+                cts = xgmCts;
+            }
+            var ct = cts.Token;
 
             Task.Run(async () =>
             {
-                settings.LockGPUModes();
-
-                if (Program.acpi.DeviceGet(AsusACPI.GPUXG) == 1)
+                try
                 {
-                    XGM.Reset();
-                    HardwareControl.KillGPUApps();
+                    settings.LockGPUModes();
 
-                    if (silent)
+                    if (Program.acpi.DeviceGet(AsusACPI.GPUXG) == 1)
                     {
-                        Program.acpi.DeviceSet(AsusACPI.GPUXG, 0, "GPU XGM");
-                        await Task.Delay(TimeSpan.FromSeconds(15));
-                    }
-                    else
-                    {
-                        DialogResult dialogResult = DialogResult.No;
-                        settings.Invoke((MethodInvoker)delegate
-                        {
-                            dialogResult = MessageBox.Show(settings, "Did you close all applications running on XG Mobile?", "Disabling XG Mobile", MessageBoxButtons.YesNo);
-                        });
+                        XGM.Reset();
+                        HardwareControl.KillGPUApps();
 
-                        if (dialogResult == DialogResult.Yes)
+                        if (silent)
                         {
                             Program.acpi.DeviceSet(AsusACPI.GPUXG, 0, "GPU XGM");
-                            await Task.Delay(TimeSpan.FromSeconds(15));
-                            HardwareControl.RecreateGpuControl();
+                            await Task.Delay(TimeSpan.FromSeconds(15), ct);
+                        }
+                        else
+                        {
+                            DialogResult dialogResult = DialogResult.No;
+                            settings.Invoke((MethodInvoker)delegate
+                            {
+                                dialogResult = MessageBox.Show(settings, "Did you close all applications running on XG Mobile?", "Disabling XG Mobile", MessageBoxButtons.YesNo);
+                            });
+
+                            if (dialogResult == DialogResult.Yes)
+                            {
+                                Program.acpi.DeviceSet(AsusACPI.GPUXG, 0, "GPU XGM");
+                                await Task.Delay(TimeSpan.FromSeconds(15), ct);
+                                ct.ThrowIfCancellationRequested();
+                                HardwareControl.RecreateGpuControl();
+                            }
                         }
                     }
-                }
-                else
-                {
-
-                    if (AppConfig.Is("xgm_special"))
-                        Program.acpi.DeviceSet(AsusACPI.GPUXG, 0x101, "GPU XGM");
                     else
-                        Program.acpi.DeviceSet(AsusACPI.GPUXG, 1, "GPU XGM");
+                    {
 
-                    XGM.Init();
+                        if (AppConfig.Is("xgm_special"))
+                            Program.acpi.DeviceSet(AsusACPI.GPUXG, 0x101, "GPU XGM");
+                        else
+                            Program.acpi.DeviceSet(AsusACPI.GPUXG, 1, "GPU XGM");
 
-                    await Task.Delay(TimeSpan.FromSeconds(15));
-                    await HardwareControl.RecreateGpuControlWithRetry(6, 5);
+                        XGM.Init();
 
-                    if (AppConfig.IsApplyFans())
-                        XGM.SetFan(AppConfig.GetFanConfig(AsusFan.XGM));
+                        await Task.Delay(TimeSpan.FromSeconds(15), ct);
+                        ct.ThrowIfCancellationRequested();
+                        await HardwareControl.RecreateGpuControlWithRetry(6, 5, ct);
 
+                        if (AppConfig.IsApplyFans())
+                            XGM.SetFan(AppConfig.GetFanConfig(AsusFan.XGM));
+
+                    }
+
+                    ct.ThrowIfCancellationRequested();
+                    settings.Invoke(delegate
+                    {
+                        InitGPUMode();
+                    });
                 }
-
-                settings.Invoke(delegate
-                {
-                    InitGPUMode();
-                });
-            });
+                catch (OperationCanceledException) { }
+            }, ct);
         }
 
         public void KillGPUApps()
@@ -479,19 +497,36 @@ namespace GHelper.Gpu
             nvRestartPending = Program.acpi.IsNVidiaGPU() && Program.acpi.DeviceGet(AsusACPI.GPUEco) == 1;
         }
 
-        public void CheckStandardHalfState()
+        private static CancellationTokenSource? standardHalfStateCts;
+        private static readonly Lock standardHalfStateLock = new();
+
+        public void CheckStandardHalfState(CancellationToken token = default)
         {
             if (gpuMode != AsusACPI.GPUModeStandard || HardwareControl.GpuControl is not null) return;
 
             Logger.WriteLine("Standard half-state");
             if (!AppConfig.IsStandardForceFix()) return;
 
+            CancellationTokenSource cts;
+            lock (standardHalfStateLock)
+            {
+                standardHalfStateCts?.Cancel();
+                standardHalfStateCts = CancellationTokenSource.CreateLinkedTokenSource(token);
+                cts = standardHalfStateCts;
+            }
+            var ct = cts.Token;
+
             Task.Run(async () =>
             {
-                Program.acpi.DeviceSet(AsusACPI.GPUEco, 0, "GPUStandard Force Fix");
-                await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("nv_delay", 5000)));
-                HardwareControl.RecreateGpuControl();
-            });
+                try
+                {
+                    Program.acpi.DeviceSet(AsusACPI.GPUEco, 0, "GPUStandard Force Fix");
+                    await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("nv_delay", 5000)), ct);
+                    ct.ThrowIfCancellationRequested();
+                    HardwareControl.RecreateGpuControl();
+                }
+                catch (OperationCanceledException) { }
+            }, ct);
         }
 
         public void StandardModeFix()

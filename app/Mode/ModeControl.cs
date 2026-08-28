@@ -176,10 +176,10 @@ namespace GHelper.Mode
 
                     await Task.Delay(TimeSpan.FromMilliseconds(100), ct);
                     ct.ThrowIfCancellationRequested();
-                    AutoFans();
+                    AutoFans(token: ct);
                     await Task.Delay(TimeSpan.FromMilliseconds(1000), ct);
                     ct.ThrowIfCancellationRequested();
-                    AutoPower();
+                    AutoPower(token: ct);
                     
                     var command = AppConfig.GetModeString("mode_command");
                     if (command is not null)
@@ -258,7 +258,7 @@ namespace GHelper.Mode
             Toast();
         }
 
-        public void AutoFans(bool force = false)
+        public void AutoFans(bool force = false, CancellationToken token = default)
         {
             customFans = false;
 
@@ -308,10 +308,15 @@ namespace GHelper.Mode
                 {
                     Task.Run(async () =>
                     {
-                        await Task.Delay(TimeSpan.FromSeconds(1));
-                        Program.acpi.DeviceSet(AsusACPI.PPT_APUA0, 80, "PowerLimit Fix A0");
-                        Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, 80, "PowerLimit Fix A3");
-                    });
+                        try
+                        {
+                            await Task.Delay(TimeSpan.FromSeconds(1), token);
+                            token.ThrowIfCancellationRequested();
+                            Program.acpi.DeviceSet(AsusACPI.PPT_APUA0, 80, "PowerLimit Fix A0");
+                            Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, 80, "PowerLimit Fix A3");
+                        }
+                        catch (OperationCanceledException) { }
+                    }, token);
                 }
 
             } else
@@ -323,7 +328,7 @@ namespace GHelper.Mode
 
         }
 
-        public void AutoPower(bool launchAsAdmin = false)
+        public void AutoPower(bool launchAsAdmin = false, CancellationToken token = default)
         {
 
             customPower = 0;
@@ -333,7 +338,7 @@ namespace GHelper.Mode
 
             if (applyPower && !applyFans && AppConfig.IsFanRequired())
             {
-                AutoFans(true);
+                AutoFans(true, token);
                 Thread.Sleep(500);
             }
 
@@ -344,7 +349,7 @@ namespace GHelper.Mode
             AutoRyzen();
 
             if (IsReapplyRyzenRequired())
-                Task.Delay(5000).ContinueWith(_ => { AutoRyzen(); ReadRyzenLimits(); });
+                Task.Delay(5000, token).ContinueWith(_ => { AutoRyzen(); ReadRyzenLimits(); }, token);
 
         }
 
