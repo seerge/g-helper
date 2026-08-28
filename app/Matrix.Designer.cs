@@ -578,7 +578,7 @@ namespace GHelper
             //
             checkFlip.AutoSize = true;
             checkFlip.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            checkFlip.Location = new Point(300, 10);
+            checkFlip.Location = new Point(279, 10);
             checkFlip.Name = "checkFlip";
             checkFlip.Size = new Size(180, 36);
             checkFlip.TabIndex = 19;
