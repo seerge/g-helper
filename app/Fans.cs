@@ -1,4 +1,4 @@
-﻿using GHelper.Fan;
+using GHelper.Fan;
 using GHelper.Gpu.NVidia;
 using GHelper.Helpers;
 using GHelper.Mode;
@@ -601,7 +601,7 @@ namespace GHelper
             modeControl.SetGPUClocks(true);
         }
 
-        private void InitGPUPower()
+        private void InitGPUPower(CancellationToken token = default)
         {
             if (!isGPUPower) return;
 
@@ -615,19 +615,25 @@ namespace GHelper
 
             Task.Run(async () =>
             {
-                await Task.Delay(TimeSpan.FromMilliseconds(200));
-                int gpuPowerVar = Program.acpi.DeviceGet(AsusACPI.GPU_POWER);
-                Logger.WriteLine($"ReadGPUPower ({Modes.GetCurrentBase()}): {gpuPowerBase} + {gpuPowerVar}");
-
-                int gpu_power = AppConfig.GetMode("gpu_power");
-                if (gpu_power < 0) gpu_power = (gpuPowerVar >= 0) ? gpuPowerVar : AsusACPI.MaxGPUPower;
-
-                Invoke(delegate
+                try
                 {
-                    trackGPUPower.Value = Math.Max(Math.Min(gpu_power, AsusACPI.MaxGPUPower), AsusACPI.MinGPUPower);
-                    VisualiseGPUSettings();
-                });
-            });
+                    await Task.Delay(TimeSpan.FromMilliseconds(200), token);
+                    int gpuPowerVar = Program.acpi.DeviceGet(AsusACPI.GPU_POWER);
+                    Logger.WriteLine($"ReadGPUPower ({Modes.GetCurrentBase()}): {gpuPowerBase} + {gpuPowerVar}");
+
+                    int gpu_power = AppConfig.GetMode("gpu_power");
+                    if (gpu_power < 0) gpu_power = (gpuPowerVar >= 0) ? gpuPowerVar : AsusACPI.MaxGPUPower;
+
+                    if (IsDisposed || Disposing) return;
+                    Invoke(delegate
+                    {
+                        if (IsDisposed || Disposing) return;
+                        trackGPUPower.Value = Math.Max(Math.Min(gpu_power, AsusACPI.MaxGPUPower), AsusACPI.MinGPUPower);
+                        VisualiseGPUSettings();
+                    });
+                }
+                catch (OperationCanceledException) { }
+            }, token);
         }
 
         public void InitGPU()
