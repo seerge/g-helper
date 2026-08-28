@@ -12,7 +12,6 @@ public static class AsusHid
 
     const uint INPUT_USAGE = 0xFF310076;
     const uint AURA_USAGE = 0xFF310079;
-    const uint LAMP_USAGE = 0x00590001;
 
     public static int[] REAR_LIGHT_PIDS = { 0x18c6 };
 
@@ -46,7 +45,6 @@ public static class AsusHid
         {
             INPUT_ID => INPUT_USAGE,
             AURA_ID => AURA_USAGE,
-            0x04 or 0x44 => LAMP_USAGE,
             _ => 0
         };
 

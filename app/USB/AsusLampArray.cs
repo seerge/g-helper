@@ -91,8 +91,9 @@ public static class AsusLampArray
 
     static HidDevice? FindDevice()
     {
+        var pids = AsusHid.FindDevices(AsusHid.AURA_ID).Select(d => d.ProductID).Distinct().ToArray();
         foreach (byte b in new byte[] { 0x00, 0x40 })
-            foreach (var device in AsusHid.FindDevices((byte)(b + 0x04)))
+            foreach (var device in AsusHid.FindDevices((byte)(b + 0x04), pids))
                 if (device.GetReportDescriptor().TryGetReport(ReportType.Feature, (byte)(b + 0x06), out _))
                 {
                     ridBase = b;
