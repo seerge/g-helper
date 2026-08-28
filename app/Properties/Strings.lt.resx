@@ -596,6 +596,9 @@ Vis tiek norite tęsti?</value>
   <data name="MatrixDateFormat" xml:space="preserve">
     <value>Date Format</value>
   </data>
+  <data name="MatrixFlip" xml:space="preserve">
+    <value>Rotate 180°</value>
+  </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Maksimalus kadrų dažnis (mažesnė delsa)</value>
   </data>
