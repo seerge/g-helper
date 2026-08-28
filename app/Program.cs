@@ -39,6 +39,8 @@ namespace GHelper
 
         private static long lastAuto;
         private static readonly object autoLock = new();
+        private static long lastTheme;
+        private static CancellationTokenSource? sessionSwitchCts;
 
         public static InputDispatcher? inputDispatcher;
 
@@ -228,6 +230,7 @@ namespace GHelper
 
         private static void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
         {
+            sessionSwitchCts?.Cancel();
             gpuControl.StandardModeFix();
             modeControl.ShutdownReset();
             BatteryControl.AutoBattery();
@@ -244,17 +247,23 @@ namespace GHelper
                 bool wasLocked = Aura.sessionLock;
                 Aura.sessionLock = false;
                 Aura.ApplyAura();
-                Task.Delay(2000).ContinueWith(_ =>
+
+                sessionSwitchCts?.Cancel();
+                sessionSwitchCts = new CancellationTokenSource();
+                var token = sessionSwitchCts.Token;
+
+                Task.Delay(2000, token).ContinueWith(_ =>
                 {
                     ScreenControl.AutoScreen();
                     if (!wasLocked) return;
                     if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < 10000) return;
                     modeControl.AutoCPUTemp();
-                });
+                }, token);
             }
             if (e.Reason == SessionSwitchReason.SessionLock)
             {
                 Logger.WriteLine("Session:" + e.Reason.ToString());
+                sessionSwitchCts?.Cancel();
                 Aura.sessionLock = true;
             }
         }
