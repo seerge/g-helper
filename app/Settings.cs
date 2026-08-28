@@ -1,4 +1,4 @@
-﻿using GHelper.Ally;
+using GHelper.Ally;
 using GHelper.AnimeMatrix;
 using GHelper.AutoUpdate;
 using GHelper.Battery;
@@ -609,6 +609,8 @@ namespace GHelper
 
         public void VisualiseController(ControllerMode mode)
         {
+            if (InvokeRequired) { Invoke(() => VisualiseController(mode)); return; }
+
             switch (mode)
             {
                 case ControllerMode.Gamepad:
@@ -800,7 +802,7 @@ namespace GHelper
                     Logger.WriteLine("Battery Saver: " + settings.Data);
                     buttonEnergySaver.Visible = settings.Data != 0;
                 }
-                else
+                else if (settings.PowerSetting == NativeMethods.PowerSettingGuid.ConsoleDisplayState)
                 {
                     switch (settings.Data)
                     {
@@ -1875,6 +1877,8 @@ namespace GHelper
 
         public void HideGPUModes(bool gpuExists)
         {
+            if (InvokeRequired) { Invoke(() => HideGPUModes(gpuExists)); return; }
+
             isGpuSection = false;
 
             buttonEco.Visible = false;
