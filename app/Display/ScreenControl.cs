@@ -11,6 +11,71 @@ namespace GHelper.Display
         public static int MIN_RATE = AppConfig.Get("min_rate", 60);
         public static int MAX_RATE = AppConfig.Get("max_rate");
 
+        // Rapid refresh-rate switching doesn't harm the panel, but each ChangeDisplaySettingsEx
+        // call briefly blanks the screen, which is visibly annoying if several changes land in
+        // quick succession (e.g. flapping power source). The first change in a while applies
+        // instantly; further requests within the cooldown window are coalesced to the latest
+        // value and applied once after the cooldown, instead of flickering on every one.
+        private static readonly Lock refreshRateLock = new();
+        private static long lastRefreshChangeAt;
+        private static string? pendingRefreshScreen;
+        private static int? pendingRefreshFrequency;
+        private static System.Timers.Timer? refreshCooldownTimer;
+
+        private static void ApplyRefreshRate(string laptopScreen, int frequency)
+        {
+            int cooldownMs = AppConfig.Get("refresh_rate_cooldown", 2000);
+
+            lock (refreshRateLock)
+            {
+                long now = Environment.TickCount64;
+                long sinceLast = now - lastRefreshChangeAt;
+
+                if (sinceLast >= cooldownMs)
+                {
+                    lastRefreshChangeAt = now;
+                    ScreenNative.SetRefreshRate(laptopScreen, frequency);
+                    return;
+                }
+
+                pendingRefreshScreen = laptopScreen;
+                pendingRefreshFrequency = frequency;
+
+                if (refreshCooldownTimer is null)
+                {
+                    refreshCooldownTimer = new System.Timers.Timer { AutoReset = false };
+                    refreshCooldownTimer.Elapsed += (_, _) => FlushPendingRefreshRate();
+                }
+
+                refreshCooldownTimer.Stop();
+                refreshCooldownTimer.Interval = Math.Max(cooldownMs - sinceLast, 50);
+                refreshCooldownTimer.Start();
+            }
+        }
+
+        private static void FlushPendingRefreshRate()
+        {
+            string? laptopScreen;
+            int frequency;
+
+            lock (refreshRateLock)
+            {
+                if (pendingRefreshScreen is null || pendingRefreshFrequency is null) return;
+
+                laptopScreen = pendingRefreshScreen;
+                frequency = pendingRefreshFrequency.Value;
+                pendingRefreshScreen = null;
+                pendingRefreshFrequency = null;
+                lastRefreshChangeAt = Environment.TickCount64;
+            }
+
+            // Something else may have already settled it to this value while we waited.
+            if (ScreenNative.GetRefreshRate(laptopScreen) != frequency)
+                ScreenNative.SetRefreshRate(laptopScreen, frequency);
+
+            InitScreen();
+        }
+
         public static int GetMaxRate(string? laptopScreen)
         {
             if (MAX_RATE > 0) return MAX_RATE;
@@ -78,7 +143,7 @@ namespace GHelper.Display
 
             if (frequency > 0 && frequency != refreshRate)
             {
-                ScreenNative.SetRefreshRate(laptopScreen, frequency);
+                ApplyRefreshRate(laptopScreen, frequency);
             }
 
             if (Program.acpi.IsOverdriveSupported() && overdrive >= 0)
