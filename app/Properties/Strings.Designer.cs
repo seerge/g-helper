@@ -1638,6 +1638,15 @@ namespace GHelper.Properties {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Rotate 180°.
+        /// </summary>
+        internal static string MatrixFlip {
+            get {
+                return ResourceManager.GetString("MatrixFlip", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Max refresh rate for lower latency.
         /// </summary>
         internal static string MaxRefreshTooltip {
