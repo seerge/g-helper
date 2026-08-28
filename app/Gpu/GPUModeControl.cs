@@ -300,7 +300,7 @@ namespace GHelper.Gpu
                     _ = Program.modeControl.ApplyGPUSettingsAsync();
                 }
 
-                if (AppConfig.IsModeReapplyRequired())
+                if (AppConfig.IsModeReapply())
                 {
                     await Task.Delay(TimeSpan.FromMilliseconds(1000), token);
 
