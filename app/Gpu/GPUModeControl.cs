@@ -209,7 +209,7 @@ namespace GHelper.Gpu
 
                         await HardwareControl.RecreateGpuControlWithRetry(3, 2);
                         if (HardwareControl.GpuControl is null) await HardwareControl.RecreateGpuControlWithRetry(3, 5);
-                        CheckGpuError();
+                        Task.Run(CheckGpuError);
                         CheckStandardHalfState();
                     }
 

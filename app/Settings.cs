@@ -1989,9 +1989,12 @@ namespace GHelper
 
         private void PictureGPU_Click(object? sender, EventArgs e)
         {
-            Program.gpuControl.CheckGpuError();
-            if (GPUModeControl.gpuError is not null)
-                Process.Start(new ProcessStartInfo("devmgmt.msc") { UseShellExecute = true });
+            Task.Run(() =>
+            {
+                Program.gpuControl.CheckGpuError();
+                if (GPUModeControl.gpuError is not null)
+                    Process.Start(new ProcessStartInfo("devmgmt.msc") { UseShellExecute = true });
+            });
         }
 
         private void ButtonSilent_Click(object? sender, EventArgs e)
