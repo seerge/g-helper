@@ -645,7 +645,10 @@ namespace GHelper.USB
         public static void ApplyDirect(Color[] color, bool init = false)
         {
             if (color is { Length: > 0 })
+            {
                 PeripheralsProvider.StreamMouseColor(color.Length > 3 ? color[3] : color[0]);
+                PeripheralsProvider.StreamKeyboardColor(color.Length > 3 ? color[3] : color[0]);
+            }
 
             if (!backlight) return;
 
@@ -762,6 +765,7 @@ namespace GHelper.USB
         public static void ApplyDirect(Color color, bool init = false)
         {
             PeripheralsProvider.StreamMouseColor(color);
+            PeripheralsProvider.StreamKeyboardColor(color);
 
             if (!backlight) return;
 
@@ -948,6 +952,7 @@ namespace GHelper.USB
             int _speed = (effectiveSpeed == AuraSpeed.Normal) ? 0xeb : (effectiveSpeed == AuraSpeed.Fast) ? 0xf5 : 0xe1;
 
             PeripheralsProvider.SyncMiceWithKeyboardAura();
+            PeripheralsProvider.SyncKeyboardsWithAura();
 
             AsusHid.Write(new List<byte[]> { AuraMessage(Mode, _Color1, _Color2, _speed), MESSAGE_SET, MESSAGE_APPLY }, "Aura", AsusHid.MAIN_AURA_PIDS);
             XGM.LightMode(Mode, _Color1, _Color2, _speed);
@@ -1152,6 +1157,7 @@ namespace GHelper.USB
                 }
 
                 PeripheralsProvider.StreamMouseColor(color);
+                PeripheralsProvider.StreamKeyboardColor(color);
                 if (isACPI) Program.acpi.TUFKeyboardRGB(AuraMode.AuraStatic, color, 0xeb, $"TUF RGB GPU {gpuMode}");
                 AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb), MESSAGE_APPLY, MESSAGE_SET });
 
@@ -1198,6 +1204,7 @@ namespace GHelper.USB
 
                 if (AppConfig.IsAlly()) color = ColorDim(color);
                 PeripheralsProvider.StreamMouseColor(color);
+                PeripheralsProvider.StreamKeyboardColor(color);
                 AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb), MESSAGE_APPLY, MESSAGE_SET });
                 if (isACPI) Program.acpi.TUFKeyboardRGB(AuraMode.AuraStatic, color, 0xeb);
             }

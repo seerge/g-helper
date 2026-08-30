@@ -71,7 +71,7 @@ namespace GHelper.Gpu
 
             Aura.CustomRGB.ApplyGPUColor(gpuMode);
 
-            Task.Run(CheckGpuError);
+            CheckGpuError();
 
         }
 
@@ -208,14 +208,18 @@ namespace GHelper.Gpu
                         }
 
                         await HardwareControl.RecreateGpuControlWithRetry(3, 2);
+                        if (HardwareControl.GpuControl is null) await HardwareControl.RecreateGpuControlWithRetry(3, 5);
+                        CheckGpuError();
                         CheckStandardHalfState();
-                        Program.modeControl.SetGPUClocks(false);
                     }
 
-                    if (AppConfig.IsModeReapplyRequired())
+                    if (AppConfig.IsModeReapply())
                     {
-                        await Task.Delay(TimeSpan.FromMilliseconds(3000));
+                        await Task.Delay(TimeSpan.FromMilliseconds(1000));
                         Program.modeControl.AutoPerformance();
+                    } else
+                    {
+                        Program.modeControl.SetGPUClocks(false);
                     }
                 }
                 catch (Exception ex)
@@ -387,17 +391,14 @@ namespace GHelper.Gpu
 
         public static string? gpuError = null;
 
-        void CheckGpuError()
+        public static void CheckGpuError() => Task.Run(() =>
         {
             string? error = DeviceHelper.GetGpuError();
-
-            if (gpuError != error)
-            {
-                gpuError = error;
-                if (error != null) Logger.WriteLine(error);
-                settings.VisualiseGPUMode();
-            }
-        }
+            if (gpuError == error) return;
+            gpuError = error;
+            if (error != null) Logger.WriteLine(error);
+            Program.settingsForm.VisualiseGPUMode();
+        });
 
     }
 }

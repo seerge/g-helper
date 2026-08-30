@@ -525,6 +525,19 @@ namespace GHelper.AnimeMatrix
             }
         }
 
+        private static void FlipText(params List<(int x, int y, byte v)>[] lines)
+        {
+            if (!AppConfig.Is("matrix_flip")) return;
+
+            var all = lines.SelectMany(l => l);
+            if (!all.Any()) return;
+
+            int sx = all.Min(p => p.x) + all.Max(p => p.x);
+            int sy = all.Min(p => p.y) + all.Max(p => p.y);
+            foreach (var lit in lines)
+                for (int i = 0; i < lit.Count; i++) lit[i] = (sx - lit[i].x, sy - lit[i].y, lit[i].v);
+        }
+
         public void PresentText(int dragLine = 0, int dragX = 0, int dragY = 0)
         {
             var (x1, y1) = TextOffset(1);
@@ -533,9 +546,13 @@ namespace GHelper.AnimeMatrix
             if (dragLine == 1) (x1, y1) = (dragX, dragY);
             if (dragLine == 2) (x2, y2) = (dragX, dragY);
 
+            var lit1 = GetTextPixels(1, out _);
+            var lit2 = GetTextPixels(2, out _);
+            FlipText(lit1, lit2);
+
             Clear();
-            PlotText(GetTextPixels(1, out _), textDeltaX, x1, y1);
-            PlotText(GetTextPixels(2, out _), textDeltaX, x2, y2);
+            PlotText(lit1, textDeltaX, x1, y1);
+            PlotText(lit2, textDeltaX, x2, y2);
             Present();
         }
 
@@ -562,6 +579,7 @@ namespace GHelper.AnimeMatrix
                 return false;
             }
 
+            FlipText(lit1, lit2);
             int textWidth = Math.Max(width1, width2);
 
             int pad = Math.Max(Math.Abs(y1) + 2 * Math.Abs(x1), Math.Abs(y2) + 2 * Math.Abs(x2));
@@ -573,6 +591,8 @@ namespace GHelper.AnimeMatrix
                 AddFrame();
             }
 
+            if (AppConfig.Is("matrix_flip")) frames.Reverse();
+
             // keep scroll phase
             frameIndex = index % frames.Count;
 
@@ -581,12 +601,16 @@ namespace GHelper.AnimeMatrix
 
         public int HitTestText(int plX, int plY)
         {
+            var lit1 = GetTextPixels(1, out _);
+            var lit2 = GetTextPixels(2, out _);
+            FlipText(lit1, lit2);
+
             long Distance(int line)
             {
                 var (offX, offY) = TextOffset(line);
                 long best = long.MaxValue;
 
-                foreach (var (x, y, _) in GetTextPixels(line, out _))
+                foreach (var (x, y, _) in line == 2 ? lit2 : lit1)
                 {
                     var (tX, tY) = Planar(x, y, textDeltaX, textDeltaY);
                     long dX = plX - tX - offX;
@@ -632,22 +656,20 @@ namespace GHelper.AnimeMatrix
 
             bool battery = AppConfig.Is("matrix_clock_battery");
 
-            Clear();
+            var lit = new List<(int x, int y, byte v)>();
             if (_model == AnimeType.STRIX)
             {
-                if (battery)
-                    PlotBattery(15, 1, offsetX, offsetY);
-                else
-                    PlotText(time, 15, 1, offsetX, offsetY);
+                lit.AddRange(battery ? BatteryPixels(15, 1) : ClockPixels(time, 15, 1));
             }
             else
             {
-                PlotText(time, 15, 6, offsetX, offsetY);
-                if (battery)
-                    PlotBattery(11.5F, 0, offsetX, offsetY);
-                else
-                    PlotText(date, 11.5F, 0, offsetX, offsetY);
+                lit.AddRange(ClockPixels(time, 15, 6));
+                lit.AddRange(battery ? BatteryPixels(11.5F, 0) : ClockPixels(date, 11.5F, 0));
             }
+            FlipText(lit);
+
+            Clear();
+            PlotText(lit, textDeltaX, offsetX, offsetY);
             Present();
 
         }
@@ -660,11 +682,11 @@ namespace GHelper.AnimeMatrix
                 : DrawTextBitmap(text, "", 10, bottom - 2.2f);
         }
 
-        private void PlotText(string text, float size, float bottom, int offsetX, int offsetY)
-            => PlotText(GetTextPixels(DrawClockBitmap(text, size, bottom), out _), textDeltaX, offsetX, offsetY);
+        private List<(int x, int y, byte v)> ClockPixels(string text, float size, float bottom)
+            => GetTextPixels(DrawClockBitmap(text, size, bottom), out _);
 
-        private void PlotBattery(float size, float bottom, int offsetX, int offsetY)
-            => PlotText(GetTextPixels(DrawBatteryBitmap(size, bottom), out _), textDeltaX, offsetX, offsetY);
+        private List<(int x, int y, byte v)> BatteryPixels(float size, float bottom)
+            => GetTextPixels(DrawBatteryBitmap(size, bottom), out _);
 
         private Bitmap? DrawBatteryBitmap(float size, float bottom)
         {

@@ -30,6 +30,7 @@ namespace GHelper.Display
         DimmingVivo = 9,
         DimmingVisual = 19,
         DimmingDuo = 109,
+        DimmingVisualDuo = 319,
 
         GamutMode = 200,
         GamutModeDuo = 201,
@@ -43,6 +44,7 @@ namespace GHelper.Display
         Vivid = 13,
         Eyecare = 17,
         EReading = 212,
+        EReadingDuo = 213,
         EReadingVivo = 210,
         EReadingVivoDuo = 211,
         Disabled = 18,
@@ -379,12 +381,25 @@ namespace GHelper.Display
                 case SplendidCommand.VivoEycare:
                     return command + 100;
                 case SplendidCommand.DimmingVivo:
-                case SplendidCommand.DimmingVisual:
                     return SplendidCommand.DimmingDuo;
+                case SplendidCommand.DimmingVisual:
+                    return SplendidCommand.DimmingVisualDuo;
                 case SplendidCommand.GamutMode:
                     return SplendidCommand.GamutModeDuo;
                 case SplendidCommand.EReadingVivo:
                     return SplendidCommand.EReadingVivoDuo;
+                case SplendidCommand.EReading:
+                    return SplendidCommand.EReadingDuo;
+                case SplendidCommand.Default:
+                case SplendidCommand.Vivid:
+                case SplendidCommand.Eyecare:
+                case SplendidCommand.Disabled:
+                case SplendidCommand.Racing:
+                case SplendidCommand.Scenery:
+                case SplendidCommand.RTS:
+                case SplendidCommand.FPS:
+                case SplendidCommand.Cinema:
+                    return command + 300;
                 default:
                     return SplendidCommand.None;
             }

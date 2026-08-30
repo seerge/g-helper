@@ -120,39 +120,79 @@ A built-in in-game overlay (OSD) that shows live **FPS, CPU / GPU temperatures, 
 <details>
 <summary><a href="https://github.com/seerge/g-helper/discussions/900">Currently supported models</a> (click to expand)</summary>
 
+- ROG Chakram
 - ROG Chakram X
 - ROG Chakram Core
-- ROG Gladius II and Gladius II Origin
+- ROG Gladius II and Gladius II Origin (+ PNK LTD / COD editions)
 - ROG Gladius II Wireless
 - ROG Gladius III
 - ROG Gladius III Wireless
+- ROG Gladius III Aimpoint Wireless (+ EVA-02 Edition)
 - ROG Harpe Ace Extreme
 - ROG Harpe Ace Aim Lab Edition
 - ROG Harpe Ace Mini
 - ROG Harpe II Ace
-- ROG Keris Wireless
-- ROG Keris II Ace
+- ROG Harpe II Extreme Edition 20
+- ROG Keris and Keris Wireless (+ EVA Edition)
 - ROG Keris Wireless Aimpoint
-- ROG Strix Carry
-- ROG Strix III Gladius III Aimpoint Wireless
-- ROG Strix Impact III
-- ROG Strix Impact III Wireless
-- ROG Spatha X
-- ROG Strix Impact II Wireless
+- ROG Keris II Ace
+- ROG Keris II Origin (+ KJP edition)
 - ROG Pugio
 - ROG Pugio II
-- TUF Gaming M4 Wireless
+- ROG Spatha X
+- ROG Strix Carry
+- ROG Strix Evolve
+- ROG Strix Impact
+- ROG Strix Impact II (+ Electro Punk / Moonlight White editions)
+- ROG Strix Impact II Wireless
+- ROG Strix Impact III
+- ROG Strix Impact III Wireless
 - TUF Gaming M3
 - TUF Gaming M3 Gen II
+- TUF Gaming M4 Wireless
 - TUF Gaming M4 AIR
 - TUF Gaming M5
-- TX Gaming Mini
+- TUF Gaming Mini Miku Edition
+- TX Gaming Mouse
+- TX Gaming Mouse Mini
+- ASUS MD200
 
 </details>
 
 Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contribution and research (!).
 
 <img width="2448" alt="Mouse and other peripherals" src="https://github.com/user-attachments/assets/fe2a766b-f514-42e9-8dff-4bcc915364d4" />
+
+### :keyboard: Asus Keyboards support
+
+<details>
+<summary><a href="https://github.com/seerge/g-helper/discussions/5710">Currently supported models</a> (click to expand)</summary>
+
+- ROG Azoth
+- ROG Azoth Extreme
+- ROG Azoth X
+- ROG Claymore II
+- ROG Falchion
+- ROG Falchion Ace
+- ROG Falchion Ace HFX
+- ROG Falchion RX
+- ROG Falchion RX Low Profile
+- ROG Strix Flare
+- ROG Strix Flare II
+- ROG Strix Flare II Animate
+- ROG Strix Scope II
+- ROG Strix Scope II RX
+- ROG Strix Scope II 96
+- ROG Strix Scope II 96 RX
+- ROG Strix Scope RX
+- ROG Strix Scope RX TKL
+- TUF Gaming K1
+- TUF Gaming K3
+- TUF Gaming K3 Gen II
+
+</details>
+
+<img width="2254" alt="Keyboards" src="https://github.com/user-attachments/assets/9da4116f-7fb1-4dae-ac3e-25f0f1266a74" />
 
 ### ⌨️ Keybindings
 
@@ -204,6 +244,7 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 - [UXTU](https://github.com/JamesCJ60/Universal-x86-Tuning-Utility) for undervolting endpoints using Ryzen SMU
 - [PawnIO](https://github.com/namazso/PawnIO) for access to RyzenSMU
 - [AsusCtl](https://gitlab.com/asus-linux/asusctl) for inspiration and some reverse engineering
+- [OpenRGB](https://gitlab.com/CalcProgrammer1/OpenRGB) for some RGB protocol details for external keyboards support
 
 ### Code Signing Policy
 Free code signing provided by [SignPath.io](https://about.signpath.io/), certificate by [SignPath Foundation](https://signpath.org/)

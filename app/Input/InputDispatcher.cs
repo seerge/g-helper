@@ -2,6 +2,7 @@ using GHelper.Display;
 using GHelper.Helpers;
 using GHelper.Mode;
 using GHelper.Peripherals;
+using GHelper.Peripherals.Keyboard;
 using GHelper.Peripherals.Mouse;
 using GHelper.USB;
 using Microsoft.Win32;
@@ -221,6 +222,10 @@ namespace GHelper.Input
             foreach (ushort code in GetActiveMouseComboCarriers())
                 hook.RegisterHotKey(ModifierKeys.None, Keys.F13 + (code - 0x0068));
 
+            for (int slot = 0; slot < AsusKeyboard.LaunchSlots; slot++)
+                if (AsusKeyboard.LaunchCommand(slot).Length > 0)
+                    hook.RegisterHotKey(ModifierKeys.Control | ModifierKeys.Shift | ModifierKeys.Alt, Keys.F1 + slot);
+
         }
 
         private static IEnumerable<ushort> GetActiveMouseComboCarriers()
@@ -331,6 +336,17 @@ namespace GHelper.Input
         {
 
             Logger.WriteLine(e.Key.ToString() + " " + e.Modifier.ToString());
+
+            if (e.Modifier == (ModifierKeys.Control | ModifierKeys.Shift | ModifierKeys.Alt)
+                && e.Key >= Keys.F1 && e.Key < Keys.F1 + AsusKeyboard.LaunchSlots)
+            {
+                string command = AsusKeyboard.LaunchCommand(e.Key - Keys.F1);
+                if (command.Length > 0)
+                {
+                    LaunchProcess(command);
+                    return;
+                }
+            }
 
             if (e.Modifier == ModifierKeys.None)
             {
