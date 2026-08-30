@@ -597,7 +597,7 @@ Folytatni szeretnéd?</value>
     <value>Dátum formátum</value>
   </data>
   <data name="MatrixFlip" xml:space="preserve">
-    <value>Rotate 180°</value>
+    <value>Forgatás180°-kal</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Max frissítési gyakoriság kevés késleltetéshez</value>
