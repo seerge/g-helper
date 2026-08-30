@@ -71,7 +71,7 @@ namespace GHelper.Gpu
 
             Aura.CustomRGB.ApplyGPUColor(gpuMode);
 
-            Task.Run(CheckGpuError);
+            CheckGpuError();
 
         }
 
@@ -209,7 +209,7 @@ namespace GHelper.Gpu
 
                         await HardwareControl.RecreateGpuControlWithRetry(3, 2);
                         if (HardwareControl.GpuControl is null) await HardwareControl.RecreateGpuControlWithRetry(3, 5);
-                        Task.Run(CheckGpuError);
+                        CheckGpuError();
                         CheckStandardHalfState();
                     }
 
@@ -391,17 +391,14 @@ namespace GHelper.Gpu
 
         public static string? gpuError = null;
 
-        public void CheckGpuError()
+        public static void CheckGpuError() => Task.Run(() =>
         {
             string? error = DeviceHelper.GetGpuError();
-
-            if (gpuError != error)
-            {
-                gpuError = error;
-                if (error != null) Logger.WriteLine(error);
-                settings.VisualiseGPUMode();
-            }
-        }
+            if (gpuError == error) return;
+            gpuError = error;
+            if (error != null) Logger.WriteLine(error);
+            Program.settingsForm.VisualiseGPUMode();
+        });
 
     }
 }
