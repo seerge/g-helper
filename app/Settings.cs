@@ -272,13 +272,11 @@ namespace GHelper
             buttonFPS.Click += ButtonFPS_Click;
             buttonOverlay.Click += ButtonOverlay_Click;
             buttonOverlay.BorderColor = colorStandard;
+            buttonOverlay.Text = Properties.Strings.Overlay;
+            buttonOverlay.Activated = AppConfig.IsOverlay();
 
-            if (!AppConfig.IsAlly())
-            {
-                tableScreen.Controls.Add(buttonOverlay, 3, 0);
-                buttonOverlay.Text = Properties.Strings.Overlay;
-                buttonOverlay.Activated = AppConfig.IsOverlay();
-            }
+            if (AppConfig.IsAlly()) tableScreen.ColumnCount = 3;
+            else tableScreen.Controls.Add(buttonOverlay, 3, 0);
 
             buttonAutoTDP.Click += ButtonAutoTDP_Click;
             buttonAutoTDP.BorderColor = colorTurbo;
@@ -599,9 +597,6 @@ namespace GHelper
             panelAlly.Visible = true;
             panelKeyboardTitle.Visible = false;
             panelKeyboard.Padding = new Padding(panelKeyboard.Padding.Left, 0, panelKeyboard.Padding.Right, panelKeyboard.Padding.Bottom);
-
-            buttonOverlay.Text = Properties.Strings.Overlay;
-            buttonOverlay.Activated = AppConfig.IsOverlay();
 
             tableAMD.Visible = true;
         }
@@ -1851,7 +1846,6 @@ namespace GHelper
                 menuOptimized.Visible = buttonOptimized.Visible = false;
                 buttonStopGPU.Visible = true;
                 tableGPU.ColumnCount = 3;
-                //tableScreen.ColumnCount = 3;
             }
             else
             {
@@ -1862,7 +1856,6 @@ namespace GHelper
             {
                 menuUltimate.Visible = buttonUltimate.Visible = false;
                 tableGPU.ColumnCount = 3;
-                //tableScreen.ColumnCount = 3;
             }
         }
 

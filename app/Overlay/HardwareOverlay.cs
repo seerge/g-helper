@@ -303,12 +303,6 @@ namespace GHelper.Overlay
                                 Math.Abs(upCursor.Y - _dragCursorStart.Y) <= 5;
                 if (wasClick)
                 {
-                    // Determine right-side anchor BEFORE the width changes
-                    Point center = new Point(Location.X + Width / 2, Location.Y + Height / 2);
-                    Screen screen = Screen.FromPoint(center);
-                    bool isRight = center.X > screen.Bounds.X + screen.Bounds.Width / 2;
-                    int rightEdge = Location.X + Width;
-
                     _mode = _mode switch
                     {
                         OverlayMode.Light   => OverlayMode.Default,
@@ -317,16 +311,7 @@ namespace GHelper.Overlay
                         _                   => OverlayMode.Light,
                     };
                     AppConfig.Set("overlay_mode", (int)_mode);
-                    ApplyPreset(_mode);
-                    ApplySensorFlags();
-                    EnsureFpsMonitor();
-                    Invalidate(); // resizes the window synchronously via PerformPaint → Size.set
-
-                    if (isRight)
-                    {
-                        Location = new Point(rightEdge - Width, Location.Y);
-                        SavePosition();
-                    }
+                    RefreshSettings();
                 }
                 else
                 {
@@ -937,16 +922,11 @@ namespace GHelper.Overlay
             SavePosition();
         }
 
-        public void SetScale(int percent)
-        {
-            if (_active) ApplyScale(percent);
-            else AppConfig.Set("overlay_scale_percent", Math.Clamp(percent, MinScalePercent, MaxScalePercent));
-        }
-
         public void RefreshSettings()
         {
             if (!_active) return;
             _mode = (OverlayMode)Math.Clamp(AppConfig.Get("overlay_mode", 0), 0, 3);
+            _scalePercent = Math.Clamp(AppConfig.Get("overlay_scale_percent", 100), MinScalePercent, MaxScalePercent);
             ApplyColors();
             ApplyPreset(_mode);
             ApplySensorFlags();

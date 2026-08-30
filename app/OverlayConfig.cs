@@ -118,12 +118,8 @@ namespace GHelper
             updating = true;
             for (int i = 0; i < modeButtons.Length; i++) modeButtons[i].Activated = i == mode;
             foreach (var (box, key) in blocks) box.Checked = HardwareOverlay.BlockShown(key, mode);
-            checkBattery.CheckState = HardwareOverlay.BatteryState(mode) switch
-            {
-                1 => CheckState.Checked,
-                0 => CheckState.Unchecked,
-                _ => CheckState.Indeterminate,
-            };
+            int battery = HardwareOverlay.BatteryState(mode);
+            checkBattery.CheckState = battery < 0 ? CheckState.Indeterminate : (CheckState)battery;
             updating = false;
         }
 
@@ -146,12 +142,7 @@ namespace GHelper
         private void Battery_CheckStateChanged(object? sender, EventArgs e)
         {
             if (updating) return;
-            int state = checkBattery.CheckState switch
-            {
-                CheckState.Checked => 1,
-                CheckState.Unchecked => 0,
-                _ => -1,
-            };
+            int state = checkBattery.CheckState == CheckState.Indeterminate ? -1 : (int)checkBattery.CheckState;
             AppConfig.Set(HardwareOverlay.ModeKey("overlay_show_battery", mode), state);
             Program.hardwareOverlay?.RefreshSettings();
         }
@@ -159,7 +150,8 @@ namespace GHelper
         private void TrackScale_ValueChanged(object? sender, EventArgs e)
         {
             labelSize.Text = trackScale.Value + "%";
-            Program.hardwareOverlay?.SetScale(trackScale.Value);
+            AppConfig.Set("overlay_scale_percent", trackScale.Value);
+            Program.hardwareOverlay?.RefreshSettings();
         }
 
         private void TrackAlpha_ValueChanged(object? sender, EventArgs e)
