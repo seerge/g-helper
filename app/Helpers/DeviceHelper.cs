@@ -27,12 +27,23 @@ namespace GHelper.Helpers
 
         static string ProblemText(uint problem) => problem switch
         {
+            1 => "Device is not configured",
             10 => "Device cannot start",
             12 => "Not enough free resources",
+            14 => "Restart required",
+            18 => "Drivers need to be reinstalled",
+            21 => "Device is being removed",
             22 => "Device is disabled",
             28 => "Drivers are not installed",
             31 or 39 => "Driver failed to load",
+            32 => "Driver service is disabled",
+            37 => "Driver initialization failed",
+            38 => "Previous driver still loaded, restart required",
             43 => "Device stopped because it reported problems",
+            44 => "Device stopped by an application or service",
+            48 => "Driver is blocked from loading",
+            52 => "Driver signature cannot be verified",
+            54 => "Device is being reset",
             _ => "Unknown problem",
         };
 

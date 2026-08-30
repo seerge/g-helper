@@ -1989,6 +1989,7 @@ namespace GHelper
 
         private void PictureGPU_Click(object? sender, EventArgs e)
         {
+            Program.gpuControl.CheckGpuError();
             if (GPUModeControl.gpuError is not null)
                 Process.Start(new ProcessStartInfo("devmgmt.msc") { UseShellExecute = true });
         }
