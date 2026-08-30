@@ -2,6 +2,7 @@
 using GHelper.Helpers;
 using GHelper.Input;
 using GHelper.Peripherals;
+using Microsoft.Win32;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
@@ -58,6 +59,7 @@ namespace GHelper.USB
         ZONETEST = 25,
         AUDIO = 26,
         AUDIOPULSE = 27,
+        ACCENT = 28,
     }
 
     public enum AuraSpeed : int
@@ -202,6 +204,7 @@ namespace GHelper.USB
             modes[AuraMode.GPUMODE] = "GPU Mode";
             modes[AuraMode.AMBIENT] = "Ambient";
             modes[AuraMode.BATTERY] = "Battery";
+            modes[AuraMode.ACCENT] = "System Accent";
             modes[AuraMode.AUDIO] = "Audio Spectrum";
             modes[AuraMode.AUDIOPULSE] = "Audio Pulse";
 
@@ -260,6 +263,23 @@ namespace GHelper.USB
         {
             RearColor = Color.FromArgb(colorCode);
         }
+        
+        public static Color GetWindowsAccentColor()
+        {
+            using var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\DWM");
+            var value = key?.GetValue("AccentColor");
+
+            if (value is int accent)
+            {
+                // 0xAABBGGRR
+                byte r = (byte)(accent & 0xFF);
+                byte g = (byte)((accent >> 8) & 0xFF);
+                byte b = (byte)((accent >> 16) & 0xFF);
+                return Color.FromArgb(r, g, b);
+            }
+
+            return Color.DodgerBlue;
+        }
 
         public static bool HasSecondColor()
         {
@@ -287,6 +307,10 @@ namespace GHelper.USB
             else if (Mode == AuraMode.AMBIENT)
             {
                 CustomRGB.ApplyAmbient();
+            }
+            else if (Mode == AuraMode.ACCENT)
+            {
+                CustomRGB.ApplyAccentColor();
             }
         }
 
@@ -909,6 +933,14 @@ namespace GHelper.USB
                 return;
             }
 
+            if (Mode == AuraMode.ACCENT)
+            {
+                CustomRGB.ApplyAccentColor(true);
+                timer.Interval = 2000;
+                timer.Start();
+                return;
+            }
+
             if (AppConfig.IsDynamicLightingOnly())
             {
                 switch (mode)
@@ -1161,6 +1193,25 @@ namespace GHelper.USB
                 if (isACPI) Program.acpi.TUFKeyboardRGB(AuraMode.AuraStatic, color, 0xeb, $"TUF RGB GPU {gpuMode}");
                 AsusHid.Write(new List<byte[]> { AuraMessage(AuraMode.AuraStatic, color, color, 0xeb), MESSAGE_APPLY, MESSAGE_SET });
 
+            }
+
+            static Color accentColor = Color.Empty;
+
+            public static void ApplyAccentColor(bool init = false)
+            {
+                if (!backlight || sessionLock) return;
+                if ((AuraMode)AppConfig.Get("aura_mode") != AuraMode.ACCENT) return;
+
+                Color color = Aura.GetWindowsAccentColor();
+                
+                if (!init && color.ToArgb() == accentColor.ToArgb()) return;
+                accentColor = color;
+
+                PeripheralsProvider.StreamMouseColor(color);
+                if (isStrix) ApplyDirect(Enumerable.Repeat(color, AURA_ZONES).ToArray(), init);
+                else ApplyDirect(color, init);
+
+                if (isACPI) Program.acpi.TUFKeyboardRGB(AuraMode.AuraStatic, color, 0xeb, "TUF RGB Accent");
             }
 
             public static void ApplyHeatmap(bool init = false)
