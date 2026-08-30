@@ -69,8 +69,6 @@ namespace GHelper.Overlay
         private Point _dragWindowStart;
         private bool _dragModeActive;
         private volatile bool _dragKey;
-        // Values match the persisted "overlay_light_mode" key for backward compat
-        // (legacy: 0 = default, 1 = light).
         private enum OverlayMode { Default = 0, Light = 1, Full = 2, Complete = 3 }
         private OverlayMode _mode;
 
@@ -999,10 +997,7 @@ namespace GHelper.Overlay
             _bgBrush.Dispose();      _bgBrush = new SolidBrush(Color.FromArgb(_bgAlpha, 0, 0, 0));
         }
 
-        // Every mode reads its own block keys: Complete keeps the legacy unsuffixed overlay_show_*
-        // keys, other modes append the mode int; defaults reproduce the original fixed presets.
-        public static string ModeKey(string key, int mode) =>
-            mode == (int)OverlayMode.Complete ? key : key + "_" + mode;
+        public static string ModeKey(string key, int mode) => key + "_" + mode;
 
         public static bool BlockShown(string key, int mode)
         {
@@ -1092,15 +1087,7 @@ namespace GHelper.Overlay
             _hidden = false;
             _shownPid = 0;
             _fgDesktop = false;
-            // overlay_mode is the new key. Migrate from legacy overlay_light_mode (0/1)
-            // when the new one isn't set yet so existing users keep their preference.
-            int storedMode = AppConfig.Exists("overlay_mode")
-                ? AppConfig.Get("overlay_mode", 0)
-                : AppConfig.Get("overlay_light_mode", 0);
-            _mode = storedMode == (int)OverlayMode.Light    ? OverlayMode.Light
-                  : storedMode == (int)OverlayMode.Full     ? OverlayMode.Full
-                  : storedMode == (int)OverlayMode.Complete ? OverlayMode.Complete
-                  : OverlayMode.Default;
+            _mode = (OverlayMode)Math.Clamp(AppConfig.Get("overlay_mode", 0), 0, 3);
             _scalePercent = Math.Clamp(AppConfig.Get("overlay_scale_percent", 100), MinScalePercent, MaxScalePercent);
             ApplyColors();
             ApplyPreset(_mode);

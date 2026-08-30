@@ -52,9 +52,7 @@ namespace GHelper
             checkEnable.Checked = AppConfig.IsOverlay();
             checkGameOnly.Checked = AppConfig.IsOverlayGameOnly();
 
-            mode = AppConfig.Exists("overlay_mode") ? AppConfig.Get("overlay_mode", 0) : AppConfig.Get("overlay_light_mode", 0);
-            mode = Math.Clamp(mode, 0, modeButtons.Length - 1);
-            if (!AppConfig.Exists("overlay_mode")) AppConfig.Set("overlay_mode", mode);
+            mode = Math.Clamp(AppConfig.Get("overlay_mode", 0), 0, modeButtons.Length - 1);
             VisualiseBlocks();
 
             trackScale.Value = Math.Clamp(AppConfig.Get("overlay_scale_percent", 100), trackScale.Minimum, trackScale.Maximum);
