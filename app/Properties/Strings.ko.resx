@@ -135,6 +135,9 @@
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>Eco 모드</value>
   </data>
+  <data name="AlertExternalDisplay" xml:space="preserve">
+    <value>Looks like external screen is connected to GPU, disable GPU anyway?</value>
+  </data>
   <data name="AlertUltimateOff" xml:space="preserve">
     <value>Ultimate 모드를 끄기 위해서는 다시 시작해야 합니다.</value>
   </data>
