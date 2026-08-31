@@ -407,6 +407,9 @@ Folytatni szeretnéd?</value>
   <data name="ExtraSettings" xml:space="preserve">
     <value>Extra beállítások</value>
   </data>
+  <data name="ExtremeLowMotionBlur" xml:space="preserve">
+    <value>Extreme Low Motion Blur</value>
+  </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>Gyári alapértékek</value>
   </data>
