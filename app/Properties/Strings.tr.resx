@@ -600,7 +600,7 @@ Yine de devam etmek istiyor musunuz?</value>
     <value>Date Format</value>
   </data>
   <data name="MatrixFlip" xml:space="preserve">
-    <value>Rotate 180°</value>
+    <value>180° Döndür</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>En düşük gecikme için en yüksek yenileme hızı</value>
