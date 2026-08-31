@@ -600,7 +600,7 @@ Ainda quer continuar?</value>
     <value>Date Format</value>
   </data>
   <data name="MatrixFlip" xml:space="preserve">
-    <value>Rotate 180°</value>
+    <value>Girar 180°</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Taxa de atualização máxima e menor latência</value>
