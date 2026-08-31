@@ -407,6 +407,9 @@
   <data name="ExtraSettings" xml:space="preserve">
     <value>更多设置</value>
   </data>
+  <data name="ExtremeLowMotionBlur" xml:space="preserve">
+    <value>Extreme Low Motion Blur</value>
+  </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>恢复默认设置</value>
   </data>
