@@ -135,6 +135,9 @@
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>節能模式</value>
   </data>
+  <data name="AlertExternalDisplay" xml:space="preserve">
+    <value>Looks like external screen is connected to GPU, disable GPU anyway?</value>
+  </data>
   <data name="AlertUltimateOff" xml:space="preserve">
     <value>關閉獨顯需要重新啟動</value>
   </data>
