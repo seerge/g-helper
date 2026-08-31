@@ -114,6 +114,7 @@ namespace GHelper
             checkAutoToggleClamshellMode = new CheckBox();
             checkTopmost = new CheckBox();
             checkNoOverdrive = new CheckBox();
+            checkELMB = new CheckBox();
             checkBootSound = new CheckBox();
             checkKeystoneSound = new CheckBox();
             checkUSBC = new CheckBox();
@@ -1201,6 +1202,7 @@ namespace GHelper
             panelSettings.AccessibleRole = AccessibleRole.Grouping;
             panelSettings.AutoSize = true;
             panelSettings.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelSettings.Controls.Add(checkELMB);
             panelSettings.Controls.Add(checkAutoToggleClamshellMode);
             panelSettings.Controls.Add(checkTopmost);
             panelSettings.Controls.Add(checkNoOverdrive);
@@ -1217,8 +1219,21 @@ namespace GHelper
             panelSettings.Location = new Point(15, 1252);
             panelSettings.Name = "panelSettings";
             panelSettings.Padding = new Padding(21, 5, 11, 5);
-            panelSettings.Size = new Size(949, 472);
+            panelSettings.Size = new Size(949, 514);
             panelSettings.TabIndex = 50;
+            // 
+            // checkELMB
+            // 
+            checkELMB.AutoSize = true;
+            checkELMB.Dock = DockStyle.Top;
+            checkELMB.Location = new Point(21, 467);
+            checkELMB.Margin = new Padding(5, 3, 5, 3);
+            checkELMB.Name = "checkELMB";
+            checkELMB.Padding = new Padding(3);
+            checkELMB.Size = new Size(917, 42);
+            checkELMB.TabIndex = 10;
+            checkELMB.Text = Strings.ExtremeLowMotionBlur;
+            checkELMB.UseVisualStyleBackColor = true;
             // 
             // checkAutoToggleClamshellMode
             // 
@@ -1830,6 +1845,7 @@ namespace GHelper
         private Panel panelSettings;
         private CheckBox checkTopmost;
         private CheckBox checkNoOverdrive;
+        private CheckBox checkELMB;
         private CheckBox checkUSBC;
         private CheckBox checkGpuApps;
         private PictureBox pictureBacklight;

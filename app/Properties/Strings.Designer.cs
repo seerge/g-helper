@@ -1015,6 +1015,15 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("ExtraSettings", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Extreme Low Motion Blur.
+        /// </summary>
+        internal static string ExtremeLowMotionBlur {
+            get {
+                return ResourceManager.GetString("ExtremeLowMotionBlur", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Factory Defaults.
