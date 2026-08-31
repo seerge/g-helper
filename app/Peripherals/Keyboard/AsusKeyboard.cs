@@ -147,6 +147,14 @@ namespace GHelper.Peripherals.Keyboard
             return false;
         }
 
+        public bool IsDeviceConnected(IEnumerable<HidDevice> devices)
+        {
+            if (TestMode) return true;
+            foreach (var device in devices)
+                if (device.VendorID == VendorID() && device.ProductID == ProductID() && (path is null || device.DevicePath.Contains(path))) return true;
+            return false;
+        }
+
         public override void SetProvider()
         {
             var candidates = FindVendorDevices();

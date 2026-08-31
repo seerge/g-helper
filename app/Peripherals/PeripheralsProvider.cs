@@ -375,9 +375,13 @@ namespace GHelper.Peripherals
             });
         }
 
+        private static List<HidDevice> asusHidDevices = new();
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static void DetectAllAsusMice()
         {
+            asusHidDevices = DeviceList.Local.GetHidDevices(0x0B05).ToList();
+
             //Add one line for every supported mouse class here to support them.
             DedectOmniMouse();
             DetectHarpeIIWireless();
@@ -442,6 +446,8 @@ namespace GHelper.Peripherals
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static void DetectAllAsusKeyboards()
         {
+            asusHidDevices = DeviceList.Local.GetHidDevices(0x0B05).ToList();
+
             if (AppConfig.Is("keyboard_test")) DetectKeyboard(new Azoth() { TestMode = true });
 
             DetectKeyboard(new Azoth());
@@ -486,7 +492,7 @@ namespace GHelper.Peripherals
         {
             if (KeyboardTestPid() == kb.ProductID()) kb.TestMode = true;
 
-            if (kb.IsDeviceConnected() && !IsDeviceConnected(kb))
+            if (kb.IsDeviceConnected(asusHidDevices) && !IsDeviceConnected(kb))
             {
                 Logger.WriteLine("Detected a new " + kb.GetDisplayName() + (kb.TestMode ? " (Test)" : "") + " . Connecting...");
                 Connect(kb);
@@ -495,8 +501,8 @@ namespace GHelper.Peripherals
 
         public static void DedectOmniMouse()
         {
-            var omnis = DeviceList.Local.GetHidDevices(0x0B05, OMNI_PID).Where(x => x.DevicePath.Contains("mi_02&col01"));
-            var devices = DeviceList.Local.GetHidDevices(0x0B05, OMNI_PID).Where(x => x.DevicePath.Contains("mi_02&col03")).ToList();
+            var omnis = asusHidDevices.Where(x => x.ProductID == OMNI_PID && x.DevicePath.Contains("mi_02&col01"));
+            var devices = asusHidDevices.Where(x => x.ProductID == OMNI_PID && x.DevicePath.Contains("mi_02&col03")).ToList();
             foreach (var omni in omnis)
                 DedectOmniMouse(omni, devices.FirstOrDefault(x => OmniInstance(x.DevicePath) == OmniInstance(omni.DevicePath)));
         }
@@ -542,8 +548,8 @@ namespace GHelper.Peripherals
                 {
                     // keyboard traffic goes on the receiver's col02 (0xFF00) channel, not the
                     // mouse's col03 (0xFF01) one that this method otherwise uses
-                    var keyboardDevice = DeviceList.Local.GetHidDevices(0x0B05, OMNI_PID)
-                        .FirstOrDefault(x => x.DevicePath.Contains("mi_02&col02")
+                    var keyboardDevice = asusHidDevices
+                        .FirstOrDefault(x => x.ProductID == OMNI_PID && x.DevicePath.Contains("mi_02&col02")
                             && OmniInstance(x.DevicePath) == OmniInstance(omni.DevicePath));
 
                     if (keyboardDevice is not null)
@@ -636,7 +642,7 @@ namespace GHelper.Peripherals
 
         public static void DetectHarpeIIWireless()
         {
-            var device = DeviceList.Local.GetHidDevices(0x0B05, 0x1AD0).FirstOrDefault();
+            var device = asusHidDevices.FirstOrDefault(x => x.ProductID == 0x1AD0);
             if (device is null) return;
 
             string product = "";
@@ -665,7 +671,7 @@ namespace GHelper.Peripherals
 
         public static void DetectMouse(AsusMouse am)
         {
-            if (am.IsDeviceConnected() && !IsDeviceConnected(am))
+            if (am.IsDeviceConnected(asusHidDevices) && !IsDeviceConnected(am))
             {
                 Logger.WriteLine("Detected a new" + am.GetDisplayName() + " . Connecting...");
                 Connect(am);
@@ -687,14 +693,9 @@ namespace GHelper.Peripherals
             timer.Start();
         }
 
-        private static string? lastDeviceSet;
-
         private static void DeviceTimer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
             timer.Stop();
-            string deviceSet = string.Join("|", DeviceList.Local.GetHidDevices(0x0B05).Select(x => x.DevicePath).OrderBy(x => x));
-            if (deviceSet == lastDeviceSet) return;
-            lastDeviceSet = deviceSet;
             Logger.WriteLine("HID Device Event: Checking for ASUS peripherals");
             DetectAllAsusMice();
             DetectAllAsusKeyboards();

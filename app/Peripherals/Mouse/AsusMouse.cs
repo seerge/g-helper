@@ -527,6 +527,11 @@ namespace GHelper.Peripherals.Mouse
             }
         }
 
+        public bool IsDeviceConnected(IEnumerable<HidSharp.HidDevice> devices)
+        {
+            return devices.Any(x => x.VendorID == VendorID() && x.ProductID == ProductID() && x.DevicePath.Contains(path));
+        }
+
         public virtual int USBTimeout()
         {
             return 300;
