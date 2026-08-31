@@ -596,6 +596,9 @@ Trotzdem fortfahren?</value>
   <data name="MatrixDateFormat" xml:space="preserve">
     <value>Date Format</value>
   </data>
+  <data name="MatrixFlip" xml:space="preserve">
+    <value>Um 180° drehen</value>
+  </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Maximale Wiederholrate für niedrigste Latenz</value>
   </data>

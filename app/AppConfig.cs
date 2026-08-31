@@ -36,7 +36,7 @@ public static class AppConfig
         : ProcessHelper.IsRunningAsSystem() && File.Exists(fallbackConfigFile) ? fallbackConfigFile
         : Path.Combine(appPath, configName);
 
-        Directory.CreateDirectory(appPath);
+        Directory.CreateDirectory(Path.GetDirectoryName(configFile));
 
         if (!TryLoadConfig(configFile) && !TryRecoverConfig(configFile) && !TryLoadConfig(configFile + ".bak") && !TryLoadConfig(fallbackConfigFile)) Init();
 
@@ -369,6 +369,11 @@ public static class AppConfig
         return Is("mouse_aura_sync");
     }
 
+    public static bool IsKeyboardAuraSync()
+    {
+        return Is("keyboard_aura_sync");
+    }
+
     public static bool NoMKeys()
     {
         return (ContainsModel("Z13") && !IsARCNM()) ||
@@ -500,6 +505,11 @@ public static class AppConfig
     public static bool IsEcoBootFix()
     {
         return ContainsModel("G635L") || ContainsModel("G615L") || ContainsModel("G835L") || ContainsModel("G815L") || ContainsModel("FA506");
+    }
+
+    public static bool IsELMB()
+    {
+        return ContainsModel("G835LX");
     }
 
     public static bool IsStandardForceFix()
@@ -644,9 +654,9 @@ public static class AppConfig
         return ContainsModel("GU605M") || ContainsModel("FX507") || ContainsModel("FX517") || ContainsModel("FX707");
     }
 
-    public static bool IsModeReapplyRequired()
+    public static bool IsModeReapply()
     {
-        return Is("mode_reapply") || ContainsModel("FA401") || ContainsModel("GA403");
+        return IsNotFalse("mode_reapply");
     }
 
     public static bool IsStandardModeFix()

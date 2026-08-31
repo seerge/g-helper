@@ -147,6 +147,10 @@ namespace GHelper.AnimeMatrix
                             Logger.WriteLine("Slash: Audio");
                             SetAudio();
                             break;
+                        case SlashMode.Dark:
+                            deviceSlash.Init();
+                            deviceSlash.SetFlag(0xAB, false);
+                            break;
                         default:
                             deviceSlash.Init();
                             deviceSlash.SetMode((SlashMode)running);

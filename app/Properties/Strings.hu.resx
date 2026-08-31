@@ -596,6 +596,9 @@ Folytatni szeretnéd?</value>
   <data name="MatrixDateFormat" xml:space="preserve">
     <value>Dátum formátum</value>
   </data>
+  <data name="MatrixFlip" xml:space="preserve">
+    <value>Elforgatás 180°-kal</value>
+  </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Max frissítési gyakoriság kevés késleltetéshez</value>
   </data>

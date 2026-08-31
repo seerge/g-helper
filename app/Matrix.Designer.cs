@@ -84,6 +84,7 @@ namespace GHelper
             labelClockDate = new Label();
             panelClockBattery = new Panel();
             checkClockBattery = new CheckBox();
+            checkFlip = new CheckBox();
             panelAudioSettings = new Panel();
             comboAudioMode = new UI.RComboBox();
             labelAudioMode = new Label();
@@ -554,6 +555,7 @@ namespace GHelper
             //
             // panelClockBattery
             //
+            panelClockBattery.Controls.Add(checkFlip);
             panelClockBattery.Controls.Add(checkClockBattery);
             panelClockBattery.Dock = DockStyle.Top;
             panelClockBattery.Location = new Point(0, 156);
@@ -571,6 +573,17 @@ namespace GHelper
             checkClockBattery.TabIndex = 18;
             checkClockBattery.Text = "Battery Level";
             checkClockBattery.UseVisualStyleBackColor = true;
+            //
+            // checkFlip
+            //
+            checkFlip.AutoSize = true;
+            checkFlip.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            checkFlip.Location = new Point(279, 10);
+            checkFlip.Name = "checkFlip";
+            checkFlip.Size = new Size(180, 36);
+            checkFlip.TabIndex = 19;
+            checkFlip.Text = "Rotate 180°";
+            checkFlip.UseVisualStyleBackColor = true;
             //
             // panelAudioSettings
             //
@@ -951,6 +964,7 @@ namespace GHelper
         private Label labelClockDate;
         private Panel panelClockBattery;
         private CheckBox checkClockBattery;
+        private CheckBox checkFlip;
         private Panel panelAudioSettings;
         private UI.RComboBox comboAudioMode;
         private Label labelAudioMode;
