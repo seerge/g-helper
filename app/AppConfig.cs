@@ -36,7 +36,7 @@ public static class AppConfig
         : ProcessHelper.IsRunningAsSystem() && File.Exists(fallbackConfigFile) ? fallbackConfigFile
         : Path.Combine(appPath, configName);
 
-        Directory.CreateDirectory(appPath);
+        Directory.CreateDirectory(Path.GetDirectoryName(configFile));
 
         if (!TryLoadConfig(configFile) && !TryRecoverConfig(configFile) && !TryLoadConfig(configFile + ".bak") && !TryLoadConfig(fallbackConfigFile)) Init();
 
@@ -369,6 +369,11 @@ public static class AppConfig
         return Is("mouse_aura_sync");
     }
 
+    public static bool IsKeyboardAuraSync()
+    {
+        return Is("keyboard_aura_sync");
+    }
+
     public static bool NoMKeys()
     {
         return (ContainsModel("Z13") && !IsARCNM()) ||
@@ -474,7 +479,7 @@ public static class AppConfig
 
     public static bool IsOLED()
     {
-        return ContainsModel("OLED") || IsSlash() || ContainsModel("M7600") || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M340") || ContainsModel("M350") || ContainsModel("K650") || ContainsModel("UM53") || ContainsModel("K660") || ContainsModel("UX84") || ContainsModel("M650") || ContainsModel("M550") || ContainsModel("M540") || ContainsModel("K340") || ContainsModel("K350") || ContainsModel("M140") || ContainsModel("S540") || ContainsModel("S550") || ContainsModel("M7400") || ContainsModel("N650") || ContainsModel("HN7306") || ContainsModel("H760") || ContainsModel("UX5406") || ContainsModel("M5606") || ContainsModel("X513") || ContainsModel("N7400") || ContainsModel("UX760") || ContainsModel("Q530VJ") || ContainsModel("TP3407") || _oledFromRegistry.Value;
+        return ContainsModel("OLED") || IsSlash() || ContainsModel("M7600") || ContainsModel("UX64") || ContainsModel("UX34") || ContainsModel("UX53") || ContainsModel("K360") || ContainsModel("X150") || ContainsModel("M340") || ContainsModel("M350") || ContainsModel("K650") || ContainsModel("UM53") || ContainsModel("K660") || ContainsModel("UX84") || ContainsModel("M650") || ContainsModel("M550") || ContainsModel("M540") || ContainsModel("K340") || ContainsModel("K350") || ContainsModel("M140") || ContainsModel("S540") || ContainsModel("S550") || ContainsModel("M7400") || ContainsModel("N650") || ContainsModel("HN7306") || ContainsModel("H760") || ContainsModel("UX5406") || ContainsModel("M5606") || ContainsModel("X513") || ContainsModel("N7400") || ContainsModel("UX760") || ContainsModel("Q530VJ") || ContainsModel("TP3407") || ContainsModel("HT7407") || ContainsModel("3607") || _oledFromRegistry.Value;
     }
 
     private static readonly Lazy<bool> _oledFromRegistry = new(() =>
@@ -500,6 +505,16 @@ public static class AppConfig
     public static bool IsEcoBootFix()
     {
         return ContainsModel("G635L") || ContainsModel("G615L") || ContainsModel("G835L") || ContainsModel("G815L") || ContainsModel("FA506");
+    }
+
+    public static bool IsELMB()
+    {
+        return ContainsModel("G835LX");
+    }
+
+    public static bool IsStandardForceFix()
+    {
+        return (ContainsModel("GU605") || ContainsModel("H7606")) && IsNotFalse("standard_force_fix");
     }
 
     public static bool IsBacklightZones()
@@ -639,9 +654,9 @@ public static class AppConfig
         return ContainsModel("GU605M") || ContainsModel("FX507") || ContainsModel("FX517") || ContainsModel("FX707");
     }
 
-    public static bool IsModeReapplyRequired()
+    public static bool IsModeReapply()
     {
-        return Is("mode_reapply") || ContainsModel("FA401") || ContainsModel("GA403");
+        return IsNotFalse("mode_reapply");
     }
 
     public static bool IsStandardModeFix()
@@ -681,7 +696,7 @@ public static class AppConfig
 
     public static bool IsHardwareTouchpadToggle()
     {
-        return ContainsModel("FA507");
+        return GetModelShort().Contains("FA507");
     }
 
     public static bool IsIntelHX()
@@ -799,6 +814,11 @@ public static class AppConfig
     public static bool IsAutoASPM()
     {
         return IsNotFalse("aspm");
+    }
+
+    public static bool IsAutoStandbyNetworking()
+    {
+        return IsNotFalse("standby_networking");
     }
 
 

@@ -27,12 +27,23 @@ namespace GHelper.Helpers
 
         static string ProblemText(uint problem) => problem switch
         {
+            1 => "Device is not configured",
             10 => "Device cannot start",
             12 => "Not enough free resources",
+            14 => "Restart required",
+            18 => "Drivers need to be reinstalled",
+            21 => "Device is being removed",
             22 => "Device is disabled",
             28 => "Drivers are not installed",
             31 or 39 => "Driver failed to load",
+            32 => "Driver service is disabled",
+            37 => "Driver initialization failed",
+            38 => "Previous driver still loaded, restart required",
             43 => "Device stopped because it reported problems",
+            44 => "Device stopped by an application or service",
+            48 => "Driver is blocked from loading",
+            52 => "Driver signature cannot be verified",
+            54 => "Device is being reset",
             _ => "Unknown problem",
         };
 
@@ -46,7 +57,8 @@ namespace GHelper.Helpers
                 var buffer = new char[len];
                 if (CM_Get_Device_ID_ListW(GUID_DEVCLASS_DISPLAY, buffer, len, flags) == 0)
                     foreach (var id in new string(buffer).Split('\0', StringSplitOptions.RemoveEmptyEntries))
-                        if (CM_Locate_DevNodeW(out uint devInst, id, 0) == 0 &&
+                        if ((id.StartsWith("PCI\\VEN_10DE", StringComparison.OrdinalIgnoreCase) || id.StartsWith("PCI\\VEN_1002", StringComparison.OrdinalIgnoreCase)) &&
+                            CM_Locate_DevNodeW(out uint devInst, id, 0) == 0 &&
                             CM_Get_DevNode_Status(out uint status, out uint problem, devInst, 0) == 0 &&
                             (status & DN_HAS_PROBLEM) != 0)
                         {

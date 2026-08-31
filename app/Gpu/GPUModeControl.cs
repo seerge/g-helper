@@ -71,7 +71,7 @@ namespace GHelper.Gpu
 
             Aura.CustomRGB.ApplyGPUColor(gpuMode);
 
-            Task.Run(CheckGpuError);
+            CheckGpuError();
 
         }
 
@@ -207,19 +207,19 @@ namespace GHelper.Gpu
                             await Task.Delay(TimeSpan.FromMilliseconds(1000));
                         }
 
-                        for (int i = 0; i < 3; i++)
-                        {
-                            HardwareControl.RecreateGpuControl();
-                            if (HardwareControl.GpuControl is not null) break;
-                            await Task.Delay(TimeSpan.FromSeconds(2));
-                        }
-                        Program.modeControl.SetGPUClocks(false);
+                        await HardwareControl.RecreateGpuControlWithRetry(3, 2);
+                        if (HardwareControl.GpuControl is null) await HardwareControl.RecreateGpuControlWithRetry(3, 5);
+                        CheckGpuError();
+                        CheckStandardHalfState();
                     }
 
-                    if (AppConfig.IsModeReapplyRequired())
+                    if (AppConfig.IsModeReapply())
                     {
-                        await Task.Delay(TimeSpan.FromMilliseconds(3000));
+                        await Task.Delay(TimeSpan.FromMilliseconds(1000));
                         Program.modeControl.AutoPerformance();
+                    } else
+                    {
+                        Program.modeControl.SetGPUClocks(false);
                     }
                 }
                 catch (Exception ex)
@@ -236,6 +236,8 @@ namespace GHelper.Gpu
             Program.currentSource == Program.PowerSource.Barrel ||
             (Program.currentSource == Program.PowerSource.USBC && !AppConfig.Is("optimized_usbc"));
 
+        public static bool suspended = false;
+
         public bool AutoGPUMode(bool optimized = false, int delay = 0)
         {
 
@@ -245,6 +247,12 @@ namespace GHelper.Gpu
             int GpuMode = AppConfig.Get("gpu_mode");
 
             if (!GpuAuto && !ForceGPU) return false;
+
+            if (suspended)
+            {
+                Logger.WriteLine("Skipping GPU Mode switch: Suspend");
+                return false;
+            }
 
             int eco = Program.acpi.DeviceGet(AsusACPI.GPUEco);
             int mux = Program.acpi.DeviceGet(AsusACPI.GPUMux);
@@ -315,6 +323,7 @@ namespace GHelper.Gpu
                         {
                             Program.acpi.DeviceSet(AsusACPI.GPUXG, 0, "GPU XGM");
                             await Task.Delay(TimeSpan.FromSeconds(15));
+                            HardwareControl.RecreateGpuControl();
                         }
                     }
                 }
@@ -329,11 +338,10 @@ namespace GHelper.Gpu
                     XGM.Init();
 
                     await Task.Delay(TimeSpan.FromSeconds(15));
+                    await HardwareControl.RecreateGpuControlWithRetry(6, 5);
 
                     if (AppConfig.IsApplyFans())
                         XGM.SetFan(AppConfig.GetFanConfig(AsusFan.XGM));
-
-                    HardwareControl.RecreateGpuControl();
 
                 }
 
@@ -357,6 +365,21 @@ namespace GHelper.Gpu
             nvRestartPending = Program.acpi.IsNVidiaGPU() && Program.acpi.DeviceGet(AsusACPI.GPUEco) == 1;
         }
 
+        public void CheckStandardHalfState()
+        {
+            if (gpuMode != AsusACPI.GPUModeStandard || HardwareControl.GpuControl is not null) return;
+
+            Logger.WriteLine("Standard half-state");
+            if (!AppConfig.IsStandardForceFix()) return;
+
+            Task.Run(async () =>
+            {
+                Program.acpi.DeviceSet(AsusACPI.GPUEco, 0, "GPUStandard Force Fix");
+                await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("nv_delay", 5000)));
+                HardwareControl.RecreateGpuControl();
+            });
+        }
+
         public void StandardModeFix()
         {
             if (!AppConfig.IsStandardModeFix()) return;
@@ -368,17 +391,14 @@ namespace GHelper.Gpu
 
         public static string? gpuError = null;
 
-        void CheckGpuError()
+        public static void CheckGpuError() => Task.Run(() =>
         {
             string? error = DeviceHelper.GetGpuError();
-
-            if (gpuError != error)
-            {
-                gpuError = error;
-                if (error != null) Logger.WriteLine(error);
-                settings.VisualiseGPUMode();
-            }
-        }
+            if (gpuError == error) return;
+            gpuError = error;
+            if (error != null) Logger.WriteLine(error);
+            Program.settingsForm.VisualiseGPUMode();
+        });
 
     }
 }

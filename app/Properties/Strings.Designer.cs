@@ -853,6 +853,24 @@ namespace GHelper.Properties {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Disable networking in Modern Standby.
+        /// </summary>
+        internal static string DisableStandbyNetworking {
+            get {
+                return ResourceManager.GetString("DisableStandbyNetworking", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Stops background tasks like Windows Update.
+        /// </summary>
+        internal static string DisableStandbyNetworkingTooltip {
+            get {
+                return ResourceManager.GetString("DisableStandbyNetworkingTooltip", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Stops NVIDIA services when the discrete GPU is disabled.
         /// </summary>
         internal static string NVPlatformTooltip {
@@ -995,6 +1013,15 @@ namespace GHelper.Properties {
         internal static string ExtraSettings {
             get {
                 return ResourceManager.GetString("ExtraSettings", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Extreme Low Motion Blur.
+        /// </summary>
+        internal static string ExtremeLowMotionBlur {
+            get {
+                return ResourceManager.GetString("ExtremeLowMotionBlur", resourceCulture);
             }
         }
         
@@ -1616,6 +1643,15 @@ namespace GHelper.Properties {
         internal static string MatrixDateFormat {
             get {
                 return ResourceManager.GetString("MatrixDateFormat", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Rotate 180°.
+        /// </summary>
+        internal static string MatrixFlip {
+            get {
+                return ResourceManager.GetString("MatrixFlip", resourceCulture);
             }
         }
 

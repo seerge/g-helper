@@ -407,6 +407,9 @@ Do you still want to continue?</value>
   <data name="ExtraSettings" xml:space="preserve">
     <value>Extra Settings</value>
   </data>
+  <data name="ExtremeLowMotionBlur" xml:space="preserve">
+    <value>Extreme Low Motion Blur</value>
+  </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>Factory Defaults</value>
   </data>
@@ -595,6 +598,9 @@ Do you still want to continue?</value>
   </data>
   <data name="MatrixDateFormat" xml:space="preserve">
     <value>Date Format</value>
+  </data>
+  <data name="MatrixFlip" xml:space="preserve">
+    <value>Rotate 180°</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Max refresh rate for lower latency</value>
@@ -984,6 +990,13 @@ and restarts them automatically when the GPU is enabled</value>
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>Prevents PCIe devices from entering low-power idle states.
 Recommended if you experience random hangs or unresponsive hardware.</value>
+  </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Disable networking in Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Stops background tasks like Windows Update
+from heating up the sleeping laptop and draining the battery.</value>
   </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>

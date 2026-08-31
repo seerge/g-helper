@@ -557,6 +557,9 @@ Nadal chcesz kontynuować?</value>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Wizualizer muzyki</value>
   </data>
+  <data name="MatrixAudioMode" xml:space="preserve">
+    <value>Tryb wizualizera</value>
+  </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Binarny</value>
   </data>
@@ -580,6 +583,21 @@ Nadal chcesz kontynuować?</value>
   </data>
   <data name="MatrixPicture" xml:space="preserve">
     <value>Obraz</value>
+  </data>
+  <data name="MatrixRunningText" xml:space="preserve">
+    <value>Tekst przewijany</value>
+  </data>
+  <data name="MatrixText" xml:space="preserve">
+    <value>Tekst</value>
+  </data>
+  <data name="MatrixTimeFormat" xml:space="preserve">
+    <value>Format czasu</value>
+  </data>
+  <data name="MatrixDateFormat" xml:space="preserve">
+    <value>Format daty</value>
+  </data>
+  <data name="MatrixFlip" xml:space="preserve">
+    <value>Obróć o 180°</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Maksymalna częstotliwość odświeżania dla mniejszych opóźnień</value>
@@ -966,6 +984,13 @@ i automatycznie je uruchamia, gdy GPU jest włączony</value>
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>Zapobiega przechodzeniu urządzeń PCIe w stany niskiego poboru mocy.
 Zalecane, jeśli występują losowe zawieszenia lub niereagujący sprzęt.</value>
+  </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Wyłącz sieć w trybie Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Zapobiega nagrzewaniu uśpionego laptopa i rozładowywaniu
+baterii przez zadania w tle, takie jak Windows Update.</value>
   </data>
   <data name="Overlay" xml:space="preserve">
     <value>Nakładka</value>

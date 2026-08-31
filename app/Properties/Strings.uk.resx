@@ -166,7 +166,7 @@
     <value>Застосувати</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Apply Fan Curve</value>
+    <value>Застосувати профілі кулерів</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Застосувати потужність</value>
@@ -525,7 +525,7 @@
     <value>Клавіатура</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Screen</value>
+    <value>Дисплей</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>LED-Індикатори стану</value>
@@ -557,6 +557,9 @@
   <data name="MatrixAudio" xml:space="preserve">
     <value>Аудіо візуалізатор</value>
   </data>
+  <data name="MatrixAudioMode" xml:space="preserve">
+    <value>Visualizer Mode</value>
+  </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Бінарний банер</value>
   </data>
@@ -580,6 +583,21 @@
   </data>
   <data name="MatrixPicture" xml:space="preserve">
     <value>Картинка</value>
+  </data>
+  <data name="MatrixRunningText" xml:space="preserve">
+    <value>Running Text</value>
+  </data>
+  <data name="MatrixText" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="MatrixTimeFormat" xml:space="preserve">
+    <value>Time Format</value>
+  </data>
+  <data name="MatrixDateFormat" xml:space="preserve">
+    <value>Date Format</value>
+  </data>
+  <data name="MatrixFlip" xml:space="preserve">
+    <value>Поворот на 180°</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Максимальна частота оновлення для мінімізації затримок</value>
@@ -966,6 +984,13 @@
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>Не дозволяє пристроям PCIe переходити в режими низького енергоспоживання.
 Рекомендується, якщо ви стикаєтеся з випадковими зависаннями або відсутністю реакції апаратного забезпечення.</value>
+  </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Вимкнути мережу в режимі Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Не дозволяє фоновим завданням, як-от Windows Update,
+нагрівати сплячий ноутбук і розряджати акумулятор.</value>
   </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>

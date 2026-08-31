@@ -166,7 +166,7 @@
     <value>Anvend</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Apply Fan Curve</value>
+    <value>Anvend blæserkurve</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Anvend strømgrænser</value>
@@ -557,6 +557,9 @@ Vil du stadig fortsætte?</value>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Lydvisualisering</value>
   </data>
+  <data name="MatrixAudioMode" xml:space="preserve">
+    <value>Visualizer Mode</value>
+  </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Binær banner</value>
   </data>
@@ -580,6 +583,21 @@ Vil du stadig fortsætte?</value>
   </data>
   <data name="MatrixPicture" xml:space="preserve">
     <value>Billede</value>
+  </data>
+  <data name="MatrixRunningText" xml:space="preserve">
+    <value>Running Text</value>
+  </data>
+  <data name="MatrixText" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="MatrixTimeFormat" xml:space="preserve">
+    <value>Time Format</value>
+  </data>
+  <data name="MatrixDateFormat" xml:space="preserve">
+    <value>Date Format</value>
+  </data>
+  <data name="MatrixFlip" xml:space="preserve">
+    <value>Roter 180°</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Maks. opdateringshastighed for lavere latenstid</value>
@@ -966,6 +984,13 @@ og genstarter dem automatisk, når GPU'en er aktiveret</value>
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>Forhindrer PCIe-enheder i at gå i lavenergi-inaktive tilstande.
 Anbefales, hvis du oplever tilfældige hængninger eller hardware, der ikke reagerer.</value>
+  </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Deaktiver netværk i Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Forhindrer baggrundsopgaver som Windows Update
+i at opvarme den sovende bærbare og dræne batteriet.</value>
   </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>

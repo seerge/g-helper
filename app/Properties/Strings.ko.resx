@@ -525,7 +525,7 @@
     <value>키보드</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Screen</value>
+    <value>화면</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>LED 상태 표시등</value>
@@ -557,6 +557,9 @@
   <data name="MatrixAudio" xml:space="preserve">
     <value>오디오 비주얼라이저</value>
   </data>
+  <data name="MatrixAudioMode" xml:space="preserve">
+    <value>Visualizer Mode</value>
+  </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Binary Banner</value>
   </data>
@@ -580,6 +583,21 @@
   </data>
   <data name="MatrixPicture" xml:space="preserve">
     <value>사진</value>
+  </data>
+  <data name="MatrixRunningText" xml:space="preserve">
+    <value>Running Text</value>
+  </data>
+  <data name="MatrixText" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="MatrixTimeFormat" xml:space="preserve">
+    <value>Time Format</value>
+  </data>
+  <data name="MatrixDateFormat" xml:space="preserve">
+    <value>Date Format</value>
+  </data>
+  <data name="MatrixFlip" xml:space="preserve">
+    <value>180° 회전</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>최대 주사율 설정</value>
@@ -966,6 +984,13 @@ GPU가 활성화될 때 자동으로 다시 시작합니다</value>
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>PCIe 장치가 저전력 유휴 상태로 진입하는 것을 방지합니다.
 무작위 멈춤이나 응답하지 않는 하드웨어가 발생하는 경우 권장됩니다.</value>
+  </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>모던 스탠바이 중 네트워크 비활성화</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Windows Update 같은 백그라운드 작업이 잠자기 중인
+노트북을 뜨겁게 만들고 배터리를 소모하는 것을 방지합니다.</value>
   </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>

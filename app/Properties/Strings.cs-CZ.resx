@@ -250,7 +250,7 @@
     <value>Nastaví 60 Hz na baterii a max. hz v síti</value>
   </data>
   <data name="Awake" xml:space="preserve">
-    <value>V provozu</value>
+    <value>Aktivní</value>
   </data>
   <data name="BacklightLow" xml:space="preserve">
     <value>Nízké</value>
@@ -490,6 +490,9 @@ Chcete přesto pokračovat?</value>
   </data>
   <data name="ImageRotation" xml:space="preserve">
     <value>Otočení obrázku</value>
+  </data>
+  <data name="MatrixFlip" xml:space="preserve">
+    <value>Otočit o 180°</value>
   </data>
   <data name="Import" xml:space="preserve">
     <value>Import Profilu</value>

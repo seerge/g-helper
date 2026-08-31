@@ -250,7 +250,7 @@
     <value>Establece 60Hz con batería y revierte cuando está enchufado</value>
   </data>
   <data name="Awake" xml:space="preserve">
-    <value>Encendida</value>
+    <value>Activa</value>
   </data>
   <data name="BacklightLow" xml:space="preserve">
     <value>Bajo</value>
@@ -304,7 +304,7 @@
     <value>Actualizaciones de BIOS y Drivers</value>
   </data>
   <data name="Boot" xml:space="preserve">
-    <value>Al arrancar</value>
+    <value>Arranque</value>
   </data>
   <data name="BootSound" xml:space="preserve">
     <value>Sonido al arranque</value>
@@ -557,6 +557,9 @@
   <data name="MatrixAudio" xml:space="preserve">
     <value>Visualizador de audio</value>
   </data>
+  <data name="MatrixAudioMode" xml:space="preserve">
+    <value>Modo visual</value>
+  </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Banner binario</value>
   </data>
@@ -580,6 +583,21 @@
   </data>
   <data name="MatrixPicture" xml:space="preserve">
     <value>Imagen</value>
+  </data>
+  <data name="MatrixRunningText" xml:space="preserve">
+    <value>Texto en curso</value>
+  </data>
+  <data name="MatrixText" xml:space="preserve">
+    <value>Texto</value>
+  </data>
+  <data name="MatrixTimeFormat" xml:space="preserve">
+    <value>Formato de hora</value>
+  </data>
+  <data name="MatrixDateFormat" xml:space="preserve">
+    <value>Formato de fecha</value>
+  </data>
+  <data name="MatrixFlip" xml:space="preserve">
+    <value>Girar 180°</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Frecuencia de actualización máxima para una latencia más baja</value>
@@ -747,13 +765,13 @@
     <value>Subir brillo ScreenPad</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
-    <value>Al apagar</value>
+    <value>Apagado</value>
   </data>
   <data name="Silent" xml:space="preserve">
     <value>Silencio</value>
   </data>
   <data name="Sleep" xml:space="preserve">
-    <value>En suspensión</value>
+    <value>Suspensión</value>
   </data>
   <data name="StandardGPUTooltip" xml:space="preserve">
     <value>Habilita la dGPU para uso estándar</value>
@@ -966,6 +984,13 @@ y los reinicia automáticamente cuando se activa</value>
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>Evita que los dispositivos PCIe entren en estados de inactividad de bajo consumo.
 Recomendado si experimenta cuelgues aleatorios o hardware que no responde.</value>
+  </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Desactivar la red en Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Evita que tareas en segundo plano como Windows Update
+calienten el portátil dormido y agoten la batería.</value>
   </data>
   <data name="Overlay" xml:space="preserve">
     <value>Interfaz superpuesta</value>

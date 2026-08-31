@@ -54,7 +54,7 @@ namespace GHelper.Battery
             try
             {
                 using var key = Registry.LocalMachine.OpenSubKey(keyPath, writable: true);
-                key.SetValue("ChargingRate", value, RegistryValueKind.DWord);
+                key?.SetValue("ChargingRate", value, RegistryValueKind.DWord);
             }
             catch (Exception ex)
             {

@@ -557,6 +557,9 @@ Bạn có muốn tiếp tục không?</value>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Sóng nhạc</value>
   </data>
+  <data name="MatrixAudioMode" xml:space="preserve">
+    <value>Visualizer Mode</value>
+  </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Nhị phân</value>
   </data>
@@ -580,6 +583,21 @@ Bạn có muốn tiếp tục không?</value>
   </data>
   <data name="MatrixPicture" xml:space="preserve">
     <value>Hình ảnh</value>
+  </data>
+  <data name="MatrixRunningText" xml:space="preserve">
+    <value>Running Text</value>
+  </data>
+  <data name="MatrixText" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="MatrixTimeFormat" xml:space="preserve">
+    <value>Time Format</value>
+  </data>
+  <data name="MatrixDateFormat" xml:space="preserve">
+    <value>Date Format</value>
+  </data>
+  <data name="MatrixFlip" xml:space="preserve">
+    <value>Xoay 180°</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Tần số quét tối đa để có độ trễ thấp</value>
@@ -966,6 +984,13 @@ và tự khởi động lại khi GPU được bật</value>
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>Ngăn các thiết bị PCIe vào trạng thái nhàn rỗi tiết kiệm điện.
 Khuyến nghị nếu bạn gặp tình trạng treo ngẫu nhiên hoặc phần cứng không phản hồi.</value>
+  </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Tắt mạng khi ở Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Ngăn các tác vụ nền như Windows Update
+làm nóng máy khi ngủ và làm cạn pin.</value>
   </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>

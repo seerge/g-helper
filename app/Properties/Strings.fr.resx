@@ -166,7 +166,7 @@
     <value>Appliquer</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Apply Fan Curve</value>
+    <value>Appliquer la courbe</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Appliquer les limites</value>
@@ -304,7 +304,7 @@
     <value>Mises à jour BIOS et pilotes </value>
   </data>
   <data name="Boot" xml:space="preserve">
-    <value>Au démarrage</value>
+    <value>Démarrage</value>
   </data>
   <data name="BootSound" xml:space="preserve">
     <value>Son au démarrage</value>
@@ -557,6 +557,9 @@ Voulez-vous continuer ?</value>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Visualiseur Audio</value>
   </data>
+  <data name="MatrixAudioMode" xml:space="preserve">
+    <value>Visualizer Mode</value>
+  </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Bannière binaire</value>
   </data>
@@ -580,6 +583,21 @@ Voulez-vous continuer ?</value>
   </data>
   <data name="MatrixPicture" xml:space="preserve">
     <value>Images</value>
+  </data>
+  <data name="MatrixRunningText" xml:space="preserve">
+    <value>Running Text</value>
+  </data>
+  <data name="MatrixText" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="MatrixTimeFormat" xml:space="preserve">
+    <value>Time Format</value>
+  </data>
+  <data name="MatrixDateFormat" xml:space="preserve">
+    <value>Date Format</value>
+  </data>
+  <data name="MatrixFlip" xml:space="preserve">
+    <value>Rotation 180°</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Rafraîchissement maximum, faible latence</value>
@@ -747,7 +765,7 @@ Voulez-vous continuer ?</value>
     <value>Augmenter la luminosité du Screenpad</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
-    <value>Arrêter</value>
+    <value>Arrêt</value>
   </data>
   <data name="Silent" xml:space="preserve">
     <value>Silencieux</value>
@@ -966,6 +984,13 @@ et les redémarre automatiquement lorsqu'il est activé</value>
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>Empêche les périphériques PCIe d'entrer dans des états d'inactivité à faible consommation.
 Recommandé en cas de blocages aléatoires ou de matériel qui ne répond plus.</value>
+  </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Désactiver le réseau en veille Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Empêche les tâches en arrière-plan comme Windows Update
+de chauffer l'ordinateur en veille et de vider la batterie.</value>
   </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>

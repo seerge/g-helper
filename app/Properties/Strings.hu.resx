@@ -304,7 +304,7 @@
     <value>BIOS és illesztőprogram frissítések</value>
   </data>
   <data name="Boot" xml:space="preserve">
-    <value>Rendszerbetöltés</value>
+    <value>Indítás</value>
   </data>
   <data name="BootSound" xml:space="preserve">
     <value>Rendszerindítási hang</value>
@@ -557,6 +557,9 @@ Folytatni szeretnéd?</value>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Hang vizualizáció</value>
   </data>
+  <data name="MatrixAudioMode" xml:space="preserve">
+    <value>Vizualizáló mód</value>
+  </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Bináris logó</value>
   </data>
@@ -580,6 +583,21 @@ Folytatni szeretnéd?</value>
   </data>
   <data name="MatrixPicture" xml:space="preserve">
     <value>Kép</value>
+  </data>
+  <data name="MatrixRunningText" xml:space="preserve">
+    <value>Futó szöveg</value>
+  </data>
+  <data name="MatrixText" xml:space="preserve">
+    <value>Szöveg</value>
+  </data>
+  <data name="MatrixTimeFormat" xml:space="preserve">
+    <value>Időformátum</value>
+  </data>
+  <data name="MatrixDateFormat" xml:space="preserve">
+    <value>Dátum formátum</value>
+  </data>
+  <data name="MatrixFlip" xml:space="preserve">
+    <value>Elforgatás 180°-kal</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Max frissítési gyakoriság kevés késleltetéshez</value>
@@ -705,7 +723,7 @@ Folytatni szeretnéd?</value>
     <value>A Teljesítménykorlát egy kísérleti funkció. Használja körültekintően és saját felelősségére!</value>
   </data>
   <data name="PrintScreen" xml:space="preserve">
-    <value>PrintScreen</value>
+    <value>Képernyő-másolás</value>
   </data>
   <data name="Profile" xml:space="preserve">
     <value>Profil</value>
@@ -759,7 +777,7 @@ Folytatni szeretnéd?</value>
     <value>Általános használathoz engedélyezi a dGPU-t</value>
   </data>
   <data name="StandardMode" xml:space="preserve">
-    <value>Standard</value>
+    <value>Szabványos</value>
   </data>
   <data name="Start" xml:space="preserve">
     <value>Indítás</value>
@@ -966,6 +984,13 @@ Folytatni szeretnéd?</value>
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>Megakadályozza, hogy a PCIe eszközök alacsony fogyasztású tétlen állapotba lépjenek.
 Ajánlott, ha véletlenszerű lefagyásokat vagy nem reagáló hardvert tapasztal.</value>
+  </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Hálózat letiltása Modern Standby módban</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Megakadályozza, hogy a háttérfeladatok, mint a Windows Update,
+felmelegítsék az alvó laptopot és lemerítsék az akkumulátort.</value>
   </data>
   <data name="Overlay" xml:space="preserve">
     <value>Átfedés</value>

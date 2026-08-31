@@ -1,4 +1,6 @@
-﻿using GHelper.Peripherals.Mouse;
+﻿using GHelper.Peripherals.Keyboard;
+using GHelper.Peripherals.Keyboard.Models;
+using GHelper.Peripherals.Mouse;
 using GHelper.Peripherals.Mouse.Models;
 using GHelper.USB;
 using HidSharp;
@@ -10,7 +12,10 @@ namespace GHelper.Peripherals
     {
         private static readonly object _LOCK = new object();
 
+        private const int OMNI_PID = 0x1ACE;
+
         public static List<AsusMouse> ConnectedMice = new List<AsusMouse>();
+        public static List<AsusKeyboard> ConnectedKeyboards = new List<AsusKeyboard>();
 
         public static bool IsAuraSync { get; private set; } = AppConfig.IsAuraSync();
 
@@ -18,6 +23,14 @@ namespace GHelper.Peripherals
         {
             AppConfig.Set("mouse_aura_sync", enabled ? 1 : 0);
             IsAuraSync = enabled;
+        }
+
+        public static bool IsKeyboardAuraSync { get; private set; } = AppConfig.IsKeyboardAuraSync();
+
+        public static void SetKeyboardAuraSync(bool enabled)
+        {
+            AppConfig.Set("keyboard_aura_sync", enabled ? 1 : 0);
+            IsKeyboardAuraSync = enabled;
         }
 
         public static event EventHandler? DeviceChanged;
@@ -45,10 +58,17 @@ namespace GHelper.Peripherals
             return AllPeripherals().Contains(peripheral);
         }
 
-        //Expand if keyboards or other device get supported later.
+        public static bool IsKeyboardConnected()
+        {
+            lock (_LOCK)
+            {
+                return ConnectedKeyboards.Count > 0;
+            }
+        }
+
         public static bool IsAnyPeripheralConnect()
         {
-            return IsMouseConnected();
+            return IsMouseConnected() || IsKeyboardConnected();
         }
 
         public static List<IPeripheral> AllPeripherals()
@@ -57,6 +77,7 @@ namespace GHelper.Peripherals
             lock (_LOCK)
             {
                 l.AddRange(ConnectedMice);
+                l.AddRange(ConnectedKeyboards);
             }
             return l;
         }
@@ -74,43 +95,49 @@ namespace GHelper.Peripherals
             RefreshBatteryForAllDevices(false);
         }
 
-        public static void StreamMouseColor(Color color)
+        private static void ForEachAsync<T>(List<T> devices, Action<T> action, string? failLog = null) where T : IPeripheral
         {
-            if (!IsAuraSync) return;
+            List<T> snapshot;
+            lock (_LOCK) { snapshot = new List<T>(devices); }
 
-            List<AsusMouse> mice;
-            lock (_LOCK) { mice = new List<AsusMouse>(ConnectedMice); }
-
-            foreach (AsusMouse m in mice)
-            {
-                Task.Run(() =>
-                {
-                    try { m.WriteColorDirect(color); } catch { }
-                });
-            }
-        }
-
-        public static void SyncMiceWithKeyboardAura()
-        {
-            if (!IsAuraSync) return;
-
-            List<AsusMouse> mice;
-            lock (_LOCK) { mice = new List<AsusMouse>(ConnectedMice); }
-
-            foreach (AsusMouse m in mice)
+            foreach (T device in snapshot)
             {
                 Task.Run(() =>
                 {
                     try
                     {
-                        m.SyncFromKeyboardAura();
+                        action(device);
                     }
                     catch (Exception e)
                     {
-                        Logger.WriteLine(m.GetDisplayName() + ": Failed to sync with keyboard aura: " + e.Message);
+                        if (failLog is not null) Logger.WriteLine(device.GetDisplayName() + ": " + failLog + ": " + e.Message);
                     }
                 });
             }
+        }
+
+        public static void StreamMouseColor(Color color)
+        {
+            if (!IsAuraSync) return;
+            ForEachAsync(ConnectedMice, m => m.WriteColorDirect(color));
+        }
+
+        public static void StreamKeyboardColor(Color color)
+        {
+            if (!IsKeyboardAuraSync) return;
+            ForEachAsync(ConnectedKeyboards, kb => kb.WriteColorDirect(color));
+        }
+
+        public static void SyncMiceWithKeyboardAura()
+        {
+            if (!IsAuraSync) return;
+            ForEachAsync(ConnectedMice, m => m.SyncFromKeyboardAura(), "Failed to sync with keyboard aura");
+        }
+
+        public static void SyncKeyboardsWithAura()
+        {
+            if (!IsKeyboardAuraSync) return;
+            ForEachAsync(ConnectedKeyboards, kb => kb.SyncFromLaptopAura(), "Failed to sync with laptop aura");
         }
 
         public static void RefreshBatteryForAllDevices(bool force)
@@ -140,7 +167,7 @@ namespace GHelper.Peripherals
             lock (_LOCK)
             {
                 am.Disconnect -= Mouse_Disconnect;
-                am.MouseReadyChanged -= MouseReadyChanged;
+                am.MouseReadyChanged -= PeripheralReadyChanged;
                 am.BatteryUpdated -= BatteryUpdated;
                 am.ButtonBindingsChanged -= ButtonBindingsChanged;
                 ConnectedMice.Remove(am);
@@ -191,7 +218,7 @@ namespace GHelper.Peripherals
 
 
             am.Disconnect += Mouse_Disconnect;
-            am.MouseReadyChanged += MouseReadyChanged;
+            am.MouseReadyChanged += PeripheralReadyChanged;
             am.BatteryUpdated += BatteryUpdated;
             am.ButtonBindingsChanged += ButtonBindingsChanged;
             if (DeviceChanged is not null)
@@ -202,14 +229,104 @@ namespace GHelper.Peripherals
             RefreshHotkeys();
         }
 
+        public static void Connect(AsusKeyboard kb)
+        {
+            if (IsDeviceConnected(kb))
+            {
+                return;
+            }
+
+            try
+            {
+                kb.Connect();
+            }
+            catch (IOException e)
+            {
+                Logger.WriteLine(kb.GetDisplayName() + " failed to connect to device: " + e);
+                return;
+            }
+
+            int tries = 0;
+            while (!kb.IsDeviceReady && tries < 3)
+            {
+                Thread.Sleep(250);
+                Logger.WriteLine(kb.GetDisplayName() + " synchronising. Try " + (tries + 1));
+                kb.SynchronizeDevice();
+                ++tries;
+            }
+
+            if (kb.ProductID() == OMNI_PID && !kb.IsDeviceReady)
+            {
+                Logger.WriteLine(kb.GetDisplayName() + " not responding over the receiver, skipping");
+                kb.Dispose();
+                return;
+            }
+
+            lock (_LOCK)
+            {
+                ConnectedKeyboards.Add(kb);
+            }
+            Logger.WriteLine(kb.GetDisplayName() + " added to the list: " + ConnectedKeyboards.Count + " keyboards are connected.");
+
+            kb.Disconnect += Keyboard_Disconnect;
+            kb.KeyboardReadyChanged += PeripheralReadyChanged;
+            kb.BatteryUpdated += BatteryUpdated;
+
+            if (DeviceChanged is not null)
+            {
+                DeviceChanged(kb, EventArgs.Empty);
+            }
+            UpdateSettingsView();
+
+            Task.Run(() =>
+            {
+                try
+                {
+                    kb.ReadMultiLayout();
+                    kb.ReadProfile();
+                    if (IsKeyboardAuraSync) kb.SyncFromLaptopAura();
+                    else if (kb.HasTransientLighting) kb.ApplyStoredLighting();
+                }
+                catch { }
+            });
+        }
+
+        private static void Keyboard_Disconnect(object? sender, EventArgs e)
+        {
+            if (sender is null)
+            {
+                return;
+            }
+
+            AsusKeyboard kb = (AsusKeyboard)sender;
+            kb.Disconnect -= Keyboard_Disconnect;
+            kb.KeyboardReadyChanged -= PeripheralReadyChanged;
+            kb.BatteryUpdated -= BatteryUpdated;
+            lock (_LOCK)
+            {
+                ConnectedKeyboards.Remove(kb);
+            }
+
+            Logger.WriteLine(kb.GetDisplayName() + " reported disconnect. " + ConnectedKeyboards.Count + " keyboards are connected.");
+            kb.Dispose();
+
+            UpdateSettingsView();
+        }
+
         private static void BatteryUpdated(object? sender, EventArgs e)
         {
             UpdateSettingsView();
         }
 
-        private static void MouseReadyChanged(object? sender, EventArgs e)
+        private static void PeripheralReadyChanged(object? sender, EventArgs e)
         {
             UpdateSettingsView();
+
+            if (sender is AsusKeyboard kb && kb.IsDeviceReady && kb.HasTransientLighting
+                && !IsKeyboardAuraSync)
+            {
+                Task.Run(() => { try { kb.ApplyStoredLighting(); } catch { } });
+            }
         }
 
         private static void ButtonBindingsChanged(object? sender, EventArgs e)
@@ -263,6 +380,7 @@ namespace GHelper.Peripherals
         {
             //Add one line for every supported mouse class here to support them.
             DedectOmniMouse();
+            DetectHarpeIIWireless();
             DetectMouse(new ChakramX());
             DetectMouse(new ChakramXWired());
             DetectMouse(new GladiusIIIAimpoint());
@@ -291,7 +409,6 @@ namespace GHelper.Peripherals
             DetectMouse(new HarpeAceAimLabEditionWired());
             DetectMouse(new HarpeAceExtremeWeird());
             DetectMouse(new HarpeAceMiniWired());
-            DetectMouse(new HarpeIIAceWireless());
             DetectMouse(new HarpeIIAceWired());
             DetectMouse(new TUFM3());
             DetectMouse(new TUFM3GenII());
@@ -322,10 +439,64 @@ namespace GHelper.Peripherals
             DetectMouse(new MD200());
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public static void DetectAllAsusKeyboards()
+        {
+            if (AppConfig.Is("keyboard_test")) DetectKeyboard(new Azoth() { TestMode = true });
+
+            DetectKeyboard(new Azoth());
+            DetectKeyboard(new AzothExtreme());
+            DetectKeyboard(new AzothWireless());
+            DetectKeyboard(new AzothX());
+            DetectKeyboard(new AzothXWireless());
+            DetectKeyboard(new StrixFlare());
+            DetectKeyboard(new StrixFlareII());
+            DetectKeyboard(new StrixFlareIIAnimate());
+            DetectKeyboard(new StrixScopeII());
+            DetectKeyboard(new StrixScopeIIRX());
+            DetectKeyboard(new StrixScopeII96Wireless());
+            DetectKeyboard(new StrixScopeII96RXWireless());
+            DetectKeyboard(new StrixScopeRXTKLWireless());
+            DetectKeyboard(new StrixScopeRXTKLWired());
+            DetectKeyboard(new StrixScopeRX());
+            DetectKeyboard(new Falchion());
+            DetectKeyboard(new FalchionWireless());
+            DetectKeyboard(new FalchionRX());
+            DetectKeyboard(new FalchionAceHFX());
+            DetectKeyboard(new FalchionAce());
+            DetectKeyboard(new TUFK1());
+            DetectKeyboard(new TUFK3());
+            DetectKeyboard(new TUFK3GenII());
+            DetectKeyboard(new ClaymoreII());
+        }
+
+        private static int KeyboardTestPid()
+        {
+            string? test = AppConfig.GetString("keyboard_test");
+            if (test is null) return -1;
+
+            test = test.Trim();
+            if (test.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
+                return int.TryParse(test.Substring(2), System.Globalization.NumberStyles.HexNumber, null, out int pid) ? pid : -1;
+
+            return int.TryParse(test, out int dec) ? dec : -1;
+        }
+
+        public static void DetectKeyboard(AsusKeyboard kb)
+        {
+            if (KeyboardTestPid() == kb.ProductID()) kb.TestMode = true;
+
+            if (kb.IsDeviceConnected() && !IsDeviceConnected(kb))
+            {
+                Logger.WriteLine("Detected a new " + kb.GetDisplayName() + (kb.TestMode ? " (Test)" : "") + " . Connecting...");
+                Connect(kb);
+            }
+        }
+
         public static void DedectOmniMouse()
         {
-            var omnis = DeviceList.Local.GetHidDevices(0x0B05, 0x1ACE).Where(x => x.DevicePath.Contains("mi_02&col01"));
-            var devices = DeviceList.Local.GetHidDevices(0x0B05, 0x1ACE).Where(x => x.DevicePath.Contains("mi_02&col03")).ToList();
+            var omnis = DeviceList.Local.GetHidDevices(0x0B05, OMNI_PID).Where(x => x.DevicePath.Contains("mi_02&col01"));
+            var devices = DeviceList.Local.GetHidDevices(0x0B05, OMNI_PID).Where(x => x.DevicePath.Contains("mi_02&col03")).ToList();
             foreach (var omni in omnis)
                 DedectOmniMouse(omni, devices.FirstOrDefault(x => OmniInstance(x.DevicePath) == OmniInstance(omni.DevicePath)));
         }
@@ -350,6 +521,7 @@ namespace GHelper.Peripherals
                 config.SetOption(OpenOption.Priority, 10);
 
                 AsusMouse? omniMouse;
+                AsusKeyboard? omniKeyboard;
 
                 using (var stream = omni.Open(config))
                 {
@@ -363,6 +535,22 @@ namespace GHelper.Peripherals
                     Logger.WriteLine($"Omni paired devices: {BitConverter.ToString(response.Skip(5).Take(12).ToArray())}");
 
                     omniMouse = ResolveOmniMouse(response);
+                    omniKeyboard = ResolveOmniKeyboard(response);
+                }
+
+                if (omniKeyboard is not null)
+                {
+                    // keyboard traffic goes on the receiver's col02 (0xFF00) channel, not the
+                    // mouse's col03 (0xFF01) one that this method otherwise uses
+                    var keyboardDevice = DeviceList.Local.GetHidDevices(0x0B05, OMNI_PID)
+                        .FirstOrDefault(x => x.DevicePath.Contains("mi_02&col02")
+                            && OmniInstance(x.DevicePath) == OmniInstance(omni.DevicePath));
+
+                    if (keyboardDevice is not null)
+                    {
+                        omniKeyboard.SetPath(keyboardDevice.DevicePath);
+                        DetectKeyboard(omniKeyboard);
+                    }
                 }
 
                 if (omniMouse is null) return;
@@ -398,11 +586,6 @@ namespace GHelper.Peripherals
             }
         }
 
-        private static readonly HashSet<int> KnownOmniKeyboards = new()
-        {
-            0x1B06, // Falchion RX Low Profile
-        };
-
         private static AsusMouse? ResolveOmniMouse(byte[] response)
         {
             for (int offset = 5; offset + 3 < response.Length; offset += 4)
@@ -417,10 +600,53 @@ namespace GHelper.Peripherals
                     return mouse;
                 }
 
-                Logger.WriteLine($"Omni slot @{offset}: {pid:X4} ({(KnownOmniKeyboards.Contains(pid) ? "keyboard, skipped" : "unknown, skipped")})");
+                Logger.WriteLine($"Omni slot @{offset}: {pid:X4} ({(KeyboardFromOmniPid(pid) is not null ? "keyboard, skipped" : "unknown, skipped")})");
             }
 
             return null;
+        }
+
+        private static AsusKeyboard? ResolveOmniKeyboard(byte[] response)
+        {
+            for (int offset = 5; offset + 3 < response.Length; offset += 4)
+            {
+                int pid = response[offset] | (response[offset + 1] << 8);
+                if (pid == 0) break;
+
+                var keyboard = KeyboardFromOmniPid(pid);
+                if (keyboard is not null)
+                {
+                    Logger.WriteLine($"Omni slot @{offset}: {pid:X4} -> {keyboard.GetDisplayName()}");
+                    return keyboard;
+                }
+            }
+
+            return null;
+        }
+
+        // keyboard pids as they appear in the Omni receiver pair-list
+        private static AsusKeyboard? KeyboardFromOmniPid(int pid) => pid switch
+        {
+            0x1A85 => new AzothOmni(),
+            0x1B42 => new AzothExtremeOmni(),
+            0x1AB0 => new StrixScopeII96WirelessOmni(),
+            0x1B06 => new FalchionRXLowProfileOmni(),
+            _ => null,
+        };
+
+        public static void DetectHarpeIIWireless()
+        {
+            var device = DeviceList.Local.GetHidDevices(0x0B05, 0x1AD0).FirstOrDefault();
+            if (device is null) return;
+
+            string product = "";
+            try { product = device.GetProductName() ?? ""; } catch { }
+            Logger.WriteLine("0x1AD0 mouse: " + product);
+
+            if (product.Contains("EXTREME", StringComparison.OrdinalIgnoreCase))
+                DetectMouse(new HarpeIIExtremeEdition20());
+            else
+                DetectMouse(new HarpeIIAceWireless());
         }
 
         private static AsusMouse? MouseFromOmniPid(int pid) => pid switch
@@ -466,6 +692,7 @@ namespace GHelper.Peripherals
             timer.Stop();
             Logger.WriteLine("HID Device Event: Checking for new ASUS Mice");
             DetectAllAsusMice();
+            DetectAllAsusKeyboards();
             if (AppConfig.IsDetachableKeyboard()) Program.inputDispatcher.Init();
             XGM.Init();
         }

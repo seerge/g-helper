@@ -557,6 +557,9 @@ Apakah Anda masih ingin melanjutkan?</value>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Visualisasi Audio</value>
   </data>
+  <data name="MatrixAudioMode" xml:space="preserve">
+    <value>Visualizer Mode</value>
+  </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Binary Banner</value>
   </data>
@@ -580,6 +583,21 @@ Apakah Anda masih ingin melanjutkan?</value>
   </data>
   <data name="MatrixPicture" xml:space="preserve">
     <value>Gambar</value>
+  </data>
+  <data name="MatrixRunningText" xml:space="preserve">
+    <value>Running Text</value>
+  </data>
+  <data name="MatrixText" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="MatrixTimeFormat" xml:space="preserve">
+    <value>Time Format</value>
+  </data>
+  <data name="MatrixDateFormat" xml:space="preserve">
+    <value>Date Format</value>
+  </data>
+  <data name="MatrixFlip" xml:space="preserve">
+    <value>Putar 180°</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Maks refresh rate untuk mengurangi latensi</value>
@@ -966,6 +984,13 @@ dan menjalankannya kembali secara otomatis saat GPU diaktifkan</value>
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>Mencegah perangkat PCIe memasuki status idle hemat daya.
 Direkomendasikan jika Anda mengalami hang acak atau perangkat keras tidak responsif.</value>
+  </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Nonaktifkan jaringan saat Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Mencegah tugas latar belakang seperti Windows Update
+memanaskan laptop yang tertidur dan menguras baterai.</value>
   </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>

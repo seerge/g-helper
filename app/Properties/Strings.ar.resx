@@ -557,6 +557,9 @@
   <data name="MatrixAudio" xml:space="preserve">
     <value>مؤثرات الصوت المرئية</value>
   </data>
+  <data name="MatrixAudioMode" xml:space="preserve">
+    <value>Visualizer Mode</value>
+  </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>لافتة ثنائية</value>
   </data>
@@ -580,6 +583,21 @@
   </data>
   <data name="MatrixPicture" xml:space="preserve">
     <value>صورة</value>
+  </data>
+  <data name="MatrixRunningText" xml:space="preserve">
+    <value>Running Text</value>
+  </data>
+  <data name="MatrixText" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="MatrixTimeFormat" xml:space="preserve">
+    <value>Time Format</value>
+  </data>
+  <data name="MatrixDateFormat" xml:space="preserve">
+    <value>Date Format</value>
+  </data>
+  <data name="MatrixFlip" xml:space="preserve">
+    <value>تدوير 180°</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>أعلى معدل تحديث لأقل تأخير</value>
@@ -966,6 +984,13 @@
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>يمنع أجهزة PCIe من الدخول في حالات الخمول منخفضة الطاقة.
 موصى به في حال حدوث تعليق عشوائي أو عدم استجابة الأجهزة.</value>
+  </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>تعطيل الشبكة في وضع Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>يمنع مهام الخلفية مثل Windows Update
+من تسخين الجهاز أثناء السكون واستنزاف البطارية.</value>
   </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
