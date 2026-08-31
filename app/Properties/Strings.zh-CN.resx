@@ -600,7 +600,7 @@
     <value>日期格式</value>
   </data>
   <data name="MatrixFlip" xml:space="preserve">
-    <value>Rotate 180°</value>
+    <value>旋转180°</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>更高的刷新率和更低的延迟</value>
