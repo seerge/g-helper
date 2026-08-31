@@ -506,6 +506,11 @@ namespace GHelper.Peripherals.Mouse
         //This function should automatically disconnect the device in GHelper if the device is no longer there or the pipe is broken.
         public virtual void CheckConnection()
         {
+            if (!IsDeviceConnected())
+            {
+                OnDisconnect();
+                return;
+            }
             ReadBattery();
         }
 

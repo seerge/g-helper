@@ -687,10 +687,15 @@ namespace GHelper.Peripherals
             timer.Start();
         }
 
+        private static string? lastDeviceSet;
+
         private static void DeviceTimer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
             timer.Stop();
-            Logger.WriteLine("HID Device Event: Checking for new ASUS Mice");
+            string deviceSet = string.Join("|", DeviceList.Local.GetHidDevices(0x0B05).Select(x => x.DevicePath).OrderBy(x => x));
+            if (deviceSet == lastDeviceSet) return;
+            lastDeviceSet = deviceSet;
+            Logger.WriteLine("HID Device Event: Checking for ASUS peripherals");
             DetectAllAsusMice();
             DetectAllAsusKeyboards();
             if (AppConfig.IsDetachableKeyboard()) Program.inputDispatcher.Init();
