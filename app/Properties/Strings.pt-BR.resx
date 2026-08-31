@@ -407,6 +407,9 @@ Ainda quer continuar?</value>
   <data name="ExtraSettings" xml:space="preserve">
     <value>Configurações adicionais</value>
   </data>
+  <data name="ExtremeLowMotionBlur" xml:space="preserve">
+    <value>Extreme Low Motion Blur</value>
+  </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>Padrão de fábrica</value>
   </data>
