@@ -113,7 +113,16 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("AlertDGPUTitle", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Looks like external screen is connected to GPU, disable GPU anyway?.
+        /// </summary>
+        internal static string AlertExternalDisplay {
+            get {
+                return ResourceManager.GetString("AlertExternalDisplay", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Switching off Ultimate Mode requires restart.
         /// </summary>

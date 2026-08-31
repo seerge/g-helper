@@ -282,6 +282,11 @@ namespace GHelper.Gpu
                             DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertDGPU, Properties.Strings.AlertDGPUTitle, MessageBoxButtons.YesNo);
                             if (dialogResult == DialogResult.No) return false;
                         }
+                        else if (GpuAuto && Program.acpi.IsExternalDisplayConnected())
+                        {
+                            DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertExternalDisplay, Properties.Strings.AlertDGPUTitle, MessageBoxButtons.YesNo);
+                            if (dialogResult == DialogResult.No) return false;
+                        }
 
                         if (delay > 0) Thread.Sleep(delay);
                         SetGPUEco(1);
