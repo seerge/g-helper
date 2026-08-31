@@ -96,7 +96,7 @@ namespace GHelper.Gpu
 
             if (CurrentGPU == AsusACPI.GPUModeUltimate)
             {
-                DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertUltimateOff, Properties.Strings.AlertUltimateTitle, MessageBoxButtons.YesNo);
+                DialogResult dialogResult = settings.ShowMessage(Properties.Strings.AlertUltimateOff, Properties.Strings.AlertUltimateTitle, MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
                     status = Program.acpi.DeviceSet(AsusACPI.GPUMux, 1, "GPUMux");
@@ -113,7 +113,7 @@ namespace GHelper.Gpu
                     return;
                 }
 
-                DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertUltimateOn, Properties.Strings.AlertUltimateTitle, MessageBoxButtons.YesNo);
+                DialogResult dialogResult = settings.ShowMessage(Properties.Strings.AlertUltimateOn, Properties.Strings.AlertUltimateTitle, MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
                     Program.acpi.SetGPUEco(0);
@@ -279,7 +279,12 @@ namespace GHelper.Gpu
                         if (Program.acpi.IsXGConnected()) return false;
                         if (HardwareControl.IsUsedGPU())
                         {
-                            DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertDGPU, Properties.Strings.AlertDGPUTitle, MessageBoxButtons.YesNo);
+                            DialogResult dialogResult = settings.ShowMessage(Properties.Strings.AlertDGPU, Properties.Strings.AlertDGPUTitle, MessageBoxButtons.YesNo);
+                            if (dialogResult == DialogResult.No) return false;
+                        }
+                        else if (GpuAuto && Program.acpi.IsExternalDisplayConnected())
+                        {
+                            DialogResult dialogResult = settings.ShowMessage(Properties.Strings.AlertExternalDisplay, Properties.Strings.AlertDGPUTitle, MessageBoxButtons.YesNo);
                             if (dialogResult == DialogResult.No) return false;
                         }
 
@@ -313,12 +318,7 @@ namespace GHelper.Gpu
                     }
                     else
                     {
-                        DialogResult dialogResult = DialogResult.No;
-                        settings.Invoke((MethodInvoker)delegate
-                        {
-                            dialogResult = MessageBox.Show(settings, "Did you close all applications running on XG Mobile?", "Disabling XG Mobile", MessageBoxButtons.YesNo);
-                        });
-                        
+                        DialogResult dialogResult = settings.ShowMessage("Did you close all applications running on XG Mobile?", "Disabling XG Mobile", MessageBoxButtons.YesNo);
                         if (dialogResult == DialogResult.Yes)
                         {
                             Program.acpi.DeviceSet(AsusACPI.GPUXG, 0, "GPU XGM");

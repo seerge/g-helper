@@ -299,7 +299,7 @@ namespace GHelper
 
         private void ButtonArmoury_Click(object? sender, EventArgs e)
         {
-            var dialogResult = MessageBox.Show(this, "Armoury Crate is active, download official uninstaller app?", "Armoury Crate", MessageBoxButtons.YesNo);
+            var dialogResult = ShowMessage("Armoury Crate is active, download official uninstaller app?", "Armoury Crate", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes) AsusService.RunArmouryUninstaller();
         }
 
@@ -1553,6 +1553,16 @@ namespace GHelper
             this.Activate();
             this.TopMost = true;
             this.TopMost = AppConfig.Is("topmost");
+        }
+
+        public DialogResult ShowMessage(string text, string title = "", MessageBoxButtons buttons = MessageBoxButtons.OK)
+        {
+            DialogResult result = DialogResult.None;
+            Invoke((MethodInvoker)delegate
+            {
+                result = MessageBox.Show(this, text, title, buttons);
+            });
+            return result;
         }
 
         /// <summary>
