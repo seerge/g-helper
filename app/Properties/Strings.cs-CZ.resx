@@ -491,6 +491,9 @@ Chcete přesto pokračovat?</value>
   <data name="ImageRotation" xml:space="preserve">
     <value>Otočení obrázku</value>
   </data>
+  <data name="MatrixFlip" xml:space="preserve">
+    <value>Otočit o 180°</value>
+  </data>
   <data name="Import" xml:space="preserve">
     <value>Import Profilu</value>
   </data>
