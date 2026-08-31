@@ -506,6 +506,11 @@ namespace GHelper.Peripherals.Mouse
         //This function should automatically disconnect the device in GHelper if the device is no longer there or the pipe is broken.
         public virtual void CheckConnection()
         {
+            if (!IsDeviceConnected())
+            {
+                OnDisconnect();
+                return;
+            }
             ReadBattery();
         }
 
@@ -520,6 +525,11 @@ namespace GHelper.Peripherals.Mouse
             {
                 return false;
             }
+        }
+
+        public bool IsDeviceConnected(IEnumerable<HidSharp.HidDevice> devices)
+        {
+            return devices.Any(x => x.VendorID == VendorID() && x.ProductID == ProductID() && x.DevicePath.Contains(path));
         }
 
         public virtual int USBTimeout()
