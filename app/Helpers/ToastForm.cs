@@ -143,7 +143,7 @@ namespace GHelper.Helpers
 
                 Screen screen1 = Screen.FromHandle(Handle);
 
-                Width = Math.Max(300, 100 + toastText.Length * 22);
+                Width = Math.Max(320, 100 + toastText.Length * 22);
                 Height = 100;
                 X = (screen1.Bounds.Width - Width) / 2;
                 Y = screen1.Bounds.Height - 300 - Height;
