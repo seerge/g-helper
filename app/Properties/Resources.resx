@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -132,6 +132,12 @@
   </data>
   <data name="icons8-natural-user-interface-48" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icons8-natural-user-interface-48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="camera_outline" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\camera-outline.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="camera_off_outline" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\camera-off-outline.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="icons8_microphone_96" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icons8-microphone-96.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

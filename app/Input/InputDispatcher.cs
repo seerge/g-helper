@@ -1237,17 +1237,20 @@ namespace GHelper.Input
                 case 0x00000:
                     Program.acpi.DeviceSet(AsusACPI.CameraShutter, state ^ 1,
                         state == 0 ? "CameraShutterOn" : "CameraShutterOff");
-                    Program.toast.RunToast(state == 0 ? "Camera Off" : "Camera On");
+                    Program.toast.RunToast(state == 0 ? "Camera Off" : "Camera On",
+                        state == 0 ? ToastIcon.CameraOff : ToastIcon.Camera);
                     break;
                 case 0x40000:
-                    Program.toast.RunToast(state == 0 ? "Camera Off" : "Camera On");
+                    Program.toast.RunToast(state == 0 ? "Camera Off" : "Camera On",
+                        state == 0 ? ToastIcon.CameraOff : ToastIcon.Camera);
                     break;
                 case 0xC0000:
                     SetCamera(state ^ 1);
                     break;
                 case 0x100000:
                     Program.acpi.DeviceSet(AsusACPI.CameraShutter, 4 | state, "CameraShutter");
-                    Program.toast.RunToast(state == 0 ? "Camera On" : "Camera Off");
+                    Program.toast.RunToast(state == 0 ? "Camera On" : "Camera Off",
+                        state == 0 ? ToastIcon.Camera : ToastIcon.CameraOff);
                     break;
                 default:
                     SetCamera(2);
@@ -1263,24 +1266,31 @@ namespace GHelper.Input
             if (status == 2 && cameraStatus >= 0) status = cameraStatus > 0 ? 0 : 1;
 
             var result = ProcessHelper.RunCMD($"{asusPath}\\AsusHotkey.exe", $"-MFCameraCommand {status} 1 0", asusPath);
-            var cameraLedStatus = Program.acpi.DeviceGet(AsusACPI.CameraLed);
-            Logger.WriteLine("Camera LED: " + cameraLedStatus);
             AppConfig.Set("camera_status", status);
-            if (toast)
+
+            if (!toast) return;
+
+            // CameraLed answers zero on models where ACPI does not drive the camera,
+            // which is exactly the models that reach this method
+            bool? blocked = CameraState.IsBlocked();
+            int cameraLedStatus = blocked is null ? Program.acpi.DeviceGet(AsusACPI.CameraLed) : (blocked.Value ? 1 : 0);
+
+            Logger.WriteLine("Camera blocked: " + (blocked?.ToString() ?? "unknown, LED says " + cameraLedStatus));
+
+            string statusText = cameraLedStatus switch
             {
-                string statusText = cameraLedStatus switch
+                0 => "On",
+                1 => "Off",
+                _ => status switch
                 {
                     0 => "On",
                     1 => "Off",
-                    _ => status switch
-                    {
-                        0 => "On",
-                        1 => "Off",
-                        _ => "Toggled"
-                    }
-                };
-                Program.toast.RunToast($"Camera {statusText}");
-            }
+                    _ => "Toggled"
+                }
+            };
+
+            Program.toast.RunToast($"Camera {statusText}",
+                statusText == "Off" ? ToastIcon.CameraOff : ToastIcon.Camera);
         }
 
         private static void InitCamera()
