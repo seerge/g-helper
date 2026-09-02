@@ -757,15 +757,15 @@ namespace GHelper
             if (m.Msg == NativeMethods.WM_POWERBROADCAST && m.WParam == (IntPtr)NativeMethods.PBT_APMSUSPEND)
             {
                 Logger.WriteLine("System Suspend");
-                GPUModeControl.suspended = true;
+                GPUModeControl.OnSuspend();
                 Program.modeControl.SleepReset();
                 m.Result = (IntPtr)1;
             }
 
-            if (m.Msg == NativeMethods.WM_POWERBROADCAST && m.WParam == (IntPtr)NativeMethods.PBT_APMRESUMEAUTOMATIC)
+            if (m.Msg == NativeMethods.WM_POWERBROADCAST && (m.WParam == (IntPtr)NativeMethods.PBT_APMRESUMEAUTOMATIC || m.WParam == (IntPtr)NativeMethods.PBT_APMRESUMESUSPEND))
             {
                 Logger.WriteLine("System Resume");
-                GPUModeControl.suspended = false;
+                GPUModeControl.OnResume();
                 BatteryControl.AutoBattery();
                 m.Result = (IntPtr)1;
             }
@@ -805,14 +805,15 @@ namespace GHelper
                     {
                         case 0:
                             Logger.WriteLine("Monitor Power Off");
+                            GPUModeControl.OnDisplayOff();
                             Aura.SleepBrightness();
                             XGM.NotifyShutdown();
                             Program.hardwareOverlay?.SuspendForDisplayOff();
                             break;
                         case 1:
                             Logger.WriteLine("Monitor Power On");
-                            GPUModeControl.suspended = false;
-                            Thread.Sleep(1000);
+                            GPUModeControl.OnDisplayOn();
+                            GPUModeControl.BreakWakeDelay("Monitor Power On");
                             if (!Program.SetAutoModes(wakeup: true)) BatteryControl.AutoBattery();
                             Task.Delay(2000).ContinueWith(_ => InputDispatcher.InitFNLock());
                             PeripheralsProvider.RestoreKeyboardLighting();

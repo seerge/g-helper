@@ -244,6 +244,7 @@ namespace GHelper
             if (e.Reason == SessionSwitchReason.SessionLogon || e.Reason == SessionSwitchReason.SessionUnlock || e.Reason == SessionSwitchReason.ConsoleConnect)
             {
                 Logger.WriteLine("Session:" + e.Reason.ToString());
+                GPUModeControl.BreakWakeDelay("Session " + e.Reason.ToString());
                 ProcessHelper.KillSmartDisplayControl();
                 bool wasLocked = Aura.sessionLock;
                 Aura.sessionLock = false;
@@ -437,7 +438,7 @@ namespace GHelper
             }
 
             ScreenControl.AutoScreen();
-            gpuControl.AutoGPUMode(delay: 0);
+            gpuControl.AutoGPUMode(delay: 1000);
         }
 
         public static void OnChargerEvent() => SchedulePowerCheck();
@@ -447,11 +448,18 @@ namespace GHelper
             if (e.Mode == PowerModes.Suspend)
             {
                 Logger.WriteLine("Power Mode Changed:" + e.Mode.ToString());
+                GPUModeControl.OnSuspend();
                 gpuControl.StandardModeFix();
                 modeControl.ShutdownReset();
                 InputDispatcher.ShutdownStatusLed();
                 XGM.NotifyShutdown();
                 return;
+            }
+
+            if (e.Mode == PowerModes.Resume)
+            {
+                Logger.WriteLine("Power Mode Changed:" + e.Mode.ToString());
+                GPUModeControl.OnResume();
             }
 
             PowerLineStatus status = SystemInformation.PowerStatus.PowerLineStatus;
@@ -481,6 +489,7 @@ namespace GHelper
             }
             else
             {
+                GPUModeControl.BreakWakeDelay("Settings Opened");
                 var screen = Screen.PrimaryScreen;
                 if (screen is null) screen = Screen.FromControl(settingsForm);
 
