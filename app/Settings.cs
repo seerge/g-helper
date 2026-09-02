@@ -1,4 +1,4 @@
-﻿using GHelper.Ally;
+using GHelper.Ally;
 using GHelper.AnimeMatrix;
 using GHelper.AutoUpdate;
 using GHelper.Battery;
@@ -591,6 +591,8 @@ namespace GHelper
 
         public void VisualiseController(ControllerMode mode)
         {
+            if (InvokeRequired) { Invoke(() => VisualiseController(mode)); return; }
+
             switch (mode)
             {
                 case ControllerMode.Gamepad:
@@ -740,15 +742,15 @@ namespace GHelper
             if (m.Msg == NativeMethods.WM_POWERBROADCAST && m.WParam == (IntPtr)NativeMethods.PBT_APMSUSPEND)
             {
                 Logger.WriteLine("System Suspend");
-                GPUModeControl.suspended = true;
+                GPUModeControl.OnSuspend();
                 Program.modeControl.SleepReset();
                 m.Result = (IntPtr)1;
             }
 
-            if (m.Msg == NativeMethods.WM_POWERBROADCAST && m.WParam == (IntPtr)NativeMethods.PBT_APMRESUMEAUTOMATIC)
+            if (m.Msg == NativeMethods.WM_POWERBROADCAST && (m.WParam == (IntPtr)NativeMethods.PBT_APMRESUMEAUTOMATIC || m.WParam == (IntPtr)NativeMethods.PBT_APMRESUMESUSPEND))
             {
                 Logger.WriteLine("System Resume");
-                GPUModeControl.suspended = false;
+                GPUModeControl.OnResume();
                 BatteryControl.AutoBattery();
                 m.Result = (IntPtr)1;
             }
@@ -782,19 +784,21 @@ namespace GHelper
                     Logger.WriteLine("Battery Saver: " + settings.Data);
                     buttonEnergySaver.Visible = settings.Data != 0;
                 }
-                else
+                else if (settings.PowerSetting == NativeMethods.PowerSettingGuid.ConsoleDisplayState)
                 {
                     switch (settings.Data)
                     {
                         case 0:
                             Logger.WriteLine("Monitor Power Off");
+                            GPUModeControl.OnDisplayOff();
                             Aura.SleepBrightness();
                             XGM.NotifyShutdown();
                             Program.hardwareOverlay?.SuspendForDisplayOff();
                             break;
                         case 1:
                             Logger.WriteLine("Monitor Power On");
-                            GPUModeControl.suspended = false;
+                            GPUModeControl.OnDisplayOn();
+                            GPUModeControl.BreakWakeDelay("Monitor Power On");
                             if (!Program.SetAutoModes(wakeup: true)) BatteryControl.AutoBattery();
                             Program.hardwareOverlay?.ResumeForDisplayOn();
                             break;
@@ -1856,6 +1860,8 @@ namespace GHelper
 
         public void HideGPUModes(bool gpuExists)
         {
+            if (InvokeRequired) { Invoke(() => HideGPUModes(gpuExists)); return; }
+
             isGpuSection = false;
 
             buttonEco.Visible = false;

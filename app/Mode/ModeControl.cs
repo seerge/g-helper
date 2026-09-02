@@ -49,6 +49,10 @@ namespace GHelper.Mode
         static CancellationTokenSource _modeCts = new();
         static Task _modeTask = Task.CompletedTask;
 
+        // Avoids a duplicate toast when SetPerformanceMode is called twice for the same mode in quick succession.
+        static long lastNotifiedAt;
+        static int lastNotifiedMode = -1;
+
         public ModeControl()
         {
             int reapplyTime = AppConfig.Get("reapply_time", IsReapplyTempRequired() ? 30 : 0);
@@ -87,6 +91,19 @@ namespace GHelper.Mode
         public void WaitForApply()
         {
             try { _modeTask.Wait(5000); } catch { }
+        }
+
+        // Awaits the same in-flight task without blocking a thread on it, and observes
+        // cancellation so a superseded caller (e.g. an eco switch dropped by a replug) can
+        // abandon the wait instead of sitting through the full 5s timeout.
+        public async Task WaitForApplyAsync(CancellationToken token = default)
+        {
+            // Task.WhenAny itself never throws for a faulted/canceled inner task - it just
+            // resolves with whichever finished first - so cancellation must be checked
+            // explicitly afterward to actually propagate to the caller.
+            try { await Task.WhenAny(_modeTask, Task.Delay(5000, token)); }
+            catch { }
+            token.ThrowIfCancellationRequested();
         }
 
         public void AutoPerformance(bool powerChanged = false)
@@ -157,19 +174,22 @@ namespace GHelper.Mode
                     if (AppConfig.Is("status_mode")) Program.acpi.DeviceSet(AsusACPI.StatusMode, [0x00, Modes.GetBase(mode) == AsusACPI.PerformanceSilent ? (byte)0x02 : (byte)0x03], "StatusMode");
                     Program.acpi.SetPerformanceMode(AppConfig.IsManualModeRequired() ? AsusACPI.PerformanceManual : Modes.GetBase(mode));
 
-                    SetGPUClocks();
-
                     await Task.Delay(TimeSpan.FromMilliseconds(100), ct);
                     ct.ThrowIfCancellationRequested();
-                    AutoFans();
+                    AutoFans(token: ct);
                     await Task.Delay(TimeSpan.FromMilliseconds(1000), ct);
                     ct.ThrowIfCancellationRequested();
-                    AutoPower();
+                    AutoPower(token: ct);
                     
                     var command = AppConfig.GetModeString("mode_command");
                     if (command is not null)
                     {   Logger.WriteLine("Running mode command: " + command);
                         RestrictedProcessHelper.RunAsRestrictedUser(command);
+                    }
+
+                    if (!Program.gpuControl.IsSwitching)
+                    {
+                        _ = ApplyGPUSettingsAsync();
                     }
                 }
                 catch (OperationCanceledException)
@@ -182,7 +202,17 @@ namespace GHelper.Mode
                 }
             }, ct);
 
-            if (notify) Toast();
+            if (notify)
+            {
+                long now = Environment.TickCount64;
+                bool isDuplicateNotify = mode == lastNotifiedMode && (now - lastNotifiedAt) < 1000;
+                if (!isDuplicateNotify)
+                {
+                    lastNotifiedAt = now;
+                    lastNotifiedMode = mode;
+                    Toast();
+                }
+            }
 
             if (!AppConfig.Is("skip_powermode"))
             {
@@ -228,7 +258,7 @@ namespace GHelper.Mode
             Toast();
         }
 
-        public void AutoFans(bool force = false)
+        public void AutoFans(bool force = false, CancellationToken token = default)
         {
             customFans = false;
 
@@ -278,10 +308,15 @@ namespace GHelper.Mode
                 {
                     Task.Run(async () =>
                     {
-                        await Task.Delay(TimeSpan.FromSeconds(1));
-                        Program.acpi.DeviceSet(AsusACPI.PPT_APUA0, 80, "PowerLimit Fix A0");
-                        Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, 80, "PowerLimit Fix A3");
-                    });
+                        try
+                        {
+                            await Task.Delay(TimeSpan.FromSeconds(1), token);
+                            token.ThrowIfCancellationRequested();
+                            Program.acpi.DeviceSet(AsusACPI.PPT_APUA0, 80, "PowerLimit Fix A0");
+                            Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, 80, "PowerLimit Fix A3");
+                        }
+                        catch (OperationCanceledException) { }
+                    }, token);
                 }
 
             } else
@@ -293,7 +328,7 @@ namespace GHelper.Mode
 
         }
 
-        public void AutoPower(bool launchAsAdmin = false)
+        public void AutoPower(bool launchAsAdmin = false, CancellationToken token = default)
         {
 
             customPower = 0;
@@ -303,19 +338,18 @@ namespace GHelper.Mode
 
             if (applyPower && !applyFans && AppConfig.IsFanRequired())
             {
-                AutoFans(true);
+                AutoFans(true, token);
                 Thread.Sleep(500);
             }
 
             if (applyPower) SetPower(launchAsAdmin);
 
             Thread.Sleep(500);
-            SetGPUPower();
             if (applyPower) SetCrossPower();
             AutoRyzen();
 
             if (IsReapplyRyzenRequired())
-                Task.Delay(5000).ContinueWith(_ => { AutoRyzen(); ReadRyzenLimits(); });
+                Task.Delay(5000, token).ContinueWith(_ => { AutoRyzen(); ReadRyzenLimits(); }, token);
 
         }
 
@@ -419,6 +453,15 @@ namespace GHelper.Mode
 
             if (cputemp >= AsusACPI.MinCPUTemp && cputemp <= AsusACPI.MaxCPUTemp && Program.acpi.IsSupported(AsusACPI.PPT_TEMP9E))
                 Program.acpi.DeviceSet(AsusACPI.PPT_TEMP9E, cputemp, "PowerLimit 9E (CPU Temp)");
+        }
+
+        public Task ApplyGPUSettingsAsync()
+        {
+            return Task.Run(() =>
+            {
+                SetGPUPower();
+                SetGPUClocks(true, false);
+            });
         }
 
         public void SetGPUClocks(bool launchAsAdmin = true, bool reset = false)
