@@ -1,5 +1,6 @@
 ﻿using GHelper;
 using GHelper.USB;
+using System.Collections.Concurrent;
 using System.Management;
 using System.Runtime.InteropServices;
 
@@ -76,6 +77,7 @@ public class AsusACPI
 
     public const uint GPUXGConnected = 0x00090018;
     public const uint GPUXG = 0x00090019;
+    public const uint GPUDisplayConnect = 0x00090030;
 
     public const uint GPUMuxROG = 0x00090016;
     public const uint GPUMuxVivo = 0x00090026;
@@ -83,6 +85,7 @@ public class AsusACPI
     public const uint BatteryLimit = 0x00120057;
 
     public const uint ScreenOverdrive = 0x00050019;
+    public const uint ScreenOverdriveSupport = 0x00050020;
     public const uint ScreenMiniled1 = 0x0005001E;
     public const uint ScreenMiniled2 = 0x0005002E;
     public const uint ScreenFHD = 0x0005001C;
@@ -109,6 +112,10 @@ public class AsusACPI
 
     public const int PPT_CPUB0 = 0x001200B0;  // CPU PPT on 2022 (PPT_LIMIT_APU)
     public const int PPT_CPUB1 = 0x001200B1;  // Total PPT on 2022 (PPT_LIMIT_SLOW)
+
+    public const int PPT_GPUCPU9C = 0x0012009C;  // GPU to CPU Dynamic Boost, 5W steps
+    public const int PPT_TEMP9E = 0x0012009E;  // CPU Temperature Limit
+    public const int PPT_CROSS9F = 0x0012009F;  // Cross Loading Processor Power
 
     public const int PPT_GPUC0 = 0x001200C0;  // NVIDIA GPU Boost
     public const int PPT_APUC1 = 0x001200C1;  // fPPT (fast boost limit)
@@ -182,6 +189,16 @@ public class AsusACPI
     public const int MinGPUTemp = 75;
     public const int MaxGPUTemp = 87;
 
+    public const int MinGPUtoCPU = 0;
+    public const int StepGPUtoCPU = 5;
+    public const int MaxGPUtoCPU = 10;
+
+    public const int MinCrossLoad = 0;
+    public static int MaxCrossLoad = 40;
+
+    public const int MinCPUTemp = 75;
+    public static int MaxCPUTemp = 97;
+
     public const int PCoreMin = 4;
     public const int ECoreMin = 0;
 
@@ -189,7 +206,8 @@ public class AsusACPI
     public const int ECoreMax = 16;
 
     private bool? _allAMD = null;
-    private readonly Dictionary<uint, bool> _supportCache = new();
+    private bool? _overdrive = null;
+    private readonly ConcurrentDictionary<uint, bool> _supportCache = new();
 
     public static uint GPUEco => AppConfig.IsVivoZenPro() ? GPUEcoVivo : GPUEcoROG;
     public static uint GPUMux => AppConfig.IsVivoZenPro() ? GPUMuxVivo : GPUMuxROG;
@@ -316,6 +334,13 @@ public class AsusACPI
         if (AppConfig.IsIntelHX())
         {
             MaxTotal = 175;
+            MaxCrossLoad = 125;
+            MaxCPUTemp = 103;
+        }
+
+        if (AppConfig.ContainsModel("GU606"))
+        {
+            MaxCrossLoad = 50;
         }
 
         if (AppConfig.DynamicBoost5())
@@ -732,6 +757,12 @@ public class AsusACPI
         return IsSupported(GPUXGConnected) && DeviceGet(GPUXGConnected) == 1;
     }
 
+    public bool IsExternalDisplayConnected()
+    {
+        int status = DeviceGet(GPUDisplayConnect);
+        return status >= 0 && ((status >> 4) & status & 0xF) > 0;
+    }
+
     public bool IsAllAmdPPT()
     {
         if (_allAMD is null) _allAMD = IsSupported(PPT_CPUB0) && !IsSupported(PPT_GPUC0) && !AppConfig.IsAMDiGPU();
@@ -740,7 +771,8 @@ public class AsusACPI
 
     public bool IsOverdriveSupported()
     {
-        return IsSupported(ScreenOverdrive);
+        if (_overdrive is null) _overdrive = DeviceGet(ScreenOverdriveSupport) == 1;
+        return (bool)_overdrive;
     }
 
     public bool IsSupported(uint DeviceID)
@@ -783,8 +815,7 @@ public class AsusACPI
 
         if ((status & 0x10000) == 0 || (status & 0x80000) != 0) return [];
 
-        int count = status & 0xFFFF;
-        if (count > 16) count = 17;
+        int count = Math.Min(status & 0xFFFF, (buf.Length - 6) / 2);
         if (count < 2) return [];
 
         unitMb = (status & 0x20000) != 0 ? 512 : 1;
@@ -865,7 +896,7 @@ public class AsusACPI
 
     }
 
-    private byte[] DeviceGetLarge(uint DeviceID, int extraIn = 8, int outSize = 40)
+    private byte[] DeviceGetLarge(uint DeviceID, int extraIn = 8, int outSize = 64)
     {
         byte[] acpiBuf = new byte[8 + 4 + extraIn];
         byte[] outBuffer = new byte[outSize];

@@ -558,7 +558,7 @@ Nadal chcesz kontynuować?</value>
     <value>Wizualizer muzyki</value>
   </data>
   <data name="MatrixAudioMode" xml:space="preserve">
-    <value>Visualizer Mode</value>
+    <value>Tryb wizualizera</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Binarny</value>
@@ -585,16 +585,19 @@ Nadal chcesz kontynuować?</value>
     <value>Obraz</value>
   </data>
   <data name="MatrixRunningText" xml:space="preserve">
-    <value>Running Text</value>
+    <value>Tekst przewijany</value>
   </data>
   <data name="MatrixText" xml:space="preserve">
-    <value>Text</value>
+    <value>Tekst</value>
   </data>
   <data name="MatrixTimeFormat" xml:space="preserve">
-    <value>Time Format</value>
+    <value>Format czasu</value>
   </data>
   <data name="MatrixDateFormat" xml:space="preserve">
-    <value>Date Format</value>
+    <value>Format daty</value>
+  </data>
+  <data name="MatrixFlip" xml:space="preserve">
+    <value>Obróć o 180°</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Maksymalna częstotliwość odświeżania dla mniejszych opóźnień</value>

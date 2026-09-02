@@ -596,6 +596,9 @@
   <data name="MatrixDateFormat" xml:space="preserve">
     <value>Date Format</value>
   </data>
+  <data name="MatrixFlip" xml:space="preserve">
+    <value>旋轉180°</value>
+  </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>更高的更新率和更低延遲</value>
   </data>

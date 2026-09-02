@@ -596,6 +596,9 @@ Folytatni szeretnéd?</value>
   <data name="MatrixDateFormat" xml:space="preserve">
     <value>Dátum formátum</value>
   </data>
+  <data name="MatrixFlip" xml:space="preserve">
+    <value>Elforgatás 180°-kal</value>
+  </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Max frissítési gyakoriság kevés késleltetéshez</value>
   </data>
@@ -720,7 +723,7 @@ Folytatni szeretnéd?</value>
     <value>A Teljesítménykorlát egy kísérleti funkció. Használja körültekintően és saját felelősségére!</value>
   </data>
   <data name="PrintScreen" xml:space="preserve">
-    <value>PrintScreen</value>
+    <value>Képernyő-másolás</value>
   </data>
   <data name="Profile" xml:space="preserve">
     <value>Profil</value>
@@ -774,7 +777,7 @@ Folytatni szeretnéd?</value>
     <value>Általános használathoz engedélyezi a dGPU-t</value>
   </data>
   <data name="StandardMode" xml:space="preserve">
-    <value>Standard</value>
+    <value>Szabványos</value>
   </data>
   <data name="Start" xml:space="preserve">
     <value>Indítás</value>

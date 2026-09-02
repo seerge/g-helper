@@ -9,6 +9,7 @@ using GHelper.Helpers;
 using GHelper.Input;
 using GHelper.Mode;
 using GHelper.Peripherals;
+using GHelper.Peripherals.Keyboard;
 using GHelper.Peripherals.Mouse;
 using GHelper.Properties;
 using GHelper.UI;
@@ -29,6 +30,7 @@ namespace GHelper
         AutoUpdateControl updateControl;
 
         AsusMouseSettings? mouseSettings;
+        AsusKeyboardSettings? keyboardSettings;
 
         public AniMatrixControl matrixControl;
 
@@ -297,7 +299,7 @@ namespace GHelper
 
         private void ButtonArmoury_Click(object? sender, EventArgs e)
         {
-            var dialogResult = MessageBox.Show(this, "Armoury Crate is active, download official uninstaller app?", "Armoury Crate", MessageBoxButtons.YesNo);
+            var dialogResult = ShowMessage("Armoury Crate is active, download official uninstaller app?", "Armoury Crate", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes) AsusService.RunArmouryUninstaller();
         }
 
@@ -738,6 +740,7 @@ namespace GHelper
             if (m.Msg == NativeMethods.WM_POWERBROADCAST && m.WParam == (IntPtr)NativeMethods.PBT_APMSUSPEND)
             {
                 Logger.WriteLine("System Suspend");
+                GPUModeControl.suspended = true;
                 Program.modeControl.SleepReset();
                 m.Result = (IntPtr)1;
             }
@@ -745,6 +748,7 @@ namespace GHelper
             if (m.Msg == NativeMethods.WM_POWERBROADCAST && m.WParam == (IntPtr)NativeMethods.PBT_APMRESUMEAUTOMATIC)
             {
                 Logger.WriteLine("System Resume");
+                GPUModeControl.suspended = false;
                 BatteryControl.AutoBattery();
                 m.Result = (IntPtr)1;
             }
@@ -790,6 +794,7 @@ namespace GHelper
                             break;
                         case 1:
                             Logger.WriteLine("Monitor Power On");
+                            GPUModeControl.suspended = false;
                             if (!Program.SetAutoModes(wakeup: true)) BatteryControl.AutoBattery();
                             Program.hardwareOverlay?.ResumeForDisplayOn();
                             break;
@@ -1536,6 +1541,7 @@ namespace GHelper
             if (slashForm != null && slashForm.Text != "") slashForm.Close();
             if (handheldForm != null && handheldForm.Text != "") handheldForm.Close();
             if (mouseSettings != null && mouseSettings.Text != "") mouseSettings.Close();
+            if (keyboardSettings != null && keyboardSettings.Text != "") keyboardSettings.Close();
             MemoryHelper.TrimAfter();
         }
 
@@ -1547,6 +1553,16 @@ namespace GHelper
             this.Activate();
             this.TopMost = true;
             this.TopMost = AppConfig.Is("topmost");
+        }
+
+        public DialogResult ShowMessage(string text, string title = "", MessageBoxButtons buttons = MessageBoxButtons.OK)
+        {
+            DialogResult result = DialogResult.None;
+            Invoke((MethodInvoker)delegate
+            {
+                result = MessageBox.Show(this, text, title, buttons);
+            });
+            return result;
         }
 
         /// <summary>
@@ -1983,8 +1999,9 @@ namespace GHelper
 
         private void PictureGPU_Click(object? sender, EventArgs e)
         {
-            if (GPUModeControl.gpuError is not null)
-                Process.Start(new ProcessStartInfo("devmgmt.msc") { UseShellExecute = true });
+            if (GPUModeControl.gpuError is null) return;
+            GPUModeControl.CheckGpuError();
+            Process.Start(new ProcessStartInfo("devmgmt.msc") { UseShellExecute = true });
         }
 
         private void ButtonSilent_Click(object? sender, EventArgs e)
@@ -2085,14 +2102,15 @@ namespace GHelper
                 Image? baseIcon = m.DeviceType() switch
                 {
                     PeripheralType.Mouse => Properties.Resources.icons8_maus_48,
-                    PeripheralType.Keyboard => Properties.Resources.icons8_keyboard_32,
+                    PeripheralType.Keyboard => Properties.Resources.icons8_keyboard_48,
                     _ => null,
                 };
 
                 if (baseIcon is not null)
                 {
-                    int iw = baseIcon.Width;
                     int ih = baseIcon.Height;
+                    // icon PNG may be wider than tall (baked-in right text padding); badge/bars anchor to the glyph square
+                    int iw = Math.Min(baseIcon.Width, ih);
                     Image composed = ControlHelper.TintImage(baseIcon, b.ForeColor);
                     if (!ready)
                     {
@@ -2152,6 +2170,12 @@ namespace GHelper
                 return;
             }
 
+            if (keyboardSettings is not null)
+            {
+                keyboardSettings.Close();
+                return;
+            }
+
             int index = 0;
             if (sender == buttonPeripheral2) index = 1;
             if (sender == buttonPeripheral3) index = 2;
@@ -2186,6 +2210,43 @@ namespace GHelper
                 }
 
             }
+
+            if (iph.DeviceType() == PeripheralType.Keyboard)
+            {
+                AsusKeyboard? kb = iph as AsusKeyboard;
+                if (kb is null || !kb.IsDeviceReady)
+                {
+                    return;
+                }
+                ShowKeyboardSettings(kb);
+            }
+        }
+
+        private void ShowKeyboardSettings(AsusKeyboard kb)
+        {
+            AsusKeyboardSettings.RequestReopen = ShowKeyboardSettings;
+            keyboardSettings = new AsusKeyboardSettings(kb);
+            keyboardSettings.TopMost = AppConfig.Is("topmost");
+            keyboardSettings.FormClosed += KeyboardSettings_FormClosed;
+            keyboardSettings.Disposed += KeyboardSettings_Disposed;
+            if (!keyboardSettings.IsDisposed)
+            {
+                keyboardSettings.Show();
+            }
+            else
+            {
+                keyboardSettings = null;
+            }
+        }
+
+        private void KeyboardSettings_Disposed(object? sender, EventArgs e)
+        {
+            keyboardSettings = null;
+        }
+
+        private void KeyboardSettings_FormClosed(object? sender, FormClosedEventArgs e)
+        {
+            keyboardSettings = null;
         }
 
         private void MouseSettings_Disposed(object? sender, EventArgs e)
