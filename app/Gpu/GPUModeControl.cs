@@ -214,17 +214,43 @@ namespace GHelper.Gpu
             Task.Run(() => RunGPUEcoSequence(eco, delay, cts));
         }
 
+        public static bool IsWakeReady()
+        {
+            if (suspended || displayOff) return false;
+            long now = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            long wakeTime = Math.Max(lastResumeTime, lastDisplayOnTime);
+            return wakeTime == 0 || (now - wakeTime >= 500);
+        }
+
+        public static void BreakWakeDelay(string reason = "")
+        {
+            if (!string.IsNullOrEmpty(reason))
+                Logger.WriteLine($"Wake delay broken by event: {reason}");
+            lastResumeTime = 0;
+            lastDisplayOnTime = 0;
+        }
+
         private async Task RunGPUEcoSequence(int eco, int delay, CancellationTokenSource cts)
         {
             var token = cts.Token;
             try
             {
                 IsSwitching = true;
-                // Was previously a blocking Thread.Sleep on the caller's thread; now an
-                // awaitable delay that a superseding request can cancel outright instead of
-                // letting a now-pointless switch fire after the fact.
-                if (delay > 0) await Task.Delay(delay, token);
+                if (delay > 0)
+                {
+                    await AsyncHelper.PollUntilAsync(
+                        () => IsWakeReady(),
+                        intervalMs: 100,
+                        timeoutMs: delay,
+                        token: token);
+                }
                 token.ThrowIfCancellationRequested();
+
+                if (displayOff || suspended)
+                {
+                    Logger.WriteLine("Aborting GPU Eco sequence: Monitor is Off or Suspended");
+                    return;
+                }
 
                 if (eco == 1)
                 {
@@ -342,6 +368,55 @@ namespace GHelper.Gpu
             (Program.currentSource == Program.PowerSource.USBC && !AppConfig.Is("optimized_usbc"));
 
         public static bool suspended = false;
+        public static bool displayOff = false;
+        private static long lastResumeTime = 0;
+        private static long lastDisplayOnTime = 0;
+
+        public static void OnSuspend()
+        {
+            suspended = true;
+        }
+
+        public static void OnResume()
+        {
+            suspended = false;
+            lastResumeTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+        }
+
+        public static void OnDisplayOff()
+        {
+            displayOff = true;
+        }
+
+        public static void OnDisplayOn()
+        {
+            suspended = false;
+            displayOff = false;
+            lastDisplayOnTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+        }
+
+        public static int GetWakeupRemainingDelay()
+        {
+            if (suspended || displayOff)
+            {
+                return AppConfig.Get("gpu_wake_delay", 6000);
+            }
+
+            int wakeDelay = AppConfig.Get("gpu_wake_delay", 6000);
+            long now = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            long recentWakeTime = Math.Max(lastResumeTime, lastDisplayOnTime);
+
+            if (recentWakeTime > 0)
+            {
+                long elapsed = now - recentWakeTime;
+                if (elapsed >= 0 && elapsed < wakeDelay)
+                {
+                    return (int)(wakeDelay - elapsed);
+                }
+            }
+
+            return 0;
+        }
 
         public bool AutoGPUMode(bool optimized = false, int delay = 0)
         {
@@ -357,6 +432,25 @@ namespace GHelper.Gpu
             {
                 Logger.WriteLine("Skipping GPU Mode switch: Suspend");
                 return false;
+            }
+
+            if (displayOff)
+            {
+                Logger.WriteLine("Skipping GPU Mode switch: Monitor Off");
+                return false;
+            }
+
+            int baseDelay = AppConfig.Get("gpu_delay", 0);
+            if (baseDelay > delay) delay = baseDelay;
+
+            int remainingWakeDelay = GetWakeupRemainingDelay();
+            if (remainingWakeDelay > 0)
+            {
+                if (remainingWakeDelay > delay)
+                {
+                    delay = remainingWakeDelay;
+                    Logger.WriteLine($"Waking up from sleep: delaying GPU Mode switch by {delay}ms");
+                }
             }
 
             // Trust an in-flight sequence's target over the live ACPI flag: the flag can lag
