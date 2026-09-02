@@ -680,16 +680,16 @@ namespace GHelper
             RefreshSensors(true);
         }
 
-        private void ShowBatteryWear()
+        private async void ShowBatteryWear()
         {
             //Refresh again only after 15 Minutes since the last refresh
             if (lastBatteryRefresh == 0 || Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastBatteryRefresh) > 15 * 60_000)
             {
                 lastBatteryRefresh = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-                HardwareControl.RefreshBatteryHealth();
+                await Task.Run(HardwareControl.RefreshBatteryHealth);
             }
 
-            if (HardwareControl.batteryHealth != -1)
+            if (batteryMouseOver && HardwareControl.batteryHealth != -1)
             {
                 labelCharge.Text = Properties.Strings.BatteryHealth + ": " + Math.Round(HardwareControl.batteryHealth, 1) + "%";
             }
