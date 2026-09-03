@@ -457,6 +457,8 @@ namespace GHelper.Peripherals
             DetectKeyboard(new AzothX());
             DetectKeyboard(new AzothXWireless());
             DetectKeyboard(new StrixFlare());
+            DetectKeyboard(new StrixFlareCOD());
+            DetectKeyboard(new StrixFlarePNK());
             DetectKeyboard(new StrixFlareII());
             DetectKeyboard(new StrixFlareIIAnimate());
             DetectKeyboard(new StrixScopeII());
@@ -466,6 +468,8 @@ namespace GHelper.Peripherals
             DetectKeyboard(new StrixScopeRXTKLWireless());
             DetectKeyboard(new StrixScopeRXTKLWired());
             DetectKeyboard(new StrixScopeRX());
+            DetectKeyboard(new StrixScopeRXEVA());
+            DetectKeyboard(new StrixScopeRXEVA02());
             DetectKeyboard(new Falchion());
             DetectKeyboard(new FalchionWireless());
             DetectKeyboard(new FalchionRX());
@@ -638,6 +642,7 @@ namespace GHelper.Peripherals
             0x1B42 => new AzothExtremeOmni(),
             0x1CF1 => new AzothExtremeSEOmni(),
             0x1AB0 => new StrixScopeII96WirelessOmni(),
+            0x1B7A => new StrixScopeII96RXWirelessOmni(),
             0x1B06 => new FalchionRXLowProfileOmni(),
             _ => null,
         };
