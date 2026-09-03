@@ -135,6 +135,9 @@
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>Chế độ Tiết kiệm</value>
   </data>
+  <data name="AlertExternalDisplay" xml:space="preserve">
+    <value>Looks like external screen is connected to GPU, disable GPU anyway?</value>
+  </data>
   <data name="AlertUltimateOff" xml:space="preserve">
     <value>Chuyển sang Chế độ Tối thượng cần phải khởi động lại</value>
   </data>
@@ -406,6 +409,9 @@ Bạn có muốn tiếp tục không?</value>
   </data>
   <data name="ExtraSettings" xml:space="preserve">
     <value>Cài đặt bổ sung</value>
+  </data>
+  <data name="ExtremeLowMotionBlur" xml:space="preserve">
+    <value>Extreme Low Motion Blur</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>Đặt về mặc định</value>

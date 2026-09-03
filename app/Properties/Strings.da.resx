@@ -135,6 +135,9 @@
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>Øko-tilstand</value>
   </data>
+  <data name="AlertExternalDisplay" xml:space="preserve">
+    <value>Looks like external screen is connected to GPU, disable GPU anyway?</value>
+  </data>
   <data name="AlertUltimateOff" xml:space="preserve">
     <value>Slukning af Ultimativ tilstand kræver genstart</value>
   </data>
@@ -406,6 +409,9 @@ Vil du stadig fortsætte?</value>
   </data>
   <data name="ExtraSettings" xml:space="preserve">
     <value>Ekstra indstillinger</value>
+  </data>
+  <data name="ExtremeLowMotionBlur" xml:space="preserve">
+    <value>Extreme Low Motion Blur</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>Gendan standarder</value>
