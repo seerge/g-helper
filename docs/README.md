@@ -170,6 +170,7 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 
 - ROG Azoth
 - ROG Azoth Extreme
+- ROG Azoth Extreme SE
 - ROG Azoth X
 - ROG Claymore II
 - ROG Falchion

@@ -452,6 +452,7 @@ namespace GHelper.Peripherals
 
             DetectKeyboard(new Azoth());
             DetectKeyboard(new AzothExtreme());
+            DetectKeyboard(new AzothExtremeSE());
             DetectKeyboard(new AzothWireless());
             DetectKeyboard(new AzothX());
             DetectKeyboard(new AzothXWireless());
@@ -635,6 +636,7 @@ namespace GHelper.Peripherals
         {
             0x1A85 => new AzothOmni(),
             0x1B42 => new AzothExtremeOmni(),
+            0x1CF1 => new AzothExtremeSEOmni(),
             0x1AB0 => new StrixScopeII96WirelessOmni(),
             0x1B06 => new FalchionRXLowProfileOmni(),
             _ => null,
