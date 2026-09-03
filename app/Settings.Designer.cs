@@ -1,4 +1,4 @@
-﻿using GHelper.UI;
+using GHelper.UI;
 
 namespace GHelper
 {
@@ -141,6 +141,7 @@ namespace GHelper
             buttonAmdOled = new RButton();
             buttonArmoury = new RButton();
             labelVersion = new Label();
+            linkLabelProxy = new LinkLabel();
             buttonHDRControl = new RButton();
             panelMatrix.SuspendLayout();
             tableLayoutMatrix.SuspendLayout();
@@ -1926,6 +1927,7 @@ namespace GHelper
             panelVersion.Controls.Add(buttonEnergySaver);
             panelVersion.Controls.Add(buttonAmdOled);
             panelVersion.Controls.Add(buttonArmoury);
+            panelVersion.Controls.Add(linkLabelProxy);
             panelVersion.Controls.Add(labelVersion);
             panelVersion.Dock = DockStyle.Top;
             panelVersion.Location = new Point(11, 1837);
@@ -2015,6 +2017,26 @@ namespace GHelper
             labelVersion.TabIndex = 38;
             labelVersion.Text = "v.0";
             labelVersion.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // linkLabelProxy
+            // 
+            linkLabelProxy.ActiveLinkColor = Color.FromArgb(255, 58, 174, 239);
+            linkLabelProxy.AutoSize = true;
+            linkLabelProxy.Cursor = Cursors.Hand;
+            linkLabelProxy.Dock = DockStyle.Left;
+            linkLabelProxy.Font = new Font("Segoe UI", 9F);
+            linkLabelProxy.LinkBehavior = LinkBehavior.NeverUnderline;
+            linkLabelProxy.LinkColor = Color.FromArgb(255, 128, 128, 128);
+            linkLabelProxy.Location = new Point(419, 5);
+            linkLabelProxy.Margin = new Padding(0);
+            linkLabelProxy.Name = "linkLabelProxy";
+            linkLabelProxy.Padding = new Padding(5, 0, 5, 0);
+            linkLabelProxy.Size = new Size(70, 40);
+            linkLabelProxy.TabIndex = 41;
+            linkLabelProxy.TabStop = true;
+            linkLabelProxy.Text = "代理设置";
+            linkLabelProxy.TextAlign = ContentAlignment.MiddleLeft;
+            linkLabelProxy.VisitedLinkColor = Color.FromArgb(255, 128, 128, 128);
             // 
             // buttonHDRControl
             // 
@@ -2234,6 +2256,7 @@ namespace GHelper
         private Label labelBacklight;
         private Panel panelVersion;
         private Label labelVersion;
+        private LinkLabel linkLabelProxy;
         private RBadgeButton buttonDonate;
         private RButton buttonEnergySaver;
         private RButton buttonAmdOled;
