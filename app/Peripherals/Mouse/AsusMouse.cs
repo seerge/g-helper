@@ -2310,6 +2310,8 @@ namespace GHelper.Peripherals.Mouse
             (0x01E7, "Target Focus" ),
             (0x01E8, "Scroll Up"    ),
             (0x01E9, "Scroll Down"  ),
+            (0x01C0, "RapidFire (Toggle)"),
+            (0x01C1, "RapidFire (Hold)"  ),
             (0x0000, "Disabled"     ),
         };
 
@@ -2510,6 +2512,13 @@ namespace GHelper.Peripherals.Mouse
             ushort sourceCode = slotDef.SourceCode;
 
             WriteForResponse(GetSetButtonBindingPacket(sourceCode, actionCode));
+            if (actionCode == 0x01C0 || actionCode == 0x01C1)
+            {
+                ushort l = (ushort)AppConfig.Get("mouse_rapidfire_left", 50);
+                ushort r = (ushort)AppConfig.Get("mouse_rapidfire_right", 0);
+                ushort s = (ushort)AppConfig.Get("mouse_rapidfire_scroll", 0);
+                WriteForResponse(new byte[] { reportId, 0x51, 0x22, 0x00, 0x00, (byte)l, (byte)(l >> 8), (byte)r, (byte)(r >> 8), (byte)s, (byte)(s >> 8) });
+            }
             FlushSettings();
 
             Logger.WriteLine(GetDisplayName()
