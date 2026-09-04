@@ -20,6 +20,7 @@ Small and lightweight Armoury Crate alternative for Asus laptops offering almost
 - [FAQ](https://github.com/seerge/g-helper/wiki/FAQ)
 - [Setup and Requirements](https://github.com/seerge/g-helper/wiki/Requirements)
 - [Troubleshooting](https://github.com/seerge/g-helper/wiki/Troubleshooting)
+  - *Note: If you experience washed out colors on OLED screens on battery while using SDR, disable AMD OLED Power Optimization in AMD Software.*
 - [Power User Settings](https://github.com/seerge/g-helper/wiki/Power-user-settings)
 
 [![seerge/g-helper downloads](https://release-monitor.com/chart/seerge/g-helper.svg?range=month&stable=3)](https://release-monitor.com/#/seerge/g-helper)
