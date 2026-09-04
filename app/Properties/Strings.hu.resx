@@ -135,6 +135,9 @@
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>Eco mód</value>
   </data>
+  <data name="AlertExternalDisplay" xml:space="preserve">
+    <value>Úgy tűnik, hogy külső képernyő csatlakozik a GPU-hoz, ennek ellenére letiltja a GPU-t?</value>
+  </data>
   <data name="AlertUltimateOff" xml:space="preserve">
     <value>Az Ultimate mód kikapcsolása után újraindítás szükséges</value>
   </data>
@@ -406,6 +409,9 @@ Folytatni szeretnéd?</value>
   </data>
   <data name="ExtraSettings" xml:space="preserve">
     <value>Extra beállítások</value>
+  </data>
+  <data name="ExtremeLowMotionBlur" xml:space="preserve">
+    <value>Extrém alacsony mozgás okozta elmosódás</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>Gyári alapértékek</value>
