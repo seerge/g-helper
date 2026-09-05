@@ -1268,11 +1268,11 @@ namespace GHelper.Input
             AppConfig.Set("camera_status", status);
             if (toast)
             {
-                string statusText = cameraLedStatus switch
+                string statusText = status switch
                 {
                     0 => "On",
                     1 => "Off",
-                    _ => status switch
+                    _ => cameraLedStatus switch
                     {
                         0 => "On",
                         1 => "Off",

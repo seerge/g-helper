@@ -135,6 +135,9 @@
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>節能模式</value>
   </data>
+  <data name="AlertExternalDisplay" xml:space="preserve">
+    <value>Looks like external screen is connected to GPU, disable GPU anyway?</value>
+  </data>
   <data name="AlertUltimateOff" xml:space="preserve">
     <value>關閉獨顯需要重新啟動</value>
   </data>
@@ -407,6 +410,9 @@
   <data name="ExtraSettings" xml:space="preserve">
     <value>更多設定</value>
   </data>
+  <data name="ExtremeLowMotionBlur" xml:space="preserve">
+    <value>Extreme Low Motion Blur</value>
+  </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>恢復原廠設定</value>
   </data>
@@ -595,6 +601,9 @@
   </data>
   <data name="MatrixDateFormat" xml:space="preserve">
     <value>Date Format</value>
+  </data>
+  <data name="MatrixFlip" xml:space="preserve">
+    <value>旋轉180°</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>更高的更新率和更低延遲</value>

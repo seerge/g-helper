@@ -135,6 +135,9 @@
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>Eco 모드</value>
   </data>
+  <data name="AlertExternalDisplay" xml:space="preserve">
+    <value>Looks like external screen is connected to GPU, disable GPU anyway?</value>
+  </data>
   <data name="AlertUltimateOff" xml:space="preserve">
     <value>Ultimate 모드를 끄기 위해서는 다시 시작해야 합니다.</value>
   </data>
@@ -407,6 +410,9 @@
   <data name="ExtraSettings" xml:space="preserve">
     <value>추가 설정</value>
   </data>
+  <data name="ExtremeLowMotionBlur" xml:space="preserve">
+    <value>Extreme Low Motion Blur</value>
+  </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>공장 설정</value>
   </data>
@@ -595,6 +601,9 @@
   </data>
   <data name="MatrixDateFormat" xml:space="preserve">
     <value>Date Format</value>
+  </data>
+  <data name="MatrixFlip" xml:space="preserve">
+    <value>180° 회전</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>최대 주사율 설정</value>

@@ -170,6 +170,7 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 
 - ROG Azoth
 - ROG Azoth Extreme
+- ROG Azoth Extreme SE
 - ROG Azoth X
 - ROG Claymore II
 - ROG Falchion
@@ -178,13 +179,17 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 - ROG Falchion RX
 - ROG Falchion RX Low Profile
 - ROG Strix Flare
+- ROG Strix Flare COD
 - ROG Strix Flare II
 - ROG Strix Flare II Animate
+- ROG Strix Flare PNK LTD
 - ROG Strix Scope II
 - ROG Strix Scope II RX
 - ROG Strix Scope II 96
 - ROG Strix Scope II 96 RX
 - ROG Strix Scope RX
+- ROG Strix Scope RX EVA Edition
+- ROG Strix Scope RX EVA-02 Edition
 - ROG Strix Scope RX TKL
 - TUF Gaming K1
 - TUF Gaming K3

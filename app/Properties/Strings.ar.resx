@@ -135,6 +135,9 @@
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>وضع التوفير</value>
   </data>
+  <data name="AlertExternalDisplay" xml:space="preserve">
+    <value>Looks like external screen is connected to GPU, disable GPU anyway?</value>
+  </data>
   <data name="AlertUltimateOff" xml:space="preserve">
     <value>إيقاف وضع الأداء العالي يتطلب إعادة تشغيل</value>
   </data>
@@ -407,6 +410,9 @@
   <data name="ExtraSettings" xml:space="preserve">
     <value>إعدادات إضافية</value>
   </data>
+  <data name="ExtremeLowMotionBlur" xml:space="preserve">
+    <value>Extreme Low Motion Blur</value>
+  </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>إعدادات المصنع الافتراضية</value>
   </data>
@@ -595,6 +601,9 @@
   </data>
   <data name="MatrixDateFormat" xml:space="preserve">
     <value>Date Format</value>
+  </data>
+  <data name="MatrixFlip" xml:space="preserve">
+    <value>تدوير 180°</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>أعلى معدل تحديث لأقل تأخير</value>
