@@ -999,6 +999,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enhanced Vibration.
+        /// </summary>
+        internal static string EnhancedVibration {
+            get {
+                return ResourceManager.GetString("EnhancedVibration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Export Profile.
         /// </summary>
         internal static string Export {

@@ -364,6 +364,11 @@ public static class AppConfig
         return ContainsModel("RC7");
     }
 
+    public static bool IsXboxAlly()
+    {
+        return ContainsModel("RC73");
+    }
+
     public static bool IsAuraSync()
     {
         return Is("mouse_aura_sync");

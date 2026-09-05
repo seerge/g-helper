@@ -674,6 +674,12 @@ namespace GHelper.Ally
             AsusHid.WriteInput([AsusHid.INPUT_ID, 0xD1, 0x0B, 0x01, disabled ? (byte)0x02 : (byte)0x01], $"ControllerDisabled: {disabled}");
         }
 
+        public static void SetVibrationMode()
+        {
+            byte enhanced = (byte)(AppConfig.Is("vibra_enhanced") ? 1 : 0);
+            AsusHid.WriteInput([AsusHid.INPUT_ID, 0xD1, 0x1F, 0x01, enhanced], $"VibrationEnhanced: {enhanced}");
+        }
+
         public static void ApplyMode(ControllerMode applyMode = ControllerMode.Auto, bool init = false)
         {
             Task.Run(() =>
@@ -721,6 +727,7 @@ namespace GHelper.Ally
 
                 SetTurbo();
                 SetDeadzones();
+                if (AppConfig.IsXboxAlly()) SetVibrationMode();
 
                 if (init && AppConfig.Is("controller_disabled"))
                 {
