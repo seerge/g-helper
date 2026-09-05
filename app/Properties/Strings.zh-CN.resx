@@ -401,6 +401,9 @@
   <data name="EnergySettings" xml:space="preserve">
     <value>电源设置</value>
   </data>
+  <data name="EnhancedVibration" xml:space="preserve">
+    <value>Enhanced Vibration</value>
+  </data>
   <data name="Export" xml:space="preserve">
     <value>导出配置文件</value>
   </data>
