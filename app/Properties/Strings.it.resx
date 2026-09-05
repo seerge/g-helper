@@ -135,6 +135,9 @@
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>Modalità Eco</value>
   </data>
+  <data name="AlertExternalDisplay" xml:space="preserve">
+    <value>Looks like external screen is connected to GPU, disable GPU anyway?</value>
+  </data>
   <data name="AlertUltimateOff" xml:space="preserve">
     <value>Per disattivare la modalità Estrema è necessario riavviare</value>
   </data>
@@ -407,6 +410,9 @@ Sei sicuro di voler continuare?</value>
   <data name="ExtraSettings" xml:space="preserve">
     <value>Impostazioni aggiuntive</value>
   </data>
+  <data name="ExtremeLowMotionBlur" xml:space="preserve">
+    <value>Extreme Low Motion Blur</value>
+  </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>Valori Predefiniti</value>
   </data>
@@ -595,6 +601,9 @@ Sei sicuro di voler continuare?</value>
   </data>
   <data name="MatrixDateFormat" xml:space="preserve">
     <value>Date Format</value>
+  </data>
+  <data name="MatrixFlip" xml:space="preserve">
+    <value>Ruota di 180°</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Massimo refresh rate per latenza ridotta</value>

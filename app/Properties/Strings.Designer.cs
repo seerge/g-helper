@@ -113,7 +113,16 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("AlertDGPUTitle", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Looks like external screen is connected to GPU, disable GPU anyway?.
+        /// </summary>
+        internal static string AlertExternalDisplay {
+            get {
+                return ResourceManager.GetString("AlertExternalDisplay", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Switching off Ultimate Mode requires restart.
         /// </summary>
@@ -990,6 +999,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enhanced Vibration.
+        /// </summary>
+        internal static string EnhancedVibration {
+            get {
+                return ResourceManager.GetString("EnhancedVibration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Export Profile.
         /// </summary>
         internal static string Export {
@@ -1013,6 +1031,15 @@ namespace GHelper.Properties {
         internal static string ExtraSettings {
             get {
                 return ResourceManager.GetString("ExtraSettings", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Extreme Low Motion Blur.
+        /// </summary>
+        internal static string ExtremeLowMotionBlur {
+            get {
+                return ResourceManager.GetString("ExtremeLowMotionBlur", resourceCulture);
             }
         }
         
@@ -1638,6 +1665,15 @@ namespace GHelper.Properties {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Rotate 180°.
+        /// </summary>
+        internal static string MatrixFlip {
+            get {
+                return ResourceManager.GetString("MatrixFlip", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Max refresh rate for lower latency.
         /// </summary>
         internal static string MaxRefreshTooltip {
@@ -2061,11 +2097,92 @@ namespace GHelper.Properties {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Chart.
+        /// </summary>
+        internal static string OverlayChart {
+            get {
+                return ResourceManager.GetString("OverlayChart", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Labels.
+        /// </summary>
+        internal static string OverlayLabels {
+            get {
+                return ResourceManager.GetString("OverlayLabels", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Load.
+        /// </summary>
+        internal static string OverlayLoad {
+            get {
+                return ResourceManager.GetString("OverlayLoad", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Complete.
+        /// </summary>
+        internal static string OverlayModeComplete {
+            get {
+                return ResourceManager.GetString("OverlayModeComplete", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Full.
+        /// </summary>
+        internal static string OverlayModeFull {
+            get {
+                return ResourceManager.GetString("OverlayModeFull", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Light.
+        /// </summary>
+        internal static string OverlayModeLight {
+            get {
+                return ResourceManager.GetString("OverlayModeLight", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Overlay only in games.
         /// </summary>
         internal static string OverlayOnlyInGames {
             get {
                 return ResourceManager.GetString("OverlayOnlyInGames", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Size.
+        /// </summary>
+        internal static string OverlaySize {
+            get {
+                return ResourceManager.GetString("OverlaySize", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Temperatures.
+        /// </summary>
+        internal static string OverlayTemperatures {
+            get {
+                return ResourceManager.GetString("OverlayTemperatures", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Transparency.
+        /// </summary>
+        internal static string OverlayTransparency {
+            get {
+                return ResourceManager.GetString("OverlayTransparency", resourceCulture);
             }
         }
 

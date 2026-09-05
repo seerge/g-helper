@@ -208,7 +208,7 @@ namespace GHelper
                 // match major version
                 int major = Major(item.version);
                 var pool = matched.Where(d => Major(d.version) == major).ToList();
-                if (pool.Count == 0) pool = matched.Where(d => !d.isExtension).ToList();
+                if (pool.Count == 0) pool = matched.Where(d => !d.isExtension || Major(d.version) > major).ToList();
                 if (pool.Count == 0) pool = matched;
                 return MaxVersion(pool, item.title);
             }

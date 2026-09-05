@@ -135,6 +135,9 @@
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>Eco Mode</value>
   </data>
+  <data name="AlertExternalDisplay" xml:space="preserve">
+    <value>Looks like external screen is connected to GPU, disable GPU anyway?</value>
+  </data>
   <data name="AlertUltimateOff" xml:space="preserve">
     <value>Switching off Ultimate Mode requires restart</value>
   </data>
@@ -398,6 +401,9 @@ Do you still want to continue?</value>
   <data name="EnergySettings" xml:space="preserve">
     <value>Energy Settings</value>
   </data>
+  <data name="EnhancedVibration" xml:space="preserve">
+    <value>Enhanced Vibration</value>
+  </data>
   <data name="Export" xml:space="preserve">
     <value>Export Profile</value>
   </data>
@@ -406,6 +412,9 @@ Do you still want to continue?</value>
   </data>
   <data name="ExtraSettings" xml:space="preserve">
     <value>Extra Settings</value>
+  </data>
+  <data name="ExtremeLowMotionBlur" xml:space="preserve">
+    <value>Extreme Low Motion Blur</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>Factory Defaults</value>
@@ -595,6 +604,9 @@ Do you still want to continue?</value>
   </data>
   <data name="MatrixDateFormat" xml:space="preserve">
     <value>Date Format</value>
+  </data>
+  <data name="MatrixFlip" xml:space="preserve">
+    <value>Rotate 180°</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Max refresh rate for lower latency</value>
@@ -992,8 +1004,35 @@ from heating up the sleeping laptop and draining the battery.</value>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
+  <data name="OverlayChart" xml:space="preserve">
+    <value>Chart</value>
+  </data>
+  <data name="OverlayLabels" xml:space="preserve">
+    <value>Labels</value>
+  </data>
+  <data name="OverlayLoad" xml:space="preserve">
+    <value>Load</value>
+  </data>
+  <data name="OverlayModeComplete" xml:space="preserve">
+    <value>Complete</value>
+  </data>
+  <data name="OverlayModeFull" xml:space="preserve">
+    <value>Full</value>
+  </data>
+  <data name="OverlayModeLight" xml:space="preserve">
+    <value>Light</value>
+  </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Overlay only in games</value>
+  </data>
+  <data name="OverlaySize" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="OverlayTemperatures" xml:space="preserve">
+    <value>Temperatures</value>
+  </data>
+  <data name="OverlayTransparency" xml:space="preserve">
+    <value>Transparency</value>
   </data>
   <data name="Power" xml:space="preserve">
     <value>Power</value>

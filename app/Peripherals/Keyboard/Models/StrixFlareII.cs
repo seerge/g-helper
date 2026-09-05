@@ -6,6 +6,10 @@
         {
         }
 
+        protected StrixFlare(ushort productId) : base(0x0B05, productId)
+        {
+        }
+
         public override string GetDisplayName()
         {
             return "ROG Strix Flare";
@@ -14,6 +18,30 @@
         protected override string? LayoutName()
         {
             return IsIsoLayout ? "TUFK7ISO" : "TUFK7";
+        }
+    }
+
+    public class StrixFlareCOD : StrixFlare
+    {
+        public StrixFlareCOD() : base(0x18AF)
+        {
+        }
+
+        public override string GetDisplayName()
+        {
+            return "ROG Strix Flare COD";
+        }
+    }
+
+    public class StrixFlarePNK : StrixFlare
+    {
+        public StrixFlarePNK() : base(0x18CF)
+        {
+        }
+
+        public override string GetDisplayName()
+        {
+            return "ROG Strix Flare PNK LTD";
         }
     }
 
