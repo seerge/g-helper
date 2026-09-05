@@ -401,6 +401,9 @@ Bạn có muốn tiếp tục không?</value>
   <data name="EnergySettings" xml:space="preserve">
     <value>Các chế độ năng lượng</value>
   </data>
+  <data name="EnhancedVibration" xml:space="preserve">
+    <value>Enhanced Vibration</value>
+  </data>
   <data name="Export" xml:space="preserve">
     <value>Xuất cấu hình ra file</value>
   </data>
