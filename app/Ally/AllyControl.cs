@@ -667,6 +667,11 @@ namespace GHelper.Ally
                 (byte)AppConfig.Get("vibra", 100)
             }, null);
 
+            if (AppConfig.IsXboxAlly()) AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xd1, 0x1c, 2,
+                (byte)AppConfig.Get("vibra", 100),
+                (byte)AppConfig.Get("vibra", 100)
+            }, null);
+
         }
 
         public static void DisableXBoxController(bool disabled)
