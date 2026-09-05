@@ -135,6 +135,9 @@
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>Еко Режим</value>
   </data>
+  <data name="AlertExternalDisplay" xml:space="preserve">
+    <value>Looks like external screen is connected to GPU, disable GPU anyway?</value>
+  </data>
   <data name="AlertUltimateOff" xml:space="preserve">
     <value>Вимкнення ультимативного режиму потребує перезавантаження</value>
   </data>
@@ -175,7 +178,7 @@
     <value>Автоматично застосовувати Windows Power Modes</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Пам'ять призначена на GPU</value>
+    <value>Пам'ять призначена на iGPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Кількість запущених сервісів Asus</value>
@@ -309,6 +312,12 @@
   <data name="BootSound" xml:space="preserve">
     <value>Звук завантаження</value>
   </data>
+  <data name="BacklightDown" xml:space="preserve">
+    <value>Backlight Down</value>
+  </data>
+  <data name="BacklightUp" xml:space="preserve">
+    <value>Backlight Up</value>
+  </data>
   <data name="Brightness" xml:space="preserve">
     <value>Яскравість</value>
   </data>
@@ -401,6 +410,9 @@
   <data name="ExtraSettings" xml:space="preserve">
     <value>Додаткові Налаштування</value>
   </data>
+  <data name="ExtremeLowMotionBlur" xml:space="preserve">
+    <value>Extreme Low Motion Blur</value>
+  </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>Скинути</value>
   </data>
@@ -444,7 +456,7 @@
     <value>FN-Lock Увімк.</value>
   </data>
   <data name="WinLockToggle" xml:space="preserve">
-    <value>Win-Lock Toggle</value>
+    <value>Перемикач утримання Win</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Dynamic Boost</value>
@@ -551,6 +563,9 @@
   <data name="MatrixAudio" xml:space="preserve">
     <value>Аудіо візуалізатор</value>
   </data>
+  <data name="MatrixAudioMode" xml:space="preserve">
+    <value>Visualizer Mode</value>
+  </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Бінарний банер</value>
   </data>
@@ -574,6 +589,21 @@
   </data>
   <data name="MatrixPicture" xml:space="preserve">
     <value>Картинка</value>
+  </data>
+  <data name="MatrixRunningText" xml:space="preserve">
+    <value>Running Text</value>
+  </data>
+  <data name="MatrixText" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="MatrixTimeFormat" xml:space="preserve">
+    <value>Time Format</value>
+  </data>
+  <data name="MatrixDateFormat" xml:space="preserve">
+    <value>Date Format</value>
+  </data>
+  <data name="MatrixFlip" xml:space="preserve">
+    <value>Поворот на 180°</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Максимальна частота оновлення для мінімізації затримок</value>
@@ -715,6 +745,9 @@
   </data>
   <data name="RestartGPU" xml:space="preserve">
     <value>Щось використовує dGPU та запобігає Еко-режиму. Дозвольте G-Helper спробувати перезапустити dGPU у менеджері пристрою? (Будь ласка, продовжуйте на власний ризик)</value>
+  </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>Оберти</value>
@@ -882,7 +915,7 @@
     <value>Завантаження</value>
   </data>
   <data name="SlashBitStream" xml:space="preserve">
-    <value>Bit Stream</value>
+    <value>Бітовий потік</value>
   </data>
   <data name="SlashTransmission" xml:space="preserve">
     <value>Трансмісія</value>
@@ -894,31 +927,31 @@
     <value>Flux</value>
   </data>
   <data name="SlashPhantom" xml:space="preserve">
-    <value>Phantom</value>
+    <value>Фантом</value>
   </data>
   <data name="SlashSpectrum" xml:space="preserve">
-    <value>Spectrum</value>
+    <value>Спектр</value>
   </data>
   <data name="SlashHazard" xml:space="preserve">
-    <value>Hazard</value>
+    <value>Небезпека</value>
   </data>
   <data name="SlashInterfacing" xml:space="preserve">
-    <value>Interfacing</value>
+    <value>Взаємодія</value>
   </data>
   <data name="SlashRamp" xml:space="preserve">
-    <value>Ramp</value>
+    <value>Рампа</value>
   </data>
   <data name="SlashGameOver" xml:space="preserve">
-    <value>Game Over</value>
+    <value>Кінець гри</value>
   </data>
   <data name="SlashStart" xml:space="preserve">
     <value>Запустити</value>
   </data>
   <data name="SlashBuzzer" xml:space="preserve">
-    <value>Buzzer</value>
+    <value>Дзвінок</value>
   </data>
   <data name="SlashStatic" xml:space="preserve">
-    <value>Static</value>
+    <value>Фіксовано</value>
   </data>
   <data name="SlashBatteryLevel" xml:space="preserve">
     <value>Заряд батареї</value>
@@ -958,10 +991,47 @@
     <value>Не дозволяє пристроям PCIe переходити в режими низького енергоспоживання.
 Рекомендується, якщо ви стикаєтеся з випадковими зависаннями або відсутністю реакції апаратного забезпечення.</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Вимкнути мережу в режимі Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Не дозволяє фоновим завданням, як-от Windows Update,
+нагрівати сплячий ноутбук і розряджати акумулятор.</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Overlay only in games</value>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>Живлення</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>Анімації</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>Анімація ввімкнення та вимкнення</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>Анімація режиму сну</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>Сповіщення про низький заряд</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>Індикатор рівня заряду</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>Затемнення при низькому заряді</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>За замовчуванням</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>Шаблон анімації</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>Завжди</value>
   </data>
 </root>

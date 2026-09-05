@@ -135,6 +135,9 @@
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>Modul Eco</value>
   </data>
+  <data name="AlertExternalDisplay" xml:space="preserve">
+    <value>Looks like external screen is connected to GPU, disable GPU anyway?</value>
+  </data>
   <data name="AlertUltimateOff" xml:space="preserve">
     <value>Oprirea modului Ultimate necesită o repornire de sistem</value>
   </data>
@@ -166,7 +169,7 @@
     <value>Aplică</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Aplicați curba personalizată</value>
+    <value>Aplicați curba</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Aplică limitele de putere</value>
@@ -175,7 +178,7 @@
     <value>Reglare automată a modului de alimentare Windows</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Memorie alocată GPU-ului</value>
+    <value>Memorie alocată iGPU-ului</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Servicii Asus în derulare</value>
@@ -309,6 +312,12 @@
   <data name="BootSound" xml:space="preserve">
     <value>Sunet la pornire</value>
   </data>
+  <data name="BacklightDown" xml:space="preserve">
+    <value>Backlight Down</value>
+  </data>
+  <data name="BacklightUp" xml:space="preserve">
+    <value>Backlight Up</value>
+  </data>
   <data name="Brightness" xml:space="preserve">
     <value>Luminozitate</value>
   </data>
@@ -400,6 +409,9 @@
   </data>
   <data name="ExtraSettings" xml:space="preserve">
     <value>Setări suplimentare</value>
+  </data>
+  <data name="ExtremeLowMotionBlur" xml:space="preserve">
+    <value>Extreme Low Motion Blur</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>Setările implicite ale fabricii</value>
@@ -519,7 +531,7 @@
     <value>Tastatură Laptop</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Ecran Laptop</value>
+    <value>Ecran</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>LED Status Indicators</value>
@@ -551,6 +563,9 @@
   <data name="MatrixAudio" xml:space="preserve">
     <value>Vizualizator audio</value>
   </data>
+  <data name="MatrixAudioMode" xml:space="preserve">
+    <value>Visualizer Mode</value>
+  </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Binary Banner</value>
   </data>
@@ -574,6 +589,21 @@
   </data>
   <data name="MatrixPicture" xml:space="preserve">
     <value>Imagine</value>
+  </data>
+  <data name="MatrixRunningText" xml:space="preserve">
+    <value>Running Text</value>
+  </data>
+  <data name="MatrixText" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="MatrixTimeFormat" xml:space="preserve">
+    <value>Time Format</value>
+  </data>
+  <data name="MatrixDateFormat" xml:space="preserve">
+    <value>Date Format</value>
+  </data>
+  <data name="MatrixFlip" xml:space="preserve">
+    <value>Rotire 180°</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Rata maximă de reîmprospătare pentru latență mai mică</value>
@@ -715,6 +745,9 @@
   </data>
   <data name="RestartGPU" xml:space="preserve">
     <value>Ceva folosește dGPU și previne modul Eco. Permiteți G-Helper să repornească dGPU în managerul de dispozitive? (Continuați pe propriul risc)</value>
+  </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
@@ -958,10 +991,47 @@
     <value>Împiedică dispozitivele PCIe să intre în stări inactive cu consum redus.
 Recomandat dacă întâmpinați blocaje aleatorii sau hardware care nu răspunde.</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Dezactivează rețeaua în Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Împiedică sarcinile din fundal, precum Windows Update,
+să încălzească laptopul adormit și să descarce bateria.</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Overlay only in games</value>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>Alimentare</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>Animații</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>Animație la pornire și oprire</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>Animație în repaus</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>Alertă baterie descărcată</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>Indicator nivel baterie</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>Estompare la baterie descărcată</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>Implicit sistem</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>Model de animație</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>Întotdeauna</value>
   </data>
 </root>

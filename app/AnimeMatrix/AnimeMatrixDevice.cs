@@ -2,6 +2,7 @@
 
 using GHelper.AnimeMatrix.Communication;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.Text;
 
@@ -86,6 +87,13 @@ namespace GHelper.AnimeMatrix
         int UpdatePageLength = 490;
         int LedCount = 1450;
 
+        readonly int textDeltaX;
+        readonly int textDeltaY;
+
+        readonly int[] rowStart;
+        readonly int[] rowFirst;
+        readonly int[] rowWidth;
+
         byte[] _displayBuffer;
         List<byte[]> frames = new List<byte[]>();
 
@@ -98,15 +106,17 @@ namespace GHelper.AnimeMatrix
 
         private static AnimeType _model = AnimeType.GA402;
 
-        [System.Runtime.InteropServices.DllImport("gdi32.dll")]
-        private static extern IntPtr AddFontMemResourceEx(IntPtr pbFont, uint cbFont, IntPtr pdv, [System.Runtime.InteropServices.In] ref uint pcFonts);
-        private PrivateFontCollection fonts = new PrivateFontCollection();
-
         protected override string LogName => "Matrix";
+
+        private static bool IsModel(string name)
+        {
+            string force = AppConfig.GetString("matrix_model", "");
+            return force.Length > 0 ? force.Contains(name) : AppConfig.ContainsModel(name);
+        }
 
         public AnimeMatrixDevice() : base(0x0B05, 0x193B, 640)
         {
-            if (AppConfig.ContainsModel("401"))
+            if (IsModel("401"))
             {
                 _model = AnimeType.GA401;
                 MaxColumns = 33;
@@ -117,7 +127,7 @@ namespace GHelper.AnimeMatrix
                 LedStart = 1;
             }
 
-            if (AppConfig.ContainsModel("GU604"))
+            if (IsModel("GU604"))
             {
                 _model = AnimeType.GU604;
                 MaxColumns = 39;
@@ -127,7 +137,7 @@ namespace GHelper.AnimeMatrix
                 FullRows = 9;
             }
 
-            if (AppConfig.ContainsModel("G635") || AppConfig.ContainsModel("G615") || AppConfig.ContainsModel("G835") || AppConfig.ContainsModel("G815"))
+            if (IsModel("G635") || IsModel("G615") || IsModel("G835") || IsModel("G815"))
             {
                 _model = AnimeType.STRIX;
                 MaxColumns = 34;
@@ -139,7 +149,18 @@ namespace GHelper.AnimeMatrix
 
             _displayBuffer = new byte[LedCount];
 
-            LoadMFont();
+            textDeltaX = 5 + (_model == AnimeType.STRIX ? 4 : 7 - FullRows / 2);
+            textDeltaY = MaxRows - FullRows - FullRows / 2 - 1;
+
+            rowStart = new int[MaxRows];
+            rowFirst = new int[MaxRows];
+            rowWidth = new int[MaxRows];
+            for (int y = 0; y < MaxRows; y++)
+            {
+                rowStart[y] = RowToLinearAddress(y);
+                rowFirst[y] = FirstX(y);
+                rowWidth[y] = Width(y);
+            }
 
         }
 
@@ -153,8 +174,11 @@ namespace GHelper.AnimeMatrix
             Set(Packet<AnimeMatrixPacket>(0xC0, 0x04, (byte)mode));
         }
 
+        bool displayOn = true;
+
         public void SetDisplayState(bool enable)
         {
+            displayOn = enable;
             Set(Packet<AnimeMatrixPacket>(0xC3, 0x01, enable ? (byte)0x00 : (byte)0x80));
         }
 
@@ -169,41 +193,46 @@ namespace GHelper.AnimeMatrix
             Set(Packet<AnimeMatrixPacket>(0xC5, animation.AsByte));
         }
 
+        public Action? OnPresent;
+
         public void Present()
         {
-
-            int page = 0;
-            int start, end;
-
-            while (page * UpdatePageLength < LedCount)
+            if (displayOn)
             {
-                start = page * UpdatePageLength;
-                end = Math.Min(LedCount, (page + 1) * UpdatePageLength);
+                try
+                {
+                    int page = 0;
+                    int start, end;
 
-                Set(Packet<AnimeMatrixPacket>(0xC0, 0x02)
-                    .AppendData(BitConverter.GetBytes((ushort)(start + 1)))
-                    .AppendData(BitConverter.GetBytes((ushort)(end - start)))
-                    .AppendData(_displayBuffer[start..end])
-                );
+                    while (page * UpdatePageLength < LedCount)
+                    {
+                        start = page * UpdatePageLength;
+                        end = Math.Min(LedCount, (page + 1) * UpdatePageLength);
 
-                page++;
+                        Set(Packet<AnimeMatrixPacket>(0xC0, 0x02)
+                            .AppendData(BitConverter.GetBytes((ushort)(start + 1)))
+                            .AppendData(BitConverter.GetBytes((ushort)(end - start)))
+                            .AppendData(_displayBuffer[start..end])
+                        );
+
+                        page++;
+                    }
+
+                    Set(Packet<AnimeMatrixPacket>(0xC0, 0x03));
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteLine(ex.Message);
+                }
             }
 
-            Set(Packet<AnimeMatrixPacket>(0xC0, 0x03));
+            OnPresent?.Invoke();
         }
 
 
-        private void LoadMFont()
-        {
-            byte[] fontData = GHelper.Properties.Resources.MFont;
-            IntPtr fontPtr = System.Runtime.InteropServices.Marshal.AllocCoTaskMem(fontData.Length);
-            System.Runtime.InteropServices.Marshal.Copy(fontData, 0, fontPtr, fontData.Length);
-            uint dummy = 0;
+        static FontFamily? defaultFont => MatrixFont.Family;
 
-            fonts.AddMemoryFont(fontPtr, GHelper.Properties.Resources.MFont.Length);
-            AddFontMemResourceEx(fontPtr, (uint)GHelper.Properties.Resources.MFont.Length, IntPtr.Zero, ref dummy);
-            System.Runtime.InteropServices.Marshal.FreeCoTaskMem(fontPtr);
-        }
+        public static bool HasDefaultFont => defaultFont is not null;
 
 
         public void PresentNextFrame()
@@ -316,20 +345,21 @@ namespace GHelper.AnimeMatrix
         {
             if (!IsRowInRange(y)) return;
 
-            if (x >= FirstX(y) && x < Width(y))
-                SetLedLinear(RowToLinearAddress(y) - FirstX(y) + x, value);
-            }
+            if (x >= rowFirst[y] && x < rowWidth[y])
+                SetLedLinear(rowStart[y] - rowFirst[y] + x, value);
+        }
+
+        private static (int plX, int plY) Planar(int x, int y, int deltaX, int deltaY)
+        {
+            int dx = x + deltaX, dy = y - deltaY;
+            int plX = (dx - dy) / 2, plY = dx + dy;
+            if (dx - dy == -1) plX = -1;
+            return (plX, plY);
+        }
 
         public void SetLedDiagonal(int x, int y, byte color, int deltaX = 0, int deltaY = 0)
         {
-            x += deltaX;
-            y -= deltaY;
-
-            int plX = (x - y) / 2;
-            int plY = x + y;
-
-            if (x - y == -1) plX = -1;
-
+            var (plX, plY) = Planar(x, y, deltaX, deltaY);
             SetLedPlanar(plX, plY, color);
         }
 
@@ -376,56 +406,319 @@ namespace GHelper.AnimeMatrix
             }
         }
 
-        public void Text(string text, float fontSize = 10, int x = 0, int y = 0)
+        private Font TextFont(string fontName, float fontSize)
         {
-
-            int width = MaxRows;
-            int height = MaxRows - FullRows;
-            int textHeight, textWidth;
-
-            using (Bitmap bmp = new Bitmap(width, height))
+            if (fontName.Length == 0)
             {
+                if (defaultFont is not null) return new Font(defaultFont, fontSize, FontStyle.Regular, GraphicsUnit.Pixel);
+                return new Font("Consolas", fontSize, FontStyle.Bold, GraphicsUnit.Pixel);
+            }
+
+            // normalize ascent to match the default font
+            using (FontFamily family = new FontFamily(fontName))
+            {
+                float scale = 1.1f * family.GetEmHeight(FontStyle.Regular) / family.GetCellAscent(FontStyle.Regular);
+                return new Font(fontName, fontSize * scale, FontStyle.Regular, GraphicsUnit.Pixel);
+            }
+        }
+
+        private Bitmap? DrawTextBitmap(string? text, string fontName, float size, float bottom)
+        {
+            int height = MaxRows - FullRows;
+            if (text is null || text.Length == 0) return null;
+
+            using (Font font = TextFont(fontName, size))
+            {
+                int textWidth = 0;
+
+                using (Bitmap measure = new Bitmap(1, 1))
+                using (Graphics g = Graphics.FromImage(measure))
+                    textWidth = (int)Math.Ceiling(g.MeasureString(text, font).Width);
+
+                if (textWidth == 0) return null;
+
+                Bitmap bmp = new Bitmap(textWidth, height);
                 using (Graphics g = Graphics.FromImage(bmp))
                 {
                     g.CompositingQuality = CompositingQuality.HighQuality;
                     g.SmoothingMode = SmoothingMode.AntiAlias;
                     g.TextRenderingHint = TextRenderingHint.SingleBitPerPixel;
-
-                    using (Font font = new Font(fonts.Families[0], fontSize, FontStyle.Regular, GraphicsUnit.Pixel))
-                    {
-                        SizeF textSize = g.MeasureString(text, font);
-                        textHeight = (int)textSize.Height;
-                        textWidth = (int)textSize.Width;
-                        g.DrawString(text, font, Brushes.White, x, height - y);
-                    }
+                    // bottom anchored
+                    g.DrawString(text, font, Brushes.White, 0, height - size * 1.25f - bottom);
                 }
-
-                SetBitmapDiagonal(bmp, 5, height);
-
+                return bmp;
             }
         }
 
-        public void PresentClock()
+        public static string TextPrefix(int line) => line == 2 ? "matrix_text2" : "matrix_text";
+
+        private Bitmap? DrawTextBitmap(int line)
+        {
+            string[] fonts = AniMatrixControl.TextFonts;
+            string prefix = TextPrefix(line);
+
+            float size = Math.Clamp(AppConfig.Get(prefix + "_size", 15), 8, 30);
+            string fontName = fonts[Math.Clamp(AppConfig.Get(prefix + "_font", 0), 0, fonts.Length - 1)];
+
+            // line 1 stacks tightly on top of line 2
+            float bottom = 0;
+            string? text2 = AppConfig.GetString("matrix_text2", "");
+            if (line == 1 && text2 is not null && text2.Length > 0) bottom = AppConfig.Get("matrix_text2_size", 15);
+
+            return DrawTextBitmap(AppConfig.GetString(prefix, line == 2 ? "" : "Hello!"), fontName, size, bottom);
+        }
+
+        private static byte[,] GetGrid(Bitmap bmp)
+        {
+            var data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
+            byte[] raw = new byte[Math.Abs(data.Stride) * bmp.Height];
+            System.Runtime.InteropServices.Marshal.Copy(data.Scan0, raw, 0, raw.Length);
+            bmp.UnlockBits(data);
+
+            byte[,] grid = new byte[bmp.Width, bmp.Height];
+            for (int y = 0; y < bmp.Height; y++)
+            {
+                int offset = y * data.Stride;
+                for (int x = 0; x < bmp.Width; x++)
+                {
+                    int i = offset + x * 3;
+                    grid[x, y] = (byte)((raw[i] + raw[i + 1] + raw[i + 2]) / 3);
+                }
+            }
+            return grid;
+        }
+
+        private List<(int x, int y, byte v)> GetTextPixels(int line, out int textWidth) => GetTextPixels(DrawTextBitmap(line), out textWidth);
+
+        private List<(int x, int y, byte v)> GetTextPixels(Bitmap? bmp, out int textWidth)
+        {
+            var lit = new List<(int x, int y, byte v)>();
+            textWidth = 0;
+
+            using (bmp)
+            {
+                if (bmp is null) return lit;
+
+                textWidth = bmp.Width;
+                byte[,] grid = GetGrid(bmp);
+
+                for (int y = 0; y < bmp.Height; y++)
+                    for (int x = 0; x < textWidth; x++)
+                        if (grid[x, y] > 20) lit.Add((x, y, grid[x, y]));
+            }
+
+            return lit;
+        }
+
+        private static (int x, int y) TextOffset(int line)
+        {
+            string prefix = TextPrefix(line);
+            return (AppConfig.Get(prefix + "_x", 0), AppConfig.Get(prefix + "_y", 0));
+        }
+
+        private void PlotText(List<(int x, int y, byte v)> lit, int deltaX, int offX, int offY)
+        {
+            foreach (var (x, y, v) in lit)
+            {
+                var (plX, plY) = Planar(x, y, deltaX, textDeltaY);
+                SetLedPlanar(plX + offX, plY + offY, v);
+            }
+        }
+
+        private static void FlipText(params List<(int x, int y, byte v)>[] lines)
+        {
+            if (!AppConfig.Is("matrix_flip")) return;
+
+            var all = lines.SelectMany(l => l);
+            if (!all.Any()) return;
+
+            int sx = all.Min(p => p.x) + all.Max(p => p.x);
+            int sy = all.Min(p => p.y) + all.Max(p => p.y);
+            foreach (var lit in lines)
+                for (int i = 0; i < lit.Count; i++) lit[i] = (sx - lit[i].x, sy - lit[i].y, lit[i].v);
+        }
+
+        public void PresentText(int dragLine = 0, int dragX = 0, int dragY = 0)
+        {
+            var (x1, y1) = TextOffset(1);
+            var (x2, y2) = TextOffset(2);
+
+            if (dragLine == 1) (x1, y1) = (dragX, dragY);
+            if (dragLine == 2) (x2, y2) = (dragX, dragY);
+
+            var lit1 = GetTextPixels(1, out _);
+            var lit2 = GetTextPixels(2, out _);
+            FlipText(lit1, lit2);
+
+            Clear();
+            PlotText(lit1, textDeltaX, x1, y1);
+            PlotText(lit2, textDeltaX, x2, y2);
+            Present();
+        }
+
+        public bool SetText()
+        {
+            int index = frameIndex;
+            ClearFrames();
+
+            if (!AppConfig.Is("matrix_text_running"))
+            {
+                PresentText();
+                return false;
+            }
+
+            var (x1, y1) = TextOffset(1);
+            var (x2, y2) = TextOffset(2);
+
+            var lit1 = GetTextPixels(1, out int width1);
+            var lit2 = GetTextPixels(2, out int width2);
+
+            if (lit1.Count == 0 && lit2.Count == 0)
+            {
+                Clear(true);
+                return false;
+            }
+
+            FlipText(lit1, lit2);
+            int textWidth = Math.Max(width1, width2);
+
+            int pad = Math.Max(Math.Abs(y1) + 2 * Math.Abs(x1), Math.Abs(y2) + 2 * Math.Abs(x2));
+            for (int shift = -pad; shift <= MaxRows + textWidth + FullRows / 2 + 6 + pad; shift++)
+            {
+                Clear();
+                PlotText(lit1, 5 + MaxRows - shift, x1, y1);
+                PlotText(lit2, 5 + MaxRows - shift, x2, y2);
+                AddFrame();
+            }
+
+            if (AppConfig.Is("matrix_flip")) frames.Reverse();
+
+            // keep scroll phase
+            frameIndex = index % frames.Count;
+
+            return true;
+        }
+
+        public int HitTestText(int plX, int plY)
+        {
+            var lit1 = GetTextPixels(1, out _);
+            var lit2 = GetTextPixels(2, out _);
+            FlipText(lit1, lit2);
+
+            long Distance(int line)
+            {
+                var (offX, offY) = TextOffset(line);
+                long best = long.MaxValue;
+
+                foreach (var (x, y, _) in line == 2 ? lit2 : lit1)
+                {
+                    var (tX, tY) = Planar(x, y, textDeltaX, textDeltaY);
+                    long dX = plX - tX - offX;
+                    long dY = plY - tY - offY;
+                    long dist = dX * dX + dY * dY;
+                    if (dist < best) best = dist;
+                }
+
+                return best;
+            }
+
+            return Distance(2) < Distance(1) ? 2 : 1;
+        }
+
+        public byte[,] LedSnapshot()
+        {
+            var buffer = _displayBuffer;
+            byte[,] led = new byte[MaxColumns, MaxRows];
+
+            for (int y = 0; y < MaxRows; y++)
+            {
+                int address = rowStart[y] - rowFirst[y];
+                for (int x = rowFirst[y]; x < Math.Min(rowWidth[y], MaxColumns); x++)
+                    if (address + x >= 0 && address + x < LedCount) led[x, y] = buffer[address + x];
+            }
+
+            return led;
+        }
+
+        public void PresentClock() => PresentClock(AppConfig.Get("matrix_clock_x", 0), AppConfig.Get("matrix_clock_y", 0));
+
+        public void PresentClock(int offsetX, int offsetY)
         {
             string timeFormat = AppConfig.GetString("matrix_time", "HH:mm");
             string dateFormat = AppConfig.GetString("matrix_date", "yy.MM.dd");
 
-            if (DateTime.Now.Second % 2 != 0) timeFormat = timeFormat.Replace(":", "  ");
+            if (DateTime.Now.Second % 2 != 0) timeFormat = timeFormat.Replace(":", defaultFont is null ? " " : "  ");
+
+            // fall back on invalid format
+            string time, date;
+            try { time = DateTime.Now.ToString(timeFormat); } catch { time = DateTime.Now.ToString("HH:mm"); }
+            try { date = DateTime.Now.ToString(dateFormat); } catch { date = DateTime.Now.ToString("yy.MM.dd"); }
+
+            bool battery = AppConfig.Is("matrix_clock_battery");
+
+            var lit = new List<(int x, int y, byte v)>();
+            if (_model == AnimeType.STRIX)
+            {
+                lit.AddRange(battery ? BatteryPixels(15, 1) : ClockPixels(time, 15, 1));
+            }
+            else
+            {
+                lit.AddRange(ClockPixels(time, 15, 6));
+                lit.AddRange(battery ? BatteryPixels(11.5F, 0) : ClockPixels(date, 11.5F, 0));
+            }
+            FlipText(lit);
 
             Clear();
-            switch (_model)
-            {
-                case AnimeType.STRIX:
-                //case AnimeType.GA402:
-                    Text(DateTime.Now.ToString(timeFormat), 15, 4, 20);
-                    break;
-                default:
-                    Text(DateTime.Now.ToString(timeFormat), 15, 7 - FullRows / 2, 25);
-                    Text(DateTime.Now.ToString(dateFormat), 11.5F, 0, 14);
-                    break;
-            }
+            PlotText(lit, textDeltaX, offsetX, offsetY);
             Present();
 
+        }
+
+        private Bitmap? DrawClockBitmap(string text, float size, float bottom)
+        {
+            if (defaultFont is not null) return DrawTextBitmap(text, "", size, bottom);
+            return size > 12
+                ? DrawTextBitmap(text, "", 13, bottom - 2.5f)
+                : DrawTextBitmap(text, "", 10, bottom - 2.2f);
+        }
+
+        private List<(int x, int y, byte v)> ClockPixels(string text, float size, float bottom)
+            => GetTextPixels(DrawClockBitmap(text, size, bottom), out _);
+
+        private List<(int x, int y, byte v)> BatteryPixels(float size, float bottom)
+            => GetTextPixels(DrawBatteryBitmap(size, bottom), out _);
+
+        private Bitmap? DrawBatteryBitmap(float size, float bottom)
+        {
+            HardwareControl.ReadBatteryState();
+            int charge = Math.Max(0, (int)HardwareControl.batteryCapacity);
+
+            Bitmap? label = DrawClockBitmap(charge.ToString(), size, bottom);
+            if (label is null) return null;
+
+            byte[,] grid = GetGrid(label);
+            int minY = label.Height, maxY = 0;
+            for (int y = 0; y < label.Height; y++)
+                for (int x = 0; x < label.Width; x++)
+                    if (grid[x, y] > 20) { minY = Math.Min(minY, y); maxY = Math.Max(maxY, y); }
+
+            if (maxY <= minY) return label;
+
+            int top = minY - 1;
+            int h = maxY - minY + 2;
+            int w = 2 * h;
+
+            Bitmap bmp = new Bitmap(w + 8 + label.Width, label.Height);
+            using (label)
+            using (Graphics g = Graphics.FromImage(bmp))
+            {
+                g.DrawRectangle(Pens.White, 2, top, w, h);
+                g.FillRectangle(Brushes.White, w + 3, top + h / 2 - 1, 2, 3);
+                int fill = (w - 3) * charge / 100;
+                if (fill > 0) g.FillRectangle(Brushes.White, 4, top + 2, fill, h - 3);
+                g.DrawImage(label, w + 8, 0);
+            }
+            return bmp;
         }
 
         public void DrawBar(int pos, double h)
@@ -467,8 +760,32 @@ namespace GHelper.AnimeMatrix
                 for (int x = 0; x < 2 ; x++)
                 {
                     color = (byte)(Math.Min(1, (h - y - 2) * 2) * 255);
-                    SetLedDiagonal(x + dx, dy - y, (byte)(h * 255 / 30), 10, -(FullRows/2));
+                    SetLedDiagonal(x + dx, dy - y, (byte)(h * 255 / 30), 13, 1 - FullRows / 2);
                 }
+        }
+
+        public void DrawSpectrogramRow(int slice, byte[] bands)
+        {
+            switch (_model)
+            {
+                case AnimeType.STRIX:
+                    for (int i = 0; i < bands.Length; i++)
+                        for (int y = 0; y < 2; y++)
+                            for (int x = 0; x < 2; x++)
+                                SetLedDiagonal((bands.Length - i) * 2 + x, slice * 2 + y, bands[i], 10, -(FullRows / 2));
+                    break;
+                default:
+                    int edge = (FullRows - 1) / 2;
+                    int len = Math.Min(MaxRows - 1 - edge, 2 * (MaxColumns - 1) + edge) - edge + 1;
+                    int count = Math.Min(bands.Length, len / 2);
+                    int last = Math.Min(MaxRows - 1 - edge + slice, 2 * MaxColumns - 1 + edge - slice);
+                    for (int x = Math.Abs(edge - slice); x <= last; x++)
+                    {
+                        int i = Math.Clamp((edge + len - 1 - x) * count / len, 0, count - 1);
+                        SetLedDiagonal(x, -slice, bands[i], 0, -edge);
+                    }
+                    break;
+            }
         }
 
         public void GenerateFrame(Image image, float zoom = 100, int panX = 0, int panY = 0, InterpolationMode quality = InterpolationMode.Default, int contrast = 100, int gamma = 0)

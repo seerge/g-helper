@@ -67,6 +67,9 @@ namespace GHelper.Mode
         private static Guid GUID_SUB_PCIEXPRESS = new Guid("501a4d13-42af-4429-9fd1-a8218c268e20");
         private static Guid GUID_PCI_EXPRESS_ASPM = new Guid("ee12f906-d277-404b-b6da-e5fa1a576df5");
 
+        private static Guid GUID_SUB_NONE = new Guid("fea3413e-7e05-4911-9a71-700331f1c294");
+        private static Guid GUID_CONNECTIVITY_IN_STANDBY = new Guid("f15576e8-98b7-4186-b944-eafa664402d9");
+
         [DllImportAttribute("powrprof.dll", EntryPoint = "PowerGetActualOverlayScheme")]
         public static extern uint PowerGetActualOverlayScheme(out Guid ActualOverlayGuid);
 
@@ -209,6 +212,8 @@ namespace GHelper.Mode
                     return POWER_TURBO;
                 case 2: //silent
                     return POWER_SILENT;
+                case 3:
+                    return PLAN_HIGH_PERFORMANCE;
                 default: // balanced
                     return POWER_BALANCED;
             }
@@ -253,6 +258,31 @@ namespace GHelper.Mode
         {
             if (GetActiveScheme().ToString() != PLAN_BALANCED) return;
             SetASPM(status);
+        }
+
+        public static void SetConnectivityInStandby(int ac = 0, int dc = 0)
+        {
+            Guid activeSchemeGuid = GetActiveScheme();
+
+            using var key = Registry.LocalMachine.OpenSubKey($@"SYSTEM\CurrentControlSet\Control\Power\User\PowerSchemes\{activeSchemeGuid}\{GUID_CONNECTIVITY_IN_STANDBY}");
+            if (key != null && (int?)key.GetValue("ACSettingIndex") == ac && (int?)key.GetValue("DCSettingIndex") == dc) return;
+
+            var hrAC = PowerWriteACValueIndex(
+                IntPtr.Zero,
+                activeSchemeGuid,
+                GUID_SUB_NONE,
+                GUID_CONNECTIVITY_IN_STANDBY,
+                ac);
+
+            var hrDC = PowerWriteDCValueIndex(
+                IntPtr.Zero,
+                activeSchemeGuid,
+                GUID_SUB_NONE,
+                GUID_CONNECTIVITY_IN_STANDBY,
+                dc);
+
+            PowerSetActiveScheme(IntPtr.Zero, activeSchemeGuid);
+            Logger.WriteLine($"Connectivity in Standby {ac}/{dc}: " + (hrAC == 0 && hrDC == 0 ? "OK" : $"{hrAC}/{hrDC}"));
         }
 
         public static int GetLidAction(bool ac)

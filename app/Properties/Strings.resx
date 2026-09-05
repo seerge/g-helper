@@ -135,6 +135,9 @@
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>Eco Mode</value>
   </data>
+  <data name="AlertExternalDisplay" xml:space="preserve">
+    <value>Looks like external screen is connected to GPU, disable GPU anyway?</value>
+  </data>
   <data name="AlertUltimateOff" xml:space="preserve">
     <value>Switching off Ultimate Mode requires restart</value>
   </data>
@@ -166,7 +169,7 @@
     <value>Apply</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Apply Custom Fan Curve</value>
+    <value>Apply Fan Curve</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Apply Power Limits</value>
@@ -175,7 +178,7 @@
     <value>Auto adjust Windows Power Modes</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Memory Assigned to GPU</value>
+    <value>Memory assigned to iGPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Asus Services Running</value>
@@ -309,6 +312,12 @@
   <data name="BootSound" xml:space="preserve">
     <value>Boot Sound</value>
   </data>
+  <data name="BacklightDown" xml:space="preserve">
+    <value>Backlight Down</value>
+  </data>
+  <data name="BacklightUp" xml:space="preserve">
+    <value>Backlight Up</value>
+  </data>
   <data name="Brightness" xml:space="preserve">
     <value>Brightness</value>
   </data>
@@ -392,6 +401,9 @@ Do you still want to continue?</value>
   <data name="EnergySettings" xml:space="preserve">
     <value>Energy Settings</value>
   </data>
+  <data name="EnhancedVibration" xml:space="preserve">
+    <value>Enhanced Vibration</value>
+  </data>
   <data name="Export" xml:space="preserve">
     <value>Export Profile</value>
   </data>
@@ -400,6 +412,9 @@ Do you still want to continue?</value>
   </data>
   <data name="ExtraSettings" xml:space="preserve">
     <value>Extra Settings</value>
+  </data>
+  <data name="ExtremeLowMotionBlur" xml:space="preserve">
+    <value>Extreme Low Motion Blur</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>Factory Defaults</value>
@@ -519,7 +534,7 @@ Do you still want to continue?</value>
     <value>Laptop Keyboard</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Laptop Screen</value>
+    <value>Screen</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>LED Status Indicators</value>
@@ -549,7 +564,10 @@ Do you still want to continue?</value>
     <value>Left Trigger Deadzones</value>
   </data>
   <data name="MatrixAudio" xml:space="preserve">
-    <value>Audio Visualizer</value>
+    <value>Audio</value>
+  </data>
+  <data name="MatrixAudioMode" xml:space="preserve">
+    <value>Visualizer Mode</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Binary Banner</value>
@@ -574,6 +592,21 @@ Do you still want to continue?</value>
   </data>
   <data name="MatrixPicture" xml:space="preserve">
     <value>Picture</value>
+  </data>
+  <data name="MatrixRunningText" xml:space="preserve">
+    <value>Running Text</value>
+  </data>
+  <data name="MatrixText" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="MatrixTimeFormat" xml:space="preserve">
+    <value>Time Format</value>
+  </data>
+  <data name="MatrixDateFormat" xml:space="preserve">
+    <value>Date Format</value>
+  </data>
+  <data name="MatrixFlip" xml:space="preserve">
+    <value>Rotate 180°</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Max refresh rate for lower latency</value>
@@ -715,6 +748,9 @@ Do you still want to continue?</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
     <value>Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk)</value>
+  </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
@@ -958,10 +994,74 @@ and restarts them automatically when the GPU is enabled</value>
     <value>Prevents PCIe devices from entering low-power idle states.
 Recommended if you experience random hangs or unresponsive hardware.</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Disable networking in Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Stops background tasks like Windows Update
+from heating up the sleeping laptop and draining the battery.</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
+  <data name="OverlayChart" xml:space="preserve">
+    <value>Chart</value>
+  </data>
+  <data name="OverlayLabels" xml:space="preserve">
+    <value>Labels</value>
+  </data>
+  <data name="OverlayLoad" xml:space="preserve">
+    <value>Load</value>
+  </data>
+  <data name="OverlayModeComplete" xml:space="preserve">
+    <value>Complete</value>
+  </data>
+  <data name="OverlayModeFull" xml:space="preserve">
+    <value>Full</value>
+  </data>
+  <data name="OverlayModeLight" xml:space="preserve">
+    <value>Light</value>
+  </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Overlay only in games</value>
+  </data>
+  <data name="OverlaySize" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="OverlayTemperatures" xml:space="preserve">
+    <value>Temperatures</value>
+  </data>
+  <data name="OverlayTransparency" xml:space="preserve">
+    <value>Transparency</value>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>Power</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>Animations</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>Startup and shutdown animation</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>Sleep animation</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>Low battery alert</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>Battery level indicator</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>Dim on low battery</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>System Default</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>Animation Pattern</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>Always</value>
   </data>
 </root>

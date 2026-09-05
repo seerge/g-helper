@@ -130,6 +130,9 @@ namespace GHelper
             panelBindingsHeader = new Panel();
             pictureBindigs = new PictureBox();
             labelBindingsTitle = new Label();
+            tableBindingsNav = new TableLayoutPanel();
+            buttonBindingsNormal = new UI.RButton();
+            buttonBindingsShift = new UI.RButton();
             tableRoot = new TableLayoutPanel();
             panelProfiles.SuspendLayout();
             panelPerformance.SuspendLayout();
@@ -167,6 +170,7 @@ namespace GHelper
             panelLeft.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureMouseLayout).BeginInit();
             panelBindingsHeader.SuspendLayout();
+            tableBindingsNav.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBindigs).BeginInit();
             tableRoot.SuspendLayout();
             SuspendLayout();
@@ -1559,6 +1563,7 @@ namespace GHelper
             panelLeft.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panelLeft.AutoSize = true;
             panelLeft.Controls.Add(pictureMouseLayout);
+            panelLeft.Controls.Add(tableBindingsNav);
             panelLeft.Controls.Add(panelGap);
             panelLeft.Controls.Add(panelBindingsHeader);
             panelLeft.Location = new Point(3, 3);
@@ -1620,7 +1625,61 @@ namespace GHelper
             labelBindingsTitle.Size = new Size(114, 32);
             labelBindingsTitle.TabIndex = 34;
             labelBindingsTitle.Text = "Bindings";
-            // 
+            //
+            // tableBindingsNav
+            //
+            tableBindingsNav.ColumnCount = 2;
+            tableBindingsNav.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableBindingsNav.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableBindingsNav.Controls.Add(buttonBindingsNormal, 0, 0);
+            tableBindingsNav.Controls.Add(buttonBindingsShift, 1, 0);
+            tableBindingsNav.Dock = DockStyle.Top;
+            tableBindingsNav.Location = new Point(10, 370);
+            tableBindingsNav.MinimumSize = new Size(0, 76);
+            tableBindingsNav.Name = "tableBindingsNav";
+            tableBindingsNav.Padding = new Padding(0, 0, 0, 18);
+            tableBindingsNav.RowCount = 1;
+            tableBindingsNav.RowStyles.Add(new RowStyle());
+            tableBindingsNav.Size = new Size(480, 76);
+            tableBindingsNav.TabIndex = 210;
+            tableBindingsNav.Visible = false;
+            //
+            // buttonBindingsNormal
+            //
+            buttonBindingsNormal.Activated = true;
+            buttonBindingsNormal.BackColor = SystemColors.ControlLight;
+            buttonBindingsNormal.BorderColor = Color.Transparent;
+            buttonBindingsNormal.BorderRadius = 2;
+            buttonBindingsNormal.Dock = DockStyle.Fill;
+            buttonBindingsNormal.FlatStyle = FlatStyle.Flat;
+            buttonBindingsNormal.Location = new Point(4, 5);
+            buttonBindingsNormal.Margin = new Padding(4, 2, 4, 2);
+            buttonBindingsNormal.Name = "buttonBindingsNormal";
+            buttonBindingsNormal.Secondary = false;
+            buttonBindingsNormal.Size = new Size(232, 58);
+            buttonBindingsNormal.TabIndex = 0;
+            buttonBindingsNormal.Text = "Buttons";
+            buttonBindingsNormal.UseVisualStyleBackColor = false;
+            buttonBindingsNormal.Click += ButtonBindingsNormal_Click;
+            //
+            // buttonBindingsShift
+            //
+            buttonBindingsShift.Activated = false;
+            buttonBindingsShift.BackColor = SystemColors.ControlLight;
+            buttonBindingsShift.BorderColor = Color.Transparent;
+            buttonBindingsShift.BorderRadius = 2;
+            buttonBindingsShift.Dock = DockStyle.Fill;
+            buttonBindingsShift.FlatStyle = FlatStyle.Flat;
+            buttonBindingsShift.Location = new Point(244, 5);
+            buttonBindingsShift.Margin = new Padding(4, 2, 4, 2);
+            buttonBindingsShift.Name = "buttonBindingsShift";
+            buttonBindingsShift.Secondary = true;
+            buttonBindingsShift.Size = new Size(232, 58);
+            buttonBindingsShift.TabIndex = 1;
+            buttonBindingsShift.Text = "SpeedShift";
+            buttonBindingsShift.UseVisualStyleBackColor = false;
+            buttonBindingsShift.Click += ButtonBindingsShift_Click;
+            //
             // tableRoot
             // 
             tableRoot.AutoSize = true;
@@ -1702,6 +1761,7 @@ namespace GHelper
             panelRight.PerformLayout();
             panelLeft.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureMouseLayout).EndInit();
+            tableBindingsNav.ResumeLayout(false);
             panelBindingsHeader.ResumeLayout(false);
             panelBindingsHeader.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBindigs).EndInit();
@@ -1813,6 +1873,9 @@ namespace GHelper
         private Panel panelBindingsHeader;
         private PictureBox pictureBindigs;
         private Label labelBindingsTitle;
+        private TableLayoutPanel tableBindingsNav;
+        private UI.RButton buttonBindingsNormal;
+        private UI.RButton buttonBindingsShift;
         private PictureBox pictureMouseLayout;
     }
 }

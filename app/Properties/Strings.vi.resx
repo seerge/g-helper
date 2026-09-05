@@ -135,6 +135,9 @@
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>Chế độ Tiết kiệm</value>
   </data>
+  <data name="AlertExternalDisplay" xml:space="preserve">
+    <value>Looks like external screen is connected to GPU, disable GPU anyway?</value>
+  </data>
   <data name="AlertUltimateOff" xml:space="preserve">
     <value>Chuyển sang Chế độ Tối thượng cần phải khởi động lại</value>
   </data>
@@ -166,7 +169,7 @@
     <value>Áp dụng</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Áp dụng Đường cong quạt tuỳ chỉnh</value>
+    <value>Áp dụng Đường cong quạt</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Áp dụng Giới hạn công suất</value>
@@ -175,7 +178,7 @@
     <value>Tự động điều chỉnh Kế hoạch nguồn của Windows</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Bộ nhớ chuyển cho GPU</value>
+    <value>Bộ nhớ chuyển cho iGPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Dịch vụ Asus đang chạy</value>
@@ -309,6 +312,12 @@
   <data name="BootSound" xml:space="preserve">
     <value>Tiếng ROG khi bật máy</value>
   </data>
+  <data name="BacklightDown" xml:space="preserve">
+    <value>Backlight Down</value>
+  </data>
+  <data name="BacklightUp" xml:space="preserve">
+    <value>Backlight Up</value>
+  </data>
   <data name="Brightness" xml:space="preserve">
     <value>Độ sáng</value>
   </data>
@@ -400,6 +409,9 @@ Bạn có muốn tiếp tục không?</value>
   </data>
   <data name="ExtraSettings" xml:space="preserve">
     <value>Cài đặt bổ sung</value>
+  </data>
+  <data name="ExtremeLowMotionBlur" xml:space="preserve">
+    <value>Extreme Low Motion Blur</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>Đặt về mặc định</value>
@@ -519,7 +531,7 @@ Bạn có muốn tiếp tục không?</value>
     <value>Bàn phím Laptop</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Màn hình Laptop</value>
+    <value>Màn hình</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>Đèn báo LED</value>
@@ -551,6 +563,9 @@ Bạn có muốn tiếp tục không?</value>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Sóng nhạc</value>
   </data>
+  <data name="MatrixAudioMode" xml:space="preserve">
+    <value>Visualizer Mode</value>
+  </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Nhị phân</value>
   </data>
@@ -574,6 +589,21 @@ Bạn có muốn tiếp tục không?</value>
   </data>
   <data name="MatrixPicture" xml:space="preserve">
     <value>Hình ảnh</value>
+  </data>
+  <data name="MatrixRunningText" xml:space="preserve">
+    <value>Running Text</value>
+  </data>
+  <data name="MatrixText" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="MatrixTimeFormat" xml:space="preserve">
+    <value>Time Format</value>
+  </data>
+  <data name="MatrixDateFormat" xml:space="preserve">
+    <value>Date Format</value>
+  </data>
+  <data name="MatrixFlip" xml:space="preserve">
+    <value>Xoay 180°</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Tần số quét tối đa để có độ trễ thấp</value>
@@ -715,6 +745,9 @@ Bạn có muốn tiếp tục không?</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
     <value>Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk)</value>
+  </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>VTP</value>
@@ -958,10 +991,47 @@ và tự khởi động lại khi GPU được bật</value>
     <value>Ngăn các thiết bị PCIe vào trạng thái nhàn rỗi tiết kiệm điện.
 Khuyến nghị nếu bạn gặp tình trạng treo ngẫu nhiên hoặc phần cứng không phản hồi.</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Tắt mạng khi ở Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Ngăn các tác vụ nền như Windows Update
+làm nóng máy khi ngủ và làm cạn pin.</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Overlay only in games</value>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>Nguồn</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>Hiệu ứng động</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>Hiệu ứng khi khởi động và tắt máy</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>Hiệu ứng khi ngủ</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>Cảnh báo pin yếu</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>Chỉ báo mức pin</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>Giảm sáng khi pin yếu</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>Mặc định hệ thống</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>Kiểu hiệu ứng</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>Luôn luôn</value>
   </data>
 </root>

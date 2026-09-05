@@ -7,6 +7,16 @@ using System.Timers;
 namespace GHelper.AnimeMatrix
 {
 
+    public enum MatrixMode
+    {
+        Banner = 0,
+        Logo = 1,
+        Picture = 2,
+        Clock = 3,
+        Audio = 4,
+        Text = 5
+    }
+
     public class AniMatrixControl
     {
 
@@ -19,13 +29,23 @@ namespace GHelper.AnimeMatrix
         public SlashDevice? deviceSlash;
 
         public static bool lidClose = false;
-        private static bool _wakeUp = false;
 
         public bool IsValid => deviceMatrix != null || deviceSlash != null;
         public bool IsSlash => deviceSlash != null;
 
+        public bool IsGated => AppConfig.Get("matrix_brightness", 0) == 0
+            || (AppConfig.Is("matrix_auto") && SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online)
+            || (AppConfig.Is("matrix_lid") && lidClose);
+
+        public static MatrixMode Mode => (MatrixMode)AppConfig.Get("matrix_running", 0);
+
         private long lastPresent;
         private List<double> maxes = new List<double>();
+
+        private bool matrixSpectrogram = false;
+        private long lastSpectro;
+        private double[] spectroLevels = new double[20];
+        private List<byte[]> spectroSlices = new List<byte[]>();
         
         private int slashBrightness = 0;
         private SlashMode slashMode;
@@ -57,8 +77,11 @@ namespace GHelper.AnimeMatrix
 
         }
 
+        bool disposed;
+
         public void SetDevice(bool wakeUp = false)
         {
+            if (disposed) return;
             if (deviceMatrix is not null) SetMatrix(wakeUp);
             if (deviceSlash is not null) SetSlash(wakeUp);
         }
@@ -70,9 +93,6 @@ namespace GHelper.AnimeMatrix
             int brightness = AppConfig.Get("matrix_brightness", 0);
             int running = AppConfig.Get("matrix_running", 0);
             int inteval = AppConfig.Get("matrix_interval", 0);
-
-            bool auto = AppConfig.Is("matrix_auto");
-            bool lid = AppConfig.Is("matrix_lid");
 
             StopAudio();
 
@@ -88,25 +108,15 @@ namespace GHelper.AnimeMatrix
                     return;
                 }
 
-                if (wakeUp) _wakeUp = true;
+                if (wakeUp) deviceSlash.WakeUp();
 
-                if (brightness == 0 || (auto && SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online) || (lid && lidClose))
+                if (brightness == 0)
                 {
-                    deviceSlash.SetSleepActive(false);
                     deviceSlash.SetEnabled(false);
-                    //deviceSlash.Init();
-                    //deviceSlash.SetOptions(false, 0, 0);
                 }
                 else
                 {
-                    if (_wakeUp)
-                    {
-                        deviceSlash.WakeUp();
-                        _wakeUp = false;
-                    }
-
                     deviceSlash.SetEnabled(true);
-                    deviceSlash.Init();
 
                     switch ((SlashMode)running)
                     {
@@ -119,6 +129,7 @@ namespace GHelper.AnimeMatrix
                             }
                             else
                             {
+                                deviceSlash.Init();
                                 deviceSlash.SetMode((SlashMode)running);
                                 deviceSlash.SetOptions(true, brightness, inteval);
                                 deviceSlash.Save();
@@ -136,30 +147,24 @@ namespace GHelper.AnimeMatrix
                             Logger.WriteLine("Slash: Audio");
                             SetAudio();
                             break;
+                        case SlashMode.Dark:
+                            deviceSlash.Init();
+                            deviceSlash.SetFlag(0xAB, false);
+                            break;
                         default:
+                            deviceSlash.Init();
                             deviceSlash.SetMode((SlashMode)running);
                             deviceSlash.SetOptions(true, brightness, inteval);
                             deviceSlash.Save();
                             break;
                     }
-
-                    // kill the timer if we are not displaying battery pattern
-
-                    deviceSlash.SetSleepActive(AppConfig.IsNotFalse("slash_sleep"));
                 }
             });
         }
 
         public void SetLidMode(bool force = false)
         {
-            bool matrixLid = AppConfig.Is("matrix_lid");
-
-            if (deviceSlash is not null)
-            {
-                deviceSlash.SetLidCloseAnimation(!matrixLid && !AppConfig.Is("slash_sleep"));
-            }
-
-            if (matrixLid || force)
+            if (deviceMatrix is not null && (AppConfig.Is("matrix_lid") || force))
             {
                 Logger.WriteLine($"Matrix LidClosed: {lidClose}");
                 SetDevice(true);
@@ -168,13 +173,6 @@ namespace GHelper.AnimeMatrix
 
         public void SetBatteryAuto()
         {
-            if (deviceSlash is not null)
-            {
-                bool auto = AppConfig.Is("matrix_auto");
-                deviceSlash.SetBatterySaver(auto);
-                if (!auto) SetSlash();
-            }
-
             if (deviceMatrix is not null) SetMatrix();
         }
 
@@ -184,9 +182,8 @@ namespace GHelper.AnimeMatrix
             if (deviceMatrix is null) return;
 
             int brightness = AppConfig.Get("matrix_brightness", 0);
-            int running = AppConfig.Get("matrix_running", 0);
-            bool auto = AppConfig.Is("matrix_auto");
-            bool lid = AppConfig.Is("matrix_lid");
+            MatrixMode running = Mode;
+            bool gated = IsGated;
 
             StopMatrixTimer();
             StopAudio();
@@ -205,34 +202,40 @@ namespace GHelper.AnimeMatrix
 
                 if (wakeUp) deviceMatrix.WakeUp();
 
-                if (brightness == 0 || (auto && SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online) || (lid && lidClose))
+                if (gated)
                 {
+                    deviceMatrix.ClearFrames();
                     deviceMatrix.SetDisplayState(false);
                     deviceMatrix.SetDisplayState(false); // some devices are dumb
                     Logger.WriteLine("Matrix Off");
+
+                    // editor open: keep rendering previews
+                    if (deviceMatrix.OnPresent == null) return;
                 }
                 else
                 {
                     if (wakeUp) deviceMatrix.WakeUp();
                     deviceMatrix.SetDisplayState(true);
                     deviceMatrix.SetBrightness((BrightnessMode)brightness);
+                }
 
-                    switch (running)
-                    {
-                        case 2:
-                            SetMatrixPicture(AppConfig.GetString("matrix_picture"), false);
-                            break;
-                        case 3:
-                            SetMatrixClock();
-                            break;
-                        case 4:
-                            SetAudio();
-                            break;
-                        default:
-                            SetBuiltIn(running);
-                            break;
-                    }
-
+                switch (running)
+                {
+                    case MatrixMode.Picture:
+                        SetMatrixPicture(AppConfig.GetString("matrix_picture"));
+                        break;
+                    case MatrixMode.Clock:
+                        SetMatrixClock();
+                        break;
+                    case MatrixMode.Audio:
+                        SetAudio();
+                        break;
+                    case MatrixMode.Text:
+                        SetMatrixText();
+                        break;
+                    default:
+                        SetBuiltIn((int)running);
+                        break;
                 }
             });
 
@@ -247,18 +250,21 @@ namespace GHelper.AnimeMatrix
                 (BuiltInAnimation.Shutdown)AppConfig.Get("matrix_shutdown", (int)BuiltInAnimation.Shutdown.SeeYa),
                 (BuiltInAnimation.Startup)AppConfig.Get("matrix_startup", (int)BuiltInAnimation.Startup.StaticEmergence)
             );
+            deviceMatrix.ClearFrames();
             deviceMatrix.SetBuiltInAnimation(true, animation);
             Logger.WriteLine("Matrix builtin: " + animation.AsByte);
         }
 
         private void StartMatrixTimer(int interval = 100)
         {
+            if (disposed) return;
             matrixTimer.Interval = interval;
             matrixTimer.Start();
         }
 
-        private void StopMatrixTimer()
+        public void StopMatrixTimer()
         {
+            if (disposed) return;
             matrixTimer.Stop();
         }
 
@@ -267,23 +273,63 @@ namespace GHelper.AnimeMatrix
 
             if (deviceMatrix is null) return;
 
-            switch (AppConfig.Get("matrix_running"))
+            // exception here kills the app
+            try
             {
-                case 2:
-                    deviceMatrix.PresentNextFrame();
-                    break;
-                case 3:
-                    deviceMatrix.PresentClock();
-                    break;
+                switch (Mode)
+                {
+                    case MatrixMode.Picture:
+                    case MatrixMode.Text:
+                        deviceMatrix.PresentNextFrame();
+                        break;
+                    case MatrixMode.Clock:
+                        deviceMatrix.PresentClock();
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine(ex.Message);
             }
 
         }
 
         public void SetMatrixClock()
         {
-            deviceMatrix.SetBuiltInAnimation(false);
-            StartMatrixTimer(1000);
-            Logger.WriteLine("Matrix Clock");
+            StopAudio();
+
+            try
+            {
+                deviceMatrix.ClearFrames();
+                deviceMatrix.SetBuiltInAnimation(false);
+                StartMatrixTimer(1000);
+                Logger.WriteLine("Matrix Clock");
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine(ex.Message);
+            }
+        }
+
+        public static readonly string[] TextFonts = { "", "Arial", "Segoe UI", "Consolas", "Impact" };
+
+        public void SetMatrixText()
+        {
+            if (deviceMatrix is null) return;
+
+            StopMatrixTimer();
+            StopAudio();
+
+            try
+            {
+                deviceMatrix.SetBuiltInAnimation(false);
+                if (deviceMatrix.SetText()) StartMatrixTimer(100);
+                Logger.WriteLine("Matrix Text");
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine(ex.Message);
+            }
         }
 
 
@@ -313,7 +359,8 @@ namespace GHelper.AnimeMatrix
 
         private void SlashTimer_elapsed(object? sender, ElapsedEventArgs e)
         {
-            SlashTimer_tick();
+            try { SlashTimer_tick(); }
+            catch (Exception ex) { Logger.WriteLine(ex.Message); }
         }
 
         private void SlashTimer_tick()
@@ -333,6 +380,7 @@ namespace GHelper.AnimeMatrix
 
         public void Dispose()
         {
+            disposed = true;
             StopAudio();
             matrixTimer?.Stop();
             matrixTimer?.Dispose();
@@ -347,7 +395,13 @@ namespace GHelper.AnimeMatrix
 
         void SetAudio()
         {
-            if (deviceMatrix is not null) deviceMatrix.SetBuiltInAnimation(false);
+            if (deviceMatrix is not null)
+            {
+                matrixSpectrogram = AppConfig.Get("matrix_audio_mode", 0) == 1;
+                spectroSlices.Clear();
+                deviceMatrix.ClearFrames();
+                deviceMatrix.SetBuiltInAnimation(false);
+            }
             else if (deviceSlash is not null) deviceSlash.SetEmpty();
             else return;
 
@@ -377,27 +431,61 @@ namespace GHelper.AnimeMatrix
             if (maxes.Count > 20) maxes.RemoveAt(0);
             maxAverage = maxes.Average();
 
-            if (deviceMatrix is not null)
+            // exception here kills the app
+            try
             {
-                deviceMatrix.Clear();
-                for (int i = 0; i < size; i++) deviceMatrix.DrawBar(20 - i, bars[i] * 20 / maxAverage);
-                deviceMatrix.Present();
-            }
+                if (deviceMatrix is not null)
+                {
+                    if (matrixSpectrogram)
+                    {
+                        for (int i = 0; i < size; i++) spectroLevels[i] = Math.Max(spectroLevels[i], bars[i]);
+                        if (lastPresent - lastSpectro >= 250 && maxes.Count >= 20)
+                        {
+                            lastSpectro = lastPresent;
 
-            if (deviceSlash is not null)
-            {
-                if (slashMode == SlashMode.Audio)
-                {
-                    var bassLevel = 30 * (bars[0] + bars[1]) / maxAverage;
-                    deviceSlash.SetAudioPattern(slashBrightness, bassLevel, 10 * (bars[3] + bars[4] + bars[5] + bars[6]) / maxAverage);
-                    //Program.settingsForm.VisualiseAudio(bassLevel);
-                } 
-                else
-                {
-                    var payload = new byte[7];
-                    for (int i = 0; i < 7; i++) payload[6-i] = (byte)(Math.Min(255, Math.Pow((bars[2 * i] + bars[2 * i + 1]) / 2 / maxAverage, 2) * 0x8F));
-                    deviceSlash.ContinueCustom(payload, null);
+                            byte[] slice = new byte[size];
+                            for (int i = 0; i < size; i++) slice[i] = (byte)Math.Min(255, Math.Pow(spectroLevels[i] / maxAverage, 2) * 255);
+                            Array.Clear(spectroLevels);
+
+                            spectroSlices.Insert(0, slice);
+                            int depth = deviceMatrix.MaxColumns + deviceMatrix.FullRows / 2;
+                            if (spectroSlices.Count == 1) while (spectroSlices.Count < depth) spectroSlices.Add(slice);
+                            if (spectroSlices.Count > depth) spectroSlices.RemoveAt(spectroSlices.Count - 1);
+
+                            deviceMatrix.Clear();
+                            for (int i = 0; i < spectroSlices.Count; i++) deviceMatrix.DrawSpectrogramRow(i, spectroSlices[i]);
+                            deviceMatrix.Present();
+                        }
+                    }
+                    else
+                    {
+                        deviceMatrix.Clear();
+                        // maxAverage stuck at its floor means noise only, don't draw it
+                        if (maxAverage > 2)
+                            for (int i = 0; i < size; i++) deviceMatrix.DrawBar(20 - i, bars[i] * 20 / maxAverage);
+                        deviceMatrix.Present();
+                    }
                 }
+
+                if (deviceSlash is not null)
+                {
+                    if (slashMode == SlashMode.Audio)
+                    {
+                        var bassLevel = 30 * (bars[0] + bars[1]) / maxAverage;
+                        deviceSlash.SetAudioPattern(slashBrightness, bassLevel, 10 * (bars[3] + bars[4] + bars[5] + bars[6]) / maxAverage);
+                        //Program.settingsForm.VisualiseAudio(bassLevel);
+                    }
+                    else
+                    {
+                        var payload = new byte[7];
+                        for (int i = 0; i < 7; i++) payload[6 - i] = (byte)(Math.Min(255, Math.Pow((bars[2 * i] + bars[2 * i + 1]) / 2 / maxAverage, 2) * 0x8F));
+                        deviceSlash.ContinueCustom(payload, null);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine(ex.Message);
             }
         }
 
@@ -423,32 +511,27 @@ namespace GHelper.AnimeMatrix
             if (fileName is not null)
             {
                 AppConfig.Set("matrix_picture", fileName);
-                AppConfig.Set("matrix_running", 2);
+                AppConfig.Set("matrix_running", (int)MatrixMode.Picture);
 
                 SetMatrixPicture(fileName);
-                settings.VisualiseMatrixRunning(2);
+                settings.VisualiseMatrixRunning((int)MatrixMode.Picture);
 
             }
 
         }
 
-        public void SetMatrixPicture(string fileName, bool visualise = true)
+        public void SetMatrixPicture(string fileName)
         {
 
             if (deviceMatrix is null) return;
 
             StopMatrixTimer();
+            StopAudio();
 
             try
             {
                 using (var fs = new FileStream(fileName, FileMode.Open))
-                //using (var ms = new MemoryStream())
                 {
-                    /*
-                    ms.SetLength(0);
-                    fs.CopyTo(ms);
-                    ms.Position = 0;
-                    */
                     using (Image image = Image.FromStream(fs))
                     {
                         ProcessPicture(image);
@@ -456,7 +539,7 @@ namespace GHelper.AnimeMatrix
                     }
 
                     fs.Close();
-                    if (visualise) settings.VisualiseMatrixPicture(fileName);
+                    settings.VisualiseMatrixPicture(fileName);
                 }
             }
             catch
@@ -467,6 +550,22 @@ namespace GHelper.AnimeMatrix
 
         }
 
+        public void GeneratePictureFrame(Image image, int x, int y)
+        {
+            int zoom = AppConfig.Get("matrix_zoom", 100);
+            int contrast = AppConfig.Get("matrix_contrast", 100);
+            int gamma = AppConfig.Get("matrix_gamma", 0);
+            InterpolationMode quality = (InterpolationMode)AppConfig.Get("matrix_quality", 0);
+
+            if ((MatrixRotation)AppConfig.Get("matrix_rotation", 0) == MatrixRotation.Planar)
+                deviceMatrix.GenerateFrame(image, zoom, x, y, quality, contrast, gamma);
+            else
+                deviceMatrix.GenerateFrameDiagonal(image, zoom, x, y, quality, contrast, gamma);
+        }
+
+        public static int PictureFrameDelay(Image image)
+            => Math.Max(AppConfig.Get("matrix_speed", 50), BitConverter.ToInt32(image.GetPropertyItem(0x5100).Value) * 10);
+
         protected void ProcessPicture(Image image)
         {
             deviceMatrix.SetBuiltInAnimation(false);
@@ -475,51 +574,25 @@ namespace GHelper.AnimeMatrix
             int matrixX = AppConfig.Get("matrix_x", 0);
             int matrixY = AppConfig.Get("matrix_y", 0);
 
-            int matrixZoom = AppConfig.Get("matrix_zoom", 100);
-            int matrixContrast = AppConfig.Get("matrix_contrast", 100);
-            int matrixGamma = AppConfig.Get("matrix_gamma", 0);
-
-            int matrixSpeed = AppConfig.Get("matrix_speed", 50);
-
-            MatrixRotation rotation = (MatrixRotation)AppConfig.Get("matrix_rotation", 0);
-
-            InterpolationMode matrixQuality = (InterpolationMode)AppConfig.Get("matrix_quality", 0);
-
-
             FrameDimension dimension = new FrameDimension(image.FrameDimensionsList[0]);
             int frameCount = image.GetFrameCount(dimension);
 
             if (frameCount > 1)
             {
-                var delayPropertyBytes = image.GetPropertyItem(0x5100).Value;
-                var frameDelay = BitConverter.ToInt32(delayPropertyBytes) * 10;
-
                 for (int i = 0; i < frameCount; i++)
                 {
                     image.SelectActiveFrame(dimension, i);
-
-                    if (rotation == MatrixRotation.Planar)
-                        deviceMatrix.GenerateFrame(image, matrixZoom, matrixX, matrixY, matrixQuality, matrixContrast, matrixGamma);
-                    else
-                        deviceMatrix.GenerateFrameDiagonal(image, matrixZoom, matrixX, matrixY, matrixQuality, matrixContrast, matrixGamma);
-
+                    GeneratePictureFrame(image, matrixX, matrixY);
                     deviceMatrix.AddFrame();
                 }
 
-
-                Logger.WriteLine("GIF Delay:" + frameDelay);
-                StartMatrixTimer(Math.Max(matrixSpeed, frameDelay));
-
-                //image.SelectActiveFrame(dimension, 0);
-
+                int frameDelay = PictureFrameDelay(image);
+                Logger.WriteLine("GIF Delay:" + frameDelay + " Frames:" + frameCount);
+                StartMatrixTimer(frameDelay);
             }
             else
             {
-                if (rotation == MatrixRotation.Planar)
-                    deviceMatrix.GenerateFrame(image, matrixZoom, matrixX, matrixY, matrixQuality, matrixContrast, matrixGamma);
-                else
-                    deviceMatrix.GenerateFrameDiagonal(image, matrixZoom, matrixX, matrixY, matrixQuality, matrixContrast, matrixGamma);
-
+                GeneratePictureFrame(image, matrixX, matrixY);
                 deviceMatrix.Present();
             }
 

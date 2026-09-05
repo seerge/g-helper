@@ -89,6 +89,7 @@ namespace GHelper
             pictureAlly = new PictureBox();
             panelVibra = new Panel();
             checkController = new GHelper.UI.RCheckBox();
+            checkVibra = new GHelper.UI.RCheckBox();
             pictureBox5 = new PictureBox();
             labelVibra = new Label();
             labelVibraTitle = new Label();
@@ -1013,6 +1014,7 @@ namespace GHelper
             // 
             panelVibra.AutoSize = true;
             panelVibra.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelVibra.Controls.Add(checkVibra);
             panelVibra.Controls.Add(checkController);
             panelVibra.Controls.Add(buttonReset);
             panelVibra.Controls.Add(pictureBox5);
@@ -1040,6 +1042,20 @@ namespace GHelper
             checkController.TabIndex = 56;
             checkController.Text = "Disable Controller";
             checkController.UseVisualStyleBackColor = false;
+            // 
+            // checkVibra
+            // 
+            checkVibra.AutoSize = true;
+            checkVibra.BackColor = SystemColors.ControlLight;
+            checkVibra.Location = new Point(13, 130);
+            checkVibra.Margin = new Padding(0);
+            checkVibra.Name = "checkVibra";
+            checkVibra.Padding = new Padding(16, 6, 16, 6);
+            checkVibra.Size = new Size(269, 48);
+            checkVibra.TabIndex = 57;
+            checkVibra.Text = "Enhanced Vibration";
+            checkVibra.UseVisualStyleBackColor = false;
+            checkVibra.Visible = false;
             // 
             // pictureBox5
             // 
@@ -1203,6 +1219,7 @@ namespace GHelper
         private Label labelVibraTitle;
         private RTrackBar trackVibra;
         private UI.RCheckBox checkController;
+        private UI.RCheckBox checkVibra;
         private Label labelTurbo;
         private UI.RComboBox comboTurboPrimary;
         private UI.RComboBox comboTurboSecondary;

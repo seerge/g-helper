@@ -135,6 +135,9 @@
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>節能模式</value>
   </data>
+  <data name="AlertExternalDisplay" xml:space="preserve">
+    <value>Looks like external screen is connected to GPU, disable GPU anyway?</value>
+  </data>
   <data name="AlertUltimateOff" xml:space="preserve">
     <value>關閉獨顯需要重新啟動</value>
   </data>
@@ -166,7 +169,7 @@
     <value>套用</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>套用自定義風扇曲線</value>
+    <value>套用風扇曲線</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>套用功率限制</value>
@@ -175,7 +178,7 @@
     <value>自動調整 Windows 電源模式</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>分配給 GPU 的記憶體</value>
+    <value>分配給 iGPU 的記憶體</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>執行中的華碩服務</value>
@@ -309,6 +312,12 @@
   <data name="BootSound" xml:space="preserve">
     <value>開機音效</value>
   </data>
+  <data name="BacklightDown" xml:space="preserve">
+    <value>Backlight Down</value>
+  </data>
+  <data name="BacklightUp" xml:space="preserve">
+    <value>Backlight Up</value>
+  </data>
   <data name="Brightness" xml:space="preserve">
     <value>亮度</value>
   </data>
@@ -400,6 +409,9 @@
   </data>
   <data name="ExtraSettings" xml:space="preserve">
     <value>更多設定</value>
+  </data>
+  <data name="ExtremeLowMotionBlur" xml:space="preserve">
+    <value>Extreme Low Motion Blur</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>恢復原廠設定</value>
@@ -551,6 +563,9 @@
   <data name="MatrixAudio" xml:space="preserve">
     <value>音效視覺化</value>
   </data>
+  <data name="MatrixAudioMode" xml:space="preserve">
+    <value>Visualizer Mode</value>
+  </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>横幅</value>
   </data>
@@ -574,6 +589,21 @@
   </data>
   <data name="MatrixPicture" xml:space="preserve">
     <value>圖片</value>
+  </data>
+  <data name="MatrixRunningText" xml:space="preserve">
+    <value>Running Text</value>
+  </data>
+  <data name="MatrixText" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="MatrixTimeFormat" xml:space="preserve">
+    <value>Time Format</value>
+  </data>
+  <data name="MatrixDateFormat" xml:space="preserve">
+    <value>Date Format</value>
+  </data>
+  <data name="MatrixFlip" xml:space="preserve">
+    <value>旋轉180°</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>更高的更新率和更低延遲</value>
@@ -715,6 +745,9 @@
   </data>
   <data name="RestartGPU" xml:space="preserve">
     <value>有其他程式正在使用獨顯導致無法切換至節能模式. 是否讓 G-Helper 於裝置管理員重新啟動獨顯? (請自行評估風險)</value>
+  </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restarting NV Services...</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
@@ -958,10 +991,47 @@
     <value>防止 PCIe 裝置進入低功耗閒置狀態。
 若遇隨機當機或硬體無回應，建議啟用。</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>在新式待命時停用網路</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>防止 Windows Update 等背景工作
+使睡眠中的筆電發熱並消耗電池。</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
     <value>效能監控(OSD)</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>僅遊戲時顯示OSD</value>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>電源</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>動畫</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>開機與關機動畫</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>睡眠動畫</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>低電量提醒</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>電量指示</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>低電量時降低亮度</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>系統預設</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>動畫圖案</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>一律</value>
   </data>
 </root>

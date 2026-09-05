@@ -71,6 +71,8 @@ namespace GHelper.Gpu
 
             Aura.CustomRGB.ApplyGPUColor(gpuMode);
 
+            CheckGpuError();
+
         }
 
 
@@ -94,7 +96,7 @@ namespace GHelper.Gpu
 
             if (CurrentGPU == AsusACPI.GPUModeUltimate)
             {
-                DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertUltimateOff, Properties.Strings.AlertUltimateTitle, MessageBoxButtons.YesNo);
+                DialogResult dialogResult = settings.ShowMessage(Properties.Strings.AlertUltimateOff, Properties.Strings.AlertUltimateTitle, MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
                     status = Program.acpi.DeviceSet(AsusACPI.GPUMux, 1, "GPUMux");
@@ -111,7 +113,7 @@ namespace GHelper.Gpu
                     return;
                 }
 
-                DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertUltimateOn, Properties.Strings.AlertUltimateTitle, MessageBoxButtons.YesNo);
+                DialogResult dialogResult = settings.ShowMessage(Properties.Strings.AlertUltimateOn, Properties.Strings.AlertUltimateTitle, MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
                     Program.acpi.SetGPUEco(0);
@@ -194,34 +196,30 @@ namespace GHelper.Gpu
 
                     if (eco == 0)
                     {
-                        if (AppConfig.IsNVPlatform())
+                        if (AppConfig.IsNVPlatform() || nvRestartPending)
                         {
-                            settings.LockGPUModes(Properties.Strings.GPUMode +": Restarting NV Services...");
+                            settings.LockGPUModes(Properties.Strings.RestartingNVServices);
                             await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("nv_delay", 5000)));
-                            NvidiaGpuControl.RestartNVService();
-                            settings.Invoke(delegate { InitGPUMode(); });
-                            await Task.Delay(TimeSpan.FromMilliseconds(1000));
-                        } else if (nvRestartPending) {
-                            settings.LockGPUModes(Properties.Strings.GPUMode +": Restarting NV Service...");
-                            await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("nv_delay", 5000)));
-                            NvidiaGpuControl.RestartNvContainer();
+                            if (AppConfig.IsNVPlatform()) NvidiaGpuControl.RestartNVService();
+                            else NvidiaGpuControl.RestartNvContainer();
                             nvRestartPending = false;
                             settings.Invoke(delegate { InitGPUMode(); });
+                            await Task.Delay(TimeSpan.FromMilliseconds(1000));
                         }
 
-                        for (int i = 0; i < 3; i++)
-                        {
-                            HardwareControl.RecreateGpuControl();
-                            if (HardwareControl.GpuControl is not null) break;
-                            await Task.Delay(TimeSpan.FromSeconds(2));
-                        }
-                        Program.modeControl.SetGPUClocks(false);
+                        await HardwareControl.RecreateGpuControlWithRetry(3, 2);
+                        if (HardwareControl.GpuControl is null) await HardwareControl.RecreateGpuControlWithRetry(3, 5);
+                        CheckGpuError();
+                        CheckStandardHalfState();
                     }
 
-                    if (AppConfig.IsModeReapplyRequired())
+                    if (AppConfig.IsModeReapply())
                     {
-                        await Task.Delay(TimeSpan.FromMilliseconds(3000));
+                        await Task.Delay(TimeSpan.FromMilliseconds(1000));
                         Program.modeControl.AutoPerformance();
+                    } else
+                    {
+                        Program.modeControl.SetGPUClocks(false);
                     }
                 }
                 catch (Exception ex)
@@ -238,6 +236,8 @@ namespace GHelper.Gpu
             Program.currentSource == Program.PowerSource.Barrel ||
             (Program.currentSource == Program.PowerSource.USBC && !AppConfig.Is("optimized_usbc"));
 
+        public static bool suspended = false;
+
         public bool AutoGPUMode(bool optimized = false, int delay = 0)
         {
 
@@ -247,6 +247,12 @@ namespace GHelper.Gpu
             int GpuMode = AppConfig.Get("gpu_mode");
 
             if (!GpuAuto && !ForceGPU) return false;
+
+            if (suspended)
+            {
+                Logger.WriteLine("Skipping GPU Mode switch: Suspend");
+                return false;
+            }
 
             int eco = Program.acpi.DeviceGet(AsusACPI.GPUEco);
             int mux = Program.acpi.DeviceGet(AsusACPI.GPUMux);
@@ -273,7 +279,12 @@ namespace GHelper.Gpu
                         if (Program.acpi.IsXGConnected()) return false;
                         if (HardwareControl.IsUsedGPU())
                         {
-                            DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertDGPU, Properties.Strings.AlertDGPUTitle, MessageBoxButtons.YesNo);
+                            DialogResult dialogResult = settings.ShowMessage(Properties.Strings.AlertDGPU, Properties.Strings.AlertDGPUTitle, MessageBoxButtons.YesNo);
+                            if (dialogResult == DialogResult.No) return false;
+                        }
+                        else if (GpuAuto && Program.acpi.IsExternalDisplayConnected())
+                        {
+                            DialogResult dialogResult = settings.ShowMessage(Properties.Strings.AlertExternalDisplay, Properties.Strings.AlertDGPUTitle, MessageBoxButtons.YesNo);
                             if (dialogResult == DialogResult.No) return false;
                         }
 
@@ -307,16 +318,12 @@ namespace GHelper.Gpu
                     }
                     else
                     {
-                        DialogResult dialogResult = DialogResult.No;
-                        settings.Invoke((MethodInvoker)delegate
-                        {
-                            dialogResult = MessageBox.Show(settings, "Did you close all applications running on XG Mobile?", "Disabling XG Mobile", MessageBoxButtons.YesNo);
-                        });
-                        
+                        DialogResult dialogResult = settings.ShowMessage("Did you close all applications running on XG Mobile?", "Disabling XG Mobile", MessageBoxButtons.YesNo);
                         if (dialogResult == DialogResult.Yes)
                         {
                             Program.acpi.DeviceSet(AsusACPI.GPUXG, 0, "GPU XGM");
                             await Task.Delay(TimeSpan.FromSeconds(15));
+                            HardwareControl.RecreateGpuControl();
                         }
                     }
                 }
@@ -331,11 +338,10 @@ namespace GHelper.Gpu
                     XGM.Init();
 
                     await Task.Delay(TimeSpan.FromSeconds(15));
+                    await HardwareControl.RecreateGpuControlWithRetry(6, 5);
 
                     if (AppConfig.IsApplyFans())
                         XGM.SetFan(AppConfig.GetFanConfig(AsusFan.XGM));
-
-                    HardwareControl.RecreateGpuControl();
 
                 }
 
@@ -356,7 +362,22 @@ namespace GHelper.Gpu
 
         public void CaptureNvBootState()
         {
-            nvRestartPending = Program.acpi.DeviceGet(AsusACPI.GPUEco) == 1;
+            nvRestartPending = Program.acpi.IsNVidiaGPU() && Program.acpi.DeviceGet(AsusACPI.GPUEco) == 1;
+        }
+
+        public void CheckStandardHalfState()
+        {
+            if (gpuMode != AsusACPI.GPUModeStandard || HardwareControl.GpuControl is not null) return;
+
+            Logger.WriteLine("Standard half-state");
+            if (!AppConfig.IsStandardForceFix()) return;
+
+            Task.Run(async () =>
+            {
+                Program.acpi.DeviceSet(AsusACPI.GPUEco, 0, "GPUStandard Force Fix");
+                await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("nv_delay", 5000)));
+                HardwareControl.RecreateGpuControl();
+            });
         }
 
         public void StandardModeFix()
@@ -367,6 +388,17 @@ namespace GHelper.Gpu
             Logger.WriteLine("Forcing Standard Mode on shutdown");
             Program.acpi.SetGPUEco(0);
         }
+
+        public static string? gpuError = null;
+
+        public static void CheckGpuError() => Task.Run(() =>
+        {
+            string? error = DeviceHelper.GetGpuError();
+            if (gpuError == error) return;
+            gpuError = error;
+            if (error != null) Logger.WriteLine(error);
+            Program.settingsForm.VisualiseGPUMode();
+        });
 
     }
 }
