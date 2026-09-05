@@ -401,6 +401,9 @@ Yine de devam etmek istiyor musunuz?</value>
   <data name="EnergySettings" xml:space="preserve">
     <value>Enerji Ayarları</value>
   </data>
+  <data name="EnhancedVibration" xml:space="preserve">
+    <value>Enhanced Vibration</value>
+  </data>
   <data name="Export" xml:space="preserve">
     <value>Profili Dışa Aktar</value>
   </data>
