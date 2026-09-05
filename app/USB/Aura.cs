@@ -1,4 +1,4 @@
-﻿using GHelper.Gpu;
+using GHelper.Gpu;
 using GHelper.Helpers;
 using GHelper.Input;
 using GHelper.Peripherals;
@@ -122,11 +122,38 @@ namespace GHelper.USB
 
         static System.Timers.Timer timer = new System.Timers.Timer(1000);
 
-        static readonly List<double> audioMaxes = new List<double>();
-        static long lastAudioPresent;
-        static double envBrightness;
+        // ---- 音频律动参数（由 RefreshAudioParams() 从 AppConfig 滑块刷新）----
+        static double audioSensitivity = 1.0;    // audio_sensitivity 整体增益
+        static double audioAttack = 0.4;         // audio_attack 上升平滑
+        static double audioDecay = 0.843;        // audio_decay 峰值包络衰减
+        static double audioRefRelease = 0.9993;  // audio_reference 慢速基准跟随
+        static double audioThreshold = 0.15;     // audio_threshold 低电平压制
+        static double audioCurve = 2.5;          // audio_curve 亮度响应曲线
+        static double audioMin = 0.0;            // audio_min 最低亮度
+        static double audioMax = 1.0;            // audio_max 最高亮度
+        static double audioColorBase = 0.15;     // audio_color_speed 颜色切换速度
+
+        // ---- 音频律动运行状态 ----
+        static double audioAttackSmooth;
+        static double audioPeak;
+        static double audioReference = 1;
         static double smoothedHue;
-        static readonly double audioDecay = AppConfig.Get("audio_decay", 70) / 100.0;
+        static double lastAudioFinal = -1;
+        static double lastAudioHue = -1;
+        static long lastAudioPresent;
+
+        public static void RefreshAudioParams()
+        {
+            audioSensitivity = 0.5 + AppConfig.Get("audio_sensitivity", 50) / 100.0 * 1.5;
+            audioAttack = 0.1 + AppConfig.Get("audio_attack", 40) / 100.0 * 0.8;
+            audioDecay = 0.5 + AppConfig.Get("audio_decay", 70) / 100.0 * 0.49;
+            audioRefRelease = 0.999 + AppConfig.Get("audio_reference", 30) / 100.0 * 0.00099;
+            audioThreshold = AppConfig.Get("audio_threshold", 15) / 100.0 * 0.5;
+            audioCurve = 1 + AppConfig.Get("audio_curve", 60) / 100.0 * 3.0;
+            audioMin = AppConfig.Get("audio_min", 0) / 100.0 * 0.5;
+            audioMax = 0.5 + AppConfig.Get("audio_max", 100) / 100.0 * 0.5;
+            audioColorBase = 0.05 + AppConfig.Get("audio_color_speed", 30) / 100.0 * 0.55;
+        }
 
         static Aura()
         {
@@ -974,10 +1001,14 @@ namespace GHelper.USB
             if (!backlight) return;
 
             initDirect = true;
-            audioMaxes.Clear();
-            lastAudioPresent = 0;
-            envBrightness = 0;
+            RefreshAudioParams();
+            audioAttackSmooth = 0;
+            audioPeak = 0;
+            audioReference = 0;
             smoothedHue = 0;
+            lastAudioFinal = -1;
+            lastAudioHue = -1;
+            lastAudioPresent = 0;
 
             AudioVisualizer.Shared.Subscribe(OnAudioSpectrum);
         }
@@ -988,74 +1019,106 @@ namespace GHelper.USB
             if (Mode != AuraMode.AUDIO && Mode != AuraMode.AUDIOPULSE) return;
 
             long now = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-            if (Math.Abs(now - lastAudioPresent) < 50) return;
+            if (Math.Abs(now - lastAudioPresent) < 20) return;
             lastAudioPresent = now;
-
-            int bands = AURA_ZONES;
-            if (fftMag.Length < bands) return;
-
-            double[] bars = new double[bands];
-            double max = 0;
-            for (int i = 0; i < bands; i++)
-            {
-                bars[i] = Math.Sqrt(fftMag[i] * 10000);
-                if (bars[i] > max) max = bars[i];
-            }
-
-            audioMaxes.Add(max);
-            if (audioMaxes.Count > 100) audioMaxes.RemoveAt(0);
-            double maxAvg = audioMaxes.OrderByDescending(x => x).ElementAt(audioMaxes.Count / 10);
-            if (maxAvg < 1) maxAvg = 1;
-
-            envBrightness = Math.Max(envBrightness * audioDecay, max);
-            double brightness = Math.Min(1.0, envBrightness / maxAvg);
-
-            Color c1 = Color1;
-            double curvedBrightness = brightness * brightness * brightness;
 
             try
             {
+                // fftMag = 32 段对数分箱幅度（AudioVisualizer.SPECTRUM_BANDS），聚合为 8 个灯区
+                int bands = fftMag.Length;
+                if (bands < AURA_ZONES) return;
+
+                double[] bars = new double[AURA_ZONES];
+                double max = 0;
+                for (int i = 0; i < AURA_ZONES; i++)
+                {
+                    int start = i * bands / AURA_ZONES;
+                    int end = (i + 1) * bands / AURA_ZONES;
+                    double sum = 0;
+                    for (int j = start; j < end; j++) sum += fftMag[j];
+                    bars[i] = sum / (end - start);
+                    if (bars[i] > max) max = bars[i];
+                }
+
+                // 1) 攻击平滑：快速跟随当前电平
+                audioAttackSmooth = audioAttack * max + (1 - audioAttack) * audioAttackSmooth;
+
+                // 2) 峰值包络：保留音头，指数衰减形成余辉
+                audioPeak = Math.Max(audioPeak * audioDecay, max);
+
+                // 3) 慢速基准：首帧按当前电平初始化（否则从大基准衰减期间会长时间黑屏），
+                //    之后只跟随整体音量水平，不被瞬时峰值顶高
+                if (audioReference <= 0)
+                    audioReference = Math.Max(audioPeak, 1e-6);
+                audioReference = Math.Max(audioReference * audioRefRelease, audioPeak);
+                if (audioReference < 1e-9) audioReference = 1e-9;
+
+                // 4) 亮度映射：阈值压制低电平 → 灵敏度 → 曲线 → 上下限
+                double raw = audioAttackSmooth / audioReference;
+                double brightness = (raw - audioThreshold) / Math.Max(1.0 - audioThreshold, 0.01) * audioSensitivity;
+                brightness = Math.Clamp(brightness, 0, 1);
+                double final = Math.Pow(brightness, audioCurve);
+                final = audioMin + final * (audioMax - audioMin);
+
+                // 5) 变化去抖：亮度基本不变时跳过 HID 写入
+                bool changed = Math.Abs(final - lastAudioFinal) > 0.01;
+                lastAudioFinal = final;
+
+                Color c1 = Color1;
+
                 if (Mode == AuraMode.AUDIOPULSE)
                 {
+                    if (!changed) return;
                     Color dimmed = Color.FromArgb(
-                        (byte)(c1.R * curvedBrightness),
-                        (byte)(c1.G * curvedBrightness),
-                        (byte)(c1.B * curvedBrightness));
+                        (byte)(c1.R * final),
+                        (byte)(c1.G * final),
+                        (byte)(c1.B * final));
                     if (isStrix) ApplyDirect(Enumerable.Repeat(dimmed, AURA_ZONES).ToArray());
                     else ApplyDirect(dimmed);
                     return;
                 }
 
+                // Audio Spectrum
                 double baseHue = ColorUtils.HSV.ToHSV(c1).Hue;
 
                 if (isStrix)
                 {
+                    // 每个灯区按各自频段能量点亮，色相从基色沿色环渐变
                     Color[] colors = new Color[AURA_ZONES];
                     for (int i = 0; i < AURA_ZONES; i++)
                     {
                         double hue = (baseHue + (double)i / (AURA_ZONES - 1) * (2.0 / 3.0)) % 1.0;
-                        double ratio = Math.Min(1.0, bars[i] / maxAvg);
-                        double v = ratio * ratio * ratio;
+                        double ratio = bars[i] / audioReference;
+                        double v = Math.Pow(Math.Clamp(ratio, 0, 1), audioCurve);
+                        v = audioMin + v * (audioMax - audioMin);
                         colors[i] = new ColorUtils.HSV { Hue = hue, Saturation = 1.0, Value = v }.ToRGB();
                     }
                     ApplyDirect(colors);
                 }
                 else
                 {
+                    // 单色区：颜色跟随主导频段漂移，切换速度随强度加快（高潮时急促）
                     int dominant = 1;
                     double dominantWeighted = bars[1];
-                    for (int i = 2; i < bands; i++)
+                    for (int i = 2; i < AURA_ZONES; i++)
                     {
                         double w = bars[i] * (1 + (i - 1) * 0.15);
                         if (w > dominantWeighted) { dominantWeighted = w; dominant = i; }
                     }
-                    if (max > maxAvg * 0.3)
+
+                    if (raw > audioThreshold * 0.5)
                     {
-                        double targetHue = (baseHue + (dominant - 1) / (double)(bands - 2) * (2.0 / 3.0)) % 1.0;
-                        smoothedHue = smoothedHue * 0.6 + targetHue * 0.4;
+                        double targetHue = (baseHue + (dominant - 1) / (double)(AURA_ZONES - 2) * (2.0 / 3.0)) % 1.0;
+                        double k = audioColorBase + final * 0.45;
+                        smoothedHue = smoothedHue * (1 - k) + targetHue * k;
                     }
 
-                    ApplyDirect(new ColorUtils.HSV { Hue = smoothedHue, Saturation = 1.0, Value = curvedBrightness }.ToRGB());
+                    bool hueChanged = Math.Abs(smoothedHue - lastAudioHue) > 0.01;
+                    lastAudioHue = smoothedHue;
+
+                    if (!changed && !hueChanged) return;
+
+                    ApplyDirect(new ColorUtils.HSV { Hue = smoothedHue, Saturation = 1.0, Value = final }.ToRGB());
                 }
             }
             catch (Exception ex)

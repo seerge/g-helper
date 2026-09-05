@@ -1,4 +1,4 @@
-﻿using GHelper.Ally;
+using GHelper.Ally;
 using GHelper.AnimeMatrix;
 using GHelper.AutoUpdate;
 using GHelper.Battery;
@@ -31,6 +31,9 @@ namespace GHelper
 
         AsusMouseSettings? mouseSettings;
         AsusKeyboardSettings? keyboardSettings;
+
+        AudioSettingsForm? audioSettingsForm;
+        RButton? buttonAudio;
 
         public AniMatrixControl matrixControl;
 
@@ -1280,9 +1283,55 @@ namespace GHelper
                 comboKeyboard.Visible = false;
             }
 
+            // 键盘灯区改为 4 列：模式下拉 / 颜色 / Extra / Audio（仅音频模式显示）
+            tableLayoutKeyboard.ColumnCount = 4;
+            tableLayoutKeyboard.ColumnStyles.Clear();
+            tableLayoutKeyboard.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tableLayoutKeyboard.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tableLayoutKeyboard.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tableLayoutKeyboard.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 150F));
+            tableLayoutKeyboard.SetColumn(comboKeyboard, 0);
+            tableLayoutKeyboard.SetColumn(buttonKeyboardColor, 1);
+            tableLayoutKeyboard.SetColumn(buttonKeyboard, 2);
+
+            // 音频律动参数设置入口（仅 Audio Spectrum / Audio Pulse 模式可见）
+            buttonAudio = new RButton
+            {
+                Text = Strings.AudioButton,
+                Dock = DockStyle.Fill,
+                Margin = new Padding(4),
+                Secondary = true,
+                TabIndex = 99
+            };
+            buttonAudio.Click += ButtonAudio_Click;
+            tableLayoutKeyboard.Controls.Add(buttonAudio, 3, 0);
+            buttonAudio.Visible = false;
+
             VisualiseAura();
 
             InitRearLight();
+        }
+
+        private void UpdateAudioButtonVisibility()
+        {
+            if (buttonAudio is null) return;
+            bool show = !AppConfig.NoAura()
+                && (Aura.Mode == AuraMode.AUDIO || Aura.Mode == AuraMode.AUDIOPULSE);
+            if (buttonAudio.Visible != show) buttonAudio.Visible = show;
+        }
+
+        private void ButtonAudio_Click(object? sender, EventArgs e)
+        {
+            if (audioSettingsForm is null || audioSettingsForm.IsDisposed)
+            {
+                audioSettingsForm = new AudioSettingsForm { Owner = this };
+                audioSettingsForm.FormClosed += (_, _) => audioSettingsForm = null;
+                audioSettingsForm.Show();
+            }
+            else
+            {
+                audioSettingsForm.Activate();
+            }
         }
 
         public void SetAura()
@@ -1316,6 +1365,8 @@ namespace GHelper
                 labelBacklight.Cursor = Cursors.Default;
                 labelBacklight.Text = "";
             }
+
+            UpdateAudioButtonVisibility();
         }
 
         public void VisualiseAura()
@@ -1386,6 +1437,7 @@ namespace GHelper
         private void ComboKeyboard_SelectedValueChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("aura_mode", (int)comboKeyboard.SelectedValue);
+            UpdateAudioButtonVisibility();
             SetAura();
         }
 
