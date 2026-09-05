@@ -401,6 +401,9 @@ Vil du stadig fortsætte?</value>
   <data name="EnergySettings" xml:space="preserve">
     <value>Energiindstillinger</value>
   </data>
+  <data name="EnhancedVibration" xml:space="preserve">
+    <value>Enhanced Vibration</value>
+  </data>
   <data name="Export" xml:space="preserve">
     <value>Eksporter profil</value>
   </data>
