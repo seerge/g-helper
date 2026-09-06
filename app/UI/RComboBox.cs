@@ -318,5 +318,52 @@ namespace GHelper.UI
 
         [DllImport("gdi32.dll")]
         private static extern nint CreateRectRgn(int x1, int y1, int x2, int y2);
+
+        public static void DrawBindingItem(object? sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0 || sender is not ComboBox cmb) return;
+
+            object obj = cmb.Items[e.Index];
+            bool isSep = obj is BindingSeparator;
+
+            Color back = isSep ? RForm.buttonSecond : RForm.buttonMain;
+            if (!isSep && (e.State & DrawItemState.Selected) != 0)
+                back = RForm.borderMain;
+
+            using var backBrush = new SolidBrush(back);
+            e.Graphics.FillRectangle(backBrush, e.Bounds);
+
+            string text = obj.ToString() ?? string.Empty;
+            Font font = isSep
+                ? new Font(e.Font ?? SystemFonts.DefaultFont, FontStyle.Bold)
+                : (e.Font ?? SystemFonts.DefaultFont);
+
+            int indent = isSep ? 6 : 14;
+            var textRect = new Rectangle(e.Bounds.X + indent, e.Bounds.Y,
+                                         e.Bounds.Width - indent, e.Bounds.Height);
+
+            using var foreBrush = new SolidBrush(RForm.foreMain);
+            e.Graphics.DrawString(text, font, foreBrush, textRect,
+                new StringFormat { LineAlignment = StringAlignment.Center });
+
+            if (isSep) font.Dispose();
+        }
+    }
+
+    public sealed class BindingItem
+    {
+        public ushort Code { get; }
+        public string DisplayName { get; }
+        public ushort[]? ComboKeys { get; }
+        public BindingItem(ushort code, string name, ushort[]? comboKeys = null)
+        { Code = code; DisplayName = name; ComboKeys = comboKeys; }
+        public override string ToString() => DisplayName;
+    }
+
+    public sealed class BindingSeparator
+    {
+        public string Label { get; }
+        public BindingSeparator(string label) { Label = label; }
+        public override string ToString() => Label;
     }
 }

@@ -157,20 +157,38 @@ namespace GHelper
             trackFast.Maximum = AsusACPI.MaxTotal;
             trackFast.Minimum = AsusACPI.MinTotal;
 
+            trackCrossLoad.Maximum = AsusACPI.MaxCrossLoad;
+            trackCrossLoad.Minimum = AsusACPI.MinCrossLoad;
+
+            trackGPUtoCPU.Maximum = AsusACPI.MaxGPUtoCPU;
+            trackGPUtoCPU.Minimum = AsusACPI.MinGPUtoCPU;
+
+            trackCPUTemp.Maximum = AsusACPI.MaxCPUTemp;
+            trackCPUTemp.Minimum = AsusACPI.MinCPUTemp;
+
             trackTotal.Scroll += TrackTotal_Scroll;
             trackSlow.Scroll += TrackSlow_Scroll;
             trackFast.Scroll += TrackFast_Scroll;
             trackCPU.Scroll += TrackCPU_Scroll;
+            trackCrossLoad.Scroll += TrackCross_Scroll;
+            trackGPUtoCPU.Scroll += TrackCross_Scroll;
+            trackCPUTemp.Scroll += TrackCross_Scroll;
 
             trackFast.MouseUp += TrackPower_MouseUp;
             trackCPU.MouseUp += TrackPower_MouseUp;
             trackTotal.MouseUp += TrackPower_MouseUp;
             trackSlow.MouseUp += TrackPower_MouseUp;
+            trackCrossLoad.MouseUp += TrackPower_MouseUp;
+            trackGPUtoCPU.MouseUp += TrackPower_MouseUp;
+            trackCPUTemp.MouseUp += TrackPower_MouseUp;
 
             trackFast.KeyUp += TrackPower_KeyUp;
             trackCPU.KeyUp += TrackPower_KeyUp;
             trackTotal.KeyUp += TrackPower_KeyUp;
             trackSlow.KeyUp += TrackPower_KeyUp;
+            trackCrossLoad.KeyUp += TrackPower_KeyUp;
+            trackGPUtoCPU.KeyUp += TrackPower_KeyUp;
+            trackCPUTemp.KeyUp += TrackPower_KeyUp;
 
             checkApplyFans.Click += CheckApplyFans_Click;
             checkApplyPower.Click += CheckApplyPower_Click;
@@ -280,6 +298,9 @@ namespace GHelper
             ToggleNavigation(0);
 
             if (!Program.acpi.IsSupported(AsusACPI.DevsCPUFanCurve)) buttonCalibrate.Visible = false;
+
+            gpuPowerBase = Program.acpi.DeviceGet(AsusACPI.GPU_BASE);
+            panelGPUPower.Visible = isGPUPower;
 
             FormClosed += Fans_FormClosed;
             Activated  += (_, _) => VisualiseAdvanced();
@@ -582,10 +603,6 @@ namespace GHelper
 
         private void InitGPUPower()
         {
-            gpuPowerBase = Program.acpi.DeviceGet(AsusACPI.GPU_BASE);
-            if (gpuPowerBase >= 0) Logger.WriteLine($"ReadGPUPowerBase: {gpuPowerBase}");
-
-            panelGPUPower.Visible = isGPUPower;
             if (!isGPUPower) return;
 
             int maxGPUPower = NvidiaSmi.GetMaxGPUPower();
@@ -600,7 +617,7 @@ namespace GHelper
             {
                 await Task.Delay(TimeSpan.FromMilliseconds(200));
                 int gpuPowerVar = Program.acpi.DeviceGet(AsusACPI.GPU_POWER);
-                Logger.WriteLine($"ReadGPUPower ({Modes.GetCurrentBase()}): {gpuPowerVar}");
+                Logger.WriteLine($"ReadGPUPower ({Modes.GetCurrentBase()}): {gpuPowerBase} + {gpuPowerVar}");
 
                 int gpu_power = AppConfig.GetMode("gpu_power");
                 if (gpu_power < 0) gpu_power = (gpuPowerVar >= 0) ? gpuPowerVar : AsusACPI.MaxGPUPower;
@@ -1011,8 +1028,16 @@ namespace GHelper
             bool modeB0 = Program.acpi.IsAllAmdPPT();
             bool modeC1 = Program.acpi.IsSupported(AsusACPI.PPT_APUC1);
 
+            bool modeCross = Program.acpi.IsSupported(AsusACPI.PPT_CROSS9F);
+            bool modeGPUtoCPU = Program.acpi.IsSupported(AsusACPI.PPT_GPUCPU9C);
+            bool modeCPUTemp = Program.acpi.IsSupported(AsusACPI.PPT_TEMP9E);
+
             panelTotal.Visible = modeA;
             panelCPU.Visible = modeB0;
+
+            panelCrossLoad.Visible = modeCross;
+            panelGPUtoCPU.Visible = modeGPUtoCPU;
+            panelCPUTemp.Visible = modeCPUTemp;
 
             panelApplyPower.Visible = panelTitleCPU.Visible = modeA || modeB0 || modeC1;
 
@@ -1065,15 +1090,30 @@ namespace GHelper
             if (limit_fast > AsusACPI.MaxTotal) limit_fast = AsusACPI.MaxTotal;
             if (limit_fast < AsusACPI.MinTotal) limit_fast = AsusACPI.MinTotal;
 
+            int limit_crossload = AppConfig.GetMode("limit_crossload", AsusACPI.MaxCrossLoad);
+            int limit_gpucpu = AppConfig.GetMode("limit_gpucpu", AsusACPI.MaxGPUtoCPU);
+            int limit_cputemp = AppConfig.GetMode("limit_cputemp", AsusACPI.MaxCPUTemp);
+
+            limit_crossload = Math.Clamp(limit_crossload, AsusACPI.MinCrossLoad, AsusACPI.MaxCrossLoad);
+            limit_gpucpu = Math.Clamp(limit_gpucpu, AsusACPI.MinGPUtoCPU, AsusACPI.MaxGPUtoCPU);
+            limit_cputemp = Math.Clamp(limit_cputemp, AsusACPI.MinCPUTemp, AsusACPI.MaxCPUTemp);
+
             trackTotal.Value = limit_total;
             trackSlow.Value = limit_slow;
             trackCPU.Value = limit_cpu;
             trackFast.Value = limit_fast;
 
+            trackCrossLoad.Value = limit_crossload;
+            trackGPUtoCPU.Value = limit_gpucpu;
+            trackCPUTemp.Value = limit_cputemp;
+
             trackTotal.AccessibleName = labelLeftTotal.Text;
             trackSlow.AccessibleName = labelLeftSlow.Text;
             trackFast.AccessibleName = labelLeftFast.Text;
             trackCPU.AccessibleName = labelLeftCPU.Text;
+            trackCrossLoad.AccessibleName = labelLeftCrossLoad.Text;
+            trackGPUtoCPU.AccessibleName = labelLeftGPUtoCPU.Text;
+            trackCPUTemp.AccessibleName = labelLeftCPUTemp.Text;
 
             SavePower();
 
@@ -1086,10 +1126,18 @@ namespace GHelper
             labelCPU.Text = trackCPU.Value.ToString() + "W";
             labelFast.Text = trackFast.Value.ToString() + "W";
 
+            labelCrossLoad.Text = trackCrossLoad.Value.ToString() + "W";
+            labelGPUtoCPU.Text = trackGPUtoCPU.Value.ToString() + "W";
+            labelCPUTemp.Text = TempHelper.FormatTemp(trackCPUTemp.Value);
+
             AppConfig.SetMode("limit_total", trackTotal.Value);
             AppConfig.SetMode("limit_slow", trackSlow.Value);
             AppConfig.SetMode("limit_cpu", trackCPU.Value);
             AppConfig.SetMode("limit_fast", trackFast.Value);
+
+            if (Program.acpi.IsSupported(AsusACPI.PPT_CROSS9F)) AppConfig.SetMode("limit_crossload", trackCrossLoad.Value);
+            if (Program.acpi.IsSupported(AsusACPI.PPT_GPUCPU9C)) AppConfig.SetMode("limit_gpucpu", trackGPUtoCPU.Value);
+            if (Program.acpi.IsSupported(AsusACPI.PPT_TEMP9E)) AppConfig.SetMode("limit_cputemp", trackCPUTemp.Value);
         }
 
         private void TrackTotal_Scroll(object? sender, EventArgs e)
@@ -1117,6 +1165,12 @@ namespace GHelper
         private void TrackCPU_Scroll(object? sender, EventArgs e)
         {
             if (trackCPU.Value > trackTotal.Value) trackTotal.Value = trackCPU.Value;
+            SavePower();
+        }
+
+        private void TrackCross_Scroll(object? sender, EventArgs e)
+        {
+            trackGPUtoCPU.Value -= trackGPUtoCPU.Value % AsusACPI.StepGPUtoCPU;
             SavePower();
         }
 
@@ -1273,6 +1327,11 @@ namespace GHelper
             trackUV.Value = CpuInfo.MaxCPUUV;
             trackUViGPU.Value = CpuInfo.MaxIGPUUV;
             trackTemp.Value = CpuInfo.DefaultTemp;
+
+            trackCrossLoad.Value = AsusACPI.MaxCrossLoad;
+            trackGPUtoCPU.Value = AsusACPI.MaxGPUtoCPU;
+            trackCPUTemp.Value = AsusACPI.MaxCPUTemp;
+            SavePower();
 
             AdvancedScroll();
             AppConfig.RemoveMode("cpu_temp");

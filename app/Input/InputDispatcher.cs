@@ -2,6 +2,7 @@ using GHelper.Display;
 using GHelper.Helpers;
 using GHelper.Mode;
 using GHelper.Peripherals;
+using GHelper.Peripherals.Keyboard;
 using GHelper.Peripherals.Mouse;
 using GHelper.USB;
 using Microsoft.Win32;
@@ -102,6 +103,7 @@ namespace GHelper.Input
             {
                 Program.acpi.DeviceGet(AsusACPI.CameraShutter);
                 listener = new KeyboardListener(HandleEvent);
+                InitCamera();
             }
             else
             {
@@ -110,7 +112,6 @@ namespace GHelper.Input
 
             InitBacklightTimer();
             MuteLEDInit();
-            InitCamera();
         }
 
         public static void InitFNLock()
@@ -220,6 +221,10 @@ namespace GHelper.Input
 
             foreach (ushort code in GetActiveMouseComboCarriers())
                 hook.RegisterHotKey(ModifierKeys.None, Keys.F13 + (code - 0x0068));
+
+            for (int slot = 0; slot < AsusKeyboard.LaunchSlots; slot++)
+                if (AsusKeyboard.LaunchCommand(slot).Length > 0)
+                    hook.RegisterHotKey(ModifierKeys.Control | ModifierKeys.Shift | ModifierKeys.Alt, Keys.F1 + slot);
 
         }
 
@@ -331,6 +336,17 @@ namespace GHelper.Input
         {
 
             Logger.WriteLine(e.Key.ToString() + " " + e.Modifier.ToString());
+
+            if (e.Modifier == (ModifierKeys.Control | ModifierKeys.Shift | ModifierKeys.Alt)
+                && e.Key >= Keys.F1 && e.Key < Keys.F1 + AsusKeyboard.LaunchSlots)
+            {
+                string command = AsusKeyboard.LaunchCommand(e.Key - Keys.F1);
+                if (command.Length > 0)
+                {
+                    LaunchProcess(command);
+                    return;
+                }
+            }
 
             if (e.Modifier == ModifierKeys.None)
             {
@@ -1115,9 +1131,10 @@ namespace GHelper.Input
                 }
             }
 
+            Aura.Init();
+
             if (!AppConfig.Is("skip_aura"))
             {
-                Aura.Init();
                 Aura.ApplyPower();
                 SetBacklightAuto();
                 Aura.ApplyAura();
@@ -1262,14 +1279,19 @@ namespace GHelper.Input
             var result = ProcessHelper.RunCMD($"{asusPath}\\AsusHotkey.exe", $"-MFCameraCommand {status} 1 0", asusPath);
             var cameraLedStatus = Program.acpi.DeviceGet(AsusACPI.CameraLed);
             Logger.WriteLine("Camera LED: " + cameraLedStatus);
-            AppConfig.Set("camera_status", cameraLedStatus);
+            AppConfig.Set("camera_status", status);
             if (toast)
             {
-                string statusText = cameraLedStatus switch
+                string statusText = status switch
                 {
                     0 => "On",
                     1 => "Off",
-                    _ => "Toggled"
+                    _ => cameraLedStatus switch
+                    {
+                        0 => "On",
+                        1 => "Off",
+                        _ => "Toggled"
+                    }
                 };
                 Program.toast.RunToast($"Camera {statusText}");
             }
@@ -1385,6 +1407,7 @@ namespace GHelper.Input
                 if (AppConfig.NoWMI()) return;
 
                 if (EventID == 123) Program.OnChargerEvent();
+                if (EventID == 186 || EventID == 194) Program.settingsForm.VisualizeXGM();
 
                 HandleEvent(EventID);
             }

@@ -14,6 +14,11 @@ namespace GHelper
 
         ClamshellModeControl clamshellControl = new ClamshellModeControl();
 
+        int[] vramOptions = [];
+
+        int coresMinP = AsusACPI.PCoreMin;
+        int coresMinE = AsusACPI.ECoreMin;
+
         const string EMPTY = "--------------";
 
 
@@ -144,8 +149,7 @@ namespace GHelper
 
             checkAwake.Text = Properties.Strings.Awake;
             checkSleep.Text = Properties.Strings.Sleep;
-            checkBoot.Text = Properties.Strings.Boot;
-            checkShutdown.Text = Properties.Strings.Shutdown;
+            checkBoot.Text = checkBootLogo.Text = checkBootBar.Text = checkBootLid.Text = Properties.Strings.Boot + "/" + Properties.Strings.Shutdown;
             checkBattery.Text = checkBatteryLogo.Text = checkBatteryBar.Text = checkBatteryLid.Text = Properties.Strings.Battery;
             checkBootSound.Text = Properties.Strings.BootSound;
             checkKeystoneSound.Text = Properties.Strings.KeystoneSound;
@@ -158,6 +162,7 @@ namespace GHelper
             //labelBacklightTimeoutPlugged.Text = Properties.Strings.BacklightTimeoutPlugged;
 
             checkNoOverdrive.Text = Properties.Strings.DisableOverdrive;
+            checkELMB.Text = Properties.Strings.ExtremeLowMotionBlur;
             checkTopmost.Text = Properties.Strings.WindowTop;
             checkUSBC.Text = Properties.Strings.OptimizedUSBC;
             checkAutoToggleClamshellMode.Text = Properties.Strings.ToggleClamshellMode;
@@ -169,6 +174,7 @@ namespace GHelper
 
             checkGpuApps.Text = Properties.Strings.KillGpuApps;
             checkAspm.Text = Properties.Strings.DisablePCIeASPM;
+            checkStandbyNetworking.Text = Properties.Strings.DisableStandbyNetworking;
             checkNVPlatform.Text = Properties.Strings.StopStartNVServices;
             labelHibernateAfter.Text = Properties.Strings.HibernateAfter;
             numericHibernateAfter.OffText = Properties.Strings.Off;
@@ -209,10 +215,9 @@ namespace GHelper
             comboKeyboardSpeed.AccessibleName = Properties.Strings.LaptopBacklight + " " + Properties.Strings.AnimationSpeed;
             comboAPU.AccessibleName = Properties.Strings.LaptopBacklight + " " + Properties.Strings.AnimationSpeed;
 
-            checkBoot.AccessibleName = Properties.Strings.Boot + " " + Properties.Strings.LaptopBacklight;
+            checkBoot.AccessibleName = Properties.Strings.Boot + "/" + Properties.Strings.Shutdown + " " + Properties.Strings.LaptopBacklight;
             checkAwake.AccessibleName = Properties.Strings.Awake + " " + Properties.Strings.LaptopBacklight;
             checkSleep.AccessibleName = Properties.Strings.Sleep + " " + Properties.Strings.LaptopBacklight;
-            checkShutdown.AccessibleName = Properties.Strings.Shutdown + " " + Properties.Strings.LaptopBacklight;
 
             panelSettings.AccessibleName = Properties.Strings.ExtraSettings;
             numericHibernateAfter.AccessibleName = Properties.Strings.HibernateAfter;
@@ -295,17 +300,6 @@ namespace GHelper
                 checkGpuApps.Visible = false;
                 checkUSBC.Visible = false;
                 checkAutoToggleClamshellMode.Visible = false;
-
-                int apuMem = Program.acpi.GetAPUMem();
-                if (apuMem >= 0)
-                {
-                    panelAPU.Visible = true;
-                    comboAPU.DropDownStyle = ComboBoxStyle.DropDownList;
-                    comboAPU.SelectedIndex = apuMem;
-                }
-
-                comboAPU.SelectedIndexChanged += ComboAPU_SelectedIndexChanged;
-
             }
             else
             {
@@ -344,52 +338,44 @@ namespace GHelper
             checkBattery.Checked = AppConfig.IsOnBattery("keyboard_awake");
             checkBoot.Checked = AppConfig.IsNotFalse("keyboard_boot");
             checkSleep.Checked = AppConfig.IsNotFalse("keyboard_sleep");
-            checkShutdown.Checked = AppConfig.IsNotFalse("keyboard_shutdown");
 
             // Lightbar
             checkAwakeBar.Checked = AppConfig.IsNotFalse("keyboard_awake_bar");
             checkBatteryBar.Checked = AppConfig.IsOnBattery("keyboard_awake_bar");
             checkBootBar.Checked = AppConfig.IsNotFalse("keyboard_boot_bar");
             checkSleepBar.Checked = AppConfig.IsNotFalse("keyboard_sleep_bar");
-            checkShutdownBar.Checked = AppConfig.IsNotFalse("keyboard_shutdown_bar");
 
             // Lid
             checkAwakeLid.Checked = AppConfig.IsNotFalse("keyboard_awake_lid");
             checkBatteryLid.Checked = AppConfig.IsOnBattery("keyboard_awake_lid");
             checkBootLid.Checked = AppConfig.IsNotFalse("keyboard_boot_lid");
             checkSleepLid.Checked = AppConfig.IsNotFalse("keyboard_sleep_lid");
-            checkShutdownLid.Checked = AppConfig.IsNotFalse("keyboard_shutdown_lid");
 
             // Logo
             checkAwakeLogo.Checked = AppConfig.IsNotFalse("keyboard_awake_logo");
             checkBatteryLogo.Checked = AppConfig.IsOnBattery("keyboard_awake_logo");
             checkBootLogo.Checked = AppConfig.IsNotFalse("keyboard_boot_logo");
             checkSleepLogo.Checked = AppConfig.IsNotFalse("keyboard_sleep_logo");
-            checkShutdownLogo.Checked = AppConfig.IsNotFalse("keyboard_shutdown_logo");
 
             checkAwake.CheckedChanged += CheckPower_CheckedChanged;
             checkBattery.CheckedChanged += CheckPower_CheckedChanged;
             checkBoot.CheckedChanged += CheckPower_CheckedChanged;
             checkSleep.CheckedChanged += CheckPower_CheckedChanged;
-            checkShutdown.CheckedChanged += CheckPower_CheckedChanged;
 
             checkAwakeBar.CheckedChanged += CheckPower_CheckedChanged;
             checkBatteryBar.CheckedChanged += CheckPower_CheckedChanged;
             checkBootBar.CheckedChanged += CheckPower_CheckedChanged;
             checkSleepBar.CheckedChanged += CheckPower_CheckedChanged;
-            checkShutdownBar.CheckedChanged += CheckPower_CheckedChanged;
 
             checkAwakeLid.CheckedChanged += CheckPower_CheckedChanged;
             checkBatteryLid.CheckedChanged += CheckPower_CheckedChanged;
             checkBootLid.CheckedChanged += CheckPower_CheckedChanged;
             checkSleepLid.CheckedChanged += CheckPower_CheckedChanged;
-            checkShutdownLid.CheckedChanged += CheckPower_CheckedChanged;
 
             checkAwakeLogo.CheckedChanged += CheckPower_CheckedChanged;
             checkBatteryLogo.CheckedChanged += CheckPower_CheckedChanged;
             checkBootLogo.CheckedChanged += CheckPower_CheckedChanged;
             checkSleepLogo.CheckedChanged += CheckPower_CheckedChanged;
-            checkShutdownLogo.CheckedChanged += CheckPower_CheckedChanged;
 
             if (!AppConfig.IsBacklightZones() || AppConfig.IsARCNM())
             {
@@ -404,7 +390,6 @@ namespace GHelper
                 checkBatteryBar.Visible = false;
                 checkBootBar.Visible = false;
                 checkSleepBar.Visible = false;
-                checkShutdownBar.Visible = false;
             }
 
             if (!Aura.HasLogo)
@@ -414,7 +399,6 @@ namespace GHelper
                 checkBatteryLogo.Visible = false;
                 checkBootLogo.Visible = false;
                 checkSleepLogo.Visible = false;
-                checkShutdownLogo.Visible = false;
             }
 
             if (!Aura.HasRearglow)
@@ -424,7 +408,6 @@ namespace GHelper
                 checkBatteryLid.Visible = false;
                 checkBootLid.Visible = false;
                 checkSleepLid.Visible = false;
-                checkShutdownLid.Visible = false;
             }
 
             //checkAutoToggleClamshellMode.Visible = clamshellControl.IsExternalDisplayConnected();
@@ -436,6 +419,11 @@ namespace GHelper
 
             checkNoOverdrive.Checked = AppConfig.IsNoOverdrive();
             checkNoOverdrive.CheckedChanged += CheckNoOverdrive_CheckedChanged;
+
+            int elmb = ScreenELMB.Get();
+            checkELMB.Visible = elmb >= 0;
+            checkELMB.Checked = elmb == 1;
+            checkELMB.CheckedChanged += CheckELMB_CheckedChanged;
 
             checkUSBC.Checked = AppConfig.Is("optimized_usbc");
             checkUSBC.CheckedChanged += CheckUSBC_CheckedChanged;
@@ -469,6 +457,11 @@ namespace GHelper
             checkStatusLed.Checked = (statusLed > 0);
             checkStatusLed.CheckedChanged += CheckLEDStatus_CheckedChanged;
 
+            int numberPad = AppConfig.IsNumberPad() ? NumberPad.Get() : -1;
+            checkNumberPad.Visible = numberPad >= 0;
+            checkNumberPad.Checked = numberPad == 1;
+            checkNumberPad.CheckedChanged += CheckNumberPad_CheckedChanged;
+
             var optimalBrightness = ScreenControl.GetOptimalBrightness();
             if (optimalBrightness >= 0)
             {
@@ -491,6 +484,9 @@ namespace GHelper
             checkAspm.Checked = AppConfig.IsAutoASPM();
             checkAspm.CheckedChanged += CheckAspm_CheckedChanged;
 
+            checkStandbyNetworking.Checked = AppConfig.IsAutoStandbyNetworking();
+            checkStandbyNetworking.CheckedChanged += CheckStandbyNetworking_CheckedChanged;
+
             checkKeystoneSound.Visible = AppConfig.IsKeystone();
             checkKeystoneSound.Checked = Keystone.IsEnabled();
             checkKeystoneSound.CheckedChanged += CheckKeystoneSoundCheckedChanged;
@@ -498,10 +494,12 @@ namespace GHelper
             toolTip.SetToolTip(checkAutoToggleClamshellMode, Properties.Strings.ClamshellModeTooltip);
             toolTip.SetToolTip(checkNVPlatform, Properties.Strings.NVPlatformTooltip);
             toolTip.SetToolTip(checkAspm, Properties.Strings.DisablePCIeASPMTooltip);
+            toolTip.SetToolTip(checkStandbyNetworking, Properties.Strings.DisableStandbyNetworkingTooltip);
 
             InitCores();
             InitServices();
             InitHibernate();
+            InitVramMem();
 
             InitACPITesting();
 
@@ -518,6 +516,13 @@ namespace GHelper
             PowerNative.SetBalancedASPM(checkAspm.Checked ? 0 : 2);
         }
 
+        private void CheckStandbyNetworking_CheckedChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("standby_networking", (checkStandbyNetworking.Checked ? 1 : 0));
+            if (checkStandbyNetworking.Checked) PowerNative.SetConnectivityInStandby(0, 0);
+            else PowerNative.SetConnectivityInStandby(1, 2);
+        }
+
         private void CheckNVPlatform_CheckedChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("nv_platform", (checkNVPlatform.Checked ? 1 : 0));
@@ -531,6 +536,11 @@ namespace GHelper
         private void CheckLEDStatus_CheckedChanged(object? sender, EventArgs e)
         {
             InputDispatcher.SetStatusLED(checkStatusLed.Checked);
+        }
+
+        private void CheckNumberPad_CheckedChanged(object? sender, EventArgs e)
+        {
+            NumberPad.Set(checkNumberPad.Checked);
         }
 
         private void InitACPITesting()
@@ -564,7 +574,7 @@ namespace GHelper
         private void InitCores()
         {
             (int eCores, int pCores) = Program.acpi.GetCores();
-            (int eCoresMax, int pCoresMax) = Program.acpi.GetCores(true);
+            (int eCoresMax, int pCoresMax) = Program.acpi.GetCores(AsusACPI.CORES_MAX);
 
             if (eCores < 0 || pCores < 0 || eCoresMax < 0 || pCoresMax < 0)
             {
@@ -578,18 +588,24 @@ namespace GHelper
             if (AppConfig.Is8Ecores()) eCoresMax = Math.Max(8, eCoresMax);
 
             eCoresMax = Math.Max(4, eCoresMax);
-            pCoresMax = Math.Max(4, pCoresMax);
+
+            (int eMin, int pMin) = Program.acpi.GetCores(AsusACPI.CORES_MIN);
+            if (pMin >= 1)
+            {
+                coresMinP = Math.Min(pMin, pCoresMax);
+                coresMinE = Math.Min(eMin, eCoresMax);
+            }
 
             panelCores.Visible = true;
 
             comboCoresE.DropDownStyle = ComboBoxStyle.DropDownList;
             comboCoresP.DropDownStyle = ComboBoxStyle.DropDownList;
 
-            for (int i = AsusACPI.PCoreMin; i <= pCoresMax; i++) comboCoresP.Items.Add(i.ToString() + " Pcores");
-            for (int i = AsusACPI.ECoreMin; i <= eCoresMax; i++) comboCoresE.Items.Add(i.ToString() + " Ecores");
+            for (int i = coresMinP; i <= pCoresMax; i++) comboCoresP.Items.Add(i.ToString() + " Pcores");
+            for (int i = coresMinE; i <= eCoresMax; i++) comboCoresE.Items.Add(i.ToString() + " Ecores");
 
-            comboCoresP.SelectedIndex = Math.Max(Math.Min(pCores - AsusACPI.PCoreMin, comboCoresP.Items.Count - 1), 0);
-            comboCoresE.SelectedIndex = Math.Max(Math.Min(eCores - AsusACPI.ECoreMin, comboCoresE.Items.Count - 1), 0);
+            comboCoresP.SelectedIndex = Math.Max(Math.Min(pCores - coresMinP, comboCoresP.Items.Count - 1), 0);
+            comboCoresE.SelectedIndex = Math.Max(Math.Min(eCores - coresMinE, comboCoresE.Items.Count - 1), 0);
 
             buttonCores.Click += ButtonCores_Click;
 
@@ -601,7 +617,7 @@ namespace GHelper
 
             if (dialogResult == DialogResult.Yes)
             {
-                Program.acpi.SetCores(AsusACPI.ECoreMin + comboCoresE.SelectedIndex, AsusACPI.PCoreMin + comboCoresP.SelectedIndex);
+                Program.acpi.SetCores(coresMinE + comboCoresE.SelectedIndex, coresMinP + comboCoresP.SelectedIndex);
                 Process.Start("shutdown", "/r /t 1");
             }
         }
@@ -619,10 +635,47 @@ namespace GHelper
             }.Start();
         }
 
+        private void InitVramMem()
+        {
+            int unitMb = 0;
+            if (PawnIO.CpuInfo.IsAMD) vramOptions = Program.acpi.GetVramOptions(out unitMb);
+
+            if (vramOptions.Length > 0)
+            {
+                comboAPU.Items.Clear();
+                foreach (int option in vramOptions)
+                    comboAPU.Items.Add(option == 0 ? Properties.Strings.AutoMode : ((double)option * unitMb / 1024).ToString("0.#") + "G");
+
+                int current = Program.acpi.GetVramMem();
+                if (current == 0) current = AppConfig.Get("vram_mem", 0);
+
+                comboAPU.SelectedIndex = Math.Max(0, Array.IndexOf(vramOptions, current));
+            }
+            else
+            {
+                if (!AppConfig.IsAlly()) return;
+
+                int apuMem = Program.acpi.GetAPUMem();
+                if (apuMem < 0) return;
+
+                comboAPU.SelectedIndex = apuMem;
+            }
+
+            panelAPU.Visible = true;
+            comboAPU.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboAPU.SelectedIndexChanged += ComboAPU_SelectedIndexChanged;
+        }
+
         private void ComboAPU_SelectedIndexChanged(object? sender, EventArgs e)
         {
             int mem = comboAPU.SelectedIndex;
-            Program.acpi.SetAPUMem(mem);
+
+            if (vramOptions.Length == 0) Program.acpi.SetAPUMem(mem);
+            else
+            {
+                Program.acpi.SetVramMem(vramOptions[mem]);
+                AppConfig.Set("vram_mem", vramOptions[mem]);
+            }
 
             DialogResult dialogResult = MessageBox.Show(Properties.Strings.AlertAPUMemoryRestart, Properties.Strings.AlertAPUMemoryRestartTitle, MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
@@ -773,6 +826,12 @@ namespace GHelper
             XGM.Light(checkXGM.Checked);
         }
 
+        private void CheckELMB_CheckedChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("elmb", checkELMB.Checked ? 1 : 0);
+            ScreenELMB.Set(checkELMB.Checked ? 1 : 0);
+        }
+
         private void CheckUSBC_CheckedChanged(object? sender, EventArgs e)
         {
             AppConfig.Set("optimized_usbc", (checkUSBC.Checked ? 1 : 0));
@@ -815,22 +874,22 @@ namespace GHelper
             AppConfig.Set("keyboard_awake", (checkAwake.Checked ? 1 : 0));
             AppConfig.Set("keyboard_boot", (checkBoot.Checked ? 1 : 0));
             AppConfig.Set("keyboard_sleep", (checkSleep.Checked ? 1 : 0));
-            AppConfig.Set("keyboard_shutdown", (checkShutdown.Checked ? 1 : 0));
+            AppConfig.Set("keyboard_shutdown", (checkBoot.Checked ? 1 : 0));
 
             AppConfig.Set("keyboard_awake_bar", (checkAwakeBar.Checked ? 1 : 0));
             AppConfig.Set("keyboard_boot_bar", (checkBootBar.Checked ? 1 : 0));
             AppConfig.Set("keyboard_sleep_bar", (checkSleepBar.Checked ? 1 : 0));
-            AppConfig.Set("keyboard_shutdown_bar", (checkShutdownBar.Checked ? 1 : 0));
+            AppConfig.Set("keyboard_shutdown_bar", (checkBootBar.Checked ? 1 : 0));
 
             AppConfig.Set("keyboard_awake_lid", (checkAwakeLid.Checked ? 1 : 0));
             AppConfig.Set("keyboard_boot_lid", (checkBootLid.Checked ? 1 : 0));
             AppConfig.Set("keyboard_sleep_lid", (checkSleepLid.Checked ? 1 : 0));
-            AppConfig.Set("keyboard_shutdown_lid", (checkShutdownLid.Checked ? 1 : 0));
+            AppConfig.Set("keyboard_shutdown_lid", (checkBootLid.Checked ? 1 : 0));
 
             AppConfig.Set("keyboard_awake_logo", (checkAwakeLogo.Checked ? 1 : 0));
             AppConfig.Set("keyboard_boot_logo", (checkBootLogo.Checked ? 1 : 0));
             AppConfig.Set("keyboard_sleep_logo", (checkSleepLogo.Checked ? 1 : 0));
-            AppConfig.Set("keyboard_shutdown_logo", (checkShutdownLogo.Checked ? 1 : 0));
+            AppConfig.Set("keyboard_shutdown_logo", (checkBootLogo.Checked ? 1 : 0));
 
             if (AppConfig.IsBacklightZones())
             {

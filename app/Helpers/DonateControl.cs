@@ -24,12 +24,29 @@ namespace GHelper.Helpers
             {
                 int click = AppConfig.Get("donate_click");
                 int startCount = AppConfig.Get("start_count");
-                if (startCount >= ((click < 20) ? 20 : click + 50))
+                int badge = GetBadge(startCount, click);
+                if (badge > 0)
                 {
                     _button.BorderColor = RForm.colorTurbo;
-                    _button.Badge = Math.Clamp((startCount - click) / 50, 1, 5);
+                    _button.Badge = GetBadge(startCount - 1, click);
+                    if (_button.Badge < badge) _settings.VisibleChanged += Settings_VisibleChanged;
                 }
             }
+        }
+
+        private static int GetBadge(int startCount, int click)
+        {
+            if (startCount < ((click < 20) ? 20 : click + 50)) return 0;
+            return Math.Clamp((startCount - click) / 50, 1, 5);
+        }
+
+        private void Settings_VisibleChanged(object? sender, EventArgs e)
+        {
+            if (!_settings.Visible) return;
+            _settings.VisibleChanged -= Settings_VisibleChanged;
+            var timer = new System.Windows.Forms.Timer { Interval = 1500 };
+            timer.Tick += (s, ev) => { timer.Dispose(); _button.Pop(_button.Badge + 1); };
+            timer.Start();
         }
 
         public void ApplyTheme()

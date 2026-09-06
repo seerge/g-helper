@@ -10,7 +10,6 @@ namespace GHelper.Peripherals
     public interface IPeripheral
     {
         public bool IsDeviceReady { get; }
-        public bool Wireless { get; }
         public int Battery { get; }
         public bool Charging { get; }
 

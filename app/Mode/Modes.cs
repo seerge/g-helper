@@ -11,6 +11,9 @@
             { "limit_slow", "int" },
             { "limit_fast", "int" },
             { "limit_cpu", "int" },
+            { "limit_crossload", "int" },
+            { "limit_gpucpu", "int" },
+            { "limit_cputemp", "int" },
             { "fan_profile_cpu", "string" },
             { "fan_profile_gpu", "string" },
             { "fan_profile_mid", "string" }, 
@@ -22,6 +25,7 @@
             { "gpu_clock_limit", "int" },
             { "cpu_temp", "_" },
             { "cpu_uv", "_" },
+            { "cpu_uv_cores", "_" },
             { "igpu_uv", "_" },
             { "auto_boost", "int" },
             { "auto_apply", "int" },
@@ -103,6 +107,24 @@
             return -1;
         }
 
+        public static void InitFullSpeed()
+        {
+            int vivoMode = Program.acpi.DeviceGet(AsusACPI.VivoBookMode);
+            if (vivoMode < 0) return;
+            Logger.WriteLine($"VivoBookMode: {vivoMode} (0x{vivoMode:X})");
+            if ((vivoMode & 0x40000) == 0) return;
+
+            for (int i = 3; i < maxModes; i++)
+                if (GetBase(i) == AsusACPI.PerformanceFullSpeed) return;
+
+            for (int i = 3; i < maxModes; i++)
+            {
+                if (Exists(i)) continue;
+                AppConfig.Set("mode_base_" + i, AsusACPI.PerformanceFullSpeed);
+                AppConfig.Set("mode_name_" + i, "Full Speed");
+                return;
+            }
+        }
 
         public static int GetCurrent()
         {

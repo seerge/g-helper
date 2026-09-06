@@ -30,6 +30,8 @@ namespace GHelper.Helpers
             GC.WaitForPendingFinalizers();
             GC.Collect(GC.MaxGeneration, GCCollectionMode.Optimized);
 
+            if (!AppConfig.IsNotFalse("gc")) return;
+
             using var p = System.Diagnostics.Process.GetCurrentProcess();
             SetProcessWorkingSetSize(p.Handle, -1, -1);
         }

@@ -30,8 +30,10 @@ namespace GHelper.Display
         DimmingVivo = 9,
         DimmingVisual = 19,
         DimmingDuo = 109,
+        DimmingVisualDuo = 319,
 
         GamutMode = 200,
+        GamutModeDuo = 201,
 
         Default = 11,
         Racing = 21,
@@ -42,6 +44,9 @@ namespace GHelper.Display
         Vivid = 13,
         Eyecare = 17,
         EReading = 212,
+        EReadingDuo = 213,
+        EReadingVivo = 210,
+        EReadingVivoDuo = 211,
         Disabled = 18,
     }
     public static class VisualControl
@@ -306,9 +311,10 @@ namespace GHelper.Display
                         param2 = null;
                         break;
                     case SplendidCommand.VivoEycare:
-                        param2 = Math.Abs(whiteBalance - 50) * 4 / 50;
+                        param2 = Math.Abs(whiteBalance - 50) * 3 / 50 + (whiteBalance < 50 ? 1 : 0);
                         break;
                     case SplendidCommand.EReading:
+                        if (AppConfig.IsDUO() && AppConfig.IsVivoZenPro()) mode = SplendidCommand.EReadingVivo;
                         param2 = 2;            // Contrast
                         param3 = whiteBalance; // Color Temp
                         break;
@@ -363,6 +369,42 @@ namespace GHelper.Display
             return _splendidPath;
         }
 
+        private static SplendidCommand GetDuoCommand(SplendidCommand command)
+        {
+            if (!AppConfig.IsDUO()) return SplendidCommand.None;
+
+            switch (command)
+            {
+                case SplendidCommand.VivoNormal:
+                case SplendidCommand.VivoVivid:
+                case SplendidCommand.VivoManual:
+                case SplendidCommand.VivoEycare:
+                    return command + 100;
+                case SplendidCommand.DimmingVivo:
+                    return SplendidCommand.DimmingDuo;
+                case SplendidCommand.DimmingVisual:
+                    return SplendidCommand.DimmingVisualDuo;
+                case SplendidCommand.GamutMode:
+                    return SplendidCommand.GamutModeDuo;
+                case SplendidCommand.EReadingVivo:
+                    return SplendidCommand.EReadingVivoDuo;
+                case SplendidCommand.EReading:
+                    return SplendidCommand.EReadingDuo;
+                case SplendidCommand.Default:
+                case SplendidCommand.Vivid:
+                case SplendidCommand.Eyecare:
+                case SplendidCommand.Disabled:
+                case SplendidCommand.Racing:
+                case SplendidCommand.Scenery:
+                case SplendidCommand.RTS:
+                case SplendidCommand.FPS:
+                case SplendidCommand.Cinema:
+                    return command + 300;
+                default:
+                    return SplendidCommand.None;
+            }
+        }
+
         private static int RunSplendid(SplendidCommand command, int? param1 = null, int? param2 = null, int? param3 = null)
         {
             string splendidPath = GetSplendidPath();
@@ -385,6 +427,9 @@ namespace GHelper.Display
 
             if (isSplenddid)
             {
+                var duoCommand = GetDuoCommand(command);
+                if (duoCommand != SplendidCommand.None) ProcessHelper.RunCMD(splendidExe, (int)duoCommand + " " + param1 + " " + param2 + " " + param3, splendidPath);
+
                 var result = ProcessHelper.RunCMD(splendidExe, (int)command + " " + param1 + " " + param2 + " " + param3, splendidPath);
                 if (result.Contains("file not exist") || (result.Length == 0 && !isVivo)) return 1;
                 if (result.Contains("return code: -1")) return -1;
@@ -405,7 +450,6 @@ namespace GHelper.Display
             var dimmingCommand = AppConfig.IsVivoZenPro() ? SplendidCommand.DimmingVivo : SplendidCommand.DimmingVisual;
             var dimmingLevel = (int)(40 + _brightness * 0.6);
 
-            if (AppConfig.IsDUO()) RunSplendid(SplendidCommand.DimmingDuo, 0, dimmingLevel);
             if (RunSplendid(dimmingCommand, 0, dimmingLevel) == 0) return;
 
             if (_init)

@@ -169,6 +169,7 @@ namespace GHelper.Display
         {
             var dm = CreateDevmode();
             if (DisplayNative.EnumDisplaySettingsEx(laptopScreen, ENUM_CURRENT_SETTINGS, ref dm) == 0) return 0;
+            if (dm.dmDisplayFrequency == frequency) return 0;
 
             dm.dmDisplayFrequency = frequency;
             int result = DisplayNative.ChangeDisplaySettingsEx(

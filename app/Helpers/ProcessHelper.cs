@@ -10,22 +10,13 @@ namespace GHelper.Helpers
         private static EventWaitHandle? exitEvent;
         private static long lastAdmin;
 
-        private static bool? _isSystem;
-        public static bool IsRunningAsSystem()
+        private static readonly Lazy<bool> _isSystem = new Lazy<bool>(() =>
         {
-            if (_isSystem.HasValue)
-                return _isSystem.Value;
+            using var identity = WindowsIdentity.GetCurrent();
+            return identity.IsSystem;
+        }, LazyThreadSafetyMode.ExecutionAndPublication);
 
-            using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
-            {
-                if (identity == null)
-                    _isSystem = false;
-                else
-                    _isSystem = string.Equals(identity.Name, @"NT AUTHORITY\SYSTEM", StringComparison.OrdinalIgnoreCase);
-            }
-
-            return _isSystem.Value;
-        }
+        public static bool IsRunningAsSystem() => _isSystem.Value;
 
         public static void CheckAlreadyRunning()
         {
