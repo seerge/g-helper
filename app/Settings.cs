@@ -2285,7 +2285,7 @@ namespace GHelper
         private void AlignFnLock()
         {
             buttonFnLock.Width = buttonOverlay.Width = (buttonKeyboard.Width - 8) / 2;
-            buttonOverlay.Left = buttonKeyboard.Left;
+            buttonOverlay.Left = buttonFnLock.Left - 8 - buttonOverlay.Width;
         }
 
         public void VisualiseOverlay()
