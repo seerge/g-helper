@@ -724,20 +724,15 @@ namespace GHelper.Input
         }
 
 
-        static int lastMuteLed = -1;
-
         static void MuteLED()
         {
             Thread.Sleep(500);
-            SetMuteLED(Audio.IsMuted());
+            MuteLED(Audio.IsMuted());
         }
 
-        static void SetMuteLED(bool muted)
+        static void MuteLED(bool muted)
         {
-            int led = muted ? 1 : 0;
-            if (led == lastMuteLed) return;
-            lastMuteLed = led;
-            Program.acpi.DeviceSet(AsusACPI.SoundMuteLed, led, "SoundLed");
+            Program.acpi.DeviceSet(AsusACPI.SoundMuteLed, muted ? 1 : 0, "SoundLed");
         }
 
         static void ToggleTouchScreen()
@@ -762,11 +757,7 @@ namespace GHelper.Input
         {
             if (!AppConfig.IsVivoZenbook()) return;
             if (Program.acpi.IsSupported(AsusACPI.MicMuteLed)) Program.acpi.DeviceSet(AsusACPI.MicMuteLed, Audio.IsMicMuted() ? 1 : 0, "MicmuteLedInit");
-            if (Program.acpi.IsSupported(AsusACPI.SoundMuteLed))
-            {
-                SetMuteLED(Audio.IsMuted());
-                Audio.SubscribeMute(SetMuteLED);
-            }
+            if (Program.acpi.IsSupported(AsusACPI.SoundMuteLed)) Audio.SubscribeMute(MuteLED);
         }
 
         static bool GetTouchpadState()

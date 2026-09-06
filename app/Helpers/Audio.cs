@@ -12,7 +12,9 @@ namespace GHelper.Helpers
             {
                 using var enumerator = new MMDeviceEnumerator();
                 endpointVolume = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia).AudioEndpointVolume;
-                endpointVolume.OnVolumeNotification += (data) => onMuteChange(data.Muted);
+                bool muted = endpointVolume.Mute;
+                onMuteChange(muted);
+                endpointVolume.OnVolumeNotification += (data) => { if (data.Muted != muted) onMuteChange(muted = data.Muted); };
             }
             catch (Exception ex)
             {
