@@ -271,12 +271,12 @@ namespace GHelper
 
             buttonFPS.Click += ButtonFPS_Click;
             buttonOverlay.Click += ButtonOverlay_Click;
-            buttonOverlay.BorderColor = colorStandard;
             buttonOverlay.Text = Properties.Strings.Overlay;
-            buttonOverlay.Activated = AppConfig.IsOverlay();
+            VisualiseOverlay();
+            buttonKeyboard.SizeChanged += (s, e) => AlignFnLock();
+            AlignFnLock();
 
             if (AppConfig.IsAlly()) tableScreen.ColumnCount = 3;
-            else tableScreen.Controls.Add(buttonOverlay, 3, 0);
 
             buttonAutoTDP.Click += ButtonAutoTDP_Click;
             buttonAutoTDP.BorderColor = colorTurbo;
@@ -1514,7 +1514,7 @@ namespace GHelper
             }
 
             if (!AppConfig.IsAlly())
-                buttonOverlay.Visible = miniled1 < 0 && miniled2 < 0 && fhd < 0 && hdrControl < 0;
+                tableScreen.ColumnCount = 4;
 
             if (advancedColor) labelVisual.Text = Properties.Strings.VisualModesHDR;
             if (!screenEnabled) labelVisual.Text = Properties.Strings.VisualModesScreen;
@@ -1716,7 +1716,7 @@ namespace GHelper
             else
                 Program.hardwareOverlay?.StopOverlay();
 
-            buttonOverlay.Activated = enable;
+            VisualiseOverlay();
 
             if (fromHotkey && AppConfig.IsOverlayGameOnly())
                 Program.toast.RunToast(Properties.Strings.Overlay + " " + (enable ? Properties.Strings.On : Properties.Strings.Off));
@@ -2280,6 +2280,19 @@ namespace GHelper
             int filledSquares = (int)Math.Round(level/2);
             string squares = new string('|', filledSquares);
             labelMatrix.Text = $"Slash Lighting: {squares}";
+        }
+
+        private void AlignFnLock()
+        {
+            buttonFnLock.Width = buttonOverlay.Width = (buttonKeyboard.Width - 8) / 2;
+            buttonOverlay.Left = buttonKeyboard.Left;
+        }
+
+        public void VisualiseOverlay()
+        {
+            bool enabled = AppConfig.IsOverlay();
+            buttonOverlay.BackColor = enabled ? colorEco : buttonSecond;
+            buttonOverlay.ForeColor = enabled ? SystemColors.ControlLightLight : SystemColors.ControlDark;
         }
 
         public void VisualiseFnLock()

@@ -67,7 +67,6 @@ namespace GHelper
             labelTipGPU = new Label();
             tableAMD = new TableLayoutPanel();
             buttonAutoTDP = new RButton();
-            buttonOverlay = new RButton();
             buttonFPS = new RButton();
             tableGPU = new TableLayoutPanel();
             buttonStopGPU = new RButton();
@@ -100,6 +99,7 @@ namespace GHelper
             comboKeyboard = new RComboBox();
             panelKeyboardTitle = new Panel();
             buttonFnLock = new RButton();
+            buttonOverlay = new RButton();
             pictureKeyboard = new PictureBox();
             labelKeyboard = new Label();
             panelRearLight = new Panel();
@@ -723,7 +723,6 @@ namespace GHelper
             tableAMD.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
             tableAMD.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
             tableAMD.Controls.Add(buttonAutoTDP, 0, 0);
-            tableAMD.Controls.Add(buttonOverlay, 0, 0);
             tableAMD.Controls.Add(buttonFPS, 0, 0);
             tableAMD.Dock = DockStyle.Top;
             tableAMD.Location = new Point(20, 316);
@@ -756,28 +755,6 @@ namespace GHelper
             buttonAutoTDP.Text = "AutoTDP";
             buttonAutoTDP.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonAutoTDP.UseVisualStyleBackColor = false;
-            // 
-            // buttonOverlay
-            // 
-            buttonOverlay.Activated = false;
-            buttonOverlay.BackColor = SystemColors.ControlLightLight;
-            buttonOverlay.BorderColor = Color.Transparent;
-            buttonOverlay.BorderRadius = 5;
-            buttonOverlay.Dock = DockStyle.Fill;
-            buttonOverlay.FlatAppearance.BorderSize = 0;
-            buttonOverlay.FlatStyle = FlatStyle.Flat;
-            buttonOverlay.ForeColor = SystemColors.ControlText;
-            buttonOverlay.Image = Properties.Resources.icons8_heartbeat_32;
-            buttonOverlay.ImageAlign = ContentAlignment.MiddleRight;
-            buttonOverlay.Location = new Point(266, 4);
-            buttonOverlay.Margin = new Padding(4);
-            buttonOverlay.Name = "buttonOverlay";
-            buttonOverlay.Secondary = false;
-            buttonOverlay.Size = new Size(254, 72);
-            buttonOverlay.TabIndex = 12;
-            buttonOverlay.Text = "Overlay";
-            buttonOverlay.TextImageRelation = TextImageRelation.ImageBeforeText;
-            buttonOverlay.UseVisualStyleBackColor = false;
             // 
             // buttonFPS
             // 
@@ -1311,6 +1288,7 @@ namespace GHelper
             // 
             // panelKeyboardTitle
             // 
+            panelKeyboardTitle.Controls.Add(buttonOverlay);
             panelKeyboardTitle.Controls.Add(buttonFnLock);
             panelKeyboardTitle.Controls.Add(pictureKeyboard);
             panelKeyboardTitle.Controls.Add(labelKeyboard);
@@ -1318,7 +1296,7 @@ namespace GHelper
             panelKeyboardTitle.Location = new Point(20, 20);
             panelKeyboardTitle.Margin = new Padding(0);
             panelKeyboardTitle.Name = "panelKeyboardTitle";
-            panelKeyboardTitle.Padding = new Padding(0, 0, 5, 0);
+            panelKeyboardTitle.Padding = new Padding(0, 0, 4, 0);
             panelKeyboardTitle.Size = new Size(787, 40);
             panelKeyboardTitle.TabIndex = 40;
             // 
@@ -1334,14 +1312,34 @@ namespace GHelper
             buttonFnLock.FlatStyle = FlatStyle.Flat;
             buttonFnLock.Font = new Font("Segoe UI", 7.125F, FontStyle.Bold);
             buttonFnLock.ForeColor = SystemColors.ControlDark;
-            buttonFnLock.Location = new Point(675, 0);
+            buttonFnLock.Location = new Point(659, 0);
             buttonFnLock.Margin = new Padding(0);
             buttonFnLock.Name = "buttonFnLock";
             buttonFnLock.Secondary = true;
-            buttonFnLock.Size = new Size(107, 40);
+            buttonFnLock.Size = new Size(124, 40);
             buttonFnLock.TabIndex = 4;
             buttonFnLock.Text = "FN-Lock";
             buttonFnLock.UseVisualStyleBackColor = false;
+            // 
+            // buttonOverlay
+            // 
+            buttonOverlay.Activated = false;
+            buttonOverlay.BackColor = SystemColors.ControlLight;
+            buttonOverlay.BorderColor = Color.Transparent;
+            buttonOverlay.BorderRadius = 2;
+            buttonOverlay.Borderless = true;
+            buttonOverlay.FlatAppearance.BorderSize = 0;
+            buttonOverlay.FlatStyle = FlatStyle.Flat;
+            buttonOverlay.Font = new Font("Segoe UI", 7.125F, FontStyle.Bold);
+            buttonOverlay.ForeColor = SystemColors.ControlDark;
+            buttonOverlay.Location = new Point(528, 0);
+            buttonOverlay.Margin = new Padding(0);
+            buttonOverlay.Name = "buttonOverlay";
+            buttonOverlay.Secondary = true;
+            buttonOverlay.Size = new Size(123, 40);
+            buttonOverlay.TabIndex = 5;
+            buttonOverlay.Text = "Overlay";
+            buttonOverlay.UseVisualStyleBackColor = false;
             // 
             // pictureKeyboard
             // 
@@ -2205,6 +2203,7 @@ namespace GHelper
         private RButton buttonUpdates;
         private Label labelCharge;
         private RButton buttonFnLock;
+        private RButton buttonOverlay;
         private RButton buttonBatteryFull;
         private Panel panelAlly;
         private TableLayoutPanel tableLayoutAlly;
@@ -2216,7 +2215,6 @@ namespace GHelper
         private TableLayoutPanel tableAMD;
         private RButton buttonFPS;
         private RButton buttonController;
-        private RButton buttonOverlay;
         private Panel panelGamma;
         private Slider sliderGamma;
         private Panel panelGammaTitle;
