@@ -1063,7 +1063,7 @@ namespace GHelper
             if (chk.Checked)
                 Startup.Schedule();
             else
-                Startup.UnSchedule();
+                Startup.Unschedule();
         }
 
         private void ButtonMatrix_Click(object? sender, EventArgs e)
