@@ -136,7 +136,7 @@
     <value>集显模式</value>
   </data>
   <data name="AlertExternalDisplay" xml:space="preserve">
-    <value>Looks like external screen is connected to GPU, disable GPU anyway?</value>
+    <value>似乎外部屏幕已连接到 GPU，仍然要禁用 GPU 吗？</value>
   </data>
   <data name="AlertUltimateOff" xml:space="preserve">
     <value>关闭独显直连需要重启</value>
@@ -414,7 +414,7 @@
     <value>更多设置</value>
   </data>
   <data name="ExtremeLowMotionBlur" xml:space="preserve">
-    <value>Extreme Low Motion Blur</value>
+    <value>极端低速运动模糊</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>恢复默认设置</value>
@@ -1005,34 +1005,34 @@
     <value>屏幕叠加</value>
   </data>
   <data name="OverlayChart" xml:space="preserve">
-    <value>Chart</value>
+    <value>图表</value>
   </data>
   <data name="OverlayLabels" xml:space="preserve">
-    <value>Labels</value>
+    <value>标签</value>
   </data>
   <data name="OverlayLoad" xml:space="preserve">
-    <value>Load</value>
+    <value>负载</value>
   </data>
   <data name="OverlayModeComplete" xml:space="preserve">
-    <value>Complete</value>
+    <value>完整</value>
   </data>
   <data name="OverlayModeFull" xml:space="preserve">
-    <value>Full</value>
+    <value>大</value>
   </data>
   <data name="OverlayModeLight" xml:space="preserve">
-    <value>Light</value>
+    <value>小</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>仅在游戏内显示叠加界面</value>
   </data>
   <data name="OverlaySize" xml:space="preserve">
-    <value>Size</value>
+    <value>大小</value>
   </data>
   <data name="OverlayTemperatures" xml:space="preserve">
-    <value>Temperatures</value>
+    <value>温度</value>
   </data>
   <data name="OverlayTransparency" xml:space="preserve">
-    <value>Transparency</value>
+    <value>透明度</value>
   </data>
   <data name="Power" xml:space="preserve">
     <value>电源</value>
