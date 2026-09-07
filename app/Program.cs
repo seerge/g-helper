@@ -66,6 +66,18 @@ namespace GHelper
 
             if (action == "gpu-eco")
             {
+                if (!acpi.IsConnected())
+                {
+                    DialogResult dialogResult = MessageBox.Show(Properties.Strings.ACPIError, Properties.Strings.AlertDGPUTitle, MessageBoxButtons.YesNo);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        Process.Start(new ProcessStartInfo("https://www.asus.com/support/FAQ/1047338/") { UseShellExecute = true });
+                    }
+
+                    Application.Exit();
+                    return;
+                }
+
                 Task.Run(async () =>
                 {
                     HardwareControl.RecreateGpuControl();
