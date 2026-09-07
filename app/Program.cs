@@ -62,22 +62,39 @@ namespace GHelper
                 return;
             }
 
+            string language = AppConfig.GetString("language");
+            try
+            {
+                if (language != null && language.Length > 0)
+                    Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(language);
+                else
+                {
+                    var culture = CultureInfo.CurrentUICulture;
+                    if (culture.ToString() == "kr") culture = CultureInfo.GetCultureInfo("ko");
+                    Thread.CurrentThread.CurrentUICulture = culture;
+                }
+            }
+            catch
+            {
+                Logger.WriteLine("Unknown Language: " + language);
+            }
+
             acpi = new AsusACPI();
+
+            if (!acpi.IsConnected() && AppConfig.IsASUS() && !AppConfig.IsDesktop())
+            {
+                DialogResult dialogResult = MessageBox.Show(Properties.Strings.ACPIError, Properties.Strings.StartupError, MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    Process.Start(new ProcessStartInfo("https://www.asus.com/support/FAQ/1047338/") { UseShellExecute = true });
+                }
+
+                Application.Exit();
+                return;
+            }
 
             if (action == "gpu-eco")
             {
-                if (!acpi.IsConnected())
-                {
-                    DialogResult dialogResult = MessageBox.Show(Properties.Strings.ACPIError, Properties.Strings.AlertDGPUTitle, MessageBoxButtons.YesNo);
-                    if (dialogResult == DialogResult.Yes)
-                    {
-                        Process.Start(new ProcessStartInfo("https://www.asus.com/support/FAQ/1047338/") { UseShellExecute = true });
-                    }
-
-                    Application.Exit();
-                    return;
-                }
-
                 Task.Run(async () =>
                 {
                     HardwareControl.RecreateGpuControl();
@@ -125,22 +142,6 @@ namespace GHelper
                 return;
             }
 
-            string language = AppConfig.GetString("language");
-            try
-            {
-                if (language != null && language.Length > 0)
-                    Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(language);
-                else
-                {
-                    var culture = CultureInfo.CurrentUICulture;
-                    if (culture.ToString() == "kr") culture = CultureInfo.GetCultureInfo("ko");
-                    Thread.CurrentThread.CurrentUICulture = culture;
-                }
-            } catch
-            {
-                Logger.WriteLine("Unknown Language: " + language);
-            }
-
             Logger.WriteLine("----------------------");
             Logger.WriteLine("App launched: " + AppConfig.GetModel() + " :" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + CultureInfo.CurrentUICulture + (ProcessHelper.IsUserAdministrator() ? "." : ""));
 
@@ -161,18 +162,6 @@ namespace GHelper
             var startCount = AppConfig.Get("start_count") + 1;
             AppConfig.Set("start_count", startCount);
             Logger.WriteLine("Start Count: " + startCount);
-
-            if (!acpi.IsConnected() && AppConfig.IsASUS() && !AppConfig.IsDesktop())
-            {
-                DialogResult dialogResult = MessageBox.Show(Properties.Strings.ACPIError, Properties.Strings.StartupError, MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.Yes)
-                {
-                    Process.Start(new ProcessStartInfo("https://www.asus.com/support/FAQ/1047338/") { UseShellExecute = true });
-                }
-
-                Application.Exit();
-                return;
-            }
 
             ProcessHelper.KillSmartDisplayControl();
             AsusService.StopOnStartup();
