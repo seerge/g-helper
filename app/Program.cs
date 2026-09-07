@@ -114,6 +114,22 @@ namespace GHelper
             ProcessHelper.KillSmartDisplayControl();
             AsusService.StopOnStartup();
 
+            // Intel Raptor Lake microcode safety check (non-blocking)
+            if (PawnIO.CpuInfo.IsIntel)
+            {
+                Task.Run(() =>
+                {
+                    try
+                    {
+                        PawnIO.IntelMicrocodeCheck.Initialize();
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.WriteLine("Intel microcode check failed: " + ex.Message);
+                    }
+                });
+            }
+
             Application.EnableVisualStyles();
 
             HardwareControl.RecreateGpuControl();

@@ -7,6 +7,7 @@ namespace PawnIO
     public static class CpuInfo
     {
         public static readonly bool IsAMD = DetectAMD();
+        public static bool IsIntel => !IsAMD && X86Base.IsSupported;
 
         private static bool DetectAMD()
         {
