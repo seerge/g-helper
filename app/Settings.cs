@@ -271,6 +271,7 @@ namespace GHelper
 
             buttonFPS.Click += ButtonFPS_Click;
             buttonOverlay.Click += ButtonOverlay_Click;
+            buttonOverlay.MouseUp += (s, e) => { if (e.Button == MouseButtons.Right) ToggleOverlay(); };
             buttonOverlay.Text = Properties.Strings.Overlay;
             VisualiseOverlay();
             buttonKeyboard.SizeChanged += (s, e) => AlignFnLock();
@@ -1513,9 +1514,6 @@ namespace GHelper
                 buttonHDRControl.Visible = false;
             }
 
-            if (!AppConfig.IsAlly())
-                tableScreen.ColumnCount = 4;
-
             if (advancedColor) labelVisual.Text = Properties.Strings.VisualModesHDR;
             if (!screenEnabled) labelVisual.Text = Properties.Strings.VisualModesScreen;
 
@@ -1856,6 +1854,7 @@ namespace GHelper
                 menuOptimized.Visible = buttonOptimized.Visible = false;
                 buttonStopGPU.Visible = true;
                 tableGPU.ColumnCount = 3;
+                tableScreen.ColumnCount = 3;
             }
             else
             {
@@ -1866,6 +1865,7 @@ namespace GHelper
             {
                 menuUltimate.Visible = buttonUltimate.Visible = false;
                 tableGPU.ColumnCount = 3;
+                tableScreen.ColumnCount = 3;
             }
         }
 
