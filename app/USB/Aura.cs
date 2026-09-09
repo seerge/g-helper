@@ -420,6 +420,7 @@ namespace GHelper.USB
             {
                 if (!backlight) initDirect = true;
                 backlight = true;
+                if (Mode == AuraMode.GRADIENT) ApplyAura();
             }
         }
 

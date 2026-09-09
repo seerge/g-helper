@@ -401,6 +401,9 @@ Folytatni szeretnéd?</value>
   <data name="EnergySettings" xml:space="preserve">
     <value>Energia beállítások</value>
   </data>
+  <data name="EnhancedVibration" xml:space="preserve">
+    <value>Fokozott rezgés</value>
+  </data>
   <data name="Export" xml:space="preserve">
     <value>Profil exportálása</value>
   </data>
@@ -1001,8 +1004,35 @@ felmelegítsék az alvó laptopot és lemerítsék az akkumulátort.</value>
   <data name="Overlay" xml:space="preserve">
     <value>Átfedés</value>
   </data>
+  <data name="OverlayChart" xml:space="preserve">
+    <value>Diagram</value>
+  </data>
+  <data name="OverlayLabels" xml:space="preserve">
+    <value>Címkék</value>
+  </data>
+  <data name="OverlayLoad" xml:space="preserve">
+    <value>Betöltés</value>
+  </data>
+  <data name="OverlayModeComplete" xml:space="preserve">
+    <value>Befejezve</value>
+  </data>
+  <data name="OverlayModeFull" xml:space="preserve">
+    <value>Teljes</value>
+  </data>
+  <data name="OverlayModeLight" xml:space="preserve">
+    <value>Világos</value>
+  </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Csak a játékokban jelenítse meg</value>
+  </data>
+  <data name="OverlaySize" xml:space="preserve">
+    <value>Méret</value>
+  </data>
+  <data name="OverlayTemperatures" xml:space="preserve">
+    <value>Hőmérsékletek</value>
+  </data>
+  <data name="OverlayTransparency" xml:space="preserve">
+    <value>Átlátszóság</value>
   </data>
   <data name="Power" xml:space="preserve">
     <value>Energiaellátás</value>
