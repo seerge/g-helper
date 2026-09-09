@@ -939,7 +939,7 @@ namespace GHelper.Peripherals.Mouse
                 return;
             }
 
-            if (profile > ProfileCount() || profile < 0)
+            if (profile >= ProfileCount() || profile < 0)
             {
                 Logger.WriteLine(GetDisplayName() + ": Profile:" + profile + " is invalid.");
                 return;
