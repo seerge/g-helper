@@ -80,6 +80,7 @@ namespace GHelper
             numericBacklightPluggedTime = new NumericUpDownWithUnit();
             numericBacklightTime = new NumericUpDownWithUnit();
             labelBacklightTimeout = new Label();
+            checkAmbient = new CheckBox();
             labelSpeed = new Label();
             comboKeyboardSpeed = new RComboBox();
             panelXGM = new Panel();
@@ -760,6 +761,7 @@ namespace GHelper
             panelBacklightExtra.Controls.Add(numericBacklightPluggedTime);
             panelBacklightExtra.Controls.Add(numericBacklightTime);
             panelBacklightExtra.Controls.Add(labelBacklightTimeout);
+            panelBacklightExtra.Controls.Add(checkAmbient);
             panelBacklightExtra.Controls.Add(labelSpeed);
             panelBacklightExtra.Controls.Add(comboKeyboardSpeed);
             panelBacklightExtra.Dock = DockStyle.Top;
@@ -802,6 +804,19 @@ namespace GHelper
             labelBacklightTimeout.Size = new Size(613, 47);
             labelBacklightTimeout.TabIndex = 46;
             labelBacklightTimeout.Text = "Timeout when plugged / on battery";
+            // 
+            // checkAmbient
+            // 
+            checkAmbient.AutoSize = true;
+            checkAmbient.Location = new Point(22, 116);
+            checkAmbient.Margin = new Padding(5, 3, 5, 3);
+            checkAmbient.Name = "checkAmbient";
+            checkAmbient.Padding = new Padding(3);
+            checkAmbient.Size = new Size(917, 42);
+            checkAmbient.TabIndex = 3;
+            checkAmbient.Text = "Ambient light sensor";
+            checkAmbient.UseVisualStyleBackColor = true;
+            checkAmbient.Visible = false;
             // 
             // labelSpeed
             // 
@@ -1818,6 +1833,7 @@ namespace GHelper
         private NumericUpDownWithUnit numericBacklightPluggedTime;
         private NumericUpDownWithUnit numericBacklightTime;
         private Label labelBacklightTimeout;
+        private CheckBox checkAmbient;
         private Label labelSpeed;
         private RComboBox comboKeyboardSpeed;
         private Panel panelXGM;
