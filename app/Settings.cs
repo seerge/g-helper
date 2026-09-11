@@ -273,7 +273,7 @@ namespace GHelper
             buttonOverlay.Click += ButtonOverlay_Click;
             buttonOverlay.MouseUp += (s, e) => { if (e.Button == MouseButtons.Right) ToggleOverlay(); };
             buttonOverlay.Text = Properties.Strings.Overlay;
-            buttonOverlayAlly.Click += (s, e) => ToggleOverlay();
+            buttonOverlayAlly.Click += ButtonOverlay_Click;
             buttonOverlayAlly.BorderColor = colorStandard;
             VisualiseOverlay();
             buttonKeyboard.SizeChanged += (s, e) => AlignFnLock();
