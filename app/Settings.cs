@@ -273,6 +273,8 @@ namespace GHelper
             buttonOverlay.Click += ButtonOverlay_Click;
             buttonOverlay.MouseUp += (s, e) => { if (e.Button == MouseButtons.Right) ToggleOverlay(); };
             buttonOverlay.Text = Properties.Strings.Overlay;
+            buttonOverlayAlly.Click += (s, e) => ToggleOverlay();
+            buttonOverlayAlly.BorderColor = colorStandard;
             VisualiseOverlay();
             buttonKeyboard.SizeChanged += (s, e) => AlignFnLock();
             AlignFnLock();
@@ -598,6 +600,9 @@ namespace GHelper
             panelAlly.Visible = true;
             panelKeyboardTitle.Visible = false;
             panelKeyboard.Padding = new Padding(panelKeyboard.Padding.Left, 0, panelKeyboard.Padding.Right, panelKeyboard.Padding.Bottom);
+
+            buttonOverlayAlly.Text = Properties.Strings.Overlay;
+            buttonOverlayAlly.Activated = AppConfig.IsOverlay();
 
             tableAMD.Visible = true;
         }
@@ -2293,6 +2298,7 @@ namespace GHelper
             bool enabled = AppConfig.IsOverlay();
             buttonOverlay.BackColor = enabled ? colorEco : buttonSecond;
             buttonOverlay.ForeColor = enabled ? SystemColors.ControlLightLight : SystemColors.ControlDark;
+            buttonOverlayAlly.Activated = enabled;
         }
 
         public void VisualiseFnLock()
