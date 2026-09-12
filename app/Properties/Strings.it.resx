@@ -1020,10 +1020,10 @@ di riscaldare il laptop in sospensione e scaricare la batteria.</value>
     <value>Full</value>
   </data>
   <data name="OverlayModeBasic" xml:space="preserve">
-    <value>Light</value>
+    <value>Basic</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
-    <value>Overlay only in games</value>
+    <value>Enable only in games</value>
   </data>
   <data name="OverlaySize" xml:space="preserve">
     <value>Size</value>

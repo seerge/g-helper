@@ -1020,7 +1020,7 @@ calienten el portátil dormido y agoten la batería.</value>
     <value>Full</value>
   </data>
   <data name="OverlayModeBasic" xml:space="preserve">
-    <value>Light</value>
+    <value>Basic</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Interfaz superpuesta solo juegos</value>

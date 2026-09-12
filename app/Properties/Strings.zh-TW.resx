@@ -1020,7 +1020,7 @@
     <value>Full</value>
   </data>
   <data name="OverlayModeBasic" xml:space="preserve">
-    <value>Light</value>
+    <value>Basic</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>僅遊戲時顯示OSD</value>
