@@ -1019,11 +1019,11 @@ GPU가 활성화될 때 자동으로 다시 시작합니다</value>
   <data name="OverlayModeFull" xml:space="preserve">
     <value>Full</value>
   </data>
-  <data name="OverlayModeLight" xml:space="preserve">
-    <value>Light</value>
+  <data name="OverlayModeBasic" xml:space="preserve">
+    <value>Basic</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
-    <value>Overlay only in games</value>
+    <value>Enable only in games</value>
   </data>
   <data name="OverlaySize" xml:space="preserve">
     <value>Size</value>
@@ -1031,8 +1031,8 @@ GPU가 활성화될 때 자동으로 다시 시작합니다</value>
   <data name="OverlayTemperatures" xml:space="preserve">
     <value>Temperatures</value>
   </data>
-  <data name="OverlayTransparency" xml:space="preserve">
-    <value>Transparency</value>
+  <data name="OverlayOpacity" xml:space="preserve">
+    <value>Opacity</value>
   </data>
   <data name="Power" xml:space="preserve">
     <value>전원</value>
@@ -1063,5 +1063,8 @@ GPU가 활성화될 때 자동으로 다시 시작합니다</value>
   </data>
   <data name="Always" xml:space="preserve">
     <value>항상</value>
+  </data>
+  <data name="OverlayEnable" xml:space="preserve">
+    <value>Enable Overlay</value>
   </data>
 </root>

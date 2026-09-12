@@ -1019,11 +1019,11 @@ làm nóng máy khi ngủ và làm cạn pin.</value>
   <data name="OverlayModeFull" xml:space="preserve">
     <value>Full</value>
   </data>
-  <data name="OverlayModeLight" xml:space="preserve">
-    <value>Light</value>
+  <data name="OverlayModeBasic" xml:space="preserve">
+    <value>Basic</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
-    <value>Overlay only in games</value>
+    <value>Enable only in games</value>
   </data>
   <data name="OverlaySize" xml:space="preserve">
     <value>Size</value>
@@ -1031,8 +1031,8 @@ làm nóng máy khi ngủ và làm cạn pin.</value>
   <data name="OverlayTemperatures" xml:space="preserve">
     <value>Temperatures</value>
   </data>
-  <data name="OverlayTransparency" xml:space="preserve">
-    <value>Transparency</value>
+  <data name="OverlayOpacity" xml:space="preserve">
+    <value>Opacity</value>
   </data>
   <data name="Power" xml:space="preserve">
     <value>Nguồn</value>
@@ -1063,5 +1063,8 @@ làm nóng máy khi ngủ và làm cạn pin.</value>
   </data>
   <data name="Always" xml:space="preserve">
     <value>Luôn luôn</value>
+  </data>
+  <data name="OverlayEnable" xml:space="preserve">
+    <value>Enable Overlay</value>
   </data>
 </root>

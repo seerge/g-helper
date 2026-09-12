@@ -2096,6 +2096,12 @@ namespace GHelper.Properties {
             }
         }
 
+        internal static string OverlayEnable {
+            get {
+                return ResourceManager.GetString("OverlayEnable", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Chart.
         /// </summary>
@@ -2144,9 +2150,9 @@ namespace GHelper.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Light.
         /// </summary>
-        internal static string OverlayModeLight {
+        internal static string OverlayModeBasic {
             get {
-                return ResourceManager.GetString("OverlayModeLight", resourceCulture);
+                return ResourceManager.GetString("OverlayModeBasic", resourceCulture);
             }
         }
 
@@ -2180,9 +2186,9 @@ namespace GHelper.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Transparency.
         /// </summary>
-        internal static string OverlayTransparency {
+        internal static string OverlayOpacity {
             get {
-                return ResourceManager.GetString("OverlayTransparency", resourceCulture);
+                return ResourceManager.GetString("OverlayOpacity", resourceCulture);
             }
         }
 

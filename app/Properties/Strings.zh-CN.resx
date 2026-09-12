@@ -1019,7 +1019,7 @@
   <data name="OverlayModeFull" xml:space="preserve">
     <value>大</value>
   </data>
-  <data name="OverlayModeLight" xml:space="preserve">
+  <data name="OverlayModeBasic" xml:space="preserve">
     <value>小</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
@@ -1031,7 +1031,7 @@
   <data name="OverlayTemperatures" xml:space="preserve">
     <value>温度</value>
   </data>
-  <data name="OverlayTransparency" xml:space="preserve">
+  <data name="OverlayOpacity" xml:space="preserve">
     <value>透明度</value>
   </data>
   <data name="Power" xml:space="preserve">
@@ -1063,5 +1063,8 @@
   </data>
   <data name="Always" xml:space="preserve">
     <value>始终</value>
+  </data>
+  <data name="OverlayEnable" xml:space="preserve">
+    <value>Enable Overlay</value>
   </data>
 </root>
