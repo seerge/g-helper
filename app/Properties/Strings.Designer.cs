@@ -2150,9 +2150,9 @@ namespace GHelper.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Light.
         /// </summary>
-        internal static string OverlayModeLight {
+        internal static string OverlayModeBasic {
             get {
-                return ResourceManager.GetString("OverlayModeLight", resourceCulture);
+                return ResourceManager.GetString("OverlayModeBasic", resourceCulture);
             }
         }
 

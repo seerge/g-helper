@@ -1019,7 +1019,7 @@ GPU가 활성화될 때 자동으로 다시 시작합니다</value>
   <data name="OverlayModeFull" xml:space="preserve">
     <value>Full</value>
   </data>
-  <data name="OverlayModeLight" xml:space="preserve">
+  <data name="OverlayModeBasic" xml:space="preserve">
     <value>Light</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">

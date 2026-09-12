@@ -23,7 +23,7 @@ namespace GHelper
             Text = Properties.Strings.Overlay;
             checkEnable.Text = Properties.Strings.OverlayEnable;
             checkGameOnly.Text = Properties.Strings.OverlayOnlyInGames;
-            buttonLight.Text = Properties.Strings.OverlayModeLight;
+            buttonLight.Text = Properties.Strings.OverlayModeBasic;
             buttonDefault.Text = Properties.Strings.Default;
             buttonFull.Text = Properties.Strings.OverlayModeFull;
             buttonComplete.Text = Properties.Strings.OverlayModeComplete;

@@ -1019,7 +1019,7 @@ kaitinti miegančio kompiuterio ir eikvoti akumuliatoriaus.</value>
   <data name="OverlayModeFull" xml:space="preserve">
     <value>Full</value>
   </data>
-  <data name="OverlayModeLight" xml:space="preserve">
+  <data name="OverlayModeBasic" xml:space="preserve">
     <value>Light</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
