@@ -569,7 +569,7 @@ public static class AppConfig
 
     public static bool IsDetachableKeyboard()
     {
-        return ContainsModel("Z13") || ContainsModel("UX8407");
+        return ContainsModel("Z13") || ContainsModel("UX8406") || ContainsModel("UX8407");
     }
 
     public static bool HasRearLight()
