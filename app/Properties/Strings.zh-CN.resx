@@ -1064,4 +1064,7 @@
   <data name="Always" xml:space="preserve">
     <value>始终</value>
   </data>
+  <data name="OverlayEnable" xml:space="preserve">
+    <value>Enable Overlay</value>
+  </data>
 </root>

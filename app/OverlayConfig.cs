@@ -1,5 +1,6 @@
 using GHelper.Overlay;
 using GHelper.UI;
+using System.Windows.Forms;
 
 namespace GHelper
 {
@@ -15,8 +16,12 @@ namespace GHelper
             InitializeComponent();
             InitTheme(true);
 
+            // Make window non-resizable
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
+
             Text = Properties.Strings.Overlay;
-            checkEnable.Text = Properties.Strings.Overlay;
+            checkEnable.Text = Properties.Strings.OverlayEnable;
             checkGameOnly.Text = Properties.Strings.OverlayOnlyInGames;
             buttonLight.Text = Properties.Strings.OverlayModeLight;
             buttonDefault.Text = Properties.Strings.Default;
@@ -30,8 +35,13 @@ namespace GHelper
             checkBattery.Text = Properties.Strings.Battery;
             checkLabels.Text = Properties.Strings.OverlayLabels;
             labelSizeTitle.Text = Properties.Strings.OverlaySize;
-            labelAlphaTitle.Text = Properties.Strings.OverlayTransparency;
-            labelHotkeys.Text = "•  Ctrl + Shift + Alt + O - Toggle overlay\n•  Ctrl + Shift + Alt + Mouse Drag - Move overlay\n•  Ctrl + Shift + Alt + Mouse Click - Switch mode\n•  Ctrl + Shift + Alt + Wheel - Resize overlay\n•  Ctrl + Shift + Alt + Wheel Click - Reset size";
+            labelAlphaTitle.Text = Properties.Strings.OverlayOpacity;
+            labelHotkeys.Text =
+                            "• Ctrl + Shift + Alt + O            | Toggle overlay           " + "\n" +
+                            "• Ctrl + Shift + Alt + Drag         | Move overlay             " + "\n" +
+                            "• Ctrl + Shift + Alt + Click        | Switch mode              " + "\n" +
+                            "• Ctrl + Shift + Alt + Scroll       | Resize overlay           " + "\n" +
+                            "• Ctrl + Shift + Alt + Scroll Click | Reset size               " + "\n";
             buttonCpuColor.Text = "CPU " + Properties.Strings.Color;
             buttonGpuColor.Text = "GPU " + Properties.Strings.Color;
             buttonReset.Text = Properties.Strings.Reset;
