@@ -1031,7 +1031,7 @@
   <data name="OverlayTemperatures" xml:space="preserve">
     <value>温度</value>
   </data>
-  <data name="OverlayTransparency" xml:space="preserve">
+  <data name="OverlayOpacity" xml:space="preserve">
     <value>透明度</value>
   </data>
   <data name="Power" xml:space="preserve">
