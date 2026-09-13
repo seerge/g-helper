@@ -177,8 +177,9 @@ namespace GHelper
                 var radio = inventory.Where(d => !d.isExtension && keys.Any(k => d.entry.Contains(k, StringComparison.OrdinalIgnoreCase)))
                     .OrderBy(d => d.entry.StartsWith("Microsoft")).FirstOrDefault();
                 if (!members.Any(n => installed[n] is not null) && radio.entry is null) continue;
+                bool sameMajor = members.Any(n => installed[n] is not null && Major(updates[n].version) == Major(installed[n]!));
 
-                foreach (var n in members.Where(n => installed[n] is null))
+                foreach (var n in members.Where(n => installed[n] is null || (sameMajor && Major(updates[n].version) != Major(installed[n]!))))
                 {
                     var u = updates[n];
                     u.status = STATUS_HIDDEN;
