@@ -68,6 +68,7 @@ namespace GHelper
             tableAMD = new TableLayoutPanel();
             buttonAutoTDP = new RButton();
             buttonFPS = new RButton();
+            buttonOverlayAlly = new RButton();
             tableGPU = new TableLayoutPanel();
             buttonStopGPU = new RButton();
             buttonEco = new RButton();
@@ -723,6 +724,7 @@ namespace GHelper
             tableAMD.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
             tableAMD.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
             tableAMD.Controls.Add(buttonAutoTDP, 0, 0);
+            tableAMD.Controls.Add(buttonOverlayAlly, 0, 0);
             tableAMD.Controls.Add(buttonFPS, 0, 0);
             tableAMD.Dock = DockStyle.Top;
             tableAMD.Location = new Point(20, 316);
@@ -777,6 +779,28 @@ namespace GHelper
             buttonFPS.Text = "FPS Limit OFF";
             buttonFPS.TextImageRelation = TextImageRelation.ImageBeforeText;
             buttonFPS.UseVisualStyleBackColor = false;
+            //
+            // buttonOverlayAlly
+            //
+            buttonOverlayAlly.Activated = false;
+            buttonOverlayAlly.BackColor = SystemColors.ControlLightLight;
+            buttonOverlayAlly.BorderColor = Color.Transparent;
+            buttonOverlayAlly.BorderRadius = 5;
+            buttonOverlayAlly.Dock = DockStyle.Fill;
+            buttonOverlayAlly.FlatAppearance.BorderSize = 0;
+            buttonOverlayAlly.FlatStyle = FlatStyle.Flat;
+            buttonOverlayAlly.ForeColor = SystemColors.ControlText;
+            buttonOverlayAlly.Image = Properties.Resources.icons8_heartbeat_32;
+            buttonOverlayAlly.ImageAlign = ContentAlignment.MiddleRight;
+            buttonOverlayAlly.Location = new Point(266, 4);
+            buttonOverlayAlly.Margin = new Padding(4);
+            buttonOverlayAlly.Name = "buttonOverlayAlly";
+            buttonOverlayAlly.Secondary = false;
+            buttonOverlayAlly.Size = new Size(254, 72);
+            buttonOverlayAlly.TabIndex = 12;
+            buttonOverlayAlly.Text = "Overlay";
+            buttonOverlayAlly.TextImageRelation = TextImageRelation.ImageBeforeText;
+            buttonOverlayAlly.UseVisualStyleBackColor = false;
             // 
             // tableGPU
             // 
@@ -2214,6 +2238,7 @@ namespace GHelper
         private RButton buttonBacklight;
         private TableLayoutPanel tableAMD;
         private RButton buttonFPS;
+        private RButton buttonOverlayAlly;
         private RButton buttonController;
         private Panel panelGamma;
         private Slider sliderGamma;
