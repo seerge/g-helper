@@ -1118,7 +1118,6 @@ namespace GHelper
         {
             if (InvokeRequired) { Invoke(() => VisualiseMatrixRunning(mode)); return; }
             comboMatrixRunning.SelectedIndex = mode;
-            if (comboMatrix.SelectedIndex == 0) comboMatrix.SelectedIndex = 3;
         }
 
         public void SetMatrixRunning(int mode)
