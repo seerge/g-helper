@@ -13,13 +13,97 @@ public sealed class KeyboardHook : IDisposable
     private static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
 
     [DllImport("user32.dll", SetLastError = true)]
-    public static extern void keybd_event(byte virtualKey, byte scanCode, uint flags, IntPtr extraInfo);
+    private static extern uint SendInput(uint nInputs, INPUT[] pInputs, int cbSize);
 
-    public const int KEYEVENTF_EXTENDEDKEY = 1;
-    public const int KEYEVENTF_KEYUP = 2;
+    [DllImport("user32.dll")]
+    private static extern uint MapVirtualKey(uint uCode, uint uMapType);
 
-    private const byte VK_LWIN = 0x5B;
-    private const byte VK_LCONTROL = 0xA2;
+    private const uint MAPVK_VK_TO_VSC_EX = 4;
+
+    private const uint INPUT_KEYBOARD = 1;
+    private const uint KEYEVENTF_EXTENDEDKEY = 0x0001;
+    private const uint KEYEVENTF_KEYUP = 0x0002;
+    private const uint KEYEVENTF_SCANCODE = 0x0008;
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct INPUT
+    {
+        public uint type;
+        public InputUnion u;
+    }
+
+    [StructLayout(LayoutKind.Explicit)]
+    private struct InputUnion
+    {
+        [FieldOffset(0)] public MOUSEINPUT mi;
+        [FieldOffset(0)] public KEYBDINPUT ki;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct MOUSEINPUT
+    {
+        public int dx;
+        public int dy;
+        public uint mouseData;
+        public uint dwFlags;
+        public uint time;
+        public IntPtr dwExtraInfo;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct KEYBDINPUT
+    {
+        public ushort wVk;
+        public ushort wScan;
+        public uint dwFlags;
+        public uint time;
+        public IntPtr dwExtraInfo;
+    }
+
+    // Keys whose hardware scan code carries the E0 prefix; the prefix matters for
+    // consumers that read scan codes (RDP clients, DirectInput games)
+    private static readonly HashSet<Keys> extendedKeys = new()
+    {
+        Keys.Insert, Keys.Delete, Keys.Home, Keys.End, Keys.PageUp, Keys.PageDown,
+        Keys.Up, Keys.Down, Keys.Left, Keys.Right,
+        Keys.LWin, Keys.RWin, Keys.Apps, Keys.RControlKey, Keys.RMenu,
+        Keys.Divide, Keys.Snapshot, Keys.Sleep,
+        Keys.VolumeMute, Keys.VolumeDown, Keys.VolumeUp,
+        Keys.MediaNextTrack, Keys.MediaPreviousTrack, Keys.MediaStop, Keys.MediaPlayPause,
+        Keys.BrowserBack, Keys.BrowserForward, Keys.BrowserRefresh, Keys.BrowserStop,
+        Keys.BrowserSearch, Keys.BrowserFavorites, Keys.BrowserHome,
+        Keys.LaunchMail, Keys.SelectMedia, Keys.LaunchApplication1, Keys.LaunchApplication2,
+    };
+
+    // Emulated keys must carry a real scan code: RDP clients and DirectInput apps read
+    // the scan code, not the virtual key, so a VK-only event works locally but is lost
+    // over RDP and in games
+    private static void SendKey(Keys key, bool keyUp)
+    {
+        // MapVirtualKey returns 0x54 (SysRq) for VK_SNAPSHOT; the standalone key sends E0 37
+        uint scan = key == Keys.Snapshot ? 0x37 : MapVirtualKey((uint)key, MAPVK_VK_TO_VSC_EX);
+
+        // E1-prefixed (Pause) is not representable via KEYEVENTF_SCANCODE: its low byte
+        // 0x1D would inject Ctrl instead
+        if ((scan & 0xFF00) == 0xE100) scan = 0;
+
+        INPUT input = new() { type = INPUT_KEYBOARD };
+        if (scan == 0)
+        {
+            input.u.ki.wVk = (ushort)key;
+            input.u.ki.dwFlags = keyUp ? KEYEVENTF_KEYUP : 0;
+        }
+        else
+        {
+            input.u.ki.wScan = (ushort)(scan & 0xFF);
+            input.u.ki.dwFlags = KEYEVENTF_SCANCODE | (keyUp ? KEYEVENTF_KEYUP : 0);
+            if ((scan & 0xFF00) == 0xE000 || extendedKeys.Contains(key))
+                input.u.ki.dwFlags |= KEYEVENTF_EXTENDEDKEY;
+        }
+
+        if (SendInput(1, new[] { input }, Marshal.SizeOf<INPUT>()) == 0)
+            Logger.WriteLine($"SendInput failed for {key}: error {Marshal.GetLastWin32Error()}");
+    }
 
     [DllImport("user32.dll")]
     public static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint cButtons, uint dwExtraInfo);
@@ -48,50 +132,50 @@ public sealed class KeyboardHook : IDisposable
                 return;
         }
 
-        keybd_event((byte)key, 0, KEYEVENTF_EXTENDEDKEY, IntPtr.Zero);
+        SendKey(key, false);
         Thread.Sleep(1);
-        keybd_event((byte)key, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, IntPtr.Zero);
+        SendKey(key, true);
     }
 
     public static void KeyKeyPress(Keys key, Keys key2)
     {
-        keybd_event((byte)key, 0, KEYEVENTF_EXTENDEDKEY, IntPtr.Zero);
-        keybd_event((byte)key2, 0, KEYEVENTF_EXTENDEDKEY, IntPtr.Zero);
+        SendKey(key, false);
+        SendKey(key2, false);
 
         Thread.Sleep(1);
 
-        keybd_event((byte)key2, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, IntPtr.Zero);
-        keybd_event((byte)key, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, IntPtr.Zero);
+        SendKey(key2, true);
+        SendKey(key, true);
     }
 
     public static void KeyKeyKeyPress(Keys key, Keys key2, Keys key3, int sleep = 1, int interSleep = 0)
     {
-        keybd_event((byte)key, 0, KEYEVENTF_EXTENDEDKEY, IntPtr.Zero);
+        SendKey(key, false);
         Thread.Sleep(interSleep);
-        keybd_event((byte)key2, 0, KEYEVENTF_EXTENDEDKEY, IntPtr.Zero);
+        SendKey(key2, false);
         Thread.Sleep(interSleep);
-        keybd_event((byte)key3, 0, KEYEVENTF_EXTENDEDKEY, IntPtr.Zero);
+        SendKey(key3, false);
 
         Thread.Sleep(sleep);
 
-        keybd_event((byte)key3, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, IntPtr.Zero);
-        keybd_event((byte)key2, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, IntPtr.Zero);
-        keybd_event((byte)key, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, IntPtr.Zero);
+        SendKey(key3, true);
+        SendKey(key2, true);
+        SendKey(key, true);
     }
 
     public static void KeyKeyKeyKeyPress(Keys key, Keys key2, Keys key3, Keys key4, int sleep = 1)
     {
-        keybd_event((byte)key, 0, KEYEVENTF_EXTENDEDKEY, IntPtr.Zero);
-        keybd_event((byte)key2, 0, KEYEVENTF_EXTENDEDKEY, IntPtr.Zero);
-        keybd_event((byte)key3, 0, KEYEVENTF_EXTENDEDKEY, IntPtr.Zero);
-        keybd_event((byte)key4, 0, KEYEVENTF_EXTENDEDKEY, IntPtr.Zero);
+        SendKey(key, false);
+        SendKey(key2, false);
+        SendKey(key3, false);
+        SendKey(key4, false);
 
         Thread.Sleep(sleep);
 
-        keybd_event((byte)key4, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, IntPtr.Zero);
-        keybd_event((byte)key3, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, IntPtr.Zero);
-        keybd_event((byte)key2, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, IntPtr.Zero);
-        keybd_event((byte)key, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, IntPtr.Zero);
+        SendKey(key4, true);
+        SendKey(key3, true);
+        SendKey(key2, true);
+        SendKey(key, true);
     }
 
     /// <summary>
