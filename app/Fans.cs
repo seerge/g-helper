@@ -1,4 +1,4 @@
-﻿using GHelper.Fan;
+using GHelper.Fan;
 using GHelper.Gpu.NVidia;
 using GHelper.Helpers;
 using GHelper.Mode;
@@ -28,6 +28,9 @@ namespace GHelper
 
         static readonly Font _axisFont = new Font("Arial", 7F);
 
+        const int Y_TOP = 20;
+
+        private System.Windows.Forms.Timer? intelRefreshTimer;
         const int tempMin = 20;
         const int tempMax = 110;
 
@@ -378,6 +381,85 @@ namespace GHelper
             InitPowerPlan();
             InitUV();
             InitGPU();
+            InitIntelHealthPanel();
+        }
+
+        private Label? labelIntelVid;
+        private Label? labelIntelWhea;
+
+        private void InitIntelHealthPanel()
+        {
+            if (!PawnIO.CpuInfo.IsIntel || !PawnIO.IntelMicrocodeCheck.IsRaptorLake) return;
+
+            var panelIntel = new Panel 
+            { 
+                Dock = DockStyle.Top, 
+                Height = 85, 
+                Padding = new Padding(10), 
+                BackColor = Color.FromArgb(255, 35, 35, 35) 
+            };
+            
+            var labelTitle = new Label 
+            { 
+                Text = "Intel Raptor Lake Health", 
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold), 
+                ForeColor = Color.White, 
+                Dock = DockStyle.Top 
+            };
+            panelIntel.Controls.Add(labelTitle);
+
+            labelIntelVid = new Label { Text = "Core Voltage (VID): Loading...", ForeColor = Color.LightGray, AutoSize = true, Location = new Point(10, 35) };
+            panelIntel.Controls.Add(labelIntelVid);
+
+            labelIntelWhea = new Label { Text = "WHEA Errors (24h): Loading...", ForeColor = Color.LightGray, AutoSize = true, Location = new Point(10, 55) };
+            panelIntel.Controls.Add(labelIntelWhea);
+
+            var buttonDefault = new RButton { Text = "Intel Default Limits", AutoSize = true, Location = new Point(220, 30) };
+            buttonDefault.Click += (s, e) => {
+                var limits = PawnIO.IntelMicrocodeCheck.GetIntelDefaultLimitsForCpu();
+                if (limits.HasValue) {
+                    AppConfig.SetMode("limit_total", limits.Value.PL1);
+                    AppConfig.SetMode("limit_slow", limits.Value.PL1);
+                    AppConfig.SetMode("limit_fast", limits.Value.PL2);
+                    AppConfig.SetMode("limit_cpu", limits.Value.PL1);
+                    Program.settingsForm.modeControl.SetPower(false);
+                    VisualisePower();
+                    MessageBox.Show($"Applied Intel Spec: PL1={limits.Value.PL1}W, PL2={limits.Value.PL2}W");
+                } else {
+                    MessageBox.Show("Unknown CPU SKU limits.");
+                }
+            };
+            panelIntel.Controls.Add(buttonDefault);
+
+            var buttonReport = new RButton { Text = "Export Diagnostic Report", AutoSize = true, Location = new Point(360, 30) };
+            buttonReport.Click += (s, e) => {
+                string report = PawnIO.IntelRaptorLakeDiag.GenerateReport();
+                using var sfd = new SaveFileDialog { Filter = "Text files|*.txt", FileName = "Intel_RaptorLake_Diag.txt" };
+                if (sfd.ShowDialog() == DialogResult.OK)
+                    File.WriteAllText(sfd.FileName, report);
+            };
+            panelIntel.Controls.Add(buttonReport);
+
+            Controls.Add(panelIntel);
+            panelIntel.BringToFront(); // Show at the very top of the window
+
+            bool _isIntelRefreshing = false;
+            intelRefreshTimer = new System.Windows.Forms.Timer { Interval = 2000 };
+            intelRefreshTimer.Tick += async (s, e) => {
+                if (_isIntelRefreshing) return;
+                if (Visible && labelIntelWhea != null && labelIntelVid != null) {
+                    _isIntelRefreshing = true;
+                    try {
+                        int wheaCount = await Task.Run(() => PawnIO.IntelRaptorLakeDiag.GetWheaErrorCount());
+                        labelIntelWhea.Text = $"WHEA Errors (24h): {(wheaCount >= 0 ? wheaCount.ToString() : "Failed")}";
+                        float? vid = HardwareControl.cpuVid;
+                        if (vid.HasValue) labelIntelVid.Text = $"Core Voltage (VID): {vid.Value:F3}V";
+                    } finally {
+                        _isIntelRefreshing = false;
+                    }
+                }
+            };
+            intelRefreshTimer.Start();
         }
 
         public void InitCPU()
