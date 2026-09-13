@@ -120,24 +120,34 @@ namespace GHelper.Helpers
 
         private void Capture_DataAvailable(object? sender, WaveInEventArgs e)
         {
-            if (capture is null || audioValues is null) return;
+            // Snapshot locals: Cleanup() can null/dispose these fields from another thread mid-callback
+            var localCapture = capture;
+            var localValues = audioValues;
+            if (localCapture is null || localValues is null) return;
 
-            int bytesPerSamplePerChannel = capture.WaveFormat.BitsPerSample / 8;
-            int bytesPerSample = bytesPerSamplePerChannel * capture.WaveFormat.Channels;
-            int bufferSampleCount = e.Buffer.Length / bytesPerSample;
-            if (bufferSampleCount > audioValues.Length) bufferSampleCount = audioValues.Length;
+            try
+            {
+                int bytesPerSamplePerChannel = localCapture.WaveFormat.BitsPerSample / 8;
+                int bytesPerSample = bytesPerSamplePerChannel * localCapture.WaveFormat.Channels;
+                int bufferSampleCount = e.Buffer.Length / bytesPerSample;
+                if (bufferSampleCount > localValues.Length) bufferSampleCount = localValues.Length;
 
-            if (bytesPerSamplePerChannel == 2 && capture.WaveFormat.Encoding == WaveFormatEncoding.Pcm)
-                for (int i = 0; i < bufferSampleCount; i++)
-                    audioValues[i] = BitConverter.ToInt16(e.Buffer, i * bytesPerSample);
-            else if (bytesPerSamplePerChannel == 4 && capture.WaveFormat.Encoding == WaveFormatEncoding.Pcm)
-                for (int i = 0; i < bufferSampleCount; i++)
-                    audioValues[i] = BitConverter.ToInt32(e.Buffer, i * bytesPerSample);
-            else if (bytesPerSamplePerChannel == 4 && capture.WaveFormat.Encoding == WaveFormatEncoding.IeeeFloat)
-                for (int i = 0; i < bufferSampleCount; i++)
-                    audioValues[i] = BitConverter.ToSingle(e.Buffer, i * bytesPerSample);
+                if (bytesPerSamplePerChannel == 2 && localCapture.WaveFormat.Encoding == WaveFormatEncoding.Pcm)
+                    for (int i = 0; i < bufferSampleCount; i++)
+                        localValues[i] = BitConverter.ToInt16(e.Buffer, i * bytesPerSample);
+                else if (bytesPerSamplePerChannel == 4 && localCapture.WaveFormat.Encoding == WaveFormatEncoding.Pcm)
+                    for (int i = 0; i < bufferSampleCount; i++)
+                        localValues[i] = BitConverter.ToInt32(e.Buffer, i * bytesPerSample);
+                else if (bytesPerSamplePerChannel == 4 && localCapture.WaveFormat.Encoding == WaveFormatEncoding.IeeeFloat)
+                    for (int i = 0; i < bufferSampleCount; i++)
+                        localValues[i] = BitConverter.ToSingle(e.Buffer, i * bytesPerSample);
+            }
+            catch (ObjectDisposedException)
+            {
+                return;
+            }
 
-            double[] padded = FftSharp.Pad.ZeroPad(audioValues);
+            double[] padded = FftSharp.Pad.ZeroPad(localValues);
             var fft = FftSharp.FFT.Forward(padded);
             double[] mag = FftSharp.FFT.Magnitude(fft);
 
