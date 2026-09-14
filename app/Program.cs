@@ -2,11 +2,13 @@ using GHelper.Ally;
 using GHelper.Battery;
 using GHelper.Display;
 using GHelper.Gpu;
+using GHelper.Gpu.NVidia;
 using GHelper.Helpers;
 using GHelper.Input;
 using GHelper.Mode;
 using GHelper.Overlay;
 using GHelper.Peripherals;
+using GHelper.Properties;
 using GHelper.USB;
 using Microsoft.Win32;
 using System.Diagnostics;
@@ -71,9 +73,73 @@ namespace GHelper
                     if (culture.ToString() == "kr") culture = CultureInfo.GetCultureInfo("ko");
                     Thread.CurrentThread.CurrentUICulture = culture;
                 }
-            } catch
+            }
+            catch
             {
                 Logger.WriteLine("Unknown Language: " + language);
+            }
+
+            acpi = new AsusACPI();
+
+            if (!acpi.IsConnected() && AppConfig.IsASUS() && !AppConfig.IsDesktop())
+            {
+                DialogResult dialogResult = MessageBox.Show(Properties.Strings.ACPIError, Properties.Strings.StartupError, MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    Process.Start(new ProcessStartInfo("https://www.asus.com/support/FAQ/1047338/") { UseShellExecute = true });
+                }
+
+                Application.Exit();
+                return;
+            }
+
+            if (action == "gpu-eco")
+            {
+                Task.Run(async () =>
+                {
+                    HardwareControl.RecreateGpuControl();
+                    HardwareControl.KillGPUApps();
+                    HardwareControl.DisposeGpuControl();
+                    if (AppConfig.IsNVPlatform()) NvidiaGpuControl.StopNVService();
+
+                    acpi.SetGPUEco(1);
+                    await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("refresh_delay", 500)));
+
+                    if (HardwareControl.GpuControl?.IsValid == true)
+                    {
+                        Logger.WriteLine("Eco half-state");
+                        if (AppConfig.IsEcoBootFix())
+                        {
+                            HardwareControl.DisposeGpuControl();
+                            acpi.DeviceSet(AsusACPI.GPUEco, 1, "GPUEco Force Fix");
+                        }
+                    }
+
+                    AppConfig.Set("gpu_mode", AsusACPI.GPUModeEco);
+                    Aura.CustomRGB.ApplyGPUColor(AsusACPI.GPUModeEco);
+                    try
+                    {
+                        ScreenControl.AutoScreen();
+                    }
+                    catch { }
+
+                    try
+                    {
+                        if (AppConfig.IsModeReapply())
+                        {
+                            await Task.Delay(TimeSpan.FromMilliseconds(1000));
+                            Program.modeControl.AutoPerformance();
+                        }
+                        else
+                        {
+                            Program.modeControl.SetGPUClocks(false);
+                        }
+                    }
+                    catch { }
+                }).Wait();
+
+                Startup.UnscheduleEcoMode();
+                return;
             }
 
             Logger.WriteLine("----------------------");
@@ -96,20 +162,6 @@ namespace GHelper
             var startCount = AppConfig.Get("start_count") + 1;
             AppConfig.Set("start_count", startCount);
             Logger.WriteLine("Start Count: " + startCount);
-
-            acpi = new AsusACPI();
-
-            if (!acpi.IsConnected() && AppConfig.IsASUS() && !AppConfig.IsDesktop())
-            {
-                DialogResult dialogResult = MessageBox.Show(Properties.Strings.ACPIError, Properties.Strings.StartupError, MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.Yes)
-                {
-                    Process.Start(new ProcessStartInfo("https://www.asus.com/support/FAQ/1047338/") { UseShellExecute = true });
-                }
-
-                Application.Exit();
-                return;
-            }
 
             ProcessHelper.KillSmartDisplayControl();
             AsusService.StopOnStartup();
