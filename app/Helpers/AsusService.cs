@@ -1,4 +1,4 @@
-﻿using GHelper.Ally;
+using GHelper.Ally;
 using System.Diagnostics;
 using System.Management;
 
@@ -65,8 +65,14 @@ namespace GHelper.Helpers
             {
                 string filter = string.Join(" OR ", names.Select(name => $"Name='{name}'"));
                 using var searcher = new ManagementObjectSearcher($"SELECT Name, State FROM Win32_Service WHERE {filter}");
-                foreach (ManagementObject mo in searcher.Get())
-                    states[(string)mo["Name"]] = (string)mo["State"];
+                using var collection = searcher.Get();
+                foreach (ManagementObject mo in collection)
+                {
+                    using (mo)
+                    {
+                        states[(string)mo["Name"]] = (string)mo["State"];
+                    }
+                }
             }
             catch (Exception ex)
             {
