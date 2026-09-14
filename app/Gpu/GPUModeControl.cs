@@ -1,4 +1,4 @@
-﻿using GHelper.Display;
+using GHelper.Display;
 using GHelper.Gpu.NVidia;
 using GHelper.Helpers;
 using GHelper.USB;
@@ -14,6 +14,31 @@ namespace GHelper.Gpu
         public static bool? gpuExists = null;
 
         static bool nvRestartPending;
+        public bool IsSwitching { get; private set; }
+
+        // InitGPUMode() is normally run fire-and-forget in the background (see call sites
+        // below) - wrap it so a failure is logged like every other error path in this file
+        // instead of becoming a silent unobserved task exception.
+        private void InitGPUModeLogged()
+        {
+            try { InitGPUMode(); }
+            catch (Exception ex) { Logger.WriteLine("Error initializing GPU mode UI: " + ex.Message); }
+        }
+
+        // Owned here rather than threaded through every caller: any two overlapping eco
+        // switches are wrong regardless of what triggered them (power event, manual toggle,
+        // Optimized-mode auto-apply), so SetGPUEco always supersedes its own previous run.
+        private static CancellationTokenSource? ecoCts;
+        private static readonly Lock ecoCtsLock = new();
+
+        // The eco value an in-flight RunGPUEcoSequence is driving toward, or null once it has
+        // either committed the ACPI write or been abandoned. AutoGPUMode must trust this over
+        // a live ACPI read: a sequence can take seconds (Nvidia service stop/restart) before it
+        // actually writes the eco flag, and during that window the live flag still reads the
+        // OLD value - a caller deciding "no switch needed" from that stale read would let the
+        // stale in-flight sequence commit its (by-then-wrong) target uncontested, e.g. a quick
+        // unplug-then-replug leaving the laptop stuck in Eco after the replug.
+        private static int? pendingEcoTarget;
 
 
         public GPUModeControl(SettingsForm settingsForm)
@@ -161,75 +186,181 @@ namespace GHelper.Gpu
 
 
 
-        public void SetGPUEco(int eco)
+        // Cancelling the previous run whenever a new one starts is what lets an in-flight eco
+        // switch (e.g. mid Nvidia-service-stop after an unplug) abandon itself cleanly instead
+        // of racing a fresher switch triggered by an immediate replug - whatever triggered it.
+        public void SetGPUEco(int eco, int delay = 0)
         {
 
             settings.LockGPUModes();
 
-            Task.Run(async () =>
+            CancellationTokenSource cts;
+            lock (ecoCtsLock)
             {
+                ecoCts?.Cancel();
+                ecoCts?.Dispose();
+                cts = new CancellationTokenSource();
+                ecoCts = cts;
+                pendingEcoTarget = eco;
+            }
 
-                int status = 1;
+            // Screen refresh only depends on power line status, not on GPU/eco state, so it
+            // runs as an independent sibling task instead of being sequenced behind, or bolted
+            // onto, the GPU/nvidia work below. Called directly (not via settings.Invoke) since
+            // ChangeDisplaySettingsEx is a slow blocking OS call - InitScreen() already
+            // marshals its own narrow UI update internally, so forcing the whole call onto the
+            // UI thread here would freeze the window for the duration of the mode change.
+            Task.Run(() => ScreenControl.AutoScreen());
+            Task.Run(() => RunGPUEcoSequence(eco, delay, cts));
+        }
 
-                Program.modeControl.WaitForApply();
+        public static bool IsWakeReady()
+        {
+            if (suspended || displayOff) return false;
+            long now = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            long wakeTime = Math.Max(lastResumeTime, lastDisplayOnTime);
+            return wakeTime == 0 || (now - wakeTime >= 500);
+        }
+
+        public static void BreakWakeDelay(string reason = "")
+        {
+            if (!string.IsNullOrEmpty(reason))
+                Logger.WriteLine($"Wake delay broken by event: {reason}");
+            lastResumeTime = 0;
+            lastDisplayOnTime = 0;
+        }
+
+        private async Task RunGPUEcoSequence(int eco, int delay, CancellationTokenSource cts)
+        {
+            var token = cts.Token;
+            try
+            {
+                IsSwitching = true;
+                if (delay > 0)
+                {
+                    await AsyncHelper.PollUntilAsync(
+                        () => IsWakeReady(),
+                        intervalMs: 100,
+                        timeoutMs: delay,
+                        token: token);
+                }
+                token.ThrowIfCancellationRequested();
+
+                if (displayOff || suspended)
+                {
+                    Logger.WriteLine("Aborting GPU Eco sequence: Monitor is Off or Suspended");
+                    return;
+                }
 
                 if (eco == 1)
                 {
                     HardwareControl.KillGPUApps();
                     HardwareControl.DisposeGpuControl();
-                    if (AppConfig.IsNVPlatform()) NvidiaGpuControl.StopNVService();
+                    // Awaited via Process.WaitForExitAsync internally - frees this thread for
+                    // the duration of the service stop instead of blocking it synchronously.
+                    if (AppConfig.IsNVPlatform()) await NvidiaGpuControl.StopNVServiceAsync(token);
                 }
+
+                token.ThrowIfCancellationRequested();
 
                 Logger.WriteLine($"Running eco command {eco}");
 
-                try
+                int status = Program.acpi.SetGPUEco(eco);
+
+                // Wait for the ACPI eco flag to actually reflect the change instead of
+                // guessing how long that takes. refresh_delay is now only the safety-net
+                // timeout, not the wait itself.
+                await AsyncHelper.PollUntilAsync(
+                    () => Program.acpi.DeviceGet(AsusACPI.GPUEco) == eco,
+                    intervalMs: 100,
+                    timeoutMs: AppConfig.Get("refresh_delay", 500),
+                    token: token);
+
+                // Fire-and-forget: InitGPUMode() calls Aura.CustomRGB.ApplyGPUColor(), which does
+                // a synchronous USB HID write + ACPI call - real blocking I/O that nothing below
+                // depends on finishing, so it shouldn't hold up the Nvidia restart step. Its own
+                // UI-touching calls (VisualiseGPUButtons/VisualiseGPUMode) already self-marshal
+                // via InvokeRequired, so this is safe to run off the UI thread too.
+                _ = Task.Run(InitGPUModeLogged, token);
+
+                if (eco == 0)
                 {
-
-                    status = Program.acpi.SetGPUEco(eco);
-                    await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("refresh_delay", 500)));
-
-                    settings.Invoke(delegate
+                    if (AppConfig.IsNVPlatform() || nvRestartPending)
                     {
-                        InitGPUMode();
-                        ScreenControl.AutoScreen();
-                    });
+                        settings.LockGPUModes(Properties.Strings.RestartingNVServices);
 
-                    if (eco == 0)
-                    {
-                        if (AppConfig.IsNVPlatform() || nvRestartPending)
-                        {
-                            settings.LockGPUModes(Properties.Strings.RestartingNVServices);
-                            await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("nv_delay", 5000)));
-                            if (AppConfig.IsNVPlatform()) NvidiaGpuControl.RestartNVService();
-                            else NvidiaGpuControl.RestartNvContainer();
-                            nvRestartPending = false;
-                            settings.Invoke(delegate { InitGPUMode(); });
-                            await Task.Delay(TimeSpan.FromMilliseconds(1000));
-                        }
+                        // Restart-Service awaits until it has actually restarted (via
+                        // Process.WaitForExitAsync, not a blocked thread); on failure (GPU/PCIe
+                        // link not re-enumerated yet) it returns quickly, so retry with backoff
+                        // instead of a single flat wait-then-try.
+                        bool restarted = await AsyncHelper.PollUntilAsync(
+                            async ct =>
+                            {
+                                try
+                                {
+                                    if (AppConfig.IsNVPlatform()) await NvidiaGpuControl.RestartNVServiceAsync(ct);
+                                    else await NvidiaGpuControl.RestartNvContainerAsync(ct);
+                                    return true;
+                                }
+                                catch (OperationCanceledException) { throw; }
+                                catch (Exception ex)
+                                {
+                                    Logger.WriteLine("NV service restart attempt failed: " + ex.Message);
+                                    return false;
+                                }
+                            },
+                            intervalMs: 500,
+                            timeoutMs: AppConfig.Get("nv_delay", 5000),
+                            token: token);
 
-                        await HardwareControl.RecreateGpuControlWithRetry(3, 2);
-                        if (HardwareControl.GpuControl is null) await HardwareControl.RecreateGpuControlWithRetry(3, 5);
-                        CheckGpuError();
-                        CheckStandardHalfState();
+                        if (!restarted) Logger.WriteLine("NV service did not restart within timeout");
+
+                        nvRestartPending = false;
+                        _ = Task.Run(InitGPUModeLogged, token);
                     }
 
-                    if (AppConfig.IsModeReapply())
+                    token.ThrowIfCancellationRequested();
+
+                    await HardwareControl.RecreateGpuControlWithRetry(3, 2, token);
+                    CheckStandardHalfState(token);
+                    _ = Program.modeControl.ApplyGPUSettingsAsync();
+                }
+
+                if (AppConfig.IsModeReapply())
+                {
+                    await Task.Delay(TimeSpan.FromMilliseconds(1000), token);
+
+                    // Reapply the currently active mode's settings (power limits reset by the
+                    // GPU eco switch on these models) - not AutoPerformance(), which re-derives
+                    // the mode from the power-source config and can switch away from whatever
+                    // mode is actually active (e.g. reverting a manual pick made in the
+                    // meantime). Mode selection stays isolated from GPU state changes.
+                    Program.modeControl.SetPerformanceMode();
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                // Superseded by a newer eco switch - not an error, the newer run owns the target state now.
+                Logger.WriteLine($"Eco command {eco} superseded, abandoning");
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine("Error setting GPU Eco: " + ex.Message);
+            }
+            finally
+            {
+                // Only clear if nothing superseded us in the meantime (a newer SetGPUEco call
+                // would have already replaced ecoCts with its own source and set its own
+                // target) - otherwise we'd wipe out the newer, still-pending target.
+                lock (ecoCtsLock)
+                {
+                    if (ReferenceEquals(ecoCts, cts))
                     {
-                        await Task.Delay(TimeSpan.FromMilliseconds(1000));
-                        Program.modeControl.AutoPerformance();
-                    } else
-                    {
-                        Program.modeControl.SetGPUClocks(false);
+                        pendingEcoTarget = null;
+                        IsSwitching = false;
                     }
                 }
-                catch (Exception ex)
-                {
-                    Logger.WriteLine("Error setting GPU Eco: " + ex.Message);
-                }
-
-            });
-
-
+            }
         }
 
         public static bool IsPlugged() =>
@@ -237,6 +368,55 @@ namespace GHelper.Gpu
             (Program.currentSource == Program.PowerSource.USBC && !AppConfig.Is("optimized_usbc"));
 
         public static bool suspended = false;
+        public static bool displayOff = false;
+        private static long lastResumeTime = 0;
+        private static long lastDisplayOnTime = 0;
+
+        public static void OnSuspend()
+        {
+            suspended = true;
+        }
+
+        public static void OnResume()
+        {
+            suspended = false;
+            lastResumeTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+        }
+
+        public static void OnDisplayOff()
+        {
+            displayOff = true;
+        }
+
+        public static void OnDisplayOn()
+        {
+            suspended = false;
+            displayOff = false;
+            lastDisplayOnTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+        }
+
+        public static int GetWakeupRemainingDelay()
+        {
+            if (suspended || displayOff)
+            {
+                return AppConfig.Get("gpu_wake_delay", 6000);
+            }
+
+            int wakeDelay = AppConfig.Get("gpu_wake_delay", 6000);
+            long now = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            long recentWakeTime = Math.Max(lastResumeTime, lastDisplayOnTime);
+
+            if (recentWakeTime > 0)
+            {
+                long elapsed = now - recentWakeTime;
+                if (elapsed >= 0 && elapsed < wakeDelay)
+                {
+                    return (int)(wakeDelay - elapsed);
+                }
+            }
+
+            return 0;
+        }
 
         public bool AutoGPUMode(bool optimized = false, int delay = 0)
         {
@@ -254,7 +434,30 @@ namespace GHelper.Gpu
                 return false;
             }
 
-            int eco = Program.acpi.DeviceGet(AsusACPI.GPUEco);
+            if (displayOff)
+            {
+                Logger.WriteLine("Skipping GPU Mode switch: Monitor Off");
+                return false;
+            }
+
+            int baseDelay = AppConfig.Get("gpu_delay", 0);
+            if (baseDelay > delay) delay = baseDelay;
+
+            int remainingWakeDelay = GetWakeupRemainingDelay();
+            if (remainingWakeDelay > 0)
+            {
+                if (remainingWakeDelay > delay)
+                {
+                    delay = remainingWakeDelay;
+                    Logger.WriteLine($"Waking up from sleep: delaying GPU Mode switch by {delay}ms");
+                }
+            }
+
+            // Trust an in-flight sequence's target over the live ACPI flag: the flag can lag
+            // several seconds behind (Nvidia service stop/restart) while a switch is already
+            // underway, and deciding "no change needed" from that stale read would let a now-
+            // stale in-flight switch commit uncontested moments later.
+            int eco = pendingEcoTarget ?? Program.acpi.DeviceGet(AsusACPI.GPUEco);
             int mux = Program.acpi.DeviceGet(AsusACPI.GPUMux);
 
             if (mux == 0)
@@ -268,8 +471,9 @@ namespace GHelper.Gpu
                 if (eco == 1)
                     if ((GpuAuto && IsPlugged()) || (ForceGPU && GpuMode == AsusACPI.GPUModeStandard))
                     {
-                        if (delay > 0) Thread.Sleep(delay);
-                        SetGPUEco(0);
+                        // Delay no longer blocks this thread - it's handed to the eco
+                        // sequence itself, which awaits it and can be cancelled mid-wait.
+                        SetGPUEco(0, delay);
                         return true;
                     }
                 if (eco == 0)
@@ -288,8 +492,7 @@ namespace GHelper.Gpu
                             if (dialogResult == DialogResult.No) return false;
                         }
 
-                        if (delay > 0) Thread.Sleep(delay);
-                        SetGPUEco(1);
+                        SetGPUEco(1, delay);
                         return true;
                     }
             }
@@ -299,57 +502,80 @@ namespace GHelper.Gpu
         }
 
 
-        public void ToggleXGM(bool silent = false)
+        private static CancellationTokenSource? xgmCts;
+        private static readonly Lock xgmCtsLock = new();
+
+        public void ToggleXGM(bool silent = false, CancellationToken token = default)
         {
+            CancellationTokenSource cts;
+            lock (xgmCtsLock)
+            {
+                xgmCts?.Cancel();
+                xgmCts = CancellationTokenSource.CreateLinkedTokenSource(token);
+                cts = xgmCts;
+            }
+            var ct = cts.Token;
 
             Task.Run(async () =>
             {
-                settings.LockGPUModes();
-
-                if (Program.acpi.DeviceGet(AsusACPI.GPUXG) == 1)
+                try
                 {
-                    XGM.Reset();
-                    HardwareControl.KillGPUApps();
+                    settings.LockGPUModes();
 
-                    if (silent)
+                    if (Program.acpi.DeviceGet(AsusACPI.GPUXG) == 1)
                     {
-                        Program.acpi.DeviceSet(AsusACPI.GPUXG, 0, "GPU XGM");
-                        await Task.Delay(TimeSpan.FromSeconds(15));
-                    }
-                    else
-                    {
-                        DialogResult dialogResult = settings.ShowMessage("Did you close all applications running on XG Mobile?", "Disabling XG Mobile", MessageBoxButtons.YesNo);
-                        if (dialogResult == DialogResult.Yes)
+                        XGM.Reset();
+                        HardwareControl.KillGPUApps();
+
+                        if (silent)
                         {
                             Program.acpi.DeviceSet(AsusACPI.GPUXG, 0, "GPU XGM");
-                            await Task.Delay(TimeSpan.FromSeconds(15));
-                            HardwareControl.RecreateGpuControl();
+                            await Task.Delay(TimeSpan.FromSeconds(15), ct);
+                        }
+                        else
+                        {
+                            DialogResult dialogResult = DialogResult.No;
+                            settings.Invoke((MethodInvoker)delegate
+                            {
+                                dialogResult = MessageBox.Show(settings, "Did you close all applications running on XG Mobile?", "Disabling XG Mobile", MessageBoxButtons.YesNo);
+                            });
+
+                            if (dialogResult == DialogResult.Yes)
+                            {
+                                Program.acpi.DeviceSet(AsusACPI.GPUXG, 0, "GPU XGM");
+                                await Task.Delay(TimeSpan.FromSeconds(15), ct);
+                                ct.ThrowIfCancellationRequested();
+                                HardwareControl.RecreateGpuControl();
+                            }
                         }
                     }
-                }
-                else
-                {
-
-                    if (AppConfig.Is("xgm_special"))
-                        Program.acpi.DeviceSet(AsusACPI.GPUXG, 0x101, "GPU XGM");
                     else
-                        Program.acpi.DeviceSet(AsusACPI.GPUXG, 1, "GPU XGM");
+                    {
 
-                    XGM.Init();
+                        if (AppConfig.Is("xgm_special"))
+                            Program.acpi.DeviceSet(AsusACPI.GPUXG, 0x101, "GPU XGM");
+                        else
+                            Program.acpi.DeviceSet(AsusACPI.GPUXG, 1, "GPU XGM");
 
-                    await Task.Delay(TimeSpan.FromSeconds(15));
-                    await HardwareControl.RecreateGpuControlWithRetry(6, 5);
+                        XGM.Init();
 
-                    if (AppConfig.IsApplyFans())
-                        XGM.SetFan(AppConfig.GetFanConfig(AsusFan.XGM));
+                        await Task.Delay(TimeSpan.FromSeconds(15), ct);
+                        ct.ThrowIfCancellationRequested();
+                        await HardwareControl.RecreateGpuControlWithRetry(6, 5, ct);
 
+                        if (AppConfig.IsApplyFans())
+                            XGM.SetFan(AppConfig.GetFanConfig(AsusFan.XGM));
+
+                    }
+
+                    ct.ThrowIfCancellationRequested();
+                    settings.Invoke(delegate
+                    {
+                        InitGPUMode();
+                    });
                 }
-
-                settings.Invoke(delegate
-                {
-                    InitGPUMode();
-                });
-            });
+                catch (OperationCanceledException) { }
+            }, ct);
         }
 
         public void KillGPUApps()
@@ -365,19 +591,36 @@ namespace GHelper.Gpu
             nvRestartPending = Program.acpi.IsNVidiaGPU() && Program.acpi.DeviceGet(AsusACPI.GPUEco) == 1;
         }
 
-        public void CheckStandardHalfState()
+        private static CancellationTokenSource? standardHalfStateCts;
+        private static readonly Lock standardHalfStateLock = new();
+
+        public void CheckStandardHalfState(CancellationToken token = default)
         {
             if (gpuMode != AsusACPI.GPUModeStandard || HardwareControl.GpuControl is not null) return;
 
             Logger.WriteLine("Standard half-state");
             if (!AppConfig.IsStandardForceFix()) return;
 
+            CancellationTokenSource cts;
+            lock (standardHalfStateLock)
+            {
+                standardHalfStateCts?.Cancel();
+                standardHalfStateCts = CancellationTokenSource.CreateLinkedTokenSource(token);
+                cts = standardHalfStateCts;
+            }
+            var ct = cts.Token;
+
             Task.Run(async () =>
             {
-                Program.acpi.DeviceSet(AsusACPI.GPUEco, 0, "GPUStandard Force Fix");
-                await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("nv_delay", 5000)));
-                HardwareControl.RecreateGpuControl();
-            });
+                try
+                {
+                    Program.acpi.DeviceSet(AsusACPI.GPUEco, 0, "GPUStandard Force Fix");
+                    await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("nv_delay", 5000)), ct);
+                    ct.ThrowIfCancellationRequested();
+                    HardwareControl.RecreateGpuControl();
+                }
+                catch (OperationCanceledException) { }
+            }, ct);
         }
 
         public void StandardModeFix()
