@@ -420,7 +420,7 @@
     <value>Valores de fábrica</value>
   </data>
   <data name="FanCurves" xml:space="preserve">
-    <value>Curvas ventiladores</value>
+    <value>Curva ventilador</value>
   </data>
   <data name="FanDragAll" xml:space="preserve">
     <value>Mantén SHIFT para arrastrar todos los puntos a la vez</value>
@@ -1002,7 +1002,7 @@ Recomendado si experimenta cuelgues aleatorios o hardware que no responde.</valu
 calienten el portátil dormido y agoten la batería.</value>
   </data>
   <data name="Overlay" xml:space="preserve">
-    <value>Interfaz superpuesta</value>
+    <value>Interfaz</value>
   </data>
   <data name="OverlayChart" xml:space="preserve">
     <value>Gráfico</value>
