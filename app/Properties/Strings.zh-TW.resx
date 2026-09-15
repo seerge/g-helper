@@ -1002,7 +1002,7 @@
 使睡眠中的筆電發熱並消耗電池。</value>
   </data>
   <data name="Overlay" xml:space="preserve">
-    <value>效能監控(OSD)</value>
+    <value>效能監控</value>
   </data>
   <data name="OverlayChart" xml:space="preserve">
     <value>Chart</value>
