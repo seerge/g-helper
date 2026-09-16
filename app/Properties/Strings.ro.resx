@@ -647,6 +647,42 @@
   <data name="MouseSynchronize" xml:space="preserve">
     <value>Sincronizare cu mouse-ul</value>
   </data>
+  <data name="HeadsetEqualizer" xml:space="preserve">
+    <value>Equalizer</value>
+  </data>
+  <data name="HeadsetMicrophoneType" xml:space="preserve">
+    <value>Microphone</value>
+  </data>
+  <data name="HeadsetMicBoom" xml:space="preserve">
+    <value>Boom</value>
+  </data>
+  <data name="HeadsetMicInline" xml:space="preserve">
+    <value>Inline</value>
+  </data>
+  <data name="HeadsetMicExternal" xml:space="preserve">
+    <value>External</value>
+  </data>
+  <data name="HeadsetNoiseReduction" xml:space="preserve">
+    <value>Noise Reduction</value>
+  </data>
+  <data name="HeadsetSidetone" xml:space="preserve">
+    <value>Sidetone</value>
+  </data>
+  <data name="HeadsetVoicePrompt" xml:space="preserve">
+    <value>Voice Prompt Language</value>
+  </data>
+  <data name="HeadsetAdaptiveAnc" xml:space="preserve">
+    <value>Adaptive ANC</value>
+  </data>
+  <data name="HeadsetAmbient" xml:space="preserve">
+    <value>Ambient</value>
+  </data>
+  <data name="HeadsetPromptSound" xml:space="preserve">
+    <value>Prompt Sound</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>Auto</value>
+  </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
     <value>Sincronizează cu laptopul</value>
   </data>
