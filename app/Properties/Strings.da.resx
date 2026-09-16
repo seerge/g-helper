@@ -651,37 +651,37 @@ Vil du stadig fortsætte?</value>
     <value>Equalizer</value>
   </data>
   <data name="HeadsetMicrophoneType" xml:space="preserve">
-    <value>Microphone</value>
+    <value>Mikrofon</value>
   </data>
   <data name="HeadsetMicBoom" xml:space="preserve">
     <value>Boom</value>
   </data>
   <data name="HeadsetMicInline" xml:space="preserve">
-    <value>Inline</value>
+    <value>På kabel</value>
   </data>
   <data name="HeadsetMicExternal" xml:space="preserve">
-    <value>External</value>
+    <value>Ekstern</value>
   </data>
   <data name="HeadsetNoiseReduction" xml:space="preserve">
-    <value>Noise Reduction</value>
+    <value>Støjreduktion</value>
   </data>
   <data name="HeadsetSidetone" xml:space="preserve">
     <value>Sidetone</value>
   </data>
   <data name="HeadsetVoicePrompt" xml:space="preserve">
-    <value>Voice Prompt Language</value>
+    <value>Sprog for stemmemeddelelser</value>
   </data>
   <data name="HeadsetAdaptiveAnc" xml:space="preserve">
-    <value>Adaptive ANC</value>
+    <value>Adaptiv ANC</value>
   </data>
   <data name="HeadsetAmbient" xml:space="preserve">
     <value>Ambient</value>
   </data>
   <data name="HeadsetPromptSound" xml:space="preserve">
-    <value>Prompt Sound</value>
+    <value>Lydsignal</value>
   </data>
   <data name="Auto" xml:space="preserve">
-    <value>Auto</value>
+    <value>Automatisk</value>
   </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
     <value>Synkroniser med laptop</value>

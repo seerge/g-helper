@@ -651,34 +651,34 @@ Trotzdem fortfahren?</value>
     <value>Equalizer</value>
   </data>
   <data name="HeadsetMicrophoneType" xml:space="preserve">
-    <value>Microphone</value>
+    <value>Mikrofon</value>
   </data>
   <data name="HeadsetMicBoom" xml:space="preserve">
-    <value>Boom</value>
+    <value>Bügel</value>
   </data>
   <data name="HeadsetMicInline" xml:space="preserve">
-    <value>Inline</value>
+    <value>Kabel</value>
   </data>
   <data name="HeadsetMicExternal" xml:space="preserve">
-    <value>External</value>
+    <value>Extern</value>
   </data>
   <data name="HeadsetNoiseReduction" xml:space="preserve">
-    <value>Noise Reduction</value>
+    <value>Rauschunterdrückung</value>
   </data>
   <data name="HeadsetSidetone" xml:space="preserve">
     <value>Sidetone</value>
   </data>
   <data name="HeadsetVoicePrompt" xml:space="preserve">
-    <value>Voice Prompt Language</value>
+    <value>Sprache der Sprachansagen</value>
   </data>
   <data name="HeadsetAdaptiveAnc" xml:space="preserve">
-    <value>Adaptive ANC</value>
+    <value>Adaptives ANC</value>
   </data>
   <data name="HeadsetAmbient" xml:space="preserve">
     <value>Ambient</value>
   </data>
   <data name="HeadsetPromptSound" xml:space="preserve">
-    <value>Prompt Sound</value>
+    <value>Signalton</value>
   </data>
   <data name="Auto" xml:space="preserve">
     <value>Auto</value>

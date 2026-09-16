@@ -648,37 +648,37 @@ Sei sicuro di voler continuare?</value>
     <value>Sincronizza con Mouse</value>
   </data>
   <data name="HeadsetEqualizer" xml:space="preserve">
-    <value>Equalizer</value>
+    <value>Equalizzatore</value>
   </data>
   <data name="HeadsetMicrophoneType" xml:space="preserve">
-    <value>Microphone</value>
+    <value>Microfono</value>
   </data>
   <data name="HeadsetMicBoom" xml:space="preserve">
-    <value>Boom</value>
+    <value>Asta</value>
   </data>
   <data name="HeadsetMicInline" xml:space="preserve">
-    <value>Inline</value>
+    <value>Sul cavo</value>
   </data>
   <data name="HeadsetMicExternal" xml:space="preserve">
-    <value>External</value>
+    <value>Esterno</value>
   </data>
   <data name="HeadsetNoiseReduction" xml:space="preserve">
-    <value>Noise Reduction</value>
+    <value>Riduzione del rumore</value>
   </data>
   <data name="HeadsetSidetone" xml:space="preserve">
     <value>Sidetone</value>
   </data>
   <data name="HeadsetVoicePrompt" xml:space="preserve">
-    <value>Voice Prompt Language</value>
+    <value>Lingua dei messaggi vocali</value>
   </data>
   <data name="HeadsetAdaptiveAnc" xml:space="preserve">
-    <value>Adaptive ANC</value>
+    <value>ANC adattivo</value>
   </data>
   <data name="HeadsetAmbient" xml:space="preserve">
     <value>Ambient</value>
   </data>
   <data name="HeadsetPromptSound" xml:space="preserve">
-    <value>Prompt Sound</value>
+    <value>Segnale acustico</value>
   </data>
   <data name="Auto" xml:space="preserve">
     <value>Auto</value>

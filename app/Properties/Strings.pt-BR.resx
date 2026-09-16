@@ -648,40 +648,40 @@ Ainda quer continuar?</value>
     <value>Sincronizar com o mouse</value>
   </data>
   <data name="HeadsetEqualizer" xml:space="preserve">
-    <value>Equalizer</value>
+    <value>Equalizador</value>
   </data>
   <data name="HeadsetMicrophoneType" xml:space="preserve">
-    <value>Microphone</value>
+    <value>Microfone</value>
   </data>
   <data name="HeadsetMicBoom" xml:space="preserve">
-    <value>Boom</value>
+    <value>Haste</value>
   </data>
   <data name="HeadsetMicInline" xml:space="preserve">
-    <value>Inline</value>
+    <value>No cabo</value>
   </data>
   <data name="HeadsetMicExternal" xml:space="preserve">
-    <value>External</value>
+    <value>Externo</value>
   </data>
   <data name="HeadsetNoiseReduction" xml:space="preserve">
-    <value>Noise Reduction</value>
+    <value>Redução de ruído</value>
   </data>
   <data name="HeadsetSidetone" xml:space="preserve">
-    <value>Sidetone</value>
+    <value>Retorno de voz</value>
   </data>
   <data name="HeadsetVoicePrompt" xml:space="preserve">
-    <value>Voice Prompt Language</value>
+    <value>Idioma dos avisos de voz</value>
   </data>
   <data name="HeadsetAdaptiveAnc" xml:space="preserve">
-    <value>Adaptive ANC</value>
+    <value>ANC adaptativo</value>
   </data>
   <data name="HeadsetAmbient" xml:space="preserve">
-    <value>Ambient</value>
+    <value>Ambiente</value>
   </data>
   <data name="HeadsetPromptSound" xml:space="preserve">
-    <value>Prompt Sound</value>
+    <value>Tom de aviso</value>
   </data>
   <data name="Auto" xml:space="preserve">
-    <value>Auto</value>
+    <value>Automático</value>
   </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
     <value>Sincronizar com laptop</value>

@@ -648,37 +648,37 @@ Nadal chcesz kontynuować?</value>
     <value>Synchronizuj z myszką</value>
   </data>
   <data name="HeadsetEqualizer" xml:space="preserve">
-    <value>Equalizer</value>
+    <value>Korektor</value>
   </data>
   <data name="HeadsetMicrophoneType" xml:space="preserve">
-    <value>Microphone</value>
+    <value>Mikrofon</value>
   </data>
   <data name="HeadsetMicBoom" xml:space="preserve">
-    <value>Boom</value>
+    <value>Na pałąku</value>
   </data>
   <data name="HeadsetMicInline" xml:space="preserve">
-    <value>Inline</value>
+    <value>Na kablu</value>
   </data>
   <data name="HeadsetMicExternal" xml:space="preserve">
-    <value>External</value>
+    <value>Zewnętrzny</value>
   </data>
   <data name="HeadsetNoiseReduction" xml:space="preserve">
-    <value>Noise Reduction</value>
+    <value>Redukcja szumów</value>
   </data>
   <data name="HeadsetSidetone" xml:space="preserve">
-    <value>Sidetone</value>
+    <value>Odsłuch</value>
   </data>
   <data name="HeadsetVoicePrompt" xml:space="preserve">
-    <value>Voice Prompt Language</value>
+    <value>Język komunikatów głosowych</value>
   </data>
   <data name="HeadsetAdaptiveAnc" xml:space="preserve">
-    <value>Adaptive ANC</value>
+    <value>Adaptacyjne ANC</value>
   </data>
   <data name="HeadsetAmbient" xml:space="preserve">
-    <value>Ambient</value>
+    <value>Otoczenie</value>
   </data>
   <data name="HeadsetPromptSound" xml:space="preserve">
-    <value>Prompt Sound</value>
+    <value>Sygnał dźwiękowy</value>
   </data>
   <data name="Auto" xml:space="preserve">
     <value>Auto</value>
