@@ -1,4 +1,6 @@
-﻿using GHelper.Peripherals.Keyboard;
+﻿using GHelper.Peripherals.Headset;
+using GHelper.Peripherals.Headset.Models;
+using GHelper.Peripherals.Keyboard;
 using GHelper.Peripherals.Keyboard.Models;
 using GHelper.Peripherals.Mouse;
 using GHelper.Peripherals.Mouse.Models;
@@ -16,6 +18,7 @@ namespace GHelper.Peripherals
 
         public static List<AsusMouse> ConnectedMice = new List<AsusMouse>();
         public static List<AsusKeyboard> ConnectedKeyboards = new List<AsusKeyboard>();
+        public static List<AsusHeadset> ConnectedHeadsets = new List<AsusHeadset>();
 
         public static bool IsAuraSync { get; private set; } = AppConfig.IsAuraSync();
 
@@ -26,11 +29,18 @@ namespace GHelper.Peripherals
         }
 
         public static bool IsKeyboardAuraSync { get; private set; } = AppConfig.IsKeyboardAuraSync();
+        public static bool IsHeadsetAuraSync { get; private set; } = AppConfig.IsHeadsetAuraSync();
 
         public static void SetKeyboardAuraSync(bool enabled)
         {
             AppConfig.Set("keyboard_aura_sync", enabled ? 1 : 0);
             IsKeyboardAuraSync = enabled;
+        }
+
+        public static void SetHeadsetAuraSync(bool enabled)
+        {
+            AppConfig.Set("headset_aura_sync", enabled ? 1 : 0);
+            IsHeadsetAuraSync = enabled;
         }
 
         public static event EventHandler? DeviceChanged;
@@ -66,9 +76,17 @@ namespace GHelper.Peripherals
             }
         }
 
+        public static bool IsHeadsetConnected()
+        {
+            lock (_LOCK)
+            {
+                return ConnectedHeadsets.Count > 0;
+            }
+        }
+
         public static bool IsAnyPeripheralConnect()
         {
-            return IsMouseConnected() || IsKeyboardConnected();
+            return IsMouseConnected() || IsKeyboardConnected() || IsHeadsetConnected();
         }
 
         public static List<IPeripheral> AllPeripherals()
@@ -78,6 +96,7 @@ namespace GHelper.Peripherals
             {
                 l.AddRange(ConnectedMice);
                 l.AddRange(ConnectedKeyboards);
+                l.AddRange(ConnectedHeadsets);
             }
             return l;
         }
@@ -132,6 +151,12 @@ namespace GHelper.Peripherals
         {
             if (!IsAuraSync) return;
             ForEachAsync(ConnectedMice, m => m.SyncFromKeyboardAura(), "Failed to sync with keyboard aura");
+        }
+
+        public static void SyncHeadsetsWithAura()
+        {
+            if (!IsHeadsetAuraSync) return;
+            ForEachAsync(ConnectedHeadsets, hs => hs.SyncFromLaptopAura(), "Failed to sync with laptop aura");
         }
 
         public static void SyncKeyboardsWithAura()
@@ -313,6 +338,71 @@ namespace GHelper.Peripherals
             UpdateSettingsView();
         }
 
+        public static void Connect(AsusHeadset hs)
+        {
+            if (IsDeviceConnected(hs))
+            {
+                return;
+            }
+
+            try
+            {
+                hs.Connect();
+            }
+            catch (IOException e)
+            {
+                Logger.WriteLine(hs.GetDisplayName() + " failed to connect to device: " + e);
+                return;
+            }
+
+            int tries = 0;
+            while (!hs.IsDeviceReady && tries < 3)
+            {
+                Thread.Sleep(250);
+                Logger.WriteLine(hs.GetDisplayName() + " synchronising. Try " + (tries + 1));
+                hs.SynchronizeDevice();
+                ++tries;
+            }
+
+            lock (_LOCK)
+            {
+                ConnectedHeadsets.Add(hs);
+            }
+            Logger.WriteLine(hs.GetDisplayName() + " added to the list: " + ConnectedHeadsets.Count + " headsets are connected.");
+
+            hs.Disconnect += Headset_Disconnect;
+            hs.HeadsetReadyChanged += PeripheralReadyChanged;
+            hs.BatteryUpdated += BatteryUpdated;
+
+            if (DeviceChanged is not null)
+            {
+                DeviceChanged(hs, EventArgs.Empty);
+            }
+            UpdateSettingsView();
+        }
+
+        private static void Headset_Disconnect(object? sender, EventArgs e)
+        {
+            if (sender is null)
+            {
+                return;
+            }
+
+            AsusHeadset hs = (AsusHeadset)sender;
+            hs.Disconnect -= Headset_Disconnect;
+            hs.HeadsetReadyChanged -= PeripheralReadyChanged;
+            hs.BatteryUpdated -= BatteryUpdated;
+            lock (_LOCK)
+            {
+                ConnectedHeadsets.Remove(hs);
+            }
+
+            Logger.WriteLine(hs.GetDisplayName() + " reported disconnect. " + ConnectedHeadsets.Count + " headsets are connected.");
+            hs.Dispose();
+
+            UpdateSettingsView();
+        }
+
         private static void BatteryUpdated(object? sender, EventArgs e)
         {
             UpdateSettingsView();
@@ -479,6 +569,28 @@ namespace GHelper.Peripherals
             DetectKeyboard(new TUFK3());
             DetectKeyboard(new TUFK3GenII());
             DetectKeyboard(new ClaymoreII());
+        }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public static void DetectAllAsusHeadsets()
+        {
+            if (AppConfig.Is("headset_test")) DetectHeadset(new DeltaII() { TestMode = true });
+
+            DetectHeadset(new DeltaII());
+            DetectHeadset(new DeltaIIKjp());
+            DetectHeadset(new Pelta());
+            DetectHeadset(new CetraSpeedNova());
+            DetectHeadset(new Clavis());
+            DetectHeadset(new CetraRgb());
+        }
+
+        public static void DetectHeadset(AsusHeadset hs)
+        {
+            if (hs.IsDeviceConnected() && !IsDeviceConnected(hs))
+            {
+                Logger.WriteLine("Detected a new " + hs.GetDisplayName() + (hs.TestMode ? " (Test)" : "") + " . Connecting...");
+                Connect(hs);
+            }
         }
 
         private static int KeyboardTestPid()
@@ -706,6 +818,7 @@ namespace GHelper.Peripherals
             Logger.WriteLine("HID Device Event: Checking for ASUS peripherals");
             DetectAllAsusMice();
             DetectAllAsusKeyboards();
+            DetectAllAsusHeadsets();
             if (AppConfig.IsDetachableKeyboard()) Program.inputDispatcher.Init();
             XGM.Init();
         }

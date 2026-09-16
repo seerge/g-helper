@@ -173,9 +173,20 @@ namespace GHelper.UI
             Brush brushEmpty = new SolidBrush(RForm.chartGrid);
             Brush brushBorder = new SolidBrush(borderColor);
 
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+
+            if (Vertical)
+            {
+                float thumbY = _dragX ?? _thumbPos.Y;
+                e.Graphics.FillRectangle(brushEmpty, _barPos.X, _barPos.Y, _barSize.Width, _barSize.Height);
+                e.Graphics.FillRectangle(brushAccent, _barPos.X, thumbY, _barSize.Width, _barPos.Y + _barSize.Height - thumbY);
+                e.Graphics.FillCircle(brushBorder, _thumbPos.X, thumbY, _radius);
+                e.Graphics.FillCircle(brushAccent, _thumbPos.X, thumbY, _innerScale * _radius);
+                return;
+            }
+
             float thumbX = _dragX ?? _thumbPos.X;
 
-            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             e.Graphics.FillRectangle(brushEmpty,
                 _barPos.X, _barPos.Y, _barSize.Width, _barSize.Height);
             e.Graphics.FillRectangle(brushAccent,
@@ -207,18 +218,33 @@ namespace GHelper.UI
 
         public bool Exponential { get; set; }
 
-        private float ValueToX(int value) => _barPos.X + _barSize.Width *
-            (Exponential ? MathF.Log((float)value / Min) / MathF.Log((float)Max / Min)
-                         : (float)(value - Min) / (Max - Min));
+        public bool Vertical { get; set; }
+
+        private float ValueFraction(int value) =>
+            Exponential ? MathF.Log((float)value / Min) / MathF.Log((float)Max / Min)
+                        : (float)(value - Min) / (Max - Min);
+
+        private float ValueToX(int value) => _barPos.X + _barSize.Width * ValueFraction(value);
+
+        // vertical sliders grow upwards, so the maximum sits at the top of the bar
+        private float ValueToY(int value) => _barPos.Y + _barSize.Height * (1 - ValueFraction(value));
 
         private void RecalculateParameters()
         {
-            _radius = 0.4F * ClientSize.Height;
-            _barSize = new SizeF(ClientSize.Width - 2 * _radius, ClientSize.Height * 0.15F);
-            _barPos = new PointF(_radius, (ClientSize.Height - _barSize.Height) / 2);
-            _thumbPos = new PointF(
-                ValueToX(Value),
-                _barPos.Y + 0.5f * _barSize.Height);
+            if (Vertical)
+            {
+                _radius = 0.4F * ClientSize.Width;
+                _barSize = new SizeF(ClientSize.Width * 0.15F, ClientSize.Height - 2 * _radius);
+                _barPos = new PointF((ClientSize.Width - _barSize.Width) / 2, _radius);
+                _thumbPos = new PointF(_barPos.X + 0.5f * _barSize.Width, ValueToY(Value));
+            }
+            else
+            {
+                _radius = 0.4F * ClientSize.Height;
+                _barSize = new SizeF(ClientSize.Width - 2 * _radius, ClientSize.Height * 0.15F);
+                _barPos = new PointF(_radius, (ClientSize.Height - _barSize.Height) / 2);
+                _thumbPos = new PointF(ValueToX(Value), _barPos.Y + 0.5f * _barSize.Height);
+            }
             Invalidate();
         }
 
@@ -238,6 +264,20 @@ namespace GHelper.UI
 
         private void _calculateValue(MouseEventArgs e)
         {
+            if (Vertical)
+            {
+                float thumbY = Math.Clamp(e.Location.Y, _barPos.Y, _barPos.Y + _barSize.Height);
+
+                if (_moving)
+                {
+                    _dragX = thumbY;
+                    Invalidate();
+                }
+
+                Value = (int)Math.Round(Min + (1 - (thumbY - _barPos.Y) / _barSize.Height) * (Max - Min));
+                return;
+            }
+
             float thumbX = e.Location.X; // - _delta.Width;
             if (thumbX < _barPos.X)
             {

@@ -1800,6 +1800,114 @@ namespace GHelper.Properties {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Equalizer.
+        /// </summary>
+        internal static string HeadsetEqualizer {
+            get {
+                return ResourceManager.GetString("HeadsetEqualizer", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Noise Reduction.
+        /// </summary>
+        internal static string HeadsetMicrophoneType {
+            get {
+                return ResourceManager.GetString("HeadsetMicrophoneType", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Boom.
+        /// </summary>
+        internal static string HeadsetMicBoom {
+            get {
+                return ResourceManager.GetString("HeadsetMicBoom", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Inline.
+        /// </summary>
+        internal static string HeadsetMicInline {
+            get {
+                return ResourceManager.GetString("HeadsetMicInline", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to External.
+        /// </summary>
+        internal static string HeadsetMicExternal {
+            get {
+                return ResourceManager.GetString("HeadsetMicExternal", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Noise Reduction.
+        /// </summary>
+        internal static string HeadsetNoiseReduction {
+            get {
+                return ResourceManager.GetString("HeadsetNoiseReduction", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Sidetone.
+        /// </summary>
+        internal static string HeadsetSidetone {
+            get {
+                return ResourceManager.GetString("HeadsetSidetone", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Voice Prompt Language.
+        /// </summary>
+        internal static string HeadsetVoicePrompt {
+            get {
+                return ResourceManager.GetString("HeadsetVoicePrompt", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Adaptive ANC.
+        /// </summary>
+        internal static string HeadsetAdaptiveAnc {
+            get {
+                return ResourceManager.GetString("HeadsetAdaptiveAnc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Ambient.
+        /// </summary>
+        internal static string HeadsetAmbient {
+            get {
+                return ResourceManager.GetString("HeadsetAmbient", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Prompt Sound.
+        /// </summary>
+        internal static string HeadsetPromptSound {
+            get {
+                return ResourceManager.GetString("HeadsetPromptSound", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Auto.
+        /// </summary>
+        internal static string Auto {
+            get {
+                return ResourceManager.GetString("Auto", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Sync with laptop.
         /// </summary>
         internal static string MouseSyncWithAura {

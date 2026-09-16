@@ -379,6 +379,11 @@ public static class AppConfig
         return Is("keyboard_aura_sync");
     }
 
+    public static bool IsHeadsetAuraSync()
+    {
+        return Is("headset_aura_sync");
+    }
+
     public static bool NoMKeys()
     {
         return (ContainsModel("Z13") && !IsARCNM()) ||
