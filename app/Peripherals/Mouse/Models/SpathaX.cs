@@ -163,6 +163,8 @@ namespace GHelper.Peripherals.Mouse.Models
                 (0x01ED, "Side Button 4" ),
                 (0x01EE, "Side Button 5" ),
                 (0x01EF, "Side Button 6" ),
+                (0x01C0, "RapidFire (Toggle)"),
+                (0x01C1, "RapidFire (Hold)"  ),
                 (0x0000, "Disabled"      ),
             }),
             ("Combos",     AsusMouse.MouseCombos.Select(c => (c.PassthroughCode, c.Label)).ToList()),

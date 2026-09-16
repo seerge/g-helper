@@ -44,6 +44,7 @@ namespace GHelper
         public Extra? extraForm;
         public Updates? updatesForm;
         public Handheld? handheldForm;
+        public OverlayConfig? overlayForm;
 
         static long lastRefresh;
         static long lastBatteryRefresh;
@@ -270,7 +271,15 @@ namespace GHelper
 
             buttonFPS.Click += ButtonFPS_Click;
             buttonOverlay.Click += ButtonOverlay_Click;
-            buttonOverlay.BorderColor = colorStandard;
+            buttonOverlay.MouseUp += (s, e) => { if (e.Button == MouseButtons.Right) ToggleOverlay(); };
+            buttonOverlay.Text = Properties.Strings.Overlay;
+            buttonOverlayAlly.Click += ButtonOverlay_Click;
+            buttonOverlayAlly.BorderColor = colorStandard;
+            VisualiseOverlay();
+            buttonKeyboard.SizeChanged += (s, e) => AlignFnLock();
+            AlignFnLock();
+
+            if (AppConfig.IsAlly()) tableScreen.ColumnCount = 3;
 
             buttonAutoTDP.Click += ButtonAutoTDP_Click;
             buttonAutoTDP.BorderColor = colorTurbo;
@@ -537,7 +546,16 @@ namespace GHelper
 
         private void ButtonOverlay_Click(object? sender, EventArgs e)
         {
-            ToggleOverlay();
+            if (overlayForm == null || overlayForm.Text == "")
+            {
+                overlayForm = new OverlayConfig();
+                AddOwnedForm(overlayForm);
+            }
+
+            if (overlayForm.Visible)
+                overlayForm.Close();
+            else
+                overlayForm.Show();
         }
 
         private void ButtonHandheld_Click(object? sender, EventArgs e)
@@ -583,8 +601,8 @@ namespace GHelper
             panelKeyboardTitle.Visible = false;
             panelKeyboard.Padding = new Padding(panelKeyboard.Padding.Left, 0, panelKeyboard.Padding.Right, panelKeyboard.Padding.Bottom);
 
-            buttonOverlay.Text = Properties.Strings.Overlay;
-            buttonOverlay.Activated = AppConfig.IsOverlay();
+            buttonOverlayAlly.Text = Properties.Strings.Overlay;
+            buttonOverlayAlly.Activated = AppConfig.IsOverlay();
 
             tableAMD.Visible = true;
         }
@@ -680,16 +698,16 @@ namespace GHelper
             RefreshSensors(true);
         }
 
-        private void ShowBatteryWear()
+        private async void ShowBatteryWear()
         {
             //Refresh again only after 15 Minutes since the last refresh
             if (lastBatteryRefresh == 0 || Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastBatteryRefresh) > 15 * 60_000)
             {
                 lastBatteryRefresh = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-                HardwareControl.RefreshBatteryHealth();
+                await Task.Run(HardwareControl.RefreshBatteryHealth);
             }
 
-            if (HardwareControl.batteryHealth != -1)
+            if (batteryMouseOver && HardwareControl.batteryHealth != -1)
             {
                 labelCharge.Text = Properties.Strings.BatteryHealth + ": " + Math.Round(HardwareControl.batteryHealth, 1) + "%";
             }
@@ -1100,7 +1118,6 @@ namespace GHelper
         {
             if (InvokeRequired) { Invoke(() => VisualiseMatrixRunning(mode)); return; }
             comboMatrixRunning.SelectedIndex = mode;
-            if (comboMatrix.SelectedIndex == 0) comboMatrix.SelectedIndex = 3;
         }
 
         public void SetMatrixRunning(int mode)
@@ -1540,6 +1557,7 @@ namespace GHelper
             if (matrixForm != null && matrixForm.Text != "") matrixForm.Close();
             if (slashForm != null && slashForm.Text != "") slashForm.Close();
             if (handheldForm != null && handheldForm.Text != "") handheldForm.Close();
+            if (overlayForm != null && overlayForm.Text != "") overlayForm.Close();
             if (mouseSettings != null && mouseSettings.Text != "") mouseSettings.Close();
             if (keyboardSettings != null && keyboardSettings.Text != "") keyboardSettings.Close();
             MemoryHelper.TrimAfter();
@@ -1553,6 +1571,7 @@ namespace GHelper
             this.Activate();
             this.TopMost = true;
             this.TopMost = AppConfig.Is("topmost");
+            if (TopMost) User32.SetWindowPos(Handle, -1, 0, 0, 0, 0, 0x0001 | 0x0002 | 0x0010);
         }
 
         public DialogResult ShowMessage(string text, string title = "", MessageBoxButtons buttons = MessageBoxButtons.OK)
@@ -1577,6 +1596,7 @@ namespace GHelper
                    (matrixForm != null && matrixForm.ContainsFocus) ||
                    (slashForm != null && slashForm.ContainsFocus) ||
                    (handheldForm != null && handheldForm.ContainsFocus) ||
+                   (overlayForm != null && overlayForm.ContainsFocus) ||
                    this.ContainsFocus ||
                    (lostFocusCheck && Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastLostFocus) < 300);
         }
@@ -1699,7 +1719,7 @@ namespace GHelper
             else
                 Program.hardwareOverlay?.StopOverlay();
 
-            buttonOverlay.Activated = enable;
+            VisualiseOverlay();
 
             if (fromHotkey && AppConfig.IsOverlayGameOnly())
                 Program.toast.RunToast(Properties.Strings.Overlay + " " + (enable ? Properties.Strings.On : Properties.Strings.Off));
@@ -2265,6 +2285,20 @@ namespace GHelper
             int filledSquares = (int)Math.Round(level/2);
             string squares = new string('|', filledSquares);
             labelMatrix.Text = $"Slash Lighting: {squares}";
+        }
+
+        private void AlignFnLock()
+        {
+            buttonFnLock.Width = buttonOverlay.Width = (buttonKeyboard.Width - 8) / 2;
+            buttonOverlay.Left = buttonFnLock.Left - 8 - buttonOverlay.Width;
+        }
+
+        public void VisualiseOverlay()
+        {
+            bool enabled = AppConfig.IsOverlay();
+            buttonOverlay.BackColor = enabled ? colorEco : buttonSecond;
+            buttonOverlay.ForeColor = enabled ? SystemColors.ControlLightLight : SystemColors.ControlDark;
+            buttonOverlayAlly.Activated = enabled;
         }
 
         public void VisualiseFnLock()
