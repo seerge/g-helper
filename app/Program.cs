@@ -169,6 +169,7 @@ namespace GHelper
             {
                 PeripheralsProvider.DetectAllAsusMice();
                 PeripheralsProvider.DetectAllAsusKeyboards();
+                PeripheralsProvider.DetectAllAsusHeadsets();
             });
             PeripheralsProvider.RegisterForDeviceEvents();
 
