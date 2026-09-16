@@ -711,10 +711,10 @@
     <value>Neconectat</value>
   </data>
   <data name="Off" xml:space="preserve">
-    <value>Off</value>
+    <value>Oprit</value>
   </data>
   <data name="On" xml:space="preserve">
-    <value>On</value>
+    <value>Pornit</value>
   </data>
   <data name="OnAlways" xml:space="preserve">
     <value>Mereu activat</value>
@@ -1099,5 +1099,20 @@ să încălzească laptopul adormit și să descarce bateria.</value>
   </data>
   <data name="Always" xml:space="preserve">
     <value>Întotdeauna</value>
+  </data>
+  <data name="TestLayout" xml:space="preserve">
+    <value>Aspect de test</value>
+  </data>
+  <data name="FillAll" xml:space="preserve">
+    <value>Umple tot</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>Taste</value>
+  </data>
+  <data name="Animation" xml:space="preserve">
+    <value>Animație</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>Fundal</value>
   </data>
 </root>

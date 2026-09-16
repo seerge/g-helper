@@ -1100,4 +1100,19 @@ kaitinti miegančio kompiuterio ir eikvoti akumuliatoriaus.</value>
   <data name="Always" xml:space="preserve">
     <value>Visada</value>
   </data>
+  <data name="TestLayout" xml:space="preserve">
+    <value>Bandomasis išdėstymas</value>
+  </data>
+  <data name="FillAll" xml:space="preserve">
+    <value>Užpildyti visus</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>Klavišai</value>
+  </data>
+  <data name="Animation" xml:space="preserve">
+    <value>Animacija</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>Fonas</value>
+  </data>
 </root>

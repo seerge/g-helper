@@ -1100,4 +1100,19 @@
   <data name="Always" xml:space="preserve">
     <value>دائمًا</value>
   </data>
+  <data name="TestLayout" xml:space="preserve">
+    <value>تخطيط الاختبار</value>
+  </data>
+  <data name="FillAll" xml:space="preserve">
+    <value>ملء الكل</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>المفاتيح</value>
+  </data>
+  <data name="Animation" xml:space="preserve">
+    <value>الرسوم المتحركة</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>الخلفية</value>
+  </data>
 </root>

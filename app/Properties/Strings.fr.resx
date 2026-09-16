@@ -1100,4 +1100,19 @@ de chauffer l'ordinateur en veille et de vider la batterie.</value>
   <data name="Always" xml:space="preserve">
     <value>Toujours</value>
   </data>
+  <data name="TestLayout" xml:space="preserve">
+    <value>Disposition de test</value>
+  </data>
+  <data name="FillAll" xml:space="preserve">
+    <value>Tout remplir</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>Touches</value>
+  </data>
+  <data name="Animation" xml:space="preserve">
+    <value>Animation</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>Arrière-plan</value>
+  </data>
 </root>

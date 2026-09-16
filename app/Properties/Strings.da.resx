@@ -1100,4 +1100,19 @@ i at opvarme den sovende bærbare og dræne batteriet.</value>
   <data name="Always" xml:space="preserve">
     <value>Altid</value>
   </data>
+  <data name="TestLayout" xml:space="preserve">
+    <value>Testlayout</value>
+  </data>
+  <data name="FillAll" xml:space="preserve">
+    <value>Udfyld alle</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>Taster</value>
+  </data>
+  <data name="Animation" xml:space="preserve">
+    <value>Animation</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>Baggrund</value>
+  </data>
 </root>

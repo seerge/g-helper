@@ -80,11 +80,14 @@ namespace GHelper
             checkBoxSyncAura.Text = Properties.Strings.MouseSyncWithAura;
             buttonLightingColor.Text = Properties.Strings.Color;
             buttonLightingColor2.Text = Properties.Strings.Color + " 2";
-            buttonLightingColor3.Text = "Back";
+            buttonLightingColor3.Text = Properties.Strings.Background;
             buttonPaintColor.Text = Properties.Strings.Color;
             labelKeyBinding.Text = Properties.Strings.KeyBindings;
             labelProfile.Text = Properties.Strings.Profile;
             buttonResetBindings.Text = "  " + Properties.Strings.Reset;
+            buttonFillAll.Text = "  " + Properties.Strings.FillAll;
+            labelKeys.Text = Properties.Strings.Keys;
+            labelTestLayout.Text = Properties.Strings.TestLayout;
 
             foreach (var mode in supportedModes)
                 comboBoxLightingMode.Items.Add(lightingModeNames.TryGetValue(mode, out var name) ? name : mode.ToString());
@@ -289,6 +292,7 @@ namespace GHelper
         {
             if (oled is null) return;
 
+            labelOledMode.Text = Properties.Strings.Animation;
             comboBoxOledMode.Items.Add(Properties.Strings.Off);
             for (int i = 1; i <= oled.OledAnimationCount(); i++)
                 comboBoxOledMode.Items.Add("Animation " + i);

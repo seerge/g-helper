@@ -1100,4 +1100,19 @@ dizüstünü ısıtmasını ve pili tüketmesini engeller.</value>
   <data name="Always" xml:space="preserve">
     <value>Her zaman</value>
   </data>
+  <data name="TestLayout" xml:space="preserve">
+    <value>Test Düzeni</value>
+  </data>
+  <data name="FillAll" xml:space="preserve">
+    <value>Tümünü Doldur</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>Tuşlar</value>
+  </data>
+  <data name="Animation" xml:space="preserve">
+    <value>Animasyon</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>Arka Plan</value>
+  </data>
 </root>

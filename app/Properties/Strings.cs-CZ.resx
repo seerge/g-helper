@@ -214,7 +214,7 @@
     <value>Náhodný</value>
   </data>
   <data name="AuraReact" xml:space="preserve">
-    <value>React</value>
+    <value>Reaktivní</value>
   </data>
   <data name="AuraSlow" xml:space="preserve">
     <value>Nízká</value>
@@ -1023,5 +1023,20 @@ Doporučeno, pokud zaznamenáváte náhodné zaseknutí nebo nereagující hardw
   </data>
   <data name="Always" xml:space="preserve">
     <value>Vždy</value>
+  </data>
+  <data name="TestLayout" xml:space="preserve">
+    <value>Testovací rozložení</value>
+  </data>
+  <data name="FillAll" xml:space="preserve">
+    <value>Vyplnit vše</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>Klávesy</value>
+  </data>
+  <data name="Animation" xml:space="preserve">
+    <value>Animace</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>Pozadí</value>
   </data>
 </root>

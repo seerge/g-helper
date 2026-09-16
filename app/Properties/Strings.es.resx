@@ -1100,4 +1100,19 @@ calienten el portátil dormido y agoten la batería.</value>
   <data name="Always" xml:space="preserve">
     <value>Siempre</value>
   </data>
+  <data name="TestLayout" xml:space="preserve">
+    <value>Distribución de prueba</value>
+  </data>
+  <data name="FillAll" xml:space="preserve">
+    <value>Rellenar todo</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>Teclas</value>
+  </data>
+  <data name="Animation" xml:space="preserve">
+    <value>Animación</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>Fondo</value>
+  </data>
 </root>

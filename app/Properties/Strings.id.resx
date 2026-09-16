@@ -1100,4 +1100,19 @@ memanaskan laptop yang tertidur dan menguras baterai.</value>
   <data name="Always" xml:space="preserve">
     <value>Selalu</value>
   </data>
+  <data name="TestLayout" xml:space="preserve">
+    <value>Tata Letak Uji</value>
+  </data>
+  <data name="FillAll" xml:space="preserve">
+    <value>Isi Semua</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>Tombol</value>
+  </data>
+  <data name="Animation" xml:space="preserve">
+    <value>Animasi</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>Latar</value>
+  </data>
 </root>

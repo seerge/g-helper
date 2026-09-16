@@ -1100,4 +1100,19 @@ from heating up the sleeping laptop and draining the battery.</value>
   <data name="Always" xml:space="preserve">
     <value>Always</value>
   </data>
+  <data name="TestLayout" xml:space="preserve">
+    <value>Test Layout</value>
+  </data>
+  <data name="FillAll" xml:space="preserve">
+    <value>Fill All</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>Keys</value>
+  </data>
+  <data name="Animation" xml:space="preserve">
+    <value>Animation</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>Back</value>
+  </data>
 </root>

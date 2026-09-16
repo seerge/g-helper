@@ -1100,4 +1100,19 @@
   <data name="Always" xml:space="preserve">
     <value>始终</value>
   </data>
+  <data name="TestLayout" xml:space="preserve">
+    <value>测试布局</value>
+  </data>
+  <data name="FillAll" xml:space="preserve">
+    <value>全部填充</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>按键</value>
+  </data>
+  <data name="Animation" xml:space="preserve">
+    <value>动画</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>背景</value>
+  </data>
 </root>

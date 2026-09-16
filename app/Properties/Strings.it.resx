@@ -1100,4 +1100,19 @@ di riscaldare il laptop in sospensione e scaricare la batteria.</value>
   <data name="Always" xml:space="preserve">
     <value>Sempre</value>
   </data>
+  <data name="TestLayout" xml:space="preserve">
+    <value>Layout di prova</value>
+  </data>
+  <data name="FillAll" xml:space="preserve">
+    <value>Riempi tutto</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>Tasti</value>
+  </data>
+  <data name="Animation" xml:space="preserve">
+    <value>Animazione</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>Sfondo</value>
+  </data>
 </root>

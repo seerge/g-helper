@@ -399,7 +399,7 @@
     <value>NVIDIA 디스플레이 모드가 Optimus로 설정되어 있지 않습니다.</value>
   </data>
   <data name="EnergySettings" xml:space="preserve">
-    <value>Energy Settings</value>
+    <value>에너지 설정</value>
   </data>
   <data name="EnhancedVibration" xml:space="preserve">
     <value>Enhanced Vibration</value>
@@ -1099,5 +1099,20 @@ GPU가 활성화될 때 자동으로 다시 시작합니다</value>
   </data>
   <data name="Always" xml:space="preserve">
     <value>항상</value>
+  </data>
+  <data name="TestLayout" xml:space="preserve">
+    <value>테스트 레이아웃</value>
+  </data>
+  <data name="FillAll" xml:space="preserve">
+    <value>모두 채우기</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>키</value>
+  </data>
+  <data name="Animation" xml:space="preserve">
+    <value>애니메이션</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>배경</value>
   </data>
 </root>

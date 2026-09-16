@@ -621,13 +621,13 @@ Bạn có muốn tiếp tục không?</value>
     <value>Phút</value>
   </data>
   <data name="Minutes" xml:space="preserve">
-    <value>Minutes</value>
+    <value>Phút</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
     <value>Khóa góc / Tinh chỉnh</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
-    <value>Auto Power Off After</value>
+    <value>Tự động tắt nguồn sau</value>
   </data>
   <data name="MouseButtonResponse" xml:space="preserve">
     <value>Button Response</value>
@@ -639,7 +639,7 @@ Bạn có muốn tiếp tục không?</value>
     <value>Lift Off Distance</value>
   </data>
   <data name="MouseLowBatteryWarning" xml:space="preserve">
-    <value>Low Battery Warning at</value>
+    <value>Cảnh báo pin yếu ở</value>
   </data>
   <data name="MousePerformance" xml:space="preserve">
     <value>Performance</value>
@@ -699,7 +699,7 @@ Bạn có muốn tiếp tục không?</value>
     <value>Tắt Mic</value>
   </data>
   <data name="Never" xml:space="preserve">
-    <value>Never</value>
+    <value>Không bao giờ</value>
   </data>
   <data name="NewUpdates" xml:space="preserve">
     <value>New updates</value>
@@ -711,10 +711,10 @@ Bạn có muốn tiếp tục không?</value>
     <value>Not Connected</value>
   </data>
   <data name="Off" xml:space="preserve">
-    <value>Off</value>
+    <value>Tắt</value>
   </data>
   <data name="On" xml:space="preserve">
-    <value>On</value>
+    <value>Bật</value>
   </data>
   <data name="OnAlways" xml:space="preserve">
     <value>Luôn bật</value>
@@ -771,7 +771,7 @@ Bạn có muốn tiếp tục không?</value>
     <value>Chụp màn hình</value>
   </data>
   <data name="Profile" xml:space="preserve">
-    <value>Profile</value>
+    <value>Hồ sơ</value>
   </data>
   <data name="Quit" xml:space="preserve">
     <value>Thoát</value>
@@ -780,7 +780,7 @@ Bạn có muốn tiếp tục không?</value>
     <value>Đọc giới hạn</value>
   </data>
   <data name="Reset" xml:space="preserve">
-    <value>Reset</value>
+    <value>Đặt lại</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
     <value>Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk)</value>
@@ -1099,5 +1099,20 @@ làm nóng máy khi ngủ và làm cạn pin.</value>
   </data>
   <data name="Always" xml:space="preserve">
     <value>Luôn luôn</value>
+  </data>
+  <data name="TestLayout" xml:space="preserve">
+    <value>Bố cục thử</value>
+  </data>
+  <data name="FillAll" xml:space="preserve">
+    <value>Tô tất cả</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>Phím</value>
+  </data>
+  <data name="Animation" xml:space="preserve">
+    <value>Hoạt ảnh</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>Nền</value>
   </data>
 </root>

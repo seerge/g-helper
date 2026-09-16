@@ -618,10 +618,10 @@
     <value>バッテリーを節約するために60Hzのリフレッシュレートを使用</value>
   </data>
   <data name="Minute" xml:space="preserve">
-    <value>Minute</value>
+    <value>分</value>
   </data>
   <data name="Minutes" xml:space="preserve">
-    <value>Minutes</value>
+    <value>分</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
     <value>アングルスナップ / 調整</value>
@@ -1099,5 +1099,20 @@ GPU が有効化されたときに自動的に再起動します</value>
   </data>
   <data name="Always" xml:space="preserve">
     <value>常時</value>
+  </data>
+  <data name="TestLayout" xml:space="preserve">
+    <value>テストレイアウト</value>
+  </data>
+  <data name="FillAll" xml:space="preserve">
+    <value>すべて塗りつぶし</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>キー</value>
+  </data>
+  <data name="Animation" xml:space="preserve">
+    <value>アニメーション</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>背景</value>
   </data>
 </root>

@@ -1100,4 +1100,19 @@ felmelegítsék az alvó laptopot és lemerítsék az akkumulátort.</value>
   <data name="Always" xml:space="preserve">
     <value>Mindig</value>
   </data>
+  <data name="TestLayout" xml:space="preserve">
+    <value>Teszt elrendezés</value>
+  </data>
+  <data name="FillAll" xml:space="preserve">
+    <value>Összes kitöltése</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>Billentyűk</value>
+  </data>
+  <data name="Animation" xml:space="preserve">
+    <value>Animáció</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>Háttér</value>
+  </data>
 </root>

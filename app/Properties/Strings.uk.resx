@@ -1100,4 +1100,19 @@
   <data name="Always" xml:space="preserve">
     <value>Завжди</value>
   </data>
+  <data name="TestLayout" xml:space="preserve">
+    <value>Тестова розкладка</value>
+  </data>
+  <data name="FillAll" xml:space="preserve">
+    <value>Заповнити все</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>Клавіші</value>
+  </data>
+  <data name="Animation" xml:space="preserve">
+    <value>Анімація</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>Фон</value>
+  </data>
 </root>

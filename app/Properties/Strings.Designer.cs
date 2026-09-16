@@ -2986,5 +2986,50 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("Always", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Test Layout.
+        /// </summary>
+        internal static string TestLayout {
+            get {
+                return ResourceManager.GetString("TestLayout", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Fill All.
+        /// </summary>
+        internal static string FillAll {
+            get {
+                return ResourceManager.GetString("FillAll", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Keys.
+        /// </summary>
+        internal static string Keys {
+            get {
+                return ResourceManager.GetString("Keys", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Animation.
+        /// </summary>
+        internal static string Animation {
+            get {
+                return ResourceManager.GetString("Animation", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Back.
+        /// </summary>
+        internal static string Background {
+            get {
+                return ResourceManager.GetString("Background", resourceCulture);
+            }
+        }
     }
 }

@@ -1100,4 +1100,19 @@ baterii przez zadania w tle, takie jak Windows Update.</value>
   <data name="Always" xml:space="preserve">
     <value>Zawsze</value>
   </data>
+  <data name="TestLayout" xml:space="preserve">
+    <value>Układ testowy</value>
+  </data>
+  <data name="FillAll" xml:space="preserve">
+    <value>Wypełnij wszystkie</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>Klawisze</value>
+  </data>
+  <data name="Animation" xml:space="preserve">
+    <value>Animacja</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>Tło</value>
+  </data>
 </root>
