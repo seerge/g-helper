@@ -115,6 +115,8 @@ namespace GHelper
             VisualizeBatteryState();
             keyboard.BatteryUpdated += Keyboard_BatteryUpdated;
             keyboard.Disconnect += Keyboard_Disconnect;
+            keyboard.ProfileChanged += Keyboard_ProfileChanged;
+            keyboard.StartEventListener();
 
             LoadSettings();
             loadingSettings = false;
@@ -758,6 +760,22 @@ namespace GHelper
             try { BeginInvoke(Close); } catch { }
         }
 
+        private void Keyboard_ProfileChanged(object? sender, EventArgs e)
+        {
+            if (Disposing || IsDisposed) return;
+            try { BeginInvoke(ReloadProfile); } catch { }
+        }
+
+        private void ReloadProfile()
+        {
+            if (!keyboard.HasProfiles() || comboBoxProfile.SelectedIndex == keyboard.Profile) return;
+
+            loadingSettings = true;
+            comboBoxProfile.SelectedIndex = Math.Clamp(keyboard.Profile, 0, comboBoxProfile.Items.Count - 1);
+            LoadSettings();
+            loadingSettings = false;
+        }
+
         private void BuildTestLayoutSelector()
         {
             testLayoutSelector = true;
@@ -947,6 +965,8 @@ namespace GHelper
 
         private void AsusKeyboardSettings_FormClosing(object? sender, FormClosingEventArgs e)
         {
+            keyboard.StopEventListener();
+            keyboard.ProfileChanged -= Keyboard_ProfileChanged;
             keyboard.BatteryUpdated -= Keyboard_BatteryUpdated;
             keyboard.Disconnect -= Keyboard_Disconnect;
             previewTimer.Stop();

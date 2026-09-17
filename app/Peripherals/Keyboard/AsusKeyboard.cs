@@ -28,6 +28,7 @@ namespace GHelper.Peripherals.Keyboard
         public event EventHandler? Disconnect;
         public event EventHandler? BatteryUpdated;
         public event EventHandler? KeyboardReadyChanged;
+        public event EventHandler? ProfileChanged;
 
         private string? path;
 
@@ -217,8 +218,44 @@ namespace GHelper.Peripherals.Keyboard
         public override void Dispose()
         {
             Logger.WriteLine(GetDisplayName() + ": Disposing");
+            StopEventListener();
             DeviceList.Local.Changed -= Device_Changed;
             base.Dispose();
+        }
+
+        protected virtual byte EventReportId => 0x70;
+
+        private PeripheralEventListener? events;
+
+        public void StartEventListener()
+        {
+            if (TestMode) return;
+            events ??= new PeripheralEventListener(VendorID(), ProductID(), GetDisplayName(), OnEventReport);
+            events.Start(path);
+        }
+
+        public void StopEventListener()
+        {
+            events?.Stop();
+        }
+
+        private void OnEventReport(byte[] buffer, int count)
+        {
+            if (count < 5 || buffer[1] != EventReportId) return;
+
+            int reported = 0;
+            for (int i = 1; i <= ProfileCount(); i++)
+                if (buffer[4] == 1 << i) reported = i;
+
+            if (reported == 0) return;
+
+            int profile = reported == ProfileCount() ? 0 : reported;
+            if (profile == Profile) return;
+
+            Profile = profile;
+            AppConfig.Set(ProfileConfigKey, profile);
+            Logger.WriteLine(GetDisplayName() + ": Active profile " + (profile + 1));
+            ProfileChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void Device_Changed(object? sender, DeviceListChangedEventArgs e)

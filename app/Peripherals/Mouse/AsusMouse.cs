@@ -211,6 +211,7 @@ namespace GHelper.Peripherals.Mouse
         public event EventHandler? Disconnect;
         public event EventHandler? BatteryUpdated;
         public event EventHandler? MouseReadyChanged;
+        public event EventHandler? ProfileChanged;
 
         private string path;
 
@@ -491,8 +492,33 @@ namespace GHelper.Peripherals.Mouse
         public override void Dispose()
         {
             Logger.WriteLine(GetDisplayName() + ": Disposing");
+            StopEventListener();
             HidSharp.DeviceList.Local.Changed -= Device_Changed;
             base.Dispose();
+        }
+
+        private PeripheralEventListener? events;
+
+        public void StartEventListener()
+        {
+            events ??= new PeripheralEventListener(VendorID(), ProductID(), GetDisplayName(), OnEventReport);
+            events.Start(path);
+        }
+
+        public void StopEventListener()
+        {
+            events?.Stop();
+        }
+
+        // 12 01 is the raw button bitmap and precedes the state change it causes
+        private void OnEventReport(byte[] buffer, int count)
+        {
+            if (count < 3 || buffer[1] != 0x12 || buffer[2] == 0x01) return;
+
+            int was = Profile;
+            int wasDpi = DpiProfile;
+            ReadProfile();
+            if (Profile != was || DpiProfile != wasDpi) ProfileChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void Device_Changed(object? sender, HidSharp.DeviceListChangedEventArgs e)
