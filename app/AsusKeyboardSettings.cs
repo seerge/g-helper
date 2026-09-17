@@ -845,11 +845,18 @@ namespace GHelper
             if (SelectedMode() != KeyboardLightingMode.Direct) return;
 
             int span = keyLedSpan.GetValueOrDefault(key, 1);
+            bool changed = false;
             for (int i = 0; i < span; i++)
-                if (led + i < keyColors.Length) keyColors[led + i] = paintColor;
+                if (led + i < keyColors.Length && keyColors[led + i].ToArgb() != paintColor.ToArgb())
+                {
+                    keyColors[led + i] = paintColor;
+                    changed = true;
+                }
+            if (!changed) return;
+
             key.FlatAppearance.BorderColor = paintColor;
             settingsChanged = true;
-            Task.Run(() => { try { for (int i = 0; i < span; i++) keyboard.SetLedColor(led + i, paintColor); } catch { } });
+            Task.Run(() => { try { keyboard.SetLedColors(keyColors); } catch { } });
         }
 
         private void LoadSettings()
