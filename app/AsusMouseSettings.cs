@@ -794,6 +794,11 @@ namespace GHelper
                 }
             }
 
+            if (mouse.DPIProfileCount() == 0)
+            {
+                panelPerformance.Visible = false;
+            }
+
             if (!mouse.HasBattery())
             {
                 panelBatteryState.Visible = false;
