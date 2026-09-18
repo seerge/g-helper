@@ -28,6 +28,7 @@ namespace GHelper.Peripherals.Keyboard
         public event EventHandler? Disconnect;
         public event EventHandler? BatteryUpdated;
         public event EventHandler? KeyboardReadyChanged;
+        public event EventHandler? ProfileChanged;
 
         private string? path;
 
@@ -217,8 +218,44 @@ namespace GHelper.Peripherals.Keyboard
         public override void Dispose()
         {
             Logger.WriteLine(GetDisplayName() + ": Disposing");
+            StopEventListener();
             DeviceList.Local.Changed -= Device_Changed;
             base.Dispose();
+        }
+
+        protected virtual byte EventReportId => 0x70;
+
+        private PeripheralEventListener? events;
+
+        public void StartEventListener()
+        {
+            if (TestMode) return;
+            events ??= new PeripheralEventListener(VendorID(), ProductID(), GetDisplayName(), OnEventReport);
+            events.Start(path);
+        }
+
+        public void StopEventListener()
+        {
+            events?.Stop();
+        }
+
+        private void OnEventReport(byte[] buffer, int count)
+        {
+            if (count < 5 || buffer[1] != EventReportId) return;
+
+            int reported = 0;
+            for (int i = 1; i <= ProfileCount(); i++)
+                if (buffer[4] == 1 << i) reported = i;
+
+            if (reported == 0) return;
+
+            int profile = reported == ProfileCount() ? 0 : reported;
+            if (profile == Profile) return;
+
+            Profile = profile;
+            AppConfig.Set(ProfileConfigKey, profile);
+            Logger.WriteLine(GetDisplayName() + ": Active profile " + (profile + 1));
+            ProfileChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void Device_Changed(object? sender, DeviceListChangedEventArgs e)
@@ -717,14 +754,11 @@ namespace GHelper.Peripherals.Keyboard
         // bytes, one over the 64-byte Omni report (last key loses B), so max 14 per packet
         private byte Dim(byte channel) => (byte)(channel * StoredBrightness / 100);
 
-        public bool SetLedColor(int led, Color color)
-        {
-            byte[] packet = new byte[] { reportId, 0xC0, 0x81, 0x01, 0x00, LedId(Layout().LedIds, led), Dim(color.R), Dim(color.G), Dim(color.B) };
-            return WriteForResponse(packet) is not null;
-        }
-
         public bool SetLedColors(Color[] colors)
         {
+            if (colors.Length > 0 && Array.TrueForAll(colors, c => c.ToArgb() == colors[0].ToArgb()))
+                return ApplyLighting(KeyboardLightingMode.Static, colors[0], Color.Black, StoredSpeed, StoredBrightness);
+
             byte[] map = Layout().LedIds;
             for (int i = 0; i < colors.Length; i += 14)
             {
@@ -795,7 +829,8 @@ namespace GHelper.Peripherals.Keyboard
             Profile = Math.Clamp(AppConfig.Get(ProfileConfigKey, 0), 0, ProfileCount() - 1);
         }
 
-        // 12 00: [11] = active profile, 1-6 with the internal 0 reported as 6
+        // 12 00: [11] = active profile, 1-6 with the internal 0 reported as 6;
+        // [10] = the effect being rendered, 0xF1 while the host drives the LEDs
         public bool ReadProfile()
         {
             if (!HasProfiles()) return false;
@@ -808,7 +843,11 @@ namespace GHelper.Peripherals.Keyboard
 
             Profile = reported == ProfileCount() ? 0 : reported;
             AppConfig.Set(ProfileConfigKey, Profile);
-            Logger.WriteLine(GetDisplayName() + ": Active profile " + (Profile + 1));
+
+            if (response[10] == 0xF1) Mode = KeyboardLightingMode.Direct;
+            else if (Enum.IsDefined(typeof(KeyboardLightingMode), response[10])) Mode = (KeyboardLightingMode)response[10];
+
+            Logger.WriteLine(GetDisplayName() + $": Active profile {Profile + 1}, lighting {Mode}");
             return true;
         }
 
@@ -843,8 +882,10 @@ namespace GHelper.Peripherals.Keyboard
             return $"kb_{GetType().Name}_p{Profile}_{name}";
         }
 
+        public KeyboardLightingMode Mode { get; protected set; } = KeyboardLightingMode.Static;
+
         public bool HasStoredLighting => AppConfig.Get(ConfigKey("mode")) >= 0;
-        public KeyboardLightingMode StoredMode => (KeyboardLightingMode)AppConfig.Get(ConfigKey("mode"), 0);
+        public KeyboardLightingMode StoredMode => HasStoredLighting ? (KeyboardLightingMode)AppConfig.Get(ConfigKey("mode"), 0) : Mode;
         public Color StoredColor => Color.FromArgb(AppConfig.Get(ConfigKey("color"), Color.Red.ToArgb()));
         public Color StoredColor2 => Color.FromArgb(AppConfig.Get(ConfigKey("color2"), Color.Black.ToArgb()));
         public Color StoredColor3 => Color.FromArgb(AppConfig.Get(ConfigKey("color3"), Color.Black.ToArgb()));

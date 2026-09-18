@@ -115,6 +115,8 @@ namespace GHelper
             VisualizeBatteryState();
             keyboard.BatteryUpdated += Keyboard_BatteryUpdated;
             keyboard.Disconnect += Keyboard_Disconnect;
+            keyboard.ProfileChanged += Keyboard_ProfileChanged;
+            keyboard.StartEventListener();
 
             LoadSettings();
             loadingSettings = false;
@@ -758,6 +760,22 @@ namespace GHelper
             try { BeginInvoke(Close); } catch { }
         }
 
+        private void Keyboard_ProfileChanged(object? sender, EventArgs e)
+        {
+            if (Disposing || IsDisposed) return;
+            try { BeginInvoke(ReloadProfile); } catch { }
+        }
+
+        private void ReloadProfile()
+        {
+            if (!keyboard.HasProfiles() || comboBoxProfile.SelectedIndex == keyboard.Profile) return;
+
+            loadingSettings = true;
+            comboBoxProfile.SelectedIndex = Math.Clamp(keyboard.Profile, 0, comboBoxProfile.Items.Count - 1);
+            LoadSettings();
+            loadingSettings = false;
+        }
+
         private void BuildTestLayoutSelector()
         {
             testLayoutSelector = true;
@@ -827,11 +845,18 @@ namespace GHelper
             if (SelectedMode() != KeyboardLightingMode.Direct) return;
 
             int span = keyLedSpan.GetValueOrDefault(key, 1);
+            bool changed = false;
             for (int i = 0; i < span; i++)
-                if (led + i < keyColors.Length) keyColors[led + i] = paintColor;
+                if (led + i < keyColors.Length && keyColors[led + i].ToArgb() != paintColor.ToArgb())
+                {
+                    keyColors[led + i] = paintColor;
+                    changed = true;
+                }
+            if (!changed) return;
+
             key.FlatAppearance.BorderColor = paintColor;
             settingsChanged = true;
-            Task.Run(() => { try { for (int i = 0; i < span; i++) keyboard.SetLedColor(led + i, paintColor); } catch { } });
+            Task.Run(() => { try { keyboard.SetLedColors(keyColors); } catch { } });
         }
 
         private void LoadSettings()
@@ -947,6 +972,8 @@ namespace GHelper
 
         private void AsusKeyboardSettings_FormClosing(object? sender, FormClosingEventArgs e)
         {
+            keyboard.StopEventListener();
+            keyboard.ProfileChanged -= Keyboard_ProfileChanged;
             keyboard.BatteryUpdated -= Keyboard_BatteryUpdated;
             keyboard.Disconnect -= Keyboard_Disconnect;
             previewTimer.Stop();
