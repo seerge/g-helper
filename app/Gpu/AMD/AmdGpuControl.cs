@@ -12,6 +12,8 @@ public class AmdGpuControl : IGpuControl
 
     private readonly ADLAdapterInfo _internalDiscreteAdapter;
     private readonly ADLAdapterInfo? _iGPU;
+    private const int SceUnsupported = -1;
+    private int? _sceDisplayIndex;
 
     public bool IsNvidia => false;
 
@@ -299,6 +301,64 @@ public class AmdGpuControl : IGpuControl
         enabled = enabledOut;
 
         return true;
+    }
+
+    private int? FindSceDisplay(int adapterIndex)
+    {
+        if (ADL2_Display_DisplayInfo_Get(_adlContextHandle, adapterIndex, out int count, out nint buffer, 0) != Adl2.ADL_SUCCESS) return null;
+
+        try
+        {
+            int size = Marshal.SizeOf<ADLDisplayInfo>();
+            for (int i = 0; i < count; i++)
+            {
+                var display = Marshal.PtrToStructure<ADLDisplayInfo>(buffer + i * size);
+                if ((display.DisplayInfoValue & 1) == 0) continue;
+                if (ADL2_Display_SCE_State_Get(_adlContextHandle, adapterIndex, display.DisplayID.DisplayLogicalIndex, out _, out _) == Adl2.ADL_SUCCESS) return display.DisplayID.DisplayLogicalIndex;
+            }
+        }
+        finally
+        {
+            Adl2.FreeMemory(buffer);
+        }
+
+        return SceUnsupported;
+    }
+
+    public bool GetOledPowerOptimization()
+    {
+        if (_adlContextHandle == nint.Zero || _iGPU is null) return false;
+
+        int adapterIndex = ((ADLAdapterInfo)_iGPU).AdapterIndex;
+
+        try
+        {
+            _sceDisplayIndex ??= FindSceDisplay(adapterIndex);
+            if (_sceDisplayIndex is null or SceUnsupported) return false;
+            if (ADL2_Display_SCE_State_Get(_adlContextHandle, adapterIndex, (int)_sceDisplayIndex, out int state, out _) != Adl2.ADL_SUCCESS) return false;
+            return state > 1;
+        }
+        catch
+        {
+            _sceDisplayIndex = SceUnsupported;
+            Logger.WriteLine("No AMD OLED Power Optimization support");
+            return false;
+        }
+    }
+
+    public bool DisableOledPowerOptimization()
+    {
+        if (_sceDisplayIndex is null or SceUnsupported) return false;
+
+        try
+        {
+            return ADL2_Display_SCE_State_Set(_adlContextHandle, ((ADLAdapterInfo)_iGPU).AdapterIndex, (int)_sceDisplayIndex, 1) == Adl2.ADL_SUCCESS;
+        }
+        catch
+        {
+            Logger.WriteLine("Can't disable AMD OLED Power Optimization");
+            return false;
+        }
     }
 
     public void StartFPS()

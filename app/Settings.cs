@@ -59,7 +59,6 @@ namespace GHelper
         bool batteryFullMouseOver = false;
 
         bool sliderGammaIgnore = false;
-        bool activateCheck = false;
 
         public SettingsForm()
         {
@@ -135,7 +134,6 @@ namespace GHelper
 
             FormClosing += SettingsForm_FormClosing;
             Deactivate += SettingsForm_LostFocus;
-            Activated += SettingsForm_Focused;
 
             buttonSilent.BorderColor = colorEco;
             buttonBalanced.BorderColor = colorStandard;
@@ -317,8 +315,7 @@ namespace GHelper
 
         private void ButtonAmdOled_Click(object? sender, EventArgs e)
         {
-            AmdDisplay.RunAdrenaline();
-            activateCheck = true;
+            if (VisualControl.DisableOledPowerOptimization()) VisualiseAmdOled(false);
         }
 
         private void LabelBattery_Click(object? sender, EventArgs e)
@@ -646,14 +643,6 @@ namespace GHelper
             buttonAutoTDP.Activated = status;
         }
 
-        private void SettingsForm_Focused(object? sender, EventArgs e)
-        {
-            if (activateCheck)
-            {
-                buttonAmdOled.Visible = AmdDisplay.IsOledPowerOptimization();
-                activateCheck = false;
-            }
-        }
         private void SettingsForm_LostFocus(object? sender, EventArgs e)
         {
             lastLostFocus = DateTimeOffset.Now.ToUnixTimeMilliseconds();
