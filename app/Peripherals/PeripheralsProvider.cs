@@ -531,6 +531,8 @@ namespace GHelper.Peripherals
             DetectMouse(new TUFGamingMiniMikuWired());
             DetectMouse(new Pugio());
             DetectMouse(new MD200());
+            DetectMouse(new BalteusQi());
+            DetectMouse(new Balteus());
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
