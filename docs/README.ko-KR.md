@@ -119,33 +119,42 @@ Asus 노트북을 위한 작고 가벼운 Armoury Crate 대체 도구로, 훨씬
 <details>
 <summary><a href="https://github.com/seerge/g-helper/discussions/900">현재 지원되는 모델</a> (클릭하여 펼치기)</summary>
 
+- ROG Chakram
 - ROG Chakram X
 - ROG Chakram Core
-- ROG Gladius II and Gladius II Origin
+- ROG Gladius II and Gladius II Origin (+ PNK LTD / COD editions)
 - ROG Gladius II Wireless
 - ROG Gladius III
 - ROG Gladius III Wireless
+- ROG Gladius III Aimpoint Wireless (+ EVA-02 Edition)
 - ROG Harpe Ace Extreme
 - ROG Harpe Ace Aim Lab Edition
 - ROG Harpe Ace Mini
 - ROG Harpe II Ace
-- ROG Keris Wireless
-- ROG Keris II Ace
+- ROG Harpe II Extreme Edition 20
+- ROG Keris and Keris Wireless (+ EVA Edition)
 - ROG Keris Wireless Aimpoint
-- ROG Strix Carry
-- ROG Strix III Gladius III Aimpoint Wireless
-- ROG Strix Impact III
-- ROG Strix Impact III Wireless
-- ROG Spatha X
-- ROG Strix Impact II Wireless
+- ROG Keris II Ace
+- ROG Keris II Origin (+ KJP edition)
 - ROG Pugio
 - ROG Pugio II
-- TUF Gaming M4 Wireless
+- ROG Spatha X
+- ROG Strix Carry
+- ROG Strix Evolve
+- ROG Strix Impact
+- ROG Strix Impact II (+ Electro Punk / Moonlight White editions)
+- ROG Strix Impact II Wireless
+- ROG Strix Impact III
+- ROG Strix Impact III Wireless
 - TUF Gaming M3
 - TUF Gaming M3 Gen II
+- TUF Gaming M4 Wireless
 - TUF Gaming M4 AIR
 - TUF Gaming M5
-- TX Gaming Mini
+- TUF Gaming Mini Miku Edition
+- TX Gaming Mouse
+- TX Gaming Mouse Mini
+- ASUS MD200
 
 </details>
 
