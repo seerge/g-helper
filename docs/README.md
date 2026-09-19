@@ -199,6 +199,24 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 
 <img width="2254" alt="Keyboards" src="https://github.com/user-attachments/assets/9da4116f-7fb1-4dae-ac3e-25f0f1266a74" />
 
+### :headphones: Asus Headsets support
+
+<details>
+<summary><a href="https://github.com/seerge/g-helper/discussions/5964">Currently supported models</a> (click to expand)</summary>
+
+- ROG Cetra RGB
+- ROG Cetra True Wireless SpeedNova
+- ROG Clavis
+- ROG Delta II
+- ROG Delta II KJP
+- ROG Pelta
+
+</details>
+
+Battery level, lighting, equalizer presets, sidetone, microphone and AI noise cancellation, ANC and power settings - depending on the model.
+
+<img width="1786" alt="Headsets" src="https://github.com/user-attachments/assets/42ddd286-ed4f-4573-953c-e41b7fc3602f" />
+
 ### ⌨️ Keybindings
 
 - ``Fn + F5 / Fn + Shift + F5`` - Toggle Performance Modes forwards / backwards
