@@ -152,6 +152,60 @@
 
 <img width="2448" alt="Mouse and other peripherals" src="https://github.com/user-attachments/assets/fe2a766b-f514-42e9-8dff-4bcc915364d4" />
 
+### :keyboard: 华硕键盘支持
+
+<details>
+<summary><a href="https://github.com/seerge/g-helper/discussions/5710">目前支持的型号</a>（点击展开）</summary>
+
+- ROG Azoth
+- ROG Azoth Extreme
+- ROG Azoth Extreme SE
+- ROG Azoth X
+- ROG Claymore II
+- ROG Falchion
+- ROG Falchion Ace
+- ROG Falchion Ace HFX
+- ROG Falchion RX
+- ROG Falchion RX Low Profile
+- ROG Strix Flare
+- ROG Strix Flare COD
+- ROG Strix Flare II
+- ROG Strix Flare II Animate
+- ROG Strix Flare PNK LTD
+- ROG Strix Scope II
+- ROG Strix Scope II RX
+- ROG Strix Scope II 96
+- ROG Strix Scope II 96 RX
+- ROG Strix Scope RX
+- ROG Strix Scope RX EVA Edition
+- ROG Strix Scope RX EVA-02 Edition
+- ROG Strix Scope RX TKL
+- TUF Gaming K1
+- TUF Gaming K3
+- TUF Gaming K3 Gen II
+
+</details>
+
+<img width="2254" alt="Keyboards" src="https://github.com/user-attachments/assets/9da4116f-7fb1-4dae-ac3e-25f0f1266a74" />
+
+### :headphones: 华硕耳机支持
+
+<details>
+<summary><a href="https://github.com/seerge/g-helper/discussions/5964">目前支持的型号</a>（点击展开）</summary>
+
+- ROG Cetra RGB
+- ROG Cetra True Wireless SpeedNova
+- ROG Clavis
+- ROG Delta II
+- ROG Delta II KJP
+- ROG Pelta
+
+</details>
+
+电池电量、灯效、均衡器预设、侧音、麦克风 AI 降噪、ANC 和电源设置，具体视型号而定。
+
+<img width="1786" alt="Headsets" src="https://github.com/user-attachments/assets/42ddd286-ed4f-4573-953c-e41b7fc3602f" />
+
 ### ⌨️ 按键绑定
 
 - ``Fn + F5 / Fn + Shift + F5`` - 向前 / 向后切换性能模式

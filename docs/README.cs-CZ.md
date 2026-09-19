@@ -153,6 +153,60 @@ Velké poděkování [@IceStormNG](https://github.com/IceStormNG) 👑 za jeho p
 
 <img width="2448" alt="Mouse and other peripherals" src="https://github.com/user-attachments/assets/fe2a766b-f514-42e9-8dff-4bcc915364d4" />
 
+### :keyboard: Podpora klávesnic značky Asus
+
+<details>
+<summary><a href="https://github.com/seerge/g-helper/discussions/5710">Aktuálně podporované modely</a> (kliknutím rozbalíte)</summary>
+
+- ROG Azoth
+- ROG Azoth Extreme
+- ROG Azoth Extreme SE
+- ROG Azoth X
+- ROG Claymore II
+- ROG Falchion
+- ROG Falchion Ace
+- ROG Falchion Ace HFX
+- ROG Falchion RX
+- ROG Falchion RX Low Profile
+- ROG Strix Flare
+- ROG Strix Flare COD
+- ROG Strix Flare II
+- ROG Strix Flare II Animate
+- ROG Strix Flare PNK LTD
+- ROG Strix Scope II
+- ROG Strix Scope II RX
+- ROG Strix Scope II 96
+- ROG Strix Scope II 96 RX
+- ROG Strix Scope RX
+- ROG Strix Scope RX EVA Edition
+- ROG Strix Scope RX EVA-02 Edition
+- ROG Strix Scope RX TKL
+- TUF Gaming K1
+- TUF Gaming K3
+- TUF Gaming K3 Gen II
+
+</details>
+
+<img width="2254" alt="Keyboards" src="https://github.com/user-attachments/assets/9da4116f-7fb1-4dae-ac3e-25f0f1266a74" />
+
+### :headphones: Podpora sluchátek značky Asus
+
+<details>
+<summary><a href="https://github.com/seerge/g-helper/discussions/5964">Aktuálně podporované modely</a> (kliknutím rozbalíte)</summary>
+
+- ROG Cetra RGB
+- ROG Cetra True Wireless SpeedNova
+- ROG Clavis
+- ROG Delta II
+- ROG Delta II KJP
+- ROG Pelta
+
+</details>
+
+Úroveň nabití baterie, podsvícení, předvolby ekvalizéru, sidetone, redukce šumu mikrofonu pomocí AI, ANC a nastavení napájení - podle modelu.
+
+<img width="1786" alt="Headsets" src="https://github.com/user-attachments/assets/42ddd286-ed4f-4573-953c-e41b7fc3602f" />
+
 ### ⌨️ Klávesové zkratky
 
 - ``Fn + F5 / Fn + Shift + F5`` - Přepínání provozních režimů vpřed / Zpět

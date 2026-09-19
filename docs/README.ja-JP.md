@@ -153,6 +153,60 @@ Asus ノートパソコン向けの小型・軽量な Armoury Crate 代替ツー
 
 <img width="2448" alt="Mouse and other peripherals" src="https://github.com/user-attachments/assets/fe2a766b-f514-42e9-8dff-4bcc915364d4" />
 
+### :keyboard: Asus キーボードのサポート
+
+<details>
+<summary><a href="https://github.com/seerge/g-helper/discussions/5710">現在サポートされているモデル</a>（クリックで展開）</summary>
+
+- ROG Azoth
+- ROG Azoth Extreme
+- ROG Azoth Extreme SE
+- ROG Azoth X
+- ROG Claymore II
+- ROG Falchion
+- ROG Falchion Ace
+- ROG Falchion Ace HFX
+- ROG Falchion RX
+- ROG Falchion RX Low Profile
+- ROG Strix Flare
+- ROG Strix Flare COD
+- ROG Strix Flare II
+- ROG Strix Flare II Animate
+- ROG Strix Flare PNK LTD
+- ROG Strix Scope II
+- ROG Strix Scope II RX
+- ROG Strix Scope II 96
+- ROG Strix Scope II 96 RX
+- ROG Strix Scope RX
+- ROG Strix Scope RX EVA Edition
+- ROG Strix Scope RX EVA-02 Edition
+- ROG Strix Scope RX TKL
+- TUF Gaming K1
+- TUF Gaming K3
+- TUF Gaming K3 Gen II
+
+</details>
+
+<img width="2254" alt="Keyboards" src="https://github.com/user-attachments/assets/9da4116f-7fb1-4dae-ac3e-25f0f1266a74" />
+
+### :headphones: Asus ヘッドセットのサポート
+
+<details>
+<summary><a href="https://github.com/seerge/g-helper/discussions/5964">現在サポートされているモデル</a>（クリックで展開）</summary>
+
+- ROG Cetra RGB
+- ROG Cetra True Wireless SpeedNova
+- ROG Clavis
+- ROG Delta II
+- ROG Delta II KJP
+- ROG Pelta
+
+</details>
+
+バッテリー残量、ライティング、イコライザープリセット、サイドトーン、マイクの AI ノイズキャンセリング、ANC、電源設定に対応しています（機種により異なります）。
+
+<img width="1786" alt="Headsets" src="https://github.com/user-attachments/assets/42ddd286-ed4f-4573-953c-e41b7fc3602f" />
+
 ### ⌨️ キーバインド
 
 - ``Fn + F5 / Fn + Shift + F5`` - パフォーマンスモードを前へ / 後ろへ切り替え
