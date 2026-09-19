@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using System.Runtime.InteropServices;
 
 namespace GHelper.Mode
@@ -99,12 +99,27 @@ namespace GHelper.Mode
                 { POWER_TURBO, "Best Performance" },
                 { PLAN_HIGH_PERFORMANCE, "High Performance Plan"},
             };
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern IntPtr LocalFree(IntPtr hMem);
+
         static Guid GetActiveScheme()
         {
             IntPtr pActiveSchemeGuid;
             var hr = PowerGetActiveScheme(IntPtr.Zero, out pActiveSchemeGuid);
-            Guid activeSchemeGuid = (Guid)Marshal.PtrToStructure(pActiveSchemeGuid, typeof(Guid));
-            return activeSchemeGuid;
+            if (hr != 0 || pActiveSchemeGuid == IntPtr.Zero)
+            {
+                return Guid.Empty;
+            }
+
+            try
+            {
+                Guid activeSchemeGuid = (Guid)Marshal.PtrToStructure(pActiveSchemeGuid, typeof(Guid));
+                return activeSchemeGuid;
+            }
+            finally
+            {
+                LocalFree(pActiveSchemeGuid);
+            }
         }
 
         public static int GetCPUBoost()

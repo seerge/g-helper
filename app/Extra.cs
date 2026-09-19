@@ -1,4 +1,4 @@
-﻿using GHelper.Display;
+using GHelper.Display;
 using GHelper.Gpu.AMD;
 using GHelper.Helpers;
 using GHelper.Input;
@@ -11,8 +11,6 @@ namespace GHelper
 {
     public partial class Extra : RForm
     {
-
-        ClamshellModeControl clamshellControl = new ClamshellModeControl();
 
         int[] vramOptions = [];
 
@@ -950,7 +948,7 @@ namespace GHelper
 
             if (checkAutoToggleClamshellMode.Checked)
             {
-                clamshellControl.ToggleLidAction();
+                Program.clamshellControl.ToggleLidAction();
             }
             else
             {
