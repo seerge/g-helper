@@ -40,10 +40,27 @@ body:
     id: logs
     attributes:
       label: Logs
-      placeholder: Please drag and drop complete log file from ``%APPDATA%\GHelper\log.txt``
-      description: Please drag and drop complete log file from ``%APPDATA%\GHelper\log.txt``
-    validations:
-      required: true
+      description: |
+        **Please do NOT paste the log directly, as it spams the issue.** 
+
+        **Recommended:** Drag and drop your `log.txt` file (from `%APPDATA%\GHelper\log.txt`) directly into this text box. 
+        GitHub will upload it as a clean attachment link.
+
+        **Fallback:** If you ABSOLUTELY cannot upload, paste your log inside a collapsed block:
+        ````markdown
+        <details>
+        <summary>Click to expand log</summary>
+
+        ```log
+        [paste log here]
+        ```
+
+        </details>
+        ````
+      placeholder: |
+        Drag your log.txt file here to upload it.
+        If you ABSOLUTELY cannot upload, paste your log inside a collapsed block shown above.
+        Respect the formate, and check by clicking "Preview" to make sure it looks correct.
   - type: input
     id: device
     attributes:
