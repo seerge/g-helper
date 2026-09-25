@@ -1,4 +1,4 @@
-﻿using GHelper.Peripherals.Headset;
+using GHelper.Peripherals.Headset;
 using GHelper.Peripherals.Headset.Models;
 using GHelper.Peripherals.Keyboard;
 using GHelper.Peripherals.Keyboard.Models;
@@ -584,6 +584,8 @@ namespace GHelper.Peripherals
             DetectHeadset(new CetraSpeedNova());
             DetectHeadset(new Clavis());
             DetectHeadset(new CetraRgb());
+            DetectHeadset(new StrixGo24());
+            DetectHeadset(new StrixGo24Wired());
         }
 
         public static void DetectHeadset(AsusHeadset hs)
