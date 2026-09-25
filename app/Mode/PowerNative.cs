@@ -60,9 +60,14 @@ namespace GHelper.Mode
 
         private static Guid GUID_SLEEP_SUBGROUP = new Guid("238c9fa8-0aad-41ed-83f4-97be242c8f20");
         private static Guid GUID_HIBERNATEIDLE = new Guid("9d7815a6-7ee4-497e-8888-515a05f02364");
+        private static Guid GUID_STANDBYRESERVETIME = new Guid("468fe7e5-1158-46ec-88bc-5b96c9e44fd0");
 
         private static Guid GUID_SYSTEM_BUTTON_SUBGROUP = new Guid("4f971e89-eebd-4455-a8de-9e59040e7347");
         private static Guid GUID_LIDACTION = new Guid("5CA83367-6E45-459F-A27B-476B1D01C936");
+        private static Guid GUID_POWERBUTTONACTION = new Guid("7648EFA3-DD9C-4E3E-B566-50F929386280");
+        private static Guid GUID_STANDBYIDLE = new Guid("29F6C1DB-86DA-48C5-9FDB-F2B67B1F44DA");
+        private static Guid GUID_VIDEO_SUBGROUP = new Guid("7516B95F-F776-4464-8C53-06167F40CC99");
+        private static Guid GUID_VIDEOIDLE = new Guid("3C0BC021-C8A8-4E07-A973-6B14CBCB2B7E");
 
         private static Guid GUID_SUB_PCIEXPRESS = new Guid("501a4d13-42af-4429-9fd1-a8218c268e20");
         private static Guid GUID_PCI_EXPRESS_ASPM = new Guid("ee12f906-d277-404b-b6da-e5fa1a576df5");
@@ -342,19 +347,41 @@ namespace GHelper.Mode
             Logger.WriteLine("Changed Lid Action to " + action);
         }
 
+        static int ReadDCValue(Guid scheme, Guid subgroup, Guid setting)
+        {
+            PowerReadDCValueIndex(IntPtr.Zero, scheme, subgroup, setting, out IntPtr value);
+            return value.ToInt32();
+        }
+
+        public static (int Lid, int PowerButton, int Sleep, int Monitor) GetSleepPolicy()
+        {
+            Guid scheme = GetActiveScheme();
+
+            return (ReadDCValue(scheme, GUID_SYSTEM_BUTTON_SUBGROUP, GUID_LIDACTION),
+                    ReadDCValue(scheme, GUID_SYSTEM_BUTTON_SUBGROUP, GUID_POWERBUTTONACTION),
+                    ReadDCValue(scheme, GUID_SLEEP_SUBGROUP, GUID_STANDBYIDLE) / 60,
+                    ReadDCValue(scheme, GUID_VIDEO_SUBGROUP, GUID_VIDEOIDLE) / 60);
+        }
+
         public static int GetHibernateAfter()
         {
             Guid activeSchemeGuid = GetActiveScheme();
-            IntPtr seconds;
+
+            IntPtr idleSeconds;
             PowerReadDCValueIndex(IntPtr.Zero,
                     activeSchemeGuid,
                     GUID_SLEEP_SUBGROUP,
-                    GUID_HIBERNATEIDLE, out seconds);
+                    GUID_HIBERNATEIDLE, out idleSeconds);
 
-            Logger.WriteLine("Hibernate after " + seconds);
-            return (seconds.ToInt32() / 60);
+            IntPtr reserveSeconds;
+            PowerReadDCValueIndex(IntPtr.Zero,
+                    activeSchemeGuid,
+                    GUID_SLEEP_SUBGROUP,
+                    GUID_STANDBYRESERVETIME, out reserveSeconds);
+
+            Logger.WriteLine($"Hibernate after: HibernateIdle={idleSeconds}, StandbyReserveTime={reserveSeconds}");
+            return (idleSeconds.ToInt32() / 60);
         }
-
 
         public static void SetHibernateAfter(int minutes)
         {
