@@ -29,6 +29,7 @@ namespace GHelper
             lastUpdate = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
             (bios, model) = AppConfig.GetBiosAndModel();
+            if (AppConfig.ContainsModel("NUC")) model = AppConfig.GetModelShort();
 
             buttonRefresh.TabStop = false;
 
