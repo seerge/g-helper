@@ -129,6 +129,9 @@ public static class AppConfig
     private static readonly Lazy<(string Bios, string ModelShort)> _biosData =
         new Lazy<(string, string)>(LoadBios, LazyThreadSafetyMode.ExecutionAndPublication);
 
+    private static readonly Lazy<bool> _isDesktop =
+        new Lazy<bool>(LoadIsDesktop, LazyThreadSafetyMode.ExecutionAndPublication);
+
     private static string LoadModel()
     {
         try
@@ -728,7 +731,7 @@ public static class AppConfig
     {
         return ContainsModel("ROG");
     }
-    public static bool IsDesktop()
+    private static bool LoadIsDesktop()
     {
         try
         {
@@ -738,9 +741,14 @@ public static class AppConfig
                 using (obj) return Convert.ToInt32(obj["PCSystemType"] ?? 0) == 1;
             }
         }
-        catch { }
+        catch (Exception ex)
+        {
+            Logger.WriteLine(ex.Message);
+        }
         return false;
     }
+
+    public static bool IsDesktop() => _isDesktop.Value;
 
     public static bool IsASUS()
     {
