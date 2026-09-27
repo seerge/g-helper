@@ -240,6 +240,7 @@ Battery level, lighting, equalizer presets, sidetone, microphone and AI noise ca
 - ``Ctrl + Shift + Alt + F18`` - Turbo
 - ``Ctrl + Shift + Alt + F19`` - Custom 1 (if exists)
 - ``Ctrl + Shift + Alt + F20`` - Custom 2 (if exists)
+- ``Ctrl + Shift + Alt + F21`` - Toggle XG Mobile
 - [Custom keybindings / hotkeys](https://github.com/seerge/g-helper/wiki/Power-user-settings#custom-hotkey-actions)
 
 ### 🎮ROG Ally Bindings
