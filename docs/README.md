@@ -168,6 +168,7 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 <details>
 <summary><a href="https://github.com/seerge/g-helper/discussions/5710">Currently supported models</a> (click to expand)</summary>
 
+- ASUS TX 98
 - ROG Azoth
 - ROG Azoth Extreme
 - ROG Azoth Extreme SE

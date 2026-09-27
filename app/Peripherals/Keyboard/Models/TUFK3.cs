@@ -149,4 +149,16 @@ namespace GHelper.Peripherals.Keyboard.Models
             return "TUF GAMING K3 (Gen II) Miku Edition";
         }
     }
+
+    public class TX98 : TUFK3GenII
+    {
+        public TX98() : base(0x1B3A)
+        {
+        }
+
+        public override string GetDisplayName()
+        {
+            return "ASUS TX 98";
+        }
+    }
 }
