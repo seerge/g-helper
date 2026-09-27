@@ -2456,6 +2456,12 @@ namespace GHelper.Peripherals.Mouse
             {
                 int offset = 5 + slot * 2;
                 string slotName = slots.TryGetValue(slot, out var def) ? def.Name : $"Slot {slot}";
+                if (WriteOnlySlots.Contains(slot))
+                {
+                    ButtonBindings[slot] = LoadWriteOnlySlot(slot, def.SourceCode);
+                    Logger.WriteLine(GetDisplayName() + $": Slot {slot} ({slotName}): {LabelForActionCode(ButtonBindings[slot])} (0x{ButtonBindings[slot]:X4}) [write-only]");
+                    continue;
+                }
                 if (offset + 1 >= response.Length)
                 {
                     Logger.WriteLine(GetDisplayName() + $": Slot {slot} ({slotName}): out of range");
