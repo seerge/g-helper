@@ -194,6 +194,7 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 - TUF Gaming K1
 - TUF Gaming K3
 - TUF Gaming K3 Gen II
+- TUF Gaming K3 Gen II Miku Edition
 
 </details>
 

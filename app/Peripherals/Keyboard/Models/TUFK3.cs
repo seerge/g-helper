@@ -123,6 +123,10 @@ namespace GHelper.Peripherals.Keyboard.Models
         {
         }
 
+        protected TUFK3GenII(ushort productId) : base(productId)
+        {
+        }
+
         public override string GetDisplayName()
         {
             return "TUF GAMING K3 (Gen II)";
@@ -131,6 +135,18 @@ namespace GHelper.Peripherals.Keyboard.Models
         protected override string? LayoutName()
         {
             return IsIsoLayout ? "TUFK3GenIIISO" : "TUFK3GenII";
+        }
+    }
+
+    public class TUFK3GenIIMiku : TUFK3GenII
+    {
+        public TUFK3GenIIMiku() : base(0x1C60)
+        {
+        }
+
+        public override string GetDisplayName()
+        {
+            return "TUF GAMING K3 (Gen II) Miku Edition";
         }
     }
 }
