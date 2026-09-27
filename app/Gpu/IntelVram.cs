@@ -60,6 +60,7 @@ public static class IntelVram
 
         foreach (string name in display.GetSubKeyNames())
         {
+            if (!int.TryParse(name, out _)) continue;
             using var adapter = display.OpenSubKey(name);
             if (adapter?.GetValue("DriverDesc") is string desc && desc.Contains("Intel", StringComparison.OrdinalIgnoreCase))
                 return $@"{DisplayClass}\{name}\GMM";
