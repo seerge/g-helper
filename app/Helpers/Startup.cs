@@ -1,4 +1,4 @@
-﻿using GHelper.Helpers;
+﻿ using GHelper.Helpers;
 using Microsoft.Win32.TaskScheduler;
 using System.Diagnostics;
 using System.Reflection;
@@ -9,6 +9,7 @@ public class Startup
 
     static string taskName = "GHelper";
     static string chargeTaskName = taskName + "Charge";
+    static string ecoTaskName = taskName + "GPUEco";
     static string strExeFilePath = Application.ExecutablePath.Trim();
     static string userTaskName = taskName + "_" + WindowsIdentity.GetCurrent().User.Value;
 
@@ -51,7 +52,7 @@ public class Startup
     {
         if (ProcessHelper.IsUserAdministrator() && IsScheduled())
         {
-            UnSchedule();
+            Unschedule();
             Schedule();
         }
     }
@@ -108,7 +109,7 @@ public class Startup
                             return;
                         }
                         Logger.WriteLine("Rescheduling to: " + strExeFilePath);
-                        UnSchedule();
+                        Unschedule();
                         Schedule();
                     }
                 }
@@ -119,21 +120,6 @@ public class Startup
 
                 if (taskService.RootFolder.AllTasks.FirstOrDefault(t => t.Name == chargeTaskName) == null) ScheduleCharge();
 
-            }
-        }
-    }
-
-    public static void UnscheduleCharge()
-    {
-        using (TaskService taskService = new TaskService())
-        {
-            try
-            {
-                taskService.RootFolder.DeleteTask(chargeTaskName);
-            }
-            catch (Exception e)
-            {
-                Logger.WriteLine("Can't remove charge limit task: " + e.Message);
             }
         }
     }
@@ -174,6 +160,68 @@ public class Startup
         }
     }
 
+    public static void UnscheduleCharge()
+    {
+        using (TaskService taskService = new TaskService())
+        {
+            try
+            {
+                taskService.RootFolder.DeleteTask(chargeTaskName);
+            }
+            catch (Exception e)
+            {
+                Logger.WriteLine("Can't remove charge limit task: " + e.Message);
+            }
+        }
+    }
+
+    public static void ScheduleEcoMode()
+    {
+        if (strExeFilePath is null) return;
+
+        using (TaskDefinition td = TaskService.Instance.NewTask())
+        {
+            td.RegistrationInfo.Description = "G-Helper Switch to GPU Eco Mode (one-time)";
+            td.Actions.Add(strExeFilePath, "gpu-eco");
+
+            if (ProcessHelper.IsUserAdministrator())
+            {
+                td.Triggers.Add(new BootTrigger());
+                td.Triggers.Add(new EventTrigger
+                {
+                    Subscription = "<QueryList><Query Id='0' Path='System'><Select Path='System'>*[System[Provider[@Name='Microsoft-Windows-Kernel-Boot'] and EventID=27]]</Select></Query></QueryList>"
+                });
+                td.Principal.UserId = "SYSTEM";
+                td.Principal.LogonType = TaskLogonType.ServiceAccount;
+            }
+            else
+            {
+                td.Triggers.Add(new LogonTrigger { UserId = WindowsIdentity.GetCurrent().Name, Delay = TimeSpan.FromSeconds(5) });
+                td.Principal.LogonType = TaskLogonType.InteractiveToken;
+            }
+
+            td.Settings.StopIfGoingOnBatteries = false;
+            td.Settings.DisallowStartIfOnBatteries = false;
+            td.Settings.ExecutionTimeLimit = TimeSpan.FromMinutes(2);
+            td.Settings.MultipleInstances = TaskInstancesPolicy.IgnoreNew;
+
+            try
+            {
+                TaskService.Instance.RootFolder.RegisterTaskDefinition(ecoTaskName, td);
+                Logger.WriteLine("One-time eco-mode task scheduled: " + strExeFilePath);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine("Can't create eco-mode task: " + ex.Message);
+            }
+        }
+    }
+
+    public static void UnscheduleEcoMode()
+    {
+        ProcessHelper.RunSilent("powershell.exe", $"-NoProfile -Command \"Start-Sleep 3; schtasks /delete /tn {ecoTaskName} /f\"");
+    }
+
     public static void Schedule()
     {
 
@@ -210,10 +258,9 @@ public class Startup
         }
 
         ScheduleCharge();
-
     }
 
-    public static void UnSchedule()
+    public static void Unschedule()
     {
         using (TaskService taskService = new TaskService())
         {

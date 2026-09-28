@@ -15,7 +15,6 @@ namespace GHelper.Gpu
 
         static bool nvRestartPending;
 
-
         public GPUModeControl(SettingsForm settingsForm)
         {
             settings = settingsForm;
@@ -72,7 +71,6 @@ namespace GHelper.Gpu
             Aura.CustomRGB.ApplyGPUColor(gpuMode);
 
             CheckGpuError();
-
         }
 
 
@@ -92,16 +90,17 @@ namespace GHelper.Gpu
             var restart = false;
             var changed = false;
 
-            int status;
 
             if (CurrentGPU == AsusACPI.GPUModeUltimate)
             {
                 DialogResult dialogResult = settings.ShowMessage(Properties.Strings.AlertUltimateOff, Properties.Strings.AlertUltimateTitle, MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
-                    status = Program.acpi.DeviceSet(AsusACPI.GPUMux, 1, "GPUMux");
+                    Program.acpi.DeviceSet(AsusACPI.GPUMux, 1, "GPUMux");
                     restart = true;
                     changed = true;
+
+                    if (GPUMode == AsusACPI.GPUModeEco) Startup.ScheduleEcoMode();
                 }
             }
             else if (GPUMode == AsusACPI.GPUModeUltimate)
@@ -127,7 +126,7 @@ namespace GHelper.Gpu
                         return;
                     }
 
-                    status = Program.acpi.DeviceSet(AsusACPI.GPUMux, 0, "GPUMux");
+                    Program.acpi.DeviceSet(AsusACPI.GPUMux, 0, "GPUMux");
                     restart = true;
                     changed = true;
                 }
@@ -154,9 +153,8 @@ namespace GHelper.Gpu
             if (restart)
             {
                 settings.VisualiseGPUMode();
-                Process.Start("shutdown", "/r /t 1");
+                ProcessHelper.RunSilent("shutdown", "/r /t 1");
             }
-
         }
 
 
@@ -228,8 +226,6 @@ namespace GHelper.Gpu
                 }
 
             });
-
-
         }
 
         public static bool IsPlugged() =>
@@ -295,7 +291,6 @@ namespace GHelper.Gpu
             }
 
             return false;
-
         }
 
 
