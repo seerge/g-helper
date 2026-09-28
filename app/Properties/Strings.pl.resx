@@ -414,7 +414,7 @@ Nadal chcesz kontynuować?</value>
     <value>Dodatkowe ustawienia</value>
   </data>
   <data name="ExtremeLowMotionBlur" xml:space="preserve">
-    <value>Extreme Low Motion Blur</value>
+    <value>ELMB (redukcja rozmycia ruchu)</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>Ustawienia fabryczne</value>
@@ -1041,16 +1041,16 @@ baterii przez zadania w tle, takie jak Windows Update.</value>
     <value>Nakładka</value>
   </data>
   <data name="OverlayChart" xml:space="preserve">
-    <value>Chart</value>
+    <value>Wykres</value>
   </data>
   <data name="OverlayLabels" xml:space="preserve">
-    <value>Labels</value>
+    <value>Etykiety</value>
   </data>
   <data name="OverlayLoad" xml:space="preserve">
-    <value>Load</value>
+    <value>Obciążenie</value>
   </data>
   <data name="OverlayModeComplete" xml:space="preserve">
-    <value>Complete</value>
+    <value>Kompletny</value>
   </data>
   <data name="OverlayModeFull" xml:space="preserve">
     <value>Pełny</value>
