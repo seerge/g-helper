@@ -1016,24 +1016,30 @@ public static class HardwareControl
         if (count > 0) Logger.WriteLine($"NvAPI Unload: {count}");
     }
 
-    public static void RecreateGpuControlWithDelay(int delay = 5)
+    public static void RecreateGpuControlWithDelay(int delay = 5, CancellationToken token = default)
     {
         // Re-enabling the discrete GPU takes a bit of time,
         // so a simple workaround is to refresh again after that happens
         Task.Run(async () =>
         {
-            await Task.Delay(TimeSpan.FromSeconds(delay));
-            RecreateGpuControl();
-        });
+            try
+            {
+                await Task.Delay(TimeSpan.FromSeconds(delay), token);
+                token.ThrowIfCancellationRequested();
+                RecreateGpuControl();
+            }
+            catch (OperationCanceledException) { }
+        }, token);
     }
 
-    public static async Task RecreateGpuControlWithRetry(int retries, int delay)
+    public static async Task RecreateGpuControlWithRetry(int retries, int delay, CancellationToken token = default)
     {
         for (int i = 0; i < retries; i++)
         {
+            token.ThrowIfCancellationRequested();
             RecreateGpuControl();
             if (GpuControl is not null) break;
-            await Task.Delay(TimeSpan.FromSeconds(delay));
+            await Task.Delay(TimeSpan.FromSeconds(delay), token);
         }
     }
 

@@ -39,6 +39,8 @@ namespace GHelper
 
         private static long lastAuto;
         private static readonly object autoLock = new();
+        private static long lastTheme;
+        private static CancellationTokenSource? sessionSwitchCts;
 
         public static InputDispatcher? inputDispatcher;
 
@@ -228,6 +230,7 @@ namespace GHelper
 
         private static void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
         {
+            sessionSwitchCts?.Cancel();
             gpuControl.StandardModeFix();
             modeControl.ShutdownReset();
             BatteryControl.AutoBattery();
@@ -240,21 +243,28 @@ namespace GHelper
             if (e.Reason == SessionSwitchReason.SessionLogon || e.Reason == SessionSwitchReason.SessionUnlock || e.Reason == SessionSwitchReason.ConsoleConnect)
             {
                 Logger.WriteLine("Session:" + e.Reason.ToString());
+                GPUModeControl.BreakWakeDelay("Session " + e.Reason.ToString());
                 ProcessHelper.KillSmartDisplayControl();
                 bool wasLocked = Aura.sessionLock;
                 Aura.sessionLock = false;
                 Aura.ApplyAura();
-                Task.Delay(2000).ContinueWith(_ =>
+
+                sessionSwitchCts?.Cancel();
+                sessionSwitchCts = new CancellationTokenSource();
+                var token = sessionSwitchCts.Token;
+
+                Task.Delay(2000, token).ContinueWith(_ =>
                 {
                     ScreenControl.AutoScreen();
                     if (!wasLocked) return;
                     if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < 10000) return;
                     modeControl.AutoCPUTemp();
-                });
+                }, token);
             }
             if (e.Reason == SessionSwitchReason.SessionLock)
             {
                 Logger.WriteLine("Session:" + e.Reason.ToString());
+                sessionSwitchCts?.Cancel();
                 Aura.sessionLock = true;
             }
         }
@@ -296,13 +306,15 @@ namespace GHelper
 
         public static bool SetAutoModes(bool powerChanged = false, bool init = false, bool wakeup = false)
         {
+            if (wakeup && powerSettleTimer.Enabled) return false;
+            
             int skipDelay = wakeup ? 10000 : 3000;
 
             if (init) gpuControl.CaptureNvBootState();
 
             lock (autoLock)
             {
-                if (Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < skipDelay) return false;
+                if (!powerChanged && Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAuto) < skipDelay) return false;
                 lastAuto = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             }
 
@@ -352,7 +364,11 @@ namespace GHelper
 
         public static PowerSource currentSource = PowerSource.Battery;
         private static PowerLineStatus lastLineStatus = SystemInformation.PowerStatus.PowerLineStatus;
-        private static readonly System.Timers.Timer powerSettleTimer = new() { AutoReset = false };
+
+        // Short, fixed debounce: only coalesces the burst of duplicate OS/WMI events that
+        // fire for a single physical plug/unplug. Not a hardware settle wait.
+        private static readonly System.Timers.Timer powerSettleTimer = new(100) { AutoReset = false };
+        private static int powerSettleGeneration;
 
         public static PowerSource ReadPowerSource()
         {
@@ -369,24 +385,59 @@ namespace GHelper
         public static bool usbcProfile = AppConfig.Is("usbc_profile");
 
         public static int PerformanceKey() =>
-            usbcProfile ? (int)ReadPowerSource() : (int)SystemInformation.PowerStatus.PowerLineStatus;
+            usbcProfile ? (int)currentSource : (currentSource == PowerSource.Battery ? 0 : 1);
 
         public static void SchedulePowerCheck()
         {
             if (AppConfig.Is("disable_power_event")) return;
-            powerSettleTimer.Interval = Math.Max(AppConfig.Get("charger_delay"), 2000);
             powerSettleTimer.Stop();
             powerSettleTimer.Start();
         }
 
         private static void OnPowerSettled(object? sender, System.Timers.ElapsedEventArgs e)
         {
-            PowerSource source = ReadPowerSource();
+            _ = SettlePowerSourceAsync();
+        }
+
+        // Instead of guessing how long the ACPI ChargerMode register takes to update, poll it
+        // until two consecutive reads agree (i.e. it has actually stopped changing), capped by
+        // charger_delay as a safety-net timeout rather than a guaranteed wait.
+        private static async Task SettlePowerSourceAsync()
+        {
+            int generation = System.Threading.Interlocked.Increment(ref powerSettleGeneration);
+
+            PowerSource? lastReading = null;
+            await AsyncHelper.PollUntilAsync(
+                () =>
+                {
+                    PowerSource reading = ReadPowerSource();
+                    bool stable = lastReading == reading;
+                    lastReading = reading;
+                    return stable;
+                },
+                intervalMs: 100,
+                timeoutMs: Math.Max(AppConfig.Get("charger_delay"), 2000));
+
+            // A newer power event superseded this one while we were polling - let that one win.
+            if (generation != powerSettleGeneration) return;
+
+            PowerSource source = lastReading ?? ReadPowerSource();
             if (source == currentSource) return;
 
             Logger.WriteLine($"Power source: {currentSource} -> {source}");
             currentSource = source;
-            SetAutoModes(powerChanged: true);
+
+            // Force CPU mode (and the rest of the cascade) to change BEFORE the GPU profile
+            bool applied = SetAutoModes(powerChanged: true);
+            if (!applied)
+            {
+                Logger.WriteLine("SetAutoModes busy - retrying power source change shortly");
+                powerSettleTimer.Stop();
+                powerSettleTimer.Start();
+            }
+
+            ScreenControl.AutoScreen();
+            gpuControl.AutoGPUMode(delay: 1000);
         }
 
         public static void OnChargerEvent() => SchedulePowerCheck();
@@ -396,11 +447,18 @@ namespace GHelper
             if (e.Mode == PowerModes.Suspend)
             {
                 Logger.WriteLine("Power Mode Changed:" + e.Mode.ToString());
+                GPUModeControl.OnSuspend();
                 gpuControl.StandardModeFix();
                 modeControl.ShutdownReset();
                 InputDispatcher.ShutdownStatusLed();
                 XGM.NotifyShutdown();
                 return;
+            }
+
+            if (e.Mode == PowerModes.Resume)
+            {
+                Logger.WriteLine("Power Mode Changed:" + e.Mode.ToString());
+                GPUModeControl.OnResume();
             }
 
             PowerLineStatus status = SystemInformation.PowerStatus.PowerLineStatus;
@@ -430,6 +488,7 @@ namespace GHelper
             }
             else
             {
+                GPUModeControl.BreakWakeDelay("Settings Opened");
                 var screen = Screen.PrimaryScreen;
                 if (screen is null) screen = Screen.FromControl(settingsForm);
 

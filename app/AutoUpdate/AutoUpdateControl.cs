@@ -1,4 +1,4 @@
-﻿using GHelper.Helpers;
+using GHelper.Helpers;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Reflection;
@@ -24,7 +24,7 @@ namespace GHelper.AutoUpdate
             settings.SetVersionLabel(Properties.Strings.VersionLabel + $": {appVersion.Major}.{appVersion.Minor}.{appVersion.Build}");
         }
 
-        public void CheckForUpdates()
+        public void CheckForUpdates(CancellationToken token = default)
         {
             // Run update once per 12 hours
             if (Math.Abs(DateTimeOffset.Now.ToUnixTimeSeconds() - lastUpdate) < 43200) return;
@@ -32,9 +32,13 @@ namespace GHelper.AutoUpdate
 
             Task.Run(async () =>
             {
-                await Task.Delay(TimeSpan.FromSeconds(1));
-                CheckForUpdatesAsync();
-            });
+                try
+                {
+                    await Task.Delay(TimeSpan.FromSeconds(1), token);
+                    CheckForUpdatesAsync(false, token);
+                }
+                catch (OperationCanceledException) { }
+            }, token);
         }
 
         public void Update()
@@ -63,7 +67,7 @@ namespace GHelper.AutoUpdate
             }
         }
 
-        async void CheckForUpdatesAsync(bool force = false)
+        async void CheckForUpdatesAsync(bool force = false, CancellationToken token = default)
         {
 
             if (AppConfig.Is("skip_updates")) return;
@@ -74,7 +78,7 @@ namespace GHelper.AutoUpdate
                 using (var httpClient = new HttpClient())
                 {
                     httpClient.DefaultRequestHeaders.Add("User-Agent", "G-Helper App");
-                    var json = await httpClient.GetStringAsync("https://api.github.com/repos/seerge/g-helper/releases/latest");
+                    var json = await httpClient.GetStringAsync("https://api.github.com/repos/seerge/g-helper/releases/latest", token);
                     var config = JsonSerializer.Deserialize<JsonElement>(json);
                     var tag = config.GetProperty("tag_name").ToString().Replace("v", "");
                     var assets = config.GetProperty("assets");
@@ -124,6 +128,7 @@ namespace GHelper.AutoUpdate
 
                 }
             }
+            catch (OperationCanceledException) { }
             catch (Exception ex)
             {
                 Logger.WriteLine("Failed to check for updates:" + ex.Message);
