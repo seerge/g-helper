@@ -37,6 +37,16 @@ namespace GHelper.AutoUpdate
             });
         }
 
+        public void CheckForAppUpdate()
+        {
+            lastUpdate = DateTimeOffset.Now.ToUnixTimeSeconds();
+            Task.Run(async () =>
+            {
+                await Task.Delay(TimeSpan.FromSeconds(1));
+                CheckForUpdatesAsync(manual: true);
+            });
+        }
+
         public void Update()
         {
             if (update)
@@ -63,7 +73,7 @@ namespace GHelper.AutoUpdate
             }
         }
 
-        async void CheckForUpdatesAsync(bool force = false)
+        async void CheckForUpdatesAsync(bool force = false, bool manual = false)
         {
 
             if (AppConfig.Is("skip_updates")) return;
@@ -71,9 +81,8 @@ namespace GHelper.AutoUpdate
             try
             {
 
-                using (var httpClient = new HttpClient())
+                using (var httpClient = ProxyHelper.CreateHttpClient("G-Helper App"))
                 {
-                    httpClient.DefaultRequestHeaders.Add("User-Agent", "G-Helper App");
                     var json = await httpClient.GetStringAsync("https://api.github.com/repos/seerge/g-helper/releases/latest");
                     var config = JsonSerializer.Deserialize<JsonElement>(json);
                     var tag = config.GetProperty("tag_name").ToString().Replace("v", "");
@@ -98,7 +107,11 @@ namespace GHelper.AutoUpdate
                     {
                         versionUrl = url;
                         update = true;
-                        settings.SetVersionLabel(Properties.Strings.DownloadUpdate + $": {appVersion.Major}.{appVersion.Minor}.{appVersion.Build} → {tag}", true);
+
+                        if (manual)
+                            settings.SetVersionLabel($"{Properties.Strings.VersionLabel}: {appVersion.Major}.{appVersion.Minor}.{appVersion.Build}→{tag}", true);
+                        else
+                            settings.SetVersionLabel(Properties.Strings.DownloadUpdate + $": {appVersion.Major}.{appVersion.Minor}.{appVersion.Build} → {tag}", true);
 
                         string[] args = Environment.GetCommandLineArgs();
                         if (force || args.Length > 1 && args[1] == "autoupdate")
@@ -120,6 +133,9 @@ namespace GHelper.AutoUpdate
                     else
                     {
                         Logger.WriteLine($"Latest version {appVersion}");
+
+                        if (manual)
+                            settings.SetVersionLabel($"{Properties.Strings.VersionLabel}: {appVersion.Major}.{appVersion.Minor}.{appVersion.Build}(已是最新)");
                     }
 
                 }
@@ -148,10 +164,9 @@ namespace GHelper.AutoUpdate
             string exeName = Path.GetFileName(exeLocation);
             string zipLocation = exeDir + "\\" + zipName;
 
-            using (HttpClient client = new HttpClient())
+            using (HttpClient client = ProxyHelper.CreateHttpClient("G-Helper App"))
             {
 
-                client.DefaultRequestHeaders.Add("User-Agent", "G-Helper App");
                 Logger.WriteLine(requestUri);
                 Logger.WriteLine(exeDir);
                 Logger.WriteLine(zipName);

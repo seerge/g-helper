@@ -150,6 +150,7 @@ namespace GHelper
             _font = new Font(Font, FontStyle.Underline);
 
             buttonRefresh.Click += ButtonRefresh_Click;
+            buttonCheckAppUpdate.Click += ButtonCheckAppUpdate_Click;
             Shown += Updates_Shown;
             Resize += (s, e) => AlignLabelUpdates();
 
@@ -166,6 +167,11 @@ namespace GHelper
         private void ButtonRefresh_Click(object? sender, EventArgs e)
         {
             LoadUpdates();
+        }
+
+        private void ButtonCheckAppUpdate_Click(object? sender, EventArgs e)
+        {
+            Program.settingsForm.updateControl.CheckForAppUpdate();
         }
 
         private void AlignLabelUpdates()
