@@ -161,6 +161,7 @@ namespace GHelper
 
             labelBacklightTimeout.Text = Properties.Strings.BacklightTimeout;
             //labelBacklightTimeoutPlugged.Text = Properties.Strings.BacklightTimeoutPlugged;
+            checkAmbient.Text = Properties.Strings.AmbientBacklight;
 
             checkNoOverdrive.Text = Properties.Strings.DisableOverdrive;
             checkELMB.Text = Properties.Strings.ExtremeLowMotionBlur;
@@ -442,6 +443,10 @@ namespace GHelper
 
             numericBacklightTime.ValueChanged += NumericBacklightTime_ValueChanged;
             numericBacklightPluggedTime.ValueChanged += NumericBacklightTime_ValueChanged;
+
+            checkAmbient.Visible = AmbientLight.IsSupported();
+            checkAmbient.Checked = AppConfig.Is("backlight_ambient");
+            checkAmbient.CheckedChanged += CheckAmbient_CheckedChanged;
 
             checkGpuApps.Checked = AppConfig.Is("kill_gpu_apps");
             checkGpuApps.CheckedChanged += CheckGpuApps_CheckedChanged;
@@ -840,6 +845,13 @@ namespace GHelper
             AppConfig.Set("keyboard_timeout", (int)numericBacklightTime.Value);
             AppConfig.Set("keyboard_ac_timeout", (int)numericBacklightPluggedTime.Value);
             Program.inputDispatcher.InitBacklightTimer();
+        }
+
+        private void CheckAmbient_CheckedChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("backlight_ambient", checkAmbient.Checked ? 1 : 0);
+            AmbientLight.Init();
+            if (!checkAmbient.Checked) InputDispatcher.SetBacklightAuto();
         }
 
         private void CheckXGM_CheckedChanged(object? sender, EventArgs e)
