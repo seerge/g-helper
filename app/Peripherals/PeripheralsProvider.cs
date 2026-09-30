@@ -533,6 +533,7 @@ namespace GHelper.Peripherals
             DetectMouse(new MD200());
             DetectMouse(new BalteusQi());
             DetectMouse(new Balteus());
+            DetectMouse(new BulwarkDock());
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]

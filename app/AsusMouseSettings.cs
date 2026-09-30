@@ -804,6 +804,12 @@ namespace GHelper
                 panelBatteryState.Visible = false;
             }
 
+            if (!mouse.HasProfiles())
+            {
+                panelProfiles.Visible = false;
+                panelBottomButtons.Visible = false;
+            }
+
             if (mouse.HasAutoPowerOff())
             {
                 comboBoxAutoPowerOff.Items.AddRange(new string[]{
