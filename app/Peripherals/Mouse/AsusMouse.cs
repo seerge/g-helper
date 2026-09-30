@@ -2144,7 +2144,7 @@ namespace GHelper.Peripherals.Mouse
             }
         }
 
-        public void SetLightingSetting(LightingSetting lightingSetting, LightingZone zone)
+        public virtual void SetLightingSetting(LightingSetting lightingSetting, LightingZone zone)
         {
             if (!HasRGB() || lightingSetting is null)
             {
