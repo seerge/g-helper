@@ -120,6 +120,7 @@ A built-in in-game overlay (OSD) that shows live **FPS, CPU / GPU temperatures, 
 <details>
 <summary><a href="https://github.com/seerge/g-helper/discussions/900">Currently supported models</a> (click to expand)</summary>
 
+- ROG Bulwark Dock (DG300)
 - ROG Chakram
 - ROG Chakram X
 - ROG Chakram Core
