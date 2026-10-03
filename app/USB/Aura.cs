@@ -387,7 +387,7 @@ namespace GHelper.USB
         {
             DetectBacklightType();
 
-            if (AppConfig.IsZ13())
+            if (AppConfig.IsZ13() && !AppConfig.Is("skip_aura"))
                 AsusHid.Write([AsusHid.AURA_ID, 0xC0, 0x03, 0x01], "Dynamic Lighting Init");
 
             if (AppConfig.IsProArt())
