@@ -857,6 +857,9 @@ Vil du stadig fortsætte?</value>
   <data name="ToggleScreen" xml:space="preserve">
     <value>Slå skærmen til/fra</value>
   </data>
+  <data name="ToggleTouchpad" xml:space="preserve">
+    <value>Toggle Touchpad</value>
+  </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
     <value>Toggle Touchscreen</value>
   </data>
