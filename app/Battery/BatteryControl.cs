@@ -38,7 +38,8 @@ namespace GHelper.Battery
         {
             chargeFull = false;
             Logger.WriteLine("Battery fully charged");
-            Program.settingsForm.Invoke(Program.settingsForm.VisualiseBatteryFull);
+            if (Program.settingsForm.IsHandleCreated)
+                Program.settingsForm.BeginInvoke(Program.settingsForm.VisualiseBatteryFull);
         }
 
         public static void AutoBattery(bool init = false)

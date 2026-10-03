@@ -184,23 +184,28 @@ namespace GHelper.Mode
 
             if (notify) Toast();
 
-            if (!AppConfig.Is("skip_powermode"))
+            // Windows power plan / overlay switching goes through the Power API, which can take
+            // hundreds of milliseconds — keep it off the calling thread (often the UI thread).
+            Task.Run(delegate
             {
-                // Windows power mode
-                if (AppConfig.GetModeString("powermode") is not null)
-                    PowerNative.SetPowerMode(AppConfig.GetModeString("powermode"));
-                else
-                    PowerNative.SetPowerMode(Modes.GetBase(mode));
+                if (!AppConfig.Is("skip_powermode"))
+                {
+                    // Windows power mode
+                    if (AppConfig.GetModeString("powermode") is not null)
+                        PowerNative.SetPowerMode(AppConfig.GetModeString("powermode"));
+                    else
+                        PowerNative.SetPowerMode(Modes.GetBase(mode));
 
-                if (AppConfig.IsAutoASPM()) PowerNative.SetBalancedASPM();
-                if (AppConfig.IsAutoStandbyNetworking()) PowerNative.SetConnectivityInStandby();
-            }
+                    if (AppConfig.IsAutoASPM()) PowerNative.SetBalancedASPM();
+                    if (AppConfig.IsAutoStandbyNetworking()) PowerNative.SetConnectivityInStandby();
+                }
 
-            // CPU Boost setting override
-            if (AppConfig.GetMode("auto_boost") != -1)
+                // CPU Boost setting override
+                if (AppConfig.GetMode("auto_boost") != -1)
                     PowerNative.SetCPUBoost(AppConfig.GetMode("auto_boost"));
 
-            settings.FansInit();
+                settings.FansInit();
+            });
         }
 
 
@@ -439,9 +444,16 @@ namespace GHelper.Mode
                 if (HardwareControl.GpuControl is null) { Logger.WriteLine("Clocks: NoGPUControl"); return; }
                 if (!HardwareControl.GpuControl!.IsNvidia) { Logger.WriteLine("Clocks: NotNvidia"); return; }
 
-                NvidiaGpuControl nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
+                // NVAPI clock writes must not race a GPU control rebuild (stale handle -> crash)
+                if (!HardwareControl.TryGpuEnter(500))
+                {
+                    Logger.WriteLine("Clocks: GPU control busy, skipping");
+                    return;
+                }
+
                 try
                 {
+                    NvidiaGpuControl nvControl = (NvidiaGpuControl)HardwareControl.GpuControl!;
                     int statusClocks = nvControl.SetClocks(core, memory);
                     int statusLimit = nvControl.SetMaxGPUClock(clock_limit);
                     if ((statusLimit != 0 || statusClocks != 0) && launchAsAdmin) ProcessHelper.RunAsAdmin("gpu");
@@ -449,6 +461,10 @@ namespace GHelper.Mode
                 catch (Exception ex)
                 {
                     Logger.WriteLine("Clocks Error:" + ex.ToString());
+                }
+                finally
+                {
+                    HardwareControl.GpuExit();
                 }
 
                 settings.GPUInit();
