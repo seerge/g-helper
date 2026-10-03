@@ -136,7 +136,7 @@
     <value>Tryb Eco</value>
   </data>
   <data name="AlertExternalDisplay" xml:space="preserve">
-    <value>Looks like external screen is connected to GPU, disable GPU anyway?</value>
+    <value>Wygląda na to, że zewnętrzny ekran jest podłączony do GPU. Wyłączyć GPU pomimo tego?</value>
   </data>
   <data name="AlertUltimateOff" xml:space="preserve">
     <value>Wyłączenie trybu Ultimate wymaga ponownego uruchomienia</value>
@@ -402,7 +402,7 @@ Nadal chcesz kontynuować?</value>
     <value>Ustawienia zasilania</value>
   </data>
   <data name="EnhancedVibration" xml:space="preserve">
-    <value>Enhanced Vibration</value>
+    <value>Wzmocnione wibracje</value>
   </data>
   <data name="Export" xml:space="preserve">
     <value>Eksportuj profil</value>
@@ -414,7 +414,7 @@ Nadal chcesz kontynuować?</value>
     <value>Dodatkowe ustawienia</value>
   </data>
   <data name="ExtremeLowMotionBlur" xml:space="preserve">
-    <value>Extreme Low Motion Blur</value>
+    <value>ELMB (redukcja rozmycia ruchu)</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>Ustawienia fabryczne</value>
@@ -1041,34 +1041,34 @@ baterii przez zadania w tle, takie jak Windows Update.</value>
     <value>Nakładka</value>
   </data>
   <data name="OverlayChart" xml:space="preserve">
-    <value>Chart</value>
+    <value>Wykres</value>
   </data>
   <data name="OverlayLabels" xml:space="preserve">
-    <value>Labels</value>
+    <value>Etykiety</value>
   </data>
   <data name="OverlayLoad" xml:space="preserve">
-    <value>Load</value>
+    <value>Obciążenie</value>
   </data>
   <data name="OverlayModeComplete" xml:space="preserve">
-    <value>Complete</value>
+    <value>Kompletny</value>
   </data>
   <data name="OverlayModeFull" xml:space="preserve">
-    <value>Full</value>
+    <value>Pełny</value>
   </data>
   <data name="OverlayModeLight" xml:space="preserve">
-    <value>Light</value>
+    <value>Lekki</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Nakładka tylko w grach</value>
   </data>
   <data name="OverlaySize" xml:space="preserve">
-    <value>Size</value>
+    <value>Rozmiar</value>
   </data>
   <data name="OverlayTemperatures" xml:space="preserve">
-    <value>Temperatures</value>
+    <value>Temperatury</value>
   </data>
   <data name="OverlayTransparency" xml:space="preserve">
-    <value>Transparency</value>
+    <value>Przezroczystość</value>
   </data>
   <data name="Power" xml:space="preserve">
     <value>Zasilanie</value>
