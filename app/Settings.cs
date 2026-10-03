@@ -2118,7 +2118,7 @@ namespace GHelper
 
                 Image? baseIcon = m.DeviceType() switch
                 {
-                    PeripheralType.Mouse => Properties.Resources.icons8_maus_48,
+                    PeripheralType.Mouse => ((AsusMouse)m).Icon(),
                     PeripheralType.Keyboard => Properties.Resources.icons8_keyboard_48,
                     PeripheralType.Headset => Properties.Resources.icons8_headphones_48,
                     _ => null,

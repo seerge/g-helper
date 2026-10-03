@@ -720,6 +720,11 @@ namespace GHelper.Peripherals.Mouse
             return PeripheralType.Mouse;
         }
 
+        public virtual Image Icon()
+        {
+            return Properties.Resources.icons8_maus_48;
+        }
+
         public virtual void SynchronizeDevice()
         {
             DpiSettings = new AsusMouseDPI[DPIProfileCount()];
