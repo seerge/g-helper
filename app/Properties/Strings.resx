@@ -857,6 +857,9 @@ Do you still want to continue?</value>
   <data name="ToggleScreen" xml:space="preserve">
     <value>Toggle Screen</value>
   </data>
+  <data name="ToggleTouchpad" xml:space="preserve">
+    <value>Toggle Touchpad</value>
+  </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
     <value>Toggle Touchscreen</value>
   </data>

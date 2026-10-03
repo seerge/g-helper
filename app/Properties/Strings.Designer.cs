@@ -2700,6 +2700,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Toggle Touchpad.
+        /// </summary>
+        internal static string ToggleTouchpad {
+            get {
+                return ResourceManager.GetString("ToggleTouchpad", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Toggle Touchscreen.
         /// </summary>
         internal static string ToggleTouchscreen {

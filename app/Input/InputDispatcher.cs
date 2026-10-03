@@ -718,6 +718,9 @@ namespace GHelper.Input
                 case "touchscreen":
                     ToggleTouchScreen();
                     break;
+                case "touchpad":
+                    ToggleTouchpadEvent(true);
+                    break;
                 default:
                     break;
             }
