@@ -857,6 +857,9 @@ Yine de devam etmek istiyor musunuz?</value>
   <data name="ToggleScreen" xml:space="preserve">
     <value>Ekranı Değiştir</value>
   </data>
+  <data name="ToggleTouchpad" xml:space="preserve">
+    <value>Toggle Touchpad</value>
+  </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
     <value>Dokunmatik Ekranı Değiştir</value>
   </data>
