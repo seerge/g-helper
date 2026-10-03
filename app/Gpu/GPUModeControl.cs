@@ -188,11 +188,15 @@ namespace GHelper.Gpu
                     status = Program.acpi.SetGPUEco(eco);
                     await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("refresh_delay", 500)));
 
-                    settings.Invoke(delegate
-                    {
-                        InitGPUMode();
-                        ScreenControl.AutoScreen();
-                    });
+                    // Keep the UI thread free: InitGPUMode is just a couple of ACPI reads plus a
+                    // light UI refresh, while AutoScreen (refresh-rate switching + CCD + many ACPI
+                    // calls) is heavy and must never run on the UI thread.
+                    settings.BeginInvoke(delegate { InitGPUMode(); });
+
+                    // Sequential inside this background flow (not a new Task): keeps the
+                    // refresh-rate switch ordered with the rest of the switch pipeline
+                    // instead of firing a concurrent CCD storm.
+                    ScreenControl.AutoScreen();
 
                     if (eco == 0)
                     {
@@ -203,7 +207,7 @@ namespace GHelper.Gpu
                             if (AppConfig.IsNVPlatform()) NvidiaGpuControl.RestartNVService();
                             else NvidiaGpuControl.RestartNvContainer();
                             nvRestartPending = false;
-                            settings.Invoke(delegate { InitGPUMode(); });
+                            settings.BeginInvoke(delegate { InitGPUMode(); });
                             await Task.Delay(TimeSpan.FromMilliseconds(1000));
                         }
 
@@ -345,7 +349,7 @@ namespace GHelper.Gpu
 
                 }
 
-                settings.Invoke(delegate
+                settings.BeginInvoke(delegate
                 {
                     InitGPUMode();
                 });

@@ -275,23 +275,28 @@ namespace GHelper.Display
             AppConfig.Set("frequency", frequency);
             AppConfig.Set("overdrive", overdrive);
 
-            Program.settingsForm.Invoke(delegate
+            if (Program.settingsForm.IsHandleCreated)
             {
-                Program.settingsForm.VisualiseScreen(
-                    screenEnabled: screenEnabled,
-                    screenAuto: screenAuto,
-                    frequency: frequency,
-                    maxFrequency: maxFrequency,
-                    overdrive: overdrive,
-                    overdriveSetting: overdriveSetting,
-                    miniled1: miniled1,
-                    miniled2: miniled2,
-                    hdr: hdr,
-                    acm: acm,
-                    fhd: fhd,
-                    hdrControl: hdrControl
-                );
-            });
+                // Asynchronous on purpose: InitScreen runs on background threads most of the
+                // time and the visual refresh is light, so there is no reason to block on it.
+                Program.settingsForm.BeginInvoke(delegate
+                {
+                    Program.settingsForm.VisualiseScreen(
+                        screenEnabled: screenEnabled,
+                        screenAuto: screenAuto,
+                        frequency: frequency,
+                        maxFrequency: maxFrequency,
+                        overdrive: overdrive,
+                        overdriveSetting: overdriveSetting,
+                        miniled1: miniled1,
+                        miniled2: miniled2,
+                        hdr: hdr,
+                        acm: acm,
+                        fhd: fhd,
+                        hdrControl: hdrControl
+                    );
+                });
+            }
 
         }
     }

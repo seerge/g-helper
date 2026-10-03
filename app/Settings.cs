@@ -639,6 +639,8 @@ namespace GHelper
 
         public void VisualiseAutoTDP(bool status)
         {
+            if (InvokeRequired) { Invoke(() => VisualiseAutoTDP(status)); return; }
+
             Logger.WriteLine($"Auto TDP: {status}");
             buttonAutoTDP.Activated = status;
         }
@@ -758,7 +760,7 @@ namespace GHelper
             {
                 Logger.WriteLine("System Resume");
                 GPUModeControl.suspended = false;
-                BatteryControl.AutoBattery();
+                Task.Run(() => BatteryControl.AutoBattery());
                 m.Result = (IntPtr)1;
             }
 
@@ -771,7 +773,7 @@ namespace GHelper
                     {
                         case 0:
                             Logger.WriteLine("Lid Closed");
-                            BatteryControl.AutoBattery();
+                            Task.Run(() => BatteryControl.AutoBattery());
                             InputDispatcher.lidClose = AniMatrixControl.lidClose = true;
                             Aura.ApplyBrightness(0, "Lid");
                             matrixControl.SetLidMode();
@@ -797,14 +799,22 @@ namespace GHelper
                     {
                         case 0:
                             Logger.WriteLine("Monitor Power Off");
-                            Aura.SleepBrightness();
-                            XGM.NotifyShutdown();
+                            Task.Run(delegate
+                            {
+                                Aura.SleepBrightness();
+                                XGM.NotifyShutdown();
+                            });
                             Program.hardwareOverlay?.SuspendForDisplayOff();
                             break;
                         case 1:
                             Logger.WriteLine("Monitor Power On");
                             GPUModeControl.suspended = false;
-                            if (!Program.SetAutoModes(wakeup: true)) BatteryControl.AutoBattery();
+                            // The whole auto-mode routine does heavy ACPI/CCD work — never run it on the UI thread,
+                            // otherwise tray icon and hotkeys (ROG key, mic mute) freeze for seconds.
+                            Task.Run(delegate
+                            {
+                                if (!Program.SetAutoModes(wakeup: true)) BatteryControl.AutoBattery();
+                            });
                             Program.hardwareOverlay?.ResumeForDisplayOn();
                             break;
                         case 2:
@@ -1165,7 +1175,7 @@ namespace GHelper
         public void FansInit()
         {
             if (fansForm == null || fansForm.Text == "") return;
-            Invoke(fansForm.InitAll);
+            BeginInvoke(fansForm.InitAll);
         }
 
         public void GPUInit()
@@ -1646,7 +1656,15 @@ namespace GHelper
             string battery = "";
             string charge = "";
 
-            await Task.Run(() => HardwareControl.ReadSensors());
+            try
+            {
+                await Task.Run(() => HardwareControl.ReadSensors());
+            }
+            catch (Exception ex)
+            {
+                // async void: without this any sensor exception would kill the whole process.
+                Logger.WriteLine("Sensors refresh failed: " + ex.Message);
+            }
             if (Visible) _ = Task.Run((Action)PeripheralsProvider.RefreshBatteryForAllDevices);
 
             if (HardwareControl.cpuTemp > 0)
@@ -1868,6 +1886,8 @@ namespace GHelper
 
         public void HideGPUModes(bool gpuExists)
         {
+            if (InvokeRequired) { Invoke(() => HideGPUModes(gpuExists)); return; }
+
             isGpuSection = false;
 
             buttonEco.Visible = false;

@@ -459,7 +459,8 @@ namespace GHelper.Peripherals
 
         private static void UpdateSettingsView()
         {
-            Program.settingsForm.Invoke(delegate
+            if (!Program.settingsForm.IsHandleCreated) return;
+            Program.settingsForm.BeginInvoke(delegate
             {
                 Program.settingsForm.VisualizePeripherals();
             });
