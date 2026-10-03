@@ -857,6 +857,9 @@
   <data name="ToggleScreen" xml:space="preserve">
     <value>画面を切り替える</value>
   </data>
+  <data name="ToggleTouchpad" xml:space="preserve">
+    <value>Toggle Touchpad</value>
+  </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
     <value>タッチスクリーンの切り替え</value>
   </data>
