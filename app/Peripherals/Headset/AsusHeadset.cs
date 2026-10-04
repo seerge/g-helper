@@ -1,4 +1,4 @@
-﻿using GHelper.AnimeMatrix.Communication.Platform;
+using GHelper.AnimeMatrix.Communication.Platform;
 using GHelper.USB;
 using HidSharp;
 using System.Runtime.CompilerServices;
@@ -369,7 +369,7 @@ namespace GHelper.Peripherals.Headset
             return fake;
         }
 
-        public void ReadBattery()
+        public virtual void ReadBattery()
         {
             if (!HasBattery()) return;
 
@@ -397,6 +397,11 @@ namespace GHelper.Peripherals.Headset
             }
 
             Logger.WriteLine(GetDisplayName() + ": Got Battery Percentage " + Battery + "% - Charging:" + Charging);
+            OnBatteryUpdated();
+        }
+
+        protected virtual void OnBatteryUpdated()
+        {
             BatteryUpdated?.Invoke(this, EventArgs.Empty);
         }
 
