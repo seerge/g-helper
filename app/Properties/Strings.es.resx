@@ -1115,4 +1115,19 @@ calienten el portátil dormido y agoten la batería.</value>
   <data name="Background" xml:space="preserve">
     <value>Fondo</value>
   </data>
+  <data name="FreeRam" xml:space="preserve">
+    <value>Liberar RAM</value>
+  </data>
+  <data name="RamUsage" xml:space="preserve">
+    <value>RAM</value>
+  </data>
+  <data name="RamFreed" xml:space="preserve">
+    <value>Liberados</value>
+  </data>
+  <data name="RamCleaning" xml:space="preserve">
+    <value>Limpiando RAM</value>
+  </data>
+  <data name="RamPartialClean" xml:space="preserve">
+    <value>parcial, sin admin</value>
+  </data>
 </root>
