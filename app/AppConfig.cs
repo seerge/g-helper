@@ -90,7 +90,7 @@ public static class AppConfig
         try
         {
             WriteAtomic(configFile, jsonString);
-            SyncFallbackConfig();
+            SyncFallbackConfig(jsonString);
         }
         catch (Exception ex) { Logger.WriteLine("Config write failed: " + ex.Message); }
     }
@@ -107,13 +107,14 @@ public static class AppConfig
             File.Move(tmp, path);
     }
 
-    private static void SyncFallbackConfig()
+    private static void SyncFallbackConfig(string content)
     {
         if (fallbackConfigFile is null || fallbackConfigFile == configFile) return;
+        if (string.IsNullOrWhiteSpace(content) || content.IndexOf('\0') >= 0) return;
         try
         {
             Directory.CreateDirectory(Path.GetDirectoryName(fallbackConfigFile));
-            File.Copy(configFile, fallbackConfigFile, overwrite: true);
+            WriteAtomic(fallbackConfigFile, content);
         }
         catch (Exception)
         {
@@ -231,19 +232,32 @@ public static class AppConfig
 
     public static void Set(string name, int value)
     {
-        lock (configLock) config[name] = value;
+        lock (configLock)
+        {
+            if (config.TryGetValue(name, out var cur) && cur is not null
+                && int.TryParse(cur.ToString(), out int curInt) && curInt == value) return;
+            config[name] = value;
+        }
         Write();
     }
 
     public static void Set(string name, string value)
     {
-        lock (configLock) config[name] = value;
+        lock (configLock)
+        {
+            if (config.TryGetValue(name, out var cur) && cur?.ToString() == value) return;
+            config[name] = value;
+        }
         Write();
     }
 
     public static void Remove(string name)
     {
-        lock (configLock) config.Remove(name);
+        lock (configLock)
+        {
+            if (!config.ContainsKey(name)) return;
+            config.Remove(name);
+        }
         Write();
     }
 
