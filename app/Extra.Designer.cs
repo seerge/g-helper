@@ -36,6 +36,10 @@ namespace GHelper
             pictureService = new PictureBox();
             labelServices = new Label();
             buttonServices = new RButton();
+            panelMemory = new Panel();
+            pictureMemory = new PictureBox();
+            labelMemory = new Label();
+            buttonMemory = new RButton();
             panelBindingsHeader = new Panel();
             buttonResetBindings = new RButton();
             pictureBindings = new PictureBox();
@@ -149,6 +153,8 @@ namespace GHelper
             comboOptimalBrightness = new RComboBox();
             pictureOptimalBrightness = new PictureBox();
             labelOptimalBrightness = new Label();
+            panelMemory.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureMemory).BeginInit();
             panelServices.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureService).BeginInit();
             panelBindingsHeader.SuspendLayout();
@@ -181,6 +187,55 @@ namespace GHelper
             panelOptimalBrightness.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureOptimalBrightness).BeginInit();
             SuspendLayout();
+            //
+            // panelMemory
+            //
+            panelMemory.AccessibleRole = AccessibleRole.Grouping;
+            panelMemory.Controls.Add(pictureMemory);
+            panelMemory.Controls.Add(labelMemory);
+            panelMemory.Controls.Add(buttonMemory);
+            panelMemory.Dock = DockStyle.Top;
+            panelMemory.Location = new Point(15, 1703);
+            panelMemory.Name = "panelMemory";
+            panelMemory.Size = new Size(949, 75);
+            panelMemory.TabIndex = 6;
+            //
+            // pictureMemory
+            //
+            pictureMemory.BackgroundImage = Resources.icons8_processor_32;
+            pictureMemory.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureMemory.Location = new Point(21, 19);
+            pictureMemory.Name = "pictureMemory";
+            pictureMemory.Size = new Size(32, 32);
+            pictureMemory.TabIndex = 23;
+            pictureMemory.TabStop = false;
+            //
+            // labelMemory
+            //
+            labelMemory.AutoSize = true;
+            labelMemory.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            labelMemory.Location = new Point(57, 19);
+            labelMemory.Name = "labelMemory";
+            labelMemory.Size = new Size(120, 32);
+            labelMemory.TabIndex = 22;
+            labelMemory.Text = "RAM";
+            //
+            // buttonMemory
+            //
+            buttonMemory.Activated = false;
+            buttonMemory.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            buttonMemory.BackColor = SystemColors.ButtonHighlight;
+            buttonMemory.BorderColor = Color.Transparent;
+            buttonMemory.BorderRadius = 2;
+            buttonMemory.FlatStyle = FlatStyle.Flat;
+            buttonMemory.Location = new Point(713, 11);
+            buttonMemory.Margin = new Padding(5, 3, 5, 3);
+            buttonMemory.Name = "buttonMemory";
+            buttonMemory.Secondary = false;
+            buttonMemory.Size = new Size(256, 53);
+            buttonMemory.TabIndex = 24;
+            buttonMemory.Text = "Free RAM";
+            buttonMemory.UseVisualStyleBackColor = false;
             // 
             // panelServices
             // 
@@ -1704,6 +1759,7 @@ namespace GHelper
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             ClientSize = new Size(1013, 1759);
+            Controls.Add(panelMemory);
             Controls.Add(panelServices);
             Controls.Add(panelPower);
             Controls.Add(panelSettings);
@@ -1727,6 +1783,9 @@ namespace GHelper
             ShowIcon = false;
             ShowInTaskbar = false;
             Text = "Extra Settings";
+            panelMemory.ResumeLayout(false);
+            panelMemory.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureMemory).EndInit();
             panelServices.ResumeLayout(false);
             panelServices.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureService).EndInit();
@@ -1778,6 +1837,10 @@ namespace GHelper
 
         #endregion
         private Panel panelServices;
+        private Panel panelMemory;
+        private PictureBox pictureMemory;
+        private Label labelMemory;
+        private RButton buttonMemory;
         private RButton buttonServices;
         private Label labelServices;
         private Panel panelBindingsHeader;
