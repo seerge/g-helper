@@ -587,6 +587,7 @@ namespace GHelper.Peripherals
             DetectHeadset(new CetraSpeedNova());
             DetectHeadset(new Clavis());
             DetectHeadset(new CetraRgb());
+            DetectHeadset(new StrixGo24());
         }
 
         public static void DetectHeadset(AsusHeadset hs)

@@ -6,7 +6,6 @@ namespace GHelper
 {
     public partial class AsusHeadsetSettings : RForm
     {
-        private static readonly int[] sleepTimers = { 2, 3, 5, 10, 15, 0 };
         private static readonly int[] voicePrompts = { 1, 2, 0 };
 
         private static readonly Dictionary<HeadsetLightingMode, string> lightingModeNames = new Dictionary<HeadsetLightingMode, string>()
@@ -21,6 +20,7 @@ namespace GHelper
         };
 
         private readonly AsusHeadset headset;
+        private readonly int[] sleepTimers;
         private readonly Slider[] bandSliders;
         private readonly (string Name, byte[] Gains)[] presets;
         private readonly List<HeadsetLightingMode> lightingModes = new List<HeadsetLightingMode>();
@@ -101,14 +101,9 @@ namespace GHelper
                 Properties.Strings.High,
             });
 
-            comboBoxAutoPowerOff.Items.AddRange(new string[] {
-                " 2 " + Properties.Strings.Minutes,
-                " 3 " + Properties.Strings.Minutes,
-                " 5 " + Properties.Strings.Minutes,
-                "10 " + Properties.Strings.Minutes,
-                "15 " + Properties.Strings.Minutes,
-                Properties.Strings.Never,
-            });
+            sleepTimers = headset.SleepTimers();
+            foreach (int minutes in sleepTimers)
+                comboBoxAutoPowerOff.Items.Add(minutes == 0 ? Properties.Strings.Never : $"{minutes,2} " + Properties.Strings.Minutes);
 
             InitTheme(true);
 
@@ -162,6 +157,8 @@ namespace GHelper
             panelAnc.Visible = headset.HasAnc();
             panelDirac.Visible = headset.HasDirac();
             if (!headset.HasPowerSettings()) panelEnergy.Visible = false;
+            labelLowBatteryWarning.Visible = sliderLowBatteryWarning.Visible = labelLowBatteryWarningValue.Visible = headset.HasLowBatteryWarning();
+            buttonReset.Visible = headset.HasReset();
 
             RefreshHeadsetData();
 

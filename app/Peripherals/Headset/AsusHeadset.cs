@@ -164,9 +164,24 @@ namespace GHelper.Peripherals.Headset
             AppConfig.Set(CustomPresetKey(slot), string.Join(",", gains));
         }
 
+        public virtual bool HasReset()
+        {
+            return true;
+        }
+
         public virtual bool HasPowerSettings()
         {
             return HasBattery();
+        }
+
+        public virtual bool HasLowBatteryWarning()
+        {
+            return true;
+        }
+
+        public virtual int[] SleepTimers()
+        {
+            return new[] { 2, 3, 5, 10, 15, 0 };
         }
 
         public virtual bool HasVoicePrompt()
@@ -369,7 +384,7 @@ namespace GHelper.Peripherals.Headset
             return fake;
         }
 
-        public void ReadBattery()
+        public virtual void ReadBattery()
         {
             if (!HasBattery()) return;
 
@@ -397,6 +412,11 @@ namespace GHelper.Peripherals.Headset
             }
 
             Logger.WriteLine(GetDisplayName() + ": Got Battery Percentage " + Battery + "% - Charging:" + Charging);
+            OnBatteryUpdated();
+        }
+
+        protected void OnBatteryUpdated()
+        {
             BatteryUpdated?.Invoke(this, EventArgs.Empty);
         }
 
@@ -637,7 +657,7 @@ namespace GHelper.Peripherals.Headset
             Logger.WriteLine(GetDisplayName() + ": Reset to defaults");
         }
 
-        public void SetEnergySettings(int lowBatteryWarning, int sleepTimer)
+        public virtual void SetEnergySettings(int lowBatteryWarning, int sleepTimer)
         {
             WriteForResponse(new byte[] { reportId, 0x51, 0x37, 0x00, 0x00, (byte)sleepTimer, (byte)lowBatteryWarning, (byte)(lowBatteryPrompt ? 1 : 0) });
             SleepTimer = sleepTimer;
