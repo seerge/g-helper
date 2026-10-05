@@ -857,6 +857,9 @@ Folytatni szeretnéd?</value>
   <data name="ToggleScreen" xml:space="preserve">
     <value>Képernyő ki-/bekapcsolása</value>
   </data>
+  <data name="ToggleTouchpad" xml:space="preserve">
+    <value>Érintőpad kapcsoló</value>
+  </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
     <value>Érintőképernyő ki-/bekapcsolása</value>
   </data>

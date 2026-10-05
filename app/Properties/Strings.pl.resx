@@ -857,6 +857,9 @@ Nadal chcesz kontynuować?</value>
   <data name="ToggleScreen" xml:space="preserve">
     <value>Przełącz ekran</value>
   </data>
+  <data name="ToggleTouchpad" xml:space="preserve">
+    <value>Toggle Touchpad</value>
+  </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
     <value>Włącz/wyłącz ekran dotykowy</value>
   </data>
