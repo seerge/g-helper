@@ -247,6 +247,26 @@ namespace GHelper.Helpers
             return result;
         }
 
+        public static void RunSilent(string cmd, string args, string? directory = null)
+        {
+            try
+            {
+                using var process = new Process();
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.CreateNoWindow = true;
+                process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                process.StartInfo.FileName = cmd;
+                process.StartInfo.Arguments = args;
+                if (directory != null) process.StartInfo.WorkingDirectory = directory;
+                process.Start();
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine(ex.ToString());
+            }
+        } 
+
         public static void SetPriority(ProcessPriorityClass priorityClass = ProcessPriorityClass.Normal)
         {
             try
