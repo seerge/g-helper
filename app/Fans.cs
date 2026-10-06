@@ -1627,12 +1627,14 @@ namespace GHelper
                             dx = Math.Max(minX, Math.Min(maxX, dx));
                         }
 
-                        curPoint.XValue = dx;
-
                         if (Control.ModifierKeys == Keys.Shift)
-                            AdjustAll(0, deltaY, series);
+                        {
+                            // clamped dots are locked to their 10-degree slots, so the group moves vertically only
+                            AdjustAll(clampFanDots ? 0 : deltaX, deltaY, series);
+                        }
                         else
                         {
+                            curPoint.XValue = dx;
                             curPoint.YValues[0] = dy;
                             AdjustAllLevels(curIndex, dx, dy, series);
                         }
