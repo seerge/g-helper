@@ -1,4 +1,4 @@
-﻿using GHelper.Ally;
+using GHelper.Ally;
 using GHelper.AnimeMatrix;
 using GHelper.AutoUpdate;
 using GHelper.Battery;
@@ -302,8 +302,25 @@ namespace GHelper
             labelBacklight.ForeColor = colorStandard;
             labelBacklight.Click += LabelBacklight_Click;
 
-            panelPerformance.Focus();
+            if (!Program.IsPeripheralMode) panelPerformance.Focus();
             InitVisual();
+            InitPeripheralMode();
+        }
+
+        public void InitPeripheralMode()
+        {
+            if (!Program.IsPeripheralMode) return;
+
+            panelPerformance.Visible = false;
+            panelGPU.Visible = false;
+            panelScreen.Visible = false;
+            panelGamma.Visible = false;
+            panelKeyboard.Visible = false;
+            panelBattery.Visible = false;
+            panelRearLight.Visible = false;
+
+            buttonFans.Visible = false;
+            labelCharge.Visible = false;
         }
 
         private void ButtonArmoury_Click(object? sender, EventArgs e)
@@ -380,7 +397,7 @@ namespace GHelper
         public void InitVisual()
         {
 
-            if (AppConfig.Is("hide_visual")) return;
+            if (Program.IsPeripheralMode || AppConfig.Is("hide_visual")) return;
 
             if (AppConfig.IsOLED())
             {
@@ -845,56 +862,67 @@ namespace GHelper
             contextMenuStrip.ShowImageMargin = false;
             Padding padding = new Padding(5, 5, 5, 5);
 
-            var title = new ToolStripMenuItem(Properties.Strings.PerformanceMode);
-            title.Margin = padding;
-            title.Enabled = false;
-            contextMenuStrip.Items.Add(title);
-
-            foreach (var mode in Modes.GetDictonary())
+            if (Program.IsPeripheralMode)
             {
-                var menuMode = new ToolStripMenuItem(mode.Value);
-                menuMode.Tag = mode.Key;
-                menuMode.Click += (sender, args) => { Program.modeControl.SetPerformanceMode(mode.Key); };
-                menuMode.Margin = padding;
-                menuMode.Checked = (mode.Key == currentMode);
-                contextMenuStrip.Items.Add(menuMode);
+                var open = new ToolStripMenuItem(Properties.Strings.OpenGHelper);
+                open.Click += (sender, args) => Program.SettingsToggle();
+                open.Margin = padding;
+                contextMenuStrip.Items.Add(open);
+                contextMenuStrip.Items.Add("-");
             }
-
-            contextMenuStrip.Items.Add("-");
-
-            if (isGpuSection)
+            else
             {
-                var titleGPU = new ToolStripMenuItem(Properties.Strings.GPUMode);
-                titleGPU.Margin = padding;
-                titleGPU.Enabled = false;
-                contextMenuStrip.Items.Add(titleGPU);
+                var title = new ToolStripMenuItem(Properties.Strings.PerformanceMode);
+                title.Margin = padding;
+                title.Enabled = false;
+                contextMenuStrip.Items.Add(title);
 
-                menuEco = new ToolStripMenuItem(Properties.Strings.EcoMode);
-                menuEco.Click += ButtonEco_Click;
-                menuEco.Margin = padding;
-                menuEco.Checked = buttonEco.Activated;
-                contextMenuStrip.Items.Add(menuEco);
-
-                menuStandard = new ToolStripMenuItem(Properties.Strings.StandardMode);
-                menuStandard.Click += ButtonStandard_Click;
-                menuStandard.Margin = padding;
-                menuStandard.Checked = buttonStandard.Activated;
-                contextMenuStrip.Items.Add(menuStandard);
-
-                menuUltimate = new ToolStripMenuItem(Properties.Strings.UltimateMode);
-                menuUltimate.Click += ButtonUltimate_Click;
-                menuUltimate.Margin = padding;
-                menuUltimate.Checked = buttonUltimate.Activated;
-                menuUltimate.Visible = isMuxGpu;
-                contextMenuStrip.Items.Add(menuUltimate);
-
-                menuOptimized = new ToolStripMenuItem(Properties.Strings.Optimized);
-                menuOptimized.Click += ButtonOptimized_Click;
-                menuOptimized.Margin = padding;
-                menuOptimized.Checked = buttonOptimized.Activated;
-                contextMenuStrip.Items.Add(menuOptimized);
+                foreach (var mode in Modes.GetDictonary())
+                {
+                    var menuMode = new ToolStripMenuItem(mode.Value);
+                    menuMode.Tag = mode.Key;
+                    menuMode.Click += (sender, args) => { Program.modeControl.SetPerformanceMode(mode.Key); };
+                    menuMode.Margin = padding;
+                    menuMode.Checked = (mode.Key == currentMode);
+                    contextMenuStrip.Items.Add(menuMode);
+                }
 
                 contextMenuStrip.Items.Add("-");
+
+                if (isGpuSection)
+                {
+                    var titleGPU = new ToolStripMenuItem(Properties.Strings.GPUMode);
+                    titleGPU.Margin = padding;
+                    titleGPU.Enabled = false;
+                    contextMenuStrip.Items.Add(titleGPU);
+
+                    menuEco = new ToolStripMenuItem(Properties.Strings.EcoMode);
+                    menuEco.Click += ButtonEco_Click;
+                    menuEco.Margin = padding;
+                    menuEco.Checked = buttonEco.Activated;
+                    contextMenuStrip.Items.Add(menuEco);
+
+                    menuStandard = new ToolStripMenuItem(Properties.Strings.StandardMode);
+                    menuStandard.Click += ButtonStandard_Click;
+                    menuStandard.Margin = padding;
+                    menuStandard.Checked = buttonStandard.Activated;
+                    contextMenuStrip.Items.Add(menuStandard);
+
+                    menuUltimate = new ToolStripMenuItem(Properties.Strings.UltimateMode);
+                    menuUltimate.Click += ButtonUltimate_Click;
+                    menuUltimate.Margin = padding;
+                    menuUltimate.Checked = buttonUltimate.Activated;
+                    menuUltimate.Visible = isMuxGpu;
+                    contextMenuStrip.Items.Add(menuUltimate);
+
+                    menuOptimized = new ToolStripMenuItem(Properties.Strings.Optimized);
+                    menuOptimized.Click += ButtonOptimized_Click;
+                    menuOptimized.Margin = padding;
+                    menuOptimized.Checked = buttonOptimized.Activated;
+                    contextMenuStrip.Items.Add(menuOptimized);
+
+                    contextMenuStrip.Items.Add("-");
+                }
             }
 
             var bwIcon = new ToolStripMenuItem(Properties.Strings.BWTrayIcon);
@@ -1443,13 +1471,13 @@ namespace GHelper
             if (maxFrequency > ScreenControl.MIN_RATE)
             {
                 button120Hz.Text = maxFrequency.ToString() + "Hz" + (overdriveSetting ? " + OD" : "");
-                panelScreen.Visible = true;
+                if (!Program.IsPeripheralMode) panelScreen.Visible = true;
                 tableScreen.Visible = true;
             }
             else if (maxFrequency > 0)
             {
                 tableScreen.Visible = false;
-                panelScreen.Visible = AppConfig.NoGpu();
+                if (!Program.IsPeripheralMode) panelScreen.Visible = AppConfig.NoGpu();
             }
 
             if (fhd >= 0)
@@ -1847,8 +1875,10 @@ namespace GHelper
 
             if (!eco)
             {
-                menuEco.Visible = buttonEco.Visible = false;
-                menuOptimized.Visible = buttonOptimized.Visible = false;
+                if (menuEco is not null) menuEco.Visible = false;
+                buttonEco.Visible = false;
+                if (menuOptimized is not null) menuOptimized.Visible = false;
+                buttonOptimized.Visible = false;
                 buttonStopGPU.Visible = true;
                 tableGPU.ColumnCount = 3;
                 tableScreen.ColumnCount = 3;
@@ -1860,7 +1890,8 @@ namespace GHelper
 
             if (!ultimate)
             {
-                menuUltimate.Visible = buttonUltimate.Visible = false;
+                if (menuUltimate is not null) menuUltimate.Visible = false;
+                buttonUltimate.Visible = false;
                 tableGPU.ColumnCount = 3;
                 tableScreen.ColumnCount = 3;
             }
@@ -1880,7 +1911,7 @@ namespace GHelper
 
             SetContextMenu();
 
-            panelGPU.Visible = gpuExists;
+            if (!Program.IsPeripheralMode) panelGPU.Visible = gpuExists;
 
         }
 
@@ -1964,7 +1995,7 @@ namespace GHelper
             VisualiseIcon();
             VisualizeXGM(GPUMode);
 
-            if (isGpuSection)
+            if (isGpuSection && menuEco is not null)
             {
                 menuEco.Checked = buttonEco.Activated;
                 menuStandard.Checked = buttonStandard.Activated;
@@ -2107,7 +2138,7 @@ namespace GHelper
                 bool hasBat = m.HasBattery();
                 bool charging = ready && hasBat && m.Charging;
                 int level = (ready && hasBat) ? Math.Min(5, (m.Battery + 10) / 20) : -1;
-                bool showPercent = AppConfig.Is("mouse_battery") && ready && hasBat;
+                bool showPercent = (AppConfig.Is("mouse_battery") || m.DeviceType() == PeripheralType.Headset) && ready && hasBat;
                 int cacheBattery = showPercent ? m.Battery : -1;
                 var state = (id, ready, charging, level, cacheBattery, b.ForeColor.ToArgb());
 
