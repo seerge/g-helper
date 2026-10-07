@@ -858,7 +858,7 @@
     <value>Alternar pantalla</value>
   </data>
   <data name="ToggleTouchpad" xml:space="preserve">
-    <value>Toggle Touchpad</value>
+    <value>Alternar Touchpad</value>
   </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
     <value>Alternar pantalla táctil</value>
