@@ -673,8 +673,63 @@ namespace GHelper
                 return;
             }
 
-            Left = Screen.FromControl(this).WorkingArea.Width - 10 - Width;
-            Top = Screen.FromControl(this).WorkingArea.Height - 10 - Height;
+            PositionNearTaskbar(Screen.FromControl(this));
+        }
+
+        private enum TaskbarEdge
+        {
+            Bottom,
+            Top,
+            Left,
+            Right
+        }
+
+        public void PositionNearTaskbar(Screen screen)
+        {
+            const int margin = 10;
+
+            Rectangle bounds = screen.Bounds;
+            Rectangle workingArea = screen.WorkingArea;
+
+            int left = workingArea.Right - margin - Width;
+            int top = workingArea.Bottom - margin - Height;
+            // The working area excludes the taskbar, so its largest inset identifies the taskbar edge and size.
+            TaskbarEdge taskbarEdge = GetTaskbarEdge(bounds, workingArea);
+
+            switch (taskbarEdge)
+            {
+                case TaskbarEdge.Top:
+                    top = workingArea.Top + margin;
+                    break;
+                case TaskbarEdge.Left:
+                    left = workingArea.Left + margin;
+                    break;
+                case TaskbarEdge.Right:
+                    left = workingArea.Right - margin - Width;
+                    break;
+            }
+
+            if (AppConfig.IsAlly() && taskbarEdge == TaskbarEdge.Bottom)
+            {
+                top = Math.Min(top, bounds.Bottom - 110 - Height);
+                top = Math.Max(bounds.Top + margin, top);
+            }
+
+            Location = new Point(left, top);
+        }
+
+        private static TaskbarEdge GetTaskbarEdge(Rectangle bounds, Rectangle workingArea)
+        {
+            int top = Math.Max(0, workingArea.Top - bounds.Top);
+            int bottom = Math.Max(0, bounds.Bottom - workingArea.Bottom);
+            int left = Math.Max(0, workingArea.Left - bounds.Left);
+            int right = Math.Max(0, bounds.Right - workingArea.Right);
+            int largestInset = Math.Max(Math.Max(top, bottom), Math.Max(left, right));
+
+            if (largestInset == 0) return TaskbarEdge.Bottom;
+            if (largestInset == top) return TaskbarEdge.Top;
+            if (largestInset == left) return TaskbarEdge.Left;
+            return TaskbarEdge.Right;
         }
 
         private void PanelBattery_MouseEnter(object? sender, EventArgs e)
