@@ -434,20 +434,12 @@ namespace GHelper
                 if (screen is null) screen = Screen.FromControl(settingsForm);
 
                 settingsForm.WindowState = FormWindowState.Normal;
-
-                settingsForm.Location = screen.WorkingArea.Location;
-                settingsForm.Left = screen.WorkingArea.Width - 10 - settingsForm.Width;
-                settingsForm.Top = screen.WorkingArea.Height - 10 - settingsForm.Height;
+                settingsForm.PositionNearTaskbar(screen);
 
                 settingsForm.Show();
                 settingsForm.ShowAll();
 
-                settingsForm.Left = screen.WorkingArea.Width - 10 - settingsForm.Width;
-
-                if (AppConfig.IsAlly())
-                    settingsForm.Top = Math.Max(10, screen.Bounds.Height - 110 - settingsForm.Height);
-                else
-                    settingsForm.Top = screen.WorkingArea.Height - 10 - settingsForm.Height;
+                settingsForm.PositionNearTaskbar(screen);
 
                 settingsForm.VisualiseGPUMode();
             }
