@@ -857,6 +857,9 @@
   <data name="ToggleScreen" xml:space="preserve">
     <value>تبديل الشاشة</value>
   </data>
+  <data name="ToggleTouchpad" xml:space="preserve">
+    <value>Toggle Touchpad</value>
+  </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
     <value>تبديل شاشة اللمس</value>
   </data>

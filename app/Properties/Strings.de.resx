@@ -857,6 +857,9 @@ Trotzdem fortfahren?</value>
   <data name="ToggleScreen" xml:space="preserve">
     <value>Bildschirm umschalten</value>
   </data>
+  <data name="ToggleTouchpad" xml:space="preserve">
+    <value>Toggle Touchpad</value>
+  </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
     <value>Touchscreen umschalten</value>
   </data>

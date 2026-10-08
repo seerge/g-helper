@@ -857,6 +857,9 @@ Bạn có muốn tiếp tục không?</value>
   <data name="ToggleScreen" xml:space="preserve">
     <value>Bật tắt màn hình</value>
   </data>
+  <data name="ToggleTouchpad" xml:space="preserve">
+    <value>Toggle Touchpad</value>
+  </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
     <value>Toggle Touchscreen</value>
   </data>
