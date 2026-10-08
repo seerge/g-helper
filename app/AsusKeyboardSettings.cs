@@ -485,7 +485,7 @@ namespace GHelper
                 Top = Program.settingsForm.Top;
             }
 
-            Left = Program.settingsForm.Left - Width - 5;
+            Left = Program.settingsForm.GetSideWindowLeft(Width);
         }
 
         private void ComboBoxProfile_DropDownClosed(object? sender, EventArgs e)

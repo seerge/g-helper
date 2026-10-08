@@ -178,7 +178,7 @@ namespace GHelper
         {
             Height = Program.settingsForm.Height;
             Top = Program.settingsForm.Top;
-            Left = Program.settingsForm.Left - Width - 5;
+            Left = Program.settingsForm.GetSideWindowLeft(Width);
             AlignLabelUpdates();
             LoadUpdates(true);
         }

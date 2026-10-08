@@ -907,7 +907,7 @@ namespace GHelper
                 Top = Program.settingsForm.Top;
             }
 
-            Left = Program.settingsForm.Left - Width - 5;
+            Left = Program.settingsForm.GetSideWindowLeft(Width);
         }
 
         private void Fans_Shown(object? sender, EventArgs e)

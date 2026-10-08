@@ -718,6 +718,21 @@ namespace GHelper
             Location = new Point(left, top);
         }
 
+        /// <summary>
+        /// Left edge for a side window. Prefers the left of the settings window; when the taskbar is on the left
+        /// there is no room there, so the side window goes to the right of the settings window instead.
+        /// </summary>
+        public int GetSideWindowLeft(int width)
+        {
+            const int gap = 5;
+            Rectangle workingArea = Screen.FromControl(this).WorkingArea;
+
+            int leftOfSettings = Left - width - gap;
+            if (leftOfSettings >= workingArea.Left) return leftOfSettings;
+
+            return Math.Max(workingArea.Left, Math.Min(Right + gap, workingArea.Right - width));
+        }
+
         private static TaskbarEdge GetTaskbarEdge(Rectangle bounds, Rectangle workingArea)
         {
             int top = Math.Max(0, workingArea.Top - bounds.Top);
