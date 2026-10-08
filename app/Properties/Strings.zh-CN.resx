@@ -966,7 +966,7 @@
     <value>流动</value>
   </data>
   <data name="SlashFlux" xml:space="preserve">
-    <value>Flux</value>
+    <value>流动</value>
   </data>
   <data name="SlashPhantom" xml:space="preserve">
     <value>虚化</value>
@@ -981,7 +981,7 @@
     <value>接口</value>
   </data>
   <data name="SlashRamp" xml:space="preserve">
-    <value>Ramp</value>
+    <value>斜切</value>
   </data>
   <data name="SlashGameOver" xml:space="preserve">
     <value>游戏结束</value>
