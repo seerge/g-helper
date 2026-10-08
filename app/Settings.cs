@@ -673,8 +673,9 @@ namespace GHelper
                 return;
             }
 
-            Left = Screen.FromControl(this).WorkingArea.Width - 10 - Width;
-            Top = Screen.FromControl(this).WorkingArea.Height - 10 - Height;
+            var screen = Screen.FromControl(this);
+            Left = screen.WorkingArea.Right - 10 - Width;
+            Top = screen.WorkingArea.Top > screen.Bounds.Top ? screen.WorkingArea.Top + 10 : screen.WorkingArea.Bottom - 10 - Height;
         }
 
         private void PanelBattery_MouseEnter(object? sender, EventArgs e)
