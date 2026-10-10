@@ -779,6 +779,9 @@
   <data name="ReadLimits" xml:space="preserve">
     <value>Зчитати ліміти</value>
   </data>
+  <data name="RearLight" xml:space="preserve">
+    <value>Задня підсвітка</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Скинути</value>
   </data>

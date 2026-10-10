@@ -779,6 +779,9 @@
   <data name="ReadLimits" xml:space="preserve">
     <value>制限を読み取る</value>
   </data>
+  <data name="RearLight" xml:space="preserve">
+    <value>背面ライト</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>リセット</value>
   </data>

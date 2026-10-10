@@ -754,6 +754,7 @@ namespace GHelper.Input
             bool muteStatus = Audio.ToggleMicMute();
             Program.toast.RunToast(muteStatus ? Properties.Strings.Muted : Properties.Strings.Unmuted, muteStatus ? ToastIcon.MicrophoneMute : ToastIcon.Microphone);
             if (AppConfig.IsVivoZenbook()) Program.acpi.DeviceSet(AsusACPI.MicMuteLed, muteStatus ? 1 : 0, "MicmuteLed");
+            if (AppConfig.IsDUO()) AsusHid.WriteInput([AsusHid.INPUT_ID, 0xD0, 0x7C, muteStatus ? (byte)0x01 : (byte)0x00], "USB MicmuteLed");
         }
 
         static void MuteLEDInit()

@@ -779,6 +779,9 @@ Voulez-vous continuer ?</value>
   <data name="ReadLimits" xml:space="preserve">
     <value>Lire les limites</value>
   </data>
+  <data name="RearLight" xml:space="preserve">
+    <value>Éclairage arrière</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Réinitialiser</value>
   </data>

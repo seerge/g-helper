@@ -779,6 +779,9 @@ Vil du stadig fortsætte?</value>
   <data name="ReadLimits" xml:space="preserve">
     <value>Læs grænser</value>
   </data>
+  <data name="RearLight" xml:space="preserve">
+    <value>Bagbelysning</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Nulstil</value>
   </data>

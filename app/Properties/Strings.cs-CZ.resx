@@ -746,6 +746,9 @@ Chcete přesto pokračovat?</value>
   <data name="ReadLimits" xml:space="preserve">
     <value>Načíst limity</value>
   </data>
+  <data name="RearLight" xml:space="preserve">
+    <value>Zadní osvětlení</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Obnovit</value>
   </data>

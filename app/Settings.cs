@@ -93,6 +93,7 @@ namespace GHelper
             labelSreen.Text = Properties.Strings.LaptopScreen;
             UpdateKeyboardLabel();
             labelMatrix.Text = Properties.Strings.AnimeMatrix;
+            labelRearLight.Text = Properties.Strings.RearLight;
             labelBatteryTitle.Text = Properties.Strings.BatteryChargeLimit;
 
             checkStartup.Text = Properties.Strings.RunOnStartup;
