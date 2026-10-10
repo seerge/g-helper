@@ -779,6 +779,9 @@ Vis tiek norite tęsti?</value>
   <data name="ReadLimits" xml:space="preserve">
     <value>Skaityti ribas</value>
   </data>
+  <data name="RearLight" xml:space="preserve">
+    <value>Galinis apšvietimas</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Atstatyti</value>
   </data>
