@@ -779,6 +779,9 @@ Trotzdem fortfahren?</value>
   <data name="ReadLimits" xml:space="preserve">
     <value>Limits lesen</value>
   </data>
+  <data name="RearLight" xml:space="preserve">
+    <value>Rückbeleuchtung</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Zurücksetzen</value>
   </data>
