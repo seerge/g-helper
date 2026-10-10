@@ -196,6 +196,8 @@ namespace GHelper
             // Accessible Labels
 
             panelServices.AccessibleName = Properties.Strings.AsusServicesRunning;
+            panelMemory.AccessibleName = Properties.Strings.FreeRam;
+            buttonMemory.Text = Properties.Strings.FreeRam;
             panelBindings.AccessibleName = Properties.Strings.KeyBindings;
             tableBindings.AccessibleName = Properties.Strings.KeyBindings;
 
@@ -476,6 +478,8 @@ namespace GHelper
             pictureHelp.Click += PictureHelp_Click;
             buttonResetBindings.Click += ButtonResetBindings_Click;
             buttonServices.Click += ButtonServices_Click;
+            buttonMemory.Click += ButtonMemory_Click;
+            VisibleChanged += (s, e) => { if (Visible) VisualiseMemory(); };
 
             pictureLog.Click += PictureLog_Click;
 
@@ -820,6 +824,42 @@ namespace GHelper
                         InitServices();
                     });
                 });
+            }
+        }
+
+        private void VisualiseMemory(MemoryCleanResult? result = null)
+        {
+            var status = MemoryCleaner.GetStatus();
+            string text = $"{Properties.Strings.RamUsage}: {status.UsedBytes / 1073741824.0:0.0} / {status.TotalBytes / 1073741824.0:0.0} GB ({status.UsedPercent}%)";
+
+            if (result is not null)
+            {
+                text += $"  -  {Properties.Strings.RamFreed} {result.FreedBytes / 1073741824.0:0.0} GB";
+                if (!result.StandbyPurged) text += " (" + Properties.Strings.RamPartialClean + ")";
+            }
+
+            labelMemory.Text = text;
+            labelMemory.ForeColor = status.UsedPercent >= 85 ? colorTurbo : colorStandard;
+        }
+
+        private async void ButtonMemory_Click(object? sender, EventArgs e)
+        {
+            buttonMemory.Enabled = false;
+            labelMemory.Text = Properties.Strings.RamCleaning + " ...";
+
+            try
+            {
+                var result = await MemoryCleaner.CleanAsync();
+                if (!IsDisposed) VisualiseMemory(result);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine("RAM clean failed: " + ex.Message);
+                if (!IsDisposed) VisualiseMemory();
+            }
+            finally
+            {
+                if (!IsDisposed) buttonMemory.Enabled = true;
             }
         }
 

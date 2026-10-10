@@ -1121,4 +1121,19 @@ from heating up the sleeping laptop and draining the battery.</value>
   <data name="Background" xml:space="preserve">
     <value>Back</value>
   </data>
+  <data name="FreeRam" xml:space="preserve">
+    <value>Free RAM</value>
+  </data>
+  <data name="RamUsage" xml:space="preserve">
+    <value>RAM</value>
+  </data>
+  <data name="RamFreed" xml:space="preserve">
+    <value>Freed</value>
+  </data>
+  <data name="RamCleaning" xml:space="preserve">
+    <value>Cleaning RAM</value>
+  </data>
+  <data name="RamPartialClean" xml:space="preserve">
+    <value>partial, run as admin for full</value>
+  </data>
 </root>
