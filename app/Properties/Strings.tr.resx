@@ -779,6 +779,9 @@ Yine de devam etmek istiyor musunuz?</value>
   <data name="ReadLimits" xml:space="preserve">
     <value>Limitleri oku</value>
   </data>
+  <data name="RearLight" xml:space="preserve">
+    <value>Arka Işık</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Sıfırla</value>
   </data>
