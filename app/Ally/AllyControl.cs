@@ -1,5 +1,4 @@
-﻿using GHelper.Gpu.AMD;
-using GHelper.Helpers;
+﻿using GHelper.Helpers;
 using GHelper.Input;
 using GHelper.Mode;
 using GHelper.USB;
@@ -35,7 +34,6 @@ namespace GHelper.Ally
     public class AllyControl
     {
         static System.Timers.Timer timer = default!;
-        static AmdGpuControl amdControl = new AmdGpuControl();
 
         SettingsForm settings;
 
@@ -43,17 +41,6 @@ namespace GHelper.Ally
         static ControllerMode _applyMode = ControllerMode.Mouse;
 
         static int _autoCount = 0;
-
-        static int _upCount = 0;
-        static int _downCount = 0;
-
-        static int tdpMin = 6;
-        static int tdpStable = tdpMin;
-        static int tdpCurrent = -1;
-
-        static bool autoTDP = false;
-
-        static int fpsLimit = -1;
 
 
         public const string BindA = "01-01";
@@ -321,107 +308,25 @@ namespace GHelper.Ally
             }
         }
 
-        private int GetMaxTDP()
-        {
-            int tdp = AppConfig.GetMode("limit_total");
-            if (tdp > 0) return tdp;
-            switch (Modes.GetCurrentBase())
-            {
-                case 1:
-                    return 25;
-                case 2:
-                    return 10;
-                default:
-                    return 15;
-            }
-        }
-
-        private int GetTDP()
-        {
-            if (tdpCurrent < 0) tdpCurrent = GetMaxTDP();
-            return tdpCurrent;
-        }
-
-        private void SetTDP(int tdp, string log)
-        {
-            if (tdp < tdpStable) tdp = tdpStable;
-
-            int max = GetMaxTDP();
-            if (tdp > max) tdp = max;
-
-            if (tdp == tdpCurrent) return;
-            if (!autoTDP) return;
-
-            Program.acpi.DeviceSet(AsusACPI.PPT_APUA0, tdp, log);
-            Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, tdp, null);
-            Program.acpi.DeviceSet(AsusACPI.PPT_APUC1, tdp, null);
-
-            tdpCurrent = tdp;
-        }
-
         private void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
-            if (!autoTDP && _mode != ControllerMode.Auto) return;
+            if (_mode != ControllerMode.Auto) return;
 
-            float fps = amdControl.GetFPS();
+            float fps = AutoTDPControl.amdControl.GetFPS();
             int? usage = 0;
 
-            if (autoTDP && fpsLimit > 0 && fpsLimit <= 120)
+            if (fps > 0) usage = AutoTDPControl.amdControl.GetiGpuUse();
+            ControllerMode newMode = (fps > 0 && usage > 15) ? ControllerMode.Gamepad : ControllerMode.Mouse;
+
+            if (_applyMode != newMode) _autoCount++;
+            else _autoCount = 0;
+
+            if (_autoCount == 3)
             {
-                int power = amdControl.GetiGpuPower();
-                //Debug.WriteLine($"{power}: {fps}");
-
-                if (fps <= Math.Min(fpsLimit * 0.9, fpsLimit - 4)) _upCount++;
-                else _upCount = 0;
-
-                if (fps >= Math.Min(fpsLimit * 0.95, fpsLimit - 2)) _downCount++;
-                else _downCount = 0;
-
-                var tdp = GetTDP();
-                if (_upCount >= 1)
-                {
-                    _downCount = 0;
-                    _upCount = 0;
-                    SetTDP(tdp + 1, $"AutoTDP+ [{power}]{fps}");
-                }
-
-                if (_downCount >= 8 && power < tdp)
-                {
-                    _upCount = 0;
-                    _downCount--;
-                    SetTDP(tdp - 1, $"AutoTDP- [{power}]{fps}");
-                }
+                _autoCount = 0;
+                ApplyMode(newMode);
+                Logger.WriteLine($"Controller Mode (FPS={fps}, USAGE={usage}%): {newMode}");
             }
-
-            if (_mode == ControllerMode.Auto)
-            {
-                if (fps > 0) usage = amdControl.GetiGpuUse();
-                ControllerMode newMode = (fps > 0 && usage > 15) ? ControllerMode.Gamepad : ControllerMode.Mouse;
-
-                if (_applyMode != newMode) _autoCount++;
-                else _autoCount = 0;
-
-                if (_autoCount == 3)
-                {
-                    _autoCount = 0;
-                    ApplyMode(newMode);
-                    Logger.WriteLine($"Controller Mode (FPS={fps}, USAGE={usage}%): {newMode}");
-                }
-            }
-
-        }
-
-        public void ToggleAutoTDP()
-        {
-            autoTDP = !autoTDP;
-            tdpCurrent = -1;
-
-            if (!autoTDP)
-            {
-                Program.modeControl.SetPerformanceMode();
-            }
-
-            settings.VisualiseAutoTDP(autoTDP);
 
         }
 
@@ -433,52 +338,7 @@ namespace GHelper.Ally
             SetMode((ControllerMode)AppConfig.Get("controller_mode", (int)ControllerMode.Auto), true);
 
             settings.VisualiseBacklight(InputDispatcher.GetBacklight());
-
-            fpsLimit = amdControl.GetFPSLimit();
-            settings.VisualiseFPSLimit(fpsLimit);
         }
-
-        public void ToggleFPSLimit(bool toast = false)
-        {
-            switch (fpsLimit)
-            {
-                case 30:
-                    fpsLimit = 40;
-                    break;
-                case 40:
-                    fpsLimit = 45;
-                    break;
-                case 45:
-                    fpsLimit = 50;
-                    break;
-                case 50:
-                    fpsLimit = 60;
-                    break;
-                case 60:
-                    fpsLimit = 75;
-                    break;
-                case 75:
-                    fpsLimit = 90;
-                    break;
-                case 90:
-                    fpsLimit = 120;
-                    break;
-                case 120:
-                    fpsLimit = 240;
-                    break;
-                default:
-                    fpsLimit = 30;
-                    break;
-            }
-
-            int result = amdControl.SetFPSLimit(fpsLimit);
-            Logger.WriteLine($"FPS Limit {fpsLimit}: {result}");
-
-            settings.VisualiseFPSLimit(fpsLimit);
-            if (toast) Program.toast.RunToast("FPS Limit " + ((fpsLimit > 0 && fpsLimit <= 120) ? fpsLimit : "OFF"));
-
-        }
-
 
         public void ToggleBacklight()
         {
@@ -777,10 +637,10 @@ namespace GHelper.Ally
             _mode = mode;
             AppConfig.Set("controller_mode", (int)mode);
 
-            amdControl.StopFPS();
+            AutoTDPControl.amdControl.StopFPS();
             ApplyMode(mode, init);
 
-            amdControl.StartFPS();
+            AutoTDPControl.amdControl.StartFPS();
             timer.Start();
 
             settings.VisualiseController(mode);

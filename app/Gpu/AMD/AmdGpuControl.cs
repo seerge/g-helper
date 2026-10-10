@@ -387,7 +387,9 @@ public class AmdGpuControl : IGpuControl
         ADLFPSSettingsOutput settings;
         if (ADL2_FPS_Settings_Get(_adlContextHandle, ((ADLAdapterInfo)_iGPU).AdapterIndex, out settings) != Adl2.ADL_SUCCESS) return -1;
 
-        Logger.WriteLine($"FPS Limit: {settings.ulACFPSCurrent}");
+        Logger.WriteLine($"FPS Limit: {settings.ulACFPSCurrent} Enabled: {settings.bACFPSEnabled}");
+
+        if (settings.bACFPSEnabled == 0) return -1;
 
         return settings.ulACFPSCurrent;
     }
@@ -403,6 +405,15 @@ public class AmdGpuControl : IGpuControl
         settings.bGlobalSettings = 1;
 
         if (ADL2_FPS_Settings_Set(_adlContextHandle, ((ADLAdapterInfo)_iGPU).AdapterIndex, settings) != Adl2.ADL_SUCCESS) return 0;
+
+        return 1;
+    }
+
+    public int ResetFPSLimit()
+    {
+        if (_adlContextHandle == nint.Zero || _iGPU == null) return -1;
+
+        if (ADL2_FPS_Settings_Reset(_adlContextHandle, ((ADLAdapterInfo)_iGPU).AdapterIndex) != Adl2.ADL_SUCCESS) return 0;
 
         return 1;
     }

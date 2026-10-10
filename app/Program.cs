@@ -334,6 +334,8 @@ namespace GHelper
                 InputDispatcher.AutoKeyboard();
             }
 
+            settingsForm.autoTDPControl.Init();
+
             bool switched = gpuControl.AutoGPUMode(delay: 1000);
             if (!switched)
             {

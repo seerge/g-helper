@@ -28,6 +28,7 @@ namespace GHelper
 
         public GPUModeControl gpuControl;
         public AllyControl allyControl;
+        public AutoTDPControl autoTDPControl;
         AutoUpdateControl updateControl;
 
         AsusMouseSettings? mouseSettings;
@@ -70,6 +71,7 @@ namespace GHelper
             updateControl = new AutoUpdateControl(this);
             matrixControl = new AniMatrixControl(this);
             allyControl = new AllyControl(this);
+            autoTDPControl = new AutoTDPControl(this);
 
             buttonSilent.Text = Properties.Strings.Silent;
             buttonBalanced.Text = Properties.Strings.Balanced;
@@ -364,7 +366,7 @@ namespace GHelper
 
         private void ButtonAutoTDP_Click(object? sender, EventArgs e)
         {
-            allyControl.ToggleAutoTDP();
+            autoTDPControl.ToggleAutoTDP();
         }
 
         private void LabelCharge_Click(object? sender, EventArgs e)
@@ -579,7 +581,7 @@ namespace GHelper
 
         private void ButtonFPS_Click(object? sender, EventArgs e)
         {
-            allyControl.ToggleFPSLimit();
+            autoTDPControl.ToggleFPSLimit();
         }
 
         private void ButtonBacklight_Click(object? sender, EventArgs e)
@@ -600,6 +602,11 @@ namespace GHelper
             panelAlly.Visible = true;
             panelKeyboardTitle.Visible = false;
             panelKeyboard.Padding = new Padding(panelKeyboard.Padding.Left, 0, panelKeyboard.Padding.Right, panelKeyboard.Padding.Bottom);
+        }
+
+        public void VisualiseAutoTDPPanel()
+        {
+            if (InvokeRequired) { Invoke(() => VisualiseAutoTDPPanel()); return; }
 
             buttonOverlayAlly.Text = Properties.Strings.Overlay;
             buttonOverlayAlly.Activated = AppConfig.IsOverlay();
@@ -1882,7 +1889,8 @@ namespace GHelper
 
             SetContextMenu();
 
-            panelGPU.Visible = gpuExists;
+            tableGPU.Visible = gpuExists;
+            panelGPU.Visible = gpuExists || AppConfig.IsAutoTDP();
 
         }
 

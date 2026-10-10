@@ -704,6 +704,11 @@ public static class AppConfig
         return ContainsModel("FA401EA") || ContainsModel("HN7306EA");
     }
 
+    public static bool IsAutoTDP()
+    {
+        return IsAlly() || (IsAMDiGPU() && NoGpu());
+    }
+
     public static bool IsHardwareTouchpadToggle()
     {
         return GetModelShort().Contains("FA507");

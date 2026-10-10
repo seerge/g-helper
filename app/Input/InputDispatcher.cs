@@ -544,7 +544,7 @@ namespace GHelper.Input
                         else SetBrightnessDimming(10);
                         break;
                     case Keys.F9:
-                        Program.settingsForm.BeginInvoke(Program.settingsForm.allyControl.ToggleFPSLimit, true);
+                        Program.settingsForm.BeginInvoke(Program.settingsForm.autoTDPControl.ToggleFPSLimit, true);
                         break;
                     case Keys.F13:
                         ToggleScreenRate();
