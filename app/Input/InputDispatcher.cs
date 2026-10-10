@@ -761,6 +761,7 @@ namespace GHelper.Input
         {
             if (!AppConfig.IsVivoZenbook()) return;
             if (Program.acpi.IsSupported(AsusACPI.MicMuteLed)) Program.acpi.DeviceSet(AsusACPI.MicMuteLed, Audio.IsMicMuted() ? 1 : 0, "MicmuteLedInit");
+            if (AppConfig.IsDUO()) AsusHid.WriteInput([AsusHid.INPUT_ID, 0xD0, 0x7C, Audio.IsMicMuted() ? (byte)0x01 : (byte)0x00], "USB MicmuteLedInit");
             if (Program.acpi.IsSupported(AsusACPI.SoundMuteLed)) Audio.SubscribeMute(MuteLED);
         }
 
