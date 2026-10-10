@@ -127,7 +127,11 @@ namespace GHelper.Helpers
 
             if (AppConfig.Is("disable_osd")) return;
 
-            Program.settingsForm.Invoke(delegate
+            // Async on purpose: toasts are triggered by hotkeys from various threads,
+            // blocking on the UI thread here used to delay hotkey handling.
+            if (!Program.settingsForm.IsHandleCreated) return;
+
+            Program.settingsForm.BeginInvoke(delegate
             {
                 //Hide();
                 timer.Stop();
