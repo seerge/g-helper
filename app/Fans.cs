@@ -204,6 +204,8 @@ namespace GHelper
 
             trackGPUBoost.Minimum = AsusACPI.MinGPUBoost;
             trackGPUBoost.Maximum = AsusACPI.MaxGPUBoost;
+            if (AsusACPI.MinGPUBoost == 0)
+                trackGPUBoost.SmallChange = trackGPUBoost.LargeChange = AsusACPI.MinEnabledGPUBoost;
 
             trackGPUTemp.Minimum = AsusACPI.MinGPUTemp;
             trackGPUTemp.Maximum = AsusACPI.MaxGPUTemp;
@@ -659,7 +661,7 @@ namespace GHelper
                     int memory = AppConfig.GetMode("gpu_memory");
                     int clock_limit = AppConfig.GetMode("gpu_clock_limit");
 
-                    if (gpu_boost < 0) gpu_boost = AsusACPI.MaxGPUBoost;
+                    gpu_boost = GHelper.Gpu.DynamicBoostSettings.GetSliderValue(gpu_boost, AsusACPI.MinGPUBoost, AsusACPI.MaxGPUBoost);
                     if (gpu_temp < 0) gpu_temp = AsusACPI.MaxGPUTemp;
 
                     if (core == -1) core = 0;
@@ -721,7 +723,7 @@ namespace GHelper
             labelGPUCore.Text = $"{trackGPUCore.Value} MHz";
             labelGPUMemory.Text = $"{trackGPUMemory.Value} MHz";
 
-            labelGPUBoost.Text = $"{trackGPUBoost.Value}W";
+            labelGPUBoost.Text = trackGPUBoost.Value == 0 ? Properties.Strings.Off : $"{trackGPUBoost.Value}W";
             labelGPUTemp.Text = TempHelper.FormatTemp(trackGPUTemp.Value);
 
             if (trackGPUClockLimit.Value >= NvidiaGpuControl.MaxClockLimit)
@@ -802,6 +804,9 @@ namespace GHelper
 
         private void trackGPUPower_Scroll(object? sender, EventArgs e)
         {
+            if (trackGPUBoost.Value > 0 && trackGPUBoost.Value < AsusACPI.MinEnabledGPUBoost)
+                trackGPUBoost.Value = 0;
+
             AppConfig.SetMode("gpu_boost", trackGPUBoost.Value);
             AppConfig.SetMode("gpu_temp", trackGPUTemp.Value);
 
