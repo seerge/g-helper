@@ -738,6 +738,11 @@ namespace GHelper.Input
             Program.acpi.DeviceSet(AsusACPI.SoundMuteLed, muted ? 1 : 0, "SoundLed");
         }
 
+        static void MicMuteLED(bool muted)
+        {
+            if (AppConfig.IsDUO()) AsusHid.WriteInput([AsusHid.INPUT_ID, 0xD0, 0x7C, muted ? (byte)0x01 : (byte)0x00], "USB MicmuteLed");
+        }
+
         static void ToggleTouchScreen()
         {
             var status = !TouchscreenHelper.GetStatus();
@@ -754,14 +759,14 @@ namespace GHelper.Input
             bool muteStatus = Audio.ToggleMicMute();
             Program.toast.RunToast(muteStatus ? Properties.Strings.Muted : Properties.Strings.Unmuted, muteStatus ? ToastIcon.MicrophoneMute : ToastIcon.Microphone);
             if (AppConfig.IsVivoZenbook()) Program.acpi.DeviceSet(AsusACPI.MicMuteLed, muteStatus ? 1 : 0, "MicmuteLed");
-            if (AppConfig.IsDUO()) AsusHid.WriteInput([AsusHid.INPUT_ID, 0xD0, 0x7C, muteStatus ? (byte)0x01 : (byte)0x00], "USB MicmuteLed");
+            MicMuteLED(muteStatus);
         }
 
         static void MuteLEDInit()
         {
             if (!AppConfig.IsVivoZenbook()) return;
             if (Program.acpi.IsSupported(AsusACPI.MicMuteLed)) Program.acpi.DeviceSet(AsusACPI.MicMuteLed, Audio.IsMicMuted() ? 1 : 0, "MicmuteLedInit");
-            if (AppConfig.IsDUO()) AsusHid.WriteInput([AsusHid.INPUT_ID, 0xD0, 0x7C, Audio.IsMicMuted() ? (byte)0x01 : (byte)0x00], "USB MicmuteLedInit");
+            MicMuteLED(Audio.IsMicMuted());
             if (Program.acpi.IsSupported(AsusACPI.SoundMuteLed)) Audio.SubscribeMute(MuteLED);
         }
 
