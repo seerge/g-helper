@@ -180,7 +180,9 @@ public class AsusACPI
     public static int MaxCPU = 100;
     public const int DefaultCPU = 80;
 
-    public const int MinGPUBoost = 5;
+    public const int MinEnabledGPUBoost = GHelper.Gpu.DynamicBoostSettings.MinimumEnabled;
+    // The C0 disable request is verified on GA403WW. Keep the existing floor on other models.
+    public static int MinGPUBoost => GHelper.Gpu.DynamicBoostSettings.GetMinimum(AppConfig.GetModel());
     public static int MaxGPUBoost = 25;
 
     public static int MinGPUPower = 0;
