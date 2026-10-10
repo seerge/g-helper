@@ -779,6 +779,9 @@
   <data name="ReadLimits" xml:space="preserve">
     <value>讀取限制</value>
   </data>
+  <data name="RearLight" xml:space="preserve">
+    <value>背部燈效</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>重設</value>
   </data>
