@@ -779,6 +779,9 @@
   <data name="ReadLimits" xml:space="preserve">
     <value>한계 읽기</value>
   </data>
+  <data name="RearLight" xml:space="preserve">
+    <value>후면 조명</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>초기화</value>
   </data>
