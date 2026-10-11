@@ -8,6 +8,9 @@ namespace GHelper.Mode
 
         static System.Timers.Timer timer = default!;
 
+        static bool isAlly = AppConfig.IsAlly();
+        public static bool isAutoTDP = AppConfig.IsAutoTDP();
+
         SettingsForm settings;
 
         static int tdpMin = 6;
@@ -34,7 +37,7 @@ namespace GHelper.Mode
 
         public void Init()
         {
-            if (!AppConfig.IsAutoTDP()) return;
+            if (!isAutoTDP) return;
 
             settings.VisualiseAutoTDPPanel();
 
@@ -47,16 +50,14 @@ namespace GHelper.Mode
             int tdp = AppConfig.GetMode("limit_total");
             if (tdp > 0) return tdp;
 
-            if (!AppConfig.IsAlly()) return AsusACPI.MaxTotal;
-
             switch (Modes.GetCurrentBase())
             {
                 case 1:
-                    return 25;
+                    return isAlly ? 25 : 90;
                 case 2:
-                    return 10;
+                    return isAlly ? 10 : 30;
                 default:
-                    return 15;
+                    return isAlly ? 15 : 40;
             }
         }
 
@@ -101,7 +102,7 @@ namespace GHelper.Mode
             {
                 _downCount = 0;
                 _upCount = 0;
-                SetTDP(tdp + 1, $"AutoTDP+ [{power}]{fps}");
+                SetTDP(tdp + Math.Max(1, GetMaxTDP() / 30), $"AutoTDP+ [{power}]{fps}");
             }
 
             if (_downCount >= 8 && power < tdp)
@@ -119,13 +120,13 @@ namespace GHelper.Mode
 
             if (autoTDP)
             {
-                if (!AppConfig.IsAlly()) amdControl.StartFPS();
+                if (!isAlly) amdControl.StartFPS();
                 timer.Start();
             }
             else
             {
                 timer.Stop();
-                if (!AppConfig.IsAlly()) amdControl.StopFPS();
+                if (!isAlly) amdControl.StopFPS();
                 Program.modeControl.SetPerformanceMode();
             }
 

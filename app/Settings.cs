@@ -610,6 +610,7 @@ namespace GHelper
 
             buttonOverlayAlly.Text = Properties.Strings.Overlay;
             buttonOverlayAlly.Activated = AppConfig.IsOverlay();
+            buttonOverlay.Visible = false;
 
             tableAMD.Visible = true;
         }
@@ -1890,7 +1891,7 @@ namespace GHelper
             SetContextMenu();
 
             tableGPU.Visible = gpuExists;
-            panelGPU.Visible = gpuExists || AppConfig.IsAutoTDP();
+            panelGPU.Visible = gpuExists || AutoTDPControl.isAutoTDP;
 
         }
 
@@ -1920,7 +1921,7 @@ namespace GHelper
                 toolTip.SetToolTip(pictureGPU, GPUModeControl.gpuError);
             }
 
-            if (AppConfig.IsAlly())
+            if (AutoTDPControl.isAutoTDP)
             {
                 tableGPU.Visible = false;
                 labelGPU.Text = "GPU";
