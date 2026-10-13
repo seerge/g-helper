@@ -1,4 +1,4 @@
-﻿using GHelper.UI;
+using GHelper.UI;
 
 namespace GHelper
 {
@@ -51,6 +51,7 @@ namespace GHelper
             labelLegend = new Label();
             toolTip = new ToolTip(components);
             textSerial = new RTextBox();
+            buttonCheckAppUpdate = new RButton();
             ((System.ComponentModel.ISupportInitialize)pictureBios).BeginInit();
             panelBiosTitle.SuspendLayout();
             panelBios.SuspendLayout();
@@ -226,6 +227,7 @@ namespace GHelper
             tableLayoutLegend.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 28.2828274F));
             tableLayoutLegend.Controls.Add(labelSerialTitle, 0, 0);
             tableLayoutLegend.Controls.Add(textSerial, 1, 0);
+            tableLayoutLegend.Controls.Add(buttonCheckAppUpdate, 2, 0);
             tableLayoutLegend.Controls.Add(labelLegend, 0, 1);
             tableLayoutLegend.Controls.Add(labelLegendGray, 1, 1);
             tableLayoutLegend.Controls.Add(labelLegendGreen, 2, 1);
@@ -320,6 +322,25 @@ namespace GHelper
             textSerial.Size = new Size(323, 39);
             textSerial.TabIndex = 6;
             // 
+            // buttonCheckAppUpdate
+            // 
+            buttonCheckAppUpdate.Activated = false;
+            buttonCheckAppUpdate.BackColor = SystemColors.ControlLight;
+            buttonCheckAppUpdate.BorderColor = Color.Transparent;
+            buttonCheckAppUpdate.BorderRadius = 5;
+            buttonCheckAppUpdate.Dock = DockStyle.Top;
+            buttonCheckAppUpdate.FlatAppearance.BorderSize = 0;
+            buttonCheckAppUpdate.FlatStyle = FlatStyle.Flat;
+            buttonCheckAppUpdate.Font = new Font("Segoe UI", 9F);
+            buttonCheckAppUpdate.Location = new Point(562, 68);
+            buttonCheckAppUpdate.Margin = new Padding(10, 8, 10, 8);
+            buttonCheckAppUpdate.Name = "buttonCheckAppUpdate";
+            buttonCheckAppUpdate.Secondary = true;
+            buttonCheckAppUpdate.Size = new Size(323, 39);
+            buttonCheckAppUpdate.TabIndex = 7;
+            buttonCheckAppUpdate.Text = "程序检查更新";
+            buttonCheckAppUpdate.UseVisualStyleBackColor = false;
+            // 
             // Updates
             // 
             AutoScaleDimensions = new SizeF(192F, 192F);
@@ -376,5 +397,6 @@ namespace GHelper
         private ToolTip toolTip;
         private Label labelSerialTitle;
         private RTextBox textSerial;
+        private RButton buttonCheckAppUpdate;
     }
 }
