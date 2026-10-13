@@ -3049,5 +3049,50 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("Background", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Free RAM.
+        /// </summary>
+        internal static string FreeRam {
+            get {
+                return ResourceManager.GetString("FreeRam", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to RAM.
+        /// </summary>
+        internal static string RamUsage {
+            get {
+                return ResourceManager.GetString("RamUsage", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Freed.
+        /// </summary>
+        internal static string RamFreed {
+            get {
+                return ResourceManager.GetString("RamFreed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Cleaning RAM.
+        /// </summary>
+        internal static string RamCleaning {
+            get {
+                return ResourceManager.GetString("RamCleaning", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to partial, run as admin for full.
+        /// </summary>
+        internal static string RamPartialClean {
+            get {
+                return ResourceManager.GetString("RamPartialClean", resourceCulture);
+            }
+        }
     }
 }
