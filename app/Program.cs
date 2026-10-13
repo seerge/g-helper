@@ -87,7 +87,7 @@ namespace GHelper
 
             hardwareOverlay = new HardwareOverlay();
 
-            ProcessHelper.CheckAlreadyRunning();
+            if (!ProcessHelper.CheckAlreadyRunning()) return;
             ProcessHelper.SetPriority();
 
             CleanupLegacyFiles();
