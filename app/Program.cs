@@ -193,6 +193,11 @@ namespace GHelper
                     settingsForm.extraForm.Show();
                     settingsForm.extraForm.ServiesToggle();
                     break;
+                case "freeram":
+                    settingsForm.extraForm = new Extra();
+                    settingsForm.extraForm.Show();
+                    settingsForm.extraForm.MemoryClean();
+                    break;
                 case "uv":
                     Startup.ReScheduleAdmin();
                     settingsForm.FansToggle(2);

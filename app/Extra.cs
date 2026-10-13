@@ -841,7 +841,15 @@ namespace GHelper
             labelMemory.ForeColor = status.UsedPercent >= 85 ? colorTurbo : colorStandard;
         }
 
-        private async void ButtonMemory_Click(object? sender, EventArgs e)
+        private void ButtonMemory_Click(object? sender, EventArgs e)
+        {
+            if (ProcessHelper.IsUserAdministrator())
+                MemoryClean();
+            else
+                ProcessHelper.RunAsAdmin("freeram");
+        }
+
+        public async void MemoryClean()
         {
             buttonMemory.Enabled = false;
             labelMemory.Text = Properties.Strings.RamCleaning + " ...";
