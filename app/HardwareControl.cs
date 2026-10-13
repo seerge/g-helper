@@ -611,31 +611,31 @@ public static class HardwareControl
 
     private static List<PerformanceCounter>? _coreCounters;
 
-    // Energy raw = cumulative picowatt-hours, Time raw = ms of the provider's ~1Hz measurement clock
+    // Power sample: raw = cumulative picowatt-hours, base = 32-bit time in 3.6 µs units, both from one measurement
     private class EnergyChannel
     {
-        private readonly PerformanceCounter _energy;
-        private readonly PerformanceCounter _time;
+        private readonly PerformanceCounter _power;
         private long _rawEnergy, _rawTime;
         private float _watts;
         private int _stale;
 
         public EnergyChannel(string instance)
         {
-            _energy = new PerformanceCounter("Energy Meter", "Energy", instance, true);
-            _time = new PerformanceCounter("Energy Meter", "Time", instance, true);
-            _rawEnergy = _energy.RawValue;
-            _rawTime = _time.RawValue;
+            _power = new PerformanceCounter("Energy Meter", "Power", instance, true);
+            var s = _power.NextSample();
+            _rawEnergy = s.RawValue;
+            _rawTime = s.BaseValue;
         }
 
         public float? Sample()
         {
             try
             {
-                long e = _energy.RawValue, t = _time.RawValue;
+                var s = _power.NextSample();
+                long e = s.RawValue, t = s.BaseValue;
                 if (t != _rawTime)
                 {
-                    _watts = (e - _rawEnergy) * 3.6e-6f / (t - _rawTime);
+                    _watts = (e - _rawEnergy) / 1000f / (uint)(t - _rawTime);
                     _rawEnergy = e;
                     _rawTime = t;
                     _stale = 0;
