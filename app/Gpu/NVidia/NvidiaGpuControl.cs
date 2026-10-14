@@ -49,7 +49,6 @@ public class NvidiaGpuControl : IGpuControl
     public string FullName => _internalGpu!.FullName;
 
     public int? _lastTemp;
-    public int _lastTempTime = 0;
 
     private static bool verboseLog = false;
 
@@ -58,6 +57,14 @@ public class NvidiaGpuControl : IGpuControl
     private GpuState _lastState = GpuState.Off;
     private long _lastStateTime = -StateCacheMs;
     private const int StateCacheMs = 500; 
+
+    // A lightly-used GPU dips into RTD3 for sub-second stretches between polls;
+    // readings survive those dips and disappear only after a real sleep
+    private const int RecentActiveMs = 10_000;
+    private long _lastActiveTime = -RecentActiveMs;
+    private float _lastPower;
+
+    private bool WithinActiveGrace => Environment.TickCount64 - _lastActiveTime < RecentActiveMs;
 
     private GpuState GetGpuState()
     {
@@ -75,6 +82,7 @@ public class NvidiaGpuControl : IGpuControl
             _lastState = ex.Message == "NVAPI_GPU_NOT_POWERED" ? GpuState.Asleep : GpuState.Off;
         }
         _lastStateTime = Environment.TickCount64;
+        if (_lastState == GpuState.Active) _lastActiveTime = _lastStateTime;
         return _lastState;
     }
 
@@ -98,19 +106,21 @@ public class NvidiaGpuControl : IGpuControl
     {
         if (!IsValid) return null;
 
+        // A sleeping GPU has no meaningful "current" temperature: returning the
+        // cached value forever freezes a stale number in the UI and feeds the fan
+        // sync a reading from a chip that generates no heat. Not reading also lets
+        // the GPU actually stay asleep (the old refresh path woke it periodically
+        // just to update the cache). RTD3 dips within the grace keep the last value.
         var state = GetGpuState();
-        if (state == GpuState.Off) return null;
+        if (state != GpuState.Active)
+            return (state == GpuState.Asleep && WithinActiveGrace) ? _lastTemp : null;
 
-        if ((_readTask?.IsCompleted ?? true) && (state == GpuState.Active || ShouldRefresh()))
+        if (_readTask?.IsCompleted ?? true)
         {
             _readTask = Task.Run(() =>
             {
                 var temp = ReadCurrentTemperature();
-                if (temp is not null)
-                {
-                    _lastTemp = temp;
-                    _lastTempTime = Environment.TickCount;
-                }
+                if (temp is not null) _lastTemp = temp;
                 return temp;
             });
         }
@@ -118,29 +128,6 @@ public class NvidiaGpuControl : IGpuControl
         _readTask?.Wait(500);
 
         return _lastTemp;
-    }
-
-    private bool ShouldRefresh()
-    {
-        const int minInterval = 5_000;
-        const int maxInterval = 120_000;
-        const float deltaMin = 5f;
-        const float deltaMax = 20f;
-
-        if (_lastTemp is null) return true;
-
-        var cpuTemp = (float)HardwareControl.GetCPUTemp();
-        var delta = _lastTemp.Value - cpuTemp;
-
-        if (delta < deltaMin) return false;
-
-        var t = Math.Clamp((delta - deltaMin) / (deltaMax - deltaMin), 0f, 1f);
-        var interval = (int)(maxInterval - t * (maxInterval - minInterval));
-
-        var refresh = Environment.TickCount > _lastTempTime + interval;
-        if (verboseLog) Logger.WriteLine($"GPU Temp Refresh Interval: {interval}ms {refresh}");
-
-        return refresh;
     }
 
     public void Dispose()
@@ -374,8 +361,10 @@ public class NvidiaGpuControl : IGpuControl
             NvmlHelper.Shutdown();
             return null;
         }
-        if (state != GpuState.Active) return 0f;
-        return NvmlHelper.GetGpuPower() ?? 0f;
+        if (state != GpuState.Active)
+            return (state == GpuState.Asleep && WithinActiveGrace) ? _lastPower : 0f;
+        _lastPower = NvmlHelper.GetGpuPower() ?? 0f;
+        return _lastPower;
     }
 
     public (long usedMb, long totalMb)? GetVramInfo()
