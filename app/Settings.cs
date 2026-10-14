@@ -327,7 +327,7 @@ namespace GHelper
 
         private void ButtonEnergySaver_Click(object? sender, EventArgs e)
         {
-            KeyboardHook.KeyKeyPress(Keys.LWin, Keys.A);
+            PowerNative.SetEnergySaver(false);
         }
 
         private void LabelBacklight_Click(object? sender, EventArgs e)
