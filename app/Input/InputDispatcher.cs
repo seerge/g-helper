@@ -111,6 +111,7 @@ namespace GHelper.Input
             }
 
             InitBacklightTimer();
+            AmbientLight.Init();
             MuteLEDInit();
         }
 
@@ -1151,6 +1152,7 @@ namespace GHelper.Input
             if (lidClose || tentMode) return;
             Aura.ApplyBrightness(GetBacklight(), "Auto");
             backlightActivity = true;
+            AmbientLight.Reset();
         }
 
         public static void StartupBacklight()
