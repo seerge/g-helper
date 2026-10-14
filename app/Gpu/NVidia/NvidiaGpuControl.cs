@@ -16,7 +16,7 @@ public class NvidiaGpuControl : IGpuControl
     public static int MaxMemoryOffset = AppConfig.Get("max_gpu_memory", 500);
 
     public static int MinCoreOffset = AppConfig.Get("min_gpu_core", -250);
-    public static int MinMemoryOffset = AppConfig.Get("min_gpu_memory", -500);
+    public static int MinMemoryOffset = Math.Clamp(AppConfig.Get("min_gpu_memory", -500), -500, 0);
 
     public static int MinClockLimit = AppConfig.Get("min_gpu_clock", 400);
     public const int MaxClockLimit = 3000;
@@ -194,6 +194,29 @@ public class NvidiaGpuControl : IGpuControl
     }
 
 
+    private static void UpdateMemoryOffsetLimit(IPerformanceStates20Info states)
+    {
+        int driverMinimum = -500;
+
+        if (states.Clocks.TryGetValue(PerformanceStateId.P0_3DPerformance, out var clocks))
+        {
+            foreach (var clock in clocks)
+            {
+                if (clock.DomainId != PublicClockDomain.Memory) continue;
+
+                var range = clock.FrequencyDeltaInkHz.DeltaRange;
+                if (range.Minimum <= 0 && range.Maximum >= 0)
+                    driverMinimum = range.Minimum / 1000;
+                break;
+            }
+        }
+
+        int minimum = Math.Clamp(AppConfig.Get("min_gpu_memory", driverMinimum), driverMinimum, 0);
+        if (minimum != MinMemoryOffset)
+            Logger.WriteLine($"NVIDIA memory offset minimum: {minimum} MHz (driver: {driverMinimum} MHz)");
+        MinMemoryOffset = minimum;
+    }
+
     public bool GetClocks(out int core, out int memory)
     {
         PhysicalGPU internalGpu = _internalGpu!;
@@ -206,8 +229,10 @@ public class NvidiaGpuControl : IGpuControl
             var temp = ReadCurrentTemperature(true); // Force wake up GPU for clock reading
 
             IPerformanceStates20Info states = GPUApi.GetPerformanceStates20(internalGpu.Handle);
-            core = states.Clocks[PerformanceStateId.P0_3DPerformance][0].FrequencyDeltaInkHz.DeltaValue / 1000;
-            memory = states.Clocks[PerformanceStateId.P0_3DPerformance][1].FrequencyDeltaInkHz.DeltaValue / 1000;
+            UpdateMemoryOffsetLimit(states);
+            var clocks = states.Clocks[PerformanceStateId.P0_3DPerformance];
+            core = clocks.First(clock => clock.DomainId == PublicClockDomain.Graphics).FrequencyDeltaInkHz.DeltaValue / 1000;
+            memory = clocks.First(clock => clock.DomainId == PublicClockDomain.Memory).FrequencyDeltaInkHz.DeltaValue / 1000;
             Logger.WriteLine($"GET GPU CLOCKS: {core}, {memory}");
 
             foreach (var delta in states.Voltages[PerformanceStateId.P0_3DPerformance])
@@ -221,6 +246,7 @@ public class NvidiaGpuControl : IGpuControl
         catch (Exception ex)
         {
             Logger.WriteLine("GET GPU CLOCKS:" + ex.Message);
+            MinMemoryOffset = Math.Clamp(AppConfig.Get("min_gpu_memory", -500), -500, 0);
             core = memory = 0;
             return false;
         }
@@ -301,10 +327,10 @@ public class NvidiaGpuControl : IGpuControl
     public int SetClocks(int core, int memory)
     {
 
+        if (!GetClocks(out int currentCore, out int currentMemory)) return -1;
+
         if (core < MinCoreOffset || core > MaxCoreOffset) return 0;
         if (memory < MinMemoryOffset || memory > MaxMemoryOffset) return 0;
-
-        GetClocks(out int currentCore, out int currentMemory);
 
         // Nothing to set
         if (Math.Abs(core - currentCore) < 5 && Math.Abs(memory - currentMemory) < 5) return 0;
