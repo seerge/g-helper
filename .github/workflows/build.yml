@@ -22,3 +22,5 @@ jobs:
     - name: Build
       run: |
         dotnet build app/GHelper.sln
+    - name: Test Dynamic Boost settings
+      run: dotnet test tests/DynamicBoostSettings.Tests --configuration Release
