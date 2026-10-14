@@ -145,6 +145,7 @@ namespace GHelper
             ScreenControl.InitScreen();
 
             SetAutoModes(init: true);
+            AppProfileWatcher.Start();
 
             powerSettleTimer.Elapsed += OnPowerSettled;
 
@@ -467,6 +468,8 @@ namespace GHelper
 
         static void OnExit(object sender, EventArgs e)
         {
+            AppProfileWatcher.Stop();
+
             if (trayIcon is not null)
             {
                 trayIcon.Visible = false;
