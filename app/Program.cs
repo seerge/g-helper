@@ -115,7 +115,8 @@ namespace GHelper
 
             Application.EnableVisualStyles();
 
-            HardwareControl.RecreateGpuControl();
+            // Force-create the window handle early so Invoke/BeginInvoke work from background threads.
+            _ = settingsForm.Handle;
 
             trayIcon = new NotifyIcon
             {
@@ -142,9 +143,16 @@ namespace GHelper
             settingsForm.InitAura();
             settingsForm.InitMatrix();
 
-            ScreenControl.InitScreen();
-
-            SetAutoModes(init: true);
+            // Heavy initialization (GPU control, screen probing, auto modes) runs on a background
+            // thread so the UI message loop starts right away: doing it on the UI thread used to
+            // freeze the tray icon and hotkeys for seconds, especially on battery power.
+            // Started only after inputDispatcher exists — SetAutoModes depends on it.
+            Task.Run(() =>
+            {
+                HardwareControl.RecreateGpuControl();
+                ScreenControl.InitScreen();
+                SetAutoModes(init: true);
+            });
 
             powerSettleTimer.Elapsed += OnPowerSettled;
 

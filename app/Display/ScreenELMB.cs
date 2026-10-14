@@ -159,8 +159,19 @@ namespace GHelper.Display
             return aux == null ? -1 : aux(value);
         }
 
-        public static int Get() => Aux(-1);
+        public static int Get()
+        {
+            // Uses NVAPI display calls — must not race a GPU control rebuild (NVAPI unload)
+            if (!HardwareControl.TryGpuEnter(500)) return -1;
+            try { return Aux(-1); }
+            finally { HardwareControl.GpuExit(); }
+        }
 
-        public static void Set(int status) => Logger.WriteLine($"ELMB: set {status} result {Aux(status)}");
+        public static void Set(int status)
+        {
+            if (!HardwareControl.TryGpuEnter(500)) return;
+            try { Logger.WriteLine($"ELMB: set {status} result {Aux(status)}"); }
+            finally { HardwareControl.GpuExit(); }
+        }
     }
 }

@@ -306,7 +306,7 @@ public static class HardwareControl
     {
         try
         {
-            int? gpuUse = GpuControl?.GetGpuUse();
+            int? gpuUse = GpuRead(gpu => gpu.GetGpuUse());
             Logger.WriteLine("GPU usage: " + GpuControl?.FullName + " " + gpuUse + "%");
             if (gpuUse is not null) return (int)gpuUse;
         }
@@ -499,7 +499,7 @@ public static class HardwareControl
     {
         try
         {
-            gpuTemp = GpuControl?.GetCurrentTemperature();
+            gpuTemp = GpuRead(gpu => gpu.GetCurrentTemperature());
 
         }
         catch (Exception)
@@ -820,7 +820,7 @@ public static class HardwareControl
     {
         try
         {
-            float? power = GpuControl?.GetGpuPower();
+            float? power = GpuRead(gpu => gpu.GetGpuPower());
             if (power is not null) return power.Value;
         }
         catch (Exception ex)
@@ -837,16 +837,24 @@ public static class HardwareControl
 
         if (Program.acpi is null) return;
 
-        cpuFan = FanSensorControl.FormatFan(AsusFan.CPU, Program.acpi.GetFan(AsusFan.CPU));
-        gpuFan = FanSensorControl.FormatFan(AsusFan.GPU, Program.acpi.GetFan(AsusFan.GPU));
-        midFan = FanSensorControl.FormatFan(AsusFan.Mid, Program.acpi.GetFan(AsusFan.Mid));
+        try
+        {
+            cpuFan = FanSensorControl.FormatFan(AsusFan.CPU, Program.acpi.GetFan(AsusFan.CPU));
+            gpuFan = FanSensorControl.FormatFan(AsusFan.GPU, Program.acpi.GetFan(AsusFan.GPU));
+            midFan = FanSensorControl.FormatFan(AsusFan.Mid, Program.acpi.GetFan(AsusFan.Mid));
 
-        cpuTemp = GetCPUTemp();
-        gpuTemp = GetGPUTemp();
+            cpuTemp = GetCPUTemp();
+            gpuTemp = GetGPUTemp();
 
-        if (log) Logger.WriteLine($"Temps: {cpuTemp} {gpuTemp} {cpuFan} {gpuFan} {midFan}");
+            if (log) Logger.WriteLine($"Temps: {cpuTemp} {gpuTemp} {cpuFan} {gpuFan} {midFan}");
 
-        ReadBatteryState();
+            ReadBatteryState();
+        }
+        catch (Exception ex)
+        {
+            // Sensor glitches must never kill the process — RefreshSensors is async void.
+            Logger.WriteLine("Sensors read failed: " + ex.Message);
+        }
     }
 
     // Lightweight sensor read used by the overlay timer - skips battery health, WMI and design capacity
@@ -871,7 +879,7 @@ public static class HardwareControl
         if (readUsage)
         {
             cpuUsage = GetCPUUsage();
-            try { gpuUsage = GpuControl?.GetGpuUse(); } catch { gpuUsage = null; }
+            try { gpuUsage = GpuRead(gpu => gpu.GetGpuUse()); } catch { gpuUsage = null; }
             if (isAMDiGPU && gpuUsage is null)
                 try { gpuUsage = AmdApu().GetiGpuSensors().use; } catch { }
         }
@@ -889,7 +897,7 @@ public static class HardwareControl
 
             try
             {
-                var vram = GpuControl?.GetVramInfo() ?? (isAMDiGPU ? AmdApu().GetVramInfo() : null);
+                var vram = GpuRead(gpu => gpu.GetVramInfo()) ?? (isAMDiGPU ? AmdApu().GetVramInfo() : null);
                 if (vram is { } v && v.totalMb > 0)
                 {
                     vramUsedMb = (int)v.usedMb;
@@ -993,15 +1001,55 @@ public static class HardwareControl
             return null;
     }
 
+    // --- GPU control lifetime gate -------------------------------------------
+    // RecreateGpuControl/DisposeGpuControl tear the GPU control down (and unload
+    // NVAPI) while the dGPU powers up. A concurrent sensor read holding a stale
+    // NVAPI handle at that exact moment crashes the whole process (0xC0000005,
+    // AccessViolation — uncatchable). Writers hold this gate for the whole
+    // rebuild; readers TryEnter briefly and just skip one refresh cycle while a
+    // rebuild is in progress (GPU temp falls back to the ACPI channel meanwhile).
+    private static readonly object GpuControlGate = new();
+
+    internal static bool TryGpuEnter(int timeoutMs = 200)
+    {
+        return Monitor.TryEnter(GpuControlGate, timeoutMs);
+    }
+
+    internal static void GpuExit()
+    {
+        Monitor.Exit(GpuControlGate);
+    }
+
+    private static T? GpuRead<T>(Func<IGpuControl, T> read, int timeoutMs = 200)
+    {
+        if (GpuControl is null) return default;
+
+        if (!Monitor.TryEnter(GpuControlGate, timeoutMs)) return default;
+
+        try
+        {
+            var gpu = GpuControl; // re-read inside the gate: it may have been rebuilt meanwhile
+            if (gpu is null) return default;
+            return read(gpu);
+        }
+        finally
+        {
+            Monitor.Exit(GpuControlGate);
+        }
+    }
+
     public static void DisposeGpuControl()
     {
-        bool wasNvidia = GpuControl is NvidiaGpuControl;
-        GpuControl?.Dispose();
-        GpuControl = null;
-        if (wasNvidia)
+        lock (GpuControlGate)
         {
-            NvmlHelper.Shutdown();
-            UnloadNvAPI();
+            bool wasNvidia = GpuControl is NvidiaGpuControl;
+            GpuControl?.Dispose();
+            GpuControl = null;
+            if (wasNvidia)
+            {
+                NvmlHelper.Shutdown();
+                UnloadNvAPI();
+            }
         }
     }
 
@@ -1040,39 +1088,42 @@ public static class HardwareControl
     public static void RecreateGpuControl()
     {
         if (AppConfig.NoGpu()) return;
-        try
+        lock (GpuControlGate)
         {
-            DisposeGpuControl();
-
-            IGpuControl _gpuControl = new NvidiaGpuControl();
-
-            if (_gpuControl.IsValid)
+            try
             {
-                GpuControl = _gpuControl;
-                Logger.WriteLine(GpuControl.FullName);
-                return;
+                DisposeGpuControl();
+
+                IGpuControl _gpuControl = new NvidiaGpuControl();
+
+                if (_gpuControl.IsValid)
+                {
+                    GpuControl = _gpuControl;
+                    Logger.WriteLine(GpuControl.FullName);
+                    return;
+                }
+
+                _gpuControl.Dispose();
+
+                _gpuControl = new AmdGpuControl();
+                if (_gpuControl.IsValid)
+                {
+                    GpuControl = _gpuControl;
+                    if (GpuControl.FullName.Contains("6850M")) AppConfig.Set("xgm_special", 1);
+                    Logger.WriteLine(GpuControl.FullName);
+                    return;
+                }
+                _gpuControl.Dispose();
+
+                Logger.WriteLine("dGPU not found");
+                GpuControl = null;
+
+
             }
-
-            _gpuControl.Dispose();
-
-            _gpuControl = new AmdGpuControl();
-            if (_gpuControl.IsValid)
+            catch (Exception ex)
             {
-                GpuControl = _gpuControl;
-                if (GpuControl.FullName.Contains("6850M")) AppConfig.Set("xgm_special", 1);
-                Logger.WriteLine(GpuControl.FullName);
-                return;
+                Logger.WriteLine("Can't connect to GPU " + ex.Message);
             }
-            _gpuControl.Dispose();
-
-            Logger.WriteLine("dGPU not found");
-            GpuControl = null;
-
-
-        }
-        catch (Exception ex)
-        {
-            Logger.WriteLine("Can't connect to GPU " + ex.Message);
         }
     }
 
@@ -1086,7 +1137,7 @@ public static class HardwareControl
 
         if (AppConfig.Is("kill_gpu_apps") && GpuControl is not null)
         {
-            GpuControl.KillGPUApps();
+            GpuRead(gpu => { gpu.KillGPUApps(); return true; }, 2000);
         }
     }
 
