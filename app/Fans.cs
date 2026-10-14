@@ -193,6 +193,9 @@ namespace GHelper
             checkApplyFans.Click += CheckApplyFans_Click;
             checkApplyPower.Click += CheckApplyPower_Click;
 
+            AddCopyFromCpuButton(chartGPU, seriesGPU, AsusFan.GPU);
+            AddCopyFromCpuButton(chartMid, seriesMid, AsusFan.Mid);
+
             trackGPUClockLimit.Minimum = NvidiaGpuControl.MinClockLimit;
             trackGPUClockLimit.Maximum = NvidiaGpuControl.MaxClockLimit;
 
@@ -989,6 +992,45 @@ namespace GHelper
             AppConfig.SetMode("auto_apply", chk.Checked ? 1 : 0);
             modeControl.SetPerformanceMode();
 
+        }
+
+        // Small overlay button in the top-right corner of a chart that copies the CPU curve into it
+        private void AddCopyFromCpuButton(Chart chart, Series target, AsusFan device)
+        {
+            float dpi = ControlHelper.GetDpiScale(this).Value;
+
+            // Theme colors: buttonSecond is nearly identical to the chart background, so the button blends in
+            RButton button = new RButton
+            {
+                Activated = false,
+                BackColor = RForm.buttonSecond,
+                ForeColor = RForm.foreMain,
+                BorderColor = Color.Transparent,
+                BorderRadius = 2,
+                FlatStyle = FlatStyle.Flat,
+                Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point, 0),
+                Secondary = true,
+                Size = new Size((int)(100 * dpi), (int)(18 * dpi)),
+                TabStop = false,
+                Text = Properties.Strings.FanCopyCpu,
+                UseVisualStyleBackColor = false,
+                Anchor = AnchorStyles.Top | AnchorStyles.Right,
+            };
+            button.FlatAppearance.BorderColor = RForm.borderSecond;
+
+            chart.Controls.Add(button);
+            button.Location = new Point(chart.ClientSize.Width - button.Width - (int)(8 * dpi), (int)(6 * dpi));
+
+            button.Click += (_, _) =>
+            {
+                if (seriesCPU.Points.Count != 8) return;
+
+                target.Points.Clear();
+                foreach (DataPoint point in seriesCPU.Points) target.Points.AddXY(point.XValue, point.YValues[0]);
+                SaveProfile(target, device);
+
+                if (AppConfig.IsApplyFans()) modeControl.AutoFans(); // push the copied curve to EC
+            };
         }
 
         public void InitAxis()
