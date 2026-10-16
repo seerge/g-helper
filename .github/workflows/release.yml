@@ -12,6 +12,7 @@ permissions:
 
 jobs:
   release:
+    if: github.repository == 'seerge/g-helper'
     runs-on: windows-2022
     steps:
     - uses: actions/checkout@v7
