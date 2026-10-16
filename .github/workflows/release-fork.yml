@@ -31,6 +31,13 @@ permissions:
 jobs:
   release:
     runs-on: windows-2022
+    env:
+      # Passed through the environment rather than interpolated into the shell
+      # bodies below: the default shell here is pwsh, which expands $(...)
+      # inside double quotes, so an input reaching a token-bearing step's
+      # command line is a code path nobody needs.
+      VERSION: ${{ inputs.version }}
+      BUILD_REF: ${{ inputs.ref }}
     steps:
     - uses: actions/checkout@v7
       with:
@@ -42,19 +49,45 @@ jobs:
         dotnet-version: '10.0.x'
 
     - name: Publish
+      # FileVersion and Version are set alongside AssemblyVersion so the
+      # apphost carries readable Win32 version info. AssemblyVersion is the
+      # one the in-app updater compares; the others only make the exe's file
+      # properties agree with it.
+      shell: pwsh
       run: |
-        dotnet publish app/GHelper.sln --configuration Release --runtime win-x64 -p:PublishSingleFile=true --no-self-contained -p:AssemblyVersion=${{ inputs.version }}
+        dotnet publish app/GHelper.sln --configuration Release --runtime win-x64 -p:PublishSingleFile=true --no-self-contained -p:AssemblyVersion=$env:VERSION -p:FileVersion=$env:VERSION -p:Version=$env:VERSION
+        if ($LASTEXITCODE -ne 0) { throw "dotnet publish failed with $LASTEXITCODE" }
 
     - name: Confirm the built exe carries the injected version
       shell: pwsh
       run: |
+        $expected = [version]$env:VERSION
+
+        # The authoritative check. AutoUpdateControl compares
+        # Assembly.GetExecutingAssembly().GetName().Version, i.e. the managed
+        # AssemblyVersion. Verifying only the apphost's Win32 FileVersion
+        # would let a build ship whose assembly version never moved, and the
+        # updater would then offer the same update forever, each download
+        # changing nothing.
+        $dll = "app/bin/x64/Release/net10.0-windows/win-x64/GHelper.dll"
+        if (-not (Test-Path $dll)) { throw "no managed assembly at $dll" }
+        $av = [Reflection.AssemblyName]::GetAssemblyName((Resolve-Path $dll)).Version
+        Write-Host "managed AssemblyVersion: $av / expected: $expected"
+        if ($av.Major -ne $expected.Major -or $av.Minor -ne $expected.Minor -or $av.Build -ne $expected.Build) {
+          throw "assembly is $av but should be $expected; -p:AssemblyVersion did not take"
+        }
+
+        # Secondary. PublishSingleFile emits a native apphost bundle, not a
+        # managed PE, so GetAssemblyName cannot be used on the exe itself
+        # ("PE image does not have metadata") — read its version resource.
         $exe = "app/bin/x64/Release/net10.0-windows/win-x64/publish/GHelper.exe"
         if (-not (Test-Path $exe)) { throw "Publish produced no exe at $exe" }
-        $actual = [Reflection.AssemblyName]::GetAssemblyName((Resolve-Path $exe)).Version
-        $expected = [version]"${{ inputs.version }}"
-        Write-Host "exe version: $actual / expected: $expected"
-        if ($actual.Major -ne $expected.Major -or $actual.Minor -ne $expected.Minor -or $actual.Build -ne $expected.Build) {
-          throw "exe is $actual but should be $expected; -p:AssemblyVersion did not take"
+        $raw = (Get-Item $exe).VersionInfo.FileVersion
+        Write-Host "exe FileVersion: $raw"
+        if (-not $raw) { throw "exe carries no FileVersion; the -p: overrides did not take" }
+        $fv = [version](($raw -split '\+')[0])
+        if ($fv.Major -ne $expected.Major -or $fv.Minor -ne $expected.Minor -or $fv.Build -ne $expected.Build) {
+          throw "exe FileVersion is $fv but should be $expected"
         }
 
     - name: Create ZIP
@@ -70,12 +103,18 @@ jobs:
         GH_REPO: ${{ github.repository }}
       shell: pwsh
       run: |
+        # target_commitish must be a branch or a commit SHA — passing the tag
+        # name here fails with "HTTP 422: Release.target_commitish is
+        # invalid". Use the SHA actually checked out and built.
+        $sha = (git rev-parse HEAD).Trim()
+        Write-Host "releasing v$env:VERSION at $sha"
         # Not --draft and not --prerelease: releases/latest, which the in-app
         # updater reads, excludes both.
-        gh release create "v${{ inputs.version }}" `
+        gh release create "v$env:VERSION" `
           app/bin/x64/Release/net10.0-windows/win-x64/publish/GHelper.exe `
           GHelper.zip `
-          --title "G-Helper ${{ inputs.version }} (fork)" `
+          --title "G-Helper $env:VERSION (fork)" `
           --notes "Unsigned fork build of upstream + local changes. SmartScreen will warn on first launch." `
-          --target "${{ inputs.ref }}" `
+          --target "$sha" `
           --latest
+        if ($LASTEXITCODE -ne 0) { throw "gh release create failed with $LASTEXITCODE" }
