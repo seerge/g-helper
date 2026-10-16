@@ -6,6 +6,13 @@ on:
     - cron: '30 5 * * *'
   workflow_dispatch:
 
+# Two overlapping runs would both check out the same pre-merge base, both
+# merge, and both race to push main. The loser dies on a rejected
+# non-fast-forward push and reports nothing. Queue instead of racing.
+concurrency:
+  group: sync-upstream
+  cancel-in-progress: false
+
 permissions:
   contents: write
   issues: write
@@ -14,26 +21,39 @@ jobs:
   sync:
     runs-on: windows-2022
     outputs:
-      released: ${{ steps.tag.outputs.released }}
-      version: ${{ steps.tag.outputs.version }}
-      ref: ${{ steps.tag.outputs.ref }}
+      # The tag step handles the normal path; the recover step handles a tag
+      # that was pushed by an earlier run whose release never published. An
+      # unset output is an empty string, which is falsy, so `||` picks
+      # whichever step actually ran.
+      released: ${{ steps.tag.outputs.released || steps.recover.outputs.released }}
+      version: ${{ steps.tag.outputs.version || steps.recover.outputs.version }}
+      ref: ${{ steps.tag.outputs.ref || steps.recover.outputs.ref }}
     steps:
     - uses: actions/checkout@v7
       with:
-        # Required: fork-version.sh refuses to run on a shallow clone, because
-        # an undercount would emit a version that loses to the installed one.
+        # Required: a shallow clone makes the behind-count below read 0, which
+        # exits green and releases nothing, forever.
         fetch-depth: 0
 
     - name: Fetch upstream
       shell: bash
       run: |
         git remote add upstream https://github.com/seerge/g-helper || true
+        git remote set-url upstream https://github.com/seerge/g-helper
         git fetch upstream main
 
     - name: Check for new upstream commits
       id: check
       shell: bash
       run: |
+        # This guard has to sit in front of the count, not only inside
+        # fork-version.sh: on a shallow clone the count reads 0, every
+        # downstream step is skipped, and the run goes green having done
+        # nothing. That failure is invisible, so assert loudly instead.
+        if [ "$(git rev-parse --is-shallow-repository)" != "false" ]; then
+          echo "shallow checkout; this workflow needs fetch-depth: 0" >&2
+          exit 1
+        fi
         behind="$(git rev-list --count HEAD..upstream/main)"
         echo "behind=$behind" >> "$GITHUB_OUTPUT"
         echo "main is $behind commits behind upstream/main"
@@ -62,7 +82,13 @@ jobs:
       id: build
       if: steps.merge.outputs.conflict == 'false'
       continue-on-error: true
-      run: dotnet build app/GHelper.sln
+      # Must match what release-fork.yml actually publishes. A Debug, RID-less
+      # `dotnet build` can pass while the Release single-file publish fails,
+      # which would push main and the tag and only then fail to release.
+      shell: pwsh
+      run: |
+        dotnet publish app/GHelper.sln --configuration Release --runtime win-x64 -p:PublishSingleFile=true --no-self-contained
+        if ($LASTEXITCODE -ne 0) { throw "release-configuration publish failed with $LASTEXITCODE" }
 
     - name: Report conflict or build failure
       if: steps.merge.outputs.conflict == 'true' || steps.build.outcome == 'failure'
@@ -80,12 +106,12 @@ jobs:
           body="\`git merge upstream/main\` conflicted and was aborted. Nothing was pushed. Merge locally, resolve, push, then re-run this workflow."
         else
           title="Upstream sync blocked: build failure"
-          body="\`upstream/main\` merged cleanly but \`dotnet build app/GHelper.sln\` failed, so the merge was not pushed. See the run log."
+          body="\`upstream/main\` merged cleanly but the release-configuration publish failed, so the merge was not pushed. See the run log."
         fi
 
-        # The run summary is the notification that always works. Issues are
-        # disabled by default on a fork, so the issue path below is a bonus,
-        # not the mechanism we rely on.
+        # The run summary is the notification that always works. Issues can be
+        # disabled on a fork, so the issue path below is a bonus, not the
+        # mechanism we rely on.
         {
           echo "## $title"
           echo
@@ -103,9 +129,9 @@ jobs:
             gh issue comment "$existing" --body "Still blocked as of $(date -u +%Y-%m-%dT%H:%MZ). Run: $run_url" || true
           else
             gh label create upstream-sync --description "Automated upstream sync needs attention" --color B60205 2>/dev/null || true
-            gh issue create --title "$title" --label upstream-sync --body "$body
-
-        Run: $run_url" || true
+            printf '%s\n\nRun: %s\n' "$body" "$run_url" > issue-body.txt
+            gh issue create --title "$title" --label upstream-sync --body-file issue-body.txt || true
+            rm -f issue-body.txt
           fi
         else
           echo "note: cannot read issues on ${{ github.repository }} (Issues may be disabled on this fork); reported via the run summary and this failure instead" >&2
@@ -115,16 +141,19 @@ jobs:
     - name: Push main and tag
       id: tag
       if: steps.merge.outputs.conflict == 'false' && steps.build.outcome == 'success'
-      env:
-        GH_TOKEN: ${{ github.token }}
       shell: bash
       run: |
-        git push origin HEAD:main
+        # Derive before pushing. fork-version.sh can refuse (no fork-only
+        # commits, for one), and under `set -e` that would otherwise fail the
+        # step with main already published and nothing explaining why.
         version="$(bash .github/scripts/fork-version.sh upstream/main)"
         echo "derived version: $version"
-        # Re-runs and same-day syncs must not abort after main was pushed.
+
+        git push origin HEAD:main
+
+        # Covers a tag created out of band, e.g. by hand during testing.
         if git ls-remote --exit-code --tags origin "refs/tags/v$version" >/dev/null 2>&1; then
-          echo "tag v$version already exists; nothing new to release"
+          echo "tag v$version already exists; leaving the release to the recovery path"
           echo "released=false" >> "$GITHUB_OUTPUT"
           exit 0
         fi
@@ -134,20 +163,49 @@ jobs:
         echo "version=$version" >> "$GITHUB_OUTPUT"
         echo "ref=v$version" >> "$GITHUB_OUTPUT"
 
-    - name: Close the sync issue now that sync succeeded
-      if: steps.build.outcome == 'success' && steps.merge.outputs.conflict == 'false'
+    - name: Recover a tag that has no release
+      id: recover
+      if: steps.check.outputs.behind == '0'
       env:
         GH_TOKEN: ${{ github.token }}
         GH_REPO: ${{ github.repository }}
       shell: bash
       run: |
-        # Tolerant by design: Issues may be disabled on this fork, and a
-        # successful sync must never fail because housekeeping could not run.
-        if existing="$(gh issue list --label upstream-sync --state open --json number --jq '.[0].number' 2>/dev/null)"; then
-          if [ -n "$existing" ]; then
-            gh issue close "$existing" --comment "Upstream sync succeeded in run ${{ github.run_id }}." || true
-          fi
+        # Without this, a sync that pushed main and the tag but failed before
+        # publishing leaves the pipeline wedged: every later run sees
+        # behind=0, does nothing, and installed clients never update again.
+        if ! version="$(bash .github/scripts/fork-version.sh upstream/main 2>/dev/null)"; then
+          echo "no derivable version; nothing to recover"
+          exit 0
         fi
+        if ! git ls-remote --exit-code --tags origin "refs/tags/v$version" >/dev/null 2>&1; then
+          echo "no tag v$version; nothing to recover"
+          exit 0
+        fi
+        if gh release view "v$version" >/dev/null 2>&1; then
+          echo "release v$version already published; nothing to recover"
+          exit 0
+        fi
+        echo "tag v$version exists with no release; recovering"
+        echo "released=true" >> "$GITHUB_OUTPUT"
+        echo "version=$version" >> "$GITHUB_OUTPUT"
+        echo "ref=v$version" >> "$GITHUB_OUTPUT"
+
+    - name: Report any other failure
+      if: failure()
+      shell: bash
+      run: |
+        # The conflict/build report above only fires for those two causes. A
+        # failed fetch, a rejected push, a shallow checkout or a refused
+        # version derivation would otherwise leave nothing but a red run.
+        run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        {
+          echo "## Upstream sync failed"
+          echo
+          echo "The run failed outside the conflict and build-gate paths — check which step is red."
+          echo
+          echo "Run: $run_url"
+        } >> "$GITHUB_STEP_SUMMARY"
 
   release:
     needs: sync
@@ -158,3 +216,27 @@ jobs:
       ref: ${{ needs.sync.outputs.ref }}
     permissions:
       contents: write
+
+  close-issue:
+    # Separate job so the tracking issue is only closed once the release has
+    # actually published. Closing it inside the sync job closed it while the
+    # release job could still fail.
+    needs: [sync, release]
+    if: always() && needs.sync.result == 'success' && (needs.release.result == 'success' || needs.release.result == 'skipped')
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+    - name: Close the sync issue now that the pipeline is healthy
+      env:
+        GH_TOKEN: ${{ github.token }}
+        GH_REPO: ${{ github.repository }}
+      shell: bash
+      run: |
+        # Tolerant by design: Issues may be disabled on this fork, and a
+        # healthy sync must never fail because housekeeping could not run.
+        if existing="$(gh issue list --label upstream-sync --state open --json number --jq '.[0].number' 2>/dev/null)"; then
+          if [ -n "$existing" ]; then
+            gh issue close "$existing" --comment "Upstream sync succeeded in run ${{ github.run_id }}." || true
+          fi
+        fi

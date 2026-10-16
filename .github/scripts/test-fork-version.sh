@@ -93,11 +93,36 @@ check "shallow repo exits non-zero" "nonzero" "$([ "$rc" -ne 0 ] && echo nonzero
 check_contains "shallow repo explains why" "shallow repository" "$err"
 rm -rf "$d" "$shallow"
 
-# 5. A missing upstream ref must be reported, not treated as zero commits
+# 5. A missing upstream ref must be reported, not treated as zero commits.
+#    The needle names the ref, because a bare "not found" also matches the
+#    "app/GHelper.csproj not found" diagnostic — it would pass whether the
+#    script refused for the right reason or because of the wrong cwd.
 d="$(make_repo 3 0.288)"
 err="$(cd "$d" && bash "$SCRIPT" no-such-ref 2>&1 >/dev/null)"
-check_contains "missing ref explains why" "not found" "$err"
+rc=0
+(cd "$d" && bash "$SCRIPT" no-such-ref >/dev/null 2>&1) || rc=$?
+check "missing ref exits non-zero" "nonzero" "$([ "$rc" -ne 0 ] && echo nonzero || echo zero)"
+check_contains "missing ref explains why" "ref 'no-such-ref' not found" "$err"
 rm -rf "$d"
+
+# 6. The ordering the whole version scheme rests on. Pinned here because the
+#    comparison is between the tag string and the four-component version the
+#    assembly actually reports: <AssemblyVersion>0.288</AssemblyVersion>
+#    reports as 0.288.0.0, so a fork's 0.288.N must beat that and lose to a
+#    later 0.289.0.0. A `Build` of -1 is a property of a parsed string only
+#    and is NOT what the updater compares against.
+if command -v pwsh >/dev/null 2>&1; then
+  ord="$(pwsh -NoProfile -Command '
+    $r = @()
+    if (([version]"0.288.9").CompareTo([version]"0.288.0.0") -ne  1) { $r += "fork build must beat installed 0.288.0.0" }
+    if (([version]"0.288.9").CompareTo([version]"0.289.0.0") -ne -1) { $r += "upstream bump must beat fork build" }
+    if (([version]"0.288.0").CompareTo([version]"0.288.0.0") -ne -1) { $r += "0.288.0 must be lower than 0.288.0.0" }
+    if (([version]"0.288.9").CompareTo([version]"0.288.9.0") -ne -1) { $r += "a fork build must not re-offer itself" }
+    if ($r.Count -eq 0) { "ok" } else { $r -join "; " }' 2>/dev/null)"
+  check "System.Version ordering holds" "ok" "$ord"
+else
+  echo "SKIP: System.Version ordering (pwsh not available)"
+fi
 
 echo "---"
 echo "passed: $PASS  failed: $FAIL"

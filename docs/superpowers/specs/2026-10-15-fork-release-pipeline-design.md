@@ -64,11 +64,27 @@ Properties:
 - Deterministic, no state file, nothing in the repo to conflict over.
 - Monotonic: `FORK_REV` only grows, since history only grows. Each sync adds a
   merge commit, so each sync yields a fresh version.
-- Ordered correctly against upstream: `new Version("0.288.5")` compares
-  greater than `new Version("0.288")` (whose `Build` is `-1`) and less than
-  `new Version("0.289")`. At upstream `0.289` the fork publishes `0.289.12`,
-  still between `0.289` and `0.290`.
-- `FORK_REV == 0` means no fork-only commits; no release is published.
+- Ordered correctly against upstream. The comparison that matters is between
+  the tag string the updater parses and the **assembly version it reads at
+  runtime**, and assembly metadata always stores four `ushort`s — a csproj
+  `<AssemblyVersion>0.288</AssemblyVersion>` reports as `0.288.0.0`, never as
+  `0.288` with a `Build` of `-1`. Measured with .NET 10:
+
+      [version]"0.288.9" vs "0.288.0.0"  ->  1   fork build wins
+      [version]"0.288.9" vs "0.289.0.0"  -> -1   upstream bump wins
+      [version]"0.288.0" vs "0.288.0.0"  -> -1   not 0
+      [version]"0.288.9" vs "0.288.9.0"  -> -1   never re-offers itself
+
+  So `0.288.N` beats the installed `0.288.0.0` and loses to a later
+  `0.289.0.0`, which is what the scheme needs. Two consequences are worth
+  stating because they are easy to get backwards: a `Build` of `-1` applies
+  only to a *parsed string*, not to anything the updater actually reads; and
+  a published fork build never offers itself its own release, since
+  `0.288.9 < 0.288.9.0`.
+- `FORK_REV == 0` means no fork-only commits, and no release is published.
+  Note that `v0.288.0` would compare *lower* than the installed `0.288.0.0`
+  rather than equal to it, so the real risk it avoids is a release that can
+  never be offered at all — not one offered uselessly.
 
 ## Components
 
