@@ -64,12 +64,17 @@ jobs:
       continue-on-error: true
       run: dotnet build app/GHelper.sln
 
-    - name: Open issue on conflict or build failure
+    - name: Report conflict or build failure
       if: steps.merge.outputs.conflict == 'true' || steps.build.outcome == 'failure'
       env:
         GH_TOKEN: ${{ github.token }}
+        # Required: the `upstream` remote added above makes gh prefer
+        # seerge/g-helper as the base repo, so without this pin every gh call
+        # here targets upstream instead of this fork.
+        GH_REPO: ${{ github.repository }}
       shell: bash
       run: |
+        run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
         if [ "${{ steps.merge.outputs.conflict }}" = "true" ]; then
           title="Upstream sync blocked: merge conflict"
           body="\`git merge upstream/main\` conflicted and was aborted. Nothing was pushed. Merge locally, resolve, push, then re-run this workflow."
@@ -77,16 +82,33 @@ jobs:
           title="Upstream sync blocked: build failure"
           body="\`upstream/main\` merged cleanly but \`dotnet build app/GHelper.sln\` failed, so the merge was not pushed. See the run log."
         fi
+
+        # The run summary is the notification that always works. Issues are
+        # disabled by default on a fork, so the issue path below is a bonus,
+        # not the mechanism we rely on.
+        {
+          echo "## $title"
+          echo
+          echo "$body"
+          echo
+          echo "Run: $run_url"
+        } >> "$GITHUB_STEP_SUMMARY"
+        echo "$title"
+        echo "$body"
+
         # Dedup: one open issue at a time, or a diverged upstream produces an
         # identical issue every single day.
-        existing="$(gh issue list --label upstream-sync --state open --json number --jq '.[0].number')"
-        if [ -n "$existing" ]; then
-          gh issue comment "$existing" --body "Still blocked as of $(date -u +%Y-%m-%dT%H:%MZ). Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-        else
-          gh label create upstream-sync --description "Automated upstream sync needs attention" --color B60205 2>/dev/null || true
-          gh issue create --title "$title" --label upstream-sync --body "$body
+        if existing="$(gh issue list --label upstream-sync --state open --json number --jq '.[0].number' 2>/dev/null)"; then
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "Still blocked as of $(date -u +%Y-%m-%dT%H:%MZ). Run: $run_url" || true
+          else
+            gh label create upstream-sync --description "Automated upstream sync needs attention" --color B60205 2>/dev/null || true
+            gh issue create --title "$title" --label upstream-sync --body "$body
 
-        Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        Run: $run_url" || true
+          fi
+        else
+          echo "note: cannot read issues on ${{ github.repository }} (Issues may be disabled on this fork); reported via the run summary and this failure instead" >&2
         fi
         exit 1
 
@@ -116,11 +138,15 @@ jobs:
       if: steps.build.outcome == 'success' && steps.merge.outputs.conflict == 'false'
       env:
         GH_TOKEN: ${{ github.token }}
+        GH_REPO: ${{ github.repository }}
       shell: bash
       run: |
-        existing="$(gh issue list --label upstream-sync --state open --json number --jq '.[0].number')"
-        if [ -n "$existing" ]; then
-          gh issue close "$existing" --comment "Upstream sync succeeded in run ${{ github.run_id }}."
+        # Tolerant by design: Issues may be disabled on this fork, and a
+        # successful sync must never fail because housekeeping could not run.
+        if existing="$(gh issue list --label upstream-sync --state open --json number --jq '.[0].number' 2>/dev/null)"; then
+          if [ -n "$existing" ]; then
+            gh issue close "$existing" --comment "Upstream sync succeeded in run ${{ github.run_id }}." || true
+          fi
         fi
 
   release:

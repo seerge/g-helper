@@ -65,6 +65,9 @@ jobs:
     - name: Publish release
       env:
         GH_TOKEN: ${{ github.token }}
+        # Pin the target repo. gh otherwise infers it from git remotes and
+        # prefers one named `upstream`, which would publish to the wrong repo.
+        GH_REPO: ${{ github.repository }}
       shell: pwsh
       run: |
         # Not --draft and not --prerelease: releases/latest, which the in-app
