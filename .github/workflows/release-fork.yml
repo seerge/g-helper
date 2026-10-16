@@ -1,0 +1,78 @@
+name: Release (fork)
+
+# Deliberately NOT triggered by `push: tags`. A tag pushed with the default
+# GITHUB_TOKEN cannot start another workflow run, so a tag trigger would look
+# correct and never fire. sync-upstream.yml calls this via workflow_call.
+on:
+  workflow_call:
+    inputs:
+      version:
+        description: 'Version to publish, e.g. 0.288.4'
+        required: true
+        type: string
+      ref:
+        description: 'Tag or sha to build'
+        required: true
+        type: string
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish, e.g. 0.288.4'
+        required: true
+        type: string
+      ref:
+        description: 'Tag or sha to build'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-2022
+    steps:
+    - uses: actions/checkout@v7
+      with:
+        ref: ${{ inputs.ref }}
+
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v5
+      with:
+        dotnet-version: '10.0.x'
+
+    - name: Publish
+      run: |
+        dotnet publish app/GHelper.sln --configuration Release --runtime win-x64 -p:PublishSingleFile=true --no-self-contained -p:AssemblyVersion=${{ inputs.version }}
+
+    - name: Confirm the built exe carries the injected version
+      shell: pwsh
+      run: |
+        $exe = "app/bin/x64/Release/net10.0-windows/win-x64/publish/GHelper.exe"
+        if (-not (Test-Path $exe)) { throw "Publish produced no exe at $exe" }
+        $actual = [Reflection.AssemblyName]::GetAssemblyName((Resolve-Path $exe)).Version
+        $expected = [version]"${{ inputs.version }}"
+        Write-Host "exe version: $actual / expected: $expected"
+        if ($actual.Major -ne $expected.Major -or $actual.Minor -ne $expected.Minor -or $actual.Build -ne $expected.Build) {
+          throw "exe is $actual but should be $expected; -p:AssemblyVersion did not take"
+        }
+
+    - name: Create ZIP
+      shell: pwsh
+      run: |
+        Compress-Archive -Path app/bin/x64/Release/net10.0-windows/win-x64/publish/GHelper.exe -DestinationPath GHelper.zip -Force
+
+    - name: Publish release
+      env:
+        GH_TOKEN: ${{ github.token }}
+      shell: pwsh
+      run: |
+        # Not --draft and not --prerelease: releases/latest, which the in-app
+        # updater reads, excludes both.
+        gh release create "v${{ inputs.version }}" `
+          app/bin/x64/Release/net10.0-windows/win-x64/publish/GHelper.exe `
+          GHelper.zip `
+          --title "G-Helper ${{ inputs.version }} (fork)" `
+          --notes "Unsigned fork build of upstream + local changes. SmartScreen will warn on first launch." `
+          --target "${{ inputs.ref }}" `
+          --latest
