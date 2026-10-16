@@ -42,19 +42,29 @@ jobs:
         dotnet-version: '10.0.x'
 
     - name: Publish
+      # FileVersion and Version are set alongside AssemblyVersion so the
+      # apphost carries readable Win32 version info. AssemblyVersion is the
+      # one the in-app updater compares; the others only make the exe's file
+      # properties agree with it, and give the check below something to read.
       run: |
-        dotnet publish app/GHelper.sln --configuration Release --runtime win-x64 -p:PublishSingleFile=true --no-self-contained -p:AssemblyVersion=${{ inputs.version }}
+        dotnet publish app/GHelper.sln --configuration Release --runtime win-x64 -p:PublishSingleFile=true --no-self-contained -p:AssemblyVersion=${{ inputs.version }} -p:FileVersion=${{ inputs.version }} -p:Version=${{ inputs.version }}
 
     - name: Confirm the built exe carries the injected version
       shell: pwsh
       run: |
+        # PublishSingleFile produces a native apphost bundle, not a managed
+        # PE, so [Reflection.AssemblyName]::GetAssemblyName throws
+        # "PE image does not have metadata" here. Read the Win32 version
+        # resource instead, which the apphost does carry.
         $exe = "app/bin/x64/Release/net10.0-windows/win-x64/publish/GHelper.exe"
         if (-not (Test-Path $exe)) { throw "Publish produced no exe at $exe" }
-        $actual = [Reflection.AssemblyName]::GetAssemblyName((Resolve-Path $exe)).Version
         $expected = [version]"${{ inputs.version }}"
-        Write-Host "exe version: $actual / expected: $expected"
+        $raw = (Get-Item $exe).VersionInfo.FileVersion
+        Write-Host "exe FileVersion: $raw / expected: $expected"
+        if (-not $raw) { throw "exe carries no FileVersion; the -p: overrides did not take" }
+        $actual = [version]($raw -split '\+')[0]
         if ($actual.Major -ne $expected.Major -or $actual.Minor -ne $expected.Minor -or $actual.Build -ne $expected.Build) {
-          throw "exe is $actual but should be $expected; -p:AssemblyVersion did not take"
+          throw "exe is $actual but should be $expected; the -p: version overrides did not take"
         }
 
     - name: Create ZIP
