@@ -1,0 +1,160 @@
+name: Sync upstream
+
+on:
+  schedule:
+    # 05:30 UTC daily. Cron in Actions is best-effort and can run late.
+    - cron: '30 5 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  sync:
+    runs-on: windows-2022
+    outputs:
+      released: ${{ steps.tag.outputs.released }}
+      version: ${{ steps.tag.outputs.version }}
+      ref: ${{ steps.tag.outputs.ref }}
+    steps:
+    - uses: actions/checkout@v7
+      with:
+        # Required: fork-version.sh refuses to run on a shallow clone, because
+        # an undercount would emit a version that loses to the installed one.
+        fetch-depth: 0
+
+    - name: Fetch upstream
+      shell: bash
+      run: |
+        git remote add upstream https://github.com/seerge/g-helper || true
+        git fetch upstream main
+
+    - name: Check for new upstream commits
+      id: check
+      shell: bash
+      run: |
+        behind="$(git rev-list --count HEAD..upstream/main)"
+        echo "behind=$behind" >> "$GITHUB_OUTPUT"
+        echo "main is $behind commits behind upstream/main"
+
+    - name: Merge upstream
+      id: merge
+      if: steps.check.outputs.behind != '0'
+      shell: bash
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        if git merge --no-edit upstream/main; then
+          echo "conflict=false" >> "$GITHUB_OUTPUT"
+        else
+          git merge --abort
+          echo "conflict=true" >> "$GITHUB_OUTPUT"
+        fi
+
+    - name: Setup dotnet
+      if: steps.merge.outputs.conflict == 'false'
+      uses: actions/setup-dotnet@v5
+      with:
+        dotnet-version: '10.0.x'
+
+    - name: Build gate
+      id: build
+      if: steps.merge.outputs.conflict == 'false'
+      continue-on-error: true
+      run: dotnet build app/GHelper.sln
+
+    - name: Report conflict or build failure
+      if: steps.merge.outputs.conflict == 'true' || steps.build.outcome == 'failure'
+      env:
+        GH_TOKEN: ${{ github.token }}
+        # Required: the `upstream` remote added above makes gh prefer
+        # seerge/g-helper as the base repo, so without this pin every gh call
+        # here targets upstream instead of this fork.
+        GH_REPO: ${{ github.repository }}
+      shell: bash
+      run: |
+        run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        if [ "${{ steps.merge.outputs.conflict }}" = "true" ]; then
+          title="Upstream sync blocked: merge conflict"
+          body="\`git merge upstream/main\` conflicted and was aborted. Nothing was pushed. Merge locally, resolve, push, then re-run this workflow."
+        else
+          title="Upstream sync blocked: build failure"
+          body="\`upstream/main\` merged cleanly but \`dotnet build app/GHelper.sln\` failed, so the merge was not pushed. See the run log."
+        fi
+
+        # The run summary is the notification that always works. Issues are
+        # disabled by default on a fork, so the issue path below is a bonus,
+        # not the mechanism we rely on.
+        {
+          echo "## $title"
+          echo
+          echo "$body"
+          echo
+          echo "Run: $run_url"
+        } >> "$GITHUB_STEP_SUMMARY"
+        echo "$title"
+        echo "$body"
+
+        # Dedup: one open issue at a time, or a diverged upstream produces an
+        # identical issue every single day.
+        if existing="$(gh issue list --label upstream-sync --state open --json number --jq '.[0].number' 2>/dev/null)"; then
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "Still blocked as of $(date -u +%Y-%m-%dT%H:%MZ). Run: $run_url" || true
+          else
+            gh label create upstream-sync --description "Automated upstream sync needs attention" --color B60205 2>/dev/null || true
+            gh issue create --title "$title" --label upstream-sync --body "$body
+
+        Run: $run_url" || true
+          fi
+        else
+          echo "note: cannot read issues on ${{ github.repository }} (Issues may be disabled on this fork); reported via the run summary and this failure instead" >&2
+        fi
+        exit 1
+
+    - name: Push main and tag
+      id: tag
+      if: steps.merge.outputs.conflict == 'false' && steps.build.outcome == 'success'
+      env:
+        GH_TOKEN: ${{ github.token }}
+      shell: bash
+      run: |
+        git push origin HEAD:main
+        version="$(bash .github/scripts/fork-version.sh upstream/main)"
+        echo "derived version: $version"
+        # Re-runs and same-day syncs must not abort after main was pushed.
+        if git ls-remote --exit-code --tags origin "refs/tags/v$version" >/dev/null 2>&1; then
+          echo "tag v$version already exists; nothing new to release"
+          echo "released=false" >> "$GITHUB_OUTPUT"
+          exit 0
+        fi
+        git tag "v$version"
+        git push origin "v$version"
+        echo "released=true" >> "$GITHUB_OUTPUT"
+        echo "version=$version" >> "$GITHUB_OUTPUT"
+        echo "ref=v$version" >> "$GITHUB_OUTPUT"
+
+    - name: Close the sync issue now that sync succeeded
+      if: steps.build.outcome == 'success' && steps.merge.outputs.conflict == 'false'
+      env:
+        GH_TOKEN: ${{ github.token }}
+        GH_REPO: ${{ github.repository }}
+      shell: bash
+      run: |
+        # Tolerant by design: Issues may be disabled on this fork, and a
+        # successful sync must never fail because housekeeping could not run.
+        if existing="$(gh issue list --label upstream-sync --state open --json number --jq '.[0].number' 2>/dev/null)"; then
+          if [ -n "$existing" ]; then
+            gh issue close "$existing" --comment "Upstream sync succeeded in run ${{ github.run_id }}." || true
+          fi
+        fi
+
+  release:
+    needs: sync
+    if: needs.sync.outputs.released == 'true'
+    uses: ./.github/workflows/release-fork.yml
+    with:
+      version: ${{ needs.sync.outputs.version }}
+      ref: ${{ needs.sync.outputs.ref }}
+    permissions:
+      contents: write
