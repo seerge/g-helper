@@ -21,7 +21,7 @@ built it and published a release; and the next G-Helper launch shows
 
 `app/AutoUpdate/AutoUpdateControl.cs` hardcodes upstream in two places:
 
-- `versionUrl = "https://github.com/seerge/g-helper/releases"` (line 18)
+- `versionUrl = "https://github.com/seerge/g-helper/releases"` (line 15)
 - `https://api.github.com/repos/seerge/g-helper/releases/latest` (line 77)
 
 A fork build therefore checks upstream's releases, and `AutoUpdate()`
@@ -101,8 +101,10 @@ Steps:
 3. If `upstream/main` has no commits absent from `main`, exit successfully.
 4. `git merge --no-edit upstream/main`.
    - On conflict: `git merge --abort`, then open an issue labelled
-     `upstream-conflict` (deduplicated — do not open a second issue while one
-     is already open), and stop without pushing.
+     `upstream-sync` (deduplicated — do not open a second issue while one is
+     already open; comment on the existing one instead), and stop without
+     pushing. The same label covers build-gate failures, so one lookup serves
+     both paths.
 5. Build gate: `dotnet build app/GHelper.sln` on `windows-2022` with
    `actions/setup-dotnet@v5` and `dotnet-version: 10.0.x`, matching
    `build.yml`.
@@ -173,7 +175,7 @@ cleanly against upstream.
             |
             |  daily cron
             v
-    sync-upstream.yml --conflict-----> issue (upstream-conflict), stop
+    sync-upstream.yml --conflict-----> issue (upstream-sync), stop
             |          --build fails-> issue, stop
             | clean + compiles
             v
@@ -203,7 +205,7 @@ End-to-end, done once at implementation time:
 4. Click Update and confirm the download URL in `Logger` output points at
    `vamsi-alluri/g-helper`, and that the app relaunches on the new version.
 5. Force a conflict deliberately (edit a line upstream also changed) and
-   confirm an `upstream-conflict` issue appears and nothing is pushed.
+   confirm an `upstream-sync` issue appears and nothing is pushed.
 
 Testing notes:
 
