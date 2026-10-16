@@ -12,7 +12,7 @@ body:
       options:
         - label: I made myself familiar with the <a href='https://github.com/seerge/g-helper?tab=readme-ov-file'>Readme</a>, <a href='https://github.com/seerge/g-helper/wiki/FAQ'>FAQ</a> and <a href='https://github.com/seerge/g-helper/wiki/Troubleshooting'>Troubleshooting</a>.
           required: true
-        - label: I understand that, if insufficient information or no app logs will be provided, my issue will be closed without an answer.
+        - label: I understand that if insufficient information or no app logs will be provided, my issue will be closed without an answer.
           required: true
     validations:
       required: true
@@ -20,8 +20,8 @@ body:
     id: description
     attributes:
       label: What's wrong?
-      description: Provide detailed description of what is wrong or does not work as expected.
-      placeholder: Provide detailed description of what is wrong or does not work as expected.
+      description: Provide a detailed description of what is wrong or does not work as expected.
+      placeholder: Provide a detailed description of what is wrong or does not work as expected.
     validations:
       required: true
   - type: textarea
@@ -40,8 +40,8 @@ body:
     id: logs
     attributes:
       label: Logs
-      placeholder: Please drag and drop complete log file from ``%APPDATA%\GHelper\log.txt``
-      description: Please drag and drop complete log file from ``%APPDATA%\GHelper\log.txt``
+      placeholder: Please drag and drop the complete log file from ``%APPDATA%\GHelper\log.txt``
+      description: Please drag and drop the complete log file from ``%APPDATA%\GHelper\log.txt``
     validations:
       required: true
   - type: input
