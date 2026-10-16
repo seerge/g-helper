@@ -80,6 +80,11 @@ jobs:
         GH_REPO: ${{ github.repository }}
       shell: pwsh
       run: |
+        # target_commitish must be a branch or a commit SHA — passing the tag
+        # name here fails with "HTTP 422: Release.target_commitish is
+        # invalid". Use the SHA actually checked out and built.
+        $sha = (git rev-parse HEAD).Trim()
+        Write-Host "releasing v${{ inputs.version }} at $sha"
         # Not --draft and not --prerelease: releases/latest, which the in-app
         # updater reads, excludes both.
         gh release create "v${{ inputs.version }}" `
@@ -87,5 +92,6 @@ jobs:
           GHelper.zip `
           --title "G-Helper ${{ inputs.version }} (fork)" `
           --notes "Unsigned fork build of upstream + local changes. SmartScreen will warn on first launch." `
-          --target "${{ inputs.ref }}" `
+          --target "$sha" `
           --latest
+        if ($LASTEXITCODE -ne 0) { throw "gh release create failed with $LASTEXITCODE" }
