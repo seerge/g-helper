@@ -12,7 +12,11 @@ namespace GHelper.AutoUpdate
 
         SettingsForm settings;
 
-        public string versionUrl = "https://github.com/seerge/g-helper/releases";
+        // Fork: updates come from this repository, not the upstream project.
+        // Pointing this back upstream makes Update overwrite this fork with
+        // the upstream build, losing every local feature.
+        const string RepoSlug = "vamsi-alluri/g-helper";
+        public string versionUrl = "https://github.com/" + RepoSlug + "/releases";
         public bool update = false;
 
         static long lastUpdate;
@@ -74,7 +78,7 @@ namespace GHelper.AutoUpdate
                 using (var httpClient = new HttpClient())
                 {
                     httpClient.DefaultRequestHeaders.Add("User-Agent", "G-Helper App");
-                    var json = await httpClient.GetStringAsync("https://api.github.com/repos/seerge/g-helper/releases/latest");
+                    var json = await httpClient.GetStringAsync("https://api.github.com/repos/" + RepoSlug + "/releases/latest");
                     var config = JsonSerializer.Deserialize<JsonElement>(json);
                     var tag = config.GetProperty("tag_name").ToString().Replace("v", "");
                     var assets = config.GetProperty("assets");
