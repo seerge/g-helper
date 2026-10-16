@@ -170,6 +170,7 @@ namespace GHelper
                 PeripheralsProvider.DetectAllAsusMice();
                 PeripheralsProvider.DetectAllAsusKeyboards();
                 PeripheralsProvider.DetectAllAsusHeadsets();
+                Peripherals.Mouse.Models.StrixArion.Detect();
             });
             PeripheralsProvider.RegisterForDeviceEvents();
 

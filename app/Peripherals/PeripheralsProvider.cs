@@ -535,7 +535,6 @@ namespace GHelper.Peripherals
             DetectMouse(new BalteusQi());
             DetectMouse(new Balteus());
             DetectMouse(new BulwarkDock());
-            StrixArion.Detect();
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
