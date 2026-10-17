@@ -119,6 +119,7 @@ namespace GHelper.USB
         public static bool HasLightbar { get; private set; }
         public static bool HasRearglow { get; private set; }
         static bool hasRearStrip = false;
+        static bool hasPerKeyMap = true;
         public static bool IsOldStrix { get; private set; }
 
         static System.Timers.Timer timer = new System.Timers.Timer(1000);
@@ -379,6 +380,7 @@ namespace GHelper.USB
             HasLightbar = (feat1 & FEAT1_LIGHTBAR) != 0;
             HasRearglow = (feat1 & (FEAT1_REARGLOW | FEAT1_VCUT)) != 0;
             hasRearStrip = (feat1 & FEAT1_REARGLOW) != 0;
+            hasPerKeyMap = (feat2 & FEAT2_BIT_FORMAT_KEY_POS) != 0;
 
             isStrix4Zone = BacklightType == AuraBacklightType.MultiZone;
 
@@ -682,7 +684,7 @@ namespace GHelper.USB
             if (init || initDirect)
             {
                 initDirect = false;
-                AsusHid.SetFeatureAura(new byte[] { AsusHid.AURA_ID, 0xBC, (byte)(IsOldStrix ? 0 : 1) });
+                AsusHid.SetFeatureAura(new byte[] { AsusHid.AURA_ID, 0xBC, (byte)(IsOldStrix || !hasPerKeyMap ? 0 : 1) });
                 Thread.Sleep(50);
             }
 
