@@ -22,3 +22,5 @@ jobs:
     - name: Build
       run: |
         dotnet build app/GHelper.sln
+    - name: Touchscreen regression checks
+      run: dotnet run --project tests/GHelper.Tests -c Release

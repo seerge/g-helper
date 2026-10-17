@@ -180,6 +180,14 @@ namespace GHelper
 
             switch (action)
             {
+                case "touchscreen-on":
+                case "touchscreen-off":
+                    Startup.ReScheduleAdmin();
+                    bool touchscreenEnabled = action == "touchscreen-on";
+                    if (TouchscreenHelper.ToggleTouchscreen(touchscreenEnabled) != touchscreenEnabled)
+                        MessageBox.Show(settingsForm, Properties.Strings.TouchscreenError, Properties.Strings.Touchscreen, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    settingsForm.VisualiseTouchscreen();
+                    break;
                 case "cpu":
                     Startup.ReScheduleAdmin();
                     settingsForm.FansToggle();
