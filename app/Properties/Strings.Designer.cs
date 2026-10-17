@@ -2726,6 +2726,12 @@ namespace GHelper.Properties {
             }
         }
         
+        internal static string ShowTouchscreenToggle => ResourceManager.GetString("ShowTouchscreenToggle", resourceCulture);
+
+        internal static string TouchscreenError => ResourceManager.GetString("TouchscreenError", resourceCulture);
+
+        internal static string TouchscreenUnavailable => ResourceManager.GetString("TouchscreenUnavailable", resourceCulture);
+
         /// <summary>
         ///   Looks up a localized string similar to Touchscreen.
         /// </summary>
