@@ -99,7 +99,7 @@ public static class AsusHid
                 if (z13 is not null) return z13.Open();
             }
 
-            if (AppConfig.IsS17())
+            if (AppConfig.IsS17() && reportId == INPUT_ID)
             {
                 var s17 = devices.Where(device => device.ProductID == 0x18c6).FirstOrDefault();
                 if (s17 is not null) return s17.Open();
