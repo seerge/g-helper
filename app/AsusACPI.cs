@@ -552,7 +552,7 @@ public class AsusACPI
         uint endpoint = device switch
         {
             AsusFan.GPU => GPU_Fan,
-            AsusFan.Mid => Mid_Fan,
+            AsusFan.Mid => _midFanReadId,
             _ => CPU_Fan,
         };
 
@@ -561,6 +561,11 @@ public class AsusACPI
         if (fan > 120 || (fan == 0 && raw < 0)) fan = -1;
         return fan;
     }
+
+    // UX3607 (Snapdragon) has a real second fan whose tach lives at a non-standard
+    // ID; the stock Mid_Fan (0x00110031) returns nothing on this model. Route the
+    // Mid slot to the working ID so the second fan's RPM is displayed.
+    static readonly uint _midFanReadId = AppConfig.ContainsModel("UX3607") ? 0x00110035u : Mid_Fan;
 
     public bool IsMidFanSupported()
     {
