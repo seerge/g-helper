@@ -429,6 +429,10 @@ namespace GHelper
             panelGamma.Visible = true;
             tableVisual.Visible = true;
 
+            comboVisual.SelectedValueChanged -= ComboVisual_SelectedValueChanged;
+            comboColorTemp.SelectedValueChanged -= ComboVisual_SelectedValueChanged;
+            comboGamut.SelectedValueChanged -= ComboGamut_SelectedValueChanged;
+
             var visualValue = (SplendidCommand)AppConfig.Get("visual", (int)VisualControl.GetDefaultVisualMode());
             var colorTempValue = AppConfig.Get("color_temp", VisualControl.DefaultColorTemp);
 
