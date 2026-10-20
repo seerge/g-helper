@@ -72,6 +72,19 @@ Small and lightweight Armoury Crate alternative for Asus laptops offering almost
 - Optimized GPU mode - disables dGPU on battery and enables when plugged in
 - Auto Screen refresh rate (60Hz on battery and max Hz when plugged)
 - Keyboard backlight timeout on battery or when plugged in
+- Windows light / dark theme switching at sunrise and sunset
+
+### :last_quarter_moon: Windows Theme Switching
+
+Switches Windows between its light and dark theme, by hand or with the sun.
+
+- **By hand:** click the sun / moon icon beside *Flicker-free Dimming / Visual Mode* to flip the theme straight away. Right-click the same icon for the settings below.
+- **On a key:** open *Extra* and pick **Light / Dark Theme** for any bindable key - M1-M4, Fn+C, Fn+V and the rest.
+- **With the sun:** tick *Switch Windows theme with the sun*, then set your latitude, longitude, and the sun elevation that counts as daylight. The dialog shows the times those values resolve to, so a wrong coordinate is obvious before you save.
+
+The sun's position is computed on your machine with the NOAA solar-position formula. Nothing is sent anywhere, there is no location lookup, and it works offline. Coordinates are seeded from your time zone and can be edited.
+
+A theme you set by hand is never overridden until the schedule next disagrees with it, so an evening toggle still stands in the morning.
 
 ### :rocket: Performance Modes
 >[!NOTE]
@@ -241,6 +254,7 @@ Battery level, lighting, equalizer presets, sidetone, microphone and AI noise ca
 - ``Ctrl + Shift + Alt + F19`` - Custom 1 (if exists)
 - ``Ctrl + Shift + Alt + F20`` - Custom 2 (if exists)
 - ``Ctrl + Shift + Alt + F21`` - Toggle XG Mobile
+- *Light / Dark Theme* - bindable to any key in *Extra* (no default binding)
 - [Custom keybindings / hotkeys](https://github.com/seerge/g-helper/wiki/Power-user-settings#custom-hotkey-actions)
 
 ### 🎮ROG Ally Bindings
