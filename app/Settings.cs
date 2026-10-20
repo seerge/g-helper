@@ -375,7 +375,12 @@ namespace GHelper
 
             bool light = WindowsTheme.IsLight();
             Image glyph = light ? Resources.icons8_brightness_32 : MoonImage();
+
+            // TintImage returns a fresh bitmap every call, so the one it replaces has
+            // to go or each theme change leaks a GDI+ handle until the finalizer runs.
+            Image? previous = pictureGamma.BackgroundImage;
             pictureGamma.BackgroundImage = ControlHelper.TintImage(glyph, foreMain);
+            if (!ReferenceEquals(previous, Resources.icons8_brightness_32)) previous?.Dispose();
 
             string tip = "Click: toggle light/dark · Right-click: settings";
             DateTime? next = Program.themeControl.NextSwitchLocal;

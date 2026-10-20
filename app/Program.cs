@@ -304,6 +304,10 @@ namespace GHelper
                     if (settingsForm.themeForm is not null && settingsForm.themeForm.Text != "")
                         settingsForm.themeForm.InitTheme();
 
+                    // The theme can change without us: Windows Settings, another tool,
+                    // or the Windows auto-switch. The glyph has to follow that too.
+                    settingsForm.VisualiseTheme();
+
                     break;
             }
         }

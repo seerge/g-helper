@@ -42,9 +42,11 @@ namespace GHelper.Theme
 
         /// <summary>
         /// Sets both registry values and tells the shell and running apps to
-        /// repaint. Logs and swallows any failure; never throws.
+        /// repaint. Logs and swallows any failure; never throws. Returns false when
+        /// the registry write did not land, so a caller recording that it applied a
+        /// crossing can decline to record one that never happened.
         /// </summary>
-        public static void Apply(bool light)
+        public static bool Apply(bool light)
         {
             try
             {
@@ -56,10 +58,12 @@ namespace GHelper.Theme
                     "ImmersiveColorSet", SMTO_ABORTIFHUNG, BroadcastTimeoutMs, out _);
 
                 Logger.WriteLine($"Theme: applied {(light ? "light" : "dark")}, broadcast {(broadcast != IntPtr.Zero ? "acknowledged" : "NOT acknowledged - the shell may not repaint")}");
+                return true;
             }
             catch (Exception ex)
             {
                 Logger.WriteLine($"Theme: failed to apply {(light ? "light" : "dark")} ({ex.Message})");
+                return false;
             }
         }
 

@@ -15,12 +15,12 @@ namespace GHelper.Theme
         // The broadcast in WindowsTheme.Apply blocks its thread for seconds while it
         // waits for every top-level window to acknowledge, so applies run off the UI
         // thread: on it, the window cannot pump the very message the broadcast waits
-        // for, and a keypress took 7-11s to land. writeLock serialises the writes;
-        // stateLock guards the last requested theme, so two quick toggles cannot both
-        // read the same registry value and coalesce into one.
-        private readonly object writeLock = new();
+        // for, and a keypress took 7-11s to land. One worker drains them, so the last
+        // theme asked for is the last one written - queued tasks contending for a lock
+        // can be granted it in any order and land backwards.
         private readonly object stateLock = new();
-        private bool? requestedLight;
+        private (bool Light, Action? OnSuccess)? pending;
+        private bool working;
 
         /// <summary>
         /// The armed crossing in local time, or null when the schedule is off or
@@ -53,6 +53,23 @@ namespace GHelper.Theme
         /// </summary>
         public void Evaluate()
         {
+            // SystemEvents raises PowerModeChanged, SessionSwitch and TimeChanged on
+            // its own thread, and System.Windows.Forms.Timer is a hidden-window timer
+            // that only its owning thread may start or stop. Get onto the UI thread
+            // before touching it. At startup the handle does not exist yet and we are
+            // already on that thread, so the call runs inline.
+            Form? form = Program.settingsForm;
+            if (form is not null && !form.IsDisposed && form.IsHandleCreated && form.InvokeRequired)
+            {
+                form.BeginInvoke(EvaluateCore);
+                return;
+            }
+
+            EvaluateCore();
+        }
+
+        private void EvaluateCore()
+        {
             try
             {
                 if (!ThemeConfig.ScheduleEnabled)
@@ -69,19 +86,27 @@ namespace GHelper.Theme
                 DateTime? recorded = ThemeConfig.LastCrossing;
                 bool light = ThemeSchedule.IsLight(now, site);
 
+                // A crossing recorded ahead of now means the clock moved, not that the
+                // future already happened. Left alone it outranks every real crossing
+                // until time catches up, and the schedule goes quiet for that long.
+                if (recorded is not null && recorded > now)
+                {
+                    Logger.WriteLine($"Theme: recorded crossing {recorded:O} is in the future, discarding it (clock change?)");
+                    recorded = null;
+                }
+
                 if (recorded is null)
                 {
                     // First run: land on the correct theme instead of waiting up to
                     // twelve hours for the next crossing.
-                    Apply(light);
-                    ThemeConfig.LastCrossing = last ?? now;
-                    Logger.WriteLine($"Theme: first evaluation applied {Name(light)}, recorded crossing {ThemeConfig.LastCrossing:O}");
+                    DateTime crossing = last ?? now;
+                    Apply(light, () => Record(crossing, $"first evaluation applied {Name(light)}"));
                 }
                 else if (last is not null && last > recorded)
                 {
-                    Apply(light);
-                    ThemeConfig.LastCrossing = last;
-                    Logger.WriteLine($"Theme: crossing at {last:O} is newer than the recorded {recorded:O}, applied {Name(light)}");
+                    DateTime crossing = last.Value;
+                    DateTime was = recorded.Value;
+                    Apply(light, () => Record(crossing, $"crossing is newer than the recorded {was:O}, applied {Name(light)}"));
                 }
                 else
                 {
@@ -103,23 +128,65 @@ namespace GHelper.Theme
         /// </summary>
         public bool Toggle()
         {
+            // Toggle away from whatever is still queued; once the worker has taken it
+            // the registry is the truth again. Holding the last applied value instead
+            // would go stale the moment the theme changed outside G-Helper, and the
+            // next press would be a no-op.
             bool light;
-            lock (stateLock) light = !(requestedLight ?? WindowsTheme.IsLight());
+            lock (stateLock) light = !(pending?.Light ?? WindowsTheme.IsLight());
 
             Logger.WriteLine($"Theme: manual toggle to {Name(light)}");
             Apply(light);
             return light;
         }
 
-        private void Apply(bool light)
+        private void Apply(bool light, Action? onSuccess = null)
         {
-            lock (stateLock) requestedLight = light;
-
-            Task.Run(() =>
+            lock (stateLock)
             {
-                lock (writeLock) WindowsTheme.Apply(light);
+                // A superseded apply hands its bookkeeping on rather than dropping it,
+                // so a manual toggle landing on top of a scheduled one still records
+                // the crossing that scheduled one was for.
+                pending = (light, onSuccess ?? pending?.OnSuccess);
+                if (working) return;
+                working = true;
+            }
+
+            Task.Run(Drain);
+        }
+
+        /// <summary>
+        /// Writes pending themes one at a time until none is left. Only the latest
+        /// request survives, so a burst of toggles costs one broadcast, not one each.
+        /// </summary>
+        private void Drain()
+        {
+            while (true)
+            {
+                bool light;
+                Action? onSuccess;
+
+                lock (stateLock)
+                {
+                    if (pending is null)
+                    {
+                        working = false;
+                        return;
+                    }
+
+                    (light, onSuccess) = pending.Value;
+                    pending = null;
+                }
+
+                if (WindowsTheme.Apply(light)) onSuccess?.Invoke();
                 RaiseThemeApplied();
-            });
+            }
+        }
+
+        private void Record(DateTime crossing, string what)
+        {
+            ThemeConfig.LastCrossing = crossing;
+            Logger.WriteLine($"Theme: {what}, recorded crossing {crossing:O}");
         }
 
         /// <summary>
@@ -132,8 +199,13 @@ namespace GHelper.Theme
 
             try
             {
+                // InvokeRequired is false before the handle exists, which would run the
+                // handler right here on the pool thread. SettingsForm paints the glyph
+                // in its own constructor, so there is nothing to lose by skipping.
                 Form? form = Program.settingsForm;
-                if (form is not null && !form.IsDisposed && form.InvokeRequired) form.BeginInvoke(handler);
+                if (form is null || form.IsDisposed || !form.IsHandleCreated) return;
+
+                if (form.InvokeRequired) form.BeginInvoke(handler);
                 else handler();
             }
             catch (Exception ex)
