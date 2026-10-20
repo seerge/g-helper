@@ -7,6 +7,7 @@ using GHelper.Input;
 using GHelper.Mode;
 using GHelper.Overlay;
 using GHelper.Peripherals;
+using GHelper.Theme;
 using GHelper.USB;
 using Microsoft.Win32;
 using System.Diagnostics;
@@ -29,6 +30,7 @@ namespace GHelper
         public static GPUModeControl gpuControl;
         public static AllyControl allyControl;
         public static ClamshellModeControl clamshellControl;
+        public static ThemeControl themeControl = new ThemeControl();
 
         public static ToastForm toast;
 
@@ -146,6 +148,8 @@ namespace GHelper
 
             SetAutoModes(init: true);
 
+            themeControl.Init();
+
             powerSettleTimer.Elapsed += OnPowerSettled;
 
             // Subscribing for system power change events
@@ -154,6 +158,7 @@ namespace GHelper
 
             SystemEvents.SessionSwitch += SystemEvents_SessionSwitch;
             SystemEvents.SessionEnding += SystemEvents_SessionEnding;
+            SystemEvents.TimeChanged += SystemEvents_TimeChanged;
 
             clamshellControl.RegisterDisplayEvents();
             clamshellControl.ToggleLidAction();
@@ -242,6 +247,7 @@ namespace GHelper
             {
                 Logger.WriteLine("Session:" + e.Reason.ToString());
                 ProcessHelper.KillSmartDisplayControl();
+                themeControl.Evaluate();
                 bool wasLocked = Aura.sessionLock;
                 Aura.sessionLock = false;
                 if (!AppConfig.Is("skip_aura")) Aura.ApplyAura();
@@ -258,6 +264,12 @@ namespace GHelper
                 Logger.WriteLine("Session:" + e.Reason.ToString());
                 Aura.sessionLock = true;
             }
+        }
+
+        static void SystemEvents_TimeChanged(object sender, EventArgs e)
+        {
+            Logger.WriteLine("Time Changed");
+            themeControl.Evaluate();
         }
 
         static void SystemEvents_UserPreferenceChanged(object sender, UserPreferenceChangedEventArgs e)
@@ -403,6 +415,10 @@ namespace GHelper
                 XGM.NotifyShutdown();
                 return;
             }
+
+            // Resume is the normal path for the morning crossing, not an edge case:
+            // the machine is usually asleep when the sun passes the threshold.
+            themeControl.Evaluate();
 
             PowerLineStatus status = SystemInformation.PowerStatus.PowerLineStatus;
             if (status != lastLineStatus)
