@@ -810,6 +810,7 @@ namespace GHelper
                         case 1:
                             Logger.WriteLine("Monitor Power On");
                             GPUModeControl.suspended = false;
+                            Thread.Sleep(1000);
                             if (!Program.SetAutoModes(wakeup: true)) BatteryControl.AutoBattery();
                             Program.hardwareOverlay?.ResumeForDisplayOn();
                             break;
