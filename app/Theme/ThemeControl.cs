@@ -12,6 +12,16 @@ namespace GHelper.Theme
         private readonly System.Windows.Forms.Timer timer = new();
         private DateTime? nextSwitchUtc;
 
+        // The broadcast in WindowsTheme.Apply blocks its thread for seconds while it
+        // waits for every top-level window to acknowledge, so applies run off the UI
+        // thread: on it, the window cannot pump the very message the broadcast waits
+        // for, and a keypress took 7-11s to land. writeLock serialises the writes;
+        // stateLock guards the last requested theme, so two quick toggles cannot both
+        // read the same registry value and coalesce into one.
+        private readonly object writeLock = new();
+        private readonly object stateLock = new();
+        private bool? requestedLight;
+
         /// <summary>
         /// The armed crossing in local time, or null when the schedule is off or
         /// there is no crossing within 24 hours.
@@ -93,16 +103,43 @@ namespace GHelper.Theme
         /// </summary>
         public bool Toggle()
         {
-            bool light = WindowsTheme.Toggle();
+            bool light;
+            lock (stateLock) light = !(requestedLight ?? WindowsTheme.IsLight());
+
             Logger.WriteLine($"Theme: manual toggle to {Name(light)}");
-            ThemeApplied?.Invoke();
+            Apply(light);
             return light;
         }
 
         private void Apply(bool light)
         {
-            WindowsTheme.Apply(light);
-            ThemeApplied?.Invoke();
+            lock (stateLock) requestedLight = light;
+
+            Task.Run(() =>
+            {
+                lock (writeLock) WindowsTheme.Apply(light);
+                RaiseThemeApplied();
+            });
+        }
+
+        /// <summary>
+        /// Raises ThemeApplied on the UI thread, so handlers can touch controls.
+        /// </summary>
+        private void RaiseThemeApplied()
+        {
+            Action? handler = ThemeApplied;
+            if (handler is null) return;
+
+            try
+            {
+                Form? form = Program.settingsForm;
+                if (form is not null && !form.IsDisposed && form.InvokeRequired) form.BeginInvoke(handler);
+                else handler();
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine($"Theme: could not refresh the UI after an apply ({ex.Message})");
+            }
         }
 
         private void Arm(DateTime now, SolarSite site)

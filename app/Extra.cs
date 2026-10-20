@@ -46,6 +46,7 @@ namespace GHelper
               {"brightness_down", Properties.Strings.BrightnessDown},
               {"brightness_up", Properties.Strings.BrightnessUp},
               {"visual", Properties.Strings.VisualMode},
+              {"theme", "Light / Dark Theme"},
               {"touchpad", Properties.Strings.ToggleTouchpad},
               {"touchscreen", Properties.Strings.ToggleTouchscreen },
               {"micmute", Properties.Strings.MuteMic},

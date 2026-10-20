@@ -669,6 +669,9 @@ namespace GHelper.Input
                 case "visual":
                     Program.settingsForm.BeginInvoke(Program.settingsForm.CycleVisualMode, Control.ModifierKeys == Keys.Shift ? -1 : 1);
                     break;
+                case "theme":
+                    Program.settingsForm.BeginInvoke(() => Program.themeControl.Toggle());
+                    break;
                 case "performance":
                     modeControl.CyclePerformanceMode(Control.ModifierKeys == Keys.Shift);
                     break;
