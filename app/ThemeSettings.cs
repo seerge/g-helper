@@ -52,7 +52,8 @@ namespace GHelper
         {
             if (!TryReadFields(out SolarSite site, out _))
             {
-                labelCrossings.Text = "Today: enter a valid latitude, longitude and elevation";
+                labelCrossings.Text = "Enter a valid latitude, longitude and elevation";
+                FitHeight();
                 return;
             }
 
@@ -64,20 +65,32 @@ namespace GHelper
             if (next is null && previous is null)
             {
                 labelCrossings.Text = light
-                    ? "Today: light all day - the sun never drops below this elevation here"
-                    : "Today: dark all day - the sun never reaches this elevation here";
+                    ? "Light Theme all day - the sun never drops below this elevation here"
+                    : "Dark Theme all day - the sun never reaches this elevation here";
+                FitHeight();
                 return;
             }
 
             // The sun is above the threshold now, so the crossing behind us turned it
             // light and the one ahead will turn it dark - and the other way round.
-            labelCrossings.Text = $"Today: {Describe(previous, light)}, {Describe(next, !light)}";
+            labelCrossings.Text = $"{Describe(previous, light)}, {Describe(next, !light)}";
+            FitHeight();
+        }
+
+        /// <summary>
+        /// Trims the form to whatever the docked panels actually measured, so the
+        /// crossing line wrapping to two lines does not clip and a short one does not
+        /// leave dead space. Measured rather than hardcoded, so it survives any DPI.
+        /// </summary>
+        private void FitHeight()
+        {
+            ClientSize = new Size(ClientSize.Width, panelButtons.Bottom);
         }
 
         private static string Describe(DateTime? crossing, bool toLight)
         {
-            string name = toLight ? "light" : "dark";
-            return crossing is null ? $"no {name} crossing within 24 hours" : $"{name} {crossing.Value.ToLocalTime():HH:mm}";
+            string name = toLight ? "Light Theme" : "Dark Theme";
+            return crossing is null ? $"no {name} within 24 hours" : $"{name} at {crossing.Value.ToLocalTime():h:mm tt}";
         }
 
         /// <summary>
@@ -140,6 +153,7 @@ namespace GHelper
             offending.BackColor = Color.FromArgb(255, 255, 220, 220);
             offending.Focus();
             labelCrossings.Text = "That value is out of range - nothing was saved";
+            FitHeight();
         }
 
         private void Unmark()

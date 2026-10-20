@@ -58,8 +58,9 @@ namespace GHelper
             checkSchedule.Location = new Point(16, 14);
             checkSchedule.Margin = new Padding(4);
             checkSchedule.Name = "checkSchedule";
+            checkSchedule.Size = new Size(400, 24);
             checkSchedule.TabIndex = 0;
-            checkSchedule.Text = "Switch the Windows theme automatically with the sun";
+            checkSchedule.Text = "Switch Windows theme with the sun";
             checkSchedule.UseVisualStyleBackColor = true;
             //
             // panelSchedule
@@ -70,7 +71,7 @@ namespace GHelper
             panelSchedule.Dock = DockStyle.Top;
             panelSchedule.Location = new Point(0, 0);
             panelSchedule.Name = "panelSchedule";
-            panelSchedule.Size = new Size(460, 52);
+            panelSchedule.Size = new Size(380, 52);
             panelSchedule.TabIndex = 0;
             //
             // labelLatitude
@@ -78,6 +79,7 @@ namespace GHelper
             labelLatitude.Anchor = AnchorStyles.Left;
             labelLatitude.AutoSize = true;
             labelLatitude.Name = "labelLatitude";
+            labelLatitude.Size = new Size(100, 20);
             labelLatitude.Text = "Latitude";
             //
             // textLatitude
@@ -85,6 +87,7 @@ namespace GHelper
             textLatitude.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             textLatitude.Margin = new Padding(4);
             textLatitude.Name = "textLatitude";
+            textLatitude.Size = new Size(240, 27);
             textLatitude.TabIndex = 1;
             //
             // labelLongitude
@@ -92,6 +95,7 @@ namespace GHelper
             labelLongitude.Anchor = AnchorStyles.Left;
             labelLongitude.AutoSize = true;
             labelLongitude.Name = "labelLongitude";
+            labelLongitude.Size = new Size(100, 20);
             labelLongitude.Text = "Longitude";
             //
             // textLongitude
@@ -99,6 +103,7 @@ namespace GHelper
             textLongitude.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             textLongitude.Margin = new Padding(4);
             textLongitude.Name = "textLongitude";
+            textLongitude.Size = new Size(240, 27);
             textLongitude.TabIndex = 2;
             //
             // labelElevation
@@ -106,6 +111,7 @@ namespace GHelper
             labelElevation.Anchor = AnchorStyles.Left;
             labelElevation.AutoSize = true;
             labelElevation.Name = "labelElevation";
+            labelElevation.Size = new Size(100, 20);
             labelElevation.Text = "Sun elevation";
             //
             // textElevation
@@ -113,6 +119,7 @@ namespace GHelper
             textElevation.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             textElevation.Margin = new Padding(4);
             textElevation.Name = "textElevation";
+            textElevation.Size = new Size(240, 27);
             textElevation.TabIndex = 3;
             //
             // tableLocation
@@ -120,8 +127,8 @@ namespace GHelper
             tableLocation.AutoSize = true;
             tableLocation.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             tableLocation.ColumnCount = 2;
-            tableLocation.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
-            tableLocation.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F));
+            tableLocation.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 110F));
+            tableLocation.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLocation.Controls.Add(labelLatitude, 0, 0);
             tableLocation.Controls.Add(textLatitude, 1, 0);
             tableLocation.Controls.Add(labelLongitude, 0, 1);
@@ -143,7 +150,8 @@ namespace GHelper
             labelCrossings.AutoSize = true;
             labelCrossings.Location = new Point(16, 8);
             labelCrossings.Margin = new Padding(4);
-            labelCrossings.MaximumSize = new Size(428, 0);
+            labelCrossings.MaximumSize = new Size(348, 0);
+            labelCrossings.MinimumSize = new Size(348, 20);
             labelCrossings.Name = "labelCrossings";
             labelCrossings.TabIndex = 0;
             //
@@ -154,14 +162,14 @@ namespace GHelper
             panelCrossings.Controls.Add(labelCrossings);
             panelCrossings.Dock = DockStyle.Top;
             panelCrossings.Name = "panelCrossings";
-            panelCrossings.Size = new Size(460, 44);
+            panelCrossings.Size = new Size(380, 44);
             panelCrossings.TabIndex = 2;
             //
             // buttonSave
             //
             buttonSave.Activated = false;
             buttonSave.BorderRadius = 4;
-            buttonSave.Location = new Point(228, 8);
+            buttonSave.Location = new Point(160, 8);
             buttonSave.Margin = new Padding(4);
             buttonSave.Name = "buttonSave";
             buttonSave.Secondary = false;
@@ -174,7 +182,7 @@ namespace GHelper
             //
             buttonCancel.Activated = false;
             buttonCancel.BorderRadius = 4;
-            buttonCancel.Location = new Point(336, 8);
+            buttonCancel.Location = new Point(268, 8);
             buttonCancel.Margin = new Padding(4);
             buttonCancel.Name = "buttonCancel";
             buttonCancel.Secondary = true;
@@ -190,17 +198,17 @@ namespace GHelper
             panelButtons.Controls.Add(buttonSave);
             panelButtons.Controls.Add(buttonCancel);
             panelButtons.Dock = DockStyle.Top;
+            panelButtons.Padding = new Padding(0, 0, 0, 11);
             panelButtons.Name = "panelButtons";
-            panelButtons.Size = new Size(460, 52);
+            panelButtons.Size = new Size(380, 51);
             panelButtons.TabIndex = 3;
             //
             // ThemeSettings
             //
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            AutoSize = true;
-            AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(460, 263);
+            AutoSize = false;
+            ClientSize = new Size(380, 260);
             Controls.Add(panelButtons);
             Controls.Add(panelCrossings);
             Controls.Add(tableLocation);
@@ -212,8 +220,8 @@ namespace GHelper
             Name = "ThemeSettings";
             ShowIcon = false;
             ShowInTaskbar = false;
-            StartPosition = FormStartPosition.CenterScreen;
-            Text = "Theme Schedule";
+            StartPosition = FormStartPosition.Manual;
+            Text = "Theme Settings";
             panelSchedule.ResumeLayout(false);
             panelSchedule.PerformLayout();
             tableLocation.ResumeLayout(false);

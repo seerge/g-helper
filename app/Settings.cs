@@ -13,6 +13,7 @@ using GHelper.Peripherals.Headset;
 using GHelper.Peripherals.Keyboard;
 using GHelper.Peripherals.Mouse;
 using GHelper.Properties;
+using GHelper.Theme;
 using GHelper.UI;
 using GHelper.USB;
 using System.Diagnostics;
@@ -47,6 +48,7 @@ namespace GHelper
         public Updates? updatesForm;
         public Handheld? handheldForm;
         public OverlayConfig? overlayForm;
+        public ThemeSettings? themeForm;
 
         static long lastRefresh;
         static long lastBatteryRefresh;
@@ -305,7 +307,93 @@ namespace GHelper
 
             panelPerformance.Focus();
             InitVisual();
+
+            pictureGamma.Cursor = Cursors.Hand;
+            pictureGamma.MouseUp += PictureGamma_MouseUp;
+            Program.themeControl.ThemeApplied += VisualiseTheme;
+            VisualiseTheme();
         }
+
+        private void PictureGamma_MouseUp(object? sender, MouseEventArgs e)
+        {
+            switch (e.Button)
+            {
+                case MouseButtons.Left:
+                    Program.themeControl.Toggle();
+                    break;
+                case MouseButtons.Right:
+                    ShowThemeSettings();
+                    break;
+            }
+        }
+
+        private void ShowThemeSettings()
+        {
+            if (themeForm == null || themeForm.Text == "")
+            {
+                themeForm = new ThemeSettings();
+                AddOwnedForm(themeForm);
+            }
+
+            if (themeForm.Visible)
+            {
+                themeForm.Close();
+                return;
+            }
+
+            PlaceThemeSettings(themeForm);
+            themeForm.Show();
+        }
+
+        /// <summary>
+        /// Opens the dialog beside this window rather than centred on whichever
+        /// screen is primary - it belongs to the icon that opened it. Falls back to
+        /// the right side when there is no room on the left.
+        /// </summary>
+        private void PlaceThemeSettings(Form dialog)
+        {
+            Rectangle area = Screen.FromControl(this).WorkingArea;
+            const int gap = 8;
+
+            int left = Left - dialog.Width - gap;
+            if (left < area.Left) left = Right + gap;
+            if (left + dialog.Width > area.Right) left = Math.Max(area.Left, area.Right - dialog.Width);
+
+            int top = Math.Min(Top, area.Bottom - dialog.Height);
+            if (top < area.Top) top = area.Top;
+
+            dialog.Location = new Point(left, top);
+        }
+
+        /// <summary>
+        /// Sun in light, moon in dark. No highlight, no ring, no border: the icon
+        /// changes, nothing else does. Safe to call repeatedly.
+        /// </summary>
+        public void VisualiseTheme()
+        {
+            if (InvokeRequired) { Invoke(VisualiseTheme); return; }
+
+            bool light = WindowsTheme.IsLight();
+            Image glyph = light ? Resources.icons8_brightness_32 : MoonImage();
+            pictureGamma.BackgroundImage = ControlHelper.TintImage(glyph, foreMain);
+
+            string tip = "Click: toggle light/dark · Right-click: settings";
+            DateTime? next = Program.themeControl.NextSwitchLocal;
+            if (next is not null) tip += $" · Next switch {next.Value:HH:mm}";
+
+            toolTip.SetToolTip(pictureGamma, tip);
+        }
+
+        /// <summary>
+        /// The moon glyph. Read through the ResourceManager rather than a generated
+        /// property, so Resources.Designer.cs - which upstream regenerates whenever
+        /// it adds an icon - needs no entry and the merge surface stays at the one
+        /// appended Resources.resx entry.
+        /// </summary>
+        private static Image MoonImage()
+            => _moon ??= (Image)Resources.ResourceManager.GetObject("moon_32")!;
+
+        private static Image? _moon;
 
         private void ButtonArmoury_Click(object? sender, EventArgs e)
         {
@@ -1164,6 +1252,8 @@ namespace GHelper
             }
             else
             {
+                // Extra is wide enough to bury the theme dialog sitting beside us.
+                if (themeForm is not null && themeForm.Visible) themeForm.Close();
                 extraForm.Show();
             }
         }

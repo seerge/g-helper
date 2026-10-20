@@ -301,6 +301,9 @@ namespace GHelper
                     if (settingsForm.handheldForm is not null && settingsForm.handheldForm.Text != "")
                         settingsForm.handheldForm.InitTheme();
 
+                    if (settingsForm.themeForm is not null && settingsForm.themeForm.Text != "")
+                        settingsForm.themeForm.InitTheme();
+
                     break;
             }
         }
