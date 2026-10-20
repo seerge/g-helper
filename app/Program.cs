@@ -59,6 +59,24 @@ namespace GHelper
                 return;
             }
 
+            // One-off elevated setup for a standard account, runs alongside its unelevated instance
+            if (action == "schedule" || action == "unschedule")
+            {
+                bool schedule = action == "schedule";
+                if (ProcessHelper.IsUserAdministrator())
+                {
+                    if (schedule) Startup.Schedule();
+                    else Startup.UnSchedule();
+                }
+                Environment.Exit(Startup.IsScheduled() == schedule ? 0 : 1);
+            }
+
+            if (action == "agent")
+            {
+                PrivilegedAgent.Run(args.Length > 1 ? args[1] : "");
+                return;
+            }
+
             string language = AppConfig.GetString("language");
             try
             {
