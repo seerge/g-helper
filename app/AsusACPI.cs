@@ -1,8 +1,10 @@
 ﻿using GHelper;
 using GHelper.USB;
+using GHelper.Helpers;
 using System.Collections.Concurrent;
 using System.Management;
 using System.Runtime.InteropServices;
+using System;
 
 public enum AsusFan
 {
@@ -390,7 +392,7 @@ public class AsusACPI
             ref lpBytesReturned,
             IntPtr.Zero
         );
-    }
+		}
 
     public void Close()
     {
@@ -436,7 +438,7 @@ public class AsusACPI
         BitConverter.GetBytes((uint)Status).CopyTo(args, 4);
 
         byte[] status = CallMethod(DEVS, args);
-        int result = BitConverter.ToInt32(status, 0);
+		int result = BitConverter.ToInt32(status, 0);
 
         if (logName is not null)
             Logger.WriteLine(logName + " = " + Status + " : " + (result == 1 ? "OK" : result));
@@ -531,20 +533,24 @@ public class AsusACPI
         return status;
     }
 
-    public int SetGPUEco(int eco)
+	public int SetGPUEco(int eco)
     {
         uint ecoEndpoint = GPUEco;
 
         int ecoFlag = DeviceGet(ecoEndpoint);
         if (ecoFlag < 0) return -1;
 
-        if (ecoFlag == 1 && eco == 0)
-            return DeviceSet(ecoEndpoint, eco, "GPUEco");
+        int status = -1;
+        if ((ecoFlag == 1 && eco == 0) || (ecoFlag == 0 && eco == 1))
+        {
+            status = DeviceSet(ecoEndpoint, eco, "GPUEco");
+            if (status != 1 && DeviceHelper.RestartdGpuPciBridge())
+            {
+				status = DeviceSet(ecoEndpoint, eco, "GPUEco");
+            }
+        }
 
-        if (ecoFlag == 0 && eco == 1)
-            return DeviceSet(ecoEndpoint, eco, "GPUEco");
-
-        return -1;
+        return status;
     }
 
     public int GetFan(AsusFan device)
