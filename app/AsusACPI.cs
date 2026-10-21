@@ -184,7 +184,7 @@ public class AsusACPI
     public static int MaxGPUBoost = 25;
 
     public static int MinGPUPower = 0;
-    public static int MaxGPUPower = 70;
+    public static int MaxGPUPower = 75;
 
     public const int MinGPUTemp = 75;
     public const int MaxGPUTemp = 87;
