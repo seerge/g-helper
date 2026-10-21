@@ -519,7 +519,7 @@ public static class AppConfig
 
     public static bool IsELMB()
     {
-        return ContainsModel("G835LX");
+        return ContainsModel("G835LX") || ContainsModel("G835LWG");
     }
 
     public static bool IsStandardForceFix()
