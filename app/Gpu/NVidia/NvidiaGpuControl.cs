@@ -1,4 +1,4 @@
-﻿using GHelper.Helpers;
+using GHelper.Helpers;
 using NvAPIWrapper.GPU;
 using NvAPIWrapper.Native;
 using NvAPIWrapper.Native.GPU;
@@ -355,27 +355,64 @@ public class NvidiaGpuControl : IGpuControl
     public int? GetGpuUse()
     {
         if (!IsValid) return null;
-         if (GetGpuState() != GpuState.Active) return null;
 
-        PhysicalGPU internalGpu = _internalGpu!;
-        IUtilizationDomainInfo? gpuUsage = GPUApi.GetUsages(internalGpu.Handle).GPU;
+        long now = Environment.TickCount64;
+        if (_cachedGpuUse != null && Math.Abs(now - _lastGpuUseTime) < 500)
+        {
+            return _cachedGpuUse;
+        }
 
-        return (int?)gpuUsage?.Percentage;
+        if (GetGpuState() != GpuState.Active)
+        {
+            _cachedGpuUse = null;
+            _lastGpuUseTime = now;
+            return null;
+        }
 
+        try
+        {
+            PhysicalGPU internalGpu = _internalGpu!;
+            IUtilizationDomainInfo? gpuUsage = GPUApi.GetUsages(internalGpu.Handle).GPU;
+            _cachedGpuUse = (int?)gpuUsage?.Percentage;
+        }
+        catch
+        {
+            _cachedGpuUse = null;
+        }
+
+        _lastGpuUseTime = now;
+        return _cachedGpuUse;
     }
 
 
     public float? GetGpuPower()
     {
         if (!IsValid) return null;
+
+        long now = Environment.TickCount64;
+        if (_cachedGpuPower != null && Math.Abs(now - _lastGpuPowerTime) < 500)
+        {
+            return _cachedGpuPower;
+        }
+
         var state = GetGpuState();
         if (state == GpuState.Off)
         {
             NvmlHelper.Shutdown();
+            _cachedGpuPower = null;
+            _lastGpuPowerTime = now;
             return null;
         }
-        if (state != GpuState.Active) return 0f;
-        return NvmlHelper.GetGpuPower() ?? 0f;
+        if (state != GpuState.Active)
+        {
+            _cachedGpuPower = 0f;
+            _lastGpuPowerTime = now;
+            return 0f;
+        }
+
+        _cachedGpuPower = NvmlHelper.GetGpuPower() ?? 0f;
+        _lastGpuPowerTime = now;
+        return _cachedGpuPower;
     }
 
     public (long usedMb, long totalMb)? GetVramInfo()
