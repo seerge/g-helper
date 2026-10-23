@@ -376,7 +376,7 @@ public class AsusACPI
 
         if (AppConfig.ContainsModel("H7607"))
         {
-            MinTotal = 10;
+            MinTotal = 15;
             MaxTotal = 95;
         }
 
