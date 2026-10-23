@@ -151,7 +151,7 @@ namespace GHelper.Input
 
             lastLevel = level;
             pendingLevel = -1;
-            Aura.ApplyBrightness(Math.Min(level, AppConfig.Get("max_brightness", 3)), "Ambient");
+            Aura.ApplyBrightness(Math.Min(level, InputDispatcher.GetBacklight()), "Ambient");
         }
     }
 }
