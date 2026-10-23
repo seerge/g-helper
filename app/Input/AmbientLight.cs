@@ -24,7 +24,7 @@ namespace GHelper.Input
             uint GetCount();
         }
 
-        [ComImport, Guid("5FA08F80-2657-458E-89DA-A26FA067C482"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+        [ComImport, Guid("5FA08F80-2657-458E-AF75-46F73FA6AC5C"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
         private interface ISensor
         {
             void GetID();
