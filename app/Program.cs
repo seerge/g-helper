@@ -324,6 +324,7 @@ namespace GHelper
             else settingsForm.matrixControl.SetDevice(true);
             InputDispatcher.InitStatusLed();
             if (init) NumberPad.Init();
+            if (init) SmartGestures.Init();
             XGM.Init();
 
             if (AppConfig.IsAlly())
