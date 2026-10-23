@@ -160,6 +160,15 @@ namespace GHelper.Properties {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Off above {0} lux (now {1}).
+        /// </summary>
+        internal static string AmbientOffAbove {
+            get {
+                return ResourceManager.GetString("AmbientOffAbove", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Ambient mode may increase resource usage.
         /// </summary>
         internal static string AmbientModeResources {
