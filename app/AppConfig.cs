@@ -482,6 +482,12 @@ public static class AppConfig
         return ContainsModel("GA405") || ContainsModel("GU405") || ContainsModel("GU606") || ContainsModel("GX651");
     }
 
+    // RTX Spark ProArt P16 enforces SPL/SPPT ~10W below the requested value
+    public static int PowerLimitOffset()
+    {
+        return Get("power_offset", ContainsModel("H7607") ? 10 : 0);
+    }
+
     public static bool IsInvertedFNLock()
     {
         return ContainsModel("M140") || ContainsModel("S550") || ContainsModel("K650") || ContainsModel("P540") || IsTUF();

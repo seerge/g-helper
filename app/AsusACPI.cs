@@ -171,7 +171,7 @@ public class AsusACPI
     public const int GPUModeStandard = 1;
     public const int GPUModeUltimate = 2;
 
-    public const int MinTotal = 5;
+    public static int MinTotal = 5;
 
     public static int MaxTotal = 150;
     public static int DefaultTotal = 80;
@@ -372,6 +372,12 @@ public class AsusACPI
         {
             MaxTotal = 115;
             MaxCPU = 115;
+        }
+
+        if (AppConfig.ContainsModel("H7607"))
+        {
+            MinTotal = 10;
+            MaxTotal = 95;
         }
 
     }

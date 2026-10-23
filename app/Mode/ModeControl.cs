@@ -374,8 +374,9 @@ namespace GHelper.Mode
             // SPL and SPPT
             if (Program.acpi.IsSupported(AsusACPI.PPT_APUA0))
             {
-                Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, limit_total, "PowerLimit A3");
-                Program.acpi.DeviceSet(AsusACPI.PPT_APUA0, limit_slow, "PowerLimit A0");
+                int offset = AppConfig.PowerLimitOffset();
+                Program.acpi.DeviceSet(AsusACPI.PPT_APUA3, limit_total + offset, "PowerLimit A3");
+                Program.acpi.DeviceSet(AsusACPI.PPT_APUA0, limit_slow + offset, "PowerLimit A0");
                 customPower = limit_total;
             }
             else if (isAMD)
