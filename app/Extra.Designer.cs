@@ -81,6 +81,8 @@ namespace GHelper
             numericBacklightTime = new NumericUpDownWithUnit();
             labelBacklightTimeout = new Label();
             checkAmbient = new CheckBox();
+            labelAmbient = new Label();
+            sliderAmbient = new Slider();
             labelSpeed = new Label();
             comboKeyboardSpeed = new RComboBox();
             panelXGM = new Panel();
@@ -762,6 +764,8 @@ namespace GHelper
             panelBacklightExtra.Controls.Add(numericBacklightTime);
             panelBacklightExtra.Controls.Add(labelBacklightTimeout);
             panelBacklightExtra.Controls.Add(checkAmbient);
+            panelBacklightExtra.Controls.Add(labelAmbient);
+            panelBacklightExtra.Controls.Add(sliderAmbient);
             panelBacklightExtra.Controls.Add(labelSpeed);
             panelBacklightExtra.Controls.Add(comboKeyboardSpeed);
             panelBacklightExtra.Dock = DockStyle.Top;
@@ -817,6 +821,32 @@ namespace GHelper
             checkAmbient.Text = "Ambient light sensor";
             checkAmbient.UseVisualStyleBackColor = true;
             checkAmbient.Visible = false;
+            //
+            // labelAmbient
+            //
+            labelAmbient.Location = new Point(16, 163);
+            labelAmbient.Margin = new Padding(5, 0, 5, 0);
+            labelAmbient.Name = "labelAmbient";
+            labelAmbient.Size = new Size(500, 40);
+            labelAmbient.TabIndex = 47;
+            labelAmbient.Text = "Off above 50 lux";
+            labelAmbient.Visible = false;
+            //
+            // sliderAmbient
+            //
+            sliderAmbient.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            sliderAmbient.Location = new Point(533, 160);
+            sliderAmbient.Margin = new Padding(0);
+            sliderAmbient.Max = 15;
+            sliderAmbient.Min = 0;
+            sliderAmbient.Name = "sliderAmbient";
+            sliderAmbient.Size = new Size(401, 40);
+            sliderAmbient.Step = 1;
+            sliderAmbient.TabIndex = 4;
+            sliderAmbient.TabStop = true;
+            sliderAmbient.Text = "sliderAmbient";
+            sliderAmbient.Value = 9;
+            sliderAmbient.Visible = false;
             // 
             // labelSpeed
             // 
@@ -1834,6 +1864,8 @@ namespace GHelper
         private NumericUpDownWithUnit numericBacklightTime;
         private Label labelBacklightTimeout;
         private CheckBox checkAmbient;
+        private Label labelAmbient;
+        private Slider sliderAmbient;
         private Label labelSpeed;
         private RComboBox comboKeyboardSpeed;
         private Panel panelXGM;

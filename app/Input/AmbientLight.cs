@@ -66,7 +66,11 @@ namespace GHelper.Input
         static Guid typeAmbientLight = new("97F115C8-599A-4153-8894-D2D12899918A");
         static PropertyKey lightLux = new() { fmtid = new("E4C77CE2-DCB7-46E9-8439-4FEC548833A6"), pid = 2 };
 
+        // Off thresholds offered in the UI, roughly logarithmic like perceived brightness
+        public static readonly int[] LuxSteps = { 1, 2, 3, 5, 7, 10, 15, 20, 30, 50, 75, 100, 150, 200, 300, 400 };
+
         static ISensor? sensor;
+        static readonly object sensorLock = new();
         static System.Timers.Timer timer = new System.Timers.Timer(2000);
         static int lastLevel = -1, pendingLevel = -1;
 
@@ -100,31 +104,41 @@ namespace GHelper.Input
             lastLevel = pendingLevel = -1;
         }
 
-        static float GetLux()
+        // Backlight turns off above this lux, lower levels scale with it (400 -> 15 / 100 / 400)
+        // Default 50 suits ProArt P16 H7607BA, whose sensor reads low (~1 lux in a dim room)
+        public static int GetThreshold()
         {
-            try
-            {
-                if (sensor is null)
-                {
-                    sensor = ((ISensorManager)new SensorManager()).GetSensorsByType(ref typeAmbientLight).GetAt(0);
-                    Logger.WriteLine("Ambient light sensor: " + sensor.GetFriendlyName());
-                }
+            return Math.Clamp(AppConfig.Get("backlight_ambient_lux", 50), LuxSteps[0], LuxSteps[^1]);
+        }
 
-                ISensorDataReport data = sensor.GetData();
-                data.GetSensorValue(ref lightLux, out PropVariant value);
-                Marshal.ReleaseComObject(data);
-                switch (value.vt)
-                {
-                    case 4: return value.fltVal; // VT_R4
-                    case 5: return (float)value.dblVal; // VT_R8
-                    case 19: return value.ulVal; // VT_UI4
-                    default: return -1;
-                }
-            }
-            catch
+        public static float GetLux()
+        {
+            lock (sensorLock)
             {
-                sensor = null;
-                return -1;
+                try
+                {
+                    if (sensor is null)
+                    {
+                        sensor = ((ISensorManager)new SensorManager()).GetSensorsByType(ref typeAmbientLight).GetAt(0);
+                        Logger.WriteLine("Ambient light sensor: " + sensor.GetFriendlyName());
+                    }
+
+                    ISensorDataReport data = sensor.GetData();
+                    data.GetSensorValue(ref lightLux, out PropVariant value);
+                    Marshal.ReleaseComObject(data);
+                    switch (value.vt)
+                    {
+                        case 4: return value.fltVal; // VT_R4
+                        case 5: return (float)value.dblVal; // VT_R8
+                        case 19: return value.ulVal; // VT_UI4
+                        default: return -1;
+                    }
+                }
+                catch
+                {
+                    sensor = null;
+                    return -1;
+                }
             }
         }
 
@@ -140,10 +154,11 @@ namespace GHelper.Input
             }
             if (timer.Interval != 2000) timer.Interval = 2000;
 
+            int threshold = GetThreshold();
             int level;
-            if (lux < 15) level = 3;
-            else if (lux < 100) level = 2;
-            else if (lux < 400) level = 1;
+            if (lux < threshold * 15 / 400f) level = 3;
+            else if (lux < threshold / 4f) level = 2;
+            else if (lux < threshold) level = 1;
             else level = 0;
 
             if (level == lastLevel) { pendingLevel = -1; return; }
