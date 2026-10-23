@@ -11,6 +11,10 @@ namespace PawnIO
         private static bool DetectAMD()
         {
             if (!X86Base.IsSupported) return false;
+            // On Windows on ARM, x64 emulation answers CPUID with "AuthenticAMD" even though there is no AMD CPU.
+            // OSArchitecture is the architecture Windows itself was built for (not the emulated process),
+            // so it stays Arm64 under emulation. A real AMD CPU always runs native x64 Windows.
+            if (RuntimeInformation.OSArchitecture != Architecture.X64) return false;
             var (_, ebx, ecx, edx) = X86Base.CpuId(0, 0);
 
             Span<uint> regs = stackalloc uint[] { (uint)ebx, (uint)edx, (uint)ecx };
