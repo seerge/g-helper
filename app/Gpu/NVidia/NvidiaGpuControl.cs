@@ -194,6 +194,16 @@ public class NvidiaGpuControl : IGpuControl
     }
 
 
+    public bool IsCoreOffsetSupported { get; private set; } = true;
+    public bool IsMemoryOffsetSupported { get; private set; } = true;
+
+    private static bool IsAdjustable(IPerformanceStates20ClockEntry? clock)
+    {
+        if (clock is null || !clock.IsEditable) return false;
+        var range = clock.FrequencyDeltaInkHz.DeltaRange;
+        return range.Maximum > range.Minimum;
+    }
+
     public bool GetClocks(out int core, out int memory)
     {
         PhysicalGPU internalGpu = _internalGpu!;
@@ -206,9 +216,18 @@ public class NvidiaGpuControl : IGpuControl
             var temp = ReadCurrentTemperature(true); // Force wake up GPU for clock reading
 
             IPerformanceStates20Info states = GPUApi.GetPerformanceStates20(internalGpu.Handle);
-            core = states.Clocks[PerformanceStateId.P0_3DPerformance][0].FrequencyDeltaInkHz.DeltaValue / 1000;
-            memory = states.Clocks[PerformanceStateId.P0_3DPerformance][1].FrequencyDeltaInkHz.DeltaValue / 1000;
-            Logger.WriteLine($"GET GPU CLOCKS: {core}, {memory}");
+            var clocks = states.Clocks[PerformanceStateId.P0_3DPerformance];
+            var coreEntry = clocks.FirstOrDefault(c => c.DomainId == PublicClockDomain.Graphics);
+            var memoryEntry = clocks.FirstOrDefault(c => c.DomainId == PublicClockDomain.Memory);
+
+            core = coreEntry is null ? 0 : coreEntry.FrequencyDeltaInkHz.DeltaValue / 1000;
+            memory = memoryEntry is null ? 0 : memoryEntry.FrequencyDeltaInkHz.DeltaValue / 1000;
+
+            // Integrated GPUs (RTX Spark) report Graphics as editable with a 0..0 range and have no Memory domain
+            IsCoreOffsetSupported = IsAdjustable(coreEntry);
+            IsMemoryOffsetSupported = IsAdjustable(memoryEntry);
+
+            Logger.WriteLine($"GET GPU CLOCKS: {core}, {memory} (adjustable: {IsCoreOffsetSupported}, {IsMemoryOffsetSupported})");
 
             foreach (var delta in states.Voltages[PerformanceStateId.P0_3DPerformance])
             {
@@ -305,6 +324,8 @@ public class NvidiaGpuControl : IGpuControl
         if (memory < MinMemoryOffset || memory > MaxMemoryOffset) return 0;
 
         GetClocks(out int currentCore, out int currentMemory);
+
+        if (!IsCoreOffsetSupported && !IsMemoryOffsetSupported) return 0;
 
         // Nothing to set
         if (Math.Abs(core - currentCore) < 5 && Math.Abs(memory - currentMemory) < 5) return 0;
