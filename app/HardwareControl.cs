@@ -911,7 +911,7 @@ public static class HardwareControl
         {
             InitCPUPowerAsync();
 
-            float? newCpu = GetCPUPower() ?? GetIntelMsrPower() ?? GetAmdApuPower();
+            float? newCpu = GetCPUPower() ?? GetIntelMsrPower() ?? GetAmdApuPower() ?? FrameViewHelper.GetCPUPower();
             float? iGpuPower = null;
 
             if (isAMDiGPU && GpuControl is null)
