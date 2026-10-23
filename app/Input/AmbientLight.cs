@@ -105,10 +105,10 @@ namespace GHelper.Input
         }
 
         // Backlight turns off above this lux, lower levels scale with it (400 -> 15 / 100 / 400)
-        // Default 50 suits ProArt P16 H7607BA, whose sensor reads low (~1 lux in a dim room)
+        // Default is low as some sensors read low (~1 lux in a dim room on ProArt P16 H7607BA)
         public static int GetThreshold()
         {
-            return Math.Clamp(AppConfig.Get("backlight_ambient_lux", 50), LuxSteps[0], LuxSteps[^1]);
+            return Math.Clamp(AppConfig.Get("backlight_ambient_lux", 10), LuxSteps[0], LuxSteps[^1]);
         }
 
         public static float GetLux()

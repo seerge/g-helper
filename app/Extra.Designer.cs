@@ -829,7 +829,7 @@ namespace GHelper
             labelAmbient.Name = "labelAmbient";
             labelAmbient.Size = new Size(500, 40);
             labelAmbient.TabIndex = 47;
-            labelAmbient.Text = "Off above 50 lux";
+            labelAmbient.Text = "Off above 10 lux";
             labelAmbient.Visible = false;
             //
             // sliderAmbient
@@ -845,7 +845,7 @@ namespace GHelper
             sliderAmbient.TabIndex = 4;
             sliderAmbient.TabStop = true;
             sliderAmbient.Text = "sliderAmbient";
-            sliderAmbient.Value = 9;
+            sliderAmbient.Value = 5;
             sliderAmbient.Visible = false;
             // 
             // labelSpeed
