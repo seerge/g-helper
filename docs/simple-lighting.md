@@ -1,0 +1,17 @@
+# Simple lighting gallery
+
+Superseded UI: Custom now opens `CustomRgbEditor` directly, as requested. The gallery is no longer reachable from GHelper. Preset definitions remain available for future per-mode settings; the proposed Modes/Gradient/Strobe/Ambient redesign is not implemented by this routing change. Existing scene and profile persistence callbacks are preserved. The following describes the previous gallery preview.
+
+The Custom button opens a preset gallery. It preserves the current saved scene, then offers 22 families and 64 variants. Each family has three variants except Lights Off (one).
+
+Families: Rainbow Wave, Spectrum Cycle, Breathing, Retro Neon, Ocean, Sunset, Aurora, Ice Blue, Toxic Green, Christmas, Candy Pastels, Deep Space, Emerald, Fire & Ice, Neon, Midnight, Lava, Halloween, Solid Color, Color Fade, Color Sweep, Lights Off. The additional themed families each offer Flowing wave, Two-tone split and Soft breathing. Existing Cyberpunk profiles remain ordinary scenes; the gallery now calls that family Retro Neon.
+
+Follow Choose → Adjust → Apply: select a look and variant, click color swatches, adjust Slow/Normal/Fast, brightness and direction, choose Keyboard + lightbar / Keyboard only / Lightbar only, then Apply look. Generated rainbow colors and Off cannot be recolored. Motion controls are disabled for static/Off variants. Direction reverses the preset's own motion. Switching variants restores its original palette. The other surface retains its most recently applied settings. Preview selections never silently write to hardware. Customize sections opens the existing independent section editor with profile management and import/export.
+
+The UI uses a readable gallery with palette swatches, a stylized keyboard/lightbar preview, a selected state and a primary Apply action. The technical palette lists, phase offsets and duty-cycle controls are absent from the default view. The preview is a software illustration of the generated scene, not a measurement of device output.
+
+`RgbPresets` composes ordinary `CustomRgbScene` settings; it does not change the hardware transport. Rainbow Wave is phase-shifted per section, Spectrum Cycle is synchronized, and themed palettes use existing palette/breathing styles. These are curated looks. Established RGB effect categories are documented by [Razer](https://mysupport.razer.com/app/answers/detail/a_id/13713/kw/Chroma%20Configurator) and [Corsair](https://help.corsair.com/hc/en-us/articles/26171491272845-CORSAIR-ONE-i500-Front-Rear-Panel-Controls); no popularity ranking is claimed.
+
+Verification includes all 64 variants, visible differences over sampled frames, target isolation, palette replacement, direction, speed scaling, preservation of saved/last-applied lighting, and the simple screen's controls/layout in an isolated UI host. Its picker wrapper returns a test color; it does not load hardware APIs. The actual GHelper executable was not run during verification. Physical behavior and the complete live application theme remain device checks.
+
+The layout borrows Aura's separation between easy effects and deeper editing, with restrained red accents. It uses the existing GHelper transport and no ASUS software dependency. Dense per-key patterns and webcam tracking are excluded. Music Pulse, Music Spectrum and Screen Glow are deferred, not advertised as working presets. No ASUS or SignalRGB effect code was copied.

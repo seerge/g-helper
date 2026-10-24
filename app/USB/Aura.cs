@@ -58,6 +58,11 @@ namespace GHelper.USB
         ZONETEST = 25,
         AUDIO = 26,
         AUDIOPULSE = 27,
+        SOFTWARE_RAINBOW = 30,
+        SOFTWARE_WAVE = 31,
+        SOFTWARE_CHASE = 32,
+        SOFTWARE_BREATHE = 33,
+        CUSTOM_SECTIONS = 34,
     }
 
     public enum AuraSpeed : int
@@ -87,9 +92,15 @@ namespace GHelper.USB
         private static AuraMode mode = AuraMode.AuraStatic;
         private static AuraSpeed speed = AuraSpeed.Normal;
 
-        private static bool backlight = false;
+        private static volatile bool backlight = false;
         private static bool initDirect = false;
-        public static bool sessionLock = false;
+        public static volatile bool sessionLock = false;
+
+        private static readonly AuraAnimationPlayer animation = new();
+        private static readonly object auraApplyLock = new();
+        private static volatile bool animationSuspended;
+        private static ModeLightingSettings? activeModeSettings;
+        private static Color[]? ambientPrevious;
 
         public static Color Color1 = Color.White;
         public static Color Color2 = Color.Black;
@@ -210,6 +221,10 @@ namespace GHelper.USB
             {
                 modes[AuraMode.GRADIENT] = "Gradient";
                 modes[AuraMode.ZONETEST] = "Zone Test";
+                if (!AppConfig.IsNoDirectRGB())
+                {
+                    modes[AuraMode.CUSTOM_SECTIONS] = "Custom";
+                }
             }
 
             return modes;
@@ -264,7 +279,7 @@ namespace GHelper.USB
 
         public static bool HasSecondColor()
         {
-            return (mode == AuraMode.AuraBreathe || mode == AuraMode.GRADIENT) && (!isACPI || AppConfig.IsDynamicLightingOnly());
+            return (mode == AuraMode.AuraBreathe || mode == AuraMode.GRADIENT || mode == AuraMode.SOFTWARE_WAVE) && (!isACPI || AppConfig.IsDynamicLightingOnly());
         }
 
         public static bool HasRandomColor()
@@ -274,21 +289,26 @@ namespace GHelper.USB
 
         private static void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
-            if (!InputDispatcher.backlightActivity)
-                return;
+            if (!Monitor.TryEnter(auraApplyLock)) return;
+            try
+            {
+                if (!InputDispatcher.backlightActivity)
+                    return;
 
-            if (Mode == AuraMode.HEATMAP)
-            {
-                CustomRGB.ApplyHeatmap();
+                if (Mode == AuraMode.HEATMAP)
+                {
+                    CustomRGB.ApplyHeatmap();
+                }
+                else if (Mode == AuraMode.BATTERY)
+                {
+                    CustomRGB.ApplyBattery();
+                }
+                else if (Mode == AuraMode.AMBIENT)
+                {
+                    CustomRGB.ApplyAmbient();
+                }
             }
-            else if (Mode == AuraMode.BATTERY)
-            {
-                CustomRGB.ApplyBattery();
-            }
-            else if (Mode == AuraMode.AMBIENT)
-            {
-                CustomRGB.ApplyAmbient();
-            }
+            finally { Monitor.Exit(auraApplyLock); }
         }
 
 
@@ -645,7 +665,7 @@ namespace GHelper.USB
 
         };
 
-        public static void ApplyDirect(Color[] color, bool init = false)
+        public static void ApplyDirect(Color[] color, bool init = false, bool throwOnError = false, bool independentSections = false)
         {
             if (color is { Length: > 0 })
             {
@@ -657,7 +677,7 @@ namespace GHelper.USB
 
             if (AsusLampArray.Available)
             {
-                AsusLampArray.SetColors(color);
+                AsusLampArray.SetColors(color, throwOnError, independentSections);
                 return;
             }
 
@@ -682,7 +702,7 @@ namespace GHelper.USB
             if (init || initDirect)
             {
                 initDirect = false;
-                AsusHid.SetFeatureAura(new byte[] { AsusHid.AURA_ID, 0xBC, (byte)(IsOldStrix || AppConfig.IsS17() ? 0 : 1) });
+                AsusHid.SetFeatureAura(new byte[] { AsusHid.AURA_ID, 0xBC, (byte)(IsOldStrix || AppConfig.IsS17() ? 0 : 1) }, throwOnError: throwOnError);
                 Thread.Sleep(50);
             }
 
@@ -711,7 +731,7 @@ namespace GHelper.USB
 
                     buffer[6] = (byte)i;
                     Buffer.BlockCopy(keyBuf, 3 * i, buffer, 9, 3 * buffer[7]);
-                    AsusHid.SetFeatureAura(buffer);
+                    AsusHid.SetFeatureAura(buffer, throwOnError: throwOnError);
                     Thread.Sleep(1);
                 }
             }
@@ -733,13 +753,13 @@ namespace GHelper.USB
                     keyBuf[ledIndex * 3 + 2] = color[zone].B;
                 }
                 Buffer.BlockCopy(keyBuf, 0, buffer, 9, 3 * leds_4_zone);
-                AsusHid.SetFeatureAura(buffer);
+                AsusHid.SetFeatureAura(buffer, throwOnError: throwOnError);
                 Thread.Sleep(1);
                 return;
             }
 
             Buffer.BlockCopy(keyBuf, 3 * keySet, buffer, 9, 3 * (ledCount - keySet));
-            AsusHid.SetFeatureAura(buffer);
+            AsusHid.SetFeatureAura(buffer, throwOnError: throwOnError);
 
             if (!hasRearStrip) return;
 
@@ -764,7 +784,7 @@ namespace GHelper.USB
                 }
 
                 Array.Clear(buffer, 9 + leds * 3, buffer.Length - 9 - leds * 3);
-                AsusHid.SetFeatureAura(buffer);
+                AsusHid.SetFeatureAura(buffer, throwOnError: throwOnError);
                 Thread.Sleep(1);
             }
         }
@@ -869,10 +889,98 @@ namespace GHelper.USB
 
         public static void ApplyAura()
         {
+            lock (auraApplyLock) ApplyAuraCore();
+        }
+
+        public static bool IsAnimation(AuraMode mode) => mode is AuraMode.SOFTWARE_RAINBOW
+            or AuraMode.SOFTWARE_WAVE or AuraMode.SOFTWARE_CHASE or AuraMode.SOFTWARE_BREATHE or AuraMode.CUSTOM_SECTIONS
+            || CanConfigureMode(mode) && mode != AuraMode.AMBIENT && !string.IsNullOrWhiteSpace(AppConfig.GetString(ModeSettingsKey(mode)));
+
+        public static bool CanConfigureMode(AuraMode value) => ModeLightingSettings.Supports((int)value)
+            && isStrix && !isACPI && !AppConfig.IsNoDirectRGB() && !AppConfig.IsDynamicLightingOnly();
+        private static string ModeSettingsKey(AuraMode value) => "aura_mode_options_" + (int)value;
+        public static ModeLightingSettings LoadModeLighting(AuraMode value)
+        {
+            string json = AppConfig.GetString(ModeSettingsKey(value));
+            if (!string.IsNullOrWhiteSpace(json))
+            {
+                try { return ModeLightingSettings.Parse(json, (int)value); }
+                catch (Exception ex) { Logger.WriteLine("Lighting mode settings: " + ex.Message); }
+            }
+            var defaults = ModeLightingSettings.Default((int)value);
+            if (value == AuraMode.GRADIENT)
+            {
+                var section = defaults.Keyboard with { Colors = [RgbSection.ToHex(Color2), RgbSection.ToHex(Color1)] };
+                defaults = defaults with { Keyboard = section, Lightbar = section };
+            }
+            return defaults.Normalize((int)value);
+        }
+        public static void ApplyModeLighting(AuraMode value, ModeLightingSettings settings)
+        {
+            if (!CanConfigureMode(value)) throw new InvalidOperationException("Custom mode options require supported direct RGB control.");
+            AppConfig.Set(ModeSettingsKey(value), settings.ToJson((int)value));
+            AppConfig.Set("aura_mode", (int)value);
+            ApplyAura();
+        }
+
+        public static CustomRgbScene LoadCustomScene()
+        {
+            string saved = AppConfig.GetString("aura_custom_scene");
+            if (!string.IsNullOrWhiteSpace(saved))
+            {
+                try { return CustomRgbScene.Parse(saved); }
+                catch (Exception ex) { Logger.WriteLine("Custom RGB profile: " + ex.Message); }
+            }
+            return CustomRgbScene.CreateDefault();
+        }
+
+        public static void ApplyCustomScene(CustomRgbScene scene)
+        {
+            AppConfig.Set("aura_custom_scene", scene.ToJson());
+            AppConfig.Set("aura_mode", (int)AuraMode.CUSTOM_SECTIONS);
+            ApplyAura();
+        }
+
+        public static void StopAnimation() => animation.Stop();
+
+        public static void ReleaseAnimation()
+        {
+            lock (auraApplyLock)
+            {
+                SuspendAnimation();
+                if (!IsAnimation(Mode) && !(Mode == AuraMode.AMBIENT && activeModeSettings != null)) return;
+                if (AsusLampArray.Available) AsusLampArray.Release();
+                else AsusHid.Write(new List<byte[]> {
+                    AuraMessage(AuraMode.AuraStatic, Color1, Color2, 0xeb), MESSAGE_SET, MESSAGE_APPLY
+                }, "Animation restore", AsusHid.MAIN_AURA_PIDS);
+            }
+        }
+
+        public static void SuspendAnimation()
+        {
+            lock (auraApplyLock)
+            {
+                animationSuspended = true;
+                animation.Stop();
+                if (Mode == AuraMode.AMBIENT && activeModeSettings != null) timer.Stop();
+            }
+        }
+
+        public static void ResumeAnimation()
+        {
+            animationSuspended = false;
+            if ((IsAnimation(Mode) || Mode == AuraMode.AMBIENT && activeModeSettings != null) && !AppConfig.Is("skip_aura")) ApplyAura();
+        }
+
+        private static void ApplyAuraCore()
+        {
+            animation.Stop();
             Mode = (AuraMode)AppConfig.Get("aura_mode");
             Speed = (AuraSpeed)AppConfig.Get("aura_speed");
             SetColor(AppConfig.Get("aura_color"));
             SetColor2(AppConfig.Get("aura_color2"));
+            activeModeSettings = CanConfigureMode(Mode) && !string.IsNullOrWhiteSpace(AppConfig.GetString(ModeSettingsKey(Mode))) ? LoadModeLighting(Mode) : null;
+            ambientPrevious = null;
 
             Color _Color1 = Color1;
             Color _Color2 = Color2;
@@ -891,6 +999,53 @@ namespace GHelper.USB
 
             AsusLampArray.SetMode(Mode);
             if (AsusLampArray.Probing) return;
+
+            if (Mode == AuraMode.CUSTOM_SECTIONS)
+            {
+                CustomRgbScene scene = LoadCustomScene();
+                float battery = SystemInformation.PowerStatus.BatteryLifePercent;
+                long batteryRead = Environment.TickCount64;
+                animation.StartFrames(seconds =>
+                {
+                    if (Environment.TickCount64 - batteryRead > 30000)
+                    {
+                        battery = SystemInformation.PowerStatus.BatteryLifePercent;
+                        batteryRead = Environment.TickCount64;
+                    }
+                    return scene.Render(seconds, battery < 0 ? 0.5 : battery);
+                }, (colors, initialize) => ApplyDirect(colors, initialize, throwOnError: true, independentSections: true),
+                    () => backlight && !sessionLock && !animationSuspended && InputDispatcher.backlightActivity,
+                    ex => Logger.WriteLine("Custom RGB stopped: " + ex.Message));
+                return;
+            }
+
+            if (activeModeSettings != null && Mode != AuraMode.AMBIENT)
+            {
+                var settings = activeModeSettings;
+                int effectMode = (int)Mode;
+                animation.StartFrames(seconds => settings.Render(effectMode, seconds),
+                    (colors, initialize) => ApplyDirect(colors, initialize, throwOnError: true, independentSections: true),
+                    () => backlight && !sessionLock && !animationSuspended && InputDispatcher.backlightActivity,
+                    ex => Logger.WriteLine("Lighting mode stopped: " + ex.Message));
+                return;
+            }
+
+            if (IsAnimation(Mode))
+            {
+                AuraAnimationEffect effect = Mode switch
+                {
+                    AuraMode.SOFTWARE_WAVE => AuraAnimationEffect.Wave,
+                    AuraMode.SOFTWARE_CHASE => AuraAnimationEffect.Chase,
+                    AuraMode.SOFTWARE_BREATHE => AuraAnimationEffect.Breathe,
+                    _ => AuraAnimationEffect.Rainbow
+                };
+                double cycle = Speed == AuraSpeed.Fast ? 2 : Speed == AuraSpeed.Slow ? 8 : 4;
+                animation.Start(effect, cycle, AppConfig.Is("aura_animation_reverse"), Color1, Color2,
+                    (colors, initialize) => ApplyDirect(colors, initialize, throwOnError: true),
+                    () => backlight && !sessionLock && !animationSuspended && InputDispatcher.backlightActivity,
+                    ex => Logger.WriteLine("Aura animation stopped: " + ex.Message));
+                return;
+            }
 
             if (Mode == AuraMode.AUDIO || Mode == AuraMode.AUDIOPULSE)
             {
@@ -1245,6 +1400,32 @@ namespace GHelper.USB
             {
                 if (!backlight || sessionLock) return;
                 if (AmbientData.IsMoveSize()) return;
+                if (activeModeSettings != null && Mode == AuraMode.AMBIENT)
+                {
+                    if (animationSuspended) return;
+                    var settings = activeModeSettings;
+                    var colors = new Color[8];
+                    try
+                    {
+                        for (int group = 0; group < 2; group++)
+                        {
+                            var section = group == 0 ? settings.Keyboard : settings.Lightbar;
+                            var screen = Screen.AllScreens.FirstOrDefault(s => s.DeviceName == section.Ambient.Monitor) ?? Screen.PrimaryScreen ?? Screen.AllScreens[0];
+                            using var samples = CaptureRegion(section.Ambient.Area.ToPixels(screen.Bounds), 4, 1);
+                            for (int i = 0; i < 4; i++)
+                            {
+                                int index = group * 4 + i;
+                                var color = ModeLightingSettings.Mix(Color.Black, section.Ambient.Transform(samples.GetPixel(i, 0)), section.Brightness / 100d);
+                                colors[index] = !init && ambientPrevious != null
+                                    ? section.Ambient.Smooth(ambientPrevious[index], color) : color;
+                            }
+                        }
+                        ambientPrevious = colors;
+                        ApplyDirect(colors, init, throwOnError: true, independentSections: true);
+                    }
+                    catch (Exception ex) { timer.Stop(); Logger.WriteLine("Ambient mode stopped: " + ex.Message); }
+                    return;
+                }
 
                 var bound = Screen.GetBounds(Point.Empty);
                 bound.Y += bound.Height / 3;
@@ -1294,6 +1475,12 @@ namespace GHelper.USB
                     else ApplyDirect(AmbientData.result[0], init);
                 }
 
+            }
+
+            public static Bitmap CaptureRegion(Rectangle bounds, int width, int height)
+            {
+                using var source = AmbientData.CamptureScreen(bounds, Math.Max(width, 256), Math.Max(height, 64));
+                return AmbientData.ResizeImage(source, width, height);
             }
 
             static class AmbientData
