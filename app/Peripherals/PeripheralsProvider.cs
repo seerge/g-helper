@@ -504,6 +504,7 @@ namespace GHelper.Peripherals
             DetectMouse(new HarpeAceAimLabEditionWired());
             DetectMouse(new HarpeAceExtremeWeird());
             DetectMouse(new HarpeAceMiniWired());
+            DetectMouse(new HarpeMiniCore());
             DetectMouse(new HarpeIIAceWired());
             DetectMouse(new TUFM3());
             DetectMouse(new TUFM3GenII());
