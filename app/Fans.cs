@@ -667,6 +667,7 @@ namespace GHelper
                     if (clock_limit == -1) clock_limit = NvidiaGpuControl.MaxClockLimit;
 
                     string? gpuName = null;
+                    bool coreVisible = true, memoryVisible = true;
 
                     if (nvControl is not null)
                     {
@@ -674,6 +675,8 @@ namespace GHelper
                         {
                             core = current_core;
                             memory = current_memory;
+                            coreVisible = nvControl.IsCoreOffsetSupported;
+                            memoryVisible = nvControl.IsMemoryOffsetSupported;
                         }
 
                         int _clockLimit = nvControl.GetMaxGPUCLock();
@@ -702,6 +705,8 @@ namespace GHelper
 
                         panelGPUBoost.Visible = boostVisible;
                         panelGPUTemp.Visible = tempVisible;
+                        panelGPUCore.Visible = coreVisible;
+                        panelGPUMemory.Visible = memoryVisible;
 
                         VisualiseGPUSettings();
 

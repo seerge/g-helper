@@ -449,7 +449,7 @@ public static class AppConfig
     // G14 2020 has no aura, but media keys instead
     public static bool NoAura()
     {
-        return (ContainsModel("GA401I") && !ContainsModel("GA401IHR")) || ContainsModel("GA502IU") || ContainsModel("HN7306") || ContainsModel("H7606") || ContainsModel("M6500X");
+        return (ContainsModel("GA401I") && !ContainsModel("GA401IHR")) || ContainsModel("GA502IU") || ContainsModel("HN7306") || ContainsModel("H7606") || ContainsModel("H7607") || ContainsModel("M6500X");
     }
 
     public static bool MediaKeys()
@@ -480,6 +480,12 @@ public static class AppConfig
     public static bool IsSlashLong()
     {
         return ContainsModel("GA405") || ContainsModel("GU405") || ContainsModel("GU606") || ContainsModel("GX651");
+    }
+
+    // RTX Spark ProArt P16 enforces SPL/SPPT ~10W below the requested value
+    public static int PowerLimitOffset()
+    {
+        return Get("power_offset", ContainsModel("H7607") ? 10 : 0);
     }
 
     public static bool IsInvertedFNLock()

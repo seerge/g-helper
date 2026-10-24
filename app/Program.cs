@@ -480,6 +480,7 @@ namespace GHelper
             NativeMethods.UnregisterPowerSettingNotification(unRegPowerNotifyLid);
             NativeMethods.UnregisterPowerSettingNotification(unRegPowerNotifyEnergy);
             NativeMethods.UnregisterSuspendResumeNotification(unRegSuspendResume);
+            FrameViewHelper.Shutdown();
         }
 
         static void Charge()

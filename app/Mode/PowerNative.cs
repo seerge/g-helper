@@ -39,9 +39,9 @@ namespace GHelper.Mode
         [DllImport("powrprof.dll")]
         static extern uint PowerReadACValue(
             IntPtr RootPowerKey,
-            Guid SchemeGuid,
-            Guid SubGroupOfPowerSettingGuid,
-            Guid PowerSettingGuid,
+            [MarshalAs(UnmanagedType.LPStruct)] Guid SchemeGuid,
+            [MarshalAs(UnmanagedType.LPStruct)] Guid SubGroupOfPowerSettingGuid,
+            [MarshalAs(UnmanagedType.LPStruct)] Guid PowerSettingGuid,
             ref int Type,
             ref IntPtr Buffer,
             ref uint BufferSize
@@ -77,7 +77,7 @@ namespace GHelper.Mode
         public static extern uint PowerGetEffectiveOverlayScheme(out Guid EffectiveOverlayGuid);
 
         [DllImportAttribute("powrprof.dll", EntryPoint = "PowerSetActiveOverlayScheme")]
-        public static extern uint PowerSetActiveOverlayScheme(Guid OverlaySchemeGuid);
+        public static extern uint PowerSetActiveOverlayScheme([MarshalAs(UnmanagedType.LPStruct)] Guid OverlaySchemeGuid);
 
         const string POWER_SILENT = "961cc777-2547-4f9d-8174-7d86181b8a7a";
         const string POWER_BALANCED = "00000000-0000-0000-0000-000000000000";
