@@ -42,6 +42,7 @@ namespace GHelper
             labelMatrix = new Label();
             panelBattery = new Panel();
             buttonBatteryFull = new RButton();
+            buttonTouchscreen = new RButton();
             sliderBattery = new Slider();
             panelBatteryTitle = new Panel();
             labelBattery = new Label();
@@ -1039,17 +1040,19 @@ namespace GHelper
             // 
             tableScreen.AutoSize = true;
             tableScreen.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            tableScreen.ColumnCount = 4;
-            tableScreen.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tableScreen.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tableScreen.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tableScreen.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tableScreen.ColumnCount = 5;
+            tableScreen.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableScreen.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableScreen.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableScreen.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableScreen.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
             tableScreen.Controls.Add(buttonScreenAuto, 0, 0);
             tableScreen.Controls.Add(button60Hz, 1, 0);
             tableScreen.Controls.Add(button120Hz, 2, 0);
-            tableScreen.Controls.Add(buttonMiniled, 3, 0);
-            tableScreen.Controls.Add(buttonFHD, 3, 0);
-            tableScreen.Controls.Add(buttonHDRControl, 3, 0);
+            tableScreen.Controls.Add(buttonTouchscreen, 3, 0);
+            tableScreen.Controls.Add(buttonMiniled, 4, 0);
+            tableScreen.Controls.Add(buttonFHD, 4, 0);
+            tableScreen.Controls.Add(buttonHDRControl, 4, 0);
             tableScreen.Dock = DockStyle.Top;
             tableScreen.Location = new Point(20, 51);
             tableScreen.Margin = new Padding(8, 4, 8, 4);
@@ -1059,6 +1062,25 @@ namespace GHelper
             tableScreen.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableScreen.Size = new Size(787, 100);
             tableScreen.TabIndex = 23;
+            //
+            // buttonTouchscreen
+            //
+            buttonTouchscreen.Activated = false;
+            buttonTouchscreen.BackColor = SystemColors.ControlLightLight;
+            buttonTouchscreen.BorderColor = Color.Transparent;
+            buttonTouchscreen.BorderRadius = 5;
+            buttonTouchscreen.Dock = DockStyle.Fill;
+            buttonTouchscreen.FlatAppearance.BorderSize = 0;
+            buttonTouchscreen.FlatStyle = FlatStyle.Flat;
+            buttonTouchscreen.ForeColor = SystemColors.ControlText;
+            buttonTouchscreen.Margin = new Padding(4);
+            buttonTouchscreen.Name = "buttonTouchscreen";
+            buttonTouchscreen.Secondary = false;
+            buttonTouchscreen.Size = new Size(149, 72);
+            buttonTouchscreen.TabIndex = 42;
+            buttonTouchscreen.Text = "Touch Screen";
+            buttonTouchscreen.UseVisualStyleBackColor = false;
+            buttonTouchscreen.Visible = false;
             // 
             // buttonScreenAuto
             // 
@@ -2229,6 +2251,7 @@ namespace GHelper
         private RButton buttonFnLock;
         private RButton buttonOverlay;
         private RButton buttonBatteryFull;
+        private RButton buttonTouchscreen;
         private Panel panelAlly;
         private TableLayoutPanel tableLayoutAlly;
         private RButton buttonControllerMode;

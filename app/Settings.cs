@@ -1,4 +1,4 @@
-﻿using GHelper.Ally;
+using GHelper.Ally;
 using GHelper.AnimeMatrix;
 using GHelper.AutoUpdate;
 using GHelper.Battery;
@@ -59,6 +59,9 @@ namespace GHelper
         bool batteryFullMouseOver = false;
 
         bool sliderGammaIgnore = false;
+        private readonly List<Control> screenButtons = [];
+        private bool screenSectionVisible = true;
+        private bool touchscreenBusy;
 
         public SettingsForm()
         {
@@ -151,6 +154,7 @@ namespace GHelper
             button120Hz.BorderColor = colorGray;
             buttonScreenAuto.BorderColor = colorGray;
             buttonMiniled.BorderColor = colorTurbo;
+            buttonTouchscreen.BorderColor = colorStandard;
 
             buttonEnergySaver.BackColor = colorEco;
             buttonEnergySaver.ForeColor = SystemColors.ControlLightLight;
@@ -266,6 +270,8 @@ namespace GHelper
             buttonBatteryFull.MouseEnter += ButtonBatteryFull_MouseEnter;
             buttonBatteryFull.MouseLeave += ButtonBatteryFull_MouseLeave;
             buttonBatteryFull.Click += ButtonBatteryFull_Click;
+            buttonTouchscreen.Click += ButtonTouchscreen_Click;
+            VisualiseTouchscreen();
 
             buttonControllerMode.Click += ButtonControllerMode_Click;
             buttonBacklight.Click += ButtonBacklight_Click;
@@ -279,8 +285,6 @@ namespace GHelper
             VisualiseOverlay();
             buttonKeyboard.SizeChanged += (s, e) => AlignFnLock();
             AlignFnLock();
-
-            if (AppConfig.IsAlly()) tableScreen.ColumnCount = 3;
 
             buttonAutoTDP.Click += ButtonAutoTDP_Click;
             buttonAutoTDP.BorderColor = colorTurbo;
@@ -715,6 +719,7 @@ namespace GHelper
             sensorTimer.Enabled = this.Visible || sensorsAlways;
             if (this.Visible)
             {
+                VisualiseTouchscreen();
                 Task.Run((Action)RefreshPeripheralsBattery);
                 updateControl.CheckForUpdates();
             }
@@ -1459,6 +1464,7 @@ namespace GHelper
                 panelScreen.Visible = AppConfig.NoGpu();
             }
 
+            buttonFHD.Visible = fhd >= 0;
             if (fhd >= 0)
             {
                 buttonFHD.Visible = true;
@@ -1531,6 +1537,15 @@ namespace GHelper
                 labelVisual.Visible = false;
             }
 
+            screenSectionVisible = maxFrequency <= 0 || maxFrequency > ScreenControl.MIN_RATE || AppConfig.NoGpu();
+            screenButtons.Clear();
+            if (maxFrequency <= 0 || maxFrequency > ScreenControl.MIN_RATE)
+                screenButtons.AddRange([buttonScreenAuto, button60Hz, button120Hz]);
+            if (miniled1 >= 0 || miniled2 >= 0)
+                if (!hdrControlVisible) screenButtons.Add(buttonMiniled);
+            if (fhd >= 0) screenButtons.Add(buttonFHD);
+            if (hdrControlVisible) screenButtons.Add(buttonHDRControl);
+            VisualiseTouchscreen();
 
         }
 
@@ -1686,6 +1701,7 @@ namespace GHelper
             if (Program.settingsForm.IsHandleCreated)
                 Program.settingsForm.BeginInvoke(delegate
                 {
+                    if (Visible && AppConfig.Is("show_touchscreen")) VisualiseTouchscreen();
                     labelCPUFan.Text = "CPU" + cpuTemp + "  " + cpuFan;
                     labelGPUFan.Text = "GPU" + gpuTemp + "  " + gpuFan;
 
@@ -1858,7 +1874,6 @@ namespace GHelper
                 menuOptimized.Visible = buttonOptimized.Visible = false;
                 buttonStopGPU.Visible = true;
                 tableGPU.ColumnCount = 3;
-                tableScreen.ColumnCount = 3;
             }
             else
             {
@@ -1869,7 +1884,6 @@ namespace GHelper
             {
                 menuUltimate.Visible = buttonUltimate.Visible = false;
                 tableGPU.ColumnCount = 3;
-                tableScreen.ColumnCount = 3;
             }
         }
 
@@ -2080,6 +2094,65 @@ namespace GHelper
 
         }
 
+        private async void ButtonTouchscreen_Click(object? sender, EventArgs e)
+        {
+            if (touchscreenBusy) return;
+            bool? enabled = TouchscreenHelper.GetStatus();
+            if (enabled is null) { VisualiseTouchscreen(); return; }
+            if (!ProcessHelper.IsUserAdministrator())
+            {
+                ProcessHelper.RunAsAdmin(enabled.Value ? "touchscreen-off" : "touchscreen-on");
+                return;
+            }
+            touchscreenBusy = true;
+            buttonTouchscreen.Enabled = false;
+            try
+            {
+                bool? result = await Task.Run(() => TouchscreenHelper.ToggleTouchscreen(!enabled.Value));
+                if (!IsDisposed && result != !enabled.Value)
+                    MessageBox.Show(this, Strings.TouchscreenError, Strings.Touchscreen, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            finally
+            {
+                touchscreenBusy = false;
+                if (!IsDisposed) VisualiseTouchscreen();
+            }
+        }
+
+        public void VisualiseTouchscreen()
+        {
+            if (InvokeRequired) { BeginInvoke(VisualiseTouchscreen); return; }
+            bool show = AppConfig.Is("show_touchscreen") && TouchscreenHelper.IsSupported();
+            bool? enabled = show ? TouchscreenHelper.GetStatus() : null;
+            buttonTouchscreen.Text = Strings.Touchscreen;
+            buttonTouchscreen.AccessibleName = Strings.Touchscreen + ": " + (enabled is null ? Strings.TouchscreenUnavailable : enabled.Value ? Strings.On : Strings.Off);
+            buttonTouchscreen.Activated = enabled == true;
+            buttonTouchscreen.Enabled = enabled is not null && !touchscreenBusy;
+            toolTip.SetToolTip(buttonTouchscreen, buttonTouchscreen.AccessibleName);
+
+            var buttons = new List<Control>(screenButtons);
+            if (show) buttons.Insert(Math.Min(3, buttons.Count), buttonTouchscreen);
+            panelScreen.Visible = screenSectionVisible || show;
+            tableScreen.Visible = buttons.Count > 0;
+            LayoutScreenButtons(tableScreen, buttons, AppConfig.IsAlly() || AppConfig.NoGpu() ? 3 : 4);
+        }
+
+        internal static void LayoutScreenButtons(TableLayoutPanel table, IReadOnlyList<Control> buttons, int minimumColumns)
+        {
+            int columns = Math.Max(minimumColumns, buttons.Count);
+            if (table.ColumnCount == columns && table.Controls.Cast<Control>().SequenceEqual(buttons)) return;
+            table.SuspendLayout();
+            table.Controls.Clear();
+            table.ColumnStyles.Clear();
+            table.ColumnCount = columns;
+            for (int i = 0; i < columns; i++) table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F / columns));
+            for (int i = 0; i < buttons.Count; i++)
+            {
+                table.Controls.Add(buttons[i], i, 0);
+                buttons[i].Visible = true;
+            }
+            table.ResumeLayout();
+        }
 
         public void UpdateKeyboardLabel()
         {
