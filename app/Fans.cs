@@ -702,6 +702,7 @@ namespace GHelper
 
                         panelGPUBoost.Visible = boostVisible;
                         panelGPUTemp.Visible = tempVisible;
+                        panelGPUCore.Visible = panelGPUMemory.Visible = nv.IsClockOffsetSupported;
 
                         VisualiseGPUSettings();
 

@@ -374,6 +374,11 @@ public class AsusACPI
             MaxCPU = 115;
         }
 
+        if (AppConfig.ContainsModel("H7607"))
+        {
+            MaxTotal = 95;
+        }
+
     }
 
     public void Control(uint dwIoControlCode, byte[] lpInBuffer, byte[] lpOutBuffer)
