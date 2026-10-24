@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType><TargetFramework>net10.0-windows</TargetFramework><UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable>
+    <DefineConstants Condition="Exists('../../app/SimpleRgbEditor.cs')">$(DefineConstants);SIMPLE_IMPLEMENTED</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../app/USB/ModeLightingSettings.cs" Link="ModeLightingSettings.cs" />
+    <Compile Include="../../app/LightingModeEditor.cs" Link="LightingModeEditor.cs" />
+    <Compile Include="../../app/CustomRgbEditor.cs" Link="CustomRgbEditor.cs" />
+    <Compile Include="../../app/USB/CustomRgbScene.cs" Link="CustomRgbScene.cs" />
+    <Compile Include="../../app/USB/RgbPresets.cs" Link="RgbPresets.cs" />
+    <Compile Include="../../app/SimpleRgbEditor.cs" Link="SimpleRgbEditor.cs" Condition="Exists('../../app/SimpleRgbEditor.cs')" />
+  </ItemGroup>
+</Project>
