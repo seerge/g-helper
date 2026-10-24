@@ -135,6 +135,9 @@
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>Ekonomiškas režimas</value>
   </data>
+  <data name="AlertExternalDisplay" xml:space="preserve">
+    <value>Panašu, kad išorinis ekranas yra prijungtas prie GPU. Vis tiek išjungti GPU?</value>
+  </data>
   <data name="AlertUltimateOff" xml:space="preserve">
     <value>Maksimalaus režimo išjungimas reikalauja paleidimo iš naujo</value>
   </data>
@@ -310,10 +313,10 @@
     <value>Paleidimo garsas</value>
   </data>
   <data name="BacklightDown" xml:space="preserve">
-    <value>Backlight Down</value>
+    <value>Sumažinti apšvietimą</value>
   </data>
   <data name="BacklightUp" xml:space="preserve">
-    <value>Backlight Up</value>
+    <value>Padidinti apšvietimą</value>
   </data>
   <data name="Brightness" xml:space="preserve">
     <value>Ryškumas</value>
@@ -398,6 +401,9 @@ Vis tiek norite tęsti?</value>
   <data name="EnergySettings" xml:space="preserve">
     <value>Energijos nustatymai</value>
   </data>
+  <data name="EnhancedVibration" xml:space="preserve">
+    <value>Padidinta vibracija</value>
+  </data>
   <data name="Export" xml:space="preserve">
     <value>Eksportuoti profilį</value>
   </data>
@@ -406,6 +412,9 @@ Vis tiek norite tęsti?</value>
   </data>
   <data name="ExtraSettings" xml:space="preserve">
     <value>Išplėstiniai nustatymai</value>
+  </data>
+  <data name="ExtremeLowMotionBlur" xml:space="preserve">
+    <value>Judesio suliejimo sumažinimas</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>Numatytieji</value>
@@ -450,7 +459,7 @@ Vis tiek norite tęsti?</value>
     <value>FN užraktas įjungtas</value>
   </data>
   <data name="WinLockToggle" xml:space="preserve">
-    <value>Win-Lock Toggle</value>
+    <value>„Win-Lock“ užraktas</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Dinaminis spartinimas</value>
@@ -558,7 +567,7 @@ Vis tiek norite tęsti?</value>
     <value>Garso vizualizatorius</value>
   </data>
   <data name="MatrixAudioMode" xml:space="preserve">
-    <value>Visualizer Mode</value>
+    <value>Vizualizatoriaus režimas</value>
   </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Dvejetainė vėliava</value>
@@ -585,16 +594,16 @@ Vis tiek norite tęsti?</value>
     <value>Paveikslėlis</value>
   </data>
   <data name="MatrixRunningText" xml:space="preserve">
-    <value>Running Text</value>
+    <value>Slenkamas tekstas</value>
   </data>
   <data name="MatrixText" xml:space="preserve">
-    <value>Text</value>
+    <value>Tekstas</value>
   </data>
   <data name="MatrixTimeFormat" xml:space="preserve">
-    <value>Time Format</value>
+    <value>Laiko formatas</value>
   </data>
   <data name="MatrixDateFormat" xml:space="preserve">
-    <value>Date Format</value>
+    <value>Datos formatas</value>
   </data>
   <data name="MatrixFlip" xml:space="preserve">
     <value>Pasukti 180°</value>
@@ -637,6 +646,42 @@ Vis tiek norite tęsti?</value>
   </data>
   <data name="MouseSynchronize" xml:space="preserve">
     <value>Sinchronizuoti su pele</value>
+  </data>
+  <data name="HeadsetEqualizer" xml:space="preserve">
+    <value>Ekvalaizeris</value>
+  </data>
+  <data name="HeadsetMicrophoneType" xml:space="preserve">
+    <value>Mikrofonas</value>
+  </data>
+  <data name="HeadsetMicBoom" xml:space="preserve">
+    <value>Ant laikiklio</value>
+  </data>
+  <data name="HeadsetMicInline" xml:space="preserve">
+    <value>Ant laido</value>
+  </data>
+  <data name="HeadsetMicExternal" xml:space="preserve">
+    <value>Išorinis</value>
+  </data>
+  <data name="HeadsetNoiseReduction" xml:space="preserve">
+    <value>Triukšmo slopinimas</value>
+  </data>
+  <data name="HeadsetSidetone" xml:space="preserve">
+    <value>Šoninis tonas</value>
+  </data>
+  <data name="HeadsetVoicePrompt" xml:space="preserve">
+    <value>Balso pranešimų kalba</value>
+  </data>
+  <data name="HeadsetAdaptiveAnc" xml:space="preserve">
+    <value>Adaptyvus ANC</value>
+  </data>
+  <data name="HeadsetAmbient" xml:space="preserve">
+    <value>Aplinkos garsai</value>
+  </data>
+  <data name="HeadsetPromptSound" xml:space="preserve">
+    <value>Garsinis signalas</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>Automatinis</value>
   </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
     <value>Sinchronizuoti su nešiojamuoju</value>
@@ -734,6 +779,9 @@ Vis tiek norite tęsti?</value>
   <data name="ReadLimits" xml:space="preserve">
     <value>Skaityti ribas</value>
   </data>
+  <data name="RearLight" xml:space="preserve">
+    <value>Galinis apšvietimas</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Atstatyti</value>
   </data>
@@ -741,7 +789,7 @@ Vis tiek norite tęsti?</value>
     <value>Kažkas naudoja dGPU ir neleidžia įjungti ekonomiško režimo. Norite leisti G-Helper bandyti iš naujo paleisti dGPU įrenginių tvarkytuvėje? (Tęskite savo rizika)</value>
   </data>
   <data name="RestartingNVServices" xml:space="preserve">
-    <value>Restarting NV Services...</value>
+    <value>Perkraunami NV servisai...</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>aps.</value>
@@ -811,6 +859,9 @@ Vis tiek norite tęsti?</value>
   </data>
   <data name="ToggleScreen" xml:space="preserve">
     <value>Perjungti ekraną</value>
+  </data>
+  <data name="ToggleTouchpad" xml:space="preserve">
+    <value>Valdyti liečiamąjį jutiklį (Touchpad)</value>
   </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
     <value>Valdyti jutiklinį ekraną</value>
@@ -963,10 +1014,10 @@ Vis tiek norite tęsti?</value>
     <value>„Ambient“ režimas gali padidinti energijos suvartojimą</value>
   </data>
   <data name="MouseMotionSync" xml:space="preserve">
-    <value>Motion Sync</value>
+    <value>Judesio sinch.</value>
   </data>
   <data name="MouseZoneMode" xml:space="preserve">
-    <value>Zone Mode</value>
+    <value>„Zone“ režimas</value>
   </data>
   <data name="DisablePCIeASPM" xml:space="preserve">
     <value>Išjungti PCIe Link State Management (prijungus prie tinklo)</value>
@@ -993,10 +1044,37 @@ Rekomenduojama, jei pastebėjote atsitiktinius užstrigimus ar nereaguojančią 
 kaitinti miegančio kompiuterio ir eikvoti akumuliatoriaus.</value>
   </data>
   <data name="Overlay" xml:space="preserve">
-    <value>Overlay</value>
+    <value>Perdanga</value>
+  </data>
+  <data name="OverlayChart" xml:space="preserve">
+    <value>Diagrama</value>
+  </data>
+  <data name="OverlayLabels" xml:space="preserve">
+    <value>Etiketės</value>
+  </data>
+  <data name="OverlayLoad" xml:space="preserve">
+    <value>Apkrova</value>
+  </data>
+  <data name="OverlayModeComplete" xml:space="preserve">
+    <value>Išsamus</value>
+  </data>
+  <data name="OverlayModeFull" xml:space="preserve">
+    <value>Papildytas</value>
+  </data>
+  <data name="OverlayModeLight" xml:space="preserve">
+    <value>Minimalus</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
-    <value>Overlay only in games</value>
+    <value>Perdanga (tik žaidimuose)</value>
+  </data>
+  <data name="OverlaySize" xml:space="preserve">
+    <value>Dydis</value>
+  </data>
+  <data name="OverlayTemperatures" xml:space="preserve">
+    <value>Temperatūros</value>
+  </data>
+  <data name="OverlayTransparency" xml:space="preserve">
+    <value>Skaidrumas</value>
   </data>
   <data name="Power" xml:space="preserve">
     <value>Maitinimas</value>
@@ -1027,5 +1105,20 @@ kaitinti miegančio kompiuterio ir eikvoti akumuliatoriaus.</value>
   </data>
   <data name="Always" xml:space="preserve">
     <value>Visada</value>
+  </data>
+  <data name="TestLayout" xml:space="preserve">
+    <value>Bandomasis išdėstymas</value>
+  </data>
+  <data name="FillAll" xml:space="preserve">
+    <value>Užpildyti visus</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>Klavišai</value>
+  </data>
+  <data name="Animation" xml:space="preserve">
+    <value>Animacija</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>Fonas</value>
   </data>
 </root>

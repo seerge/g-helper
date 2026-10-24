@@ -135,6 +135,9 @@
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>Mode Éco</value>
   </data>
+  <data name="AlertExternalDisplay" xml:space="preserve">
+    <value>Looks like external screen is connected to GPU, disable GPU anyway?</value>
+  </data>
   <data name="AlertUltimateOff" xml:space="preserve">
     <value>Désactiver le Mode Ultime requiert un redémarrage</value>
   </data>
@@ -398,6 +401,9 @@ Voulez-vous continuer ?</value>
   <data name="EnergySettings" xml:space="preserve">
     <value>Paramètres d'énergie</value>
   </data>
+  <data name="EnhancedVibration" xml:space="preserve">
+    <value>Enhanced Vibration</value>
+  </data>
   <data name="Export" xml:space="preserve">
     <value>Exporter profil</value>
   </data>
@@ -406,6 +412,9 @@ Voulez-vous continuer ?</value>
   </data>
   <data name="ExtraSettings" xml:space="preserve">
     <value>Paramètres supplémentaires</value>
+  </data>
+  <data name="ExtremeLowMotionBlur" xml:space="preserve">
+    <value>Extreme Low Motion Blur</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>Paramètres d'usine</value>
@@ -638,6 +647,42 @@ Voulez-vous continuer ?</value>
   <data name="MouseSynchronize" xml:space="preserve">
     <value>Synchroniser avec le pointeur</value>
   </data>
+  <data name="HeadsetEqualizer" xml:space="preserve">
+    <value>Égaliseur</value>
+  </data>
+  <data name="HeadsetMicrophoneType" xml:space="preserve">
+    <value>Microphone</value>
+  </data>
+  <data name="HeadsetMicBoom" xml:space="preserve">
+    <value>Perche</value>
+  </data>
+  <data name="HeadsetMicInline" xml:space="preserve">
+    <value>Sur câble</value>
+  </data>
+  <data name="HeadsetMicExternal" xml:space="preserve">
+    <value>Externe</value>
+  </data>
+  <data name="HeadsetNoiseReduction" xml:space="preserve">
+    <value>Réduction de bruit</value>
+  </data>
+  <data name="HeadsetSidetone" xml:space="preserve">
+    <value>Retour micro</value>
+  </data>
+  <data name="HeadsetVoicePrompt" xml:space="preserve">
+    <value>Langue des invites vocales</value>
+  </data>
+  <data name="HeadsetAdaptiveAnc" xml:space="preserve">
+    <value>ANC adaptatif</value>
+  </data>
+  <data name="HeadsetAmbient" xml:space="preserve">
+    <value>Ambiant</value>
+  </data>
+  <data name="HeadsetPromptSound" xml:space="preserve">
+    <value>Bip sonore</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>Automatique</value>
+  </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
     <value>Synchroniser avec le portable</value>
   </data>
@@ -734,6 +779,9 @@ Voulez-vous continuer ?</value>
   <data name="ReadLimits" xml:space="preserve">
     <value>Lire les limites</value>
   </data>
+  <data name="RearLight" xml:space="preserve">
+    <value>Éclairage arrière</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Réinitialiser</value>
   </data>
@@ -811,6 +859,9 @@ Voulez-vous continuer ?</value>
   </data>
   <data name="ToggleScreen" xml:space="preserve">
     <value>Allumer l'écran</value>
+  </data>
+  <data name="ToggleTouchpad" xml:space="preserve">
+    <value>Toggle Touchpad</value>
   </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
     <value>Activer/désactiver l'écran tactile</value>
@@ -995,8 +1046,35 @@ de chauffer l'ordinateur en veille et de vider la batterie.</value>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
+  <data name="OverlayChart" xml:space="preserve">
+    <value>Chart</value>
+  </data>
+  <data name="OverlayLabels" xml:space="preserve">
+    <value>Labels</value>
+  </data>
+  <data name="OverlayLoad" xml:space="preserve">
+    <value>Load</value>
+  </data>
+  <data name="OverlayModeComplete" xml:space="preserve">
+    <value>Complete</value>
+  </data>
+  <data name="OverlayModeFull" xml:space="preserve">
+    <value>Full</value>
+  </data>
+  <data name="OverlayModeLight" xml:space="preserve">
+    <value>Light</value>
+  </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Overlay only in games</value>
+  </data>
+  <data name="OverlaySize" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="OverlayTemperatures" xml:space="preserve">
+    <value>Temperatures</value>
+  </data>
+  <data name="OverlayTransparency" xml:space="preserve">
+    <value>Transparency</value>
   </data>
   <data name="Power" xml:space="preserve">
     <value>Alimentation</value>
@@ -1027,5 +1105,20 @@ de chauffer l'ordinateur en veille et de vider la batterie.</value>
   </data>
   <data name="Always" xml:space="preserve">
     <value>Toujours</value>
+  </data>
+  <data name="TestLayout" xml:space="preserve">
+    <value>Disposition de test</value>
+  </data>
+  <data name="FillAll" xml:space="preserve">
+    <value>Tout remplir</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>Touches</value>
+  </data>
+  <data name="Animation" xml:space="preserve">
+    <value>Animation</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>Arrière-plan</value>
   </data>
 </root>

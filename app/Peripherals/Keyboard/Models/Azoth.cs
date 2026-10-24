@@ -165,12 +165,28 @@
         {
         }
 
+        protected AzothExtreme(ushort productId) : base(productId, "mi_01", 0x00)
+        {
+        }
+
         public override string GetDisplayName()
         {
             return "ROG Azoth Extreme";
         }
 
         protected override bool IsAmoled => true;
+    }
+
+    public class AzothExtremeSE : AzothExtreme
+    {
+        public AzothExtremeSE() : base(0x1CEF)
+        {
+        }
+
+        public override string GetDisplayName()
+        {
+            return "ROG Azoth Extreme SE";
+        }
     }
 
     public class AzothWireless : Azoth
@@ -238,5 +254,13 @@
         }
 
         protected override bool IsAmoled => true;
+    }
+
+    public class AzothExtremeSEOmni : AzothExtremeOmni
+    {
+        public override string GetDisplayName()
+        {
+            return "ROG Azoth Extreme SE (OMNI)";
+        }
     }
 }

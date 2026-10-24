@@ -214,7 +214,7 @@
     <value>Náhodný</value>
   </data>
   <data name="AuraReact" xml:space="preserve">
-    <value>React</value>
+    <value>Reaktivní</value>
   </data>
   <data name="AuraSlow" xml:space="preserve">
     <value>Nízká</value>
@@ -611,6 +611,42 @@ Chcete přesto pokračovat?</value>
   <data name="MousePerformance" xml:space="preserve">
     <value>Vlastnosti</value>
   </data>
+  <data name="HeadsetEqualizer" xml:space="preserve">
+    <value>Ekvalizér</value>
+  </data>
+  <data name="HeadsetMicrophoneType" xml:space="preserve">
+    <value>Mikrofon</value>
+  </data>
+  <data name="HeadsetMicBoom" xml:space="preserve">
+    <value>Raménko</value>
+  </data>
+  <data name="HeadsetMicInline" xml:space="preserve">
+    <value>Na kabelu</value>
+  </data>
+  <data name="HeadsetMicExternal" xml:space="preserve">
+    <value>Externí</value>
+  </data>
+  <data name="HeadsetNoiseReduction" xml:space="preserve">
+    <value>Potlačení šumu</value>
+  </data>
+  <data name="HeadsetSidetone" xml:space="preserve">
+    <value>Odposlech</value>
+  </data>
+  <data name="HeadsetVoicePrompt" xml:space="preserve">
+    <value>Jazyk hlasových výzev</value>
+  </data>
+  <data name="HeadsetAdaptiveAnc" xml:space="preserve">
+    <value>Adaptivní ANC</value>
+  </data>
+  <data name="HeadsetAmbient" xml:space="preserve">
+    <value>Ambientní</value>
+  </data>
+  <data name="HeadsetPromptSound" xml:space="preserve">
+    <value>Zvuková výzva</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>Auto</value>
+  </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
     <value>Synchronizovat s notebookem</value>
   </data>
@@ -709,6 +745,9 @@ Chcete přesto pokračovat?</value>
   </data>
   <data name="ReadLimits" xml:space="preserve">
     <value>Načíst limity</value>
+  </data>
+  <data name="RearLight" xml:space="preserve">
+    <value>Zadní osvětlení</value>
   </data>
   <data name="Reset" xml:space="preserve">
     <value>Obnovit</value>
@@ -987,5 +1026,20 @@ Doporučeno, pokud zaznamenáváte náhodné zaseknutí nebo nereagující hardw
   </data>
   <data name="Always" xml:space="preserve">
     <value>Vždy</value>
+  </data>
+  <data name="TestLayout" xml:space="preserve">
+    <value>Testovací rozložení</value>
+  </data>
+  <data name="FillAll" xml:space="preserve">
+    <value>Vyplnit vše</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>Klávesy</value>
+  </data>
+  <data name="Animation" xml:space="preserve">
+    <value>Animace</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>Pozadí</value>
   </data>
 </root>

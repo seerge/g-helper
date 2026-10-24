@@ -177,8 +177,9 @@ namespace GHelper
                 var radio = inventory.Where(d => !d.isExtension && keys.Any(k => d.entry.Contains(k, StringComparison.OrdinalIgnoreCase)))
                     .OrderBy(d => d.entry.StartsWith("Microsoft")).FirstOrDefault();
                 if (!members.Any(n => installed[n] is not null) && radio.entry is null) continue;
+                bool sameMajor = members.Any(n => installed[n] is not null && Major(updates[n].version) == Major(installed[n]!));
 
-                foreach (var n in members.Where(n => installed[n] is null))
+                foreach (var n in members.Where(n => installed[n] is null || (sameMajor && Major(updates[n].version) != Major(installed[n]!))))
                 {
                     var u = updates[n];
                     u.status = STATUS_HIDDEN;
@@ -208,7 +209,7 @@ namespace GHelper
                 // match major version
                 int major = Major(item.version);
                 var pool = matched.Where(d => Major(d.version) == major).ToList();
-                if (pool.Count == 0) pool = matched.Where(d => !d.isExtension).ToList();
+                if (pool.Count == 0) pool = matched.Where(d => !d.isExtension || Major(d.version) > major).ToList();
                 if (pool.Count == 0) pool = matched;
                 return MaxVersion(pool, item.title);
             }

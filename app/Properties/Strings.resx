@@ -135,6 +135,9 @@
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>Eco Mode</value>
   </data>
+  <data name="AlertExternalDisplay" xml:space="preserve">
+    <value>Looks like external screen is connected to GPU, disable GPU anyway?</value>
+  </data>
   <data name="AlertUltimateOff" xml:space="preserve">
     <value>Switching off Ultimate Mode requires restart</value>
   </data>
@@ -398,6 +401,9 @@ Do you still want to continue?</value>
   <data name="EnergySettings" xml:space="preserve">
     <value>Energy Settings</value>
   </data>
+  <data name="EnhancedVibration" xml:space="preserve">
+    <value>Enhanced Vibration</value>
+  </data>
   <data name="Export" xml:space="preserve">
     <value>Export Profile</value>
   </data>
@@ -641,6 +647,42 @@ Do you still want to continue?</value>
   <data name="MouseSynchronize" xml:space="preserve">
     <value>Synchronize with mouse</value>
   </data>
+  <data name="HeadsetEqualizer" xml:space="preserve">
+    <value>Equalizer</value>
+  </data>
+  <data name="HeadsetMicrophoneType" xml:space="preserve">
+    <value>Microphone</value>
+  </data>
+  <data name="HeadsetMicBoom" xml:space="preserve">
+    <value>Boom</value>
+  </data>
+  <data name="HeadsetMicInline" xml:space="preserve">
+    <value>Inline</value>
+  </data>
+  <data name="HeadsetMicExternal" xml:space="preserve">
+    <value>External</value>
+  </data>
+  <data name="HeadsetNoiseReduction" xml:space="preserve">
+    <value>Noise Reduction</value>
+  </data>
+  <data name="HeadsetSidetone" xml:space="preserve">
+    <value>Sidetone</value>
+  </data>
+  <data name="HeadsetVoicePrompt" xml:space="preserve">
+    <value>Voice Prompt Language</value>
+  </data>
+  <data name="HeadsetAdaptiveAnc" xml:space="preserve">
+    <value>Adaptive ANC</value>
+  </data>
+  <data name="HeadsetAmbient" xml:space="preserve">
+    <value>Ambient</value>
+  </data>
+  <data name="HeadsetPromptSound" xml:space="preserve">
+    <value>Prompt Sound</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>Auto</value>
+  </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
     <value>Sync with laptop</value>
   </data>
@@ -737,6 +779,9 @@ Do you still want to continue?</value>
   <data name="ReadLimits" xml:space="preserve">
     <value>Read Limits</value>
   </data>
+  <data name="RearLight" xml:space="preserve">
+    <value>Rear Light</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Reset</value>
   </data>
@@ -814,6 +859,9 @@ Do you still want to continue?</value>
   </data>
   <data name="ToggleScreen" xml:space="preserve">
     <value>Toggle Screen</value>
+  </data>
+  <data name="ToggleTouchpad" xml:space="preserve">
+    <value>Toggle Touchpad</value>
   </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
     <value>Toggle Touchscreen</value>
@@ -1001,8 +1049,35 @@ from heating up the sleeping laptop and draining the battery.</value>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
+  <data name="OverlayChart" xml:space="preserve">
+    <value>Chart</value>
+  </data>
+  <data name="OverlayLabels" xml:space="preserve">
+    <value>Labels</value>
+  </data>
+  <data name="OverlayLoad" xml:space="preserve">
+    <value>Load</value>
+  </data>
+  <data name="OverlayModeComplete" xml:space="preserve">
+    <value>Complete</value>
+  </data>
+  <data name="OverlayModeFull" xml:space="preserve">
+    <value>Full</value>
+  </data>
+  <data name="OverlayModeLight" xml:space="preserve">
+    <value>Light</value>
+  </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Overlay only in games</value>
+  </data>
+  <data name="OverlaySize" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="OverlayTemperatures" xml:space="preserve">
+    <value>Temperatures</value>
+  </data>
+  <data name="OverlayTransparency" xml:space="preserve">
+    <value>Transparency</value>
   </data>
   <data name="Power" xml:space="preserve">
     <value>Power</value>
@@ -1033,5 +1108,20 @@ from heating up the sleeping laptop and draining the battery.</value>
   </data>
   <data name="Always" xml:space="preserve">
     <value>Always</value>
+  </data>
+  <data name="TestLayout" xml:space="preserve">
+    <value>Test Layout</value>
+  </data>
+  <data name="FillAll" xml:space="preserve">
+    <value>Fill All</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>Keys</value>
+  </data>
+  <data name="Animation" xml:space="preserve">
+    <value>Animation</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>Back</value>
   </data>
 </root>

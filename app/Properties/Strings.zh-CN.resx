@@ -135,6 +135,9 @@
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>集显模式</value>
   </data>
+  <data name="AlertExternalDisplay" xml:space="preserve">
+    <value>似乎外部屏幕已连接到 GPU，仍然要禁用 GPU 吗？</value>
+  </data>
   <data name="AlertUltimateOff" xml:space="preserve">
     <value>关闭独显直连需要重启</value>
   </data>
@@ -229,7 +232,7 @@
     <value>全部</value>
   </data>
   <data name="AuraZoneDock" xml:space="preserve">
-    <value>Dock</value>
+    <value>底座</value>
   </data>
   <data name="AuraZoneLogo" xml:space="preserve">
     <value>Logo</value>
@@ -398,6 +401,9 @@
   <data name="EnergySettings" xml:space="preserve">
     <value>电源设置</value>
   </data>
+  <data name="EnhancedVibration" xml:space="preserve">
+    <value>强化震动</value>
+  </data>
   <data name="Export" xml:space="preserve">
     <value>导出配置文件</value>
   </data>
@@ -406,6 +412,9 @@
   </data>
   <data name="ExtraSettings" xml:space="preserve">
     <value>更多设置</value>
+  </data>
+  <data name="ExtremeLowMotionBlur" xml:space="preserve">
+    <value>极端低速运动模糊</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>恢复默认设置</value>
@@ -638,6 +647,42 @@
   <data name="MouseSynchronize" xml:space="preserve">
     <value>和鼠标同步</value>
   </data>
+  <data name="HeadsetEqualizer" xml:space="preserve">
+    <value>均衡器</value>
+  </data>
+  <data name="HeadsetMicrophoneType" xml:space="preserve">
+    <value>麦克风</value>
+  </data>
+  <data name="HeadsetMicBoom" xml:space="preserve">
+    <value>悬臂</value>
+  </data>
+  <data name="HeadsetMicInline" xml:space="preserve">
+    <value>线控</value>
+  </data>
+  <data name="HeadsetMicExternal" xml:space="preserve">
+    <value>外接</value>
+  </data>
+  <data name="HeadsetNoiseReduction" xml:space="preserve">
+    <value>降噪</value>
+  </data>
+  <data name="HeadsetSidetone" xml:space="preserve">
+    <value>侧音</value>
+  </data>
+  <data name="HeadsetVoicePrompt" xml:space="preserve">
+    <value>语音提示语言</value>
+  </data>
+  <data name="HeadsetAdaptiveAnc" xml:space="preserve">
+    <value>自适应 ANC</value>
+  </data>
+  <data name="HeadsetAmbient" xml:space="preserve">
+    <value>环境音</value>
+  </data>
+  <data name="HeadsetPromptSound" xml:space="preserve">
+    <value>提示音</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>自动</value>
+  </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
     <value>与笔记本同步</value>
   </data>
@@ -734,6 +779,9 @@
   <data name="ReadLimits" xml:space="preserve">
     <value>读取限制</value>
   </data>
+  <data name="RearLight" xml:space="preserve">
+    <value>背部灯效</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>重置</value>
   </data>
@@ -812,6 +860,9 @@
   <data name="ToggleScreen" xml:space="preserve">
     <value>关闭屏幕</value>
   </data>
+  <data name="ToggleTouchpad" xml:space="preserve">
+    <value>开关触摸板</value>
+  </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
     <value>切换触摸屏</value>
   </data>
@@ -885,7 +936,7 @@
     <value>谢谢</value>
   </data>
   <data name="Legend" xml:space="preserve">
-    <value>Legend</value>
+    <value>图例</value>
   </data>
   <data name="LegendGray" xml:space="preserve">
     <value>无法检查本地版本</value>
@@ -900,7 +951,7 @@
     <comment>Updated</comment>
   </data>
   <data name="SlashBounce" xml:space="preserve">
-    <value>Bounce</value>
+    <value>反弹</value>
   </data>
   <data name="SlashMode" xml:space="preserve">
     <value>光线矩阵</value>
@@ -912,28 +963,28 @@
     <value>数据流</value>
   </data>
   <data name="SlashTransmission" xml:space="preserve">
-    <value>Transmission</value>
+    <value>传动器</value>
   </data>
   <data name="SlashFlow" xml:space="preserve">
     <value>流动</value>
   </data>
   <data name="SlashFlux" xml:space="preserve">
-    <value>Flux</value>
+    <value>流动</value>
   </data>
   <data name="SlashPhantom" xml:space="preserve">
-    <value>Phantom</value>
+    <value>虚化</value>
   </data>
   <data name="SlashSpectrum" xml:space="preserve">
-    <value>Spectrum</value>
+    <value>光谱</value>
   </data>
   <data name="SlashHazard" xml:space="preserve">
     <value>命运</value>
   </data>
   <data name="SlashInterfacing" xml:space="preserve">
-    <value>Interfacing</value>
+    <value>接口</value>
   </data>
   <data name="SlashRamp" xml:space="preserve">
-    <value>Ramp</value>
+    <value>斜切</value>
   </data>
   <data name="SlashGameOver" xml:space="preserve">
     <value>游戏结束</value>
@@ -942,7 +993,7 @@
     <value>启动</value>
   </data>
   <data name="SlashBuzzer" xml:space="preserve">
-    <value>Buzzer</value>
+    <value>蜂鸣器</value>
   </data>
   <data name="SlashStatic" xml:space="preserve">
     <value>恒亮(静态)</value>
@@ -995,8 +1046,35 @@
   <data name="Overlay" xml:space="preserve">
     <value>屏幕叠加</value>
   </data>
+  <data name="OverlayChart" xml:space="preserve">
+    <value>图表</value>
+  </data>
+  <data name="OverlayLabels" xml:space="preserve">
+    <value>标签</value>
+  </data>
+  <data name="OverlayLoad" xml:space="preserve">
+    <value>负载</value>
+  </data>
+  <data name="OverlayModeComplete" xml:space="preserve">
+    <value>完整</value>
+  </data>
+  <data name="OverlayModeFull" xml:space="preserve">
+    <value>大</value>
+  </data>
+  <data name="OverlayModeLight" xml:space="preserve">
+    <value>小</value>
+  </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>仅在游戏内显示叠加界面</value>
+  </data>
+  <data name="OverlaySize" xml:space="preserve">
+    <value>大小</value>
+  </data>
+  <data name="OverlayTemperatures" xml:space="preserve">
+    <value>温度</value>
+  </data>
+  <data name="OverlayTransparency" xml:space="preserve">
+    <value>透明度</value>
   </data>
   <data name="Power" xml:space="preserve">
     <value>电源</value>
@@ -1027,5 +1105,20 @@
   </data>
   <data name="Always" xml:space="preserve">
     <value>始终</value>
+  </data>
+  <data name="TestLayout" xml:space="preserve">
+    <value>测试布局</value>
+  </data>
+  <data name="FillAll" xml:space="preserve">
+    <value>全部填充</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>按键</value>
+  </data>
+  <data name="Animation" xml:space="preserve">
+    <value>动画</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>背景</value>
   </data>
 </root>

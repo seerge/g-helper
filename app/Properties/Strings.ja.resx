@@ -135,6 +135,9 @@
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>エコモード</value>
   </data>
+  <data name="AlertExternalDisplay" xml:space="preserve">
+    <value>Looks like external screen is connected to GPU, disable GPU anyway?</value>
+  </data>
   <data name="AlertUltimateOff" xml:space="preserve">
     <value>Ultimate モードをオフにするには再起動が必要です</value>
   </data>
@@ -398,6 +401,9 @@
   <data name="EnergySettings" xml:space="preserve">
     <value>エネルギー設定</value>
   </data>
+  <data name="EnhancedVibration" xml:space="preserve">
+    <value>Enhanced Vibration</value>
+  </data>
   <data name="Export" xml:space="preserve">
     <value>プロファイルをエクスポート</value>
   </data>
@@ -406,6 +412,9 @@
   </data>
   <data name="ExtraSettings" xml:space="preserve">
     <value>その他の設定</value>
+  </data>
+  <data name="ExtremeLowMotionBlur" xml:space="preserve">
+    <value>Extreme Low Motion Blur</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>出荷時のデフォルト設定</value>
@@ -609,10 +618,10 @@
     <value>バッテリーを節約するために60Hzのリフレッシュレートを使用</value>
   </data>
   <data name="Minute" xml:space="preserve">
-    <value>Minute</value>
+    <value>分</value>
   </data>
   <data name="Minutes" xml:space="preserve">
-    <value>Minutes</value>
+    <value>分</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
     <value>アングルスナップ / 調整</value>
@@ -637,6 +646,42 @@
   </data>
   <data name="MouseSynchronize" xml:space="preserve">
     <value>マウスと同期</value>
+  </data>
+  <data name="HeadsetEqualizer" xml:space="preserve">
+    <value>イコライザー</value>
+  </data>
+  <data name="HeadsetMicrophoneType" xml:space="preserve">
+    <value>マイク</value>
+  </data>
+  <data name="HeadsetMicBoom" xml:space="preserve">
+    <value>ブーム</value>
+  </data>
+  <data name="HeadsetMicInline" xml:space="preserve">
+    <value>インライン</value>
+  </data>
+  <data name="HeadsetMicExternal" xml:space="preserve">
+    <value>外部</value>
+  </data>
+  <data name="HeadsetNoiseReduction" xml:space="preserve">
+    <value>ノイズリダクション</value>
+  </data>
+  <data name="HeadsetSidetone" xml:space="preserve">
+    <value>サイドトーン</value>
+  </data>
+  <data name="HeadsetVoicePrompt" xml:space="preserve">
+    <value>音声ガイドの言語</value>
+  </data>
+  <data name="HeadsetAdaptiveAnc" xml:space="preserve">
+    <value>アダプティブANC</value>
+  </data>
+  <data name="HeadsetAmbient" xml:space="preserve">
+    <value>外音取り込み</value>
+  </data>
+  <data name="HeadsetPromptSound" xml:space="preserve">
+    <value>通知音</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>自動</value>
   </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
     <value>ノートPCと同期</value>
@@ -734,6 +779,9 @@
   <data name="ReadLimits" xml:space="preserve">
     <value>制限を読み取る</value>
   </data>
+  <data name="RearLight" xml:space="preserve">
+    <value>背面ライト</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>リセット</value>
   </data>
@@ -811,6 +859,9 @@
   </data>
   <data name="ToggleScreen" xml:space="preserve">
     <value>画面を切り替える</value>
+  </data>
+  <data name="ToggleTouchpad" xml:space="preserve">
+    <value>Toggle Touchpad</value>
   </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
     <value>タッチスクリーンの切り替え</value>
@@ -995,8 +1046,35 @@ GPU が有効化されたときに自動的に再起動します</value>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
+  <data name="OverlayChart" xml:space="preserve">
+    <value>Chart</value>
+  </data>
+  <data name="OverlayLabels" xml:space="preserve">
+    <value>Labels</value>
+  </data>
+  <data name="OverlayLoad" xml:space="preserve">
+    <value>Load</value>
+  </data>
+  <data name="OverlayModeComplete" xml:space="preserve">
+    <value>Complete</value>
+  </data>
+  <data name="OverlayModeFull" xml:space="preserve">
+    <value>Full</value>
+  </data>
+  <data name="OverlayModeLight" xml:space="preserve">
+    <value>Light</value>
+  </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Overlay only in games</value>
+  </data>
+  <data name="OverlaySize" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="OverlayTemperatures" xml:space="preserve">
+    <value>Temperatures</value>
+  </data>
+  <data name="OverlayTransparency" xml:space="preserve">
+    <value>Transparency</value>
   </data>
   <data name="Power" xml:space="preserve">
     <value>電源</value>
@@ -1027,5 +1105,20 @@ GPU が有効化されたときに自動的に再起動します</value>
   </data>
   <data name="Always" xml:space="preserve">
     <value>常時</value>
+  </data>
+  <data name="TestLayout" xml:space="preserve">
+    <value>テストレイアウト</value>
+  </data>
+  <data name="FillAll" xml:space="preserve">
+    <value>すべて塗りつぶし</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>キー</value>
+  </data>
+  <data name="Animation" xml:space="preserve">
+    <value>アニメーション</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>背景</value>
   </data>
 </root>

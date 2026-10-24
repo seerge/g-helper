@@ -402,6 +402,15 @@ namespace GHelper.Mode
             public Int32 BatteryFullLifeTime;
         }
 
+        [DllImport("ntdll.dll")]
+        static extern int RtlPublishWnfStateData(ulong StateName, IntPtr TypeId, byte[] Buffer, int Length, IntPtr ExplicitScope);
+
+        public static void SetEnergySaver(bool status)
+        {
+            int result = RtlPublishWnfStateData(0x41C6013DA3BC3075, IntPtr.Zero, BitConverter.GetBytes(status ? 1 : 2), 4, IntPtr.Zero);
+            Logger.WriteLine($"Energy Saver {status}: {result}");
+        }
+
         public static bool GetBatterySaverStatus()
         {
             try

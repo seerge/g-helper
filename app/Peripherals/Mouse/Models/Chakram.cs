@@ -192,6 +192,59 @@ namespace GHelper.Peripherals.Mouse.Models
         {
             return false;
         }
+
+        public override HashSet<int> WriteOnlySlots => [8, 9, 10, 11];
+
+        private static readonly IReadOnlyList<(string GroupLabel, IReadOnlyList<(ushort Code, string Name)> Items)>
+        ChakramBindingGroups = new List<(string, IReadOnlyList<(ushort, string)>)>
+        {
+            ("Mouse", new List<(ushort, string)>
+            {
+                (0x01F0, "Mouse Left"    ),
+                (0x01F1, "Mouse Right"   ),
+                (0x01F2, "Mouse Middle"  ),
+                (0x01E3, "Double Click"  ),
+                (0x01E4, "Mouse Back"    ),
+                (0x01E5, "Mouse Forward" ),
+                (0x01E6, "DPI Switch"    ),
+                (0x01E7, "Target Focus"  ),
+                (0x01E8, "Scroll Up"     ),
+                (0x01E9, "Scroll Down"   ),
+                (0x01C0, "RapidFire (Toggle)"),
+                (0x01C1, "RapidFire (Hold)"  ),
+                (0x01D0, "Joystick Up"   ),
+                (0x01D1, "Joystick Down" ),
+                (0x01D2, "Joystick Fwd"  ),
+                (0x01D3, "Joystick Back" ),
+                (0x01D7, "Joystick -Y"   ),
+                (0x01D8, "Joystick +Y"   ),
+                (0x01DA, "Joystick -X"   ),
+                (0x01DB, "Joystick +X"   ),
+                (0x0000, "Disabled"      ),
+            }),
+            ("Combos",     AsusMouse.MouseCombos.Select(c => (c.PassthroughCode, c.Label)).ToList()),
+            ("Multimedia", AsusMouse.MultimediaBindings),
+            ("Keyboard",   AsusMouse.KeyboardBindings  ),
+        };
+
+        public override IReadOnlyList<(string GroupLabel, IReadOnlyList<(ushort Code, string Name)> Items)>
+            BindingGroups => ChakramBindingGroups;
+
+        public override Dictionary<int, (ushort SourceCode, string Name)> ButtonSlots => new()
+        {
+            { 0, (0x01F0, "Left Click"   ) },
+            { 1, (0x01F1, "Right Click"  ) },
+            { 2, (0x01F2, "Scroll Click" ) },
+            { 3, (0x01E4, "Side Back"    ) },
+            { 4, (0x01E5, "Side Forward" ) },
+            { 5, (0x01E6, "DPI Button"   ) },
+            { 6, (0x01E8, "Scroll Up"    ) },
+            { 7, (0x01E9, "Scroll Down"  ) },
+            { 8, (0x01D0, "Joystick Up"  ) },
+            { 9, (0x01D1, "Joystick Down") },
+            {10, (0x01D2, "Joystick Fwd" ) },
+            {11, (0x01D3, "Joystick Back") },
+        };
     }
 
 

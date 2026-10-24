@@ -119,39 +119,102 @@ Asus 노트북을 위한 작고 가벼운 Armoury Crate 대체 도구로, 훨씬
 <details>
 <summary><a href="https://github.com/seerge/g-helper/discussions/900">현재 지원되는 모델</a> (클릭하여 펼치기)</summary>
 
+- ROG Chakram
 - ROG Chakram X
 - ROG Chakram Core
-- ROG Gladius II and Gladius II Origin
+- ROG Gladius II and Gladius II Origin (+ PNK LTD / COD editions)
 - ROG Gladius II Wireless
 - ROG Gladius III
 - ROG Gladius III Wireless
+- ROG Gladius III Aimpoint Wireless (+ EVA-02 Edition)
 - ROG Harpe Ace Extreme
 - ROG Harpe Ace Aim Lab Edition
 - ROG Harpe Ace Mini
 - ROG Harpe II Ace
-- ROG Keris Wireless
-- ROG Keris II Ace
+- ROG Harpe II Extreme Edition 20
+- ROG Keris and Keris Wireless (+ EVA Edition)
 - ROG Keris Wireless Aimpoint
-- ROG Strix Carry
-- ROG Strix III Gladius III Aimpoint Wireless
-- ROG Strix Impact III
-- ROG Strix Impact III Wireless
-- ROG Spatha X
-- ROG Strix Impact II Wireless
+- ROG Keris II Ace
+- ROG Keris II Origin (+ KJP edition)
 - ROG Pugio
 - ROG Pugio II
-- TUF Gaming M4 Wireless
+- ROG Spatha X
+- ROG Strix Carry
+- ROG Strix Evolve
+- ROG Strix Impact
+- ROG Strix Impact II (+ Electro Punk / Moonlight White editions)
+- ROG Strix Impact II Wireless
+- ROG Strix Impact III
+- ROG Strix Impact III Wireless
 - TUF Gaming M3
 - TUF Gaming M3 Gen II
+- TUF Gaming M4 Wireless
 - TUF Gaming M4 AIR
 - TUF Gaming M5
-- TX Gaming Mini
+- TUF Gaming Mini Miku Edition
+- TX Gaming Mouse
+- TX Gaming Mouse Mini
+- ASUS MD200
 
 </details>
 
 기여와 연구를 해주신 [@IceStormNG](https://github.com/IceStormNG) 👑 님께 깊이 감사드립니다 (!).
 
 <img width="2448" alt="Mouse and other peripherals" src="https://github.com/user-attachments/assets/fe2a766b-f514-42e9-8dff-4bcc915364d4" />
+
+### :keyboard: Asus 키보드 지원
+
+<details>
+<summary><a href="https://github.com/seerge/g-helper/discussions/5710">현재 지원되는 모델</a> (클릭하여 펼치기)</summary>
+
+- ROG Azoth
+- ROG Azoth Extreme
+- ROG Azoth Extreme SE
+- ROG Azoth X
+- ROG Claymore II
+- ROG Falchion
+- ROG Falchion Ace
+- ROG Falchion Ace HFX
+- ROG Falchion RX
+- ROG Falchion RX Low Profile
+- ROG Strix Flare
+- ROG Strix Flare COD
+- ROG Strix Flare II
+- ROG Strix Flare II Animate
+- ROG Strix Flare PNK LTD
+- ROG Strix Scope II
+- ROG Strix Scope II RX
+- ROG Strix Scope II 96
+- ROG Strix Scope II 96 RX
+- ROG Strix Scope RX
+- ROG Strix Scope RX EVA Edition
+- ROG Strix Scope RX EVA-02 Edition
+- ROG Strix Scope RX TKL
+- TUF Gaming K1
+- TUF Gaming K3
+- TUF Gaming K3 Gen II
+
+</details>
+
+<img width="2254" alt="Keyboards" src="https://github.com/user-attachments/assets/9da4116f-7fb1-4dae-ac3e-25f0f1266a74" />
+
+### :headphones: Asus 헤드셋 지원
+
+<details>
+<summary><a href="https://github.com/seerge/g-helper/discussions/5964">현재 지원되는 모델</a> (클릭하여 펼치기)</summary>
+
+- ROG Cetra RGB
+- ROG Cetra True Wireless SpeedNova
+- ROG Clavis
+- ROG Delta II
+- ROG Delta II KJP
+- ROG Pelta
+
+</details>
+
+배터리 잔량, 조명, 이퀄라이저 프리셋, 사이드톤, 마이크 AI 노이즈 캔슬링, ANC, 전원 설정을 모델에 따라 지원합니다.
+
+<img width="1786" alt="Headsets" src="https://github.com/user-attachments/assets/42ddd286-ed4f-4573-953c-e41b7fc3602f" />
 
 ### ⌨️ 키 바인딩
 

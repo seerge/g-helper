@@ -135,6 +135,9 @@
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>Eco 모드</value>
   </data>
+  <data name="AlertExternalDisplay" xml:space="preserve">
+    <value>Looks like external screen is connected to GPU, disable GPU anyway?</value>
+  </data>
   <data name="AlertUltimateOff" xml:space="preserve">
     <value>Ultimate 모드를 끄기 위해서는 다시 시작해야 합니다.</value>
   </data>
@@ -396,7 +399,10 @@
     <value>NVIDIA 디스플레이 모드가 Optimus로 설정되어 있지 않습니다.</value>
   </data>
   <data name="EnergySettings" xml:space="preserve">
-    <value>Energy Settings</value>
+    <value>에너지 설정</value>
+  </data>
+  <data name="EnhancedVibration" xml:space="preserve">
+    <value>Enhanced Vibration</value>
   </data>
   <data name="Export" xml:space="preserve">
     <value>프로필 내보내기</value>
@@ -406,6 +412,9 @@
   </data>
   <data name="ExtraSettings" xml:space="preserve">
     <value>추가 설정</value>
+  </data>
+  <data name="ExtremeLowMotionBlur" xml:space="preserve">
+    <value>Extreme Low Motion Blur</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>공장 설정</value>
@@ -638,6 +647,42 @@
   <data name="MouseSynchronize" xml:space="preserve">
     <value>마우스와 동기화</value>
   </data>
+  <data name="HeadsetEqualizer" xml:space="preserve">
+    <value>이퀄라이저</value>
+  </data>
+  <data name="HeadsetMicrophoneType" xml:space="preserve">
+    <value>마이크</value>
+  </data>
+  <data name="HeadsetMicBoom" xml:space="preserve">
+    <value>붐</value>
+  </data>
+  <data name="HeadsetMicInline" xml:space="preserve">
+    <value>인라인</value>
+  </data>
+  <data name="HeadsetMicExternal" xml:space="preserve">
+    <value>외장</value>
+  </data>
+  <data name="HeadsetNoiseReduction" xml:space="preserve">
+    <value>노이즈 감소</value>
+  </data>
+  <data name="HeadsetSidetone" xml:space="preserve">
+    <value>사이드톤</value>
+  </data>
+  <data name="HeadsetVoicePrompt" xml:space="preserve">
+    <value>음성 안내 언어</value>
+  </data>
+  <data name="HeadsetAdaptiveAnc" xml:space="preserve">
+    <value>적응형 ANC</value>
+  </data>
+  <data name="HeadsetAmbient" xml:space="preserve">
+    <value>주변음</value>
+  </data>
+  <data name="HeadsetPromptSound" xml:space="preserve">
+    <value>알림음</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>자동</value>
+  </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
     <value>노트북과 동기화</value>
   </data>
@@ -734,6 +779,9 @@
   <data name="ReadLimits" xml:space="preserve">
     <value>한계 읽기</value>
   </data>
+  <data name="RearLight" xml:space="preserve">
+    <value>후면 조명</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>초기화</value>
   </data>
@@ -811,6 +859,9 @@
   </data>
   <data name="ToggleScreen" xml:space="preserve">
     <value>화면 전환</value>
+  </data>
+  <data name="ToggleTouchpad" xml:space="preserve">
+    <value>Toggle Touchpad</value>
   </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
     <value>터치스크린 전환</value>
@@ -995,8 +1046,35 @@ GPU가 활성화될 때 자동으로 다시 시작합니다</value>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
+  <data name="OverlayChart" xml:space="preserve">
+    <value>Chart</value>
+  </data>
+  <data name="OverlayLabels" xml:space="preserve">
+    <value>Labels</value>
+  </data>
+  <data name="OverlayLoad" xml:space="preserve">
+    <value>Load</value>
+  </data>
+  <data name="OverlayModeComplete" xml:space="preserve">
+    <value>Complete</value>
+  </data>
+  <data name="OverlayModeFull" xml:space="preserve">
+    <value>Full</value>
+  </data>
+  <data name="OverlayModeLight" xml:space="preserve">
+    <value>Light</value>
+  </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Overlay only in games</value>
+  </data>
+  <data name="OverlaySize" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="OverlayTemperatures" xml:space="preserve">
+    <value>Temperatures</value>
+  </data>
+  <data name="OverlayTransparency" xml:space="preserve">
+    <value>Transparency</value>
   </data>
   <data name="Power" xml:space="preserve">
     <value>전원</value>
@@ -1027,5 +1105,20 @@ GPU가 활성화될 때 자동으로 다시 시작합니다</value>
   </data>
   <data name="Always" xml:space="preserve">
     <value>항상</value>
+  </data>
+  <data name="TestLayout" xml:space="preserve">
+    <value>테스트 레이아웃</value>
+  </data>
+  <data name="FillAll" xml:space="preserve">
+    <value>모두 채우기</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>키</value>
+  </data>
+  <data name="Animation" xml:space="preserve">
+    <value>애니메이션</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>배경</value>
   </data>
 </root>

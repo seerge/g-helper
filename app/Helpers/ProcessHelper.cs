@@ -85,8 +85,7 @@ namespace GHelper.Helpers
                             if (stillAlive)
                             {
                                 MessageBox.Show(Properties.Strings.AppAlreadyRunningText, Properties.Strings.AppAlreadyRunning, MessageBoxButtons.OK);
-                                Application.Exit();
-                                return;
+                                Environment.Exit(0);
                             }
                         }
                     }
@@ -213,8 +212,8 @@ namespace GHelper.Helpers
             cmd.StartInfo.CreateNoWindow = true;
             cmd.StartInfo.RedirectStandardOutput = true;
             cmd.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            cmd.StartInfo.FileName = name;
-            cmd.StartInfo.Arguments = args;
+            cmd.StartInfo.FileName = (name == "powershell") ? Path.Combine(Environment.SystemDirectory, @"WindowsPowerShell\v1.0\powershell.exe") : name;
+            cmd.StartInfo.Arguments = (name == "powershell") ? "-NoProfile " + args : args;
             if (directory != null) cmd.StartInfo.WorkingDirectory = directory;
             cmd.Start();
 

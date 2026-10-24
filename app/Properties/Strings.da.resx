@@ -135,6 +135,9 @@
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>Øko-tilstand</value>
   </data>
+  <data name="AlertExternalDisplay" xml:space="preserve">
+    <value>Looks like external screen is connected to GPU, disable GPU anyway?</value>
+  </data>
   <data name="AlertUltimateOff" xml:space="preserve">
     <value>Slukning af Ultimativ tilstand kræver genstart</value>
   </data>
@@ -398,6 +401,9 @@ Vil du stadig fortsætte?</value>
   <data name="EnergySettings" xml:space="preserve">
     <value>Energiindstillinger</value>
   </data>
+  <data name="EnhancedVibration" xml:space="preserve">
+    <value>Enhanced Vibration</value>
+  </data>
   <data name="Export" xml:space="preserve">
     <value>Eksporter profil</value>
   </data>
@@ -406,6 +412,9 @@ Vil du stadig fortsætte?</value>
   </data>
   <data name="ExtraSettings" xml:space="preserve">
     <value>Ekstra indstillinger</value>
+  </data>
+  <data name="ExtremeLowMotionBlur" xml:space="preserve">
+    <value>Extreme Low Motion Blur</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>Gendan standarder</value>
@@ -638,6 +647,42 @@ Vil du stadig fortsætte?</value>
   <data name="MouseSynchronize" xml:space="preserve">
     <value>Synkroniser med mus</value>
   </data>
+  <data name="HeadsetEqualizer" xml:space="preserve">
+    <value>Equalizer</value>
+  </data>
+  <data name="HeadsetMicrophoneType" xml:space="preserve">
+    <value>Mikrofon</value>
+  </data>
+  <data name="HeadsetMicBoom" xml:space="preserve">
+    <value>Boom</value>
+  </data>
+  <data name="HeadsetMicInline" xml:space="preserve">
+    <value>På kabel</value>
+  </data>
+  <data name="HeadsetMicExternal" xml:space="preserve">
+    <value>Ekstern</value>
+  </data>
+  <data name="HeadsetNoiseReduction" xml:space="preserve">
+    <value>Støjreduktion</value>
+  </data>
+  <data name="HeadsetSidetone" xml:space="preserve">
+    <value>Sidetone</value>
+  </data>
+  <data name="HeadsetVoicePrompt" xml:space="preserve">
+    <value>Sprog for stemmemeddelelser</value>
+  </data>
+  <data name="HeadsetAdaptiveAnc" xml:space="preserve">
+    <value>Adaptiv ANC</value>
+  </data>
+  <data name="HeadsetAmbient" xml:space="preserve">
+    <value>Ambient</value>
+  </data>
+  <data name="HeadsetPromptSound" xml:space="preserve">
+    <value>Lydsignal</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>Automatisk</value>
+  </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
     <value>Synkroniser med laptop</value>
   </data>
@@ -734,6 +779,9 @@ Vil du stadig fortsætte?</value>
   <data name="ReadLimits" xml:space="preserve">
     <value>Læs grænser</value>
   </data>
+  <data name="RearLight" xml:space="preserve">
+    <value>Bagbelysning</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Nulstil</value>
   </data>
@@ -811,6 +859,9 @@ Vil du stadig fortsætte?</value>
   </data>
   <data name="ToggleScreen" xml:space="preserve">
     <value>Slå skærmen til/fra</value>
+  </data>
+  <data name="ToggleTouchpad" xml:space="preserve">
+    <value>Toggle Touchpad</value>
   </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
     <value>Toggle Touchscreen</value>
@@ -995,8 +1046,35 @@ i at opvarme den sovende bærbare og dræne batteriet.</value>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
+  <data name="OverlayChart" xml:space="preserve">
+    <value>Chart</value>
+  </data>
+  <data name="OverlayLabels" xml:space="preserve">
+    <value>Labels</value>
+  </data>
+  <data name="OverlayLoad" xml:space="preserve">
+    <value>Load</value>
+  </data>
+  <data name="OverlayModeComplete" xml:space="preserve">
+    <value>Complete</value>
+  </data>
+  <data name="OverlayModeFull" xml:space="preserve">
+    <value>Full</value>
+  </data>
+  <data name="OverlayModeLight" xml:space="preserve">
+    <value>Light</value>
+  </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Overlay only in games</value>
+  </data>
+  <data name="OverlaySize" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="OverlayTemperatures" xml:space="preserve">
+    <value>Temperatures</value>
+  </data>
+  <data name="OverlayTransparency" xml:space="preserve">
+    <value>Transparency</value>
   </data>
   <data name="Power" xml:space="preserve">
     <value>Strøm</value>
@@ -1027,5 +1105,20 @@ i at opvarme den sovende bærbare og dræne batteriet.</value>
   </data>
   <data name="Always" xml:space="preserve">
     <value>Altid</value>
+  </data>
+  <data name="TestLayout" xml:space="preserve">
+    <value>Testlayout</value>
+  </data>
+  <data name="FillAll" xml:space="preserve">
+    <value>Udfyld alle</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>Taster</value>
+  </data>
+  <data name="Animation" xml:space="preserve">
+    <value>Animation</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>Baggrund</value>
   </data>
 </root>

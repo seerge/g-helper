@@ -1,4 +1,5 @@
 ﻿using GHelper.Display;
+using GHelper.Gpu;
 using GHelper.Gpu.AMD;
 using GHelper.Helpers;
 using GHelper.Input;
@@ -45,6 +46,7 @@ namespace GHelper
               {"brightness_down", Properties.Strings.BrightnessDown},
               {"brightness_up", Properties.Strings.BrightnessUp},
               {"visual", Properties.Strings.VisualMode},
+              {"touchpad", Properties.Strings.ToggleTouchpad},
               {"touchscreen", Properties.Strings.ToggleTouchscreen },
               {"micmute", Properties.Strings.MuteMic},
               {"ghelper", Properties.Strings.OpenGHelper},
@@ -502,7 +504,6 @@ namespace GHelper
             toolTip.SetToolTip(checkStandbyNetworking, Properties.Strings.DisableStandbyNetworkingTooltip);
 
             InitCores();
-            InitServices();
             InitHibernate();
             InitVramMem();
 
@@ -656,6 +657,14 @@ namespace GHelper
 
                 comboAPU.SelectedIndex = Math.Max(0, Array.IndexOf(vramOptions, current));
             }
+            else if (IntelVram.Init())
+            {
+                comboAPU.Items.Clear();
+                comboAPU.Items.Add(Properties.Strings.AutoMode);
+                foreach (int size in IntelVram.Sizes) comboAPU.Items.Add(size + "G");
+
+                comboAPU.SelectedIndex = IntelVram.Index;
+            }
             else
             {
                 if (!AppConfig.IsAlly()) return;
@@ -675,7 +684,14 @@ namespace GHelper
         {
             int mem = comboAPU.SelectedIndex;
 
-            if (vramOptions.Length == 0) Program.acpi.SetAPUMem(mem);
+            if (IntelVram.Supported && !ProcessHelper.IsUserAdministrator())
+            {
+                ProcessHelper.RunAsAdmin();
+                return;
+            }
+
+            if (IntelVram.Supported) IntelVram.SetIndex(mem);
+            else if (vramOptions.Length == 0) Program.acpi.SetAPUMem(mem);
             else
             {
                 Program.acpi.SetVramMem(vramOptions[mem]);
@@ -755,9 +771,16 @@ namespace GHelper
 
         private void InitServices()
         {
+            buttonServices.Enabled = false;
+            Task.Run(() =>
+            {
+                int servicesCount = AsusService.GetRunningCount();
+                if (!IsDisposed) Invoke(() => VisualiseServices(servicesCount));
+            });
+        }
 
-            int servicesCount = AsusService.GetRunningCount();
-
+        private void VisualiseServices(int servicesCount)
+        {
             if (servicesCount > 0)
             {
                 buttonServices.Text = Properties.Strings.Stop;
@@ -946,6 +969,7 @@ namespace GHelper
             }
 
             Left = Program.settingsForm.Left - Width - 5;
+            InitServices();
         }
 
 

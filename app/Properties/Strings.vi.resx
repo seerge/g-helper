@@ -135,6 +135,9 @@
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>Chế độ Tiết kiệm</value>
   </data>
+  <data name="AlertExternalDisplay" xml:space="preserve">
+    <value>Looks like external screen is connected to GPU, disable GPU anyway?</value>
+  </data>
   <data name="AlertUltimateOff" xml:space="preserve">
     <value>Chuyển sang Chế độ Tối thượng cần phải khởi động lại</value>
   </data>
@@ -398,6 +401,9 @@ Bạn có muốn tiếp tục không?</value>
   <data name="EnergySettings" xml:space="preserve">
     <value>Các chế độ năng lượng</value>
   </data>
+  <data name="EnhancedVibration" xml:space="preserve">
+    <value>Enhanced Vibration</value>
+  </data>
   <data name="Export" xml:space="preserve">
     <value>Xuất cấu hình ra file</value>
   </data>
@@ -406,6 +412,9 @@ Bạn có muốn tiếp tục không?</value>
   </data>
   <data name="ExtraSettings" xml:space="preserve">
     <value>Cài đặt bổ sung</value>
+  </data>
+  <data name="ExtremeLowMotionBlur" xml:space="preserve">
+    <value>Extreme Low Motion Blur</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>Đặt về mặc định</value>
@@ -612,13 +621,13 @@ Bạn có muốn tiếp tục không?</value>
     <value>Phút</value>
   </data>
   <data name="Minutes" xml:space="preserve">
-    <value>Minutes</value>
+    <value>Phút</value>
   </data>
   <data name="MouseAngleSnapping" xml:space="preserve">
     <value>Khóa góc / Tinh chỉnh</value>
   </data>
   <data name="MouseAutoPowerOff" xml:space="preserve">
-    <value>Auto Power Off After</value>
+    <value>Tự động tắt nguồn sau</value>
   </data>
   <data name="MouseButtonResponse" xml:space="preserve">
     <value>Button Response</value>
@@ -630,13 +639,49 @@ Bạn có muốn tiếp tục không?</value>
     <value>Lift Off Distance</value>
   </data>
   <data name="MouseLowBatteryWarning" xml:space="preserve">
-    <value>Low Battery Warning at</value>
+    <value>Cảnh báo pin yếu ở</value>
   </data>
   <data name="MousePerformance" xml:space="preserve">
     <value>Performance</value>
   </data>
   <data name="MouseSynchronize" xml:space="preserve">
     <value>Synchronize with mouse</value>
+  </data>
+  <data name="HeadsetEqualizer" xml:space="preserve">
+    <value>Bộ chỉnh âm</value>
+  </data>
+  <data name="HeadsetMicrophoneType" xml:space="preserve">
+    <value>Micro</value>
+  </data>
+  <data name="HeadsetMicBoom" xml:space="preserve">
+    <value>Cần</value>
+  </data>
+  <data name="HeadsetMicInline" xml:space="preserve">
+    <value>Trên dây</value>
+  </data>
+  <data name="HeadsetMicExternal" xml:space="preserve">
+    <value>Gắn ngoài</value>
+  </data>
+  <data name="HeadsetNoiseReduction" xml:space="preserve">
+    <value>Giảm ồn</value>
+  </data>
+  <data name="HeadsetSidetone" xml:space="preserve">
+    <value>Âm phản hồi</value>
+  </data>
+  <data name="HeadsetVoicePrompt" xml:space="preserve">
+    <value>Ngôn ngữ thông báo giọng nói</value>
+  </data>
+  <data name="HeadsetAdaptiveAnc" xml:space="preserve">
+    <value>ANC thích ứng</value>
+  </data>
+  <data name="HeadsetAmbient" xml:space="preserve">
+    <value>Âm thanh ngoài</value>
+  </data>
+  <data name="HeadsetPromptSound" xml:space="preserve">
+    <value>Âm báo</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>Tự động</value>
   </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
     <value>Đồng bộ với laptop</value>
@@ -654,7 +699,7 @@ Bạn có muốn tiếp tục không?</value>
     <value>Tắt Mic</value>
   </data>
   <data name="Never" xml:space="preserve">
-    <value>Never</value>
+    <value>Không bao giờ</value>
   </data>
   <data name="NewUpdates" xml:space="preserve">
     <value>New updates</value>
@@ -666,10 +711,10 @@ Bạn có muốn tiếp tục không?</value>
     <value>Not Connected</value>
   </data>
   <data name="Off" xml:space="preserve">
-    <value>Off</value>
+    <value>Tắt</value>
   </data>
   <data name="On" xml:space="preserve">
-    <value>On</value>
+    <value>Bật</value>
   </data>
   <data name="OnAlways" xml:space="preserve">
     <value>Luôn bật</value>
@@ -726,7 +771,7 @@ Bạn có muốn tiếp tục không?</value>
     <value>Chụp màn hình</value>
   </data>
   <data name="Profile" xml:space="preserve">
-    <value>Profile</value>
+    <value>Hồ sơ</value>
   </data>
   <data name="Quit" xml:space="preserve">
     <value>Thoát</value>
@@ -734,8 +779,11 @@ Bạn có muốn tiếp tục không?</value>
   <data name="ReadLimits" xml:space="preserve">
     <value>Đọc giới hạn</value>
   </data>
+  <data name="RearLight" xml:space="preserve">
+    <value>Đèn mặt sau</value>
+  </data>
   <data name="Reset" xml:space="preserve">
-    <value>Reset</value>
+    <value>Đặt lại</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
     <value>Something is using dGPU and preventing Eco mode. Let G-Helper try to restart dGPU in device manager? (Please proceed at your own risk)</value>
@@ -811,6 +859,9 @@ Bạn có muốn tiếp tục không?</value>
   </data>
   <data name="ToggleScreen" xml:space="preserve">
     <value>Bật tắt màn hình</value>
+  </data>
+  <data name="ToggleTouchpad" xml:space="preserve">
+    <value>Toggle Touchpad</value>
   </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
     <value>Toggle Touchscreen</value>
@@ -995,8 +1046,35 @@ làm nóng máy khi ngủ và làm cạn pin.</value>
   <data name="Overlay" xml:space="preserve">
     <value>Overlay</value>
   </data>
+  <data name="OverlayChart" xml:space="preserve">
+    <value>Chart</value>
+  </data>
+  <data name="OverlayLabels" xml:space="preserve">
+    <value>Labels</value>
+  </data>
+  <data name="OverlayLoad" xml:space="preserve">
+    <value>Load</value>
+  </data>
+  <data name="OverlayModeComplete" xml:space="preserve">
+    <value>Complete</value>
+  </data>
+  <data name="OverlayModeFull" xml:space="preserve">
+    <value>Full</value>
+  </data>
+  <data name="OverlayModeLight" xml:space="preserve">
+    <value>Light</value>
+  </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Overlay only in games</value>
+  </data>
+  <data name="OverlaySize" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="OverlayTemperatures" xml:space="preserve">
+    <value>Temperatures</value>
+  </data>
+  <data name="OverlayTransparency" xml:space="preserve">
+    <value>Transparency</value>
   </data>
   <data name="Power" xml:space="preserve">
     <value>Nguồn</value>
@@ -1027,5 +1105,20 @@ làm nóng máy khi ngủ và làm cạn pin.</value>
   </data>
   <data name="Always" xml:space="preserve">
     <value>Luôn luôn</value>
+  </data>
+  <data name="TestLayout" xml:space="preserve">
+    <value>Bố cục thử</value>
+  </data>
+  <data name="FillAll" xml:space="preserve">
+    <value>Tô tất cả</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>Phím</value>
+  </data>
+  <data name="Animation" xml:space="preserve">
+    <value>Hoạt ảnh</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>Nền</value>
   </data>
 </root>

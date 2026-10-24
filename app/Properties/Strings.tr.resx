@@ -135,6 +135,9 @@
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>Eko Modu</value>
   </data>
+  <data name="AlertExternalDisplay" xml:space="preserve">
+    <value>Harici ekran, GPU'ya bağlı görünüyor. Yine de GPU devre dışı bırakılsın mı?</value>
+  </data>
   <data name="AlertUltimateOff" xml:space="preserve">
     <value>Ultimate Modu kapatmak yeniden başlatmayı gerektirir</value>
   </data>
@@ -398,6 +401,9 @@ Yine de devam etmek istiyor musunuz?</value>
   <data name="EnergySettings" xml:space="preserve">
     <value>Enerji Ayarları</value>
   </data>
+  <data name="EnhancedVibration" xml:space="preserve">
+    <value>Enhanced Vibration</value>
+  </data>
   <data name="Export" xml:space="preserve">
     <value>Profili Dışa Aktar</value>
   </data>
@@ -406,6 +412,9 @@ Yine de devam etmek istiyor musunuz?</value>
   </data>
   <data name="ExtraSettings" xml:space="preserve">
     <value>Ek Ayarlar</value>
+  </data>
+  <data name="ExtremeLowMotionBlur" xml:space="preserve">
+    <value>Extreme Low Motion Blur</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>Fabrika Ayarları</value>
@@ -638,6 +647,42 @@ Yine de devam etmek istiyor musunuz?</value>
   <data name="MouseSynchronize" xml:space="preserve">
     <value>Fare ile eşitle</value>
   </data>
+  <data name="HeadsetEqualizer" xml:space="preserve">
+    <value>Ekolayzer</value>
+  </data>
+  <data name="HeadsetMicrophoneType" xml:space="preserve">
+    <value>Mikrofon</value>
+  </data>
+  <data name="HeadsetMicBoom" xml:space="preserve">
+    <value>Kollu</value>
+  </data>
+  <data name="HeadsetMicInline" xml:space="preserve">
+    <value>Kablo üzerinde</value>
+  </data>
+  <data name="HeadsetMicExternal" xml:space="preserve">
+    <value>Harici</value>
+  </data>
+  <data name="HeadsetNoiseReduction" xml:space="preserve">
+    <value>Gürültü Azaltma</value>
+  </data>
+  <data name="HeadsetSidetone" xml:space="preserve">
+    <value>Yan Ses</value>
+  </data>
+  <data name="HeadsetVoicePrompt" xml:space="preserve">
+    <value>Sesli Uyarı Dili</value>
+  </data>
+  <data name="HeadsetAdaptiveAnc" xml:space="preserve">
+    <value>Uyarlanabilir ANC</value>
+  </data>
+  <data name="HeadsetAmbient" xml:space="preserve">
+    <value>Ortam</value>
+  </data>
+  <data name="HeadsetPromptSound" xml:space="preserve">
+    <value>Uyarı Sesi</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>Otomatik</value>
+  </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
     <value>Dizüstüyle senkronize et</value>
   </data>
@@ -734,6 +779,9 @@ Yine de devam etmek istiyor musunuz?</value>
   <data name="ReadLimits" xml:space="preserve">
     <value>Limitleri oku</value>
   </data>
+  <data name="RearLight" xml:space="preserve">
+    <value>Arka Işık</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Sıfırla</value>
   </data>
@@ -811,6 +859,9 @@ Yine de devam etmek istiyor musunuz?</value>
   </data>
   <data name="ToggleScreen" xml:space="preserve">
     <value>Ekranı Değiştir</value>
+  </data>
+  <data name="ToggleTouchpad" xml:space="preserve">
+    <value>Toggle Touchpad</value>
   </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
     <value>Dokunmatik Ekranı Değiştir</value>
@@ -995,8 +1046,35 @@ dizüstünü ısıtmasını ve pili tüketmesini engeller.</value>
   <data name="Overlay" xml:space="preserve">
     <value>Yer Paylaşımı</value>
   </data>
+  <data name="OverlayChart" xml:space="preserve">
+    <value>Çizelge</value>
+  </data>
+  <data name="OverlayLabels" xml:space="preserve">
+    <value>Labels</value>
+  </data>
+  <data name="OverlayLoad" xml:space="preserve">
+    <value>Load</value>
+  </data>
+  <data name="OverlayModeComplete" xml:space="preserve">
+    <value>Kapsamlı</value>
+  </data>
+  <data name="OverlayModeFull" xml:space="preserve">
+    <value>Tam</value>
+  </data>
+  <data name="OverlayModeLight" xml:space="preserve">
+    <value>Hafif</value>
+  </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Yer paylaşımını sadece oyunlarda aç</value>
+  </data>
+  <data name="OverlaySize" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="OverlayTemperatures" xml:space="preserve">
+    <value>Sıcaklık dereceleri</value>
+  </data>
+  <data name="OverlayTransparency" xml:space="preserve">
+    <value>Transparency</value>
   </data>
   <data name="Power" xml:space="preserve">
     <value>Güç</value>
@@ -1027,5 +1105,20 @@ dizüstünü ısıtmasını ve pili tüketmesini engeller.</value>
   </data>
   <data name="Always" xml:space="preserve">
     <value>Her zaman</value>
+  </data>
+  <data name="TestLayout" xml:space="preserve">
+    <value>Test Düzeni</value>
+  </data>
+  <data name="FillAll" xml:space="preserve">
+    <value>Tümünü Doldur</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>Tuşlar</value>
+  </data>
+  <data name="Animation" xml:space="preserve">
+    <value>Animasyon</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>Arka Plan</value>
   </data>
 </root>

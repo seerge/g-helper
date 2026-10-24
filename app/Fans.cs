@@ -702,6 +702,7 @@ namespace GHelper
 
                         panelGPUBoost.Visible = boostVisible;
                         panelGPUTemp.Visible = tempVisible;
+                        panelGPUCore.Visible = panelGPUMemory.Visible = nv.IsClockOffsetSupported;
 
                         VisualiseGPUSettings();
 
@@ -1292,7 +1293,7 @@ namespace GHelper
             int i = 0;
             foreach (DataPoint point in series.Points)
             {
-                curve[i] = (byte)point.XValue;
+                curve[i] = (byte)Math.Round(point.XValue);
                 curve[i + 8] = (byte)point.YValues.First();
                 i++;
             }

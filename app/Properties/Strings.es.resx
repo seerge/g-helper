@@ -135,6 +135,9 @@
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>Modo Eco</value>
   </data>
+  <data name="AlertExternalDisplay" xml:space="preserve">
+    <value>Parece que la pantalla externa está conectada a GPU, ¿desactivar GPU de todos modos?</value>
+  </data>
   <data name="AlertUltimateOff" xml:space="preserve">
     <value>Desactivar el Modo Ultimate requiere reiniciar</value>
   </data>
@@ -398,6 +401,9 @@
   <data name="EnergySettings" xml:space="preserve">
     <value>Ajustes de energía</value>
   </data>
+  <data name="EnhancedVibration" xml:space="preserve">
+    <value>Vibración mejorada</value>
+  </data>
   <data name="Export" xml:space="preserve">
     <value>Exportar perfil</value>
   </data>
@@ -407,11 +413,14 @@
   <data name="ExtraSettings" xml:space="preserve">
     <value>Opciones adicionales</value>
   </data>
+  <data name="ExtremeLowMotionBlur" xml:space="preserve">
+    <value>Desenfoque de movimiento bajo</value>
+  </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>Valores de fábrica</value>
   </data>
   <data name="FanCurves" xml:space="preserve">
-    <value>Curvas ventiladores</value>
+    <value>Curva ventilador</value>
   </data>
   <data name="FanDragAll" xml:space="preserve">
     <value>Mantén SHIFT para arrastrar todos los puntos a la vez</value>
@@ -638,6 +647,42 @@
   <data name="MouseSynchronize" xml:space="preserve">
     <value>Sincronizar con el ratón</value>
   </data>
+  <data name="HeadsetEqualizer" xml:space="preserve">
+    <value>Ecualizador</value>
+  </data>
+  <data name="HeadsetMicrophoneType" xml:space="preserve">
+    <value>Micrófono</value>
+  </data>
+  <data name="HeadsetMicBoom" xml:space="preserve">
+    <value>Brazo</value>
+  </data>
+  <data name="HeadsetMicInline" xml:space="preserve">
+    <value>En cable</value>
+  </data>
+  <data name="HeadsetMicExternal" xml:space="preserve">
+    <value>Externo</value>
+  </data>
+  <data name="HeadsetNoiseReduction" xml:space="preserve">
+    <value>Reducción de ruido</value>
+  </data>
+  <data name="HeadsetSidetone" xml:space="preserve">
+    <value>Retorno de voz</value>
+  </data>
+  <data name="HeadsetVoicePrompt" xml:space="preserve">
+    <value>Idioma de avisos de voz</value>
+  </data>
+  <data name="HeadsetAdaptiveAnc" xml:space="preserve">
+    <value>ANC adaptativo</value>
+  </data>
+  <data name="HeadsetAmbient" xml:space="preserve">
+    <value>Ambiente</value>
+  </data>
+  <data name="HeadsetPromptSound" xml:space="preserve">
+    <value>Tono de aviso</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>Automático</value>
+  </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
     <value>Sincronizar con portátil</value>
   </data>
@@ -734,6 +779,9 @@
   <data name="ReadLimits" xml:space="preserve">
     <value>Leer límites</value>
   </data>
+  <data name="RearLight" xml:space="preserve">
+    <value>Luz trasera</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Reiniciar</value>
   </data>
@@ -811,6 +859,9 @@
   </data>
   <data name="ToggleScreen" xml:space="preserve">
     <value>Alternar pantalla</value>
+  </data>
+  <data name="ToggleTouchpad" xml:space="preserve">
+    <value>Alternar Touchpad</value>
   </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
     <value>Alternar pantalla táctil</value>
@@ -993,10 +1044,37 @@ Recomendado si experimenta cuelgues aleatorios o hardware que no responde.</valu
 calienten el portátil dormido y agoten la batería.</value>
   </data>
   <data name="Overlay" xml:space="preserve">
-    <value>Interfaz superpuesta</value>
+    <value>Interfaz</value>
+  </data>
+  <data name="OverlayChart" xml:space="preserve">
+    <value>Gráfico</value>
+  </data>
+  <data name="OverlayLabels" xml:space="preserve">
+    <value>Etiquetas</value>
+  </data>
+  <data name="OverlayLoad" xml:space="preserve">
+    <value>Uso</value>
+  </data>
+  <data name="OverlayModeComplete" xml:space="preserve">
+    <value>Detallada</value>
+  </data>
+  <data name="OverlayModeFull" xml:space="preserve">
+    <value>Completa</value>
+  </data>
+  <data name="OverlayModeLight" xml:space="preserve">
+    <value>Mínima</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
     <value>Interfaz superpuesta solo juegos</value>
+  </data>
+  <data name="OverlaySize" xml:space="preserve">
+    <value>Tamaño</value>
+  </data>
+  <data name="OverlayTemperatures" xml:space="preserve">
+    <value>Temperaturas</value>
+  </data>
+  <data name="OverlayTransparency" xml:space="preserve">
+    <value>Transparencia</value>
   </data>
   <data name="Power" xml:space="preserve">
     <value>Energía</value>
@@ -1027,5 +1105,20 @@ calienten el portátil dormido y agoten la batería.</value>
   </data>
   <data name="Always" xml:space="preserve">
     <value>Siempre</value>
+  </data>
+  <data name="TestLayout" xml:space="preserve">
+    <value>Distribución de prueba</value>
+  </data>
+  <data name="FillAll" xml:space="preserve">
+    <value>Rellenar todo</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>Teclas</value>
+  </data>
+  <data name="Animation" xml:space="preserve">
+    <value>Animación</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>Fondo</value>
   </data>
 </root>
