@@ -434,7 +434,6 @@ namespace GHelper
             comboGamut.SelectedValueChanged -= ComboGamut_SelectedValueChanged;
 
             var visualValue = (SplendidCommand)AppConfig.Get("visual", (int)VisualControl.GetDefaultVisualMode());
-            var colorTempValue = AppConfig.Get("color_temp", VisualControl.DefaultColorTemp);
 
             comboVisual.DropDownStyle = ComboBoxStyle.DropDownList;
             comboVisual.DataSource = new BindingSource(VisualControl.GetVisualModes(), null);
@@ -443,19 +442,16 @@ namespace GHelper
             comboVisual.SelectedValue = visualValue;
 
             comboColorTemp.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboColorTemp.DataSource = new BindingSource(VisualControl.GetTemperatures(), null);
             comboColorTemp.DisplayMember = "Value";
             comboColorTemp.ValueMember = "Key";
-            comboColorTemp.SelectedValue = colorTempValue;
+            colorTempEyeCare = null;
+            VisualiseColorTemp();
 
-            VisualControl.SetVisual(visualValue, colorTempValue, true);
+            VisualControl.SetVisual(visualValue, (int)comboColorTemp.SelectedValue, true);
 
             comboVisual.SelectedValueChanged += ComboVisual_SelectedValueChanged;
             comboVisual.Visible = true;
             VisualiseDisabled();
-
-            comboColorTemp.SelectedValueChanged += ComboVisual_SelectedValueChanged;
-            comboColorTemp.Visible = true;
 
             if (gamuts.Count <= 1) return;
 
@@ -506,8 +502,25 @@ namespace GHelper
 
         private void ComboVisual_SelectedValueChanged(object? sender, EventArgs e)
         {
+            VisualiseColorTemp();
             VisualControl.SetVisual((SplendidCommand)comboVisual.SelectedValue, (int)comboColorTemp.SelectedValue);
             VisualiseDisabled();
+        }
+
+        bool? colorTempEyeCare;
+
+        // Vivo Eye Care uses the second dropdown for strength levels instead of color temperatures
+        private void VisualiseColorTemp()
+        {
+            bool eyeCare = comboVisual.SelectedValue is SplendidCommand.VivoEycare;
+            if (eyeCare == colorTempEyeCare) return;
+            colorTempEyeCare = eyeCare;
+
+            comboColorTemp.SelectedValueChanged -= ComboVisual_SelectedValueChanged;
+            comboColorTemp.DataSource = new BindingSource(eyeCare ? VisualControl.GetEyeCares() : VisualControl.GetTemperatures(), null);
+            comboColorTemp.SelectedValue = eyeCare ? AppConfig.Get("eyecare_level", 0) : AppConfig.Get("color_temp", VisualControl.DefaultColorTemp);
+            if (comboColorTemp.SelectedIndex < 0) comboColorTemp.SelectedIndex = 0;
+            comboColorTemp.SelectedValueChanged += ComboVisual_SelectedValueChanged;
         }
 
         public void VisualiseBrightness()
@@ -533,7 +546,20 @@ namespace GHelper
 
         public void VisualiseDisabled()
         {
-            comboGamut.Enabled = comboColorTemp.Enabled = (SplendidCommand)AppConfig.Get("visual") != SplendidCommand.Disabled;
+            var visual = comboVisual.SelectedValue is SplendidCommand selected ? selected : (SplendidCommand)AppConfig.Get("visual");
+            comboGamut.Enabled = comboColorTemp.Enabled = visual != SplendidCommand.Disabled;
+
+            // Vivo Default and Vivid modes ignore color temperature, collapse its column
+            bool colorTemp = visual != SplendidCommand.VivoNormal && visual != SplendidCommand.VivoVivid;
+            comboColorTemp.Visible = colorTemp;
+            if (colorTemp) comboColorTemp.CreateControl(); // RComboBox calibrates its height on handle creation, before the row is measured
+            tableVisual.ColumnStyles[1].Width = colorTemp ? 33.33F : 0;
+            // Re-layout after the dropdown selection event completes, owner-drawn combos otherwise keep old widths until repainted
+            BeginInvoke(() =>
+            {
+                tableVisual.PerformLayout();
+                tableVisual.Invalidate(true);
+            });
         }
 
         public void VisualiseGamut()
