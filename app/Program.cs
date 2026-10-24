@@ -311,6 +311,7 @@ namespace GHelper
             Logger.WriteLine("AutoSetting for " + SystemInformation.PowerStatus.PowerLineStatus.ToString());
 
             BatteryControl.AutoBattery(init);
+            HibernateHelper.Init();
             if (init) InputDispatcher.InitScreenpad();
             DynamicLightingHelper.Init();
             ScreenControl.InitOptimalBrightness();
