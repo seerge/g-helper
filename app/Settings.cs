@@ -784,7 +784,7 @@ namespace GHelper
                             break;
                         case 1:
                             Logger.WriteLine("Lid Open");
-                            InputDispatcher.InitFNLock();
+                            Task.Delay(1000).ContinueWith(_ => InputDispatcher.InitFNLock());
                             InputDispatcher.lidClose = AniMatrixControl.lidClose = false;
                             Aura.ApplyBrightness(InputDispatcher.GetBacklight(), "Lid");
                             matrixControl.SetLidMode();
