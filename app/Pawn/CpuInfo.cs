@@ -10,7 +10,7 @@ namespace PawnIO
 
         private static bool DetectAMD()
         {
-            if (!X86Base.IsSupported) return false;
+            if (!X86Base.IsSupported || RuntimeInformation.OSArchitecture != Architecture.X64) return false;
             var (_, ebx, ecx, edx) = X86Base.CpuId(0, 0);
 
             Span<uint> regs = stackalloc uint[] { (uint)ebx, (uint)edx, (uint)ecx };

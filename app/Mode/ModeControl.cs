@@ -548,7 +548,6 @@ namespace GHelper.Mode
                         {
                             SmuStatus s = smu.SetCoPer(core, -uv);
                             Logger.WriteLine($"UV core {core}: {-uv} {s}");
-                            // Track any non-zero offset so ResetRyzen clears per-core UV even if the last core is 0
                             if (s == SmuStatus.OK && uv != 0) _cpuUV = -uv;
                         }
                         core++;

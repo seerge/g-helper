@@ -18,8 +18,7 @@ namespace GHelper.Helpers
 
         public static bool IsRunningAsSystem() => _isSystem.Value;
 
-        // Returns false if another instance is still running and this one should exit
-        public static bool CheckAlreadyRunning()
+        public static void CheckAlreadyRunning()
         {
             var sec = new EventWaitHandleSecurity();
             sec.AddAccessRule(new EventWaitHandleAccessRule(
@@ -86,7 +85,7 @@ namespace GHelper.Helpers
                             if (stillAlive)
                             {
                                 MessageBox.Show(Properties.Strings.AppAlreadyRunningText, Properties.Strings.AppAlreadyRunning, MessageBoxButtons.OK);
-                                return false;
+                                Environment.Exit(0);
                             }
                         }
                     }
@@ -99,8 +98,6 @@ namespace GHelper.Helpers
 
             if (exitEvent != null)
                 ThreadPool.RegisterWaitForSingleObject(exitEvent, (_, _) => Application.Exit(), null, Timeout.Infinite, true);
-
-            return true;
         }
 
         public static bool IsUserAdministrator()

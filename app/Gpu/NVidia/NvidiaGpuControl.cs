@@ -194,6 +194,8 @@ public class NvidiaGpuControl : IGpuControl
     }
 
 
+    public bool IsClockOffsetSupported { get; private set; } = true;
+
     public bool GetClocks(out int core, out int memory)
     {
         PhysicalGPU internalGpu = _internalGpu!;
@@ -208,6 +210,8 @@ public class NvidiaGpuControl : IGpuControl
             IPerformanceStates20Info states = GPUApi.GetPerformanceStates20(internalGpu.Handle);
             core = states.Clocks[PerformanceStateId.P0_3DPerformance][0].FrequencyDeltaInkHz.DeltaValue / 1000;
             memory = states.Clocks[PerformanceStateId.P0_3DPerformance][1].FrequencyDeltaInkHz.DeltaValue / 1000;
+            var range = states.Clocks[PerformanceStateId.P0_3DPerformance][0].FrequencyDeltaInkHz.DeltaRange;
+            IsClockOffsetSupported = range.Maximum > range.Minimum;
             Logger.WriteLine($"GET GPU CLOCKS: {core}, {memory}");
 
             foreach (var delta in states.Voltages[PerformanceStateId.P0_3DPerformance])

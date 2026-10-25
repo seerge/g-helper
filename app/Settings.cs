@@ -327,7 +327,7 @@ namespace GHelper
 
         private void ButtonEnergySaver_Click(object? sender, EventArgs e)
         {
-            KeyboardHook.KeyKeyPress(Keys.LWin, Keys.A);
+            PowerNative.SetEnergySaver(false);
         }
 
         private void LabelBacklight_Click(object? sender, EventArgs e)
@@ -428,6 +428,10 @@ namespace GHelper
 
             panelGamma.Visible = true;
             tableVisual.Visible = true;
+
+            comboVisual.SelectedValueChanged -= ComboVisual_SelectedValueChanged;
+            comboColorTemp.SelectedValueChanged -= ComboVisual_SelectedValueChanged;
+            comboGamut.SelectedValueChanged -= ComboGamut_SelectedValueChanged;
 
             var visualValue = (SplendidCommand)AppConfig.Get("visual", (int)VisualControl.GetDefaultVisualMode());
             var colorTempValue = AppConfig.Get("color_temp", VisualControl.DefaultColorTemp);
@@ -676,7 +680,7 @@ namespace GHelper
 
             var screen = Screen.FromControl(this);
             Left = screen.WorkingArea.Right - 10 - Width;
-            Top = screen.WorkingArea.Top > screen.Bounds.Top ? screen.WorkingArea.Top + 10 : screen.WorkingArea.Bottom - 10 - Height;
+            Top = screen.WorkingArea.Top - screen.Bounds.Top > screen.Bounds.Bottom - screen.WorkingArea.Bottom ? screen.WorkingArea.Top + 10 : screen.WorkingArea.Bottom - 10 - Height;
         }
 
         private void PanelBattery_MouseEnter(object? sender, EventArgs e)
@@ -780,7 +784,7 @@ namespace GHelper
                             break;
                         case 1:
                             Logger.WriteLine("Lid Open");
-                            InputDispatcher.InitFNLock();
+                            Task.Delay(1000).ContinueWith(_ => InputDispatcher.InitFNLock());
                             InputDispatcher.lidClose = AniMatrixControl.lidClose = false;
                             Aura.ApplyBrightness(InputDispatcher.GetBacklight(), "Lid");
                             matrixControl.SetLidMode();
@@ -806,6 +810,7 @@ namespace GHelper
                         case 1:
                             Logger.WriteLine("Monitor Power On");
                             GPUModeControl.suspended = false;
+                            Thread.Sleep(1000);
                             if (!Program.SetAutoModes(wakeup: true)) BatteryControl.AutoBattery();
                             Program.hardwareOverlay?.ResumeForDisplayOn();
                             break;

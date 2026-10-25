@@ -196,7 +196,7 @@ namespace GHelper.Gpu
 
                     if (eco == 0)
                     {
-                        if (AppConfig.IsNVPlatform() || nvRestartPending)
+                        if ((AppConfig.IsNVPlatform() || nvRestartPending) && ProcessHelper.IsUserAdministrator())
                         {
                             settings.LockGPUModes(Properties.Strings.RestartingNVServices);
                             await Task.Delay(TimeSpan.FromMilliseconds(AppConfig.Get("nv_delay", 5000)));
