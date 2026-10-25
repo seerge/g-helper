@@ -186,29 +186,33 @@ public static class AsusHid
 
     public static void SetFeatureAura(byte[] data, bool retry = true)
     {
-        EnsureAuraStream();
-        if (auraStream == null)
+        // Stream and shared scratch buffer must only be touched under the lock
+        lock (hidLock)
         {
-            Logger.WriteLine("Aura stream not found");
-            return;
-        }
-
-        try
-        {
-            byte[] payload = data;
-            if (auraScratch != null && data.Length < auraFeatLen)
+            EnsureAuraStream();
+            if (auraStream == null)
             {
-                Array.Clear(auraScratch, 0, auraFeatLen);
-                Array.Copy(data, auraScratch, data.Length);
-                payload = auraScratch;
+                Logger.WriteLine("Aura stream not found");
+                return;
             }
-            lock (hidLock) auraStream.SetFeature(payload);
-        }
-        catch (Exception ex)
-        {
-            Logger.WriteLine($"Error setting feature on HID device: {ex.Message} {BitConverter.ToString(data, 0, Math.Min(16, data.Length))}");
-            DisposeAuraStream();
-            if (retry) SetFeatureAura(data, false);
+
+            try
+            {
+                byte[] payload = data;
+                if (auraScratch != null && data.Length < auraFeatLen)
+                {
+                    Array.Clear(auraScratch, 0, auraFeatLen);
+                    Array.Copy(data, auraScratch, data.Length);
+                    payload = auraScratch;
+                }
+                auraStream.SetFeature(payload);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine($"Error setting feature on HID device: {ex.Message} {BitConverter.ToString(data, 0, Math.Min(16, data.Length))}");
+                DisposeAuraStream();
+                if (retry) SetFeatureAura(data, false);
+            }
         }
     }
 
