@@ -889,6 +889,20 @@ namespace GHelper.USB
 
             Logger.WriteLine($"AuraMode: {Mode}");
 
+            // Arion has autonomous effects only; never send high-frequency Aura frames to storage.
+            byte? arionMode = Mode switch
+            {
+                AuraMode.AuraStatic => 1,
+                AuraMode.AuraBreathe => 2,
+                AuraMode.AuraStrobe => 3,
+                AuraMode.AuraColorCycle => 4,
+                AuraMode.AuraRainbow => 5,
+                _ => null,
+            };
+            // Unsupported modes turn Arion lighting off rather than leaving a stale effect running.
+            byte arionSpeed = Speed == AuraSpeed.Slow ? (byte)4 : Speed == AuraSpeed.Fast ? (byte)0 : (byte)2;
+            Arion.Sync(arionMode ?? 0, arionSpeed, Color1.R, Color1.G, Color1.B);
+
             AsusLampArray.SetMode(Mode);
             if (AsusLampArray.Probing) return;
 
