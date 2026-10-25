@@ -82,7 +82,13 @@ public static class AppConfig
         }
     }
 
-    private static void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
+    // Write pending changes now, e.g. before exit or restart as admin
+    public static void Flush()
+    {
+        if (timer.Enabled) Timer_Elapsed(null, null);
+    }
+
+    private static void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs? e)
     {
         timer.Stop();
         string jsonString;

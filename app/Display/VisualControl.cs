@@ -217,11 +217,11 @@ namespace GHelper.Display
         {
             return new Dictionary<int, string>
             {
-                { 0, "0"},
-                { 1, "1"},
-                { 2, "2"},
-                { 3, "3"},
-                { 4, "4"},
+                { 0, "Level 1"},
+                { 1, "Level 2"},
+                { 2, "Level 3"},
+                { 3, "Level 4"},
+                { 4, "Level 5"},
             };
         }
 
@@ -283,7 +283,9 @@ namespace GHelper.Display
             if (mode == SplendidCommand.Disabled && !CpuInfo.IsAMD && init) return; // Skip disabled setting for Intel devices
 
             AppConfig.Set("visual", (int)mode);
-            AppConfig.Set("color_temp", whiteBalance);
+            // Vivo Eye Care takes a strength level (0-4) instead of a color temperature
+            if (mode == SplendidCommand.VivoEycare) AppConfig.Set("eyecare_level", whiteBalance);
+            else AppConfig.Set("color_temp", whiteBalance);
 
             Task.Run(() =>
             {
@@ -309,7 +311,7 @@ namespace GHelper.Display
                         param2 = null;
                         break;
                     case SplendidCommand.VivoEycare:
-                        param2 = Math.Abs(whiteBalance - 50) * 3 / 50 + (whiteBalance < 50 ? 1 : 0);
+                        param2 = Math.Clamp(whiteBalance, 0, 4);
                         break;
                     case SplendidCommand.EReading:
                         if (AppConfig.IsDUO() && AppConfig.IsVivoZenPro()) mode = SplendidCommand.EReadingVivo;
