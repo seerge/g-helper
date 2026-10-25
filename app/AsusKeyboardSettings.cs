@@ -501,13 +501,14 @@ namespace GHelper
             }
 
             settingsChanged = false;
+            bool wasDirect = keyboard.HasTransientLighting;
             keyboard.SetProfile(comboBoxProfile.SelectedIndex);
 
             loadingSettings = true;
             LoadSettings();
             loadingSettings = false;
 
-            Task.Run(() => { try { if (keyboard.HasTransientLighting) keyboard.ApplyStoredLighting(); keyboard.ReadBattery(); BeginInvoke(VisualizeEnergy); } catch { } });
+            Task.Run(() => { try { if (wasDirect || keyboard.HasTransientLighting) keyboard.ApplyStoredLighting(); keyboard.ReadBattery(); BeginInvoke(VisualizeEnergy); } catch { } });
         }
 
         private object[] BuildBindingComboItems()
