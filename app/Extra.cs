@@ -251,6 +251,12 @@ namespace GHelper
                 labelM4.Text = "FN+F12";
             }
 
+            if (AppConfig.IsProArt())
+            {
+                labelFNC.Visible = comboFNC.Visible = textFNC.Visible = false;
+                labelFNV.Text = "FN+C";
+            }
+
             if (AppConfig.MediaKeys())
             {
                 labelFNF4.Visible = comboFNF4.Visible = textFNF4.Visible = false;
