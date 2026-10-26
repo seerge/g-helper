@@ -2,6 +2,7 @@
 using GHelper.Helpers;
 using GHelper.Input;
 using GHelper.Peripherals;
+using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
@@ -58,6 +59,15 @@ namespace GHelper.USB
         ZONETEST = 25,
         AUDIO = 26,
         AUDIOPULSE = 27,
+        // Software animations. These values are app settings only and must never be sent to device firmware.
+        Fire = 28,
+        OceanWave = 29,
+        Aurora = 30,
+        Sunset = 31,
+        Neon = 32,
+        Meteor = 33,
+        ColorPulse = 34,
+        BreathingRainbow = 35,
     }
 
     public enum AuraSpeed : int
@@ -106,6 +116,10 @@ namespace GHelper.USB
 
         static bool isStrix => BacklightType == AuraBacklightType.MultiZone || BacklightType == AuraBacklightType.PerKey;
         public static bool IsBacklightDetected => BacklightType != AuraBacklightType.Unknown;
+        static bool supportsSoftwareAnimations => !isWhite && !AppConfig.IsAlly() && !AppConfig.IsDynamicLightingOnly() &&
+            (isACPI || BacklightType is AuraBacklightType.SingleZone or AuraBacklightType.MultiZone or AuraBacklightType.PerKey);
+        static bool supportsZonedSoftwareAnimations => !isACPI &&
+            BacklightType is AuraBacklightType.MultiZone or AuraBacklightType.PerKey;
 
         static bool isStrix4Zone = false;
         static bool isStrixNumpad = AppConfig.IsStrixNumpad();
@@ -122,6 +136,35 @@ namespace GHelper.USB
         public static bool IsOldStrix { get; private set; }
 
         static System.Timers.Timer timer = new System.Timers.Timer(1000);
+        const int animationFrameInterval = 50;
+        static long animationStartedAt;
+        static int animationFrameRunning;
+
+        static readonly Color[] firePalette =
+        {
+            Color.FromArgb(72, 0, 0), Color.FromArgb(178, 8, 0), Color.FromArgb(255, 48, 0),
+            Color.FromArgb(255, 126, 0), Color.FromArgb(255, 190, 24), Color.FromArgb(255, 226, 88)
+        };
+        static readonly Color[] oceanWavePalette =
+        {
+            Color.FromArgb(0, 18, 64), Color.FromArgb(0, 74, 145), Color.FromArgb(0, 163, 190),
+            Color.FromArgb(42, 220, 198), Color.FromArgb(0, 125, 171)
+        };
+        static readonly Color[] auroraPalette =
+        {
+            Color.FromArgb(0, 110, 54), Color.FromArgb(0, 184, 133), Color.FromArgb(24, 204, 222),
+            Color.FromArgb(110, 66, 194), Color.FromArgb(31, 83, 211)
+        };
+        static readonly Color[] sunsetPalette =
+        {
+            Color.FromArgb(191, 24, 38), Color.FromArgb(255, 94, 38), Color.FromArgb(255, 90, 132),
+            Color.FromArgb(204, 42, 151), Color.FromArgb(94, 38, 145)
+        };
+        static readonly Color[] neonPalette =
+        {
+            Color.FromArgb(0, 240, 255), Color.FromArgb(28, 94, 255), Color.FromArgb(126, 30, 255),
+            Color.FromArgb(255, 32, 176), Color.FromArgb(227, 0, 255)
+        };
 
         static readonly List<double> audioMaxes = new List<double>();
         static long lastAudioPresent;
@@ -187,6 +230,18 @@ namespace GHelper.USB
 
             modes[AuraMode.AuraStrobe] = Properties.Strings.AuraStrobe;
 
+            if (supportsSoftwareAnimations)
+            {
+                modes[AuraMode.Fire] = GetLocalizedModeName("AuraFire", "Fire");
+                modes[AuraMode.OceanWave] = GetLocalizedModeName("AuraOceanWave", "Ocean Wave");
+                modes[AuraMode.Aurora] = GetLocalizedModeName("AuraAurora", "Aurora");
+                modes[AuraMode.Sunset] = GetLocalizedModeName("AuraSunset", "Sunset");
+                modes[AuraMode.Neon] = GetLocalizedModeName("AuraNeon", "Neon");
+                modes[AuraMode.Meteor] = GetLocalizedModeName("AuraMeteor", "Meteor");
+                modes[AuraMode.ColorPulse] = GetLocalizedModeName("AuraColorPulse", "Color Pulse");
+                modes[AuraMode.BreathingRainbow] = GetLocalizedModeName("AuraBreathingRainbow", "Breathing Rainbow");
+            }
+
             if (perKey)
             {
                 modes[AuraMode.Comet] = "Comet";
@@ -228,6 +283,18 @@ namespace GHelper.USB
         {
             return _modesRear;
         }
+
+        private static string GetLocalizedModeName(string resourceName, string fallback)
+        {
+            return Properties.Strings.ResourceManager.GetString(resourceName, Properties.Strings.Culture) ?? fallback;
+        }
+
+        private static bool IsSoftwareAnimation(AuraMode mode)
+        {
+            return mode is AuraMode.Fire or AuraMode.OceanWave or AuraMode.Aurora or AuraMode.Sunset
+                or AuraMode.Neon or AuraMode.Meteor or AuraMode.ColorPulse or AuraMode.BreathingRainbow;
+        }
+
         public static AuraMode Mode
         {
             get { return mode; }
@@ -277,6 +344,33 @@ namespace GHelper.USB
             if (!InputDispatcher.backlightActivity)
                 return;
 
+            if (IsSoftwareAnimation(Mode))
+            {
+                if (!backlight || Interlocked.Exchange(ref animationFrameRunning, 1) != 0) return;
+                try
+                {
+                    double elapsed = (Stopwatch.GetTimestamp() - animationStartedAt) / (double)Stopwatch.Frequency;
+                    double cycle = Speed switch
+                    {
+                        AuraSpeed.Slow => 20.0,
+                        AuraSpeed.Fast => 5.0,
+                        _ => 10.0
+                    };
+                    double phase = (elapsed / cycle) % 1.0;
+                    if (phase < 0) phase += 1.0;
+                    ApplySoftwareAnimationFrame(phase);
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteLine("Aura animation: " + ex.Message);
+                }
+                finally
+                {
+                    Interlocked.Exchange(ref animationFrameRunning, 0);
+                }
+                return;
+            }
+
             if (Mode == AuraMode.HEATMAP)
             {
                 CustomRGB.ApplyHeatmap();
@@ -290,6 +384,98 @@ namespace GHelper.USB
                 CustomRGB.ApplyAmbient();
             }
         }
+
+        private static void ApplySoftwareAnimationFrame(double phase)
+        {
+            if (Mode == AuraMode.Meteor && supportsZonedSoftwareAnimations)
+            {
+                ApplyDirect(RenderMeteorZones(phase));
+                return;
+            }
+
+            if (supportsZonedSoftwareAnimations)
+            {
+                Color[] zones = new Color[AURA_ZONES];
+                for (int i = 0; i < zones.Length; i++)
+                    zones[i] = GetSoftwareAnimationColor(Mode, phase, (double)i / zones.Length);
+                ApplyDirect(zones);
+                return;
+            }
+
+            ApplyDirect(GetSoftwareAnimationColor(Mode, phase, 0));
+        }
+
+        private static Color GetSoftwareAnimationColor(AuraMode animation, double phase, double zoneOffset)
+        {
+            double shiftedPhase = (phase + zoneOffset) % 1.0;
+            return animation switch
+            {
+                AuraMode.Fire => InterpolatePalette(firePalette, shiftedPhase),
+                AuraMode.OceanWave => InterpolatePalette(oceanWavePalette, shiftedPhase),
+                AuraMode.Aurora => InterpolatePalette(auroraPalette, shiftedPhase),
+                AuraMode.Sunset => InterpolatePalette(sunsetPalette, shiftedPhase),
+                AuraMode.Neon => InterpolatePalette(neonPalette, shiftedPhase),
+                AuraMode.Meteor => ScaleColor(
+                    InterpolatePalette(firePalette, phase),
+                    0.08 + 0.92 * EaseInOut(0.5 - 0.5 * Math.Cos(phase * Math.PI * 2))),
+                AuraMode.ColorPulse => ScaleColor(Color1, 0.18 + 0.82 * (0.5 - 0.5 * Math.Cos(phase * Math.PI * 2))),
+                AuraMode.BreathingRainbow => new ColorUtils.HSV
+                {
+                    Hue = shiftedPhase,
+                    Saturation = 1.0,
+                    Value = 0.2 + 0.8 * (0.5 - 0.5 * Math.Cos(phase * Math.PI * 2))
+                }.ToRGB(),
+                _ => Color1
+            };
+        }
+
+        private static Color[] RenderMeteorZones(double phase)
+        {
+            Color[] zones = new Color[AURA_ZONES];
+            double head = phase * AURA_ZONES;
+            Color glow = InterpolatePalette(firePalette, (phase * 0.35) % 1.0);
+            Color dark = Color.FromArgb(2, 0, 8);
+
+            for (int i = 0; i < zones.Length; i++)
+            {
+                double behindHead = (head - i + AURA_ZONES) % AURA_ZONES;
+                double trail = behindHead <= 3.5 ? Math.Exp(-behindHead * 0.9) : 0;
+                double headGlow = Math.Exp(-Math.Pow(behindHead / 0.42, 2));
+                zones[i] = LerpColor(dark, glow, Math.Clamp(Math.Max(trail, headGlow), 0, 1));
+            }
+
+            return zones;
+        }
+
+        private static Color InterpolatePalette(Color[] palette, double phase)
+        {
+            double position = (phase % 1.0) * palette.Length;
+            int start = (int)position;
+            return LerpColor(palette[start], palette[(start + 1) % palette.Length], position - start);
+        }
+
+        private static double EaseInOut(double value)
+        {
+            value = Math.Clamp(value, 0, 1);
+            return value * value * (3 - 2 * value);
+        }
+
+        private static Color ScaleColor(Color color, double scale)
+        {
+            return Color.FromArgb(255, ToChannel(color.R * scale), ToChannel(color.G * scale), ToChannel(color.B * scale));
+        }
+
+        private static Color LerpColor(Color from, Color to, double amount)
+        {
+            amount = Math.Clamp(amount, 0, 1);
+            return Color.FromArgb(
+                255,
+                ToChannel(from.R + (to.R - from.R) * amount),
+                ToChannel(from.G + (to.G - from.G) * amount),
+                ToChannel(from.B + (to.B - from.B) * amount));
+        }
+
+        private static byte ToChannel(double value) => (byte)Math.Clamp((int)Math.Round(value), 0, 255);
 
 
         public static byte[] AuraMessage(AuraMode mode, Color color, Color color2, int speed)
@@ -413,7 +599,11 @@ namespace GHelper.USB
 
         public static void ApplyBrightness(int brightness, string log = "Backlight")
         {
-            if (brightness == 0) backlight = false;
+            if (brightness == 0)
+            {
+                backlight = false;
+                if (IsSoftwareAnimation(Mode)) timer.Stop();
+            }
 
             DirectBrightness(brightness, log);
             if (AppConfig.IsAlly()) ApplyAura();
@@ -422,7 +612,7 @@ namespace GHelper.USB
             {
                 if (!backlight) initDirect = true;
                 backlight = true;
-                if (Mode == AuraMode.GRADIENT) ApplyAura();
+                if (Mode == AuraMode.GRADIENT || IsSoftwareAnimation(Mode)) ApplyAura();
             }
         }
 
@@ -888,6 +1078,18 @@ namespace GHelper.USB
             if (Mode != AuraMode.AUDIO && Mode != AuraMode.AUDIOPULSE) StopAudio();
 
             Logger.WriteLine($"AuraMode: {Mode}");
+
+            if (IsSoftwareAnimation(Mode))
+            {
+                _ = AsusLampArray.Available;
+                if (AsusLampArray.Probing || !backlight) return;
+
+                animationStartedAt = Stopwatch.GetTimestamp();
+                timer.Interval = animationFrameInterval;
+                ApplySoftwareAnimationFrame(0);
+                timer.Start();
+                return;
+            }
 
             AsusLampArray.SetMode(Mode);
             if (AsusLampArray.Probing) return;
