@@ -141,6 +141,11 @@
             return 12_000;
         }
 
+        public override bool HasXYDPI()
+        {
+            return false;
+        }
+
         public override bool HasBattery()
         {
             return false;
