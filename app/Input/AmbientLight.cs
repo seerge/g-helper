@@ -140,11 +140,7 @@ namespace GHelper.Input
             }
             if (timer.Interval != 2000) timer.Interval = 2000;
 
-            int level;
-            if (lux < 15) level = 3;
-            else if (lux < 100) level = 2;
-            else if (lux < 400) level = 1;
-            else level = 0;
+            int level = lux >= 300 || (lux >= 200 && lastLevel == 0) ? 0 : 3;
 
             if (level == lastLevel) { pendingLevel = -1; return; }
             if (level != pendingLevel) { pendingLevel = level; return; }
