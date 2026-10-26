@@ -117,7 +117,6 @@ namespace GHelper.Input
         public static void InitFNLock()
         {
             if (!IsHardwareFnLock()) return;
-            AsusHid.InitInput();
             HardwareFnLock(AppConfig.Is("fn_lock"));
         }
 
