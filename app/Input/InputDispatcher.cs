@@ -228,7 +228,7 @@ namespace GHelper.Input
 
             for (int slot = 0; slot < AsusKeyboard.TextSlots; slot++)
                 if (AsusKeyboard.TextCommand(slot).Length > 0)
-                    hook.RegisterHotKey(ModifierKeys.Control | ModifierKeys.Shift | ModifierKeys.Alt | ModifierKeys.NoRepeat, Keys.F5 + slot);
+                    hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Alt | ModifierKeys.NoRepeat, Keys.F1 + slot);
 
         }
 
@@ -354,14 +354,17 @@ namespace GHelper.Input
                         return;
                     }
                 }
+            }
 
-                if (e.Key >= Keys.F5 && e.Key < Keys.F5 + AsusKeyboard.TextSlots)
+            if (e.Modifier == (ModifierKeys.Shift | ModifierKeys.Alt))
+            {
+                if (e.Key >= Keys.F1 && e.Key < Keys.F1 + AsusKeyboard.TextSlots)
                 {
                     long now = Environment.TickCount64;
                     if (now - lastTextMacroTick < 800) return;
                     lastTextMacroTick = now;
 
-                    string text = AsusKeyboard.TextCommand(e.Key - Keys.F5);
+                    string text = AsusKeyboard.TextCommand(e.Key - Keys.F1);
                     if (text.Length > 0)
                     {
                         Task.Run(() => KeyboardHook.TypeText(text));

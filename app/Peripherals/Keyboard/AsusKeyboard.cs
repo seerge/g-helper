@@ -571,16 +571,18 @@ namespace GHelper.Peripherals.Keyboard
 
         public void ReapplyTextBindings()
         {
+            bool any = false;
             foreach (ushort code in KeyLayout().SelectMany(row => row).Select(def => AuraKeyboardLayouts.Keys.GetValueOrDefault(def.Name)).Distinct())
             {
                 ushort binding = GetKeyBinding(code);
                 if (binding >= TextCode && binding < TextCode + TextSlots)
                 {
                     int slot = binding - TextCode;
-                    ushort[] keys = new[] { AuraKeyboardLayouts.Keys["Ctrl"], AuraKeyboardLayouts.Keys["Shift"], AuraKeyboardLayouts.Keys["Alt"], AuraKeyboardLayouts.Keys["F" + (LaunchSlots + 1 + slot)] };
-                    SetKeyCombo(code, binding, keys);
+                    ushort[] keys = new[] { AuraKeyboardLayouts.Keys["Shift"], AuraKeyboardLayouts.Keys["Alt"], AuraKeyboardLayouts.Keys["F" + (slot + 1)] };
+                    if (SetKeyCombo(code, binding, keys)) any = true;
                 }
             }
+            if (any) SaveLighting();
         }
 
         // no reset-all command exists; re-map each remapped key back to itself (default)

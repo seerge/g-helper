@@ -164,46 +164,85 @@ public sealed class KeyboardHook : IDisposable
             lastTypeTick = now;
 
             int wait = 0;
-            while (wait < 50 && (
-                (GetAsyncKeyState(0x10) & 0x8000) != 0 ||
-                (GetAsyncKeyState(0x11) & 0x8000) != 0 ||
-                (GetAsyncKeyState(0x12) & 0x8000) != 0 ||
-                (GetAsyncKeyState(0x5B) & 0x8000) != 0 ||
-                (GetAsyncKeyState(0x5C) & 0x8000) != 0))
+            while (wait < 30 && (
+                (GetAsyncKeyState(0x10) & 0x8000) != 0 || // Shift
+                (GetAsyncKeyState(0x11) & 0x8000) != 0 || // Control
+                (GetAsyncKeyState(0x12) & 0x8000) != 0))   // Alt
             {
                 Thread.Sleep(10);
                 wait++;
             }
-            Thread.Sleep(30);
-
-            ushort[] mods = { 0x10, 0x11, 0x12, 0xA0, 0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0x5B, 0x5C };
-            var rel = new INPUT[mods.Length];
-            for (int i = 0; i < mods.Length; i++)
-            {
-                rel[i].type = INPUT_KEYBOARD;
-                rel[i].u.ki.wVk = mods[i];
-                rel[i].u.ki.dwFlags = KEYEVENTF_KEYUP;
-            }
-            SendInput((uint)rel.Length, rel, Marshal.SizeOf(typeof(INPUT)));
             Thread.Sleep(20);
+
+            ushort[] checkMods = { 0x10, 0x11, 0x12, 0xA0, 0xA1, 0xA2, 0xA3, 0xA4, 0xA5 };
+            var releaseInputs = new List<INPUT>();
+            foreach (ushort vk in checkMods)
+            {
+                if ((GetAsyncKeyState(vk) & 0x8000) != 0)
+                {
+                    INPUT input = new INPUT { type = INPUT_KEYBOARD };
+                    input.u.ki.wVk = vk;
+                    input.u.ki.dwFlags = KEYEVENTF_KEYUP;
+                    if (vk == 0xA3 || vk == 0xA5) input.u.ki.dwFlags |= KEYEVENTF_EXTENDEDKEY;
+                    releaseInputs.Add(input);
+                }
+            }
+            if (releaseInputs.Count > 0)
+            {
+                SendInput((uint)releaseInputs.Count, releaseInputs.ToArray(), Marshal.SizeOf(typeof(INPUT)));
+                Thread.Sleep(20);
+            }
 
             var inputs = new INPUT[2];
             inputs[0].type = INPUT_KEYBOARD;
-            inputs[0].u.ki.wVk = 0;
-            inputs[0].u.ki.dwFlags = KEYEVENTF_UNICODE;
-
             inputs[1].type = INPUT_KEYBOARD;
-            inputs[1].u.ki.wVk = 0;
-            inputs[1].u.ki.dwFlags = KEYEVENTF_UNICODE | KEYEVENTF_KEYUP;
 
             int structSize = Marshal.SizeOf(typeof(INPUT));
 
-            foreach (char c in text)
+            for (int i = 0; i < text.Length; i++)
             {
-                inputs[0].u.ki.wScan = (ushort)c;
-                inputs[1].u.ki.wScan = (ushort)c;
+                char c = text[i];
+
+                if (c == '\r')
+                {
+                    if (i + 1 < text.Length && text[i + 1] == '\n') i++;
+                    inputs[0].u.ki.wVk = 0x0D; // VK_RETURN
+                    inputs[0].u.ki.wScan = 0;
+                    inputs[0].u.ki.dwFlags = 0;
+                    inputs[1].u.ki.wVk = 0x0D;
+                    inputs[1].u.ki.wScan = 0;
+                    inputs[1].u.ki.dwFlags = KEYEVENTF_KEYUP;
+                }
+                else if (c == '\n')
+                {
+                    inputs[0].u.ki.wVk = 0x0D;
+                    inputs[0].u.ki.wScan = 0;
+                    inputs[0].u.ki.dwFlags = 0;
+                    inputs[1].u.ki.wVk = 0x0D;
+                    inputs[1].u.ki.wScan = 0;
+                    inputs[1].u.ki.dwFlags = KEYEVENTF_KEYUP;
+                }
+                else if (c == '\t')
+                {
+                    inputs[0].u.ki.wVk = 0x09; // VK_TAB
+                    inputs[0].u.ki.wScan = 0;
+                    inputs[0].u.ki.dwFlags = 0;
+                    inputs[1].u.ki.wVk = 0x09;
+                    inputs[1].u.ki.wScan = 0;
+                    inputs[1].u.ki.dwFlags = KEYEVENTF_KEYUP;
+                }
+                else
+                {
+                    inputs[0].u.ki.wVk = 0;
+                    inputs[0].u.ki.wScan = (ushort)c;
+                    inputs[0].u.ki.dwFlags = KEYEVENTF_UNICODE;
+                    inputs[1].u.ki.wVk = 0;
+                    inputs[1].u.ki.wScan = (ushort)c;
+                    inputs[1].u.ki.dwFlags = KEYEVENTF_UNICODE | KEYEVENTF_KEYUP;
+                }
+
                 SendInput(2, inputs, structSize);
-                Thread.Sleep(12);
+                Thread.Sleep(15);
             }
 
             lastTypeTick = Environment.TickCount64;

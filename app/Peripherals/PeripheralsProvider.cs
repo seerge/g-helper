@@ -1,4 +1,4 @@
-﻿using GHelper.Peripherals.Headset;
+using GHelper.Peripherals.Headset;
 using GHelper.Peripherals.Headset.Models;
 using GHelper.Peripherals.Keyboard;
 using GHelper.Peripherals.Keyboard.Models;
@@ -106,6 +106,14 @@ namespace GHelper.Peripherals
             lock (_LOCK)
             {
                 return new List<AsusMouse>(ConnectedMice);
+            }
+        }
+
+        public static List<AsusKeyboard> SnapshotKeyboards()
+        {
+            lock (_LOCK)
+            {
+                return new List<AsusKeyboard>(ConnectedKeyboards);
             }
         }
 
@@ -311,6 +319,7 @@ namespace GHelper.Peripherals
                     kb.ReadProfile();
                     if (IsKeyboardAuraSync) kb.SyncFromLaptopAura();
                     else if (kb.HasTransientLighting) kb.ApplyStoredLighting();
+                    kb.ReapplyTextBindings();
                 }
                 catch { }
             });

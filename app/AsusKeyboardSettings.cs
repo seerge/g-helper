@@ -546,7 +546,7 @@ namespace GHelper
             list.Add(new BindingSeparator("Text"));
             for (int slot = 0; slot < AsusKeyboard.TextSlots; slot++)
                 list.Add(new BindingItem((ushort)(AsusKeyboard.TextCode + slot), "Type Text " + (slot + 1),
-                    new[] { K("Ctrl"), K("Shift"), K("Alt"), K("F" + (AsusKeyboard.LaunchSlots + 1 + slot)) }));
+                    new[] { K("Shift"), K("Alt"), K("F" + (slot + 1)) }));
             return list.ToArray();
         }
 
@@ -594,6 +594,8 @@ namespace GHelper
                         if (item.ComboKeys is null) keyboard.SetKeyBinding(sourceCode, item.Code);
                         else keyboard.SetKeyCombo(sourceCode, item.Code, item.ComboKeys);
                         keyboard.SaveLighting();
+                        if (item.Code >= AsusKeyboard.TextCode && item.Code < AsusKeyboard.TextCode + AsusKeyboard.TextSlots)
+                            Program.inputDispatcher?.RegisterKeys();
                     }
                     catch { }
                     try { bound?.BeginInvoke(() => ApplyKeyUnderline(bound, sourceCode)); } catch { }
