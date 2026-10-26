@@ -1,5 +1,6 @@
 using GHelper.AnimeMatrix.Communication;
 using GHelper.AnimeMatrix.Communication.Platform;
+using GHelper.Helpers;
 using GHelper.USB;
 using HidSharp;
 using System.Runtime.CompilerServices;
@@ -514,10 +515,32 @@ namespace GHelper.Peripherals.Keyboard
 
         public static void SetLaunchCommand(int slot, string command) => AppConfig.Set($"kb_launch_{slot}", command);
 
+        public const ushort TextCode = 0xC300;
+        public const int TextSlots = 8;
+
+        public static string TextCommand(int slot)
+        {
+            string? enc = AppConfig.GetString($"kb_text_enc_{slot}");
+            return string.IsNullOrEmpty(enc) ? "" : SecureStorage.DecryptString(enc);
+        }
+
+        public static void SetTextCommand(int slot, string text)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                AppConfig.Set($"kb_text_enc_{slot}", null);
+            }
+            else
+            {
+                string enc = SecureStorage.EncryptString(text);
+                AppConfig.Set($"kb_text_enc_{slot}", enc);
+            }
+        }
+
         // the FF terminator record also binds the key to its macro slot, no separate remap needed
         public bool SetKeyCombo(ushort sourceCode, ushort comboId, ushort[] keys)
         {
-            if (keys.Length == 0 || WriteForResponse(new byte[] { reportId, 0x51, 0x18, 0x02, 0x00, (byte)sourceCode }) is null)
+            if (keys.Length == 0 || WriteForResponse(new byte[] { reportId, 0x51, 0x18, 0x01, 0x00, (byte)sourceCode }) is null)
                 return false;
 
             var records = new List<byte[]>();
@@ -545,6 +568,22 @@ namespace GHelper.Peripherals.Keyboard
 
         // device can't report bindings back; we track keys we've remapped ourselves (per profile)
         public ushort GetKeyBinding(ushort sourceCode) => (ushort)AppConfig.Get(ConfigKey($"bind_{sourceCode:X4}"), 0);
+
+        public void ReapplyTextBindings()
+        {
+            bool any = false;
+            foreach (ushort code in KeyLayout().SelectMany(row => row).Select(def => AuraKeyboardLayouts.Keys.GetValueOrDefault(def.Name)).Distinct())
+            {
+                ushort binding = GetKeyBinding(code);
+                if (binding >= TextCode && binding < TextCode + TextSlots)
+                {
+                    int slot = binding - TextCode;
+                    ushort[] keys = new[] { AuraKeyboardLayouts.Keys["Shift"], AuraKeyboardLayouts.Keys["Alt"], AuraKeyboardLayouts.Keys["F" + (slot + 1)] };
+                    if (SetKeyCombo(code, binding, keys)) any = true;
+                }
+            }
+            if (any) SaveLighting();
+        }
 
         // no reset-all command exists; re-map each remapped key back to itself (default)
         public void ResetAllBindings()
