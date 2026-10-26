@@ -1121,4 +1121,7 @@
   <data name="Background" xml:space="preserve">
     <value>Фон</value>
   </data>
+  <data name="AmbientBacklight" xml:space="preserve">
+    <value>Датчик зовнішнього освітлення</value>
+  </data>
 </root>

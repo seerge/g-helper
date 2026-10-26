@@ -1121,4 +1121,7 @@ felmelegítsék az alvó laptopot és lemerítsék az akkumulátort.</value>
   <data name="Background" xml:space="preserve">
     <value>Háttér</value>
   </data>
+  <data name="AmbientBacklight" xml:space="preserve">
+    <value>Környezeti fényérzékelő</value>
+  </data>
 </root>
