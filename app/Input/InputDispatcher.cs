@@ -361,7 +361,7 @@ namespace GHelper.Input
                 if (e.Key >= Keys.F1 && e.Key < Keys.F1 + AsusKeyboard.TextSlots)
                 {
                     long now = Environment.TickCount64;
-                    if (now - lastTextMacroTick < 800) return;
+                    if (now - lastTextMacroTick < 250) return;
                     lastTextMacroTick = now;
 
                     string text = AsusKeyboard.TextCommand(e.Key - Keys.F1);
