@@ -451,9 +451,17 @@ namespace GHelper
             numericBacklightTime.ValueChanged += NumericBacklightTime_ValueChanged;
             numericBacklightPluggedTime.ValueChanged += NumericBacklightTime_ValueChanged;
 
-            checkAmbient.Visible = AmbientLight.IsSupported();
+            ambientSupported = AmbientLight.IsSupported();
+            checkAmbient.Visible = ambientSupported;
             checkAmbient.Checked = AppConfig.Is("backlight_ambient");
             checkAmbient.CheckedChanged += CheckAmbient_CheckedChanged;
+
+            sliderAmbient.Max = AmbientLight.LuxSteps.Length - 1;
+            sliderAmbient.Value = Array.FindLastIndex(AmbientLight.LuxSteps, lux => lux <= AmbientLight.GetThreshold());
+            sliderAmbient.ValueChanged += SliderAmbient_ValueChanged;
+            ambientTimer.Tick += AmbientTimer_Tick;
+            FormClosed += (s, e) => ambientTimer.Dispose();
+            VisualiseAmbient();
 
             checkGpuApps.Checked = AppConfig.Is("kill_gpu_apps");
             checkGpuApps.CheckedChanged += CheckGpuApps_CheckedChanged;
@@ -859,6 +867,40 @@ namespace GHelper
             AppConfig.Set("backlight_ambient", checkAmbient.Checked ? 1 : 0);
             AmbientLight.Init();
             if (!checkAmbient.Checked) InputDispatcher.SetBacklightAuto();
+            VisualiseAmbient();
+        }
+
+        System.Windows.Forms.Timer ambientTimer = new() { Interval = 1000 };
+        string ambientLux = "-";
+        bool ambientSupported;
+
+        private void VisualiseAmbient()
+        {
+            bool visible = ambientSupported && checkAmbient.Checked;
+            labelAmbient.Visible = sliderAmbient.Visible = visible;
+            ambientTimer.Enabled = visible;
+            UpdateAmbientLabel();
+        }
+
+        private void UpdateAmbientLabel()
+        {
+            labelAmbient.Text = string.Format(Properties.Strings.AmbientOffAbove, AmbientLight.LuxSteps[sliderAmbient.Value], ambientLux);
+            sliderAmbient.AccessibleName = labelAmbient.Text;
+        }
+
+        private async void AmbientTimer_Tick(object? sender, EventArgs e)
+        {
+            float lux = await Task.Run(AmbientLight.GetLux);
+            if (IsDisposed) return;
+            ambientLux = lux < 0 ? "-" : Math.Round(lux).ToString();
+            UpdateAmbientLabel();
+        }
+
+        private void SliderAmbient_ValueChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("backlight_ambient_lux", AmbientLight.LuxSteps[sliderAmbient.Value]);
+            AmbientLight.Reset();
+            UpdateAmbientLabel();
         }
 
         private void CheckXGM_CheckedChanged(object? sender, EventArgs e)
