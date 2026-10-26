@@ -226,6 +226,10 @@ namespace GHelper.Input
                 if (AsusKeyboard.LaunchCommand(slot).Length > 0)
                     hook.RegisterHotKey(ModifierKeys.Control | ModifierKeys.Shift | ModifierKeys.Alt, Keys.F1 + slot);
 
+            for (int slot = 0; slot < AsusKeyboard.TextSlots; slot++)
+                if (AsusKeyboard.TextCommand(slot).Length > 0)
+                    hook.RegisterHotKey(ModifierKeys.Control | ModifierKeys.Shift | ModifierKeys.Alt, Keys.F5 + slot);
+
         }
 
         private static IEnumerable<ushort> GetActiveMouseComboCarriers()
@@ -337,14 +341,26 @@ namespace GHelper.Input
 
             Logger.WriteLine(e.Key.ToString() + " " + e.Modifier.ToString());
 
-            if (e.Modifier == (ModifierKeys.Control | ModifierKeys.Shift | ModifierKeys.Alt)
-                && e.Key >= Keys.F1 && e.Key < Keys.F1 + AsusKeyboard.LaunchSlots)
+            if (e.Modifier == (ModifierKeys.Control | ModifierKeys.Shift | ModifierKeys.Alt))
             {
-                string command = AsusKeyboard.LaunchCommand(e.Key - Keys.F1);
-                if (command.Length > 0)
+                if (e.Key >= Keys.F1 && e.Key < Keys.F1 + AsusKeyboard.LaunchSlots)
                 {
-                    LaunchProcess(command);
-                    return;
+                    string command = AsusKeyboard.LaunchCommand(e.Key - Keys.F1);
+                    if (command.Length > 0)
+                    {
+                        LaunchProcess(command);
+                        return;
+                    }
+                }
+
+                if (e.Key >= Keys.F5 && e.Key < Keys.F5 + AsusKeyboard.TextSlots)
+                {
+                    string text = AsusKeyboard.TextCommand(e.Key - Keys.F5);
+                    if (text.Length > 0)
+                    {
+                        Task.Run(() => KeyboardHook.TypeText(text));
+                        return;
+                    }
                 }
             }
 

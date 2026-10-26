@@ -59,6 +59,8 @@ namespace GHelper
             labelKeyBinding = new Label();
             comboBoxKeyBinding = new GHelper.UI.RComboBox();
             textBoxKeyPath = new GHelper.UI.RTextBox();
+            textBoxKeyText = new GHelper.UI.RTextBox();
+            buttonMaskText = new GHelper.UI.RButton();
             panelEnergyHeader = new Panel();
             pictureBoxEnergy = new PictureBox();
             labelEnergy = new Label();
@@ -462,6 +464,34 @@ namespace GHelper
             textBoxKeyPath.Size = new Size(300, 40);
             textBoxKeyPath.TabIndex = 14;
             textBoxKeyPath.Visible = false;
+            // 
+            // textBoxKeyText
+            // 
+            textBoxKeyText.Location = new Point(830, 528);
+            textBoxKeyText.Margin = new Padding(5, 3, 5, 3);
+            textBoxKeyText.Name = "textBoxKeyText";
+            textBoxKeyText.PlaceholderText = "text or password";
+            textBoxKeyText.Size = new Size(260, 40);
+            textBoxKeyText.TabIndex = 15;
+            textBoxKeyText.UseSystemPasswordChar = true;
+            textBoxKeyText.Visible = false;
+            // 
+            // buttonMaskText
+            // 
+            buttonMaskText.Activated = false;
+            buttonMaskText.BorderColor = Color.Transparent;
+            buttonMaskText.BorderRadius = 2;
+            buttonMaskText.FlatAppearance.BorderSize = 0;
+            buttonMaskText.FlatStyle = FlatStyle.Flat;
+            buttonMaskText.Location = new Point(1095, 528);
+            buttonMaskText.Margin = new Padding(4);
+            buttonMaskText.Name = "buttonMaskText";
+            buttonMaskText.Secondary = true;
+            buttonMaskText.Size = new Size(40, 40);
+            buttonMaskText.TabIndex = 16;
+            buttonMaskText.Text = "👁";
+            buttonMaskText.UseVisualStyleBackColor = false;
+            buttonMaskText.Visible = false;
             //
             // panelEnergyHeader
             //
@@ -658,6 +688,8 @@ namespace GHelper
             Controls.Add(labelKeyBinding);
             Controls.Add(comboBoxKeyBinding);
             Controls.Add(textBoxKeyPath);
+            Controls.Add(textBoxKeyText);
+            Controls.Add(buttonMaskText);
             Controls.Add(buttonResetBindings);
             Controls.Add(panelEnergyHeader);
             Controls.Add(labelAutoPowerOff);
@@ -723,6 +755,8 @@ namespace GHelper
         private Label labelKeyBinding;
         private GHelper.UI.RComboBox comboBoxKeyBinding;
         private GHelper.UI.RTextBox textBoxKeyPath;
+        private GHelper.UI.RTextBox textBoxKeyText;
+        private GHelper.UI.RButton buttonMaskText;
         private Panel panelEnergyHeader;
         private PictureBox pictureBoxEnergy;
         private Label labelEnergy;

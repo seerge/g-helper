@@ -140,6 +140,9 @@ namespace GHelper
             comboBoxKeyBinding.Items.AddRange(BuildBindingComboItems());
             comboBoxKeyBinding.SelectedIndexChanged += BindingCombo_Changed;
             textBoxKeyPath.TextChanged += TextBoxKeyPath_Changed;
+            textBoxKeyText.TextChanged += TextBoxKeyText_Changed;
+            buttonMaskText.Click += ButtonMaskText_Click;
+            keyToolTip.SetToolTip(buttonMaskText, "Show text");
 
             if (keyboard.HasProfiles())
             {
@@ -398,8 +401,9 @@ namespace GHelper
 
                 if (bindings)
                 {
-                    labelKeyBinding.Top = comboBoxKeyBinding.Top = textBoxKeyPath.Top = bottom;
+                    labelKeyBinding.Top = comboBoxKeyBinding.Top = textBoxKeyPath.Top = textBoxKeyText.Top = bottom;
                     buttonResetBindings.Top = bottom + (comboBoxKeyBinding.Height - buttonResetBindings.Height) / 2;
+                    buttonMaskText.Top = bottom + (comboBoxKeyBinding.Height - buttonMaskText.Height) / 2;
                     bottom = comboBoxKeyBinding.Bottom + gap;
                 }
             }
@@ -444,6 +448,14 @@ namespace GHelper
             {
                 buttonResetBindings.Left = ClientSize.Width - margin - buttonResetBindings.Width;
                 textBoxKeyPath.Width = Math.Max(0, buttonResetBindings.Left - gap - textBoxKeyPath.Left);
+
+                buttonMaskText.Height = comboBoxKeyBinding.Height;
+                buttonMaskText.Width = comboBoxKeyBinding.Height;
+                buttonMaskText.Left = buttonResetBindings.Left - gap - buttonMaskText.Width;
+
+                textBoxKeyText.Left = textBoxKeyPath.Left;
+                textBoxKeyText.Height = textBoxKeyPath.Height;
+                textBoxKeyText.Width = Math.Max(0, buttonMaskText.Left - gap - textBoxKeyText.Left);
             }
         }
 
@@ -531,6 +543,10 @@ namespace GHelper
             for (int slot = 0; slot < AsusKeyboard.LaunchSlots; slot++)
                 list.Add(new BindingItem((ushort)(AsusKeyboard.LaunchCode + slot), "Launch App " + (slot + 1),
                     new[] { K("Ctrl"), K("Shift"), K("Alt"), K("F" + (slot + 1)) }));
+            list.Add(new BindingSeparator("Text"));
+            for (int slot = 0; slot < AsusKeyboard.TextSlots; slot++)
+                list.Add(new BindingItem((ushort)(AsusKeyboard.TextCode + slot), "Type Text " + (slot + 1),
+                    new[] { K("Ctrl"), K("Shift"), K("Alt"), K("F" + (AsusKeyboard.LaunchSlots + 1 + slot)) }));
             return list.ToArray();
         }
 
@@ -570,7 +586,7 @@ namespace GHelper
             {
                 settingsChanged = true;
                 Button? bound = selectedKey;
-                VisualizeLaunchPath(item.Code);
+                VisualizeCustomBinding(item.Code);
                 Task.Run(() =>
                 {
                     try
@@ -585,13 +601,26 @@ namespace GHelper
             }
         }
 
-        private void VisualizeLaunchPath(ushort code)
+        private void VisualizeCustomBinding(ushort code)
         {
-            int slot = code - AsusKeyboard.LaunchCode;
-            bool launch = slot >= 0 && slot < AsusKeyboard.LaunchSlots;
+            int launchSlot = code - AsusKeyboard.LaunchCode;
+            bool launch = launchSlot >= 0 && launchSlot < AsusKeyboard.LaunchSlots;
             textBoxKeyPath.Visible = launch;
-            textBoxKeyPath.Tag = slot;
-            if (launch) textBoxKeyPath.Text = AsusKeyboard.LaunchCommand(slot);
+            textBoxKeyPath.Tag = launchSlot;
+            if (launch) textBoxKeyPath.Text = AsusKeyboard.LaunchCommand(launchSlot);
+
+            int textSlot = code - AsusKeyboard.TextCode;
+            bool text = textSlot >= 0 && textSlot < AsusKeyboard.TextSlots;
+            textBoxKeyText.Visible = text;
+            buttonMaskText.Visible = text;
+            textBoxKeyText.Tag = textSlot;
+            if (text)
+            {
+                textBoxKeyText.UseSystemPasswordChar = true;
+                buttonMaskText.Text = "👁";
+                keyToolTip.SetToolTip(buttonMaskText, "Show text");
+                textBoxKeyText.Text = AsusKeyboard.TextCommand(textSlot);
+            }
         }
 
         private void TextBoxKeyPath_Changed(object? sender, EventArgs e)
@@ -599,6 +628,20 @@ namespace GHelper
             if (updatingBindings || textBoxKeyPath.Tag is not int slot) return;
             AsusKeyboard.SetLaunchCommand(slot, textBoxKeyPath.Text);
             Program.inputDispatcher?.RegisterKeys();
+        }
+
+        private void TextBoxKeyText_Changed(object? sender, EventArgs e)
+        {
+            if (updatingBindings || textBoxKeyText.Tag is not int slot) return;
+            AsusKeyboard.SetTextCommand(slot, textBoxKeyText.Text);
+            Program.inputDispatcher?.RegisterKeys();
+        }
+
+        private void ButtonMaskText_Click(object? sender, EventArgs e)
+        {
+            textBoxKeyText.UseSystemPasswordChar = !textBoxKeyText.UseSystemPasswordChar;
+            buttonMaskText.Text = textBoxKeyText.UseSystemPasswordChar ? "👁" : "🔒";
+            keyToolTip.SetToolTip(buttonMaskText, textBoxKeyText.UseSystemPasswordChar ? "Show text" : "Hide text");
         }
 
         private void SelectKey(Button key)
@@ -620,9 +663,9 @@ namespace GHelper
                 for (int i = 0; i < comboBoxKeyBinding.Items.Count; i++)
                     if (comboBoxKeyBinding.Items[i] is BindingItem item && item.Code == current)
                     { comboBoxKeyBinding.SelectedIndex = i; break; }
-                VisualizeLaunchPath(current);
+                VisualizeCustomBinding(current);
             }
-            else textBoxKeyPath.Visible = false;
+            else VisualizeCustomBinding(0);
             updatingBindings = false;
         }
 
