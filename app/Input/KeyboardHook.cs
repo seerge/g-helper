@@ -193,9 +193,13 @@ public sealed class KeyboardHook : IDisposable
                 Thread.Sleep(20);
             }
 
-            var inputs = new INPUT[2];
-            inputs[0].type = INPUT_KEYBOARD;
-            inputs[1].type = INPUT_KEYBOARD;
+            Thread.Sleep(30);
+
+            var down = new INPUT[1];
+            down[0].type = INPUT_KEYBOARD;
+
+            var up = new INPUT[1];
+            up[0].type = INPUT_KEYBOARD;
 
             int structSize = Marshal.SizeOf(typeof(INPUT));
 
@@ -206,42 +210,48 @@ public sealed class KeyboardHook : IDisposable
                 if (c == '\r')
                 {
                     if (i + 1 < text.Length && text[i + 1] == '\n') i++;
-                    inputs[0].u.ki.wVk = 0x0D; // VK_RETURN
-                    inputs[0].u.ki.wScan = 0;
-                    inputs[0].u.ki.dwFlags = 0;
-                    inputs[1].u.ki.wVk = 0x0D;
-                    inputs[1].u.ki.wScan = 0;
-                    inputs[1].u.ki.dwFlags = KEYEVENTF_KEYUP;
+                    down[0].u.ki.wVk = 0x0D; // VK_RETURN
+                    down[0].u.ki.wScan = 0;
+                    down[0].u.ki.dwFlags = 0;
+
+                    up[0].u.ki.wVk = 0x0D;
+                    up[0].u.ki.wScan = 0;
+                    up[0].u.ki.dwFlags = KEYEVENTF_KEYUP;
                 }
                 else if (c == '\n')
                 {
-                    inputs[0].u.ki.wVk = 0x0D;
-                    inputs[0].u.ki.wScan = 0;
-                    inputs[0].u.ki.dwFlags = 0;
-                    inputs[1].u.ki.wVk = 0x0D;
-                    inputs[1].u.ki.wScan = 0;
-                    inputs[1].u.ki.dwFlags = KEYEVENTF_KEYUP;
+                    down[0].u.ki.wVk = 0x0D;
+                    down[0].u.ki.wScan = 0;
+                    down[0].u.ki.dwFlags = 0;
+
+                    up[0].u.ki.wVk = 0x0D;
+                    up[0].u.ki.wScan = 0;
+                    up[0].u.ki.dwFlags = KEYEVENTF_KEYUP;
                 }
                 else if (c == '\t')
                 {
-                    inputs[0].u.ki.wVk = 0x09; // VK_TAB
-                    inputs[0].u.ki.wScan = 0;
-                    inputs[0].u.ki.dwFlags = 0;
-                    inputs[1].u.ki.wVk = 0x09;
-                    inputs[1].u.ki.wScan = 0;
-                    inputs[1].u.ki.dwFlags = KEYEVENTF_KEYUP;
+                    down[0].u.ki.wVk = 0x09; // VK_TAB
+                    down[0].u.ki.wScan = 0;
+                    down[0].u.ki.dwFlags = 0;
+
+                    up[0].u.ki.wVk = 0x09;
+                    up[0].u.ki.wScan = 0;
+                    up[0].u.ki.dwFlags = KEYEVENTF_KEYUP;
                 }
                 else
                 {
-                    inputs[0].u.ki.wVk = 0;
-                    inputs[0].u.ki.wScan = (ushort)c;
-                    inputs[0].u.ki.dwFlags = KEYEVENTF_UNICODE;
-                    inputs[1].u.ki.wVk = 0;
-                    inputs[1].u.ki.wScan = (ushort)c;
-                    inputs[1].u.ki.dwFlags = KEYEVENTF_UNICODE | KEYEVENTF_KEYUP;
+                    down[0].u.ki.wVk = 0;
+                    down[0].u.ki.wScan = (ushort)c;
+                    down[0].u.ki.dwFlags = KEYEVENTF_UNICODE;
+
+                    up[0].u.ki.wVk = 0;
+                    up[0].u.ki.wScan = (ushort)c;
+                    up[0].u.ki.dwFlags = KEYEVENTF_UNICODE | KEYEVENTF_KEYUP;
                 }
 
-                SendInput(2, inputs, structSize);
+                SendInput(1, down, structSize);
+                Thread.Sleep(8);
+                SendInput(1, up, structSize);
                 Thread.Sleep(15);
             }
 
