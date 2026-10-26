@@ -617,7 +617,7 @@ namespace GHelper
             if (text)
             {
                 textBoxKeyText.UseSystemPasswordChar = true;
-                buttonMaskText.Text = "👁";
+                buttonMaskText.Text = "•••";
                 keyToolTip.SetToolTip(buttonMaskText, "Show text");
                 textBoxKeyText.Text = AsusKeyboard.TextCommand(textSlot);
             }
@@ -640,7 +640,7 @@ namespace GHelper
         private void ButtonMaskText_Click(object? sender, EventArgs e)
         {
             textBoxKeyText.UseSystemPasswordChar = !textBoxKeyText.UseSystemPasswordChar;
-            buttonMaskText.Text = textBoxKeyText.UseSystemPasswordChar ? "👁" : "🔒";
+            buttonMaskText.Text = textBoxKeyText.UseSystemPasswordChar ? "•••" : "ABC";
             keyToolTip.SetToolTip(buttonMaskText, textBoxKeyText.UseSystemPasswordChar ? "Show text" : "Hide text");
         }
 

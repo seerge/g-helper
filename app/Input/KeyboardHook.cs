@@ -147,32 +147,66 @@ public sealed class KeyboardHook : IDisposable
     [DllImport("user32.dll", SetLastError = true)]
     private static extern uint SendInput(uint nInputs, INPUT[] pInputs, int cbSize);
 
+    [DllImport("user32.dll")]
+    private static extern short GetAsyncKeyState(int vKey);
+
+    private static readonly object typeLock = new object();
+    private static long lastTypeTick = 0;
+
     public static void TypeText(string text)
     {
         if (string.IsNullOrEmpty(text)) return;
 
-        keybd_event((byte)Keys.ControlKey, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, IntPtr.Zero);
-        keybd_event((byte)Keys.ShiftKey, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, IntPtr.Zero);
-        keybd_event((byte)Keys.Menu, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, IntPtr.Zero);
-        Thread.Sleep(25);
-
-        var inputs = new INPUT[2];
-        inputs[0].type = INPUT_KEYBOARD;
-        inputs[0].u.ki.wVk = 0;
-        inputs[0].u.ki.dwFlags = KEYEVENTF_UNICODE;
-
-        inputs[1].type = INPUT_KEYBOARD;
-        inputs[1].u.ki.wVk = 0;
-        inputs[1].u.ki.dwFlags = KEYEVENTF_UNICODE | KEYEVENTF_KEYUP;
-
-        int structSize = Marshal.SizeOf(typeof(INPUT));
-
-        foreach (char c in text)
+        lock (typeLock)
         {
-            inputs[0].u.ki.wScan = (ushort)c;
-            inputs[1].u.ki.wScan = (ushort)c;
-            SendInput(2, inputs, structSize);
-            Thread.Sleep(5);
+            long now = Environment.TickCount64;
+            if (now - lastTypeTick < 300) return;
+            lastTypeTick = now;
+
+            int wait = 0;
+            while (wait < 50 && (
+                (GetAsyncKeyState(0x10) & 0x8000) != 0 ||
+                (GetAsyncKeyState(0x11) & 0x8000) != 0 ||
+                (GetAsyncKeyState(0x12) & 0x8000) != 0 ||
+                (GetAsyncKeyState(0x5B) & 0x8000) != 0 ||
+                (GetAsyncKeyState(0x5C) & 0x8000) != 0))
+            {
+                Thread.Sleep(10);
+                wait++;
+            }
+            Thread.Sleep(30);
+
+            ushort[] mods = { 0x10, 0x11, 0x12, 0xA0, 0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0x5B, 0x5C };
+            var rel = new INPUT[mods.Length];
+            for (int i = 0; i < mods.Length; i++)
+            {
+                rel[i].type = INPUT_KEYBOARD;
+                rel[i].u.ki.wVk = mods[i];
+                rel[i].u.ki.dwFlags = KEYEVENTF_KEYUP;
+            }
+            SendInput((uint)rel.Length, rel, Marshal.SizeOf(typeof(INPUT)));
+            Thread.Sleep(20);
+
+            var inputs = new INPUT[2];
+            inputs[0].type = INPUT_KEYBOARD;
+            inputs[0].u.ki.wVk = 0;
+            inputs[0].u.ki.dwFlags = KEYEVENTF_UNICODE;
+
+            inputs[1].type = INPUT_KEYBOARD;
+            inputs[1].u.ki.wVk = 0;
+            inputs[1].u.ki.dwFlags = KEYEVENTF_UNICODE | KEYEVENTF_KEYUP;
+
+            int structSize = Marshal.SizeOf(typeof(INPUT));
+
+            foreach (char c in text)
+            {
+                inputs[0].u.ki.wScan = (ushort)c;
+                inputs[1].u.ki.wScan = (ushort)c;
+                SendInput(2, inputs, structSize);
+                Thread.Sleep(12);
+            }
+
+            lastTypeTick = Environment.TickCount64;
         }
     }
 

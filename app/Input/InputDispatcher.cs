@@ -228,7 +228,7 @@ namespace GHelper.Input
 
             for (int slot = 0; slot < AsusKeyboard.TextSlots; slot++)
                 if (AsusKeyboard.TextCommand(slot).Length > 0)
-                    hook.RegisterHotKey(ModifierKeys.Control | ModifierKeys.Shift | ModifierKeys.Alt, Keys.F5 + slot);
+                    hook.RegisterHotKey(ModifierKeys.Control | ModifierKeys.Shift | ModifierKeys.Alt | ModifierKeys.NoRepeat, Keys.F5 + slot);
 
         }
 

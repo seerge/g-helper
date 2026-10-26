@@ -489,7 +489,7 @@ namespace GHelper
             buttonMaskText.Secondary = true;
             buttonMaskText.Size = new Size(40, 40);
             buttonMaskText.TabIndex = 16;
-            buttonMaskText.Text = "👁";
+            buttonMaskText.Text = "•••";
             buttonMaskText.UseVisualStyleBackColor = false;
             buttonMaskText.Visible = false;
             //
