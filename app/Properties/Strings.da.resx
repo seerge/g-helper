@@ -1121,4 +1121,7 @@ i at opvarme den sovende bærbare og dræne batteriet.</value>
   <data name="Background" xml:space="preserve">
     <value>Baggrund</value>
   </data>
+  <data name="AmbientBacklight" xml:space="preserve">
+    <value>Sensor for omgivende lys</value>
+  </data>
 </root>

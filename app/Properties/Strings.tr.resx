@@ -1121,4 +1121,7 @@ dizüstünü ısıtmasını ve pili tüketmesini engeller.</value>
   <data name="Background" xml:space="preserve">
     <value>Arka Plan</value>
   </data>
+  <data name="AmbientBacklight" xml:space="preserve">
+    <value>Ortam ışığı sensörü</value>
+  </data>
 </root>
