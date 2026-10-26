@@ -336,6 +336,8 @@ namespace GHelper.Input
                 Program.toast.RunToast(brightness + "%", (delta < 0) ? ToastIcon.BrightnessDown : ToastIcon.BrightnessUp);
         }
 
+        private static long lastTextMacroTick = 0;
+
         public void KeyPressed(object sender, KeyPressedEventArgs e)
         {
 
@@ -355,6 +357,10 @@ namespace GHelper.Input
 
                 if (e.Key >= Keys.F5 && e.Key < Keys.F5 + AsusKeyboard.TextSlots)
                 {
+                    long now = Environment.TickCount64;
+                    if (now - lastTextMacroTick < 800) return;
+                    lastTextMacroTick = now;
+
                     string text = AsusKeyboard.TextCommand(e.Key - Keys.F5);
                     if (text.Length > 0)
                     {

@@ -540,7 +540,7 @@ namespace GHelper.Peripherals.Keyboard
         // the FF terminator record also binds the key to its macro slot, no separate remap needed
         public bool SetKeyCombo(ushort sourceCode, ushort comboId, ushort[] keys)
         {
-            if (keys.Length == 0 || WriteForResponse(new byte[] { reportId, 0x51, 0x18, 0x02, 0x00, (byte)sourceCode }) is null)
+            if (keys.Length == 0 || WriteForResponse(new byte[] { reportId, 0x51, 0x18, 0x01, 0x00, (byte)sourceCode }) is null)
                 return false;
 
             var records = new List<byte[]>();
@@ -568,6 +568,20 @@ namespace GHelper.Peripherals.Keyboard
 
         // device can't report bindings back; we track keys we've remapped ourselves (per profile)
         public ushort GetKeyBinding(ushort sourceCode) => (ushort)AppConfig.Get(ConfigKey($"bind_{sourceCode:X4}"), 0);
+
+        public void ReapplyTextBindings()
+        {
+            foreach (ushort code in KeyLayout().SelectMany(row => row).Select(def => AuraKeyboardLayouts.Keys.GetValueOrDefault(def.Name)).Distinct())
+            {
+                ushort binding = GetKeyBinding(code);
+                if (binding >= TextCode && binding < TextCode + TextSlots)
+                {
+                    int slot = binding - TextCode;
+                    ushort[] keys = new[] { AuraKeyboardLayouts.Keys["Ctrl"], AuraKeyboardLayouts.Keys["Shift"], AuraKeyboardLayouts.Keys["Alt"], AuraKeyboardLayouts.Keys["F" + (LaunchSlots + 1 + slot)] };
+                    SetKeyCombo(code, binding, keys);
+                }
+            }
+        }
 
         // no reset-all command exists; re-map each remapped key back to itself (default)
         public void ResetAllBindings()

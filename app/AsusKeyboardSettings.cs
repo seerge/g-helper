@@ -919,6 +919,7 @@ namespace GHelper
             buttonPaintColor.SwatchColor = paintColor;
 
             RefreshBindingUnderlines();
+            Task.Run(() => { try { keyboard.ReapplyTextBindings(); } catch { } });
             VisualizeControls();
             VisualizeEnergy();
             VisualizeOled();
