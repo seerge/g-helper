@@ -177,7 +177,7 @@ namespace GHelper.AutoUpdate
                     return;
                 }
 
-                string command = $"$ErrorActionPreference = \"Stop\"; Set-Location -Path '{EscapeString(exeDir)}'; Wait-Process -Name \"GHelper\"; Expand-Archive \"{zipName}\" -DestinationPath . -Force; Remove-Item \"{zipName}\" -Force; \".\\{exeName}\"; ";
+                string command = $"$ErrorActionPreference = 'Stop'; Set-Location -Path '{EscapeString(exeDir)}'; Wait-Process -Name \"GHelper\"; Start-Sleep -Seconds 1; Expand-Archive \"{zipName}\" -DestinationPath . -Force; Remove-Item \"{zipName}\" -Force; \".\\{exeName}\"; ";
                 Logger.WriteLine(command);
 
                 try
