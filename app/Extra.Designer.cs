@@ -36,6 +36,10 @@ namespace GHelper
             pictureService = new PictureBox();
             labelServices = new Label();
             buttonServices = new RButton();
+            panelRoutines = new Panel();
+            pictureRoutines = new PictureBox();
+            labelRoutines = new Label();
+            buttonRoutines = new RButton();
             panelBindingsHeader = new Panel();
             buttonResetBindings = new RButton();
             pictureBindings = new PictureBox();
@@ -151,6 +155,8 @@ namespace GHelper
             labelOptimalBrightness = new Label();
             panelServices.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureService).BeginInit();
+            panelRoutines.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureRoutines).BeginInit();
             panelBindingsHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBindings).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureHelp).BeginInit();
@@ -181,6 +187,55 @@ namespace GHelper
             panelOptimalBrightness.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureOptimalBrightness).BeginInit();
             SuspendLayout();
+            // 
+            // panelRoutines
+            // 
+            panelRoutines.AccessibleRole = AccessibleRole.Grouping;
+            panelRoutines.Controls.Add(pictureRoutines);
+            panelRoutines.Controls.Add(labelRoutines);
+            panelRoutines.Controls.Add(buttonRoutines);
+            panelRoutines.Dock = DockStyle.Top;
+            panelRoutines.Location = new Point(15, 1703);
+            panelRoutines.Name = "panelRoutines";
+            panelRoutines.Size = new Size(949, 75);
+            panelRoutines.TabIndex = 6;
+            // 
+            // pictureRoutines
+            // 
+            pictureRoutines.BackgroundImage = Resources.icons8_controller_32;
+            pictureRoutines.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureRoutines.Location = new Point(21, 19);
+            pictureRoutines.Name = "pictureRoutines";
+            pictureRoutines.Size = new Size(32, 32);
+            pictureRoutines.TabIndex = 21;
+            pictureRoutines.TabStop = false;
+            // 
+            // labelRoutines
+            // 
+            labelRoutines.AutoSize = true;
+            labelRoutines.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            labelRoutines.Location = new Point(57, 19);
+            labelRoutines.Name = "labelRoutines";
+            labelRoutines.Size = new Size(108, 32);
+            labelRoutines.TabIndex = 20;
+            labelRoutines.Text = "Routines";
+            // 
+            // buttonRoutines
+            // 
+            buttonRoutines.Activated = false;
+            buttonRoutines.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            buttonRoutines.BackColor = SystemColors.ButtonHighlight;
+            buttonRoutines.BorderColor = Color.Transparent;
+            buttonRoutines.BorderRadius = 2;
+            buttonRoutines.FlatStyle = FlatStyle.Flat;
+            buttonRoutines.Location = new Point(713, 11);
+            buttonRoutines.Margin = new Padding(5, 3, 5, 3);
+            buttonRoutines.Name = "buttonRoutines";
+            buttonRoutines.Secondary = false;
+            buttonRoutines.Size = new Size(256, 53);
+            buttonRoutines.TabIndex = 19;
+            buttonRoutines.Text = "Routines";
+            buttonRoutines.UseVisualStyleBackColor = false;
             // 
             // panelServices
             // 
@@ -1705,6 +1760,7 @@ namespace GHelper
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             ClientSize = new Size(1013, 1759);
             Controls.Add(panelServices);
+            Controls.Add(panelRoutines);
             Controls.Add(panelPower);
             Controls.Add(panelSettings);
             Controls.Add(panelOptimalBrightness);
@@ -1730,6 +1786,9 @@ namespace GHelper
             panelServices.ResumeLayout(false);
             panelServices.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureService).EndInit();
+            panelRoutines.ResumeLayout(false);
+            panelRoutines.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureRoutines).EndInit();
             panelBindingsHeader.ResumeLayout(false);
             panelBindingsHeader.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBindings).EndInit();
@@ -1780,6 +1839,10 @@ namespace GHelper
         private Panel panelServices;
         private RButton buttonServices;
         private Label labelServices;
+        private Panel panelRoutines;
+        private RButton buttonRoutines;
+        private Label labelRoutines;
+        private PictureBox pictureRoutines;
         private Panel panelBindingsHeader;
         private RButton buttonResetBindings;
         private Panel panelBindings;

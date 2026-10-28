@@ -157,6 +157,26 @@
             return GetBase(mode) >= 0;
         }
 
+        public static int Find(string name)
+        {
+            if (int.TryParse(name, out int mode)) return Exists(mode) ? mode : -1;
+
+            switch (name.ToLower())
+            {
+                case "balanced":
+                    return AsusACPI.PerformanceBalanced;
+                case "turbo":
+                    return AsusACPI.PerformanceTurbo;
+                case "silent":
+                    return AsusACPI.PerformanceSilent;
+            }
+
+            foreach (var item in GetDictonary())
+                if (item.Value.Equals(name, StringComparison.OrdinalIgnoreCase)) return item.Key;
+
+            return -1;
+        }
+
         public static int GetBase(int mode)
         {
             if (mode >= 0 && mode <= 2)

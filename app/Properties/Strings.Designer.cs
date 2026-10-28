@@ -700,6 +700,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Browse....
+        /// </summary>
+        internal static string Browse {
+            get {
+                return ResourceManager.GetString("Browse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Black and white tray icon.
         /// </summary>
         internal static string BWTrayIcon {
@@ -915,6 +924,69 @@ namespace GHelper.Properties {
             }
         }
 
+        /// <summary>
+        ///   Looks up a localized string similar to Apps and Games.
+        /// </summary>
+        internal static string RoutineApps {
+            get {
+                return ResourceManager.GetString("RoutineApps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Switch mode while app is running or PC is locked. Previous mode is restored after..
+        /// </summary>
+        internal static string RoutineHint {
+            get {
+                return ResourceManager.GetString("RoutineHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When Locked.
+        /// </summary>
+        internal static string RoutineLock {
+            get {
+                return ResourceManager.GetString("RoutineLock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Locked.
+        /// </summary>
+        internal static string RoutineLocked {
+            get {
+                return ResourceManager.GetString("RoutineLocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No app windows open.
+        /// </summary>
+        internal static string RoutineNoApps {
+            get {
+                return ResourceManager.GetString("RoutineNoApps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Routines.
+        /// </summary>
+        internal static string Routines {
+            get {
+                return ResourceManager.GetString("Routines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Window Title.
+        /// </summary>
+        internal static string RoutineTitle {
+            get {
+                return ResourceManager.GetString("RoutineTitle", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Thank You.
         /// </summary>
