@@ -184,12 +184,19 @@ public static class AsusHid
             }
     }
 
-    public static void SetFeatureAura(byte[] data, bool retry = true)
+    public static void SetFeatureAura(byte[] data, bool retry = true, bool throwOnError = false)
+    {
+        // Stream lifetime and the shared padding buffer belong to the same critical section as the write.
+        lock (hidLock) SetFeatureAuraCore(data, retry, throwOnError);
+    }
+
+    static void SetFeatureAuraCore(byte[] data, bool retry, bool throwOnError)
     {
         EnsureAuraStream();
         if (auraStream == null)
         {
             Logger.WriteLine("Aura stream not found");
+            if (throwOnError) throw new IOException("Aura stream not found");
             return;
         }
 
@@ -208,7 +215,8 @@ public static class AsusHid
         {
             Logger.WriteLine($"Error setting feature on HID device: {ex.Message} {BitConverter.ToString(data, 0, Math.Min(16, data.Length))}");
             DisposeAuraStream();
-            if (retry) SetFeatureAura(data, false);
+            if (retry) SetFeatureAuraCore(data, false, throwOnError);
+            else if (throwOnError) throw;
         }
     }
 

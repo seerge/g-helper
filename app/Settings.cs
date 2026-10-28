@@ -32,6 +32,7 @@ namespace GHelper
 
         AsusMouseSettings? mouseSettings;
         AsusKeyboardSettings? keyboardSettings;
+        RButton? customRgbButton;
         AsusHeadsetSettings? headsetSettings;
 
         public AniMatrixControl matrixControl;
@@ -332,6 +333,11 @@ namespace GHelper
 
         private void LabelBacklight_Click(object? sender, EventArgs e)
         {
+            if (Aura.Mode == AuraMode.CUSTOM_SECTIONS)
+            {
+                ShowCustomRgbEditor();
+                return;
+            }
             if (AppConfig.IsDynamicLighting() && DynamicLightingHelper.IsEnabled()) DynamicLightingHelper.OpenSettings();
         }
 
@@ -1221,6 +1227,17 @@ namespace GHelper
 
         private void ButtonKeyboardColor_Click(object? sender, EventArgs e)
         {
+            if (Aura.CanConfigureMode(Aura.Mode))
+            {
+                var selectedMode = Aura.Mode;
+                using var editor = new LightingModeEditor((int)selectedMode, Aura.LoadModeLighting(selectedMode), settings =>
+                {
+                    Aura.ApplyModeLighting(selectedMode, settings);
+                    VisualiseAura();
+                }, Aura.HasLightbar, Aura.CustomRGB.CaptureRegion);
+                editor.ShowDialog(this);
+                return;
+            }
             SetColorPicker("aura_color", Aura.Color1);
         }
 
@@ -1273,6 +1290,24 @@ namespace GHelper
             comboKeyboard.SelectedValue = Aura.Mode;
             comboKeyboard.SelectedValueChanged += ComboKeyboard_SelectedValueChanged;
 
+            if (customRgbButton == null && Aura.GetModes().ContainsKey(AuraMode.CUSTOM_SECTIONS))
+            {
+                customRgbButton = new RButton { Text = "Custom", Name = "customRgb", Dock = DockStyle.Fill,
+                    Margin = buttonKeyboard.Margin, BackColor = buttonMain, ForeColor = foreMain,
+                    BorderColor = colorStandard, AccessibleName = "Custom keyboard and lightbar effects" };
+                customRgbButton.Click += (_, _) => ShowCustomRgbEditor();
+                tableLayoutKeyboard.SuspendLayout();
+                tableLayoutKeyboard.ColumnCount = 4;
+                tableLayoutKeyboard.ColumnStyles.Clear();
+                foreach (int width in new[] { 40, 20, 20, 20 })
+                    tableLayoutKeyboard.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, width));
+                tableLayoutKeyboard.Controls.Clear();
+                tableLayoutKeyboard.Controls.Add(comboKeyboard, 0, 0);
+                tableLayoutKeyboard.Controls.Add(buttonKeyboardColor, 1, 0);
+                tableLayoutKeyboard.Controls.Add(customRgbButton, 2, 0);
+                tableLayoutKeyboard.Controls.Add(buttonKeyboard, 3, 0);
+                tableLayoutKeyboard.ResumeLayout();
+            }
 
             if (Aura.isWhite)
             {
@@ -1298,16 +1333,38 @@ namespace GHelper
             });
         }
 
+        private void ShowCustomRgbEditor()
+        {
+            using var editor = new CustomRgbEditor(Aura.LoadCustomScene(), scene =>
+            {
+                Aura.ApplyCustomScene(scene);
+                comboKeyboard.SelectedValueChanged -= ComboKeyboard_SelectedValueChanged;
+                comboKeyboard.SelectedValue = Aura.Mode;
+                comboKeyboard.SelectedValueChanged += ComboKeyboard_SelectedValueChanged;
+                VisualiseAura();
+            }, AppConfig.GetString("aura_custom_profiles") ?? "", json => AppConfig.Set("aura_custom_profiles", json), Aura.HasLightbar);
+            editor.ShowDialog(this);
+        }
+
         private void _VisualiseAura()
         {
-            buttonKeyboardColor.SwatchColor = Aura.Color1;
-            buttonKeyboardColor.SwatchColor2 = Aura.HasSecondColor() ? Aura.Color2 : (Color?)null;
+            bool modeOptions = Aura.CanConfigureMode(Aura.Mode);
+            buttonKeyboardColor.Text = modeOptions ? "Modes" : Properties.Strings.Color;
+            buttonKeyboardColor.AccessibleName = Properties.Strings.LaptopKeyboard + " " + buttonKeyboardColor.Text;
+            buttonKeyboardColor.SwatchColor = modeOptions ? null : Aura.Color1;
+            buttonKeyboardColor.Enabled = Aura.Mode != AuraMode.SOFTWARE_RAINBOW && Aura.Mode != AuraMode.CUSTOM_SECTIONS;
+            buttonKeyboardColor.SwatchColor2 = !modeOptions && Aura.HasSecondColor() ? Aura.Color2 : (Color?)null;
 
             if (panelRearLight.Visible) buttonRearColor.SwatchColor = Aura.RearColor;
 
             bool dynamic = AppConfig.IsDynamicLighting() && DynamicLightingHelper.IsEnabled() && !AppConfig.IsDynamicLightingOnly();
 
-            if (dynamic)
+            if (Aura.Mode == AuraMode.CUSTOM_SECTIONS)
+            {
+                labelBacklight.Cursor = Cursors.Hand;
+                labelBacklight.Text = "Independent section effects · Edit with Custom";
+            }
+            else if (dynamic)
             {
                 labelBacklight.Cursor = Cursors.Hand;
                 labelBacklight.Text = Strings.DisableDynamicLighting;
@@ -1537,6 +1594,7 @@ namespace GHelper
 
         private void ButtonQuit_Click(object? sender, EventArgs e)
         {
+            Aura.ReleaseAnimation();
             AsusLampArray.Release();
             matrixControl.Dispose();
             Close();
