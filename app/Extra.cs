@@ -428,6 +428,15 @@ namespace GHelper
             checkNoOverdrive.Checked = AppConfig.IsNoOverdrive();
             checkNoOverdrive.CheckedChanged += CheckNoOverdrive_CheckedChanged;
 
+            checkTouchscreen.Text = Properties.Strings.ShowTouchscreenToggle;
+            checkTouchscreen.Visible = TouchscreenHelper.IsSupported();
+            checkTouchscreen.Checked = AppConfig.Is("show_touchscreen");
+            checkTouchscreen.CheckedChanged += (s, e) =>
+            {
+                AppConfig.Set("show_touchscreen", checkTouchscreen.Checked ? 1 : 0);
+                Program.settingsForm.VisualiseTouchscreen();
+            };
+
             int elmb = ScreenELMB.Get();
             checkELMB.Visible = elmb >= 0;
             checkELMB.Checked = elmb == 1;
