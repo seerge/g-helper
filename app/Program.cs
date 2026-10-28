@@ -344,6 +344,7 @@ namespace GHelper
             //HardwareControl.ReadSensors(true);
 
             modeControl.AutoPerformance(powerChanged);
+            routineControl.Reapply();
 
             if (powerChanged) settingsForm.matrixControl.SetMatrix(true);
             else settingsForm.matrixControl.SetDevice(true);
