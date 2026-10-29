@@ -470,6 +470,11 @@ namespace GHelper
             checkNumberPad.Checked = numberPad == 1;
             checkNumberPad.CheckedChanged += CheckNumberPad_CheckedChanged;
 
+            int smartGestures = SmartGestures.IsSupported() ? SmartGestures.Get() : -1;
+            checkSmartGestures.Visible = smartGestures >= 0;
+            checkSmartGestures.Checked = smartGestures == 1;
+            checkSmartGestures.CheckedChanged += CheckSmartGestures_CheckedChanged;
+
             var optimalBrightness = ScreenControl.GetOptimalBrightness();
             if (optimalBrightness >= 0)
             {
@@ -548,6 +553,11 @@ namespace GHelper
         private void CheckNumberPad_CheckedChanged(object? sender, EventArgs e)
         {
             NumberPad.Set(checkNumberPad.Checked);
+        }
+
+        private void CheckSmartGestures_CheckedChanged(object? sender, EventArgs e)
+        {
+            SmartGestures.Set(checkSmartGestures.Checked);
         }
 
         private void InitACPITesting()
