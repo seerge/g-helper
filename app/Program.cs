@@ -318,6 +318,14 @@ namespace GHelper
             inputDispatcher.Init();
             //HardwareControl.ReadSensors(true);
 
+            // Optional: "startup_mode": 0/1/2(+custom) forces that mode once on app launch
+            if (init)
+            {
+                int startup = AppConfig.Get("startup_mode");
+                if (startup != -1 && Modes.Exists(startup))
+                    AppConfig.Set("performance_" + PerformanceKey(), startup);
+            }
+
             modeControl.AutoPerformance(powerChanged);
 
             if (powerChanged) settingsForm.matrixControl.SetMatrix(true);
