@@ -701,7 +701,7 @@ public static class AppConfig
 
     public static bool NoGpu()
     {
-        return Is("no_gpu") || ContainsModel("UX540") || ContainsModel("M560") || ContainsModel("GZ302") || IsOnlyAIMAX();
+        return Is("no_gpu") || ContainsModel("UX540") || ContainsModel("UX5606") || ContainsModel("M560") || ContainsModel("GZ302") || IsOnlyAIMAX();
     }
 
     public static bool IsOnlyAIMAX()
