@@ -183,7 +183,6 @@ namespace GHelper
                 var members = Enumerable.Range(0, updates.Count)
                     .Where(n => updates[n].hardwares.Length > 0 && keys.Any(k => updates[n].title.Contains(k, StringComparison.OrdinalIgnoreCase)))
                     .ToList();
-                if (members.Count < 2) continue;
                 var radio = inventory.Where(d => !d.isExtension && keys.Any(k => d.entry.Contains(k, StringComparison.OrdinalIgnoreCase)))
                     .OrderBy(d => d.entry.StartsWith("Microsoft")).FirstOrDefault();
                 if (!members.Any(n => installed[n] is not null) && radio.entry is null) continue;
