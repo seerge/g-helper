@@ -6,6 +6,10 @@ namespace GHelper.Peripherals.Headset.Models
         {
         }
 
+        protected Clavis(ushort productId) : base(0x0B05, productId)
+        {
+        }
+
         public override string GetDisplayName()
         {
             return "ROG Clavis";
