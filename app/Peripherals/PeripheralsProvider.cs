@@ -588,6 +588,7 @@ namespace GHelper.Peripherals
             DetectHeadset(new Pelta());
             DetectHeadset(new CetraSpeedNova());
             DetectHeadset(new Clavis());
+            DetectHeadset(new DeltaS());
             DetectHeadset(new CetraRgb());
             DetectHeadset(new StrixGo24());
         }
