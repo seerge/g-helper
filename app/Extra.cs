@@ -831,7 +831,7 @@ namespace GHelper
 
         private void ButtonServices_Click(object? sender, EventArgs e)
         {
-            if (ProcessHelper.IsUserAdministrator())
+            if (ProcessHelper.IsUserAdministrator() || PrivilegedAgent.IsAvailable)
                 ServiesToggle();
             else
                 ProcessHelper.RunAsAdmin("services");

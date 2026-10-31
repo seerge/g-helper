@@ -1065,10 +1065,34 @@ namespace GHelper
             if (sender is null) return;
             CheckBox chk = (CheckBox)sender;
 
-            if (chk.Checked)
-                Startup.Schedule();
-            else
-                Startup.UnSchedule();
+            if (!ProcessHelper.IsStandardUser())
+            {
+                if (chk.Checked)
+                    Startup.Schedule();
+                else
+                    Startup.UnSchedule();
+                return;
+            }
+
+            // Standard account waits on an admin credential prompt, keep the tray responsive meanwhile
+            bool enable = chk.Checked;
+            chk.Enabled = false;
+            Task.Run(() =>
+            {
+                if (enable) Startup.Schedule();
+                else Startup.UnSchedule();
+
+                bool scheduled = Startup.IsScheduled();
+                if (scheduled && PrivilegedAgent.IsAvailable) Program.modeControl.AutoPerformance();
+
+                Invoke(() =>
+                {
+                    chk.CheckedChanged -= CheckStartup_CheckedChanged;
+                    chk.Checked = scheduled;
+                    chk.CheckedChanged += CheckStartup_CheckedChanged;
+                    chk.Enabled = true;
+                });
+            });
         }
 
         private void ButtonMatrix_Click(object? sender, EventArgs e)
