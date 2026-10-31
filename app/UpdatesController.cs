@@ -128,12 +128,13 @@ namespace GHelper
 
             var inventory = BuildInventory();
             var installed = new string?[updates.Count];
+            var source = new string?[updates.Count];
             var needStaged = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             for (int n = 0; n < updates.Count; n++)
             {
                 token.ThrowIfCancellationRequested();
-                installed[n] = ResolveInstalledVersion(inventory, updates[n]);
-                if (installed[n] is null && updates[n].hardwares.Length > 0)
+                installed[n] = ResolveInstalledVersion(inventory, updates[n], out source[n]);
+                if ((installed[n] is null || Major(installed[n]!) != Major(updates[n].version)) && updates[n].hardwares.Length > 0)
                     foreach (var h in updates[n].hardwares) needStaged.Add(h);
             }
 
@@ -145,15 +146,24 @@ namespace GHelper
             for (int n = 0; n < updates.Count; n++)
             {
                 var u = updates[n];
+                if (u.status == STATUS_HIDDEN) continue;
+
                 var version = installed[n];
-                if (version is null && staged is not null && u.hardwares.Length > 0)
-                    version = MaxVersion(u.hardwares.Where(staged.ContainsKey).Select(h => staged[h]).Where(v => Major(v) == Major(u.version)));
+                if ((version is null || Major(version) != Major(u.version)) && staged is not null && u.hardwares.Length > 0)
+                {
+                    var stagedVersion = MaxVersion(u.hardwares.Where(staged.ContainsKey).Select(h => staged[h]).Where(v => Major(v) == Major(u.version)));
+                    if (stagedVersion is not null)
+                    {
+                        version = stagedVersion;
+                        source[n] = "driver store";
+                    }
+                }
 
                 if (version is not null && Version.TryParse(u.version, out var sv) && Version.TryParse(version, out var iv))
                 {
                     u.status = sv > iv ? STATUS_NEW : STATUS_UPTODATE;
                     u.tip = "Download: " + u.version + "\n" + "Installed: " + version;
-                    Logger.WriteLine(u.title + " " + u.version + " vs " + version + " = " + u.status);
+                    Logger.WriteLine(u.title + " " + u.version + " vs " + version + " (" + source[n] + ") = " + u.status);
                 }
                 // store apps have no versions
                 else if (u.version.Contains("store", StringComparison.OrdinalIgnoreCase) && IsStoreAppInstalled(packages ??= GetInstalledPackages(), u.title))
@@ -199,8 +209,9 @@ namespace GHelper
             return list.ToArray();
         }
 
-        static string? ResolveInstalledVersion(List<LocalDriver> inventory, DriverUpdate item)
+        static string? ResolveInstalledVersion(List<LocalDriver> inventory, DriverUpdate item, out string? source)
         {
+            source = null;
             if (item.hardwares.Length > 0)
             {
                 var matched = inventory.Where(d => item.hardwares.Any(id => d.matchId.Contains(id, StringComparison.OrdinalIgnoreCase))).ToList();
@@ -211,13 +222,13 @@ namespace GHelper
                 var pool = matched.Where(d => Major(d.version) == major).ToList();
                 if (pool.Count == 0) pool = matched.Where(d => !d.isExtension || Major(d.version) > major).ToList();
                 if (pool.Count == 0) pool = matched;
-                return MaxVersion(pool, item.title);
+                return MaxVersion(pool, out source);
             }
 
             // no hardware id in the API (Dolby, displayHDR)
             var key = item.title.Split(' ')[0];
             if (key.Length < 3) return null;
-            return MaxVersion(inventory.Where(d => d.isExtension && Major(d.version) == Major(item.version) && d.entry.Contains(key, StringComparison.OrdinalIgnoreCase)).ToList(), item.title);
+            return MaxVersion(inventory.Where(d => d.isExtension && Major(d.version) == Major(item.version) && d.entry.Contains(key, StringComparison.OrdinalIgnoreCase)).ToList(), out source);
         }
 
         static int Major(string version) => Version.TryParse(version, out var v) ? v.Major : -1;
@@ -235,12 +246,13 @@ namespace GHelper
             return bestString;
         }
 
-        static string? MaxVersion(List<LocalDriver> drivers, string title)
+        static string? MaxVersion(List<LocalDriver> drivers, out string? source)
         {
+            source = null;
             var version = MaxVersion(drivers.Select(d => d.version));
             if (version is null) return null;
             var d = drivers.First(x => x.version == version);
-            Logger.WriteLine(title + ": " + (!d.isExtension ? "driver " + d.matchId : d.matchId.Length == 0 ? "registry " + d.entry : "extension " + d.entry));
+            source = !d.isExtension ? "device driver " + d.matchId : d.matchId.Length == 0 ? "registry " + d.entry : "device extension " + d.entry;
             return version;
         }
 
