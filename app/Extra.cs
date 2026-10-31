@@ -262,7 +262,7 @@ namespace GHelper
                 labelFNF4.Visible = comboFNF4.Visible = textFNF4.Visible = false;
             }
 
-            if (!AppConfig.IsTUF())
+            if (!AppConfig.IsFNNumpad())
             {
                 labelFNE.Visible = comboFNE.Visible = textFNE.Visible = false;
             }

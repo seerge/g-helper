@@ -405,6 +405,11 @@ public static class AppConfig
         return ContainsModel("TUF") || ContainsModel("TX Gaming") || ContainsModel("TX Air");
     }
 
+    public static bool IsFNNumpad()
+    {
+        return IsTUF() && !ContainsModel("FA401");
+    }
+
     public static bool IsProArt()
     {
         return ContainsModel("ProArt");
