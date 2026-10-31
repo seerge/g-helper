@@ -183,17 +183,26 @@
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Asus Services Running</value>
   </data>
+  <data name="AuraAurora" xml:space="preserve">
+    <value>Aurora</value>
+  </data>
   <data name="AuraBatteryState" xml:space="preserve">
     <value>Battery State</value>
   </data>
   <data name="AuraBreathe" xml:space="preserve">
     <value>Breathe</value>
   </data>
+  <data name="AuraBreathingRainbow" xml:space="preserve">
+    <value>Breathing Rainbow</value>
+  </data>
   <data name="AuraClockwise" xml:space="preserve">
     <value>Clockwise</value>
   </data>
   <data name="AuraColorCycle" xml:space="preserve">
     <value>Color Cycle</value>
+  </data>
+  <data name="AuraColorPulse" xml:space="preserve">
+    <value>Color Pulse</value>
   </data>
   <data name="AuraComet" xml:space="preserve">
     <value>Comet</value>
@@ -204,11 +213,23 @@
   <data name="AuraFast" xml:space="preserve">
     <value>Fast</value>
   </data>
+  <data name="AuraFire" xml:space="preserve">
+    <value>Fire</value>
+  </data>
   <data name="AuraLightingMode" xml:space="preserve">
     <value>Lighting Mode</value>
   </data>
+  <data name="AuraMeteor" xml:space="preserve">
+    <value>Meteor</value>
+  </data>
+  <data name="AuraNeon" xml:space="preserve">
+    <value>Neon</value>
+  </data>
   <data name="AuraNormal" xml:space="preserve">
     <value>Normal</value>
+  </data>
+  <data name="AuraOceanWave" xml:space="preserve">
+    <value>Ocean Wave</value>
   </data>
   <data name="AuraRainbow" xml:space="preserve">
     <value>Rainbow</value>
@@ -227,6 +248,9 @@
   </data>
   <data name="AuraStrobe" xml:space="preserve">
     <value>Strobe</value>
+  </data>
+  <data name="AuraSunset" xml:space="preserve">
+    <value>Sunset</value>
   </data>
   <data name="AuraZoneAll" xml:space="preserve">
     <value>All</value>
