@@ -44,6 +44,8 @@ namespace GHelper
             buttonLightingColor3 = new GHelper.UI.RColorButton();
             labelAnimationSpeed = new Label();
             comboBoxAnimationSpeed = new GHelper.UI.RComboBox();
+            labelDirection = new Label();
+            comboBoxDirection = new GHelper.UI.RComboBox();
             labelProfile = new Label();
             comboBoxProfile = new GHelper.UI.RComboBox();
             labelTestLayout = new Label();
@@ -269,6 +271,30 @@ namespace GHelper
             comboBoxAnimationSpeed.Name = "comboBoxAnimationSpeed";
             comboBoxAnimationSpeed.Size = new Size(378, 40);
             comboBoxAnimationSpeed.TabIndex = 7;
+            //
+            // labelDirection
+            //
+            labelDirection.Location = new Point(24, 302);
+            labelDirection.Margin = new Padding(8, 0, 8, 0);
+            labelDirection.Name = "labelDirection";
+            labelDirection.Size = new Size(360, 44);
+            labelDirection.TabIndex = 8;
+            labelDirection.Text = "Animation Direction";
+            labelDirection.Visible = false;
+            //
+            // comboBoxDirection
+            //
+            comboBoxDirection.BorderColor = Color.White;
+            comboBoxDirection.ButtonColor = Color.FromArgb(255, 255, 255);
+            comboBoxDirection.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxDirection.FlatStyle = FlatStyle.Flat;
+            comboBoxDirection.FormattingEnabled = true;
+            comboBoxDirection.Location = new Point(440,302);
+            comboBoxDirection.Margin = new Padding(22, 0, 22, 0);
+            comboBoxDirection.Name = "comboBoxDirection";
+            comboBoxDirection.Size = new Size(378, 40);
+            comboBoxDirection.TabIndex = 9;
+            comboBoxDirection.Visible = false;
             //
             // labelProfile
             //
@@ -646,6 +672,8 @@ namespace GHelper
             Controls.Add(buttonLightingColor3);
             Controls.Add(labelAnimationSpeed);
             Controls.Add(comboBoxAnimationSpeed);
+            Controls.Add(labelDirection);
+            Controls.Add(comboBoxDirection);
             Controls.Add(labelProfile);
             Controls.Add(comboBoxProfile);
             Controls.Add(labelTestLayout);
@@ -708,6 +736,8 @@ namespace GHelper
         private GHelper.UI.RColorButton buttonLightingColor3;
         private Label labelAnimationSpeed;
         private GHelper.UI.RComboBox comboBoxAnimationSpeed;
+        private Label labelDirection;
+        private GHelper.UI.RComboBox comboBoxDirection;
         private Label labelProfile;
         private GHelper.UI.RComboBox comboBoxProfile;
         private Label labelTestLayout;

@@ -24,6 +24,19 @@ namespace GHelper
             { KeyboardLightingMode.Direct, "Custom" },
         };
 
+        private static readonly Dictionary<KeyboardLightingDirection, string> directionNames = new()
+        {
+            { KeyboardLightingDirection.Right, "Right" },
+            { KeyboardLightingDirection.Left, "Left" },
+            { KeyboardLightingDirection.Up, "Up" },
+            { KeyboardLightingDirection.Down, "Down" },
+            { KeyboardLightingDirection.UpRight, "Up-Right" },
+            { KeyboardLightingDirection.DownRight, "Down-Right" },
+            { KeyboardLightingDirection.DownLeft, "Down-Left" },
+            { KeyboardLightingDirection.UpLeft, "Up-Left" },
+            { KeyboardLightingDirection.Outward, "Outward" },
+        };
+
         private static readonly Color[] paletteColors =
         {
             Color.FromArgb(0, 0, 0), Color.FromArgb(255, 255, 255),
@@ -36,6 +49,10 @@ namespace GHelper
         private readonly AsusKeyboard keyboard;
         private Azoth? oled => keyboard as Azoth;
         private readonly List<KeyboardLightingMode> supportedModes;
+
+        // user's preferred direction, kept even while a mode that can't use it is selected
+        private KeyboardLightingDirection direction = KeyboardLightingDirection.Right;
+        private KeyboardLightingDirection[] directionItems = Array.Empty<KeyboardLightingDirection>();
 
         private Color[] keyColors = Array.Empty<Color>();
         private readonly List<Button> keyButtons = new();
@@ -77,6 +94,7 @@ namespace GHelper
             labelLighting.Text = Properties.Strings.Lighting;
             labelLightingMode.Text = Properties.Strings.AuraLightingMode;
             labelAnimationSpeed.Text = Properties.Strings.AnimationSpeed;
+            labelDirection.Text = Properties.Strings.AnimationDirection;
             checkBoxSyncAura.Text = Properties.Strings.MouseSyncWithAura;
             buttonLightingColor.Text = Properties.Strings.Color;
             buttonLightingColor2.Text = Properties.Strings.Color + " 2";
@@ -124,6 +142,7 @@ namespace GHelper
             checkBoxSyncAura.CheckedChanged += CheckBoxSyncAura_CheckedChanged;
             comboBoxLightingMode.DropDownClosed += (_, _) => ApplySettings();
             comboBoxAnimationSpeed.DropDownClosed += (_, _) => ApplySettings();
+            comboBoxDirection.DropDownClosed += ComboBoxDirection_DropDownClosed;
             sliderBrightness.MouseUp += SliderBrightness_MouseUp;
             sliderBrightness.KeyUp += SliderBrightness_MouseUp;
             buttonLightingColor.Click += (_, _) => PickColor(buttonLightingColor);
@@ -215,6 +234,7 @@ namespace GHelper
             Color bg = keyboard.SupportsColor3Setting(mode) ? (buttonLightingColor3.SwatchColor ?? Color.Black) : Color.Black;
             float w = Math.Max(1, panelKeys.Width);
             float h = Math.Max(1, panelKeys.Height);
+            KeyboardLightingDirection dir = keyboard.ResolveDirection(mode, direction);
 
             if (mode is KeyboardLightingMode.Reactive or KeyboardLightingMode.StarryNight or KeyboardLightingMode.Current or KeyboardLightingMode.RainDrop)
             {
@@ -246,12 +266,26 @@ namespace GHelper
                 float kx = (key.Left + key.Width / 2f) / w;
                 float ky = (key.Top + key.Height / 2f) / h;
 
+                // 0..1 position along the travel direction, the hue pattern scrolls towards 1
+                float travel = dir switch
+                {
+                    KeyboardLightingDirection.Left => 1 - kx,
+                    KeyboardLightingDirection.Up => 1 - ky,
+                    KeyboardLightingDirection.Down => ky,
+                    KeyboardLightingDirection.DownRight => (kx + ky) * 0.5f,
+                    KeyboardLightingDirection.DownLeft => (1 - kx + ky) * 0.5f,
+                    KeyboardLightingDirection.UpLeft => (2 - kx - ky) * 0.5f,
+                    KeyboardLightingDirection.UpRight => (kx + 1 - ky) * 0.5f,
+                    KeyboardLightingDirection.Outward => Math.Abs(kx - 0.5f) * 2f,
+                    _ => kx,
+                };
+
                 Color c = mode switch
                 {
                     KeyboardLightingMode.Breathing => Lerp(c2, c1, Tri(previewPhase)),
                     KeyboardLightingMode.ColorCycle => Hsv(previewPhase),
-                    KeyboardLightingMode.Wave => Hsv(previewPhase + kx),
-                    KeyboardLightingMode.Quicksand => Hsv(ky - previewPhase),
+                    KeyboardLightingMode.Wave => Hsv(travel - previewPhase),
+                    KeyboardLightingMode.Quicksand => Hsv(travel - previewPhase),
                     KeyboardLightingMode.Ripple => RippleColor(c1, kx, ky),
                     KeyboardLightingMode.Reactive or KeyboardLightingMode.StarryNight or KeyboardLightingMode.Current or KeyboardLightingMode.RainDrop
                         => Lerp(bg, keyGlowColor[i], keyGlow[i]),
@@ -366,9 +400,17 @@ namespace GHelper
             bool bindings = grid && keyboard.HasKeyBindings();
             bool sleep = keyboard.HasAutoPowerOff();
             bool warn = keyboard.HasLowBatteryWarning();
+            bool hasDirection = keyboard.SupportsDirection(SelectedMode());
 
             int gap = comboBoxLightingMode.Height / 2;
             int bottom = comboBoxAnimationSpeed.Bottom + gap;
+
+            labelDirection.Visible = comboBoxDirection.Visible = hasDirection;
+            if (hasDirection)
+            {
+                labelDirection.Top = comboBoxDirection.Top = bottom;
+                bottom = comboBoxDirection.Bottom + gap;
+            }
 
             if (testLayoutSelector)
             {
@@ -869,6 +911,7 @@ namespace GHelper
             int modeIndex = supportedModes.IndexOf(keyboard.StoredMode);
             comboBoxLightingMode.SelectedIndex = modeIndex >= 0 ? modeIndex : 0;
             comboBoxAnimationSpeed.SelectedIndex = Math.Clamp((int)keyboard.StoredSpeed, 0, comboBoxAnimationSpeed.Items.Count - 1);
+            direction = keyboard.StoredDirection;
             sliderBrightness.Value = Math.Clamp(keyboard.StoredBrightness, sliderBrightness.Min, sliderBrightness.Max);
             buttonLightingColor.SwatchColor = keyboard.StoredColor;
             buttonLightingColor2.SwatchColor = keyboard.StoredColor2;
@@ -902,6 +945,8 @@ namespace GHelper
             buttonLightingColor3.Enabled = manual;
 
             comboBoxAnimationSpeed.Enabled = manual;
+            comboBoxDirection.Enabled = manual;
+            FillDirections(mode);
 
             bool paint = manual && mode == KeyboardLightingMode.Direct;
             buttonPaintColor.Enabled = paint;
@@ -914,6 +959,28 @@ namespace GHelper
             LayoutSections();
             RefreshKeyGrid();
             UpdatePreviewTimer();
+        }
+
+        // rebuilt only when the mode's direction set changes, selection follows the preferred direction
+        private void FillDirections(KeyboardLightingMode mode)
+        {
+            var items = keyboard.SupportedDirections(mode);
+            if (!items.SequenceEqual(directionItems))
+            {
+                directionItems = items;
+                comboBoxDirection.Items.Clear();
+                foreach (var item in items)
+                    comboBoxDirection.Items.Add(directionNames.TryGetValue(item, out var name) ? name : item.ToString());
+            }
+            comboBoxDirection.SelectedIndex = Array.IndexOf(directionItems, keyboard.ResolveDirection(mode, direction));
+        }
+
+        private void ComboBoxDirection_DropDownClosed(object? sender, EventArgs e)
+        {
+            int index = comboBoxDirection.SelectedIndex;
+            if (index < 0 || index >= directionItems.Length) return;
+            direction = directionItems[index];
+            ApplySettings();
         }
 
         private void PickColor(RColorButton button)
@@ -946,7 +1013,8 @@ namespace GHelper
                 buttonLightingColor2.SwatchColor ?? Color.Black,
                 buttonLightingColor3.SwatchColor ?? Color.Black,
                 (AuraSpeed)Math.Max(0, comboBoxAnimationSpeed.SelectedIndex),
-                sliderBrightness.Value);
+                sliderBrightness.Value,
+                direction);
             if (keyColors.Length > 0) keyboard.StoreKeyColors(keyColors);
             settingsChanged = true;
         }
@@ -958,7 +1026,7 @@ namespace GHelper
             VisualizeControls();
             StoreSettings();
 
-            Task.Run(() => { try { keyboard.ApplyStoredLighting(); keyboard.SaveLighting(); } catch { } });
+            Task.Run(() => { try { if (keyboard.ApplyStoredLighting()) keyboard.SaveLighting(); } catch { } });
         }
 
         private void SliderBrightness_MouseUp(object? sender, EventArgs e)
@@ -968,7 +1036,7 @@ namespace GHelper
             StoreSettings();
 
             if (checkBoxSyncAura.Checked) Task.Run(() => { try { keyboard.SyncFromLaptopAura(); } catch { } });
-            else Task.Run(() => { try { keyboard.ApplyStoredLighting(); keyboard.SaveLighting(); } catch { } });
+            else Task.Run(() => { try { if (keyboard.ApplyStoredLighting()) keyboard.SaveLighting(); } catch { } });
         }
 
         private void AsusKeyboardSettings_FormClosing(object? sender, FormClosingEventArgs e)
