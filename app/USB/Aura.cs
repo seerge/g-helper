@@ -123,11 +123,7 @@ namespace GHelper.USB
 
         static System.Timers.Timer timer = new System.Timers.Timer(1000);
 
-        static readonly List<double> audioMaxes = new List<double>();
-        static long lastAudioPresent;
-        static double envBrightness;
-        static double smoothedHue;
-        static readonly double audioDecay = AppConfig.Get("audio_decay", 70) / 100.0;
+        static readonly AudioLevels audioLevels = new AudioLevels();
 
         static Aura()
         {
@@ -1006,10 +1002,7 @@ namespace GHelper.USB
             if (!backlight) return;
 
             initDirect = true;
-            audioMaxes.Clear();
-            lastAudioPresent = 0;
-            envBrightness = 0;
-            smoothedHue = 0;
+            audioLevels.Reset();
 
             AudioVisualizer.Shared.Subscribe(OnAudioSpectrum);
         }
@@ -1019,31 +1012,10 @@ namespace GHelper.USB
             if (!backlight || sessionLock) return;
             if (Mode != AuraMode.AUDIO && Mode != AuraMode.AUDIOPULSE) return;
 
-            long now = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-            if (Math.Abs(now - lastAudioPresent) < 50) return;
-            lastAudioPresent = now;
-
-            int bands = AURA_ZONES;
-            if (fftMag.Length < bands) return;
-
-            double[] bars = new double[bands];
-            double max = 0;
-            for (int i = 0; i < bands; i++)
-            {
-                bars[i] = Math.Sqrt(fftMag[i] * 10000);
-                if (bars[i] > max) max = bars[i];
-            }
-
-            audioMaxes.Add(max);
-            if (audioMaxes.Count > 100) audioMaxes.RemoveAt(0);
-            double maxAvg = audioMaxes.OrderByDescending(x => x).ElementAt(audioMaxes.Count / 10);
-            if (maxAvg < 1) maxAvg = 1;
-
-            envBrightness = Math.Max(envBrightness * audioDecay, max);
-            double brightness = Math.Min(1.0, envBrightness / maxAvg);
+            if (!audioLevels.Update(fftMag)) return;
 
             Color c1 = Color1;
-            double curvedBrightness = brightness * brightness * brightness;
+            double curvedBrightness = audioLevels.Brightness;
 
             try
             {
@@ -1058,15 +1030,14 @@ namespace GHelper.USB
                     return;
                 }
 
-                double baseHue = ColorUtils.HSV.ToHSV(c1).Hue;
-
                 if (isStrix)
                 {
+                    double baseHue = ColorUtils.HSV.ToHSV(c1).Hue;
                     Color[] colors = new Color[AURA_ZONES];
                     for (int i = 0; i < AURA_ZONES; i++)
                     {
                         double hue = (baseHue + (double)i / (AURA_ZONES - 1) * (2.0 / 3.0)) % 1.0;
-                        double ratio = Math.Min(1.0, bars[i] / maxAvg);
+                        double ratio = Math.Min(1.0, audioLevels.Bars[i] / audioLevels.Scale);
                         double v = ratio * ratio * ratio;
                         colors[i] = new ColorUtils.HSV { Hue = hue, Saturation = 1.0, Value = v }.ToRGB();
                     }
@@ -1074,20 +1045,7 @@ namespace GHelper.USB
                 }
                 else
                 {
-                    int dominant = 1;
-                    double dominantWeighted = bars[1];
-                    for (int i = 2; i < bands; i++)
-                    {
-                        double w = bars[i] * (1 + (i - 1) * 0.15);
-                        if (w > dominantWeighted) { dominantWeighted = w; dominant = i; }
-                    }
-                    if (max > maxAvg * 0.3)
-                    {
-                        double targetHue = (baseHue + (dominant - 1) / (double)(bands - 2) * (2.0 / 3.0)) % 1.0;
-                        smoothedHue = smoothedHue * 0.6 + targetHue * 0.4;
-                    }
-
-                    ApplyDirect(new ColorUtils.HSV { Hue = smoothedHue, Saturation = 1.0, Value = curvedBrightness }.ToRGB());
+                    ApplyDirect(audioLevels.DominantColor(c1));
                 }
             }
             catch (Exception ex)

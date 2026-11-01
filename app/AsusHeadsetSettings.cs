@@ -17,6 +17,7 @@ namespace GHelper
             { HeadsetLightingMode.ColorCycle, Properties.Strings.AuraColorCycle },
             { HeadsetLightingMode.Rainbow, Properties.Strings.AuraRainbow },
             { HeadsetLightingMode.MqaIndicator, "MQA Indicator" },
+            { HeadsetLightingMode.Music, "Music" },
         };
 
         private readonly AsusHeadset headset;

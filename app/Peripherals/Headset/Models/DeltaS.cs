@@ -18,7 +18,7 @@ namespace GHelper.Peripherals.Headset.Models
 
         public override HeadsetLightingMode[] SupportedLightingModes()
         {
-            return new[] { HeadsetLightingMode.Static, HeadsetLightingMode.Breathing, HeadsetLightingMode.Strobing, HeadsetLightingMode.ColorCycle, HeadsetLightingMode.Rainbow };
+            return new[] { HeadsetLightingMode.Static, HeadsetLightingMode.Breathing, HeadsetLightingMode.Strobing, HeadsetLightingMode.ColorCycle, HeadsetLightingMode.Rainbow, HeadsetLightingMode.Music };
         }
 
         private static readonly byte[] Controllers = { 0xCC, 0xCE };
@@ -92,6 +92,37 @@ namespace GHelper.Peripherals.Headset.Models
             WriteFrame(mode, hasColor ? color : null);
             AppConfig.Set(ModeKey, (int)mode);
             AppConfig.Set(ColorKey, color.ToArgb());
+        }
+
+        private void SetDirectMode(bool enabled)
+        {
+            foreach (byte controller in Controllers)
+            {
+                WriteRegister(controller, 0x00, 0x80, 0x20);
+                WriteRegister(controller, 0x01, (byte)(enabled ? 1 : 0));
+                WriteRegister(controller, 0x00, 0x80, 0x2F);
+                WriteRegister(controller, 0x01, 0x01);
+            }
+        }
+
+        protected override void EnterMusic()
+        {
+            PauseBus(true);
+            SetDirectMode(true);
+        }
+
+        protected override void ExitMusic()
+        {
+            PauseBus(true);
+            SetDirectMode(false);
+            PauseBus(false);
+        }
+
+        // one packet carries the 8 LEDs of both earcups
+        protected override void WriteMusicColor(Color color)
+        {
+            byte[] leds = Enumerable.Repeat(new[] { color.R, color.G, color.B }, 16).SelectMany(rgb => rgb).ToArray();
+            WriteStream(new byte[] { reportId, 0x60, 0x20, 0x00, 0x00 }.Concat(leds).ToArray());
         }
 
         protected override void TurnLightingOn()

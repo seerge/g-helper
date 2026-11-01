@@ -88,7 +88,7 @@ namespace GHelper.Peripherals.Headset.Models
 
         public override HeadsetLightingMode[] SupportedLightingModes()
         {
-            return new[] { HeadsetLightingMode.Static, HeadsetLightingMode.Breathing, HeadsetLightingMode.Strobing, HeadsetLightingMode.ColorCycle, HeadsetLightingMode.MqaIndicator };
+            return new[] { HeadsetLightingMode.Static, HeadsetLightingMode.Breathing, HeadsetLightingMode.Strobing, HeadsetLightingMode.ColorCycle, HeadsetLightingMode.Music, HeadsetLightingMode.MqaIndicator };
         }
 
         public override bool HasBrightness()

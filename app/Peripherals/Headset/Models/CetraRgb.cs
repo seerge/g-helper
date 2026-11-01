@@ -53,7 +53,7 @@ namespace GHelper.Peripherals.Headset.Models
 
         public override HeadsetLightingMode[] SupportedLightingModes()
         {
-            return new[] { HeadsetLightingMode.Static, HeadsetLightingMode.Breathing, HeadsetLightingMode.ColorCycle };
+            return new[] { HeadsetLightingMode.Static, HeadsetLightingMode.Breathing, HeadsetLightingMode.ColorCycle, HeadsetLightingMode.Music };
         }
 
         protected override byte[]? WriteForResponse(byte[] packet)
