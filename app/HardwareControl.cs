@@ -741,6 +741,7 @@ public static class HardwareControl
     }
 
     private static PerformanceCounter? _cpuPerfCounter;
+    private static Task? _cpuClockInit;
     private static float _cpuBaseMhz;
     private static bool _cpuClockFailed;
 
@@ -748,22 +749,38 @@ public static class HardwareControl
     public static int? GetCPUClock()
     {
         if (_cpuClockFailed) return null;
+        if (_cpuPerfCounter is null)
+        {
+            _cpuClockInit ??= Task.Run(InitCPUClock);
+            return null;
+        }
         try
         {
-            if (_cpuPerfCounter is null)
-            {
-                using var freq = new PerformanceCounter("Processor Information", "Processor Frequency", "_Total", true);
-                _cpuBaseMhz = freq.NextValue();
-                _cpuPerfCounter = new PerformanceCounter("Processor Information", "% Processor Performance", "_Total", true);
-            }
-            float perf = _cpuPerfCounter.NextValue();
-            return perf > 0 ? (int)Math.Round(_cpuBaseMhz * perf / 100) : null;
+            int mhz = (int)Math.Round(_cpuBaseMhz * _cpuPerfCounter.NextValue() / 100);
+            return mhz > 0 ? mhz : null;
         }
         catch (Exception ex)
         {
             _cpuClockFailed = true;
             Logger.WriteLine("CPU clock read failed: " + ex.Message);
             return null;
+        }
+    }
+
+    private static void InitCPUClock()
+    {
+        try
+        {
+            using var freq = new PerformanceCounter("Processor Information", "Processor Frequency", "_Total", true);
+            _cpuBaseMhz = freq.NextValue();
+            var counter = new PerformanceCounter("Processor Information", "% Processor Performance", "_Total", true);
+            counter.NextValue();
+            _cpuPerfCounter = counter;
+        }
+        catch (Exception ex)
+        {
+            _cpuClockFailed = true;
+            Logger.WriteLine("CPU clock init failed: " + ex.Message);
         }
     }
 
