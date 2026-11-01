@@ -45,12 +45,15 @@ public static class HardwareControl
     public static int? ramUsage;
     public static int? vramUsedMb;
     public static int? ramUsedMb;
+    public static int? cpuClock;
+    public static int? gpuClock;
 
     // Set by the overlay so ReadSensorsOverlay skips sensors that won't be
     // displayed in the current mode (fan ACPI calls and CPU usage counter).
     public static bool readFans;
     public static bool readUsage;
     public static bool readMemory;
+    public static bool readClocks;
     public static bool readPower;
     public static bool readBattery;
 
@@ -737,6 +740,50 @@ public static class HardwareControl
         return Math.Clamp((int)Math.Round((1.0 - (double)deltaIdle / deltaTotal) * 100), 0, 100);
     }
 
+    private static PerformanceCounter? _cpuPerfCounter;
+    private static Task? _cpuClockInit;
+    private static float _cpuBaseMhz;
+    private static bool _cpuClockFailed;
+
+    // Same formula as Task Manager "Speed": base frequency * % Processor Performance
+    public static int? GetCPUClock()
+    {
+        if (_cpuClockFailed) return null;
+        if (_cpuPerfCounter is null)
+        {
+            _cpuClockInit ??= Task.Run(InitCPUClock);
+            return null;
+        }
+        try
+        {
+            int mhz = (int)Math.Round(_cpuBaseMhz * _cpuPerfCounter.NextValue() / 100);
+            return mhz > 0 ? mhz : null;
+        }
+        catch (Exception ex)
+        {
+            _cpuClockFailed = true;
+            Logger.WriteLine("CPU clock read failed: " + ex.Message);
+            return null;
+        }
+    }
+
+    private static void InitCPUClock()
+    {
+        try
+        {
+            using var freq = new PerformanceCounter("Processor Information", "Processor Frequency", "_Total", true);
+            _cpuBaseMhz = freq.NextValue();
+            var counter = new PerformanceCounter("Processor Information", "% Processor Performance", "_Total", true);
+            counter.NextValue();
+            _cpuPerfCounter = counter;
+        }
+        catch (Exception ex)
+        {
+            _cpuClockFailed = true;
+            Logger.WriteLine("CPU clock init failed: " + ex.Message);
+        }
+    }
+
     [StructLayout(LayoutKind.Sequential)]
     private struct MEMORYSTATUSEX
     {
@@ -905,6 +952,19 @@ public static class HardwareControl
             ramUsedMb = null;
             vramUsage = null;
             vramUsedMb = null;
+        }
+
+        if (readClocks)
+        {
+            cpuClock = GetCPUClock();
+            try { gpuClock = GpuControl?.GetGpuClock(); } catch { gpuClock = null; }
+            if (isAMDiGPU && gpuClock is null)
+                try { gpuClock = AmdApu().GetiGpuClock(); } catch { }
+        }
+        else
+        {
+            cpuClock = null;
+            gpuClock = null;
         }
 
         if (readPower)
