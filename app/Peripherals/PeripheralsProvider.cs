@@ -165,6 +165,12 @@ namespace GHelper.Peripherals
             ForEachAsync(ConnectedKeyboards, kb => kb.SyncFromLaptopAura(), "Failed to sync with laptop aura");
         }
 
+        public static void RestoreKeyboardLighting()
+        {
+            if (IsKeyboardAuraSync) return;
+            ForEachAsync(ConnectedKeyboards, kb => { if (kb.GetType() == typeof(StrixScopeII) && kb.HasTransientLighting) kb.ApplyStoredLighting(); }, "Failed to restore lighting");
+        }
+
         public static void RefreshBatteryForAllDevices(bool force)
         {
             //Polling the battery every 20s should be enough
