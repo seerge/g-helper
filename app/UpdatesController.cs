@@ -349,7 +349,7 @@ namespace GHelper
                 string text;
                 try
                 {
-                    if (new FileInfo(file).Length > 1024 * 1024) continue;
+                    if (new FileInfo(file).Length > 2 * 1024 * 1024) continue;
                     text = File.ReadAllText(file);
                 }
                 catch { continue; }
