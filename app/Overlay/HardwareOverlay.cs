@@ -77,7 +77,7 @@ namespace GHelper.Overlay
         // Light:    fps | temp                        | power
         // Default:  fps | temp + fan RPM              | chart | power | bat% + rate
         // Full:     fps | temp + fan RPM              | chart | power | usage% | bar | bat% + rate
-        // Complete: fps | name | temp + fan RPM       | chart | power | usage% | bar | mem GB | bar | bat% + rate
+        // Complete: fps | name | temp + fan RPM       | chart | power | usage% | bar | MHz | mem GB | bar | bat% + rate
         //
         // The battery column only appears while the device runs on battery (always on Ally).
         //
@@ -113,6 +113,7 @@ namespace GHelper.Overlay
         private const int BaseNameColWidth = 90;     // fits "Core Ultra 9" / "Ryzen AI 9"
         private const int BaseMemBarGap = 8;
         private const int BaseMemNumColWidth = 54;   // fits "127.9GB"
+        private const int BaseClockColWidth = 54;    // fits "5100MHz"
         private const int BaseBatColGap = 8;
         private const int BaseBatColWidth = 38;      // fits "-22.4"
         private const int BaseBatIconGap = 2;
@@ -123,7 +124,7 @@ namespace GHelper.Overlay
         private const int BaseLightWidth = BasePadX + BaseFpsColWidth + BaseColGap + BaseLightLeftColWidth + BasePowerGap + BasePowerColWidth + BasePadX;
         private const int BaseWidth = BasePadX + BaseFpsColWidth + BaseColGap + BaseLeftColWidth + BaseColGap + BaseChartColWidth + BasePowerGap + BasePowerColWidth + BasePadX;
         private const int BaseFullWidth = BaseWidth - BasePadX + BaseUsageBarGap + BaseUsageBarWidth + BaseUsageNumGap + BaseUsageNumColWidth + BaseFullPadRight;
-        private const int BaseCompleteWidth = BaseFullWidth + BaseMemBarGap + BaseMemNumColWidth + BaseUsageNumGap + BaseUsageBarWidth;
+        private const int BaseCompleteWidth = BaseFullWidth + BaseColGap + BaseClockColWidth + BaseMemBarGap + BaseMemNumColWidth + BaseUsageNumGap + BaseUsageBarWidth;
 
         private static readonly Color DefaultGpuColor = Color.FromArgb(255, 0, 255, 80);
         private static readonly Color DefaultCpuColor = Color.FromArgb(255, 60, 220, 255);
@@ -172,6 +173,8 @@ namespace GHelper.Overlay
         private int? _ramUsage;
         private int? _vramUsedMb;
         private int? _ramUsedMb;
+        private int? _gpuClock;
+        private int? _cpuClock;
         private string _gpuShortName = "";
         private string _cpuShortName = "";
         private string _batLevel = "";
@@ -196,7 +199,7 @@ namespace GHelper.Overlay
         private bool _active;
         private bool _gameOnly;
         private bool _showNames;
-        private bool _showFps, _showTemp, _showFans, _showChart, _showPower, _showUsage, _showRam, _showBattery;
+        private bool _showFps, _showTemp, _showFans, _showChart, _showPower, _showUsage, _showClocks, _showRam, _showBattery;
         private bool _onBattery;
         private int _overlayBattery = -1;
         private static readonly bool _isAlly = AppConfig.IsAlly();
@@ -462,6 +465,8 @@ namespace GHelper.Overlay
             _vramUsedMb = gpuActive ? (HardwareControl.vramUsedMb ?? 0) : null;
             _ramUsage = HardwareControl.ramUsage;
             _ramUsedMb = HardwareControl.ramUsedMb;
+            _gpuClock = gpuActive ? HardwareControl.gpuClock : null;
+            _cpuClock = HardwareControl.cpuClock;
 
             if (_showBattery)
             {
@@ -558,7 +563,7 @@ namespace GHelper.Overlay
             int totalH = padY * 2 + innerH;
 
             bool showFps = _showFps, showTemp = _showTemp, showFans = _showFans, showChart = _showChart;
-            bool showPower = _showPower, showUsageMetric = _showUsage, showMem = _showRam, showNames = _showNames;
+            bool showPower = _showPower, showUsageMetric = _showUsage, showClocks = _showClocks, showMem = _showRam, showNames = _showNames;
             bool showBat = _showBattery && _onBattery;
             bool showUsage = _showUsage || _showRam; // bar sizing is shared by the usage and ram bars
 
@@ -566,6 +571,7 @@ namespace GHelper.Overlay
             int usageNumColW = S(sc, BaseUsageNumColWidth);
             int barW = S(sc, BaseUsageBarWidth);
             int memNumColW = S(sc, BaseMemNumColWidth);
+            int clockColW = S(sc, BaseClockColWidth);
             int batColW = S(sc, BaseBatColWidth);
 
             int cursor = padX;
@@ -590,6 +596,9 @@ namespace GHelper.Overlay
                 barX = usageNumX + usageNumColW + S(sc, BaseUsageNumGap);
                 cursor = barX + barW;
             }
+
+            int clockX = cursor;
+            if (showClocks) { clockX = cursor + colGap; cursor = clockX + clockColW; }
 
             int memNumX = cursor, memBarX = cursor;
             if (showMem)
@@ -674,6 +683,12 @@ namespace GHelper.Overlay
                 g.DrawString(_cpuPow, font, _cpuBrush,
                 new PointF(powX + powColW - g.MeasureString(_cpuPow, font).Width, textY + lineH + lineGap));
 
+            if (showClocks)
+            {
+                DrawMhz(g, font, clockX, clockColW, textY, _gpuClock, _gpuBrush);
+                DrawMhz(g, font, clockX, clockColW, textY + lineH + lineGap, _cpuClock, _cpuBrush);
+            }
+
             if (showUsage)
             {
                 // Bar sizing: fixed bar height per DPI; cellH grows with DPI but sepH stays 1.
@@ -735,6 +750,13 @@ namespace GHelper.Overlay
         {
             if (!usedMb.HasValue) return;
             string s = (usedMb.Value / 1024.0).ToString("F1") + "GB";
+            g.DrawString(s, font, brush, new PointF(x + colW - g.MeasureString(s, font).Width, y));
+        }
+
+        private static void DrawMhz(Graphics g, Font font, int x, int colW, int y, int? mhz, SolidBrush brush)
+        {
+            if (!mhz.HasValue) return;
+            string s = mhz.Value + "MHz";
             g.DrawString(s, font, brush, new PointF(x + colW - g.MeasureString(s, font).Width, y));
         }
 
@@ -986,7 +1008,7 @@ namespace GHelper.Overlay
             {
                 "overlay_show_fans" or "overlay_show_chart" => m != OverlayMode.Light,
                 "overlay_show_usage" => m == OverlayMode.Full || m == OverlayMode.Complete,
-                "overlay_show_ram" => m == OverlayMode.Complete,
+                "overlay_show_ram" or "overlay_show_clocks" => m == OverlayMode.Complete,
                 "overlay_names" => false,
                 _ => true,
             };
@@ -1006,6 +1028,7 @@ namespace GHelper.Overlay
             _showChart = BlockShown("overlay_show_chart", m);
             _showPower = BlockShown("overlay_show_power", m);
             _showUsage = BlockShown("overlay_show_usage", m);
+            _showClocks = BlockShown("overlay_show_clocks", m);
             _showRam   = BlockShown("overlay_show_ram", m);
             _showNames = BlockShown("overlay_names", m);
             _overlayBattery = BatteryState(m);
@@ -1018,6 +1041,7 @@ namespace GHelper.Overlay
             HardwareControl.readFans   = _showFans;
             HardwareControl.readUsage  = _showUsage;
             HardwareControl.readMemory = _showRam;
+            HardwareControl.readClocks = _showClocks;
             HardwareControl.readPower  = _showPower || _showChart;
             HardwareControl.readBattery = _showBattery && _onBattery;
         }
@@ -1108,6 +1132,7 @@ namespace GHelper.Overlay
             HardwareControl.readUsage = false;
             HardwareControl.readFans = false;
             HardwareControl.readMemory = false;
+            HardwareControl.readClocks = false;
             HardwareControl.readPower = false;
             HardwareControl.readBattery = false;
             SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;

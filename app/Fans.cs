@@ -899,7 +899,7 @@ namespace GHelper
 
             if (Height > Program.settingsForm.Height)
             {
-                Top = Math.Max(0, Program.settingsForm.Top + Program.settingsForm.Height - Height);
+                Top = Math.Max(Screen.FromControl(Program.settingsForm).WorkingArea.Top, Program.settingsForm.Top + Program.settingsForm.Height - Height);
             }
             else
             {

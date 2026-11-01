@@ -405,6 +405,11 @@ public static class AppConfig
         return ContainsModel("TUF") || ContainsModel("TX Gaming") || ContainsModel("TX Air");
     }
 
+    public static bool IsFNNumpad()
+    {
+        return IsTUF() && !ContainsModel("FA401");
+    }
+
     public static bool IsProArt()
     {
         return ContainsModel("ProArt");
@@ -696,7 +701,7 @@ public static class AppConfig
 
     public static bool NoGpu()
     {
-        return Is("no_gpu") || ContainsModel("UX540") || ContainsModel("M560") || ContainsModel("GZ302") || IsOnlyAIMAX();
+        return Is("no_gpu") || ContainsModel("UX540") || ContainsModel("UX5606") || ContainsModel("M560") || ContainsModel("GZ302") || IsOnlyAIMAX();
     }
 
     public static bool IsOnlyAIMAX()

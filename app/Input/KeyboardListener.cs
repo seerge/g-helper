@@ -41,7 +41,6 @@ namespace GHelper.Input
 
             AsusHid.InitInput();
             Logger.WriteLine($"Input: {input.Device.DevicePath}");
-            InputDispatcher.InitFNLock();
 
             try
             {

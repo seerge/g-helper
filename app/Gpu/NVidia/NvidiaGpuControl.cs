@@ -368,6 +368,15 @@ public class NvidiaGpuControl : IGpuControl
 
     }
 
+    public int? GetGpuClock()
+    {
+        if (!IsValid) return null;
+        if (GetGpuState() != GpuState.Active) return null;
+
+        var clock = GPUApi.GetAllClockFrequencies(_internalGpu!.Handle, new ClockFrequenciesV2(ClockType.CurrentClock)).GraphicsClock;
+        return clock.IsPresent ? (int)(clock.Frequency / 1000) : null;
+    }
+
 
     public float? GetGpuPower()
     {

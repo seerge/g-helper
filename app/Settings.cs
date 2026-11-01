@@ -812,6 +812,8 @@ namespace GHelper
                             GPUModeControl.suspended = false;
                             Thread.Sleep(1000);
                             if (!Program.SetAutoModes(wakeup: true)) BatteryControl.AutoBattery();
+                            Task.Delay(2000).ContinueWith(_ => InputDispatcher.InitFNLock());
+                            PeripheralsProvider.RestoreKeyboardLighting();
                             Program.hardwareOverlay?.ResumeForDisplayOn();
                             break;
                         case 2:
