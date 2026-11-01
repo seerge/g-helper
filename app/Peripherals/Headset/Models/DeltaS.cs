@@ -52,7 +52,7 @@ namespace GHelper.Peripherals.Headset.Models
 
             if (color is Color c)
             {
-                byte[] leds = new byte[] { 0x18 }.Concat(Enumerable.Repeat(new[] { c.R, c.G, c.B }, 8).SelectMany(rgb => rgb)).ToArray();
+                byte[] leds = new byte[] { 0x18 }.Concat(Enumerable.Repeat(new[] { c.R, c.B, c.G }, 8).SelectMany(rbg => rbg)).ToArray();
                 foreach (byte controller in Controllers)
                 {
                     WriteRegister(controller, 0x00, 0x81, 0x60);
@@ -118,10 +118,10 @@ namespace GHelper.Peripherals.Headset.Models
             PauseBus(false);
         }
 
-        // one packet carries the 8 LEDs of both earcups
+        // one packet carries the 8 LEDs of both earcups, the controllers take R B G
         protected override void WriteMusicColor(Color color)
         {
-            byte[] leds = Enumerable.Repeat(new[] { color.R, color.G, color.B }, 16).SelectMany(rgb => rgb).ToArray();
+            byte[] leds = Enumerable.Repeat(new[] { color.R, color.B, color.G }, 16).SelectMany(rbg => rbg).ToArray();
             WriteStream(new byte[] { reportId, 0x60, 0x20, 0x00, 0x00 }.Concat(leds).ToArray());
         }
 
