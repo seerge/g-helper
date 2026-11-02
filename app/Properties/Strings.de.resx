@@ -1121,4 +1121,7 @@ den schlafenden Laptop aufheizen und den Akku entladen.</value>
   <data name="Background" xml:space="preserve">
     <value>Hintergrund</value>
   </data>
+  <data name="AmbientBacklight" xml:space="preserve">
+    <value>Umgebungslichtsensor</value>
+  </data>
 </root>

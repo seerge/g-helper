@@ -1121,4 +1121,7 @@ kaitinti miegančio kompiuterio ir eikvoti akumuliatoriaus.</value>
   <data name="Background" xml:space="preserve">
     <value>Fonas</value>
   </data>
+  <data name="AmbientBacklight" xml:space="preserve">
+    <value>Aplinkos šviesos jutiklis</value>
+  </data>
 </root>

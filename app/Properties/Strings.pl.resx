@@ -1121,4 +1121,7 @@ baterii przez zadania w tle, takie jak Windows Update.</value>
   <data name="Background" xml:space="preserve">
     <value>Tło</value>
   </data>
+  <data name="AmbientBacklight" xml:space="preserve">
+    <value>Czujnik światła otoczenia</value>
+  </data>
 </root>
