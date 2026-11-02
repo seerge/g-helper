@@ -140,7 +140,12 @@ namespace GHelper.Input
             }
             if (timer.Interval != 2000) timer.Interval = 2000;
 
-            int level = lux >= 300 || (lux >= 200 && lastLevel == 0) ? 0 : 3;
+            int threshold = Math.Clamp(AppConfig.Get("backlight_ambient_lux", 10), 1, 400);
+            int level;
+            if (lux < threshold * 15 / 400f) level = 3;
+            else if (lux < threshold / 4f) level = 2;
+            else if (lux < threshold) level = 1;
+            else level = 0;
 
             if (level == lastLevel) { pendingLevel = -1; return; }
             if (level != pendingLevel) { pendingLevel = level; return; }
