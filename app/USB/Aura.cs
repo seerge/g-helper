@@ -481,9 +481,30 @@ namespace GHelper.USB
             AsusHid.WriteInput(new byte[] { AsusHid.INPUT_ID, 0xD1, 0x09, 0x01, power }, "Aura");
         }
 
-        public static void ApplyPowerOff()
+        public static void ApplyPowerOff(string? log = "USB")
         {
-            AsusHid.Write(AuraPowerMessage(new AuraPower()));
+            AsusHid.Write(AuraPowerMessage(new AuraPower()), log);
+        }
+
+        // Some keyboards (seen on G635LX, Strix SCAR 2025) turn the backlight on at full brightness
+        // about 1 second after the lid is closed and ignore brightness commands in that state,
+        // but still honor the power flags packet. So the flags are cleared repeatedly for a few
+        // seconds after the lid closes; ApplyPower() restores them when the lid is opened.
+        public static void LidPowerOff(int attempts = 30, int delay = 100)
+        {
+            Task.Run(async () =>
+            {
+                for (int i = 0; i < attempts; i++)
+                {
+                    if (i > 0) await Task.Delay(delay);
+                    // Checked under hidLock, so a late packet can't land after ApplyPower() on lid open
+                    lock (AsusHid.hidLock)
+                    {
+                        if (!InputDispatcher.lidClose) return;
+                        ApplyPowerOff(i == 0 ? "Lid Power Off" : null);
+                    }
+                }
+            });
         }
 
         public static void ApplyPower()
