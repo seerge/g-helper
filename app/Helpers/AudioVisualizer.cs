@@ -187,6 +187,7 @@ namespace GHelper.Helpers
 
         private readonly List<double> maxes = new();
         private readonly double decay = AppConfig.Get("audio_decay", 70) / 100.0;
+        public double DecayMultiplier { get; init; } = 1;
         private long lastPresent;
         private double peak;
         private double envelope;
@@ -219,7 +220,7 @@ namespace GHelper.Helpers
             if (maxes.Count > 100) maxes.RemoveAt(0);
             Scale = Math.Max(1, maxes.OrderByDescending(x => x).ElementAt(maxes.Count / 10));
 
-            envelope = Math.Max(envelope * decay, peak);
+            envelope = Math.Max(envelope * decay * DecayMultiplier, peak);
             double brightness = Math.Min(1.0, envelope / Scale);
             Brightness = brightness * brightness * brightness;
             return true;

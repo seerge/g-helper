@@ -70,7 +70,7 @@ namespace GHelper.Peripherals.Headset
         protected HeadsetLightingMode effect = HeadsetLightingMode.Static;
 
         private Action<double[]>? musicHandler;
-        private readonly AudioLevels audioLevels = new();
+        private readonly AudioLevels audioLevels = new() { DecayMultiplier = 1.3 };
 
         private string MusicKey => "headset_music_" + GetType().Name;
 
