@@ -10,22 +10,13 @@ namespace GHelper.Helpers
         private static EventWaitHandle? exitEvent;
         private static long lastAdmin;
 
-        private static bool? _isSystem;
-        public static bool IsRunningAsSystem()
+        private static readonly Lazy<bool> _isSystem = new Lazy<bool>(() =>
         {
-            if (_isSystem.HasValue)
-                return _isSystem.Value;
+            using var identity = WindowsIdentity.GetCurrent();
+            return identity.IsSystem;
+        }, LazyThreadSafetyMode.ExecutionAndPublication);
 
-            using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
-            {
-                if (identity == null)
-                    _isSystem = false;
-                else
-                    _isSystem = string.Equals(identity.Name, @"NT AUTHORITY\SYSTEM", StringComparison.OrdinalIgnoreCase);
-            }
-
-            return _isSystem.Value;
-        }
+        public static bool IsRunningAsSystem() => _isSystem.Value;
 
         public static void CheckAlreadyRunning()
         {
@@ -94,8 +85,7 @@ namespace GHelper.Helpers
                             if (stillAlive)
                             {
                                 MessageBox.Show(Properties.Strings.AppAlreadyRunningText, Properties.Strings.AppAlreadyRunning, MessageBoxButtons.OK);
-                                Application.Exit();
-                                return;
+                                Environment.Exit(0);
                             }
                         }
                     }
@@ -222,8 +212,8 @@ namespace GHelper.Helpers
             cmd.StartInfo.CreateNoWindow = true;
             cmd.StartInfo.RedirectStandardOutput = true;
             cmd.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            cmd.StartInfo.FileName = name;
-            cmd.StartInfo.Arguments = args;
+            cmd.StartInfo.FileName = (name == "powershell") ? Path.Combine(Environment.SystemDirectory, @"WindowsPowerShell\v1.0\powershell.exe") : name;
+            cmd.StartInfo.Arguments = (name == "powershell") ? "-NoProfile " + args : args;
             if (directory != null) cmd.StartInfo.WorkingDirectory = directory;
             cmd.Start();
 

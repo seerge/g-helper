@@ -45,12 +45,15 @@ public static class HardwareControl
     public static int? ramUsage;
     public static int? vramUsedMb;
     public static int? ramUsedMb;
+    public static int? cpuClock;
+    public static int? gpuClock;
 
     // Set by the overlay so ReadSensorsOverlay skips sensors that won't be
     // displayed in the current mode (fan ACPI calls and CPU usage counter).
     public static bool readFans;
     public static bool readUsage;
     public static bool readMemory;
+    public static bool readClocks;
     public static bool readPower;
     public static bool readBattery;
 
@@ -508,7 +511,7 @@ public static class HardwareControl
             //Debug.WriteLine("Failed reading GPU temp :" + ex.Message);
         }
 
-        if (gpuTemp is null || gpuTemp < 0)
+        if (gpuTemp is null || gpuTemp < 0 || gpuTemp >= 125)
         {
             int acpiTemp = Program.acpi.DeviceGet(AsusACPI.Temp_GPU);
             gpuTemp = (acpiTemp > 0 && acpiTemp < 125) ? acpiTemp : null;
@@ -535,6 +538,15 @@ public static class HardwareControl
 
         Task.Run(() =>
         {
+            if (isAMDiGPU && _cpuChannel is null)
+                try
+                {
+                    _apuChannel = new EnergyChannel("Apu Power");
+                    _cpuChannel = new EnergyChannel("CPU Power");
+                    Logger.WriteLine("Power source: Energy Meter APU/CPU channels");
+                }
+                catch { }
+
             if (isAMDiGPU && _coreCounters is null)
                 try
                 {
@@ -601,6 +613,45 @@ public static class HardwareControl
     }
 
     private static List<PerformanceCounter>? _coreCounters;
+
+    // Power sample: raw = cumulative picowatt-hours, base = 32-bit time in 3.6 µs units, both from one measurement
+    private class EnergyChannel
+    {
+        private readonly PerformanceCounter _power;
+        private long _rawEnergy, _rawTime;
+        private float _watts;
+        private int _stale;
+
+        public EnergyChannel(string instance)
+        {
+            _power = new PerformanceCounter("Energy Meter", "Power", instance, true);
+            var s = _power.NextSample();
+            _rawEnergy = s.RawValue;
+            _rawTime = s.BaseValue;
+        }
+
+        public float? Sample()
+        {
+            try
+            {
+                var s = _power.NextSample();
+                long e = s.RawValue, t = s.BaseValue;
+                if (t != _rawTime)
+                {
+                    _watts = (e - _rawEnergy) / 1000f / (uint)(t - _rawTime);
+                    _rawEnergy = e;
+                    _rawTime = t;
+                    _stale = 0;
+                }
+                else if (++_stale >= 5)
+                    return null;
+                return _watts > 0 ? _watts : null;
+            }
+            catch { return null; }
+        }
+    }
+
+    private static EnergyChannel? _cpuChannel, _apuChannel;
 
     private static float? GetCoresPower()
     {
@@ -689,6 +740,50 @@ public static class HardwareControl
         return Math.Clamp((int)Math.Round((1.0 - (double)deltaIdle / deltaTotal) * 100), 0, 100);
     }
 
+    private static PerformanceCounter? _cpuPerfCounter;
+    private static Task? _cpuClockInit;
+    private static float _cpuBaseMhz;
+    private static bool _cpuClockFailed;
+
+    // Same formula as Task Manager "Speed": base frequency * % Processor Performance
+    public static int? GetCPUClock()
+    {
+        if (_cpuClockFailed) return null;
+        if (_cpuPerfCounter is null)
+        {
+            _cpuClockInit ??= Task.Run(InitCPUClock);
+            return null;
+        }
+        try
+        {
+            int mhz = (int)Math.Round(_cpuBaseMhz * _cpuPerfCounter.NextValue() / 100);
+            return mhz > 0 ? mhz : null;
+        }
+        catch (Exception ex)
+        {
+            _cpuClockFailed = true;
+            Logger.WriteLine("CPU clock read failed: " + ex.Message);
+            return null;
+        }
+    }
+
+    private static void InitCPUClock()
+    {
+        try
+        {
+            using var freq = new PerformanceCounter("Processor Information", "Processor Frequency", "_Total", true);
+            _cpuBaseMhz = freq.NextValue();
+            var counter = new PerformanceCounter("Processor Information", "% Processor Performance", "_Total", true);
+            counter.NextValue();
+            _cpuPerfCounter = counter;
+        }
+        catch (Exception ex)
+        {
+            _cpuClockFailed = true;
+            Logger.WriteLine("CPU clock init failed: " + ex.Message);
+        }
+    }
+
     [StructLayout(LayoutKind.Sequential)]
     private struct MEMORYSTATUSEX
     {
@@ -719,7 +814,7 @@ public static class HardwareControl
     private static AmdGpuControl? _amdApuControl;
     private static bool _amdApuPowerFailed;
 
-    private static AmdGpuControl AmdApu() => GpuControl as AmdGpuControl ?? (_amdApuControl ??= new AmdGpuControl());
+    public static AmdGpuControl AmdApu() => GpuControl as AmdGpuControl ?? (_amdApuControl ??= new AmdGpuControl());
 
     private static float? GetAmdApuPower()
     {
@@ -859,20 +954,31 @@ public static class HardwareControl
             vramUsedMb = null;
         }
 
+        if (readClocks)
+        {
+            cpuClock = GetCPUClock();
+            try { gpuClock = GpuControl?.GetGpuClock(); } catch { gpuClock = null; }
+            if (isAMDiGPU && gpuClock is null)
+                try { gpuClock = AmdApu().GetiGpuClock(); } catch { }
+        }
+        else
+        {
+            cpuClock = null;
+            gpuClock = null;
+        }
+
         if (readPower)
         {
             InitCPUPowerAsync();
 
-            // Only overwrite with a new reading when the counter returns a valid value.
-            // If the counter is absent or returns 0 for several consecutive ticks (e.g. after
-            // a game exits and invalidates the Intel Energy Meter counter), clear the stale
-            // value so the overlay shows "--" rather than the last-seen wattage.
             float? newCpu = GetCPUPower() ?? GetIntelMsrPower() ?? GetAmdApuPower();
             float? iGpuPower = null;
 
-            if (isAMDiGPU)
+            if (isAMDiGPU && GpuControl is null)
             {
-                float? cores = GetCoresPower();
+                float? apu = _apuChannel?.Sample();
+                if (apu > 0) newCpu = apu;
+                float? cores = _cpuChannel?.Sample() ?? GetCoresPower();
                 if (cores > 0 && newCpu > cores)
                 {
                     iGpuPower = newCpu - cores;
@@ -979,6 +1085,16 @@ public static class HardwareControl
             await Task.Delay(TimeSpan.FromSeconds(delay));
             RecreateGpuControl();
         });
+    }
+
+    public static async Task RecreateGpuControlWithRetry(int retries, int delay)
+    {
+        for (int i = 0; i < retries; i++)
+        {
+            RecreateGpuControl();
+            if (GpuControl is not null) break;
+            await Task.Delay(TimeSpan.FromSeconds(delay));
+        }
     }
 
     public static void RecreateGpuControl()

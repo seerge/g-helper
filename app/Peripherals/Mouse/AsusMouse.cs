@@ -211,8 +211,9 @@ namespace GHelper.Peripherals.Mouse
         public event EventHandler? Disconnect;
         public event EventHandler? BatteryUpdated;
         public event EventHandler? MouseReadyChanged;
+        public event EventHandler? ProfileChanged;
 
-        private readonly string path;
+        private string path;
 
         protected byte reportId = 0x00;
 
@@ -291,6 +292,11 @@ namespace GHelper.Peripherals.Mouse
         public AsusMouse(ushort vendorId, ushort productId, string path, bool wireless, byte reportId) : this(vendorId, productId, path, wireless)
         {
             this.reportId = reportId;
+        }
+
+        public void SetPath(string path)
+        {
+            this.path = path;
         }
 
 
@@ -486,8 +492,33 @@ namespace GHelper.Peripherals.Mouse
         public override void Dispose()
         {
             Logger.WriteLine(GetDisplayName() + ": Disposing");
+            StopEventListener();
             HidSharp.DeviceList.Local.Changed -= Device_Changed;
             base.Dispose();
+        }
+
+        private PeripheralEventListener? events;
+
+        public void StartEventListener()
+        {
+            events ??= new PeripheralEventListener(VendorID(), ProductID(), GetDisplayName(), OnEventReport);
+            events.Start(path);
+        }
+
+        public void StopEventListener()
+        {
+            events?.Stop();
+        }
+
+        // 12 01 is the raw button bitmap and precedes the state change it causes
+        private void OnEventReport(byte[] buffer, int count)
+        {
+            if (count < 3 || buffer[1] != 0x12 || buffer[2] == 0x01) return;
+
+            int was = Profile;
+            int wasDpi = DpiProfile;
+            ReadProfile();
+            if (Profile != was || DpiProfile != wasDpi) ProfileChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void Device_Changed(object? sender, HidSharp.DeviceListChangedEventArgs e)
@@ -501,6 +532,11 @@ namespace GHelper.Peripherals.Mouse
         //This function should automatically disconnect the device in GHelper if the device is no longer there or the pipe is broken.
         public virtual void CheckConnection()
         {
+            if (!IsDeviceConnected())
+            {
+                OnDisconnect();
+                return;
+            }
             ReadBattery();
         }
 
@@ -515,6 +551,11 @@ namespace GHelper.Peripherals.Mouse
             {
                 return false;
             }
+        }
+
+        public bool IsDeviceConnected(IEnumerable<HidSharp.HidDevice> devices)
+        {
+            return devices.Any(x => x.VendorID == VendorID() && x.ProductID == ProductID() && x.DevicePath.Contains(path));
         }
 
         public virtual int USBTimeout()
@@ -566,11 +607,29 @@ namespace GHelper.Peripherals.Mouse
             return watch.ElapsedMilliseconds;
         }
 
+        private int _otherIoBusy;
+        private long _otherIoEndedMs;
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         protected virtual byte[]? WriteForResponse(byte[] packet, int matchLength = 3)
         {
+            Interlocked.Increment(ref _otherIoBusy);
+            try
+            {
+                return WriteForResponseImpl(packet, matchLength);
+            }
+            finally
+            {
+                _otherIoEndedMs = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                Interlocked.Decrement(ref _otherIoBusy);
+            }
+        }
+
+        private byte[]? WriteForResponseImpl(byte[] packet, int matchLength)
+        {
             Array.Resize(ref packet, USBPacketSize());
 
+            try { Drain(USBPacketSize()); } catch { }
 
             byte[] response = new byte[USBPacketSize()];
             response[0] = reportId;
@@ -659,6 +718,11 @@ namespace GHelper.Peripherals.Mouse
         public PeripheralType DeviceType()
         {
             return PeripheralType.Mouse;
+        }
+
+        public virtual Image Icon()
+        {
+            return Properties.Resources.icons8_maus_48;
         }
 
         public virtual void SynchronizeDevice()
@@ -1774,8 +1838,8 @@ namespace GHelper.Peripherals.Mouse
 
         protected virtual byte[] GetUpdateZoneModePacket(bool enabled)
         {
-            // DPI formula: ((DPI - 50) / 50) - using 2 bytes
-            int dpiVal = (ZoneModeDPI - 50) / 50;
+            // DPI formula: ((DPI - increment) / increment) - using 2 bytes
+            int dpiVal = (ZoneModeDPI - DPIIncrements()) / DPIIncrements();
             byte dpiLow = (byte)(dpiVal & 0xFF);
             byte dpiHigh = (byte)((dpiVal >> 8) & 0xFF);
 
@@ -1838,15 +1902,15 @@ namespace GHelper.Peripherals.Mouse
             {
                 ZoneMode = packet[5] == 0x01;
                 ZoneModePollingRate = (PollingRate)packet[6];
-                // DPI formula: (byteL + byteH * 256) * 50 + 50
+                // DPI formula: (byteL + byteH * 256) * increment + increment
                 if (packet.Length > 8)
                 {
                     int dpiVal = packet[7] | (packet[8] << 8);
-                    ZoneModeDPI = dpiVal * 50 + 50;
+                    ZoneModeDPI = dpiVal * DPIIncrements() + DPIIncrements();
                 }
                 else
                 {
-                    ZoneModeDPI = packet[7] * 50 + 50;
+                    ZoneModeDPI = packet[7] * DPIIncrements() + DPIIncrements();
                 }
             }
         }
@@ -2126,6 +2190,8 @@ namespace GHelper.Peripherals.Mouse
         public void WriteColorDirect(Color color)
         {
             if (!HasRGB() || !IsDeviceReady) return;
+            if (_otherIoBusy > 0) return;
+            if (DateTimeOffset.Now.ToUnixTimeMilliseconds() - _otherIoEndedMs < 200) return;
             if (Interlocked.CompareExchange(ref _streamingBusy, 1, 0) != 0) return;
 
             try
@@ -2275,8 +2341,15 @@ namespace GHelper.Peripherals.Mouse
             (0x01E7, "Target Focus" ),
             (0x01E8, "Scroll Up"    ),
             (0x01E9, "Scroll Down"  ),
+            (0x01C0, "RapidFire (Toggle)"),
+            (0x01C1, "RapidFire (Hold)"  ),
             (0x0000, "Disabled"     ),
         };
+
+        public const ushort SpeedShiftCode = 0x00FD;
+
+        public static readonly IReadOnlyList<(ushort, string)> SpeedShiftMouseBindings =
+            MouseBindings.Append((SpeedShiftCode, "Speed Shift")).ToList();
 
         public sealed record ComboDef(ushort PassthroughCode, string Label, string DefaultCommand)
         {
@@ -2315,8 +2388,13 @@ namespace GHelper.Peripherals.Mouse
             ("Keyboard",   KeyboardBindings),
         };
 
+        public static readonly IReadOnlyList<(string GroupLabel, IReadOnlyList<(ushort Code, string Name)> Items)>
+        SpeedShiftBindingGroups = DefaultBindingGroups
+            .Select(g => g.GroupLabel == "Mouse" ? (g.GroupLabel, SpeedShiftMouseBindings) : g)
+            .ToList();
+
         public static readonly Dictionary<ushort, string> BindingCodes =
-            DefaultBindingGroups.SelectMany(g => g.Items)
+            SpeedShiftBindingGroups.SelectMany(g => g.Items)
                 .DistinctBy(e => e.Code)
                 .ToDictionary(e => e.Code, e => e.Name);
 
@@ -2383,6 +2461,12 @@ namespace GHelper.Peripherals.Mouse
             {
                 int offset = 5 + slot * 2;
                 string slotName = slots.TryGetValue(slot, out var def) ? def.Name : $"Slot {slot}";
+                if (WriteOnlySlots.Contains(slot))
+                {
+                    ButtonBindings[slot] = LoadWriteOnlySlot(slot, def.SourceCode);
+                    Logger.WriteLine(GetDisplayName() + $": Slot {slot} ({slotName}): {LabelForActionCode(ButtonBindings[slot])} (0x{ButtonBindings[slot]:X4}) [write-only]");
+                    continue;
+                }
                 if (offset + 1 >= response.Length)
                 {
                     Logger.WriteLine(GetDisplayName() + $": Slot {slot} ({slotName}): out of range");
@@ -2428,6 +2512,28 @@ namespace GHelper.Peripherals.Mouse
             FlushSettings();
         }
 
+        public bool HasSpeedShift => BindingGroups == SpeedShiftBindingGroups;
+
+        private string SpeedShiftSlotConfigKey(int slot) =>
+            $"mouse_shift_binding_{_productId:X4}_{slot}";
+
+        public ushort GetSpeedShiftBinding(int slot) =>
+            (ushort)AppConfig.Get(SpeedShiftSlotConfigKey(slot),
+                ButtonSlots.TryGetValue(slot, out var def) ? def.SourceCode : 0);
+
+        public void SetSpeedShiftBinding(int slot, ushort actionCode)
+        {
+            if (!ButtonSlots.TryGetValue(slot, out var slotDef)) return;
+
+            WriteForResponse(GetSetButtonBindingPacket(slotDef.SourceCode, actionCode, 0x23));
+            FlushSettings();
+            AppConfig.Set(SpeedShiftSlotConfigKey(slot), (int)actionCode);
+
+            Logger.WriteLine(GetDisplayName()
+                + $": Shift Slot {slot} ({slotDef.Name}) → {LabelForActionCode(actionCode)}"
+                + $" (src=0x{slotDef.SourceCode:X4}, dst=0x{actionCode:X4})");
+        }
+
         public virtual void SetButtonBinding(int slot, ushort actionCode)
         {
             if (!HasButtonBindings()) return;
@@ -2443,6 +2549,13 @@ namespace GHelper.Peripherals.Mouse
             ushort sourceCode = slotDef.SourceCode;
 
             WriteForResponse(GetSetButtonBindingPacket(sourceCode, actionCode));
+            if (actionCode == 0x01C0 || actionCode == 0x01C1)
+            {
+                ushort l = (ushort)AppConfig.Get("mouse_rapidfire_left", 50);
+                ushort r = (ushort)AppConfig.Get("mouse_rapidfire_right", 0);
+                ushort s = (ushort)AppConfig.Get("mouse_rapidfire_scroll", 0);
+                WriteForResponse(new byte[] { reportId, 0x51, 0x22, 0x00, 0x00, (byte)l, (byte)(l >> 8), (byte)r, (byte)(r >> 8), (byte)s, (byte)(s >> 8) });
+            }
             FlushSettings();
 
             Logger.WriteLine(GetDisplayName()
@@ -2453,13 +2566,13 @@ namespace GHelper.Peripherals.Mouse
             if (WriteOnlySlots.Contains(slot)) SaveWriteOnlySlot(slot, actionCode);
         }
 
-        protected virtual byte[] GetSetButtonBindingPacket(ushort sourceCode, ushort destCode)
+        protected virtual byte[] GetSetButtonBindingPacket(ushort sourceCode, ushort destCode, byte subCommand = 0x21)
         {
             return new byte[]
             {
                 reportId,
                 0x51,                              // command: Set Binding
-                0x21,                              // sub-command (constant 0x21)
+                subCommand,                        // 0x21 normal layer, 0x23 Speed Shift layer
                 0x00,                              // profile / flags (always 0)
                 0x00,
                 (byte)( sourceCode        & 0xFF), // src low  byte

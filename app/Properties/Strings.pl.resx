@@ -135,6 +135,9 @@
   <data name="AlertDGPUTitle" xml:space="preserve">
     <value>Tryb Eco</value>
   </data>
+  <data name="AlertExternalDisplay" xml:space="preserve">
+    <value>Wygląda na to, że zewnętrzny ekran jest podłączony do GPU. Wyłączyć GPU pomimo tego?</value>
+  </data>
   <data name="AlertUltimateOff" xml:space="preserve">
     <value>Wyłączenie trybu Ultimate wymaga ponownego uruchomienia</value>
   </data>
@@ -175,7 +178,7 @@
     <value>Dostosuj systemowy Tryb Zasilania</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Pamięć przypisana do GPU</value>
+    <value>Pamięć przypisana do iGPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Uruchomione usługi Asus</value>
@@ -309,6 +312,12 @@
   <data name="BootSound" xml:space="preserve">
     <value>Dźwięk podczas rozruchu</value>
   </data>
+  <data name="BacklightDown" xml:space="preserve">
+    <value>Podświetlenie –</value>
+  </data>
+  <data name="BacklightUp" xml:space="preserve">
+    <value>Podświetlenie +</value>
+  </data>
   <data name="Brightness" xml:space="preserve">
     <value>Jasność</value>
   </data>
@@ -392,6 +401,9 @@ Nadal chcesz kontynuować?</value>
   <data name="EnergySettings" xml:space="preserve">
     <value>Ustawienia zasilania</value>
   </data>
+  <data name="EnhancedVibration" xml:space="preserve">
+    <value>Wzmocnione wibracje</value>
+  </data>
   <data name="Export" xml:space="preserve">
     <value>Eksportuj profil</value>
   </data>
@@ -400,6 +412,9 @@ Nadal chcesz kontynuować?</value>
   </data>
   <data name="ExtraSettings" xml:space="preserve">
     <value>Dodatkowe ustawienia</value>
+  </data>
+  <data name="ExtremeLowMotionBlur" xml:space="preserve">
+    <value>ELMB (redukcja rozmycia ruchu)</value>
   </data>
   <data name="FactoryDefaults" xml:space="preserve">
     <value>Ustawienia fabryczne</value>
@@ -444,7 +459,7 @@ Nadal chcesz kontynuować?</value>
     <value>Fn-Lock wł.</value>
   </data>
   <data name="WinLockToggle" xml:space="preserve">
-    <value>Win-Lock Toggle</value>
+    <value>Blokada klawisza Windows</value>
   </data>
   <data name="GPUBoost" xml:space="preserve">
     <value>Dynamic Boost</value>
@@ -519,7 +534,7 @@ Nadal chcesz kontynuować?</value>
     <value>Klawiatura laptopa</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Ekran laptopa</value>
+    <value>Ekran</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>Wskaźniki stanu</value>
@@ -551,6 +566,9 @@ Nadal chcesz kontynuować?</value>
   <data name="MatrixAudio" xml:space="preserve">
     <value>Wizualizer muzyki</value>
   </data>
+  <data name="MatrixAudioMode" xml:space="preserve">
+    <value>Tryb wizualizera</value>
+  </data>
   <data name="MatrixBanner" xml:space="preserve">
     <value>Binarny</value>
   </data>
@@ -574,6 +592,21 @@ Nadal chcesz kontynuować?</value>
   </data>
   <data name="MatrixPicture" xml:space="preserve">
     <value>Obraz</value>
+  </data>
+  <data name="MatrixRunningText" xml:space="preserve">
+    <value>Tekst przewijany</value>
+  </data>
+  <data name="MatrixText" xml:space="preserve">
+    <value>Tekst</value>
+  </data>
+  <data name="MatrixTimeFormat" xml:space="preserve">
+    <value>Format czasu</value>
+  </data>
+  <data name="MatrixDateFormat" xml:space="preserve">
+    <value>Format daty</value>
+  </data>
+  <data name="MatrixFlip" xml:space="preserve">
+    <value>Obróć o 180°</value>
   </data>
   <data name="MaxRefreshTooltip" xml:space="preserve">
     <value>Maksymalna częstotliwość odświeżania dla mniejszych opóźnień</value>
@@ -613,6 +646,42 @@ Nadal chcesz kontynuować?</value>
   </data>
   <data name="MouseSynchronize" xml:space="preserve">
     <value>Synchronizuj z myszką</value>
+  </data>
+  <data name="HeadsetEqualizer" xml:space="preserve">
+    <value>Korektor</value>
+  </data>
+  <data name="HeadsetMicrophoneType" xml:space="preserve">
+    <value>Mikrofon</value>
+  </data>
+  <data name="HeadsetMicBoom" xml:space="preserve">
+    <value>Na pałąku</value>
+  </data>
+  <data name="HeadsetMicInline" xml:space="preserve">
+    <value>Na kablu</value>
+  </data>
+  <data name="HeadsetMicExternal" xml:space="preserve">
+    <value>Zewnętrzny</value>
+  </data>
+  <data name="HeadsetNoiseReduction" xml:space="preserve">
+    <value>Redukcja szumów</value>
+  </data>
+  <data name="HeadsetSidetone" xml:space="preserve">
+    <value>Odsłuch</value>
+  </data>
+  <data name="HeadsetVoicePrompt" xml:space="preserve">
+    <value>Język komunikatów głosowych</value>
+  </data>
+  <data name="HeadsetAdaptiveAnc" xml:space="preserve">
+    <value>Adaptacyjne ANC</value>
+  </data>
+  <data name="HeadsetAmbient" xml:space="preserve">
+    <value>Otoczenie</value>
+  </data>
+  <data name="HeadsetPromptSound" xml:space="preserve">
+    <value>Sygnał dźwiękowy</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>Auto</value>
   </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
     <value>Synchronizuj z laptopem</value>
@@ -710,11 +779,17 @@ Nadal chcesz kontynuować?</value>
   <data name="ReadLimits" xml:space="preserve">
     <value>Odczytaj limity</value>
   </data>
+  <data name="RearLight" xml:space="preserve">
+    <value>Tylne oświetlenie</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Reset</value>
   </data>
   <data name="RestartGPU" xml:space="preserve">
     <value>Coś korzysta z dGPU, uniemożliwiając włączenie trybu Eco. Czy G-Helper ma zresetować dGPU w Menadżerze Urządzeń? (Korzystasz na własne ryzyko)</value>
+  </data>
+  <data name="RestartingNVServices" xml:space="preserve">
+    <value>Restartowanie usług NV...</value>
   </data>
   <data name="RPM" xml:space="preserve">
     <value>RPM</value>
@@ -784,6 +859,9 @@ Nadal chcesz kontynuować?</value>
   </data>
   <data name="ToggleScreen" xml:space="preserve">
     <value>Przełącz ekran</value>
+  </data>
+  <data name="ToggleTouchpad" xml:space="preserve">
+    <value>Toggle Touchpad</value>
   </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
     <value>Włącz/wyłącz ekran dotykowy</value>
@@ -873,7 +951,7 @@ Nadal chcesz kontynuować?</value>
     <comment>Updated</comment>
   </data>
   <data name="SlashBounce" xml:space="preserve">
-    <value>Skaczący</value>
+    <value>Odbicia</value>
   </data>
   <data name="SlashMode" xml:space="preserve">
     <value>Slash</value>
@@ -882,13 +960,13 @@ Nadal chcesz kontynuować?</value>
     <value>Ładowanie</value>
   </data>
   <data name="SlashBitStream" xml:space="preserve">
-    <value>Strumień bitów</value>
+    <value>Strumień danych</value>
   </data>
   <data name="SlashTransmission" xml:space="preserve">
     <value>Transmisja</value>
   </data>
   <data name="SlashFlow" xml:space="preserve">
-    <value>Płynny</value>
+    <value>Przepływ</value>
   </data>
   <data name="SlashFlux" xml:space="preserve">
     <value>Strumień</value>
@@ -903,7 +981,7 @@ Nadal chcesz kontynuować?</value>
     <value>Zagrożenie</value>
   </data>
   <data name="SlashInterfacing" xml:space="preserve">
-    <value>Interfacing</value>
+    <value>Przeplatanie</value>
   </data>
   <data name="SlashRamp" xml:space="preserve">
     <value>Rampa</value>
@@ -936,10 +1014,10 @@ Nadal chcesz kontynuować?</value>
     <value>Tryb ambient może zwiększyć zużycie zasobów</value>
   </data>
   <data name="MouseMotionSync" xml:space="preserve">
-    <value>Motion Sync</value>
+    <value>Synchronizacja ruchu</value>
   </data>
   <data name="MouseZoneMode" xml:space="preserve">
-    <value>Zone Mode</value>
+    <value>Tryb Zone</value>
   </data>
   <data name="DisablePCIeASPM" xml:space="preserve">
     <value>Wyłącz zarządzanie stanem łącza PCIe (po podłączeniu zasilania)</value>
@@ -958,10 +1036,92 @@ i automatycznie je uruchamia, gdy GPU jest włączony</value>
     <value>Zapobiega przechodzeniu urządzeń PCIe w stany niskiego poboru mocy.
 Zalecane, jeśli występują losowe zawieszenia lub niereagujący sprzęt.</value>
   </data>
+  <data name="DisableStandbyNetworking" xml:space="preserve">
+    <value>Wyłącz sieć w trybie Modern Standby</value>
+  </data>
+  <data name="DisableStandbyNetworkingTooltip" xml:space="preserve">
+    <value>Zapobiega nagrzewaniu uśpionego laptopa i rozładowywaniu
+baterii przez zadania w tle, takie jak Windows Update.</value>
+  </data>
   <data name="Overlay" xml:space="preserve">
-    <value>Overlay</value>
+    <value>Nakładka</value>
+  </data>
+  <data name="OverlayChart" xml:space="preserve">
+    <value>Wykres</value>
+  </data>
+  <data name="OverlayLabels" xml:space="preserve">
+    <value>Etykiety</value>
+  </data>
+  <data name="OverlayLoad" xml:space="preserve">
+    <value>Obciążenie</value>
+  </data>
+  <data name="OverlayModeComplete" xml:space="preserve">
+    <value>Kompletny</value>
+  </data>
+  <data name="OverlayModeFull" xml:space="preserve">
+    <value>Pełny</value>
+  </data>
+  <data name="OverlayModeLight" xml:space="preserve">
+    <value>Lekki</value>
   </data>
   <data name="OverlayOnlyInGames" xml:space="preserve">
-    <value>Overlay only in games</value>
+    <value>Nakładka tylko w grach</value>
+  </data>
+  <data name="OverlaySize" xml:space="preserve">
+    <value>Rozmiar</value>
+  </data>
+  <data name="OverlayTemperatures" xml:space="preserve">
+    <value>Temperatury</value>
+  </data>
+  <data name="OverlayTransparency" xml:space="preserve">
+    <value>Przezroczystość</value>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>Zasilanie</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>Animacje</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>Animacja uruchamiania i wyłączania</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>Animacja uśpienia</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>Alert niskiego poziomu baterii</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>Wskaźnik poziomu baterii</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>Przyciemnij przy słabej baterii</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>Domyślne systemowe</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>Wzór animacji</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>Zawsze</value>
+  </data>
+  <data name="TestLayout" xml:space="preserve">
+    <value>Układ testowy</value>
+  </data>
+  <data name="FillAll" xml:space="preserve">
+    <value>Wypełnij wszystkie</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>Klawisze</value>
+  </data>
+  <data name="Animation" xml:space="preserve">
+    <value>Animacja</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>Tło</value>
+  </data>
+  <data name="AmbientBacklight" xml:space="preserve">
+    <value>Czujnik światła otoczenia</value>
   </data>
 </root>

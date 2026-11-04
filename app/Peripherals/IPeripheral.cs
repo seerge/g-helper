@@ -4,13 +4,13 @@ namespace GHelper.Peripherals
     public enum PeripheralType
     {
         Mouse,
-        Keyboard
+        Keyboard,
+        Headset
     }
 
     public interface IPeripheral
     {
         public bool IsDeviceReady { get; }
-        public bool Wireless { get; }
         public int Battery { get; }
         public bool Charging { get; }
 

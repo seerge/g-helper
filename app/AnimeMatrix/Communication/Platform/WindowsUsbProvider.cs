@@ -83,6 +83,25 @@ namespace GHelper.AnimeMatrix.Communication.Platform
             });
         }
 
+        public override void Drain(int packetSize)
+        {
+            int saved = HidStream.ReadTimeout;
+            HidStream.ReadTimeout = 1;
+            try
+            {
+                byte[] buf = new byte[packetSize];
+                while (true)
+                {
+                    try { HidStream.Read(buf); }
+                    catch { break; }
+                }
+            }
+            finally
+            {
+                HidStream.ReadTimeout = saved;
+            }
+        }
+
         public override void Write(byte[] data)
         {
             WrapException(() =>

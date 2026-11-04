@@ -93,7 +93,7 @@ namespace GHelper.Helpers
 
             if (AppConfig.Is("screen_force"))
                 ScreenControl.AutoScreen();
-            else if (Program.settingsForm.Visible)
+            else 
                 ScreenControl.InitScreen();
 
             if (AppConfig.IsForceMiniled())

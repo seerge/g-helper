@@ -166,7 +166,7 @@
     <value>Použít</value>
   </data>
   <data name="ApplyFanCurve" xml:space="preserve">
-    <value>Použít vlastní křivky vent.</value>
+    <value>Použít křivky vent.</value>
   </data>
   <data name="ApplyPowerLimits" xml:space="preserve">
     <value>Použít výkonové limity</value>
@@ -175,7 +175,7 @@
     <value>Auto. upravit režimy napájení Windows</value>
   </data>
   <data name="APUMemory" xml:space="preserve">
-    <value>Paměť přidělená GPU</value>
+    <value>Paměť přidělená iGPU</value>
   </data>
   <data name="AsusServicesRunning" xml:space="preserve">
     <value>Služeb Asus spuštěno</value>
@@ -214,7 +214,7 @@
     <value>Náhodný</value>
   </data>
   <data name="AuraReact" xml:space="preserve">
-    <value>React</value>
+    <value>Reaktivní</value>
   </data>
   <data name="AuraSlow" xml:space="preserve">
     <value>Nízká</value>
@@ -250,7 +250,7 @@
     <value>Nastaví 60 Hz na baterii a max. hz v síti</value>
   </data>
   <data name="Awake" xml:space="preserve">
-    <value>V provozu</value>
+    <value>Aktivní</value>
   </data>
   <data name="BacklightLow" xml:space="preserve">
     <value>Nízké</value>
@@ -491,6 +491,9 @@ Chcete přesto pokračovat?</value>
   <data name="ImageRotation" xml:space="preserve">
     <value>Otočení obrázku</value>
   </data>
+  <data name="MatrixFlip" xml:space="preserve">
+    <value>Otočit o 180°</value>
+  </data>
   <data name="Import" xml:space="preserve">
     <value>Import Profilu</value>
   </data>
@@ -516,7 +519,7 @@ Chcete přesto pokračovat?</value>
     <value>Klávesnice notebooku</value>
   </data>
   <data name="LaptopScreen" xml:space="preserve">
-    <value>Displej ntb</value>
+    <value>Displej</value>
   </data>
   <data name="LEDStatusIndicators" xml:space="preserve">
     <value>LED indikátory sdtavu</value>
@@ -607,6 +610,42 @@ Chcete přesto pokračovat?</value>
   </data>
   <data name="MousePerformance" xml:space="preserve">
     <value>Vlastnosti</value>
+  </data>
+  <data name="HeadsetEqualizer" xml:space="preserve">
+    <value>Ekvalizér</value>
+  </data>
+  <data name="HeadsetMicrophoneType" xml:space="preserve">
+    <value>Mikrofon</value>
+  </data>
+  <data name="HeadsetMicBoom" xml:space="preserve">
+    <value>Raménko</value>
+  </data>
+  <data name="HeadsetMicInline" xml:space="preserve">
+    <value>Na kabelu</value>
+  </data>
+  <data name="HeadsetMicExternal" xml:space="preserve">
+    <value>Externí</value>
+  </data>
+  <data name="HeadsetNoiseReduction" xml:space="preserve">
+    <value>Potlačení šumu</value>
+  </data>
+  <data name="HeadsetSidetone" xml:space="preserve">
+    <value>Odposlech</value>
+  </data>
+  <data name="HeadsetVoicePrompt" xml:space="preserve">
+    <value>Jazyk hlasových výzev</value>
+  </data>
+  <data name="HeadsetAdaptiveAnc" xml:space="preserve">
+    <value>Adaptivní ANC</value>
+  </data>
+  <data name="HeadsetAmbient" xml:space="preserve">
+    <value>Ambientní</value>
+  </data>
+  <data name="HeadsetPromptSound" xml:space="preserve">
+    <value>Zvuková výzva</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>Auto</value>
   </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
     <value>Synchronizovat s notebookem</value>
@@ -706,6 +745,9 @@ Chcete přesto pokračovat?</value>
   </data>
   <data name="ReadLimits" xml:space="preserve">
     <value>Načíst limity</value>
+  </data>
+  <data name="RearLight" xml:space="preserve">
+    <value>Zadní osvětlení</value>
   </data>
   <data name="Reset" xml:space="preserve">
     <value>Obnovit</value>
@@ -954,5 +996,53 @@ a automaticky je spustí, jakmile je GPU zapnuté</value>
   <data name="DisablePCIeASPMTooltip" xml:space="preserve">
     <value>Zabraňuje zařízením PCIe vstoupit do nízkoenergetických nečinných stavů.
 Doporučeno, pokud zaznamenáváte náhodné zaseknutí nebo nereagující hardware.</value>
+  </data>
+  <data name="Power" xml:space="preserve">
+    <value>Napájení</value>
+  </data>
+  <data name="Animations" xml:space="preserve">
+    <value>Animace</value>
+  </data>
+  <data name="SlashBootAnimation" xml:space="preserve">
+    <value>Animace při spuštění a vypnutí</value>
+  </data>
+  <data name="SlashSleepAnimation" xml:space="preserve">
+    <value>Animace režimu spánku</value>
+  </data>
+  <data name="SlashLowBatteryAlert" xml:space="preserve">
+    <value>Upozornění na slabou baterii</value>
+  </data>
+  <data name="SlashBatteryIndicator" xml:space="preserve">
+    <value>Indikátor stavu baterie</value>
+  </data>
+  <data name="SlashDimOnLowBattery" xml:space="preserve">
+    <value>Ztlumit při slabé baterii</value>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>Výchozí systémové</value>
+  </data>
+  <data name="AnimationPattern" xml:space="preserve">
+    <value>Vzor animace</value>
+  </data>
+  <data name="Always" xml:space="preserve">
+    <value>Vždy</value>
+  </data>
+  <data name="TestLayout" xml:space="preserve">
+    <value>Testovací rozložení</value>
+  </data>
+  <data name="FillAll" xml:space="preserve">
+    <value>Vyplnit vše</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>Klávesy</value>
+  </data>
+  <data name="Animation" xml:space="preserve">
+    <value>Animace</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>Pozadí</value>
+  </data>
+  <data name="AmbientBacklight" xml:space="preserve">
+    <value>Senzor okolního světla</value>
   </data>
 </root>

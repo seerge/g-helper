@@ -14,6 +14,7 @@ namespace GHelper
         public const int STATUS_NEW = 1;
         public const int STATUS_UPTODATE = -1;
         public const int STATUS_NOT_FOUND = 2;
+        public const int STATUS_HIDDEN = 3;
 
         public struct DriverUpdate
         {
@@ -35,7 +36,7 @@ namespace GHelper
             public string entry;
         }
 
-        static readonly string[] SkipList = { "Armoury Crate & Aura Creator Installer", "MyASUS", "ASUS Smart Display Control", "Aura Wallpaper", "Virtual Pet", "Virtual Pet- Ultimate Edition", "ROG Font V1.5", "Armoury Crate Control Interface", "Virtual Assistant" };
+        static readonly string[] SkipList = { "Armoury Crate & Aura Creator Installer", "MyASUS", "ASUS Smart Display Control", "Aura Wallpaper", "Virtual Pet", "Virtual Pet- Ultimate Edition", "Armoury Crate Control Interface", "Virtual Assistant" };
 
         static readonly HttpClient _httpClient = CreateHttpClient();
 
@@ -78,10 +79,11 @@ namespace GHelper
                 {
                     var file = files[j];
                     var title = file.GetProperty("Title").ToString();
+                    var version = file.GetProperty("Version").ToString().Replace("V", "");
+                    if (title.Contains("Realtek LAN")) title += " " + Major(version);
 
                     if (oldTitle != title && !SkipList.Contains(title) && !title.Contains("Armoury Crate"))
                     {
-                        var version = file.GetProperty("Version").ToString().Replace("V", "");
                         updates.Add(new DriverUpdate
                         {
                             categoryName = categoryName,
@@ -117,6 +119,7 @@ namespace GHelper
                     {
                         u.status = sv > iv ? STATUS_NEW : STATUS_UPTODATE;
                         u.tip = "Download: " + u.version + "\n" + "Installed: " + version;
+                        Logger.WriteLine(u.title + " " + u.version + " vs " + version + " = " + u.status);
                     }
                     updates[n] = u;
                 }
@@ -125,14 +128,17 @@ namespace GHelper
 
             var inventory = BuildInventory();
             var installed = new string?[updates.Count];
+            var source = new string?[updates.Count];
             var needStaged = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             for (int n = 0; n < updates.Count; n++)
             {
                 token.ThrowIfCancellationRequested();
-                installed[n] = ResolveInstalledVersion(inventory, updates[n]);
-                if (installed[n] is null && updates[n].hardwares.Length > 0)
+                installed[n] = ResolveInstalledVersion(inventory, updates[n], out source[n]);
+                if ((installed[n] is null || Major(installed[n]!) != Major(updates[n].version)) && updates[n].hardwares.Length > 0)
                     foreach (var h in updates[n].hardwares) needStaged.Add(h);
             }
+
+            HideAbsentAdapters(updates, inventory, installed, needStaged);
 
             var staged = needStaged.Count > 0 ? BuildStagedVersions(needStaged, token) : null;
 
@@ -140,23 +146,56 @@ namespace GHelper
             for (int n = 0; n < updates.Count; n++)
             {
                 var u = updates[n];
+                if (u.status == STATUS_HIDDEN) continue;
+
                 var version = installed[n];
-                if (version is null && staged is not null && u.hardwares.Length > 0)
-                    version = MaxVersion(u.hardwares.Where(staged.ContainsKey).Select(h => staged[h]));
+                if ((version is null || Major(version) != Major(u.version)) && staged is not null && u.hardwares.Length > 0)
+                {
+                    var stagedVersion = MaxVersion(u.hardwares.Where(staged.ContainsKey).Select(h => staged[h]).Where(v => Major(v) == Major(u.version)));
+                    if (stagedVersion is not null)
+                    {
+                        version = stagedVersion;
+                        source[n] = "driver store";
+                    }
+                }
 
                 if (version is not null && Version.TryParse(u.version, out var sv) && Version.TryParse(version, out var iv))
                 {
                     u.status = sv > iv ? STATUS_NEW : STATUS_UPTODATE;
                     u.tip = "Download: " + u.version + "\n" + "Installed: " + version;
-                    Logger.WriteLine(u.title + " " + u.version + " vs " + version + " = " + u.status);
+                    Logger.WriteLine(u.title + " " + u.version + " vs " + version + " (" + source[n] + ") = " + u.status);
                 }
                 // store apps have no versions
                 else if (u.version.Contains("store", StringComparison.OrdinalIgnoreCase) && IsStoreAppInstalled(packages ??= GetInstalledPackages(), u.title))
                 {
                     u.status = STATUS_UPTODATE;
+                    Logger.WriteLine(u.title + " [store package] = " + u.status);
                 }
 
                 updates[n] = u;
+            }
+        }
+
+        static void HideAbsentAdapters(List<DriverUpdate> updates, List<LocalDriver> inventory, string?[] installed, HashSet<string> needStaged)
+        {
+            foreach (var keys in new[] { new[] { "Bluetooth" }, new[] { "WLAN", "Wireless LAN", "Wi-Fi", "WiFi" }, new[] { "Realtek LAN" }, new[] { "Card Reader", "CardReader" } })
+            {
+                var members = Enumerable.Range(0, updates.Count)
+                    .Where(n => updates[n].hardwares.Length > 0 && keys.Any(k => updates[n].title.Contains(k, StringComparison.OrdinalIgnoreCase)))
+                    .ToList();
+                var radio = inventory.Where(d => !d.isExtension && keys.Any(k => d.entry.Contains(k, StringComparison.OrdinalIgnoreCase)))
+                    .OrderBy(d => d.entry.StartsWith("Microsoft")).FirstOrDefault();
+                if (!members.Any(n => installed[n] is not null) && radio.entry is null) continue;
+                bool sameMajor = members.Any(n => installed[n] is not null && Major(updates[n].version) == Major(installed[n]!));
+
+                foreach (var n in members.Where(n => installed[n] is null || (sameMajor && Major(updates[n].version) != Major(installed[n]!))))
+                {
+                    var u = updates[n];
+                    u.status = STATUS_HIDDEN;
+                    foreach (var h in u.hardwares) needStaged.Remove(h);
+                    Logger.WriteLine(u.title + " = hidden, detected: " + radio.entry);
+                    updates[n] = u;
+                }
             }
         }
 
@@ -169,8 +208,9 @@ namespace GHelper
             return list.ToArray();
         }
 
-        static string? ResolveInstalledVersion(List<LocalDriver> inventory, DriverUpdate item)
+        static string? ResolveInstalledVersion(List<LocalDriver> inventory, DriverUpdate item, out string? source)
         {
+            source = null;
             if (item.hardwares.Length > 0)
             {
                 var matched = inventory.Where(d => item.hardwares.Any(id => d.matchId.Contains(id, StringComparison.OrdinalIgnoreCase))).ToList();
@@ -179,15 +219,15 @@ namespace GHelper
                 // match major version
                 int major = Major(item.version);
                 var pool = matched.Where(d => Major(d.version) == major).ToList();
-                if (pool.Count == 0) pool = matched.Where(d => !d.isExtension).ToList();
+                if (pool.Count == 0) pool = matched.Where(d => !d.isExtension || Major(d.version) > major).ToList();
                 if (pool.Count == 0) pool = matched;
-                return MaxVersion(pool.Select(d => d.version));
+                return MaxVersion(pool, out source);
             }
 
             // no hardware id in the API (Dolby, displayHDR)
             var key = item.title.Split(' ')[0];
             if (key.Length < 3) return null;
-            return MaxVersion(inventory.Where(d => d.isExtension && d.entry.Contains(key, StringComparison.OrdinalIgnoreCase)).Select(d => d.version));
+            return MaxVersion(inventory.Where(d => d.isExtension && Major(d.version) == Major(item.version) && d.entry.Contains(key, StringComparison.OrdinalIgnoreCase)).ToList(), out source);
         }
 
         static int Major(string version) => Version.TryParse(version, out var v) ? v.Major : -1;
@@ -203,6 +243,16 @@ namespace GHelper
                     bestString = version;
                 }
             return bestString;
+        }
+
+        static string? MaxVersion(List<LocalDriver> drivers, out string? source)
+        {
+            source = null;
+            var version = MaxVersion(drivers.Select(d => d.version));
+            if (version is null) return null;
+            var d = drivers.First(x => x.version == version);
+            source = !d.isExtension ? "device driver " + d.matchId : d.matchId.Length == 0 ? "registry " + d.entry : "device extension " + d.entry;
+            return version;
         }
 
         static string CleanupDeviceId(string input)
@@ -263,7 +313,9 @@ namespace GHelper
                 if (name is null || !name.Contains(key, StringComparison.OrdinalIgnoreCase)) continue;
                 if (PropString(GetDevNodeProperty(devInst, DEVPKEY_Device_DriverProvider)) == "Microsoft") continue;
 
-                return PropString(GetDevNodeProperty(devInst, DEVPKEY_Device_DriverVersion))?.Split('.')[^1];
+                var version = PropString(GetDevNodeProperty(devInst, DEVPKEY_Device_DriverVersion));
+                Logger.WriteLine(name + " " + version + " " + deviceId);
+                return version?.Split('.')[^1];
             }
             return null;
         }
@@ -297,7 +349,7 @@ namespace GHelper
                 string text;
                 try
                 {
-                    if (new FileInfo(file).Length > 1024 * 1024) continue;
+                    if (new FileInfo(file).Length > 2 * 1024 * 1024) continue;
                     text = File.ReadAllText(file);
                 }
                 catch { continue; }
@@ -310,6 +362,8 @@ namespace GHelper
                 foreach (var id in hardwares.Where(id => text.Contains(id, StringComparison.OrdinalIgnoreCase)))
                     if (!map.TryGetValue(id, out var current) || parsed > Version.Parse(current))
                         map[id] = version;
+
+                Logger.WriteLine("Staged " + Path.GetFileName(file) + " " + version);
             }
 
             return map;

@@ -210,6 +210,9 @@ namespace GHelper.UI
                 new Point(middle.X + 4, middle.Y - 2),
                 new Point(middle.X, middle.Y + 2)
                 };
+                int outerRadius = Math.Max(1, (int)Math.Round(4 * DeviceDpi / 192f));
+                var formBackColor = Parent is not null ? Parent.BackColor : BackColor;
+
                 var ps = new PAINTSTRUCT();
                 bool shoulEndPaint = false;
                 nint dc;
@@ -224,6 +227,15 @@ namespace GHelper.UI
                     dc = m.WParam;
                 }
 
+                using (var g = Graphics.FromHdc(dc))
+                {
+                    g.SmoothingMode = SmoothingMode.AntiAlias;
+                    using (var b = new SolidBrush(formBackColor))
+                        g.FillRectangle(b, clientRect);
+                    using (var b = new SolidBrush(buttonColor))
+                        FillRoundedRectangle(g, b, outerBorder, outerRadius, outerRadius);
+                }
+
                 var rgn = CreateRectRgn(innerInnerBorder.Left, innerInnerBorder.Top,
                     innerInnerBorder.Right, innerInnerBorder.Bottom);
 
@@ -233,25 +245,12 @@ namespace GHelper.UI
                 rgn = CreateRectRgn(clientRect.Left, clientRect.Top,
                     clientRect.Right, clientRect.Bottom);
                 SelectClipRgn(dc, rgn);
-                float ratio = DeviceDpi / 192f;
-                int innerRadiusL = Math.Max(1, (int)Math.Round(3 * ratio));
-                int innerRadiusR = Math.Max(1, (int)Math.Round(1 * ratio));
-                int outerRadius = Math.Max(1, (int)Math.Round(4 * ratio));
 
                 using (var g = Graphics.FromHdc(dc))
                 {
-                    using (var b = new SolidBrush(buttonColor))
-                    {
-                        g.FillRectangle(b, dropDownRect);
-                    }
+                    g.SmoothingMode = SmoothingMode.AntiAlias;
                     using (var b = new SolidBrush(arrowColor))
-                    {
                         g.FillPolygon(b, arrow);
-                    }
-                    using (var p = new Pen(innerBorderColor, 2))
-                    {
-                        DrawRoundedRectangle(g, p, innerBorder, innerRadiusL, innerRadiusR);
-                    }
                     if (DropDownStyle == ComboBoxStyle.DropDown)
                         using (var b = new SolidBrush(innerBorderColor))
                             g.FillRectangle(b, innerInnerBorder);
@@ -319,5 +318,52 @@ namespace GHelper.UI
 
         [DllImport("gdi32.dll")]
         private static extern nint CreateRectRgn(int x1, int y1, int x2, int y2);
+
+        public static void DrawBindingItem(object? sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0 || sender is not ComboBox cmb) return;
+
+            object obj = cmb.Items[e.Index];
+            bool isSep = obj is BindingSeparator;
+
+            Color back = isSep ? RForm.buttonSecond : RForm.buttonMain;
+            if (!isSep && (e.State & DrawItemState.Selected) != 0)
+                back = RForm.borderMain;
+
+            using var backBrush = new SolidBrush(back);
+            e.Graphics.FillRectangle(backBrush, e.Bounds);
+
+            string text = obj.ToString() ?? string.Empty;
+            Font font = isSep
+                ? new Font(e.Font ?? SystemFonts.DefaultFont, FontStyle.Bold)
+                : (e.Font ?? SystemFonts.DefaultFont);
+
+            int indent = isSep ? 6 : 14;
+            var textRect = new Rectangle(e.Bounds.X + indent, e.Bounds.Y,
+                                         e.Bounds.Width - indent, e.Bounds.Height);
+
+            using var foreBrush = new SolidBrush(RForm.foreMain);
+            e.Graphics.DrawString(text, font, foreBrush, textRect,
+                new StringFormat { LineAlignment = StringAlignment.Center });
+
+            if (isSep) font.Dispose();
+        }
+    }
+
+    public sealed class BindingItem
+    {
+        public ushort Code { get; }
+        public string DisplayName { get; }
+        public ushort[]? ComboKeys { get; }
+        public BindingItem(ushort code, string name, ushort[]? comboKeys = null)
+        { Code = code; DisplayName = name; ComboKeys = comboKeys; }
+        public override string ToString() => DisplayName;
+    }
+
+    public sealed class BindingSeparator
+    {
+        public string Label { get; }
+        public BindingSeparator(string label) { Label = label; }
+        public override string ToString() => Label;
     }
 }

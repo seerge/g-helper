@@ -29,6 +29,7 @@ namespace GHelper
             lastUpdate = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
             (bios, model) = AppConfig.GetBiosAndModel();
+            if (AppConfig.ContainsModel("NUC")) model = AppConfig.GetModelShort();
 
             buttonRefresh.TabStop = false;
 
@@ -219,6 +220,14 @@ namespace GHelper
 
         private void SetDriverStatus(int position, int status, string tip, TableLayoutPanel table)
         {
+            if (status == UpdatesController.STATUS_HIDDEN)
+            {
+                table.RowStyles[position].Height = 0;
+                for (int col = 0; col < table.ColumnCount; col++)
+                    table.GetControlFromPosition(col, position)?.Hide();
+                return;
+            }
+
             var symbolLabel = table.GetControlFromPosition(3, position) as Label;
             var label = table.GetControlFromPosition(4, position) as LinkLabel;
             if (label == null) return;

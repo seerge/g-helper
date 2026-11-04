@@ -472,4 +472,21 @@
             return "Gladius II Origin COD";
         }
     }
+
+    public class GladiusIICore : StrixImpactII
+    {
+        public GladiusIICore() : base(0x18DD)
+        {
+        }
+
+        public override string GetDisplayName()
+        {
+            return "ROG Gladius II Core";
+        }
+
+        public override LightingZone[] SupportedLightingZones()
+        {
+            return new LightingZone[] { LightingZone.Logo, LightingZone.Scrollwheel };
+        }
+    }
 }

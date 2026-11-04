@@ -231,6 +231,8 @@ namespace GHelper
 
         private void AsusMouseSettings_FormClosing(object? sender, FormClosingEventArgs e)
         {
+            mouse.StopEventListener();
+            mouse.ProfileChanged -= Mouse_ProfileChanged;
             mouse.BatteryUpdated -= Mouse_BatteryUpdated;
             mouse.Disconnect -= Mouse_Disconnect;
             mouse.MouseReadyChanged -= Mouse_MouseReadyChanged;
@@ -249,6 +251,12 @@ namespace GHelper
                     Close();
                 });
             }
+        }
+
+        private void Mouse_ProfileChanged(object? sender, EventArgs e)
+        {
+            if (Disposing || IsDisposed) return;
+            try { BeginInvoke(VisualizeMouseSettings); } catch { }
         }
 
         private void Mouse_BatteryUpdated(object? sender, EventArgs e)
@@ -671,6 +679,11 @@ namespace GHelper
             numericUpDownCurrentDPI.Maximum = mouse.MaxDPI();
             numericUpDownCurrentDPI.Increment = mouse.DPIIncrements();
 
+            sliderZoneModeDPI.Max = mouse.MaxDPI();
+            sliderZoneModeDPI.Step = mouse.DPIIncrements();
+            numericUpDownZoneModeDPI.Maximum = mouse.MaxDPI();
+            numericUpDownZoneModeDPI.Increment = mouse.DPIIncrements();
+
             if (!mouse.HasDebounceSetting())
             {
                 panelDebounce.Visible = false;
@@ -781,9 +794,20 @@ namespace GHelper
                 }
             }
 
+            if (mouse.DPIProfileCount() == 0)
+            {
+                panelPerformance.Visible = false;
+            }
+
             if (!mouse.HasBattery())
             {
                 panelBatteryState.Visible = false;
+            }
+
+            if (!mouse.HasProfiles())
+            {
+                panelProfiles.Visible = false;
+                panelBottomButtons.Visible = false;
             }
 
             if (mouse.HasAutoPowerOff())
@@ -864,6 +888,7 @@ namespace GHelper
         }
 
         private bool _updatingBindings;
+        private bool _shiftLayer;
         private readonly List<UI.RComboBox> _bindingCombos = new();
         private object[] _bindingComboItems = [];
 
@@ -883,6 +908,9 @@ namespace GHelper
         {
             var slots = mouse.ButtonSlots;
             _bindingComboItems = BuildBindingComboItems();
+            tableBindingsNav.Visible = mouse.HasSpeedShift;
+            buttonBindingsNormal.BorderColor = RForm.colorStandard;
+            buttonBindingsShift.BorderColor = RForm.colorStandard;
 
             float s = DeviceDpi / 192f;
 
@@ -919,7 +947,7 @@ namespace GHelper
                 };
                 cmb.Items.AddRange(_bindingComboItems);
                 cmb.Tag = slot;
-                cmb.DrawItem += BindingCombo_DrawItem;
+                cmb.DrawItem += RComboBox.DrawBindingItem;
                 cmb.SelectedIndexChanged += BindingCombo_Changed;
                 panelLeft.Controls.Add(lbl);
                 panelLeft.Controls.Add(cmb);
@@ -948,36 +976,18 @@ namespace GHelper
             panelLeft.Controls.Add(btnReset);
         }
 
-        private static void BindingCombo_DrawItem(object? sender, DrawItemEventArgs e)
+        private void ButtonBindingsNormal_Click(object? sender, EventArgs e) => SetBindingLayer(false);
+
+        private void ButtonBindingsShift_Click(object? sender, EventArgs e) => SetBindingLayer(true);
+
+        private void SetBindingLayer(bool shift)
         {
-            if (e.Index < 0 || sender is not ComboBox cmb) return;
-
-            object obj = cmb.Items[e.Index];
-            bool isSep = obj is BindingSeparator;
-
-            Color back = isSep ? RForm.buttonSecond : RForm.buttonMain;
-            Color fore = isSep ? RForm.foreMain     : RForm.foreMain;
-
-            if (!isSep && (e.State & DrawItemState.Selected) != 0)
-                back = RForm.borderMain;
-
-            using var backBrush = new SolidBrush(back);
-            e.Graphics.FillRectangle(backBrush, e.Bounds);
-
-            string text = obj.ToString() ?? string.Empty;
-            Font font = isSep
-                ? new Font(e.Font ?? SystemFonts.DefaultFont, FontStyle.Bold)
-                : (e.Font ?? SystemFonts.DefaultFont);
-
-            int indent = isSep ? 6 : 14;
-            var textRect = new Rectangle(e.Bounds.X + indent, e.Bounds.Y,
-                                         e.Bounds.Width - indent, e.Bounds.Height);
-
-            using var foreBrush = new SolidBrush(fore);
-            e.Graphics.DrawString(text, font, foreBrush, textRect,
-                new StringFormat { LineAlignment = StringAlignment.Center });
-
-            if (isSep) font.Dispose();
+            _shiftLayer = shift;
+            buttonBindingsNormal.Activated = !shift;
+            buttonBindingsNormal.Secondary = shift;
+            buttonBindingsShift.Activated = shift;
+            buttonBindingsShift.Secondary = !shift;
+            VisualizeButtonBindings();
         }
 
         private void ButtonResetBindings_Click(object? sender, EventArgs e)
@@ -1000,6 +1010,12 @@ namespace GHelper
             }
             if (cmb.SelectedItem is BindingItem item)
             {
+                if (_shiftLayer)
+                {
+                    if (item.Code == AsusMouse.SpeedShiftCode) VisualizeButtonBindings();
+                    else mouse.SetSpeedShiftBinding(slot, item.Code);
+                    return;
+                }
                 mouse.SetButtonBinding(slot, item.Code);
                 Program.inputDispatcher?.RegisterKeys();
             }
@@ -1015,7 +1031,11 @@ namespace GHelper
             {
                 if (row >= _bindingCombos.Count) break;
                 var cmb = _bindingCombos[row];
-                ushort code = mouse.ButtonBindings[slot];
+
+                bool locked = _shiftLayer && mouse.ButtonBindings[slot] == AsusMouse.SpeedShiftCode;
+                ushort code = _shiftLayer && !locked ? mouse.GetSpeedShiftBinding(slot) : mouse.ButtonBindings[slot];
+                cmb.Enabled = !locked;
+
                 for (int j = 0; j < cmb.Items.Count; j++)
                 {
                     if (cmb.Items[j] is BindingItem item && item.Code == code)
@@ -1024,21 +1044,6 @@ namespace GHelper
                 row++;
             }
             _updatingBindings = false;
-        }
-
-        private sealed class BindingItem
-        {
-            public ushort Code        { get; }
-            public string DisplayName { get; }
-            public BindingItem(ushort code, string name) { Code = code; DisplayName = name; }
-            public override string ToString() => DisplayName;
-        }
-
-        private sealed class BindingSeparator
-        {
-            public string Label { get; }
-            public BindingSeparator(string label) { Label = label; }
-            public override string ToString() => Label;
         }
 
         private void InitLightingModes()
@@ -1386,6 +1391,8 @@ namespace GHelper
             mouse.Disconnect += Mouse_Disconnect;
             mouse.BatteryUpdated += Mouse_BatteryUpdated;
             mouse.MouseReadyChanged += Mouse_MouseReadyChanged;
+            mouse.ProfileChanged += Mouse_ProfileChanged;
+            mouse.StartEventListener();
         }
 
         private void ButtonSync_Click(object sender, EventArgs e)
