@@ -2313,6 +2313,7 @@ namespace GHelper.Peripherals.Mouse
             (0x006C, "F17"), (0x006D, "F18"), (0x006E, "F19"), (0x006F, "F20"),
             (0x0070, "F21"), (0x0071, "F22"), (0x0072, "F23"), (0x0073, "F24"),
             // navigation
+            (0x0046, "Print Screen"),
             (0x0049, "Insert"   ), (0x004A, "Home"     ), (0x004B, "Page Up"  ),
             (0x004C, "Delete"   ), (0x004D, "End"      ), (0x004E, "Page Down"),
             (0x004F, "Right"    ), (0x0050, "Left"     ),
