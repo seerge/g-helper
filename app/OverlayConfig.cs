@@ -48,6 +48,7 @@ namespace GHelper
                 (checkClocks, "overlay_show_clocks"),
                 (checkRam, "overlay_show_ram"),
                 (checkLabels, "overlay_names"),
+                (checkInline, "overlay_inline"),
             };
 
             checkEnable.Checked = AppConfig.IsOverlay();
