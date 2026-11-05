@@ -6,6 +6,10 @@ namespace GHelper.Peripherals.Mouse.Models
         {
         }
 
+        public MD200(ushort productId, bool wireless) : base(0x0B05, productId, "mi_02", wireless)
+        {
+        }
+
         public override int DPIProfileCount()
         {
             return 2;
