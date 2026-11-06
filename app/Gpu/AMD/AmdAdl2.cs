@@ -516,6 +516,23 @@ public class Adl2
         );
 
         [DllImport(Atiadlxx_FileName)]
+        public static extern int ADL2_Display_SCE_State_Get(
+            nint adlContextHandle,
+            int adapterIndex,
+            int displayIndex,
+            out int state,
+            out int defaultState
+        );
+
+        [DllImport(Atiadlxx_FileName)]
+        public static extern int ADL2_Display_SCE_State_Set(
+            nint adlContextHandle,
+            int adapterIndex,
+            int displayIndex,
+            int state
+        );
+
+        [DllImport(Atiadlxx_FileName)]
         public static extern int ADL2_Overdrive_Caps(
             nint adlContextHandle,
             int adapterIndex,

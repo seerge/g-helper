@@ -548,7 +548,7 @@ namespace GHelper.Mode
                         {
                             SmuStatus s = smu.SetCoPer(core, -uv);
                             Logger.WriteLine($"UV core {core}: {-uv} {s}");
-                            if (s == SmuStatus.OK) _cpuUV = -uv;
+                            if (s == SmuStatus.OK && uv != 0) _cpuUV = -uv;
                         }
                         core++;
                     }

@@ -647,6 +647,42 @@
   <data name="MouseSynchronize" xml:space="preserve">
     <value>Sincronizar con el ratón</value>
   </data>
+  <data name="HeadsetEqualizer" xml:space="preserve">
+    <value>Ecualizador</value>
+  </data>
+  <data name="HeadsetMicrophoneType" xml:space="preserve">
+    <value>Micrófono</value>
+  </data>
+  <data name="HeadsetMicBoom" xml:space="preserve">
+    <value>Brazo</value>
+  </data>
+  <data name="HeadsetMicInline" xml:space="preserve">
+    <value>En cable</value>
+  </data>
+  <data name="HeadsetMicExternal" xml:space="preserve">
+    <value>Externo</value>
+  </data>
+  <data name="HeadsetNoiseReduction" xml:space="preserve">
+    <value>Reducción de ruido</value>
+  </data>
+  <data name="HeadsetSidetone" xml:space="preserve">
+    <value>Retorno de voz</value>
+  </data>
+  <data name="HeadsetVoicePrompt" xml:space="preserve">
+    <value>Idioma de avisos de voz</value>
+  </data>
+  <data name="HeadsetAdaptiveAnc" xml:space="preserve">
+    <value>ANC adaptativo</value>
+  </data>
+  <data name="HeadsetAmbient" xml:space="preserve">
+    <value>Ambiente</value>
+  </data>
+  <data name="HeadsetPromptSound" xml:space="preserve">
+    <value>Tono de aviso</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>Automático</value>
+  </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
     <value>Sincronizar con portátil</value>
   </data>
@@ -743,6 +779,9 @@
   <data name="ReadLimits" xml:space="preserve">
     <value>Leer límites</value>
   </data>
+  <data name="RearLight" xml:space="preserve">
+    <value>Luz trasera</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Reiniciar</value>
   </data>
@@ -820,6 +859,9 @@
   </data>
   <data name="ToggleScreen" xml:space="preserve">
     <value>Alternar pantalla</value>
+  </data>
+  <data name="ToggleTouchpad" xml:space="preserve">
+    <value>Alternar Touchpad</value>
   </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
     <value>Alternar pantalla táctil</value>
@@ -1063,5 +1105,23 @@ calienten el portátil dormido y agoten la batería.</value>
   </data>
   <data name="Always" xml:space="preserve">
     <value>Siempre</value>
+  </data>
+  <data name="TestLayout" xml:space="preserve">
+    <value>Distribución de prueba</value>
+  </data>
+  <data name="FillAll" xml:space="preserve">
+    <value>Rellenar todo</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>Teclas</value>
+  </data>
+  <data name="Animation" xml:space="preserve">
+    <value>Animación</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>Fondo</value>
+  </data>
+  <data name="AmbientBacklight" xml:space="preserve">
+    <value>Sensor de luz ambiental</value>
   </data>
 </root>

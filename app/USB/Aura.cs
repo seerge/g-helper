@@ -119,15 +119,12 @@ namespace GHelper.USB
         public static bool HasLogo { get; private set; }
         public static bool HasLightbar { get; private set; }
         public static bool HasRearglow { get; private set; }
+        static bool hasRearStrip = false;
         public static bool IsOldStrix { get; private set; }
 
         static System.Timers.Timer timer = new System.Timers.Timer(1000);
 
-        static readonly List<double> audioMaxes = new List<double>();
-        static long lastAudioPresent;
-        static double envBrightness;
-        static double smoothedHue;
-        static readonly double audioDecay = AppConfig.Get("audio_decay", 70) / 100.0;
+        static readonly AudioLevels audioLevels = new AudioLevels();
 
         static Aura()
         {
@@ -383,6 +380,7 @@ namespace GHelper.USB
             HasLogo = (feat1 & FEAT1_LOGO) != 0 || AppConfig.IsZ13();
             HasLightbar = (feat1 & FEAT1_LIGHTBAR) != 0;
             HasRearglow = (feat1 & (FEAT1_REARGLOW | FEAT1_VCUT)) != 0;
+            hasRearStrip = (feat1 & FEAT1_REARGLOW) != 0;
 
             isStrix4Zone = BacklightType == AuraBacklightType.MultiZone;
 
@@ -393,7 +391,7 @@ namespace GHelper.USB
         {
             DetectBacklightType();
 
-            if (AppConfig.IsZ13())
+            if (AppConfig.IsZ13() && !AppConfig.Is("skip_aura"))
                 AsusHid.Write([AsusHid.AURA_ID, 0xC0, 0x03, 0x01], "Dynamic Lighting Init");
 
             if (AppConfig.IsProArt())
@@ -573,7 +571,7 @@ namespace GHelper.USB
         /* LSFT  ISO\    Z     X     C     V     B     N     M     ,     .     /   RSFT  RSFT  RSFT  ARWU NXT15  NM1   NM2   NM3   NMER  */
            105,  106,  107,  108,  109,  110,  111,  112,  113,  114,  115,  116,  117,  118,  119,  139,  121,  122,  123,  124,  125,
         /* LCTL  LFNC  LWIN  LALT              SPC               RALT  RFNC  RCTL        ARWL  ARWD  ARWR PRT15        NM0   NMPD  NMER  */
-           126,  127,  128,  129,              131,              135,  136,  137,        159,  160,  161,  142,        144,  145,  146,
+           126,  127,  128,  129,              131,              135,  136,  137,  138,  159,  160,  161,  142,        144,  145,  146,
         /* LB1   LB2   LB3                                                               ARW?  ARWL? ARWD? ARWR?       LB4   LB5   LB6   */
            174,  173,  172,                                                              120,  140,  141,  143,        171,  170,  169,
         /* KSTN  LOGO  LIDL  LIDR  */
@@ -597,7 +595,7 @@ namespace GHelper.USB
         /* LSFT  ISO\    Z     X     C     V     B     N     M     ,     .     /   RSFT  RSFT  RSFT  ARWU NXT15  NM1   NM2   NM3   NMER  */
              0,    0,    0,    0,    1,    1,    1,    1,    2,    2,    2,    2,    3,    3,    3,    3,    3,    3,    3,    3,    3,
         /* LCTL  LFNC  LWIN  LALT              SPC               RALT  RFNC  RCTL        ARWL  ARWD  ARWR PRT15        NM0   NMPD  NMER  */
-             0,    0,    0,    0,              1,                  2,    2,    2,          3,    3,    3,    3,          3,    3,    3,
+             0,    0,    0,    0,              1,                  2,    2,    2,    2,    3,    3,    3,    3,          3,    3,    3,
         /* LB1   LB1   LB3                                                               ARW?  ARW?  ARW?  ARW?        LB4   LB5   LB6   */
              5,    5,    4,                                                                3,    3,    3,    3,          6,    7,    7,
         /* KSTN  LOGO  LIDL  LIDR  */
@@ -621,7 +619,7 @@ namespace GHelper.USB
         /* LSFT  ISO\    Z     X     C     V     B     N     M     ,     .     /   RSFT  RSFT  RSFT  ARWU NXT15  NM1   NM2   NM3   NMER  */
              0,    0,    0,    0,    0,    1,    1,    1,    1,    1,    2,    2,    2,    2,    2,     2,   3,    3,    3,    3,    3,
         /* LCTL  LFNC  LWIN  LALT              SPC               RALT  RFNC  RCTL        ARWL  ARWD  ARWR PRT15        NM0   NMPD  NMER  */
-             0,    0,    0,    0,              1,                  1,    2,    2,          2,    2,    2,    3,          3,    3,    3,
+             0,    0,    0,    0,              1,                  1,    2,    2,    2,    2,    2,    2,    3,          3,    3,    3,
         /* LB1   LB1   LB3                                                               ARW?  ARW?  ARW?  ARW?        LB4   LB5   LB6   */
              5,    5,    4,                                                                2,    2,    2,    3,          6,    7,    7,
         /* KSTN  LOGO  LIDL  LIDR  */
@@ -669,6 +667,7 @@ namespace GHelper.USB
             const byte ledCount = 178;
             const ushort mapSize = 3 * ledCount;
             const byte ledsPerPacket = 16;
+            const byte rearCount = 39;
 
             byte[] buffer = new byte[64];
             byte[] keyBuf = new byte[mapSize];
@@ -685,7 +684,7 @@ namespace GHelper.USB
             if (init || initDirect)
             {
                 initDirect = false;
-                AsusHid.SetFeatureAura(new byte[] { AsusHid.AURA_ID, 0xBC, (byte)(IsOldStrix ? 0 : 1) });
+                AsusHid.SetFeatureAura(new byte[] { AsusHid.AURA_ID, 0xBC, (byte)(IsOldStrix || AppConfig.IsS17() ? 0 : 1) });
                 Thread.Sleep(50);
             }
 
@@ -743,6 +742,33 @@ namespace GHelper.USB
 
             Buffer.BlockCopy(keyBuf, 3 * keySet, buffer, 9, 3 * (ledCount - keySet));
             AsusHid.SetFeatureAura(buffer);
+
+            if (!hasRearStrip) return;
+
+            buffer[4] = 0x05;
+
+            for (int i = 0; i < rearCount; i += ledsPerPacket)
+            {
+                byte leds = (byte)Math.Min(ledsPerPacket, rearCount - i);
+
+                buffer[6] = (byte)(i + 1);
+                buffer[7] = leds;
+
+                for (int n = 0; n < leds; n++)
+                {
+                    float f = (i + n) / (float)(rearCount - 1) * 3;
+                    int z = Math.Min(2, (int)f);
+                    Color c = ColorUtils.GetWeightedAverage(color[z], color[z + 1], f - z);
+
+                    buffer[9 + n * 3] = c.R;
+                    buffer[10 + n * 3] = c.G;
+                    buffer[11 + n * 3] = c.B;
+                }
+
+                Array.Clear(buffer, 9 + leds * 3, buffer.Length - 9 - leds * 3);
+                AsusHid.SetFeatureAura(buffer);
+                Thread.Sleep(1);
+            }
         }
 
         public static void ApplyDirectLightbar(Color[] color)
@@ -969,6 +995,7 @@ namespace GHelper.USB
 
             PeripheralsProvider.SyncMiceWithKeyboardAura();
             PeripheralsProvider.SyncKeyboardsWithAura();
+            PeripheralsProvider.SyncHeadsetsWithAura();
 
             AsusHid.Write(new List<byte[]> { AuraMessage(Mode, _Color1, _Color2, _speed), MESSAGE_SET, MESSAGE_APPLY }, "Aura", AsusHid.MAIN_AURA_PIDS);
             XGM.LightMode(Mode, _Color1, _Color2, _speed);
@@ -990,10 +1017,7 @@ namespace GHelper.USB
             if (!backlight) return;
 
             initDirect = true;
-            audioMaxes.Clear();
-            lastAudioPresent = 0;
-            envBrightness = 0;
-            smoothedHue = 0;
+            audioLevels.Reset();
 
             AudioVisualizer.Shared.Subscribe(OnAudioSpectrum);
         }
@@ -1003,31 +1027,10 @@ namespace GHelper.USB
             if (!backlight || sessionLock) return;
             if (Mode != AuraMode.AUDIO && Mode != AuraMode.AUDIOPULSE) return;
 
-            long now = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-            if (Math.Abs(now - lastAudioPresent) < 50) return;
-            lastAudioPresent = now;
-
-            int bands = AURA_ZONES;
-            if (fftMag.Length < bands) return;
-
-            double[] bars = new double[bands];
-            double max = 0;
-            for (int i = 0; i < bands; i++)
-            {
-                bars[i] = Math.Sqrt(fftMag[i] * 10000);
-                if (bars[i] > max) max = bars[i];
-            }
-
-            audioMaxes.Add(max);
-            if (audioMaxes.Count > 100) audioMaxes.RemoveAt(0);
-            double maxAvg = audioMaxes.OrderByDescending(x => x).ElementAt(audioMaxes.Count / 10);
-            if (maxAvg < 1) maxAvg = 1;
-
-            envBrightness = Math.Max(envBrightness * audioDecay, max);
-            double brightness = Math.Min(1.0, envBrightness / maxAvg);
+            if (!audioLevels.Update(fftMag)) return;
 
             Color c1 = Color1;
-            double curvedBrightness = brightness * brightness * brightness;
+            double curvedBrightness = audioLevels.Brightness;
 
             try
             {
@@ -1042,15 +1045,14 @@ namespace GHelper.USB
                     return;
                 }
 
-                double baseHue = ColorUtils.HSV.ToHSV(c1).Hue;
-
                 if (isStrix)
                 {
+                    double baseHue = ColorUtils.HSV.ToHSV(c1).Hue;
                     Color[] colors = new Color[AURA_ZONES];
                     for (int i = 0; i < AURA_ZONES; i++)
                     {
                         double hue = (baseHue + (double)i / (AURA_ZONES - 1) * (2.0 / 3.0)) % 1.0;
-                        double ratio = Math.Min(1.0, bars[i] / maxAvg);
+                        double ratio = Math.Min(1.0, audioLevels.Bars[i] / audioLevels.Scale);
                         double v = ratio * ratio * ratio;
                         colors[i] = new ColorUtils.HSV { Hue = hue, Saturation = 1.0, Value = v }.ToRGB();
                     }
@@ -1058,20 +1060,7 @@ namespace GHelper.USB
                 }
                 else
                 {
-                    int dominant = 1;
-                    double dominantWeighted = bars[1];
-                    for (int i = 2; i < bands; i++)
-                    {
-                        double w = bars[i] * (1 + (i - 1) * 0.15);
-                        if (w > dominantWeighted) { dominantWeighted = w; dominant = i; }
-                    }
-                    if (max > maxAvg * 0.3)
-                    {
-                        double targetHue = (baseHue + (dominant - 1) / (double)(bands - 2) * (2.0 / 3.0)) % 1.0;
-                        smoothedHue = smoothedHue * 0.6 + targetHue * 0.4;
-                    }
-
-                    ApplyDirect(new ColorUtils.HSV { Hue = smoothedHue, Saturation = 1.0, Value = curvedBrightness }.ToRGB());
+                    ApplyDirect(audioLevels.DominantColor(c1));
                 }
             }
             catch (Exception ex)

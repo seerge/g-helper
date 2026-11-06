@@ -160,6 +160,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ambient light sensor.
+        /// </summary>
+        internal static string AmbientBacklight {
+            get {
+                return ResourceManager.GetString("AmbientBacklight", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Ambient mode may increase resource usage.
         /// </summary>
         internal static string AmbientModeResources {
@@ -1800,6 +1809,114 @@ namespace GHelper.Properties {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Equalizer.
+        /// </summary>
+        internal static string HeadsetEqualizer {
+            get {
+                return ResourceManager.GetString("HeadsetEqualizer", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Noise Reduction.
+        /// </summary>
+        internal static string HeadsetMicrophoneType {
+            get {
+                return ResourceManager.GetString("HeadsetMicrophoneType", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Boom.
+        /// </summary>
+        internal static string HeadsetMicBoom {
+            get {
+                return ResourceManager.GetString("HeadsetMicBoom", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Inline.
+        /// </summary>
+        internal static string HeadsetMicInline {
+            get {
+                return ResourceManager.GetString("HeadsetMicInline", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to External.
+        /// </summary>
+        internal static string HeadsetMicExternal {
+            get {
+                return ResourceManager.GetString("HeadsetMicExternal", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Noise Reduction.
+        /// </summary>
+        internal static string HeadsetNoiseReduction {
+            get {
+                return ResourceManager.GetString("HeadsetNoiseReduction", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Sidetone.
+        /// </summary>
+        internal static string HeadsetSidetone {
+            get {
+                return ResourceManager.GetString("HeadsetSidetone", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Voice Prompt Language.
+        /// </summary>
+        internal static string HeadsetVoicePrompt {
+            get {
+                return ResourceManager.GetString("HeadsetVoicePrompt", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Adaptive ANC.
+        /// </summary>
+        internal static string HeadsetAdaptiveAnc {
+            get {
+                return ResourceManager.GetString("HeadsetAdaptiveAnc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Ambient.
+        /// </summary>
+        internal static string HeadsetAmbient {
+            get {
+                return ResourceManager.GetString("HeadsetAmbient", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Prompt Sound.
+        /// </summary>
+        internal static string HeadsetPromptSound {
+            get {
+                return ResourceManager.GetString("HeadsetPromptSound", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Auto.
+        /// </summary>
+        internal static string Auto {
+            get {
+                return ResourceManager.GetString("Auto", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Sync with laptop.
         /// </summary>
         internal static string MouseSyncWithAura {
@@ -2084,6 +2201,15 @@ namespace GHelper.Properties {
         internal static string Quit {
             get {
                 return ResourceManager.GetString("Quit", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Rear Light.
+        /// </summary>
+        internal static string RearLight {
+            get {
+                return ResourceManager.GetString("RearLight", resourceCulture);
             }
         }
 
@@ -2592,6 +2718,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Toggle Touchpad.
+        /// </summary>
+        internal static string ToggleTouchpad {
+            get {
+                return ResourceManager.GetString("ToggleTouchpad", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Toggle Touchscreen.
         /// </summary>
         internal static string ToggleTouchscreen {
@@ -2876,6 +3011,51 @@ namespace GHelper.Properties {
         internal static string Always {
             get {
                 return ResourceManager.GetString("Always", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Test Layout.
+        /// </summary>
+        internal static string TestLayout {
+            get {
+                return ResourceManager.GetString("TestLayout", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Fill All.
+        /// </summary>
+        internal static string FillAll {
+            get {
+                return ResourceManager.GetString("FillAll", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Keys.
+        /// </summary>
+        internal static string Keys {
+            get {
+                return ResourceManager.GetString("Keys", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Animation.
+        /// </summary>
+        internal static string Animation {
+            get {
+                return ResourceManager.GetString("Animation", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Back.
+        /// </summary>
+        internal static string Background {
+            get {
+                return ResourceManager.GetString("Background", resourceCulture);
             }
         }
     }

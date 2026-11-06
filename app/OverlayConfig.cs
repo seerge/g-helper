@@ -45,6 +45,7 @@ namespace GHelper
                 (checkChart, "overlay_show_chart"),
                 (checkPower, "overlay_show_power"),
                 (checkUsage, "overlay_show_usage"),
+                (checkClocks, "overlay_show_clocks"),
                 (checkRam, "overlay_show_ram"),
                 (checkLabels, "overlay_names"),
             };

@@ -119,39 +119,102 @@ Una superposición integrada en el juego (OSD) que muestra en tiempo real los **
 <details>
 <summary><a href="https://github.com/seerge/g-helper/discussions/900">Modelos compatibles actualmente</a> (haz clic para expandir)</summary>
 
+- ROG Chakram
 - ROG Chakram X
 - ROG Chakram Core
-- ROG Gladius II and Gladius II Origin
+- ROG Gladius II and Gladius II Origin (+ PNK LTD / COD editions)
 - ROG Gladius II Wireless
 - ROG Gladius III
 - ROG Gladius III Wireless
+- ROG Gladius III Aimpoint Wireless (+ EVA-02 Edition)
 - ROG Harpe Ace Extreme
 - ROG Harpe Ace Aim Lab Edition
 - ROG Harpe Ace Mini
 - ROG Harpe II Ace
-- ROG Keris Wireless
-- ROG Keris II Ace
+- ROG Harpe II Extreme Edition 20
+- ROG Keris and Keris Wireless (+ EVA Edition)
 - ROG Keris Wireless Aimpoint
-- ROG Strix Carry
-- ROG Strix III Gladius III Aimpoint Wireless
-- ROG Strix Impact III
-- ROG Strix Impact III Wireless
-- ROG Spatha X
-- ROG Strix Impact II Wireless
+- ROG Keris II Ace
+- ROG Keris II Origin (+ KJP edition)
 - ROG Pugio
 - ROG Pugio II
-- TUF Gaming M4 Wireless
+- ROG Spatha X
+- ROG Strix Carry
+- ROG Strix Evolve
+- ROG Strix Impact
+- ROG Strix Impact II (+ Electro Punk / Moonlight White editions)
+- ROG Strix Impact II Wireless
+- ROG Strix Impact III
+- ROG Strix Impact III Wireless
 - TUF Gaming M3
 - TUF Gaming M3 Gen II
+- TUF Gaming M4 Wireless
 - TUF Gaming M4 AIR
 - TUF Gaming M5
-- TX Gaming Mini
+- TUF Gaming Mini Miku Edition
+- TX Gaming Mouse
+- TX Gaming Mouse Mini
+- ASUS MD200
 
 </details>
 
 Un enorme agradecimiento a [@IceStormNG](https://github.com/IceStormNG) 👑 por su contribución e investigación (!).
 
 <img width="2448" alt="Mouse and other peripherals" src="https://github.com/user-attachments/assets/fe2a766b-f514-42e9-8dff-4bcc915364d4" />
+
+### :keyboard: Compatibilidad con teclados Asus
+
+<details>
+<summary><a href="https://github.com/seerge/g-helper/discussions/5710">Modelos compatibles actualmente</a> (haz clic para expandir)</summary>
+
+- ROG Azoth
+- ROG Azoth Extreme
+- ROG Azoth Extreme SE
+- ROG Azoth X
+- ROG Claymore II
+- ROG Falchion
+- ROG Falchion Ace
+- ROG Falchion Ace HFX
+- ROG Falchion RX
+- ROG Falchion RX Low Profile
+- ROG Strix Flare
+- ROG Strix Flare COD
+- ROG Strix Flare II
+- ROG Strix Flare II Animate
+- ROG Strix Flare PNK LTD
+- ROG Strix Scope II
+- ROG Strix Scope II RX
+- ROG Strix Scope II 96
+- ROG Strix Scope II 96 RX
+- ROG Strix Scope RX
+- ROG Strix Scope RX EVA Edition
+- ROG Strix Scope RX EVA-02 Edition
+- ROG Strix Scope RX TKL
+- TUF Gaming K1
+- TUF Gaming K3
+- TUF Gaming K3 Gen II
+
+</details>
+
+<img width="2254" alt="Keyboards" src="https://github.com/user-attachments/assets/9da4116f-7fb1-4dae-ac3e-25f0f1266a74" />
+
+### :headphones: Compatibilidad con auriculares Asus
+
+<details>
+<summary><a href="https://github.com/seerge/g-helper/discussions/5964">Modelos compatibles actualmente</a> (haz clic para expandir)</summary>
+
+- ROG Cetra RGB
+- ROG Cetra True Wireless SpeedNova
+- ROG Clavis
+- ROG Delta II
+- ROG Delta II KJP
+- ROG Pelta
+
+</details>
+
+Nivel de batería, iluminación, ajustes predefinidos del ecualizador, sidetone, cancelación de ruido del micrófono con IA, ANC y ajustes de energía, según el modelo.
+
+<img width="1786" alt="Headsets" src="https://github.com/user-attachments/assets/42ddd286-ed4f-4573-953c-e41b7fc3602f" />
 
 ### ⌨️ Atajos de teclado
 

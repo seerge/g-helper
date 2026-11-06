@@ -647,6 +647,42 @@
   <data name="MouseSynchronize" xml:space="preserve">
     <value>مزامنة مع الماوس</value>
   </data>
+  <data name="HeadsetEqualizer" xml:space="preserve">
+    <value>معادل الصوت</value>
+  </data>
+  <data name="HeadsetMicrophoneType" xml:space="preserve">
+    <value>الميكروفون</value>
+  </data>
+  <data name="HeadsetMicBoom" xml:space="preserve">
+    <value>ذراع</value>
+  </data>
+  <data name="HeadsetMicInline" xml:space="preserve">
+    <value>مدمج</value>
+  </data>
+  <data name="HeadsetMicExternal" xml:space="preserve">
+    <value>خارجي</value>
+  </data>
+  <data name="HeadsetNoiseReduction" xml:space="preserve">
+    <value>تقليل الضوضاء</value>
+  </data>
+  <data name="HeadsetSidetone" xml:space="preserve">
+    <value>الصوت الجانبي</value>
+  </data>
+  <data name="HeadsetVoicePrompt" xml:space="preserve">
+    <value>لغة التنبيهات الصوتية</value>
+  </data>
+  <data name="HeadsetAdaptiveAnc" xml:space="preserve">
+    <value>ANC التكيفي</value>
+  </data>
+  <data name="HeadsetAmbient" xml:space="preserve">
+    <value>محيطي</value>
+  </data>
+  <data name="HeadsetPromptSound" xml:space="preserve">
+    <value>نغمة التنبيه</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>تلقائي</value>
+  </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
     <value>مزامنة مع اللاب توب</value>
   </data>
@@ -743,6 +779,9 @@
   <data name="ReadLimits" xml:space="preserve">
     <value>قراءة الحدود</value>
   </data>
+  <data name="RearLight" xml:space="preserve">
+    <value>الضوء الخلفي</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>إعادة ضبط</value>
   </data>
@@ -820,6 +859,9 @@
   </data>
   <data name="ToggleScreen" xml:space="preserve">
     <value>تبديل الشاشة</value>
+  </data>
+  <data name="ToggleTouchpad" xml:space="preserve">
+    <value>Toggle Touchpad</value>
   </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
     <value>تبديل شاشة اللمس</value>
@@ -1063,5 +1105,23 @@
   </data>
   <data name="Always" xml:space="preserve">
     <value>دائمًا</value>
+  </data>
+  <data name="TestLayout" xml:space="preserve">
+    <value>تخطيط الاختبار</value>
+  </data>
+  <data name="FillAll" xml:space="preserve">
+    <value>ملء الكل</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>المفاتيح</value>
+  </data>
+  <data name="Animation" xml:space="preserve">
+    <value>الرسوم المتحركة</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>الخلفية</value>
+  </data>
+  <data name="AmbientBacklight" xml:space="preserve">
+    <value>مستشعر الإضاءة المحيطة</value>
   </data>
 </root>

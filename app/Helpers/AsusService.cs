@@ -114,7 +114,11 @@ namespace GHelper.Helpers
             if (GetRunningCount() == 0) return;
 
             Logger.WriteLine("ASUS services revived, re-stopping on startup");
-            Task.Run(() => StopAsusServices());
+            Task.Run(() =>
+            {
+                StopAsusServices();
+                Program.inputDispatcher?.Init();
+            });
         }
 
     }

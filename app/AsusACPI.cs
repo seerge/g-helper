@@ -101,6 +101,10 @@ public class AsusACPI
     public const uint DevsGPUFanCurve = 0x00110025;
     public const uint DevsMidFanCurve = 0x00110032;
 
+    public const uint DevsCPUFanFloor = 0x00110026;
+    public const uint DevsGPUFanFloor = 0x00110027;
+    public const uint DevsMidFanFloor = 0x00110033;
+
     public const uint FanHysteresis = 0x00110034;
     public const int Temp_CPU = 0x00120094;
     public const int Temp_GPU = 0x00120097;
@@ -184,7 +188,7 @@ public class AsusACPI
     public static int MaxGPUBoost = 25;
 
     public static int MinGPUPower = 0;
-    public static int MaxGPUPower = 70;
+    public static int MaxGPUPower = 75;
 
     public const int MinGPUTemp = 75;
     public const int MaxGPUTemp = 87;
@@ -372,6 +376,11 @@ public class AsusACPI
         {
             MaxTotal = 115;
             MaxCPU = 115;
+        }
+
+        if (AppConfig.ContainsModel("H7607"))
+        {
+            MaxTotal = 95;
         }
 
     }
@@ -653,6 +662,16 @@ public class AsusACPI
 
         return result;
 
+    }
+
+    public byte[] GetFanFloor(AsusFan device)
+    {
+        return DeviceGetBuffer(device switch
+        {
+            AsusFan.GPU => DevsGPUFanFloor,
+            AsusFan.Mid => DevsMidFanFloor,
+            _ => DevsCPUFanFloor
+        });
     }
 
     public static bool IsInvalidCurve(byte[] curve)

@@ -85,8 +85,7 @@ namespace GHelper.Helpers
                             if (stillAlive)
                             {
                                 MessageBox.Show(Properties.Strings.AppAlreadyRunningText, Properties.Strings.AppAlreadyRunning, MessageBoxButtons.OK);
-                                Application.Exit();
-                                return;
+                                Environment.Exit(0);
                             }
                         }
                     }

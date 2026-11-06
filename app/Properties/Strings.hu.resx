@@ -647,6 +647,42 @@ Folytatni szeretnéd?</value>
   <data name="MouseSynchronize" xml:space="preserve">
     <value>Szinkronizálás egérrel</value>
   </data>
+  <data name="HeadsetEqualizer" xml:space="preserve">
+    <value>Hangszínszabályzó</value>
+  </data>
+  <data name="HeadsetMicrophoneType" xml:space="preserve">
+    <value>Mikrofon</value>
+  </data>
+  <data name="HeadsetMicBoom" xml:space="preserve">
+    <value>Karos</value>
+  </data>
+  <data name="HeadsetMicInline" xml:space="preserve">
+    <value>Kábeles</value>
+  </data>
+  <data name="HeadsetMicExternal" xml:space="preserve">
+    <value>Külső</value>
+  </data>
+  <data name="HeadsetNoiseReduction" xml:space="preserve">
+    <value>Zajcsökkentés</value>
+  </data>
+  <data name="HeadsetSidetone" xml:space="preserve">
+    <value>Visszahallgatás</value>
+  </data>
+  <data name="HeadsetVoicePrompt" xml:space="preserve">
+    <value>Hangüzenetek nyelve</value>
+  </data>
+  <data name="HeadsetAdaptiveAnc" xml:space="preserve">
+    <value>Adaptív ANC</value>
+  </data>
+  <data name="HeadsetAmbient" xml:space="preserve">
+    <value>Környezeti</value>
+  </data>
+  <data name="HeadsetPromptSound" xml:space="preserve">
+    <value>Hangjelzés</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>Automata</value>
+  </data>
   <data name="MouseSyncWithAura" xml:space="preserve">
     <value>Szinkronizálás laptoppal</value>
   </data>
@@ -743,6 +779,9 @@ Folytatni szeretnéd?</value>
   <data name="ReadLimits" xml:space="preserve">
     <value>Korlátok beolvasása</value>
   </data>
+  <data name="RearLight" xml:space="preserve">
+    <value>Hátsó világítás</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Visszaállítás</value>
   </data>
@@ -820,6 +859,9 @@ Folytatni szeretnéd?</value>
   </data>
   <data name="ToggleScreen" xml:space="preserve">
     <value>Képernyő ki-/bekapcsolása</value>
+  </data>
+  <data name="ToggleTouchpad" xml:space="preserve">
+    <value>Érintőpad kapcsoló</value>
   </data>
   <data name="ToggleTouchscreen" xml:space="preserve">
     <value>Érintőképernyő ki-/bekapcsolása</value>
@@ -1063,5 +1105,23 @@ felmelegítsék az alvó laptopot és lemerítsék az akkumulátort.</value>
   </data>
   <data name="Always" xml:space="preserve">
     <value>Mindig</value>
+  </data>
+  <data name="TestLayout" xml:space="preserve">
+    <value>Teszt elrendezés</value>
+  </data>
+  <data name="FillAll" xml:space="preserve">
+    <value>Összes kitöltése</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>Billentyűk</value>
+  </data>
+  <data name="Animation" xml:space="preserve">
+    <value>Animáció</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>Háttér</value>
+  </data>
+  <data name="AmbientBacklight" xml:space="preserve">
+    <value>Környezeti fényérzékelő</value>
   </data>
 </root>
