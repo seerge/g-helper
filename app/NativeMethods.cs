@@ -39,6 +39,9 @@ public static class NativeMethods
     [return: MarshalAs(UnmanagedType.Bool)]
     private static extern bool LockWorkStation();
 
+    [DllImport("kernel32.dll")]
+    public static extern bool AttachConsole(int dwProcessId);
+
     public static void LockScreen()
     {
         LockWorkStation();
