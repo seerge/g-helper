@@ -826,10 +826,37 @@ namespace GHelper.Input
             return (bool)_fnLock;
         }
 
+        static CancellationTokenSource? fnLockReapply;
+
+        // ProArt: after lid open / wake the keyboard reverts FnLock to its default at some point in the first few seconds,
+        // so keep resending it for a while
+        public static void ReapplyFnLock()
+        {
+            if (!AppConfig.IsProArt() || !IsHardwareFnLock()) return;
+
+            var cts = new CancellationTokenSource();
+            Interlocked.Exchange(ref fnLockReapply, cts)?.Cancel();
+
+            Task.Run(async () =>
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    await Task.Delay(1000);
+                    if (cts.IsCancellationRequested) return;
+                    UsbFnLock(AppConfig.Is("fn_lock"), null);
+                }
+            });
+        }
+
+        static void UsbFnLock(bool fnLock, string? log = "USB FnLock")
+        {
+            AsusHid.WriteInput([AsusHid.INPUT_ID, 0xD0, 0x4E, fnLock ? (byte)0x00 : (byte)0x01], log);
+        }
+
         public static void HardwareFnLock(bool fnLock)
         {
             Program.acpi.DeviceSet(AsusACPI.FnLock, fnLock ^ AppConfig.IsInvertedFNLock() ? 1 : 0, "FnLock");
-            AsusHid.WriteInput([AsusHid.INPUT_ID, 0xD0, 0x4E, fnLock ? (byte)0x00 : (byte)0x01], "USB FnLock");
+            UsbFnLock(fnLock);
         }
 
         public static void ToggleFnLock()
