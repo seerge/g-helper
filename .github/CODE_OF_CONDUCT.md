@@ -2,7 +2,7 @@
 
 ## Our Pledge
 
-We as members, contributors, and leaders pledge to make participation in our
+We, as members, contributors, and leaders, pledge to make participation in our
 community a harassment-free experience for everyone, regardless of age, body
 size, visible or invisible disability, ethnicity, sex characteristics, gender
 identity and expression, level of experience, education, socio-economic status,
@@ -14,13 +14,13 @@ diverse, inclusive, and healthy community.
 
 ## Our Standards
 
-Examples of behavior that contributes to a positive environment for our
+Examples of behavior that contribute to a positive environment for our
 community include:
 
 * Demonstrating empathy and kindness toward other people
 * Being respectful of differing opinions, viewpoints, and experiences
 * Giving and gracefully accepting constructive feedback
-* Accepting responsibility and apologizing to those affected by our mistakes,
+* Accepting responsibility and apologizing to those affected by our mistakes
   and learning from the experience
 * Focusing on what is best not just for us as individuals, but for the
   overall community
@@ -45,7 +45,7 @@ or harmful.
 
 Community leaders have the right and responsibility to remove, edit, or reject
 comments, commits, code, wiki edits, issues, and other contributions that are
-not aligned to this Code of Conduct, and will communicate reasons for moderation
+not aligned with this Code of Conduct, and will communicate reasons for moderation
 decisions when appropriate.
 
 ## Scope
