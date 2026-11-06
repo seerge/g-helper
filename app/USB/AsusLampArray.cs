@@ -150,10 +150,14 @@ public static class AsusLampArray
         }
     }
 
-    static void Send(byte[] data)
+    static void Send(byte[] data, bool throwOnError = false)
     {
         var s = stream;
-        if (s == null) return;
+        if (s == null)
+        {
+            if (throwOnError) throw new IOException("LampArray stream not found");
+            return;
+        }
         byte[] buf = new byte[featLen];
         Array.Copy(data, buf, Math.Min(data.Length, featLen));
         try
@@ -166,16 +170,17 @@ public static class AsusLampArray
             stream = null;
             controlled = false;
             s.Dispose();
+            if (throwOnError) throw;
         }
     }
 
-    static void Control()
+    static void Control(bool throwOnError = false)
     {
         lock (AsusHid.hidLock)
         {
-            AsusHid.SetFeatureAura(new byte[] { AsusHid.AURA_ID, 0xC0, 0x03, 0x01 });
-            Send(new byte[] { RidControl, 0x01 });
-            Send(new byte[] { RidControl, 0x00 });
+            AsusHid.SetFeatureAura(new byte[] { AsusHid.AURA_ID, 0xC0, 0x03, 0x01 }, throwOnError: throwOnError);
+            Send(new byte[] { RidControl, 0x01 }, throwOnError);
+            Send(new byte[] { RidControl, 0x00 }, throwOnError);
         }
         controlled = stream != null;
     }
@@ -184,7 +189,7 @@ public static class AsusLampArray
     {
         if (!Available) return;
         bool streaming = mode is AuraMode.HEATMAP or AuraMode.AMBIENT or AuraMode.GRADIENT
-            or AuraMode.ZONETEST or AuraMode.AUDIO or AuraMode.AUDIOPULSE;
+            or AuraMode.ZONETEST or AuraMode.AUDIO or AuraMode.AUDIOPULSE || Aura.IsAnimation(mode);
         if (streaming) controlled = false;
         else Reset();
     }
@@ -217,18 +222,24 @@ public static class AsusLampArray
     }
 
     // zones: 8-zone g-helper colors (0-3 keyboard left->right, 4-7 lightbar left->right)
-    public static void SetColors(Color[] zones)
+    public static void SetColors(Color[] zones, bool throwOnError = false, bool independentSections = false)
     {
-        if (!Available || !Reopen() || zones.Length < 8) return;
-        if (!controlled) Control();
+        if (!Available || !Reopen() || zones.Length < 8)
+        {
+            if (throwOnError) throw new IOException("LampArray is not ready for an animation frame");
+            return;
+        }
+        if (!controlled) Control(throwOnError);
 
         var arr = new Color[lamps.Length];
         for (int i = 0; i < lamps.Length; i++)
-            arr[i] = Blend(zones, lamps[i].Zone, lamps[i].T);
-        SendMulti(arr);
+            arr[i] = independentSections
+                ? CustomRgbScene.SampleSection(zones, lamps[i].Zone, lamps[i].T)
+                : Blend(zones, lamps[i].Zone, lamps[i].T);
+        SendMulti(arr, throwOnError);
     }
 
-    static void SendMulti(Color[] arr)
+    static void SendMulti(Color[] arr, bool throwOnError = false)
     {
         for (int start = 0; start < arr.Length; start += MULTI_MAX)
         {
@@ -250,7 +261,7 @@ public static class AsusLampArray
                 report[colOff + i * 4 + 2] = c.B;
                 report[colOff + i * 4 + 3] = 0xFF;
             }
-            Send(report);
+            Send(report, throwOnError);
         }
     }
 }
