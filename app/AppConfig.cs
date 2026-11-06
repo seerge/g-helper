@@ -83,16 +83,21 @@ public static class AppConfig
     }
 
     private static void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
+        => Flush();
+
+    public static void Flush()
     {
         timer.Stop();
-        string jsonString;
-        lock (configLock) jsonString = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
-        try
+        lock (configLock)
         {
-            WriteAtomic(configFile, jsonString);
-            SyncFallbackConfig();
+            string jsonString = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
+            try
+            {
+                WriteAtomic(configFile, jsonString);
+                SyncFallbackConfig();
+            }
+            catch (Exception ex) { Logger.WriteLine("Config write failed: " + ex.Message); }
         }
-        catch (Exception ex) { Logger.WriteLine("Config write failed: " + ex.Message); }
     }
 
     private static void WriteAtomic(string path, string content)
