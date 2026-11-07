@@ -2,6 +2,7 @@
 using GHelper.Helpers;
 using GHelper.Input;
 using GHelper.Peripherals;
+using GHelper.Peripherals.Keyboard;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
@@ -58,6 +59,7 @@ namespace GHelper.USB
         ZONETEST = 25,
         AUDIO = 26,
         AUDIOPULSE = 27,
+        CUSTOM = 28,
     }
 
     public enum AuraSpeed : int
@@ -83,6 +85,7 @@ namespace GHelper.USB
         static byte[] MESSAGE_SET = { AsusHid.AURA_ID, 0xb5, 0, 0, 0 };
 
         static readonly int AURA_ZONES = 8;
+        const byte LED_COUNT = 178;
 
         private static AuraMode mode = AuraMode.AuraStatic;
         private static AuraSpeed speed = AuraSpeed.Normal;
@@ -108,6 +111,7 @@ namespace GHelper.USB
         public static bool IsBacklightDetected => BacklightType != AuraBacklightType.Unknown;
 
         static bool isStrix4Zone = false;
+        static bool isIso = false;
         static bool isStrixNumpad = AppConfig.IsStrixNumpad();
         static bool isStrix4ZoneFlipped = AppConfig.IsStrix4ZoneFlipped();
 
@@ -207,6 +211,8 @@ namespace GHelper.USB
                 modes[AuraMode.GRADIENT] = "Gradient";
                 modes[AuraMode.ZONETEST] = "Zone Test";
             }
+
+            if ((isStrixKb && !AppConfig.IsNoDirectRGB()) || KeyLayoutName is not null) modes[AuraMode.CUSTOM] = "Custom";
 
             return modes;
         }
@@ -377,6 +383,7 @@ namespace GHelper.USB
             hasRearStrip = (feat1 & FEAT1_REARGLOW) != 0;
 
             isStrix4Zone = BacklightType == AuraBacklightType.MultiZone;
+            isIso = layout == 0x02;
 
             if (typeByte != 0x00 && (feat2 & FEAT2_ONE_ZONE_RED_EFFECT) != 0) isWhite = true;
         }
@@ -418,7 +425,7 @@ namespace GHelper.USB
             {
                 if (!backlight) initDirect = true;
                 backlight = true;
-                if (Mode == AuraMode.GRADIENT) ApplyAura();
+                if (Mode == AuraMode.GRADIENT || Mode == AuraMode.CUSTOM) ApplyAura();
             }
         }
 
@@ -641,7 +648,7 @@ namespace GHelper.USB
 
         };
 
-        public static void ApplyDirect(Color[] color, bool init = false)
+        public static void ApplyDirect(Color[] color, bool init = false, bool keys = false)
         {
             if (color is { Length: > 0 })
             {
@@ -658,7 +665,7 @@ namespace GHelper.USB
             }
 
             const byte keySet = 167;
-            const byte ledCount = 178;
+            const byte ledCount = LED_COUNT;
             const ushort mapSize = 3 * ledCount;
             const byte ledsPerPacket = 16;
             const byte rearCount = 39;
@@ -678,7 +685,7 @@ namespace GHelper.USB
             if (init || initDirect)
             {
                 initDirect = false;
-                AsusHid.SetFeatureAura(new byte[] { AsusHid.AURA_ID, 0xBC, (byte)(IsOldStrix || AppConfig.IsS17() ? 0 : 1) });
+                AsusHid.SetFeatureAura(new byte[] { AsusHid.AURA_ID, 0xBC, (byte)(isStrix4Zone && !IsOldStrix ? 1 : 0) });
                 Thread.Sleep(50);
             }
 
@@ -686,7 +693,17 @@ namespace GHelper.USB
 
             if (!isStrix4Zone) // per key
             {
-                for (int ledIndex = 0; ledIndex < packetMap.Count(); ledIndex++)
+                if (keys)
+                {
+                    for (int i = 0; i < ledCount; i++)
+                    {
+                        if (i == 168 || i == 175) continue;
+                        keyBuf[3 * i] = color[i].R;
+                        keyBuf[3 * i + 1] = color[i].G;
+                        keyBuf[3 * i + 2] = color[i].B;
+                    }
+                }
+                else for (int ledIndex = 0; ledIndex < packetMap.Count(); ledIndex++)
                 {
                     ushort offset = (ushort)(3 * packetMap[ledIndex]);
                     byte zone = isStrixNumpad ? packetZoneNumpad[ledIndex] : packetZone[ledIndex];
@@ -763,6 +780,35 @@ namespace GHelper.USB
                 AsusHid.SetFeatureAura(buffer);
                 Thread.Sleep(1);
             }
+        }
+
+        static string? KeyLayoutName => AppConfig.GetString("aura_layout");
+
+        static bool LampLayout => AsusLampArray.Available && KeyLayoutName is null;
+
+        static int KeyTargets => LampLayout ? AsusLampArray.LampCount : isStrix4Zone ? AURA_ZONES : LED_COUNT;
+
+        public static (List<KeyDef[]> Rows, int[] Targets) KeyLayout()
+        {
+            if (LampLayout) return AuraKeyboardLayouts.FromLamps(AsusLampArray.Lamps());
+
+            var layout = AuraKeyboardLayouts.Laptop(KeyLayoutName, isIso);
+            return (layout.Rows, isStrix4Zone ? AuraKeyboardLayouts.Zones(layout.Rows) : Array.ConvertAll(layout.LedIds, id => (int)id));
+        }
+
+        public static Color[] KeyColors() => AppConfig.GetColors("aura_keys", KeyTargets, Color1);
+
+        public static void StoreKeyColors(Color[] colors) => AppConfig.Set("aura_keys", colors);
+
+        public static void ApplyKeyColors(Color[] colors, bool init = false)
+        {
+            if (LampLayout)
+            {
+                if (backlight) AsusLampArray.SetLamps(colors);
+                return;
+            }
+
+            ApplyDirect(colors, init, true);
         }
 
         public static void ApplyDirectLightbar(Color[] color)
@@ -927,6 +973,12 @@ namespace GHelper.USB
             if (Mode == AuraMode.ZONETEST)
             {
                 CustomRGB.ApplyZoneTest();
+                return;
+            }
+
+            if (Mode == AuraMode.CUSTOM)
+            {
+                CustomRGB.ApplyKeys();
                 return;
             }
 
@@ -1124,6 +1176,13 @@ namespace GHelper.USB
 
                 ApplyDirect(colors, true);
                 ApplyDirectLightbar(colors);
+            }
+
+            public static void ApplyKeys()
+            {
+                Color[] colors = KeyColors();
+                ApplyKeyColors(colors, true);
+                ApplyKeyColors(colors);
             }
 
             public static void ApplyGPUColor(int gpuMode = -1)
