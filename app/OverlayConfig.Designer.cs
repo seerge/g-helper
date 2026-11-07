@@ -47,6 +47,8 @@ namespace GHelper
             checkRam = new GHelper.UI.RCheckBox();
             checkBattery = new GHelper.UI.RCheckBox();
             checkLabels = new GHelper.UI.RCheckBox();
+            checkClocks = new GHelper.UI.RCheckBox();
+            checkInline = new GHelper.UI.RCheckBox();
             panelSliders = new Panel();
             labelSizeTitle = new Label();
             labelSize = new Label();
@@ -221,14 +223,17 @@ namespace GHelper
             tableBlocks.Controls.Add(checkRam, 0, 2);
             tableBlocks.Controls.Add(checkBattery, 1, 2);
             tableBlocks.Controls.Add(checkLabels, 2, 2);
+            tableBlocks.Controls.Add(checkClocks, 0, 3);
+            tableBlocks.Controls.Add(checkInline, 1, 3);
             tableBlocks.Dock = DockStyle.Top;
             tableBlocks.Location = new Point(10, 160);
             tableBlocks.Name = "tableBlocks";
-            tableBlocks.RowCount = 3;
+            tableBlocks.RowCount = 4;
             tableBlocks.RowStyles.Add(new RowStyle(SizeType.Absolute, 48F));
             tableBlocks.RowStyles.Add(new RowStyle(SizeType.Absolute, 48F));
             tableBlocks.RowStyles.Add(new RowStyle(SizeType.Absolute, 48F));
-            tableBlocks.Size = new Size(880, 144);
+            tableBlocks.RowStyles.Add(new RowStyle(SizeType.Absolute, 48F));
+            tableBlocks.Size = new Size(880, 192);
             tableBlocks.TabIndex = 2;
             //
             // checkFps
@@ -330,6 +335,28 @@ namespace GHelper
             checkLabels.Size = new Size(130, 48);
             checkLabels.TabIndex = 8;
             checkLabels.Text = "Labels";
+            //
+            // checkClocks
+            //
+            checkClocks.Anchor = AnchorStyles.Left;
+            checkClocks.AutoSize = true;
+            checkClocks.Location = new Point(10, 186);
+            checkClocks.Margin = new Padding(10, 2, 4, 2);
+            checkClocks.Name = "checkClocks";
+            checkClocks.Size = new Size(130, 48);
+            checkClocks.TabIndex = 9;
+            checkClocks.Text = "Clocks";
+            //
+            // checkInline
+            //
+            checkInline.Anchor = AnchorStyles.Left;
+            checkInline.AutoSize = true;
+            checkInline.Location = new Point(303, 186);
+            checkInline.Margin = new Padding(10, 2, 4, 2);
+            checkInline.Name = "checkInline";
+            checkInline.Size = new Size(130, 48);
+            checkInline.TabIndex = 10;
+            checkInline.Text = "Inline";
             //
             // panelSliders
             //
@@ -516,7 +543,7 @@ namespace GHelper
             //
             AutoScaleDimensions = new SizeF(192F, 192F);
             AutoScaleMode = AutoScaleMode.Dpi;
-            ClientSize = new Size(900, 675);
+            ClientSize = new Size(900, 723);
             Controls.Add(panelToggles);
             Controls.Add(panelHotkeys);
             Controls.Add(tableColors);
@@ -567,6 +594,8 @@ namespace GHelper
         private UI.RCheckBox checkRam;
         private UI.RCheckBox checkBattery;
         private UI.RCheckBox checkLabels;
+        private UI.RCheckBox checkInline;
+        private UI.RCheckBox checkClocks;
         private Panel panelSliders;
         private Label labelSizeTitle;
         private Label labelSize;

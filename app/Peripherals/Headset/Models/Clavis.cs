@@ -6,6 +6,10 @@ namespace GHelper.Peripherals.Headset.Models
         {
         }
 
+        protected Clavis(ushort productId) : base(0x0B05, productId)
+        {
+        }
+
         public override string GetDisplayName()
         {
             return "ROG Clavis";
@@ -84,7 +88,7 @@ namespace GHelper.Peripherals.Headset.Models
 
         public override HeadsetLightingMode[] SupportedLightingModes()
         {
-            return new[] { HeadsetLightingMode.Static, HeadsetLightingMode.Breathing, HeadsetLightingMode.Strobing, HeadsetLightingMode.ColorCycle, HeadsetLightingMode.MqaIndicator };
+            return new[] { HeadsetLightingMode.Static, HeadsetLightingMode.Breathing, HeadsetLightingMode.Strobing, HeadsetLightingMode.ColorCycle, HeadsetLightingMode.Music, HeadsetLightingMode.MqaIndicator };
         }
 
         public override bool HasBrightness()

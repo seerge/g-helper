@@ -1121,4 +1121,7 @@ aqueçam o portátil adormecido e esgotem a bateria.</value>
   <data name="Background" xml:space="preserve">
     <value>Fundo</value>
   </data>
+  <data name="AmbientBacklight" xml:space="preserve">
+    <value>Sensor de luz ambiente</value>
+  </data>
 </root>

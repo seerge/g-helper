@@ -212,6 +212,18 @@ public class AmdGpuControl : IGpuControl
                 Sensor(log, ADLSensorType.PMLOG_ASIC_POWER));
     }
 
+    public int? GetGpuClock()
+    {
+        if (!IsValid || !GetPMLog(out ADLPMLogDataOutput log)) return null;
+        return Sensor(log, ADLSensorType.PMLOG_CLK_GFXCLK);
+    }
+
+    public int? GetiGpuClock()
+    {
+        if (!GetPMLogiGpu(out ADLPMLogDataOutput log)) return null;
+        return Sensor(log, ADLSensorType.PMLOG_CLK_GFXCLK);
+    }
+
     public float? GetGpuPower()
     {
         if (!IsValid) return null;

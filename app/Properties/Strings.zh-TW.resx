@@ -1121,4 +1121,7 @@
   <data name="Background" xml:space="preserve">
     <value>背景</value>
   </data>
+  <data name="AmbientBacklight" xml:space="preserve">
+    <value>環境光感測器</value>
+  </data>
 </root>

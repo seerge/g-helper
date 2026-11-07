@@ -1121,4 +1121,7 @@ làm nóng máy khi ngủ và làm cạn pin.</value>
   <data name="Background" xml:space="preserve">
     <value>Nền</value>
   </data>
+  <data name="AmbientBacklight" xml:space="preserve">
+    <value>Cảm biến ánh sáng môi trường</value>
+  </data>
 </root>

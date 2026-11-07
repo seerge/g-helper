@@ -1042,4 +1042,7 @@ Doporučeno, pokud zaznamenáváte náhodné zaseknutí nebo nereagující hardw
   <data name="Background" xml:space="preserve">
     <value>Pozadí</value>
   </data>
+  <data name="AmbientBacklight" xml:space="preserve">
+    <value>Senzor okolního světla</value>
+  </data>
 </root>

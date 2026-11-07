@@ -1121,4 +1121,7 @@ să încălzească laptopul adormit și să descarce bateria.</value>
   <data name="Background" xml:space="preserve">
     <value>Fundal</value>
   </data>
+  <data name="AmbientBacklight" xml:space="preserve">
+    <value>Senzor de lumină ambientală</value>
+  </data>
 </root>

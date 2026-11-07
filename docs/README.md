@@ -112,6 +112,8 @@ A built-in in-game overlay (OSD) that shows live **FPS, CPU / GPU temperatures, 
 - ``Ctrl + Shift + Alt + Wheel`` - Resize overlay
 - ``Ctrl + Shift + Alt + Wheel Click`` - Reset overlay size
 
+All detailed settings can be configured directly via the `Overlay` button
+
 <img width="1690" alt="Metrics Overlay" src="https://github.com/user-attachments/assets/0752a704-e9a7-4e27-8587-39967f625fae" />
 <img width="3840" alt="Metrics Overlay in a game" src="https://github.com/user-attachments/assets/8b063f80-d508-41e0-9978-154bc936d451" />
 

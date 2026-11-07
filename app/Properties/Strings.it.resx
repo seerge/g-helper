@@ -1121,4 +1121,7 @@ di riscaldare il laptop in sospensione e scaricare la batteria.</value>
   <data name="Background" xml:space="preserve">
     <value>Sfondo</value>
   </data>
+  <data name="AmbientBacklight" xml:space="preserve">
+    <value>Sensore di luce ambientale</value>
+  </data>
 </root>

@@ -1121,4 +1121,7 @@ de chauffer l'ordinateur en veille et de vider la batterie.</value>
   <data name="Background" xml:space="preserve">
     <value>Arrière-plan</value>
   </data>
+  <data name="AmbientBacklight" xml:space="preserve">
+    <value>Capteur de luminosité ambiante</value>
+  </data>
 </root>

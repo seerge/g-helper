@@ -111,13 +111,13 @@ namespace GHelper.Input
             }
 
             InitBacklightTimer();
+            AmbientLight.Init();
             MuteLEDInit();
         }
 
         public static void InitFNLock()
         {
             if (!IsHardwareFnLock()) return;
-            AsusHid.InitInput();
             HardwareFnLock(AppConfig.Is("fn_lock"));
         }
 
@@ -1151,6 +1151,7 @@ namespace GHelper.Input
             if (lidClose || tentMode) return;
             Aura.ApplyBrightness(GetBacklight(), "Auto");
             backlightActivity = true;
+            AmbientLight.Reset();
         }
 
         public static void StartupBacklight()

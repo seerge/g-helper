@@ -70,10 +70,12 @@ namespace GHelper
                 case "m1":
                     customActions[""] = Properties.Strings.VolumeDown;
                     customActions.Remove("volume_down");
+                    customActions.Remove("volume_up");
                     break;
                 case "m2":
                     customActions[""] = Properties.Strings.VolumeUp;
                     customActions.Remove("volume_up");
+                    customActions.Remove("volume_down");
                     break;
                 case "m3":
                     customActions[""] = Properties.Strings.MuteMic;
@@ -162,6 +164,7 @@ namespace GHelper
 
             labelBacklightTimeout.Text = Properties.Strings.BacklightTimeout;
             //labelBacklightTimeoutPlugged.Text = Properties.Strings.BacklightTimeoutPlugged;
+            checkAmbient.Text = Properties.Strings.AmbientBacklight;
 
             checkNoOverdrive.Text = Properties.Strings.DisableOverdrive;
             checkELMB.Text = Properties.Strings.ExtremeLowMotionBlur;
@@ -262,7 +265,7 @@ namespace GHelper
                 labelFNF4.Visible = comboFNF4.Visible = textFNF4.Visible = false;
             }
 
-            if (!AppConfig.IsTUF())
+            if (!AppConfig.IsFNNumpad())
             {
                 labelFNE.Visible = comboFNE.Visible = textFNE.Visible = false;
             }
@@ -449,6 +452,10 @@ namespace GHelper
 
             numericBacklightTime.ValueChanged += NumericBacklightTime_ValueChanged;
             numericBacklightPluggedTime.ValueChanged += NumericBacklightTime_ValueChanged;
+
+            checkAmbient.Visible = AmbientLight.IsSupported();
+            checkAmbient.Checked = AppConfig.Is("backlight_ambient");
+            checkAmbient.CheckedChanged += CheckAmbient_CheckedChanged;
 
             checkGpuApps.Checked = AppConfig.Is("kill_gpu_apps");
             checkGpuApps.CheckedChanged += CheckGpuApps_CheckedChanged;
@@ -847,6 +854,13 @@ namespace GHelper
             AppConfig.Set("keyboard_timeout", (int)numericBacklightTime.Value);
             AppConfig.Set("keyboard_ac_timeout", (int)numericBacklightPluggedTime.Value);
             Program.inputDispatcher.InitBacklightTimer();
+        }
+
+        private void CheckAmbient_CheckedChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("backlight_ambient", checkAmbient.Checked ? 1 : 0);
+            AmbientLight.Init();
+            if (!checkAmbient.Checked) InputDispatcher.SetBacklightAuto();
         }
 
         private void CheckXGM_CheckedChanged(object? sender, EventArgs e)
