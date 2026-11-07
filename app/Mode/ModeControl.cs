@@ -66,7 +66,7 @@ namespace GHelper.Mode
             return smu != null && smu.Family is CpuFamily.Renoir or CpuFamily.Mobile;
         }
 
-        private static bool IsReapplyRyzenRequired()
+        public static bool IsReapplyRyzenRequired()
         {
             var smu = GetSmu();
             return smu != null && smu.Family is CpuFamily.Raphael;
@@ -157,7 +157,8 @@ namespace GHelper.Mode
                     if (AppConfig.Is("status_mode")) Program.acpi.DeviceSet(AsusACPI.StatusMode, [0x00, Modes.GetBase(mode) == AsusACPI.PerformanceSilent ? (byte)0x02 : (byte)0x03], "StatusMode");
                     Program.acpi.SetPerformanceMode(AppConfig.IsManualModeRequired() ? AsusACPI.PerformanceManual : Modes.GetBase(mode));
 
-                    SetGPUClocks();
+                    // Standard account would get a credential prompt on every boot
+                    SetGPUClocks(!ProcessHelper.IsStandardUser());
 
                     await Task.Delay(TimeSpan.FromMilliseconds(100), ct);
                     ct.ThrowIfCancellationRequested();
@@ -384,6 +385,10 @@ namespace GHelper.Mode
                 {
                     SetRyzenPower(true);
                 }
+                else if (PrivilegedAgent.IsAvailable)
+                {
+                    PrivilegedAgent.Post(AgentCommand.RyzenPower);
+                }
                 else if (launchAsAdmin)
                 {
                     ProcessHelper.RunAsAdmin("cpu");
@@ -425,34 +430,52 @@ namespace GHelper.Mode
         {
             Task.Run(() =>
             {
-
-                int core = AppConfig.GetMode("gpu_core");
-                int memory = AppConfig.GetMode("gpu_memory");
-                int clock_limit = AppConfig.GetMode("gpu_clock_limit");
-
-                if (reset) core = memory = clock_limit = 0;
-
-                if (core == -1 && memory == -1 && clock_limit == -1) return;
-                //if ((gpu_core > -5 && gpu_core < 5) && (gpu_memory > -5 && gpu_memory < 5)) launchAsAdmin = false;
-
-                if (Program.acpi.DeviceGet(AsusACPI.GPUEco) == 1) { Logger.WriteLine("Clocks: Eco"); return; }
-                if (HardwareControl.GpuControl is null) { Logger.WriteLine("Clocks: NoGPUControl"); return; }
-                if (!HardwareControl.GpuControl!.IsNvidia) { Logger.WriteLine("Clocks: NotNvidia"); return; }
-
-                NvidiaGpuControl nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
-                try
+                if (!ProcessHelper.IsUserAdministrator() && PrivilegedAgent.IsAvailable)
                 {
-                    int statusClocks = nvControl.SetClocks(core, memory);
-                    int statusLimit = nvControl.SetMaxGPUClock(clock_limit);
-                    if ((statusLimit != 0 || statusClocks != 0) && launchAsAdmin) ProcessHelper.RunAsAdmin("gpu");
+                    if (!reset && !HasGPUClocks()) return;
+                    if (PrivilegedAgent.Send(reset ? AgentCommand.GpuClocksReset : AgentCommand.GpuClocks)) settings.GPUInit();
+                    return;
                 }
-                catch (Exception ex)
-                {
-                    Logger.WriteLine("Clocks Error:" + ex.ToString());
-                }
+
+                bool? changed = ApplyGPUClocks(reset);
+                if (changed is null) return;
+                if (changed == true && launchAsAdmin) ProcessHelper.RunAsAdmin("gpu");
 
                 settings.GPUInit();
             });
+        }
+
+        private static bool HasGPUClocks() =>
+            AppConfig.GetMode("gpu_core") != -1 || AppConfig.GetMode("gpu_memory") != -1 || AppConfig.GetMode("gpu_clock_limit") != -1;
+
+        // Null when there is nothing to apply, otherwise whether clocks were touched
+        public bool? ApplyGPUClocks(bool reset = false)
+        {
+            int core = AppConfig.GetMode("gpu_core");
+            int memory = AppConfig.GetMode("gpu_memory");
+            int clock_limit = AppConfig.GetMode("gpu_clock_limit");
+
+            if (reset) core = memory = clock_limit = 0;
+
+            if (core == -1 && memory == -1 && clock_limit == -1) return null;
+            //if ((gpu_core > -5 && gpu_core < 5) && (gpu_memory > -5 && gpu_memory < 5)) launchAsAdmin = false;
+
+            if (Program.acpi.DeviceGet(AsusACPI.GPUEco) == 1) { Logger.WriteLine("Clocks: Eco"); return null; }
+            if (HardwareControl.GpuControl is null) { Logger.WriteLine("Clocks: NoGPUControl"); return null; }
+            if (!HardwareControl.GpuControl!.IsNvidia) { Logger.WriteLine("Clocks: NotNvidia"); return null; }
+
+            NvidiaGpuControl nvControl = (NvidiaGpuControl)HardwareControl.GpuControl;
+            try
+            {
+                int statusClocks = nvControl.SetClocks(core, memory);
+                int statusLimit = nvControl.SetMaxGPUClock(clock_limit);
+                return statusLimit != 0 || statusClocks != 0;
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine("Clocks Error:" + ex.ToString());
+                return false;
+            }
         }
 
         public void SetGPUPower()
@@ -524,7 +547,8 @@ namespace GHelper.Mode
         {
             if (!ProcessHelper.IsUserAdministrator())
             {
-                if (launchAsAdmin) ProcessHelper.RunAsAdmin("uv");
+                if (PrivilegedAgent.IsAvailable) PrivilegedAgent.Post(AgentCommand.Ryzen);
+                else if (launchAsAdmin) ProcessHelper.RunAsAdmin("uv");
                 return string.Empty;
             }
 
@@ -607,6 +631,12 @@ namespace GHelper.Mode
 
         public void ResetRyzen()
         {
+            if (CpuInfo.IsAMD && !ProcessHelper.IsUserAdministrator() && PrivilegedAgent.IsAvailable)
+            {
+                PrivilegedAgent.Post(AgentCommand.ResetRyzen);
+                return;
+            }
+
             if (_cpuUV != 0) SetUV(0);
             if (_igpuUV != 0) SetUViGPU(0);
             if (_cpuTemp != CpuInfo.DefaultTemp) SetCPUTemp(CpuInfo.DefaultTemp, true);
@@ -617,6 +647,13 @@ namespace GHelper.Mode
         {
             if (!CpuInfo.IsAMD) return;
 
+            // Agent tracks what it applied, so it decides between apply and reset
+            if (!ProcessHelper.IsUserAdministrator() && PrivilegedAgent.IsAvailable)
+            {
+                PrivilegedAgent.Post(AgentCommand.AutoRyzen);
+                return;
+            }
+
             if (AppConfig.IsApplyUV()) SetRyzen();
             else ResetRyzen();
         }
@@ -625,7 +662,11 @@ namespace GHelper.Mode
         {
             if (!CpuInfo.IsAMD) return;
             if (!AppConfig.IsApplyUV()) return;
-            if (!ProcessHelper.IsUserAdministrator()) return;
+            if (!ProcessHelper.IsUserAdministrator())
+            {
+                if (PrivilegedAgent.IsAvailable) PrivilegedAgent.Post(AgentCommand.CpuTemp);
+                return;
+            }
 
             try
             {

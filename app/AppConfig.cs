@@ -2,6 +2,7 @@ using GHelper.Helpers;
 using GHelper.Mode;
 using Microsoft.Win32;
 using System.Management;
+using System.Security.Principal;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
@@ -10,10 +11,13 @@ public static class AppConfig
 
     private static string configFile;
     private static string fallbackConfigFile;
+    private static string startupConfig;
+    private static bool readOnly;
 
     private static Dictionary<string, object> config = new Dictionary<string, object>();
     private static System.Timers.Timer timer = new System.Timers.Timer(2000) { AutoReset = false };
     private static readonly object configLock = new();
+    private static readonly object writeLock = new();
 
     private static readonly JsonSerializerOptions LenientOptions = new()
     {
@@ -28,7 +32,7 @@ public static class AppConfig
     {
         string configName = "config.json";
         string appPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "GHelper");
-        string startupConfig = Path.Combine(Application.StartupPath.Trim('\\'), configName);
+        startupConfig = Path.Combine(Application.StartupPath.Trim('\\'), configName);
 
         fallbackConfigFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "GHelper", configName);
 
@@ -43,13 +47,50 @@ public static class AppConfig
         timer.Elapsed += Timer_Elapsed;
     }
 
-    private static bool TryLoadConfig(string path)
+    public static string? GetUserConfigFile(string sid)
+    {
+        try
+        {
+            using var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList\" + new SecurityIdentifier(sid).Value);
+            if (key?.GetValue("ProfileImagePath") is not string profile) return null;
+
+            profile = Environment.ExpandEnvironmentVariables(profile);
+            if (!Directory.Exists(profile)) return null;
+
+            return Path.Combine(profile, "AppData", "Roaming", "GHelper", "config.json");
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine("Can't resolve user config: " + ex.Message);
+            return null;
+        }
+    }
+
+    // SYSTEM agent reads the user's settings and never writes into their profile
+    public static void LoadForUser(string sid)
+    {
+        readOnly = true;
+        timer.Stop();
+
+        if (configFile != startupConfig && GetUserConfigFile(sid) is string userConfig && File.Exists(userConfig))
+            configFile = userConfig;
+
+        Reload();
+    }
+
+    public static void Reload()
+    {
+        if (!TryLoadConfig(configFile, false) && !TryLoadConfig(configFile + ".bak"))
+            Logger.WriteLine("Can't reload config " + configFile);
+    }
+
+    private static bool TryLoadConfig(string path, bool log = true)
     {
         if (!File.Exists(path)) return false;
         try
         {
             config = JsonSerializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(path), LenientOptions);
-            Logger.WriteLine($"Config loaded from {path}");
+            if (log) Logger.WriteLine($"Config loaded from {path}");
             return true;
         }
         catch (Exception ex)
@@ -85,14 +126,24 @@ public static class AppConfig
     private static void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
     {
         timer.Stop();
-        string jsonString;
-        lock (configLock) jsonString = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
-        try
+        lock (writeLock)
         {
-            WriteAtomic(configFile, jsonString);
-            SyncFallbackConfig();
+            string jsonString;
+            lock (configLock) jsonString = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
+            try
+            {
+                WriteAtomic(configFile, jsonString);
+                SyncFallbackConfig();
+            }
+            catch (Exception ex) { Logger.WriteLine("Config write failed: " + ex.Message); }
         }
-        catch (Exception ex) { Logger.WriteLine("Config write failed: " + ex.Message); }
+    }
+
+    // Writes pending changes now, so another process sees them
+    public static void Flush()
+    {
+        if (timer.Enabled) Timer_Elapsed(null, null);
+        else lock (writeLock) { } // let a write already in progress finish
     }
 
     private static void WriteAtomic(string path, string content)
@@ -225,6 +276,7 @@ public static class AppConfig
 
     private static void Write()
     {
+        if (readOnly) return;
         timer.Stop();
         timer.Start();
     }
