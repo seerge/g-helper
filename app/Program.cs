@@ -209,6 +209,9 @@ namespace GHelper
                         });
                     });
                     break;
+                case "rgb-preview":
+                    // A local experimental run should not replace the installed startup task.
+                    break;
                 default:
                     Task.Run(Startup.StartupCheck);
                     break;
@@ -229,6 +232,8 @@ namespace GHelper
 
         private static void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
         {
+            Aura.ReleaseAnimation();
+            AsusLampArray.Release();
             gpuControl.StandardModeFix();
             modeControl.ShutdownReset();
             BatteryControl.AutoBattery();
@@ -257,6 +262,7 @@ namespace GHelper
             {
                 Logger.WriteLine("Session:" + e.Reason.ToString());
                 Aura.sessionLock = true;
+                Aura.StopAnimation();
             }
         }
 
@@ -396,6 +402,8 @@ namespace GHelper
         {
             if (e.Mode == PowerModes.Suspend)
             {
+                Aura.ReleaseAnimation();
+                AsusLampArray.Release();
                 Logger.WriteLine("Power Mode Changed:" + e.Mode.ToString());
                 gpuControl.StandardModeFix();
                 modeControl.ShutdownReset();
@@ -403,6 +411,8 @@ namespace GHelper
                 XGM.NotifyShutdown();
                 return;
             }
+
+            if (e.Mode == PowerModes.Resume) Aura.ResumeAnimation();
 
             PowerLineStatus status = SystemInformation.PowerStatus.PowerLineStatus;
             if (status != lastLineStatus)
@@ -468,6 +478,8 @@ namespace GHelper
 
         static void OnExit(object sender, EventArgs e)
         {
+            Aura.ReleaseAnimation();
+            AsusLampArray.Release();
             if (trayIcon is not null)
             {
                 trayIcon.Visible = false;
