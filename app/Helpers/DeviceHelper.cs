@@ -9,6 +9,7 @@ namespace GHelper.Helpers
         const uint CM_GETIDLIST_FILTER_PRESENT = 0x00000100;
         const uint DN_HAS_PROBLEM = 0x00000400;
         const uint CM_DRP_DEVICEDESC = 0x00000001;
+        const uint CM_LOCATE_DEVNODE_PHANTOM = 0x00000001;
 
         [DllImport("CfgMgr32.dll", CharSet = CharSet.Unicode)]
         static extern int CM_Get_Device_ID_List_SizeW(out uint pulLen, string pszFilter, uint ulFlags);
@@ -25,7 +26,16 @@ namespace GHelper.Helpers
         [DllImport("CfgMgr32.dll", CharSet = CharSet.Unicode)]
         static extern int CM_Get_DevNode_Registry_PropertyW(uint dnDevInst, uint ulProperty, out uint pulRegDataType, char[] Buffer, ref uint pulLength, uint ulFlags);
 
-        static string ProblemText(uint problem) => problem switch
+		[DllImport("cfgmgr32.dll")]
+		static extern uint CM_Disable_DevNode(uint dnDevInst, uint ulFlags);
+
+		[DllImport("cfgmgr32.dll")]
+		static extern uint CM_Enable_DevNode(uint dnDevInst, uint ulFlags);
+
+		[DllImport("cfgmgr32.dll")]
+		static extern uint CM_Get_Parent(out uint pdnDevInst, uint dnDevInst, uint ulFlags);
+
+		static string ProblemText(uint problem) => problem switch
         {
             1 => "Device is not configured",
             10 => "Device cannot start",
@@ -46,7 +56,7 @@ namespace GHelper.Helpers
             54 => "Device is being reset",
             _ => "Unknown problem",
         };
-
+         
         public static string? GetGpuError()
         {
             string? error = null;
@@ -72,5 +82,29 @@ namespace GHelper.Helpers
 
             return error;
         }
+
+
+        public static bool RestartdGpuPciBridge()
+        {
+            bool success = false;
+			uint flags = CM_GETIDLIST_FILTER_CLASS;
+			if (CM_Get_Device_ID_List_SizeW(out uint len, GUID_DEVCLASS_DISPLAY, flags) == 0 && len > 1)
+			{
+				var buffer = new char[len];
+				if (CM_Get_Device_ID_ListW(GUID_DEVCLASS_DISPLAY, buffer, len, flags) == 0)
+					foreach (var id in new string(buffer).Split('\0', StringSplitOptions.RemoveEmptyEntries))
+						if (id.StartsWith("PCI\\VEN_10DE", StringComparison.OrdinalIgnoreCase) &&
+							CM_Locate_DevNodeW(out uint devInst, id, CM_LOCATE_DEVNODE_PHANTOM) == 0 &&
+                            CM_Get_Parent(out uint parentDevInst, devInst, 0) == 0)
+						{
+							success = CM_Disable_DevNode(parentDevInst, 0) == 0;
+                            System.Threading.Thread.Sleep(1000);
+                            success = CM_Enable_DevNode(parentDevInst, 0) == 0;
+                            System.Threading.Thread.Sleep(1000);
+						}
+			}
+
+            return success;
+		}
     }
 }
