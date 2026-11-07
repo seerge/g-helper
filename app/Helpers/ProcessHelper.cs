@@ -239,9 +239,9 @@ namespace GHelper.Helpers
             }
 
             watch.Stop();
-            Logger.WriteLine(name + " " + args);
-            Logger.WriteLine(watch.ElapsedMilliseconds + " ms: " + result);
             cmd.WaitForExit();
+            Logger.WriteLine(name + " " + args);
+            Logger.WriteLine(watch.ElapsedMilliseconds + " ms, exit " + cmd.ExitCode + ": " + result);
 
             return result;
         }
