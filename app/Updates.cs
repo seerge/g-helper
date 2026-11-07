@@ -155,8 +155,10 @@ namespace GHelper
 
             FormClosed += (s, e) =>
             {
-                _cts.Cancel();
-                _cts.Dispose();
+                _cts?.Cancel();
+                _cts?.Dispose();
+                _cts = null;
+
                 _boldUnderlineFont.Dispose();
                 _font.Dispose();
                 MemoryHelper.TrimAfter();
