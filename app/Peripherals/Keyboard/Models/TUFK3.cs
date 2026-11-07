@@ -1,4 +1,4 @@
-﻿using GHelper.USB;
+using GHelper.USB;
 
 namespace GHelper.Peripherals.Keyboard.Models
 {
@@ -35,12 +35,20 @@ namespace GHelper.Peripherals.Keyboard.Models
             return false;
         }
 
+        // 5 horizontal zones only: horizontal/outward wave, no vertical axis
+        public override KeyboardLightingDirection[] SupportedDirections(KeyboardLightingMode mode)
+        {
+            return mode == KeyboardLightingMode.Wave
+                ? new[] { KeyboardLightingDirection.Right, KeyboardLightingDirection.Left, KeyboardLightingDirection.Outward }
+                : Array.Empty<KeyboardLightingDirection>();
+        }
+
         static byte SpeedByte(AuraSpeed speed)
         {
             return speed == AuraSpeed.Slow ? (byte)0 : speed == AuraSpeed.Fast ? (byte)2 : (byte)1;
         }
 
-        protected override byte[] BuildAuraPacket(KeyboardLightingMode mode, Color color, Color color2, AuraSpeed speed, int brightnessPct)
+        protected override byte[] BuildAuraPacket(KeyboardLightingMode mode, Color color, Color color2, AuraSpeed speed, int brightnessPct, KeyboardLightingDirection direction)
         {
             byte[] packet = new byte[12];
             packet[0] = reportId;
@@ -56,10 +64,10 @@ namespace GHelper.Peripherals.Keyboard.Models
             return packet;
         }
 
-        public override bool ApplyLighting(KeyboardLightingMode mode, Color color, Color color2, AuraSpeed speed, int brightness)
+        public override bool ApplyLighting(KeyboardLightingMode mode, Color color, Color color2, AuraSpeed speed, int brightness, KeyboardLightingDirection direction)
         {
             if (mode != KeyboardLightingMode.Wave || !HasRGB())
-                return base.ApplyLighting(mode, color, color2, speed, brightness);
+                return base.ApplyLighting(mode, color, color2, speed, brightness, direction);
 
             Color[] rainbow = { Color.Red, Color.Yellow, Color.Lime, Color.Blue, Color.Magenta };
 
@@ -70,6 +78,7 @@ namespace GHelper.Peripherals.Keyboard.Models
             packet[3] = 0x03;
             packet[5] = SpeedByte(speed);
             packet[6] = (byte)Math.Min(100, brightness);
+            packet[8] = DirectionByte(mode, direction);
             packet[10] = 5;
             packet[11] = rainbow[4].R;
             packet[12] = rainbow[4].G;

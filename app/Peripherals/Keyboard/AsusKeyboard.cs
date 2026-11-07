@@ -21,6 +21,20 @@ namespace GHelper.Peripherals.Keyboard
         Direct = 15,
     }
 
+    // 51 2C byte [8]: 0..7 clockwise in 45-degree steps from right, 8 = split outward from center
+    public enum KeyboardLightingDirection : byte
+    {
+        Right = 0,
+        DownRight = 1,
+        Down = 2,
+        DownLeft = 3,
+        Left = 4,
+        UpLeft = 5,
+        Up = 6,
+        UpRight = 7,
+        Outward = 8,
+    }
+
     // External ROG/TUF keyboards on the vendor usage page 0xFF00 interface:
     // 64-byte output reports, device acks every packet
     public abstract class AsusKeyboard : AnimeMatrix.Communication.Device, IPeripheral
@@ -334,27 +348,33 @@ namespace GHelper.Peripherals.Keyboard
 
             Array.Resize(ref packet, USBPacketSize());
 
-            try { Drain(USBPacketSize()); } catch { }
-
-            // verbose by default: testers' logs must show the full exchange
-            Logger.WriteLine(GetDisplayName() + " OUT: " + BitConverter.ToString(packet, 0, Math.Min(21, packet.Length)));
-
-            byte[] response = new byte[USBPacketSize()];
-            try
+            // Omni RF replies FF AA while busy (e.g. right after a 50 55 flash save); retry write commands briefly
+            int attempts = packet[1] == 0x12 ? 1 : 3;
+            for (int attempt = 0; attempt < attempts; attempt++)
             {
-                Write(packet);
-                Read(response);
-            }
-            catch (Exception e)
-            {
-                Logger.WriteLine(GetDisplayName() + ": Failed to communicate: " + e.Message);
-                return null;
+                if (attempt > 0) Thread.Sleep(60);
+                try { Drain(USBPacketSize()); } catch { }
+
+                // verbose by default: testers' logs must show the full exchange
+                Logger.WriteLine(GetDisplayName() + " OUT: " + BitConverter.ToString(packet, 0, Math.Min(21, packet.Length)));
+
+                byte[] response = new byte[USBPacketSize()];
+                try
+                {
+                    Write(packet);
+                    Read(response);
+                }
+                catch (Exception e)
+                {
+                    Logger.WriteLine(GetDisplayName() + ": Failed to communicate: " + e.Message);
+                    return null;
+                }
+
+                Logger.WriteLine(GetDisplayName() + " IN:  " + BitConverter.ToString(response, 0, Math.Min(21, response.Length)));
+                if (response[1] != 0xFF || response[2] != 0xAA) return response;
             }
 
-            Logger.WriteLine(GetDisplayName() + " IN:  " + BitConverter.ToString(response, 0, Math.Min(21, response.Length)));
-            if (response[1] == 0xFF && response[2] == 0xAA) return null;
-
-            return response;
+            return null;
         }
 
         // 12 12: factory layout id in [6] (3 DE, 4 UK, 5 FR, 17 US)
@@ -592,6 +612,50 @@ namespace GHelper.Peripherals.Keyboard
             return mode != KeyboardLightingMode.Static && mode != KeyboardLightingMode.Direct;
         }
 
+        // directions the effect can travel in, first entry is the default; empty = no direction
+        public virtual KeyboardLightingDirection[] SupportedDirections(KeyboardLightingMode mode)
+        {
+            return mode switch
+            {
+                KeyboardLightingMode.Wave => new[]
+                {
+                    KeyboardLightingDirection.Right,
+                    KeyboardLightingDirection.Left,
+                    KeyboardLightingDirection.Up,
+                    KeyboardLightingDirection.Down,
+                    KeyboardLightingDirection.UpRight,
+                    KeyboardLightingDirection.DownRight,
+                    KeyboardLightingDirection.DownLeft,
+                    KeyboardLightingDirection.UpLeft,
+                    KeyboardLightingDirection.Outward,
+                },
+                KeyboardLightingMode.Quicksand => new[]
+                {
+                    KeyboardLightingDirection.Down,
+                    KeyboardLightingDirection.Up,
+                },
+                _ => Array.Empty<KeyboardLightingDirection>(),
+            };
+        }
+
+        public bool SupportsDirection(KeyboardLightingMode mode)
+        {
+            return SupportedDirections(mode).Length > 0;
+        }
+
+        // falls back to the mode's default when the requested direction doesn't apply to it
+        public KeyboardLightingDirection ResolveDirection(KeyboardLightingMode mode, KeyboardLightingDirection direction)
+        {
+            var supported = SupportedDirections(mode);
+            if (supported.Length == 0) return KeyboardLightingDirection.Right;
+            return supported.Contains(direction) ? direction : supported[0];
+        }
+
+        protected virtual byte DirectionByte(KeyboardLightingMode mode, KeyboardLightingDirection direction)
+        {
+            return (byte)ResolveDirection(mode, direction);
+        }
+
         public virtual int LedCount()
         {
             return KeyLayout().Sum(row => row.Length) + MediaKeyCount();
@@ -612,8 +676,27 @@ namespace GHelper.Peripherals.Keyboard
             };
         }
 
+        private static readonly Color[] RainbowColors =
+        {
+            Color.FromArgb(255, 0, 0),
+            Color.FromArgb(255, 128, 0),
+            Color.FromArgb(255, 255, 0),
+            Color.FromArgb(0, 255, 0),
+            Color.FromArgb(0, 255, 255),
+            Color.FromArgb(0, 0, 255),
+            Color.FromArgb(255, 0, 255),
+        };
+
+        private static void WriteWaveStop(byte[] packet, int offset, int index)
+        {
+            packet[offset] = (byte)(100f / RainbowColors.Length * (index + 1));
+            packet[offset + 1] = RainbowColors[index].R;
+            packet[offset + 2] = RainbowColors[index].G;
+            packet[offset + 3] = RainbowColors[index].B;
+        }
+
         // 51 2C mode 00 speed brightness% color_mode direction 02, colors as RGB triplets from [10]
-        protected virtual byte[] BuildAuraPacket(KeyboardLightingMode mode, Color color, Color color2, AuraSpeed speed, int brightnessPct)
+        protected virtual byte[] BuildAuraPacket(KeyboardLightingMode mode, Color color, Color color2, AuraSpeed speed, int brightnessPct, KeyboardLightingDirection direction)
         {
             byte[] packet = new byte[19];
             packet[0] = reportId;
@@ -622,10 +705,21 @@ namespace GHelper.Peripherals.Keyboard
             packet[3] = (byte)mode;
             packet[5] = AuraSpeedByte(speed);
             packet[6] = (byte)Math.Min(100, brightnessPct);
+            packet[8] = DirectionByte(mode, direction);
             packet[9] = 0x02;
 
-            // wave/ripple take a 4-byte-per-color list instead of triplets, use random color there
-            if (mode == KeyboardLightingMode.Wave || mode == KeyboardLightingMode.Ripple)
+            // wave needs an explicit (stop%, R, G, B) colour list for direction [8] to take effect;
+            // random colour [7]=1 triggers a fixed-direction built-in rainbow instead
+            if (mode == KeyboardLightingMode.Wave)
+            {
+                Array.Resize(ref packet, 11 + RainbowColors.Length * 4);
+                packet[10] = (byte)RainbowColors.Length;
+                for (int i = 0; i < RainbowColors.Length; i++)
+                    WriteWaveStop(packet, 11 + i * 4, i);
+                return packet;
+            }
+
+            if (mode == KeyboardLightingMode.Ripple)
             {
                 packet[7] = 1;
                 return packet;
@@ -665,9 +759,45 @@ namespace GHelper.Peripherals.Keyboard
             return speed == AuraSpeed.Slow ? (byte)255 : speed == AuraSpeed.Fast ? (byte)10 : (byte)30;
         }
 
-        // chunk sequence tagged in [4], counting down to 0: wave/ripple 02/01/00, quicksand 01/00;
-        // the first chunk carries speed/brightness and random colour (no palette in the UI)
-        protected bool ApplyChunked(KeyboardLightingMode mode, AuraSpeed speed, int brightness, byte firstTag)
+        // chunked wave splits the 7-stop rainbow across tags 02 (header + 2 stops), 01 (4 stops), 00 (1 stop)
+        protected bool ApplyChunkedWave(AuraSpeed speed, int brightness, KeyboardLightingDirection direction)
+        {
+            byte[] p2 = new byte[19];
+            p2[0] = reportId;
+            p2[1] = 0x51;
+            p2[2] = 0x2C;
+            p2[3] = (byte)KeyboardLightingMode.Wave;
+            p2[4] = 0x02;
+            p2[5] = AuraSpeedByte(speed);
+            p2[6] = (byte)Math.Min(100, brightness);
+            p2[8] = DirectionByte(KeyboardLightingMode.Wave, direction);
+            p2[9] = 0x02;
+            p2[10] = (byte)RainbowColors.Length;
+            for (int i = 0; i < 2; i++) WriteWaveStop(p2, 11 + i * 4, i);
+            if (WriteForResponse(p2) is null) return false;
+
+            byte[] p1 = new byte[21];
+            p1[0] = reportId;
+            p1[1] = 0x51;
+            p1[2] = 0x2C;
+            p1[3] = (byte)KeyboardLightingMode.Wave;
+            p1[4] = 0x01;
+            for (int i = 0; i < 4; i++) WriteWaveStop(p1, 5 + i * 4, i + 2);
+            if (WriteForResponse(p1) is null) return false;
+
+            byte[] p0 = new byte[9];
+            p0[0] = reportId;
+            p0[1] = 0x51;
+            p0[2] = 0x2C;
+            p0[3] = (byte)KeyboardLightingMode.Wave;
+            p0[4] = 0x00;
+            WriteWaveStop(p0, 5, 6);
+            return WriteForResponse(p0) is not null;
+        }
+
+        // chunk sequence tagged in [4], counting down to 0: ripple 02/01/00, quicksand 01/00;
+        // the first chunk carries speed/brightness/direction and random colour (no palette in the UI)
+        protected bool ApplyChunked(KeyboardLightingMode mode, AuraSpeed speed, int brightness, KeyboardLightingDirection direction, byte firstTag)
         {
             for (byte tag = firstTag; ; tag--)
             {
@@ -682,6 +812,7 @@ namespace GHelper.Peripherals.Keyboard
                     packet[5] = AuraSpeedByte(speed);
                     packet[6] = (byte)Math.Min(100, brightness);
                     packet[7] = 1;
+                    packet[8] = DirectionByte(mode, direction);
                     packet[9] = 0x02;
                 }
                 if (WriteForResponse(packet) is null) return false;
@@ -689,19 +820,21 @@ namespace GHelper.Peripherals.Keyboard
             }
         }
 
-        public virtual bool ApplyLighting(KeyboardLightingMode mode, Color color, Color color2, AuraSpeed speed, int brightness)
+        public virtual bool ApplyLighting(KeyboardLightingMode mode, Color color, Color color2, AuraSpeed speed, int brightness, KeyboardLightingDirection direction)
         {
             if (!HasRGB()) return false;
 
             if (UsesChunkedWaveEffects())
             {
-                if (mode == KeyboardLightingMode.Wave || mode == KeyboardLightingMode.Ripple)
-                    return ApplyChunked(mode, speed, brightness, 0x02);
+                if (mode == KeyboardLightingMode.Wave)
+                    return ApplyChunkedWave(speed, brightness, direction);
+                if (mode == KeyboardLightingMode.Ripple)
+                    return ApplyChunked(mode, speed, brightness, direction, 0x02);
                 if (mode == KeyboardLightingMode.Quicksand)
-                    return ApplyChunked(mode, speed, brightness, 0x01);
+                    return ApplyChunked(mode, speed, brightness, direction, 0x01);
             }
 
-            byte[] packet = BuildAuraPacket(mode, color, color2, speed, brightness);
+            byte[] packet = BuildAuraPacket(mode, color, color2, speed, brightness, direction);
             byte[]? response = WriteForResponse(packet);
 
             if (response is not null) Logger.WriteLine(GetDisplayName() + ": Lighting " + BitConverter.ToString(packet, 0, Math.Min(19, packet.Length)));
@@ -724,7 +857,7 @@ namespace GHelper.Peripherals.Keyboard
         [MethodImpl(MethodImplOptions.Synchronized)]
         private void WriteColorLocked(Color color)
         {
-            byte[] packet = BuildAuraPacket(KeyboardLightingMode.Static, color, Color.Black, AuraSpeed.Normal, StoredBrightness);
+            byte[] packet = BuildAuraPacket(KeyboardLightingMode.Static, color, Color.Black, AuraSpeed.Normal, StoredBrightness, KeyboardLightingDirection.Right);
             Array.Resize(ref packet, USBPacketSize());
             Write(packet);
         }
@@ -757,7 +890,7 @@ namespace GHelper.Peripherals.Keyboard
         public bool SetLedColors(Color[] colors)
         {
             if (colors.Length > 0 && Array.TrueForAll(colors, c => c.ToArgb() == colors[0].ToArgb()))
-                return ApplyLighting(KeyboardLightingMode.Static, colors[0], Color.Black, StoredSpeed, StoredBrightness);
+                return ApplyLighting(KeyboardLightingMode.Static, colors[0], Color.Black, StoredSpeed, StoredBrightness, KeyboardLightingDirection.Right);
 
             byte[] map = Layout().LedIds;
             for (int i = 0; i < colors.Length; i += 14)
@@ -873,7 +1006,8 @@ namespace GHelper.Peripherals.Keyboard
             Color color = Color.FromArgb(AppConfig.Get("aura_color"));
             Color color2 = Color.FromArgb(AppConfig.Get("aura_color2"));
 
-            if (!ApplyLighting(MapAuraMode(mode), color, color2, speed, StoredBrightness)) return false;
+            KeyboardLightingMode mapped = MapAuraMode(mode);
+            if (!ApplyLighting(mapped, color, color2, speed, StoredBrightness, ResolveDirection(mapped, StoredDirection))) return false;
             return SaveLighting();
         }
 
@@ -891,8 +1025,9 @@ namespace GHelper.Peripherals.Keyboard
         public Color StoredColor3 => Color.FromArgb(AppConfig.Get(ConfigKey("color3"), Color.Black.ToArgb()));
         public AuraSpeed StoredSpeed => (AuraSpeed)AppConfig.Get(ConfigKey("speed"), (int)AuraSpeed.Normal);
         public int StoredBrightness => AppConfig.Get(ConfigKey("brightness"), 100);
+        public KeyboardLightingDirection StoredDirection => (KeyboardLightingDirection)AppConfig.Get(ConfigKey("direction"), (int)KeyboardLightingDirection.Right);
 
-        public void StoreLighting(KeyboardLightingMode mode, Color color, Color color2, Color color3, AuraSpeed speed, int brightness)
+        public void StoreLighting(KeyboardLightingMode mode, Color color, Color color2, Color color3, AuraSpeed speed, int brightness, KeyboardLightingDirection direction)
         {
             AppConfig.Set(ConfigKey("mode"), (int)mode);
             AppConfig.Set(ConfigKey("color"), color.ToArgb());
@@ -900,13 +1035,14 @@ namespace GHelper.Peripherals.Keyboard
             AppConfig.Set(ConfigKey("color3"), color3.ToArgb());
             AppConfig.Set(ConfigKey("speed"), (int)speed);
             AppConfig.Set(ConfigKey("brightness"), brightness);
+            AppConfig.Set(ConfigKey("direction"), (int)direction);
         }
 
         public bool ApplyStoredLighting()
         {
             if (!HasStoredLighting) return false;
             if (StoredMode == KeyboardLightingMode.Direct) return SetLedColors(StoredKeyColors());
-            return ApplyLighting(StoredMode, StoredColor, StoredColor2, StoredSpeed, StoredBrightness);
+            return ApplyLighting(StoredMode, StoredColor, StoredColor2, StoredSpeed, StoredBrightness, ResolveDirection(StoredMode, StoredDirection));
         }
 
         public bool HasTransientLighting => StoredMode == KeyboardLightingMode.Direct;
