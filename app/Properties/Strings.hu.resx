@@ -441,7 +441,7 @@ Folytatni szeretnéd?</value>
     <value>Ventilátor és energia</value>
   </data>
   <data name="FanSpeed" xml:space="preserve">
-    <value>Ventilátor</value>
+    <value>Venti</value>
   </data>
   <data name="FansPower" xml:space="preserve">
     <value>Venti + energia</value>
