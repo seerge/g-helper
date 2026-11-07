@@ -241,6 +241,21 @@ public static class AppConfig
         Write();
     }
 
+    public static void Set(string name, Color[] colors)
+    {
+        Set(name, string.Join(",", colors.Select(c => c.ToArgb().ToString("x8"))));
+    }
+
+    public static Color[] GetColors(string name, int count, Color fill)
+    {
+        Color[] colors = Enumerable.Repeat(fill, count).ToArray();
+        string[] stored = GetString(name)?.Split(',') ?? [];
+        for (int i = 0; i < count && i < stored.Length; i++)
+            if (int.TryParse(stored[i], System.Globalization.NumberStyles.HexNumber, null, out int argb))
+                colors[i] = Color.FromArgb(argb);
+        return colors;
+    }
+
     public static void Remove(string name)
     {
         lock (configLock) config.Remove(name);

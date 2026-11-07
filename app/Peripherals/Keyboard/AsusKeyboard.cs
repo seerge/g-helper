@@ -782,26 +782,9 @@ namespace GHelper.Peripherals.Keyboard
             return true;
         }
 
-        public Color[] StoredKeyColors()
-        {
-            Color[] colors = new Color[LedCount()];
-            Array.Fill(colors, StoredColor);
+        public Color[] StoredKeyColors() => AppConfig.GetColors(ConfigKey("key_colors"), LedCount(), StoredColor);
 
-            string? stored = AppConfig.GetString(ConfigKey("key_colors"));
-            if (stored is null) return colors;
-
-            string[] parts = stored.Split(',');
-            for (int i = 0; i < colors.Length && i < parts.Length; i++)
-                if (int.TryParse(parts[i], System.Globalization.NumberStyles.HexNumber, null, out int argb))
-                    colors[i] = Color.FromArgb(argb);
-
-            return colors;
-        }
-
-        public void StoreKeyColors(Color[] colors)
-        {
-            AppConfig.Set(ConfigKey("key_colors"), string.Join(",", colors.Select(c => c.ToArgb().ToString("x8"))));
-        }
+        public void StoreKeyColors(Color[] colors) => AppConfig.Set(ConfigKey("key_colors"), colors);
 
         public bool SaveLighting()
         {

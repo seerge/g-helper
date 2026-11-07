@@ -44,6 +44,7 @@ namespace GHelper
         public Slash? slashForm;
         public Fans? fansForm;
         public Extra? extraForm;
+        public AuraKeys? auraKeysForm;
         public Updates? updatesForm;
         public Handheld? handheldForm;
         public OverlayConfig? overlayForm;
@@ -1220,8 +1221,26 @@ namespace GHelper
             colorDlg.ShowDialog(this);
         }
 
+        public void ToggleAuraKeys()
+        {
+            if (auraKeysForm == null || auraKeysForm.Text == "")
+            {
+                auraKeysForm = new AuraKeys();
+                AddOwnedForm(auraKeysForm);
+            }
+
+            if (auraKeysForm.Visible) auraKeysForm.Close();
+            else auraKeysForm.Show();
+        }
+
         private void ButtonKeyboardColor_Click(object? sender, EventArgs e)
         {
+            if (Aura.Mode == AuraMode.CUSTOM)
+            {
+                ToggleAuraKeys();
+                return;
+            }
+
             SetColorPicker("aura_color", Aura.Color1);
         }
 

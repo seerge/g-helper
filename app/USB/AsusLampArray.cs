@@ -11,7 +11,7 @@ public static class AsusLampArray
     const int MULTI_MAX = 8;
     const byte PURPOSE_CONTROL = 0x01;
 
-    struct Lamp { public int Zone; public double T; }
+    struct Lamp { public int Zone; public double T; public int X, Y, Binding; }
 
     static HidDevice? device;
     static HidStream? stream;
@@ -118,6 +118,8 @@ public static class AsusLampArray
     static void ReadLamps(int count)
     {
         var xs = new int[count];
+        var ys = new int[count];
+        var bindings = new int[count];
         var keyboard = new bool[count];
         int keyMin = int.MaxValue, keyMax = int.MinValue, barMin = int.MaxValue, barMax = int.MinValue;
         for (int i = 0; i < count; i++)
@@ -134,7 +136,9 @@ public static class AsusLampArray
                     stream.GetFeature(resp);
                 }
                 xs[i] = BitConverter.ToInt32(resp, 3);
+                ys[i] = BitConverter.ToInt32(resp, 7);
                 keyboard[i] = (BitConverter.ToUInt32(resp, 19) & PURPOSE_CONTROL) != 0;
+                bindings[i] = resp[28];
             }
             catch { }
             if (keyboard[i]) { keyMin = Math.Min(keyMin, xs[i]); keyMax = Math.Max(keyMax, xs[i]); }
@@ -146,7 +150,7 @@ public static class AsusLampArray
         {
             int min = keyboard[i] ? keyMin : barMin;
             int span = Math.Max(1, (keyboard[i] ? keyMax : barMax) - min);
-            lamps[i] = new Lamp { Zone = keyboard[i] ? 0 : 4, T = (xs[i] - min) / (double)span };
+            lamps[i] = new Lamp { Zone = keyboard[i] ? 0 : 4, T = (xs[i] - min) / (double)span, X = xs[i], Y = ys[i], Binding = bindings[i] };
         }
     }
 
@@ -184,7 +188,7 @@ public static class AsusLampArray
     {
         if (!Available) return;
         bool streaming = mode is AuraMode.HEATMAP or AuraMode.AMBIENT or AuraMode.GRADIENT
-            or AuraMode.ZONETEST or AuraMode.AUDIO or AuraMode.AUDIOPULSE;
+            or AuraMode.ZONETEST or AuraMode.AUDIO or AuraMode.AUDIOPULSE or AuraMode.CUSTOM;
         if (streaming) controlled = false;
         else Reset();
     }
@@ -227,6 +231,17 @@ public static class AsusLampArray
             arr[i] = Blend(zones, lamps[i].Zone, lamps[i].T);
         SendMulti(arr);
     }
+
+    public static void SetLamps(Color[] colors)
+    {
+        if (!Available || !Reopen()) return;
+        if (!controlled) Control();
+        SendMulti(colors);
+    }
+
+    public static int LampCount => lamps.Length;
+
+    public static (int X, int Y, int Usage, bool Key)[] Lamps() => lamps.Select(l => (l.X, l.Y, l.Binding, l.Zone == 0)).ToArray();
 
     static void SendMulti(Color[] arr)
     {
