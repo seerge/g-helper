@@ -199,6 +199,7 @@ namespace GHelper.Overlay
         private bool _active;
         private bool _gameOnly;
         private bool _showNames;
+        private bool _inline;
         private bool _showFps, _showTemp, _showFans, _showChart, _showPower, _showUsage, _showClocks, _showRam, _showBattery;
         private bool _onBattery;
         private int _overlayBattery = -1;
@@ -559,7 +560,8 @@ namespace GHelper.Overlay
             int colGap = S(sc, BaseColGap);
             int powGap = S(sc, BasePowerGap);
 
-            int innerH = lineH * 2 + lineGap;
+            bool inline = _inline;
+            int innerH = inline ? lineH : lineH * 2 + lineGap;
             int totalH = padY * 2 + innerH;
 
             bool showFps = _showFps, showTemp = _showTemp, showFans = _showFans, showChart = _showChart;
@@ -577,14 +579,16 @@ namespace GHelper.Overlay
             int cursor = padX;
             if (showFps) cursor += fpsColW + colGap;
 
+            int chartX = cursor;
+            if (showChart && inline) cursor += chartColW + colGap;
+
             int nameX = cursor;
             if (showNames) cursor += nameColW + colGap;
 
             int leftX = cursor;
             cursor += S(sc, showTemp && showFans ? BaseLeftColWidth : showTemp || showFans ? BaseLightLeftColWidth : 0);
 
-            int chartX = cursor;
-            if (showChart) cursor += chartColW;
+            if (showChart && !inline) { chartX = cursor; cursor += chartColW; }
 
             int powX = cursor;
             if (showPower) { powX = cursor + powGap; cursor = powX + powColW; }
@@ -616,7 +620,9 @@ namespace GHelper.Overlay
                 cursor = batIconX + S(sc, BaseBatIconWidth);
             }
 
-            int width = cursor + padX;
+            int row2X = inline ? cursor - nameX + colGap : 0;
+            int row2Y = inline ? 0 : lineH + lineGap;
+            int width = cursor + row2X + padX;
 
             if (Size.Width != width || Size.Height != totalH)
                 Size = new Size(width, totalH);
@@ -662,14 +668,15 @@ namespace GHelper.Overlay
             {
                 var savedClip = g.Save();
                 g.SetClip(new RectangleF(nameX, topY, nameColW, innerH));
+                g.SetClip(new RectangleF(nameX + row2X, topY + row2Y, nameColW, innerH), CombineMode.Union);
                 g.DrawString(_gpuShortName, font, _gpuBrush, new PointF(nameX, textY));
-                g.DrawString(_cpuShortName, font, _cpuBrush, new PointF(nameX, textY + lineH + lineGap));
+                g.DrawString(_cpuShortName, font, _cpuBrush, new PointF(nameX + row2X, textY + row2Y));
                 g.Restore(savedClip);
             }
 
             // Left column: fan RPM hidden in Light mode
             DrawTempFan(g, font, rpmFont, charW, sc, leftX, textY, showTemp ? _gpuTempStr : "", showFans ? _gpuFanNum : "", _gpuBrush);
-            DrawTempFan(g, font, rpmFont, charW, sc, leftX, textY + lineH + lineGap, showTemp ? _cpuTempStr : "", showFans ? _cpuFanNum : "", _cpuBrush);
+            DrawTempFan(g, font, rpmFont, charW, sc, leftX + row2X, textY + row2Y, showTemp ? _cpuTempStr : "", showFans ? _cpuFanNum : "", _cpuBrush);
 
             // Chart — hidden in Light mode
             if (showChart)
@@ -681,12 +688,12 @@ namespace GHelper.Overlay
                 new PointF(powX + powColW - g.MeasureString(_gpuPow, font).Width, textY));
             if (showPower && _cpuPow.Length > 0)
                 g.DrawString(_cpuPow, font, _cpuBrush,
-                new PointF(powX + powColW - g.MeasureString(_cpuPow, font).Width, textY + lineH + lineGap));
+                new PointF(powX + row2X + powColW - g.MeasureString(_cpuPow, font).Width, textY + row2Y));
 
             if (showClocks)
             {
                 DrawMhz(g, font, clockX, clockColW, textY, _gpuClock, _gpuBrush);
-                DrawMhz(g, font, clockX, clockColW, textY + lineH + lineGap, _cpuClock, _cpuBrush);
+                DrawMhz(g, font, clockX + row2X, clockColW, textY + row2Y, _cpuClock, _cpuBrush);
             }
 
             if (showUsage)
@@ -699,25 +706,24 @@ namespace GHelper.Overlay
                 int numCells = Math.Max(2, (targetBarH + sepH) / pitch);
                 int barH = numCells * cellH + (numCells - 1) * sepH;
                 int barYOff = (lineH - barH) / 2 - S(sc, BaseUsageBarYNudge);
-                int row2Y = lineH + lineGap;
 
                 if (showUsageMetric)
                 {
                     DrawUsageBar(g, barX, topY + barYOff, barW, cellH, sepH, numCells, _gpuUsage ?? 0, _gpuBrush, _gpuFillBrush);
-                    DrawUsageBar(g, barX, topY + row2Y + barYOff, barW, cellH, sepH, numCells, _cpuUsage ?? 0, _cpuBrush, _cpuFillBrush);
+                    DrawUsageBar(g, barX + row2X, topY + row2Y + barYOff, barW, cellH, sepH, numCells, _cpuUsage ?? 0, _cpuBrush, _cpuFillBrush);
 
                     DrawUsagePercent(g, font, usageNumX, usageNumColW, textY,           _gpuUsage, _gpuBrush);
-                    DrawUsagePercent(g, font, usageNumX, usageNumColW, textY + row2Y,   _cpuUsage, _cpuBrush);
+                    DrawUsagePercent(g, font, usageNumX + row2X, usageNumColW, textY + row2Y,   _cpuUsage, _cpuBrush);
                 }
 
                 // VRAM (GPU row) / RAM (CPU row) — complete mode only
                 if (showMem)
                 {
                     DrawMemGb(g, font, memNumX, memNumColW, textY,         _vramUsedMb, _gpuBrush);
-                    DrawMemGb(g, font, memNumX, memNumColW, textY + row2Y, _ramUsedMb, _cpuBrush);
+                    DrawMemGb(g, font, memNumX + row2X, memNumColW, textY + row2Y, _ramUsedMb, _cpuBrush);
 
                     DrawUsageBar(g, memBarX, topY + barYOff, barW, cellH, sepH, numCells, _vramUsage ?? 0, _gpuBrush, _gpuFillBrush);
-                    DrawUsageBar(g, memBarX, topY + row2Y + barYOff, barW, cellH, sepH, numCells, _ramUsage ?? 0, _cpuBrush, _cpuFillBrush);
+                    DrawUsageBar(g, memBarX + row2X, topY + row2Y + barYOff, barW, cellH, sepH, numCells, _ramUsage ?? 0, _cpuBrush, _cpuFillBrush);
                 }
             }
 
@@ -729,9 +735,9 @@ namespace GHelper.Overlay
                 if (_batRate.Length > 0)
                 {
                     g.DrawString(_batRate, font, _batBrush,
-                    new PointF(batX + batColW - g.MeasureString(_batRate, font).Width, textY + lineH + lineGap));
+                    new PointF(batX + row2X + batColW - g.MeasureString(_batRate, font).Width, textY + row2Y));
                     g.DrawString("W", font, _batBrush,
-                    new PointF(batIconX + (S(sc, BaseBatIconWidth) - g.MeasureString("W", font).Width) / 2f, textY + lineH + lineGap));
+                    new PointF(batIconX + row2X + (S(sc, BaseBatIconWidth) - g.MeasureString("W", font).Width) / 2f, textY + row2Y));
                 }
 
                 int batIconH = S(sc, BaseBatIconHeight);
@@ -1009,7 +1015,7 @@ namespace GHelper.Overlay
                 "overlay_show_fans" or "overlay_show_chart" => m != OverlayMode.Light,
                 "overlay_show_usage" => m == OverlayMode.Full || m == OverlayMode.Complete,
                 "overlay_show_ram" or "overlay_show_clocks" => m == OverlayMode.Complete,
-                "overlay_names" => false,
+                "overlay_names" or "overlay_inline" => false,
                 _ => true,
             };
             return AppConfig.Get(ModeKey(key, mode), def ? 1 : 0) != 0;
@@ -1031,6 +1037,8 @@ namespace GHelper.Overlay
             _showClocks = BlockShown("overlay_show_clocks", m);
             _showRam   = BlockShown("overlay_show_ram", m);
             _showNames = BlockShown("overlay_names", m);
+            _inline    = BlockShown("overlay_inline", m);
+            _lastScale = 0f;
             _overlayBattery = BatteryState(m);
             _showBattery = _overlayBattery != 0;
         }
