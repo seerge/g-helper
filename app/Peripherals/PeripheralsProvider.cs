@@ -836,7 +836,10 @@ namespace GHelper.Peripherals
             DetectAllAsusMice();
             DetectAllAsusKeyboards();
             DetectAllAsusHeadsets();
-            if (AppConfig.IsDetachableKeyboard()) Program.inputDispatcher.Init();
+            if (AppConfig.IsDetachableKeyboard()) {
+                Program.inputDispatcher.Init();
+                Input.InputDispatcher.InitFNLock();
+            }
             XGM.Init();
         }
     }
