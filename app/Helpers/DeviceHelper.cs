@@ -10,6 +10,9 @@ namespace GHelper.Helpers
         const uint DN_HAS_PROBLEM = 0x00000400;
         const uint CM_DRP_DEVICEDESC = 0x00000001;
         const uint CM_LOCATE_DEVNODE_PHANTOM = 0x00000001;
+        const uint CM_DISABLE_UI_NOT_OK = 0x00000004;
+        const int MAX_DEVICE_ID_LEN = 200;
+        const int PCI_BRIDGE_RESET_TIMEOUT = 10000;
 
         [DllImport("CfgMgr32.dll", CharSet = CharSet.Unicode)]
         static extern int CM_Get_Device_ID_List_SizeW(out uint pulLen, string pszFilter, uint ulFlags);
@@ -26,16 +29,19 @@ namespace GHelper.Helpers
         [DllImport("CfgMgr32.dll", CharSet = CharSet.Unicode)]
         static extern int CM_Get_DevNode_Registry_PropertyW(uint dnDevInst, uint ulProperty, out uint pulRegDataType, char[] Buffer, ref uint pulLength, uint ulFlags);
 
-		[DllImport("cfgmgr32.dll")]
-		static extern uint CM_Disable_DevNode(uint dnDevInst, uint ulFlags);
+        [DllImport("CfgMgr32.dll")]
+        static extern uint CM_Disable_DevNode(uint dnDevInst, uint ulFlags);
 
-		[DllImport("cfgmgr32.dll")]
-		static extern uint CM_Enable_DevNode(uint dnDevInst, uint ulFlags);
+        [DllImport("CfgMgr32.dll")]
+        static extern uint CM_Enable_DevNode(uint dnDevInst, uint ulFlags);
 
-		[DllImport("cfgmgr32.dll")]
-		static extern uint CM_Get_Parent(out uint pdnDevInst, uint dnDevInst, uint ulFlags);
+        [DllImport("CfgMgr32.dll")]
+        static extern uint CM_Get_Parent(out uint pdnDevInst, uint dnDevInst, uint ulFlags);
 
-		static string ProblemText(uint problem) => problem switch
+        [DllImport("CfgMgr32.dll", CharSet = CharSet.Unicode)]
+        static extern uint CM_Get_Device_IDW(uint dnDevInst, char[] Buffer, uint BufferLen, uint ulFlags);
+
+        static string ProblemText(uint problem) => problem switch
         {
             1 => "Device is not configured",
             10 => "Device cannot start",
@@ -56,8 +62,10 @@ namespace GHelper.Helpers
             54 => "Device is being reset",
             _ => "Unknown problem",
         };
-         
-        public static string? GetGpuError()
+
+		static int bridgeResetRunning = 0;
+
+		public static string? GetGpuError()
         {
             string? error = null;
 
@@ -83,28 +91,113 @@ namespace GHelper.Helpers
             return error;
         }
 
-
-        public static bool RestartdGpuPciBridge()
+        public static bool RestartdGpuPciBridge(int timeout = PCI_BRIDGE_RESET_TIMEOUT)
         {
-            bool success = false;
-			uint flags = CM_GETIDLIST_FILTER_CLASS;
-			if (CM_Get_Device_ID_List_SizeW(out uint len, GUID_DEVCLASS_DISPLAY, flags) == 0 && len > 1)
-			{
-				var buffer = new char[len];
-				if (CM_Get_Device_ID_ListW(GUID_DEVCLASS_DISPLAY, buffer, len, flags) == 0)
-					foreach (var id in new string(buffer).Split('\0', StringSplitOptions.RemoveEmptyEntries))
-						if (id.StartsWith("PCI\\VEN_10DE", StringComparison.OrdinalIgnoreCase) &&
-							CM_Locate_DevNodeW(out uint devInst, id, CM_LOCATE_DEVNODE_PHANTOM) == 0 &&
+            if (!ProcessHelper.IsUserAdministrator())
+            {
+                Logger.WriteLine("dGPU PCIe bridge reset skipped: admin privileges required");
+                return false;
+            }
+
+            if (Interlocked.CompareExchange(ref bridgeResetRunning, 1, 0) != 0)
+            {
+                Logger.WriteLine("dGPU PCIe bridge reset skipped: already in progress");
+                return false;
+            }
+
+            var reset = Task.Run(() =>
+            {
+                try
+                {
+                    return ResetdGpuPciBridge();
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteLine("dGPU PCIe bridge reset error: " + ex.Message);
+                    return false;
+                }
+                finally
+                {
+                    Interlocked.Exchange(ref bridgeResetRunning, 0);
+                }
+            });
+
+            if (!reset.Wait(timeout))
+            {
+                Logger.WriteLine($"dGPU PCIe bridge reset: timed out after {timeout / 1000}s, continuing in background");
+                reset.ContinueWith(t =>
+                {
+                    if (t.Result)
+                    {
+                        HardwareControl.RecreateGpuControl();
+                    }
+                });
+                return false;
+            }
+
+            return reset.Result;
+        }
+
+        static bool ResetdGpuPciBridge()
+        {
+            var bridges = new HashSet<uint>();
+
+            uint flags = CM_GETIDLIST_FILTER_CLASS;
+            if (CM_Get_Device_ID_List_SizeW(out uint len, GUID_DEVCLASS_DISPLAY, flags) == 0 && len > 1)
+            {
+                var buffer = new char[len];
+                if (CM_Get_Device_ID_ListW(GUID_DEVCLASS_DISPLAY, buffer, len, flags) == 0)
+                    foreach (var id in new string(buffer).Split('\0', StringSplitOptions.RemoveEmptyEntries))
+                        if (id.StartsWith("PCI\\VEN_10DE", StringComparison.OrdinalIgnoreCase) &&
+                            CM_Locate_DevNodeW(out uint devInst, id, CM_LOCATE_DEVNODE_PHANTOM) == 0 &&
                             CM_Get_Parent(out uint parentDevInst, devInst, 0) == 0)
-						{
-							success = CM_Disable_DevNode(parentDevInst, 0) == 0;
-                            System.Threading.Thread.Sleep(1000);
-                            success = CM_Enable_DevNode(parentDevInst, 0) == 0;
-                            System.Threading.Thread.Sleep(1000);
-						}
-			}
+                        {
+                            bridges.Add(parentDevInst);
+                        }
+            }
+
+            if (bridges.Count == 0)
+            {
+                Logger.WriteLine("dGPU PCIe bridge reset skipped: dGPU bridge not found");
+                return false;
+            }
+
+            bool success = true;
+
+            foreach (uint bridge in bridges)
+            {
+                string bridgeId = GetDeviceId(bridge) ?? "unknown";
+
+                // Ensure parent is a PCI device before disabling
+                if (!bridgeId.StartsWith("PCI\\", StringComparison.OrdinalIgnoreCase))
+                {
+                    Logger.WriteLine($"dGPU PCIe bridge reset skipped: unexpected parent {bridgeId}");
+                    success = false;
+                    continue;
+                }
+
+                var watch = System.Diagnostics.Stopwatch.StartNew();
+
+                uint disable = CM_Disable_DevNode(bridge, CM_DISABLE_UI_NOT_OK);
+                Thread.Sleep(1000);
+                uint enable = CM_Enable_DevNode(bridge, 0);
+                Thread.Sleep(1000);
+
+                success &= disable == 0 && enable == 0;
+
+                Logger.WriteLine($"dGPU PCIe bridge reset: {bridgeId} disable=0x{disable:X} enable=0x{enable:X} time={watch.ElapsedMilliseconds}ms");
+            }
+
+            Logger.WriteLine($"dGPU PCIe bridge reset {(success ? "done" : "failed")}, gpu problem: {GetGpuError()?.Replace('\n', ' ') ?? "none"}");
 
             return success;
-		}
+        }
+
+        static string? GetDeviceId(uint devInst)
+        {
+            var buffer = new char[MAX_DEVICE_ID_LEN + 1];
+            if (CM_Get_Device_IDW(devInst, buffer, (uint)buffer.Length, 0) != 0) return null;
+            return new string(buffer).TrimEnd('\0');
+        }
     }
 }
