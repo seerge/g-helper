@@ -1287,6 +1287,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CPU + GPU Boost.
+        /// </summary>
+        internal static string GPUTotalBoost {
+            get {
+                return ResourceManager.GetString("GPUTotalBoost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Time to hibernate in sleep on battery.
         /// </summary>
         internal static string HibernateAfter {

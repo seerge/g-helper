@@ -148,6 +148,10 @@ namespace GHelper
             labelGPUTemp = new Label();
             labelGPUTempTitle = new Label();
             trackGPUTemp = new RTrackBar();
+            panelGPUTotal = new Panel();
+            labelGPUTotal = new Label();
+            labelGPUTotalTitle = new Label();
+            trackGPUTotal = new RTrackBar();
             panelGPUBoost = new Panel();
             labelGPUBoost = new Label();
             labelGPUBoostTitle = new Label();
@@ -234,6 +238,8 @@ namespace GHelper
             panelGPU.SuspendLayout();
             panelGPUTemp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackGPUTemp).BeginInit();
+            panelGPUTotal.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackGPUTotal).BeginInit();
             panelGPUBoost.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackGPUBoost).BeginInit();
             panelGPUPower.SuspendLayout();
@@ -1611,6 +1617,7 @@ namespace GHelper
             // 
             panelGPU.AutoSize = true;
             panelGPU.Controls.Add(panelGPUTemp);
+            panelGPU.Controls.Add(panelGPUTotal);
             panelGPU.Controls.Add(panelGPUBoost);
             panelGPU.Controls.Add(panelGPUPower);
             panelGPU.Controls.Add(panelGPUMemory);
@@ -1622,7 +1629,7 @@ namespace GHelper
             panelGPU.Margin = new Padding(4);
             panelGPU.Name = "panelGPU";
             panelGPU.Padding = new Padding(0, 0, 0, 18);
-            panelGPU.Size = new Size(520, 822);
+            panelGPU.Size = new Size(520, 946);
             panelGPU.TabIndex = 1;
             panelGPU.Visible = false;
             // 
@@ -1634,12 +1641,12 @@ namespace GHelper
             panelGPUTemp.Controls.Add(labelGPUTempTitle);
             panelGPUTemp.Controls.Add(trackGPUTemp);
             panelGPUTemp.Dock = DockStyle.Top;
-            panelGPUTemp.Location = new Point(0, 680);
+            panelGPUTemp.Location = new Point(0, 804);
             panelGPUTemp.Margin = new Padding(4);
             panelGPUTemp.MaximumSize = new Size(0, 124);
             panelGPUTemp.Name = "panelGPUTemp";
             panelGPUTemp.Size = new Size(520, 124);
-            panelGPUTemp.TabIndex = 6;
+            panelGPUTemp.TabIndex = 7;
             // 
             // labelGPUTemp
             // 
@@ -1674,7 +1681,57 @@ namespace GHelper
             trackGPUTemp.TickFrequency = 5;
             trackGPUTemp.TickStyle = TickStyle.TopLeft;
             trackGPUTemp.Value = 87;
-            // 
+            //
+            // panelGPUTotal
+            //
+            panelGPUTotal.AutoSize = true;
+            panelGPUTotal.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelGPUTotal.Controls.Add(labelGPUTotal);
+            panelGPUTotal.Controls.Add(labelGPUTotalTitle);
+            panelGPUTotal.Controls.Add(trackGPUTotal);
+            panelGPUTotal.Dock = DockStyle.Top;
+            panelGPUTotal.Location = new Point(0, 680);
+            panelGPUTotal.Margin = new Padding(4);
+            panelGPUTotal.MaximumSize = new Size(0, 124);
+            panelGPUTotal.Name = "panelGPUTotal";
+            panelGPUTotal.Size = new Size(520, 124);
+            panelGPUTotal.TabIndex = 6;
+            panelGPUTotal.Visible = false;
+            //
+            // labelGPUTotal
+            //
+            labelGPUTotal.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            labelGPUTotal.Location = new Point(374, 14);
+            labelGPUTotal.Margin = new Padding(4, 0, 4, 0);
+            labelGPUTotal.Name = "labelGPUTotal";
+            labelGPUTotal.Size = new Size(124, 32);
+            labelGPUTotal.TabIndex = 44;
+            labelGPUTotal.Text = "25W";
+            labelGPUTotal.TextAlign = ContentAlignment.TopRight;
+            //
+            // labelGPUTotalTitle
+            //
+            labelGPUTotalTitle.AutoSize = true;
+            labelGPUTotalTitle.Location = new Point(10, 14);
+            labelGPUTotalTitle.Margin = new Padding(4, 0, 4, 0);
+            labelGPUTotalTitle.Name = "labelGPUTotalTitle";
+            labelGPUTotalTitle.Size = new Size(190, 32);
+            labelGPUTotalTitle.TabIndex = 43;
+            labelGPUTotalTitle.Text = "CPU + GPU Boost";
+            //
+            // trackGPUTotal
+            //
+            trackGPUTotal.Location = new Point(6, 48);
+            trackGPUTotal.Margin = new Padding(4, 2, 4, 2);
+            trackGPUTotal.Maximum = 50;
+            trackGPUTotal.Minimum = 0;
+            trackGPUTotal.Name = "trackGPUTotal";
+            trackGPUTotal.Size = new Size(496, 90);
+            trackGPUTotal.TabIndex = 42;
+            trackGPUTotal.TickFrequency = 5;
+            trackGPUTotal.TickStyle = TickStyle.TopLeft;
+            trackGPUTotal.Value = 25;
+            //
             // panelGPUBoost
             // 
             panelGPUBoost.AutoSize = true;
@@ -2147,6 +2204,9 @@ namespace GHelper
             panelGPUTemp.ResumeLayout(false);
             panelGPUTemp.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)trackGPUTemp).EndInit();
+            panelGPUTotal.ResumeLayout(false);
+            panelGPUTotal.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackGPUTotal).EndInit();
             panelGPUBoost.ResumeLayout(false);
             panelGPUBoost.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)trackGPUBoost).EndInit();
@@ -2213,6 +2273,10 @@ namespace GHelper
         private Label labelGPUTemp;
         private Label labelGPUTempTitle;
         private RTrackBar trackGPUTemp;
+        private Panel panelGPUTotal;
+        private Label labelGPUTotal;
+        private Label labelGPUTotalTitle;
+        private RTrackBar trackGPUTotal;
         private Panel panelTitleFans;
         private Panel panelApplyFans;
         private Label labelFansResult;
