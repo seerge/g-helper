@@ -743,14 +743,21 @@ namespace GHelper.Input
             if (AppConfig.IsDUO()) AsusHid.WriteInput([AsusHid.INPUT_ID, 0xD0, 0x7C, muted ? (byte)0x01 : (byte)0x00], "USB MicmuteLed");
         }
 
-        static void ToggleTouchScreen()
+        static async void ToggleTouchScreen()
         {
             var status = !TouchscreenHelper.GetStatus();
             Logger.WriteLine("Touchscreen status: " + status);
             if (status is not null)
             {
-                Program.toast.RunToast(Properties.Strings.Touchscreen + " " + ((bool)status ? Properties.Strings.On : Properties.Strings.Off), ToastIcon.Touchpad);
-                TouchscreenHelper.ToggleTouchscreen((bool)status);
+                if (!ProcessHelper.IsUserAdministrator())
+                {
+                    ProcessHelper.RunAsAdmin(status.Value ? "touchscreen-on" : "touchscreen-off");
+                    return;
+                }
+                bool? result = await Task.Run(() => TouchscreenHelper.ToggleTouchscreen(status.Value));
+                Program.settingsForm.VisualiseTouchscreen();
+                if (result == status)
+                    Program.toast.RunToast(Properties.Strings.Touchscreen + " " + (result.Value ? Properties.Strings.On : Properties.Strings.Off), ToastIcon.Touchpad);
             }
         }
 

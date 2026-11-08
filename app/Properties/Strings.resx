@@ -867,7 +867,16 @@ Do you still want to continue?</value>
     <value>Toggle Touchscreen</value>
   </data>
   <data name="Touchscreen" xml:space="preserve">
-    <value>Touchscreen</value>
+    <value>Touch Screen</value>
+  </data>
+  <data name="ShowTouchscreenToggle" xml:space="preserve">
+    <value>Show touchscreen toggle</value>
+  </data>
+  <data name="TouchscreenError" xml:space="preserve">
+    <value>Could not change the touchscreen state. Approve the administrator prompt and check the device in Device Manager.</value>
+  </data>
+  <data name="TouchscreenUnavailable" xml:space="preserve">
+    <value>Unavailable</value>
   </data>
   <data name="Turbo" xml:space="preserve">
     <value>Turbo</value>

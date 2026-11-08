@@ -124,6 +124,7 @@ namespace GHelper.Helpers
                 startInfo.Verb = "runas";
                 try
                 {
+                    AppConfig.Flush();
                     Process.Start(startInfo);
                     Application.Exit();
                 }
