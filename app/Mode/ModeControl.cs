@@ -467,8 +467,10 @@ namespace GHelper.Mode
             if (gpu_power >= AsusACPI.MinGPUPower && gpu_power <= AsusACPI.MaxGPUPower && Program.acpi.IsSupported(AsusACPI.GPU_POWER))
                 Program.acpi.DeviceSet(AsusACPI.GPU_POWER, gpu_power, "PowerLimit TGP (GPU VAR)");
 
-            if (gpu_boost >= AsusACPI.MinGPUBoost && gpu_boost <= AsusACPI.MaxGPUBoost && Program.acpi.IsSupported(AsusACPI.PPT_GPUC0))
-                boostResult = Program.acpi.DeviceSet(AsusACPI.PPT_GPUC0, gpu_boost, "PowerLimit C0 (GPU BOOST)");
+            if (GHelper.Gpu.DynamicBoostSettings.IsValidRequest(gpu_boost, AsusACPI.MinGPUBoost, AsusACPI.MaxGPUBoost)
+                && Program.acpi.IsSupported(AsusACPI.PPT_GPUC0))
+                boostResult = Program.acpi.DeviceSet(AsusACPI.PPT_GPUC0, gpu_boost,
+                    gpu_boost == 0 ? "PowerLimit C0 (GPU BOOST OFF)" : "PowerLimit C0 (GPU BOOST)");
 
             if (gpu_temp >= AsusACPI.MinGPUTemp && gpu_temp <= AsusACPI.MaxGPUTemp && Program.acpi.IsSupported(AsusACPI.PPT_GPUC2))
                 Program.acpi.DeviceSet(AsusACPI.PPT_GPUC2, gpu_temp, "PowerLimit C2 (GPU TEMP)");
