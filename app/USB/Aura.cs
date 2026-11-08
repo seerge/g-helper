@@ -378,7 +378,7 @@ namespace GHelper.USB
             IsOldStrix = feat1 == 0 && AppConfig.IsStrix();
             if (IsOldStrix) feat1 = FEAT1_LOGO | FEAT1_LIGHTBAR;
             HasLogo = (feat1 & FEAT1_LOGO) != 0 || AppConfig.IsZ13();
-            HasLightbar = (feat1 & FEAT1_LIGHTBAR) != 0;
+            HasLightbar = (feat1 & (FEAT1_LIGHTBAR | FEAT1_LOGO)) != 0;
             HasRearglow = (feat1 & (FEAT1_REARGLOW | FEAT1_VCUT)) != 0;
             hasRearStrip = (feat1 & FEAT1_REARGLOW) != 0;
 
