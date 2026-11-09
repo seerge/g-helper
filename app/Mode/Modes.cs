@@ -18,6 +18,7 @@
             { "fan_profile_gpu", "string" },
             { "fan_profile_mid", "string" }, 
             { "gpu_power", "int" },
+            { "gpu_total", "int" },
             { "gpu_boost", "int" },
             { "gpu_temp", "int" },
             { "gpu_core", "int" },

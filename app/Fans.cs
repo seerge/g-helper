@@ -40,6 +40,7 @@ namespace GHelper
 
         static int gpuPowerBase = 0;
         static bool isGPUPower => gpuPowerBase > 0;
+        static bool isGPUTotal = false;
         static bool clampFanDots = AppConfig.IsClampFanDots();
 
         public Fans()
@@ -69,6 +70,7 @@ namespace GHelper
             labelGPUBoostTitle.Text = Properties.Strings.GPUBoost;
             labelGPUTempTitle.Text = Properties.Strings.GPUTempTarget;
             labelGPUPowerTitle.Text = Properties.Strings.GPUPower;
+            labelGPUTotalTitle.Text = Properties.Strings.GPUTotalBoost;
 
             labelRisky.Text = Properties.Strings.UndervoltingRisky;
             buttonApplyAdvanced.Text = Properties.Strings.Apply;
@@ -215,6 +217,9 @@ namespace GHelper
             trackGPUPower.Minimum = AsusACPI.MinGPUPower;
             trackGPUPower.Maximum = AsusACPI.MaxGPUPower;
 
+            trackGPUTotal.Minimum = AsusACPI.MinGPUTotal;
+            trackGPUTotal.Maximum = AsusACPI.MaxGPUTotal;
+
             trackGPUClockLimit.Scroll += trackGPUClockLimit_Scroll;
             trackGPUCore.Scroll += trackGPU_Scroll;
             trackGPUMemory.Scroll += trackGPU_Scroll;
@@ -222,6 +227,7 @@ namespace GHelper
             trackGPUBoost.Scroll += trackGPUPower_Scroll;
             trackGPUTemp.Scroll += trackGPUPower_Scroll;
             trackGPUPower.Scroll += trackGPUPower_Scroll;
+            trackGPUTotal.Scroll += trackGPUPower_Scroll;
 
             trackGPUCore.MouseUp += TrackGPUClocks_MouseUp;
             trackGPUMemory.MouseUp += TrackGPUClocks_MouseUp;
@@ -230,6 +236,7 @@ namespace GHelper
             trackGPUBoost.MouseUp += TrackGPU_MouseUp;
             trackGPUTemp.MouseUp += TrackGPU_MouseUp;
             trackGPUPower.MouseUp += TrackGPU_MouseUp;
+            trackGPUTotal.MouseUp += TrackGPU_MouseUp;
 
             trackHysteresisUp.Scroll += TrackHysteresis_Scroll;
             trackHysteresisDown.Scroll += TrackHysteresis_Scroll;
@@ -317,6 +324,7 @@ namespace GHelper
             trackGPUBoost.AccessibleName = labelGPUBoostTitle.Text;
             trackGPUTemp.AccessibleName = labelGPUTempTitle.Text;
             trackGPUPower.AccessibleName = labelGPUPowerTitle.Text;
+            trackGPUTotal.AccessibleName = labelGPUTotalTitle.Text;
             trackGPUClockLimit.AccessibleName = labelGPUClockLimitTitle.Text;
             trackHysteresisUp.AccessibleName = labelHysteresisUp.Text;
             trackHysteresisDown.AccessibleName = labelHysteresisDown.Text;
@@ -634,6 +642,27 @@ namespace GHelper
             });
         }
 
+        private void InitGPUTotal()
+        {
+            if (!isGPUTotal) return;
+
+            Task.Run(async () =>
+            {
+                await Task.Delay(TimeSpan.FromMilliseconds(200));
+                int gpuTotal = Program.acpi.DeviceGet(AsusACPI.PPT_TOTAL9A);
+                Logger.WriteLine($"ReadGPUTotal ({Modes.GetCurrentBase()}): {gpuTotal}");
+
+                int gpu_total = AppConfig.GetMode("gpu_total");
+                if (gpu_total < 0) gpu_total = Math.Max(gpuTotal, AsusACPI.MinGPUTotal);
+
+                Invoke(delegate
+                {
+                    trackGPUTotal.Value = Math.Max(Math.Min(gpu_total, AsusACPI.MaxGPUTotal), AsusACPI.MinGPUTotal);
+                    VisualiseGPUSettings();
+                });
+            });
+        }
+
         public void InitGPU()
         {
             Task.Run(() =>
@@ -690,6 +719,7 @@ namespace GHelper
 
                     bool boostVisible = Program.acpi.IsSupported(AsusACPI.PPT_GPUC0);
                     bool tempVisible = Program.acpi.IsSupported(AsusACPI.PPT_GPUC2);
+                    bool totalVisible = Program.acpi.IsSupported(AsusACPI.PPT_TOTAL9A);
 
                     Invoke(delegate
                     {
@@ -706,11 +736,13 @@ namespace GHelper
 
                         panelGPUBoost.Visible = boostVisible;
                         panelGPUTemp.Visible = tempVisible;
+                        panelGPUTotal.Visible = isGPUTotal = totalVisible;
                         panelGPUCore.Visible = panelGPUMemory.Visible = nv.IsClockOffsetSupported;
 
                         VisualiseGPUSettings();
 
                         InitGPUPower();
+                        InitGPUTotal();
                     });
                 }
                 catch (Exception ex)
@@ -735,6 +767,7 @@ namespace GHelper
                 labelGPUClockLimit.Text = $"{trackGPUClockLimit.Value} MHz";
 
             labelGPUPower.Text = (gpuPowerBase + trackGPUPower.Value) + "W";
+            labelGPUTotal.Text = $"{trackGPUTotal.Value}W";
 
         }
 
@@ -811,6 +844,7 @@ namespace GHelper
             AppConfig.SetMode("gpu_temp", trackGPUTemp.Value);
 
             if (isGPUPower) AppConfig.SetMode("gpu_power", trackGPUPower.Value);
+            if (isGPUTotal) AppConfig.SetMode("gpu_total", trackGPUTotal.Value);
 
             VisualiseGPUSettings();
         }
@@ -1376,11 +1410,13 @@ namespace GHelper
                 AppConfig.RemoveMode("gpu_temp");
 
                 AppConfig.RemoveMode("gpu_power");
+                AppConfig.RemoveMode("gpu_total");
                 AppConfig.RemoveMode("gpu_clock_limit");
                 AppConfig.RemoveMode("gpu_core");
                 AppConfig.RemoveMode("gpu_memory");
 
                 InitGPUPower();
+                InitGPUTotal();
 
                 VisualiseGPUSettings();
                 modeControl.SetGPUClocks(true, true);

@@ -494,6 +494,9 @@ Do you still want to continue?</value>
   <data name="GPUTempTarget" xml:space="preserve">
     <value>Temperature Target</value>
   </data>
+  <data name="GPUTotalBoost" xml:space="preserve">
+    <value>CPU + GPU Boost</value>
+  </data>
   <data name="HibernateAfter" xml:space="preserve">
     <value>Time to hibernate in sleep on battery</value>
   </data>
