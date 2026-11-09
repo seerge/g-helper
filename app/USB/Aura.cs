@@ -790,7 +790,11 @@ namespace GHelper.USB
 
         public static (List<KeyDef[]> Rows, int[] Targets) KeyLayout()
         {
-            if (LampLayout) return AuraKeyboardLayouts.FromLamps(AsusLampArray.Lamps());
+            if (LampLayout)
+            {
+                var lamps = AsusLampArray.Lamps();
+                return AuraKeyboardLayouts.MapLamps(AuraKeyboardLayouts.Laptop(null, isIso), lamps) ?? AuraKeyboardLayouts.FromLamps(lamps);
+            }
 
             var layout = AuraKeyboardLayouts.Laptop(KeyLayoutName, isIso);
             return (layout.Rows, isStrix4Zone ? AuraKeyboardLayouts.Zones(layout.Rows) : Array.ConvertAll(layout.LedIds, id => (int)id));

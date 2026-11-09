@@ -11,7 +11,7 @@ public static class AsusLampArray
     const int MULTI_MAX = 8;
     const byte PURPOSE_CONTROL = 0x01;
 
-    struct Lamp { public int Zone; public double T; public int X, Y, Binding; }
+    struct Lamp { public int Zone; public double T; public int X, Y, Binding, Purpose; }
 
     static HidDevice? device;
     static HidStream? stream;
@@ -121,6 +121,7 @@ public static class AsusLampArray
         var ys = new int[count];
         var bindings = new int[count];
         var keyboard = new bool[count];
+        var purposes = new int[count];
         int keyMin = int.MaxValue, keyMax = int.MinValue, barMin = int.MaxValue, barMax = int.MinValue;
         for (int i = 0; i < count; i++)
         {
@@ -137,7 +138,8 @@ public static class AsusLampArray
                 }
                 xs[i] = BitConverter.ToInt32(resp, 3);
                 ys[i] = BitConverter.ToInt32(resp, 7);
-                keyboard[i] = (BitConverter.ToUInt32(resp, 19) & PURPOSE_CONTROL) != 0;
+                purposes[i] = (int)BitConverter.ToUInt32(resp, 19);
+                keyboard[i] = (purposes[i] & PURPOSE_CONTROL) != 0;
                 bindings[i] = resp[28];
                 //Logger.WriteLine($"LampArray lamp {i}: X={xs[i]} Y={ys[i]} Z={BitConverter.ToInt32(resp, 11)} purpose=0x{BitConverter.ToUInt32(resp, 19):X} binding=0x{bindings[i]:X2}");
             }
@@ -151,7 +153,7 @@ public static class AsusLampArray
         {
             int min = keyboard[i] ? keyMin : barMin;
             int span = Math.Max(1, (keyboard[i] ? keyMax : barMax) - min);
-            lamps[i] = new Lamp { Zone = keyboard[i] ? 0 : 4, T = (xs[i] - min) / (double)span, X = xs[i], Y = ys[i], Binding = bindings[i] };
+            lamps[i] = new Lamp { Zone = keyboard[i] ? 0 : 4, T = (xs[i] - min) / (double)span, X = xs[i], Y = ys[i], Binding = bindings[i], Purpose = purposes[i] };
         }
     }
 
@@ -242,7 +244,7 @@ public static class AsusLampArray
 
     public static int LampCount => lamps.Length;
 
-    public static (int X, int Y, int Usage, bool Key)[] Lamps() => lamps.Select(l => (l.X, l.Y, l.Binding, l.Zone == 0)).ToArray();
+    public static (int X, int Y, int Usage, int Purpose)[] Lamps() => lamps.Select(l => (l.X, l.Y, l.Binding, l.Purpose)).ToArray();
 
     static void SendMulti(Color[] arr)
     {
