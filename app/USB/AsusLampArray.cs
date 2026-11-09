@@ -139,6 +139,7 @@ public static class AsusLampArray
                 ys[i] = BitConverter.ToInt32(resp, 7);
                 keyboard[i] = (BitConverter.ToUInt32(resp, 19) & PURPOSE_CONTROL) != 0;
                 bindings[i] = resp[28];
+                //Logger.WriteLine($"LampArray lamp {i}: X={xs[i]} Y={ys[i]} Z={BitConverter.ToInt32(resp, 11)} purpose=0x{BitConverter.ToUInt32(resp, 19):X} binding=0x{bindings[i]:X2}");
             }
             catch { }
             if (keyboard[i]) { keyMin = Math.Min(keyMin, xs[i]); keyMax = Math.Max(keyMax, xs[i]); }

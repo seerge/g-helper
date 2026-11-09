@@ -373,17 +373,17 @@ namespace GHelper.Peripherals.Keyboard
 
         private const int LAMP_ROW_SPREAD_UM = 6000;
         private const int LAMP_PITCH_UM = 19000;
+        private static readonly HashSet<int> WideKeys = new() { 0x28, 0x2A, 0x2B, 0x2C, 0x31, 0x39, 0xE0, 0xE1, 0xE5 };
 
         public static (List<KeyDef[]> Rows, int[] Targets) FromLamps((int X, int Y, int Usage, bool Key)[] lamps)
         {
             var groups = new List<List<int>>();
-            foreach (int i in Enumerable.Range(0, lamps.Length).Where(i => lamps[i].Key).OrderBy(i => lamps[i].Y))
+            foreach (int i in Enumerable.Range(0, lamps.Length).OrderBy(i => lamps[i].Y))
             {
                 if (groups.Count == 0 || lamps[i].Y - lamps[groups[^1][0]].Y > LAMP_ROW_SPREAD_UM) groups.Add(new List<int>());
                 groups[^1].Add(i);
             }
-            groups.Add(Enumerable.Range(0, lamps.Length).Where(i => !lamps[i].Key).ToList());
-            groups = groups.Where(g => g.Count > 0).Select(g => g.OrderBy(i => lamps[i].X).ToList()).ToList();
+            groups = groups.Select(g => g.OrderBy(i => lamps[i].X).ToList()).ToList();
 
             var deltas = groups.SelectMany(g => g.Zip(g.Skip(1), (a, b) => lamps[b].X - lamps[a].X)).Where(d => d > 0).Order().ToList();
             double pitch = deltas.Count > 0 ? deltas[deltas.Count / 2] : LAMP_PITCH_UM;
@@ -398,8 +398,14 @@ namespace GHelper.Peripherals.Keyboard
                 for (int k = 0; k < group.Count; k++)
                 {
                     var lamp = lamps[group[k]];
-                    double left = (lamp.X - minX) / pitch;
-                    double width = k + 1 < group.Count ? Math.Clamp((lamps[group[k + 1]].X - lamp.X) / pitch, 0.5, 1) : 1;
+                    double width = group.Count < 2 ? 1 : Math.Clamp(Math.Abs(lamps[group[k + 1 < group.Count ? k + 1 : k - 1]].X - lamp.X) / pitch, 0.5, 1);
+                    if (WideKeys.Contains(lamp.Usage) && group.Count > 1)
+                    {
+                        int prev = k > 0 ? lamps[group[k - 1]].X : 2 * lamp.X - lamps[group[k + 1]].X;
+                        int next = k + 1 < group.Count ? lamps[group[k + 1]].X : 2 * lamp.X - prev;
+                        width = Math.Max(1, (next - prev) / pitch - 1);
+                    }
+                    double left = (lamp.X - minX) / pitch + 0.5 - width / 2;
                     double gap = left - right < 0.1 ? 0 : left - right;
                     row[k] = new KeyDef(UsageName(lamp.Usage), (float)width, (float)gap);
                     right += gap + width;
