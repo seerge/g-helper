@@ -183,6 +183,7 @@ public static class AsusLampArray
             AsusHid.SetFeatureAura(new byte[] { AsusHid.AURA_ID, 0xC0, 0x03, 0x01 });
             Send(new byte[] { RidControl, 0x01 });
             Send(new byte[] { RidControl, 0x00 });
+            Aura.ApplyPower();
         }
         controlled = stream != null;
     }
