@@ -59,6 +59,11 @@ public class NvidiaGpuControl : IGpuControl
     private long _lastStateTime = -StateCacheMs;
     private const int StateCacheMs = 500; 
 
+    private static readonly int NvmlIntervalMs = AppConfig.Get("nv_interval", 0) * 1000;
+    private long _powerTime, _vramTime;
+    private float? _power;
+    private (long usedMb, long totalMb)? _vram;
+
     private GpuState GetGpuState()
     {
         if (!IsValid) return GpuState.Off;
@@ -388,14 +393,18 @@ public class NvidiaGpuControl : IGpuControl
             return null;
         }
         if (state != GpuState.Active) return 0f;
-        return NvmlHelper.GetGpuPower() ?? 0f;
+        if (Environment.TickCount64 - _powerTime < NvmlIntervalMs) return _power;
+        _powerTime = Environment.TickCount64;
+        return _power = NvmlHelper.GetGpuPower() ?? 0f;
     }
 
     public (long usedMb, long totalMb)? GetVramInfo()
     {
         if (!IsValid) return null;
         if (GetGpuState() != GpuState.Active) return null;
-        return NvmlHelper.GetMemoryInfo();
+        if (Environment.TickCount64 - _vramTime < NvmlIntervalMs) return _vram;
+        _vramTime = Environment.TickCount64;
+        return _vram = NvmlHelper.GetMemoryInfo();
     }
 
 }
