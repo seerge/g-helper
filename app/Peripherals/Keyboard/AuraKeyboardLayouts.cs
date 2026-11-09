@@ -213,7 +213,7 @@ namespace GHelper.Peripherals.Keyboard
 
         private static readonly List<KeyDef[]> Strix16Rows = new(Scar15Rows.GetRange(0, 7))
         {
-            Short(0.25f, new("Lightbar", 4f, 0.0f), new("Lightbar", 4f, 0.0f), new("Lightbar", 4f, 0.0f), new("Lightbar", 4f, 0.0f)),
+            Short(0.25f, new("Lightbar", 2.6666667f, 0.0f), new("Lightbar", 2.6666667f, 0.0f), new("Lightbar", 2.6666667f, 0.0f), new("Lightbar", 2.6666667f, 0.0f), new("Lightbar", 2.6666667f, 0.0f), new("Lightbar", 2.6666667f, 0.0f)),
         };
 
         private static readonly List<KeyDef[]> Strix18Rows = new()
@@ -267,7 +267,7 @@ namespace GHelper.Peripherals.Keyboard
             ["Strix15"] = new(Strix15Rows,
             new byte[] { 2, 3, 4, 5, 6, 21, 23, 24, 25, 26, 28, 29, 30, 31, 33, 34, 35, 36, 37, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 79, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 97, 98, 99, 100, 105, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 159, 139, 160, 161, 142, 174, 173, 172, 171, 170, 169 }),
             ["Strix16"] = new(Strix16Rows,
-            new byte[] { 2, 3, 4, 5, 6, 21, 23, 24, 25, 26, 28, 29, 30, 31, 33, 34, 35, 36, 37, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 79, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 97, 98, 99, 100, 105, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 140, 141, 142, 173, 172, 170, 169 }),
+            new byte[] { 2, 3, 4, 5, 6, 21, 23, 24, 25, 26, 28, 29, 30, 31, 33, 34, 35, 36, 37, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 79, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 97, 98, 99, 100, 105, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 140, 141, 142, 174, 173, 172, 171, 170, 169 }),
             ["Scar15"] = new(Scar15Rows,
             new byte[] { 2, 3, 4, 5, 6, 21, 23, 24, 25, 26, 28, 29, 30, 31, 33, 34, 35, 36, 37, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 79, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 97, 98, 99, 100, 105, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 139, 121, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 142, 137, 159, 160, 161, 174, 173, 172, 171, 170, 169 }),
             ["Strix18"] = new(Strix18Rows,
@@ -383,6 +383,8 @@ namespace GHelper.Peripherals.Keyboard
 
             var byName = all.Where(i => IsKey(i) && UsageName(lamps[i].Usage) != "").GroupBy(i => UsageName(lamps[i].Usage)).ToDictionary(g => g.Key, g => g.First());
             if (byName.Count == 0) return null;
+            // ISO laptops bind the "#" key to the US backslash usage (0x31)
+            bool Find(string name, out int i) => byName.TryGetValue(name, out i) || (name == "#" && byName.TryGetValue("\\", out i));
 
             var keyRows = new List<List<int>>();
             foreach (int i in all.Where(IsKey).OrderBy(i => lamps[i].Y))
@@ -419,7 +421,7 @@ namespace GHelper.Peripherals.Keyboard
                 {
                     if (def.Name == "Lightbar") targets.Add(front.Count > 0 ? front[bar++ * front.Count / barCount] : int.MaxValue);
                     else if (def.Name == "Logo") targets.Add(logos.Dequeue());
-                    else if (byName.TryGetValue(def.Name, out int i)) targets.Add(i);
+                    else if (Find(def.Name, out int i)) targets.Add(i);
                     else targets.Add(queue?.Count > 0 ? queue.Dequeue() : int.MaxValue);
                 }
                 rows.Add(defs);
