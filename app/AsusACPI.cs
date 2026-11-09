@@ -890,13 +890,13 @@ public class AsusACPI
                     uint id = i + j;
                     byte[] buf = DeviceGetLarge(id);
                     uint head = BitConverter.ToUInt32(buf, 0);
-                    if ((head & 0x10000) == 0) continue;
 
                     bool extra = false;
                     for (int k = 4; k < buf.Length; k++)
                         if (buf[k] != 0) { extra = true; break; }
 
-                    if (extra)
+                    if (head == 0 && !extra) continue;
+                    if (extra || (head & 0x10000) == 0)
                     {
                         w.WriteLine(id.ToString("X8") + ": BUF " + BitConverter.ToString(buf));
                     }
