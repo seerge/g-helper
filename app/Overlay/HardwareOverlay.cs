@@ -352,8 +352,8 @@ namespace GHelper.Overlay
         private static int S(float sc, int v) => (int)(v * sc);
         private static double D(object? v) { try { return v is null ? 0.0 : Convert.ToDouble(v); } catch { return 0.0; } }
 
-        private static string FmtTemp(double t) =>
-        t > 0 ? ((int)Math.Round(t) + "°").PadLeft(4) : " -- ";
+        private static string FmtTemp(double t, string none = " -- ") =>
+        t > 0 ? ((int)Math.Round(t) + "°").PadLeft(4) : none;
 
         private static string FmtPow(double p) =>
         p > 0 ? Math.Round(p, 1).ToString("F1") + "W" : "";
@@ -450,7 +450,8 @@ namespace GHelper.Overlay
 
             // Trailing space is the separator between temp and fan number
             _gpuTempStr = "GPU:" + FmtTemp(gpuTemp) + " ";
-            _cpuTempStr = "CPU:" + FmtTemp(cpuTemp) + " ";
+            // CPU has no "sensor off" state like the GPU: no reading means no source worked
+            _cpuTempStr = "CPU:" + FmtTemp(cpuTemp, " N/D") + " ";
             _gpuFanNum = FormatFan(HardwareControl.gpuFanRPM);
             _cpuFanNum = FormatFan(HardwareControl.cpuFanRPM);
             _gpuPow = HardwareControl.gpuPower is null ? "" : Math.Round(HardwareControl.gpuPower.Value, 1).ToString("F1") + "W";

@@ -455,22 +455,95 @@ public static class HardwareControl
         lastUpdate = last;
 
         if (isPZ13) return (float)GetCPUTempWMI();
-        cpuTemp = Program.acpi.DeviceGet(AsusACPI.Temp_CPU);
 
-        if (cpuTemp < 0) try
+        cpuTemp = ResolveCPUTemp() ?? -1;
+        return cpuTemp;
+    }
+
+    // Sources are tried in this order; the first one returning a plausible value wins and is cached.
+    private enum CpuTempSource { None, Acpi, ThermalZone, IntelDts }
+    private static readonly CpuTempSource[] _cpuTempOrder = { CpuTempSource.Acpi, CpuTempSource.ThermalZone, CpuTempSource.IntelDts };
+
+    private static CpuTempSource _cpuTempSource = CpuTempSource.None;
+    private static long _cpuTempRescanAt;
+    private static bool _cpuTempNoSourceLogged;
+    private static long _thermalZoneRetryAt;
+
+    // Lower-priority source in use: give the higher-priority ones another chance every minute.
+    private const long CpuTempRescanMs = 60_000;
+
+    private static bool IsValidCpuTemp(float? t) => t is > 0 and <= 120;
+
+    private static float? ReadCpuTempSource(CpuTempSource source)
+    {
+        try
         {
-            if (_cpuTempCounter == null)
-                _cpuTempCounter = new PerformanceCounter("Thermal Zone Information", "Temperature", @"\_TZ.THRM", true);
+            return source switch
+            {
+                CpuTempSource.Acpi => Program.acpi.DeviceGet(AsusACPI.Temp_CPU),
+                CpuTempSource.ThermalZone => ReadThermalZoneTemp(),
+                CpuTempSource.IntelDts => GetIntelMsr()?.GetCpuTemp(),
+                _ => null
+            };
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Failed reading CPU temp from {source}: {ex.Message}");
+            return null;
+        }
+    }
 
-            cpuTemp = _cpuTempCounter.NextValue() - 273;
+    private static float? ReadThermalZoneTemp()
+    {
+        // Instance name differs between models (\_TZ.THRM here, \_TZ.TZ00 elsewhere): don't retry a missing one on every refresh.
+        if (_cpuTempCounter == null && Environment.TickCount64 < _thermalZoneRetryAt) return null;
+
+        try
+        {
+            _cpuTempCounter ??= new PerformanceCounter("Thermal Zone Information", "Temperature", @"\_TZ.THRM", true);
+            return _cpuTempCounter.NextValue() - 273;
         }
         catch (Exception)
         {
-            //Debug.WriteLine("Failed reading CPU temp :" + ex.Message);
+            _cpuTempCounter?.Dispose();
+            _cpuTempCounter = null;
+            _thermalZoneRetryAt = Environment.TickCount64 + CpuTempRescanMs;
+            return null;
+        }
+    }
+
+    private static float? ResolveCPUTemp()
+    {
+        int cached = Array.IndexOf(_cpuTempOrder, _cpuTempSource);
+        if (cached > 0 && Environment.TickCount64 >= _cpuTempRescanAt) cached = -1;
+
+        if (cached >= 0)
+        {
+            float? temp = ReadCpuTempSource(_cpuTempSource);
+            if (IsValidCpuTemp(temp)) return temp;
         }
 
+        foreach (CpuTempSource source in _cpuTempOrder)
+        {
+            if (cached >= 0 && source == _cpuTempOrder[cached]) continue;
 
-        return cpuTemp;
+            float? temp = ReadCpuTempSource(source);
+            if (!IsValidCpuTemp(temp)) continue;
+
+            if (source != _cpuTempSource) Logger.WriteLine($"CPU Temp source: {source}");
+            _cpuTempSource = source;
+            _cpuTempRescanAt = Environment.TickCount64 + CpuTempRescanMs;
+            _cpuTempNoSourceLogged = false;
+            return temp;
+        }
+
+        if (!_cpuTempNoSourceLogged)
+        {
+            _cpuTempNoSourceLogged = true;
+            Logger.WriteLine("CPU Temp: no source available, tried " + string.Join(", ", _cpuTempOrder));
+        }
+        _cpuTempSource = CpuTempSource.None;
+        return null;
     }
 
     static double GetCPUTempWMI()
@@ -832,27 +905,55 @@ public static class HardwareControl
     }
 
     private static PawnIO.IntelMsr? _intelMsr;
+    private static bool _intelMsrFailed;
     private static bool _intelMsrPowerFailed;
+    private static bool _intelMsrPowerLogged;
+    private static readonly object _intelMsrLock = new();
 
-    private static float? GetIntelMsrPower()
+    // Shared by CPU power and CPU temperature: one PawnIO handle for the whole app.
+    private static PawnIO.IntelMsr? GetIntelMsr()
     {
-        if (_intelMsrPowerFailed || PawnIO.CpuInfo.IsAMD) return null;
-        try
+        if (_intelMsrFailed || PawnIO.CpuInfo.IsAMD) return null;
+        lock (_intelMsrLock)
         {
-            if (_intelMsr == null)
+            if (_intelMsr != null) return _intelMsr;
+            if (_intelMsrFailed) return null;
+
+            try
             {
                 var msr = new PawnIO.IntelMsr();
                 if (!msr.Initialize(typeof(HardwareControl).Assembly))
                 {
                     msr.Dispose();
-                    _intelMsrPowerFailed = true;
+                    _intelMsrFailed = true;
                     Logger.WriteLine("Intel MSR: PawnIO/IntelMSR module unavailable (not installed?)");
                     return null;
                 }
-                _intelMsr = msr;
+                return _intelMsr = msr;
+            }
+            catch (Exception ex)
+            {
+                _intelMsrFailed = true;
+                Logger.WriteLine("Intel MSR init failed: " + ex.Message);
+                return null;
+            }
+        }
+    }
+
+    private static float? GetIntelMsrPower()
+    {
+        if (_intelMsrPowerFailed) return null;
+        try
+        {
+            var msr = GetIntelMsr();
+            if (msr == null) return null;
+
+            if (!_intelMsrPowerLogged)
+            {
+                _intelMsrPowerLogged = true;
                 Logger.WriteLine("CPU Power source: Intel RAPL MSR (PawnIO)");
             }
-            float? power = _intelMsr.GetPackagePower();
+            float? power = msr.GetPackagePower();
             return power > 0 ? power : null;
         }
         catch (Exception ex)
@@ -1154,5 +1255,7 @@ public static class HardwareControl
     {
         _cpuTempCounter?.Dispose();
         _cpuTempCounter = null;
+        _intelMsr?.Dispose();
+        _intelMsr = null;
     }
 }
