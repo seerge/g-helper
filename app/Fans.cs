@@ -1045,7 +1045,7 @@ namespace GHelper
             bool modeB0 = Program.acpi.IsAllAmdPPT();
             bool modeC1 = Program.acpi.IsSupported(AsusACPI.PPT_APUC1);
 
-            bool modeCross = Program.acpi.IsSupported(AsusACPI.PPT_CROSS9F);
+            bool modeCross = Program.acpi.IsSupported(AsusACPI.PPT_CROSS9F) || Program.acpi.IsSupported(AsusACPI.PPT_TOTAL9A);
             bool modeGPUtoCPU = Program.acpi.IsSupported(AsusACPI.PPT_GPUCPU9C);
             bool modeCPUTemp = Program.acpi.IsSupported(AsusACPI.PPT_TEMP9E);
 
@@ -1152,7 +1152,7 @@ namespace GHelper
             AppConfig.SetMode("limit_cpu", trackCPU.Value);
             AppConfig.SetMode("limit_fast", trackFast.Value);
 
-            if (Program.acpi.IsSupported(AsusACPI.PPT_CROSS9F)) AppConfig.SetMode("limit_crossload", trackCrossLoad.Value);
+            if (Program.acpi.IsSupported(AsusACPI.PPT_CROSS9F) || Program.acpi.IsSupported(AsusACPI.PPT_TOTAL9A)) AppConfig.SetMode("limit_crossload", trackCrossLoad.Value);
             if (Program.acpi.IsSupported(AsusACPI.PPT_GPUCPU9C)) AppConfig.SetMode("limit_gpucpu", trackGPUtoCPU.Value);
             if (Program.acpi.IsSupported(AsusACPI.PPT_TEMP9E)) AppConfig.SetMode("limit_cputemp", trackCPUTemp.Value);
         }
