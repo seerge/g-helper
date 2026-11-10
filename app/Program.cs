@@ -26,6 +26,7 @@ namespace GHelper
         public static SettingsForm settingsForm;
 
         public static ModeControl modeControl;
+        public static RoutineControl routineControl;
         public static GPUModeControl gpuControl;
         public static AllyControl allyControl;
         public static ClamshellModeControl clamshellControl;
@@ -59,6 +60,17 @@ namespace GHelper
                 return;
             }
 
+            if (PipeServer.IsCommand(action))
+            {
+                string? result = PipeServer.Send(string.Join(' ', args));
+                if (result is not null)
+                {
+                    NativeMethods.AttachConsole(-1);
+                    Console.WriteLine(result.Replace("OK ", "").Replace(";", Environment.NewLine));
+                    return;
+                }
+            }
+
             string language = AppConfig.GetString("language");
             try
             {
@@ -83,6 +95,7 @@ namespace GHelper
             gpuControl = new GPUModeControl(settingsForm);
             allyControl = new AllyControl(settingsForm);
             clamshellControl = new ClamshellModeControl();
+            routineControl = new RoutineControl();
             toast = new ToastForm();
 
             hardwareOverlay = new HardwareOverlay();
@@ -155,6 +168,9 @@ namespace GHelper
             SystemEvents.SessionSwitch += SystemEvents_SessionSwitch;
             SystemEvents.SessionEnding += SystemEvents_SessionEnding;
 
+            PipeServer.Start();
+            routineControl.Init();
+
             clamshellControl.RegisterDisplayEvents();
             clamshellControl.ToggleLidAction();
 
@@ -194,6 +210,11 @@ namespace GHelper
                     settingsForm.extraForm.Show();
                     settingsForm.extraForm.ServiesToggle();
                     break;
+                case "routines":
+                    settingsForm.extraForm = new Extra();
+                    settingsForm.extraForm.Show();
+                    settingsForm.extraForm.RoutinesToggle();
+                    break;
                 case "uv":
                     Startup.ReScheduleAdmin();
                     settingsForm.FansToggle(2);
@@ -208,6 +229,10 @@ namespace GHelper
                             settingsForm.InitVisual();
                         });
                     });
+                    break;
+                case "mode":
+                    Task.Run(Startup.StartupCheck);
+                    if (args.Length > 1 && Modes.Find(args[1]) >= 0) modeControl.SetPerformanceMode(Modes.Find(args[1]), true);
                     break;
                 default:
                     Task.Run(Startup.StartupCheck);
@@ -319,6 +344,7 @@ namespace GHelper
             //HardwareControl.ReadSensors(true);
 
             modeControl.AutoPerformance(powerChanged);
+            routineControl.Reapply();
 
             if (powerChanged) settingsForm.matrixControl.SetMatrix(true);
             else settingsForm.matrixControl.SetDevice(true);
