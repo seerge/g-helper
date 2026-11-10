@@ -382,6 +382,7 @@ namespace GHelper.Peripherals.Keyboard
             bool IsLogo(int i) => !IsKey(i) && (lamps[i].Purpose & 0x04) != 0;
 
             var byName = all.Where(i => IsKey(i) && UsageName(lamps[i].Usage) != "").GroupBy(i => UsageName(lamps[i].Usage)).ToDictionary(g => g.Key, g => g.First());
+            if (byName.TryGetValue("\\", out int backslash)) byName.TryAdd("#", backslash);
             if (byName.Count == 0) return null;
 
             var keyRows = new List<List<int>>();
@@ -405,13 +406,13 @@ namespace GHelper.Peripherals.Keyboard
             if (rear.Count > 0) rows.Add(rear.Select(_ => new KeyDef("", width / rear.Count, 0, 0.5f)).ToArray());
             targets.AddRange(rear);
 
-            var table = layout.Rows.ToList();
+            var table = layout.Rows.Select(r => front.Count > 0 && r.All(d => d.Name == "Lightbar") ? Enumerable.Repeat(r[0] with { Width = r.Sum(d => d.Width) / front.Count }, front.Count).ToArray() : r).ToList();
             float firstWidth = table[0].Sum(d => d.Gap + d.Width);
             table[0] = table[0].Select(d => d with { Top = d.Top + 0.15f })
                 .Concat(logo.Select((_, k) => new KeyDef("Logo", 1, k == 0 ? width - firstWidth - logo.Count : 0, 0.5f, 0.15f))).ToArray();
             var logos = new Queue<int>(logo);
 
-            int row = 0, bar = 0, barCount = layout.Rows.Sum(r => r.Count(d => d.Name == "Lightbar"));
+            int row = 0, bar = 0, barCount = table.Sum(r => r.Count(d => d.Name == "Lightbar"));
             foreach (var defs in table)
             {
                 var queue = defs.All(d => d.Name == "Lightbar") ? null : blanks.ElementAtOrDefault(row++);
