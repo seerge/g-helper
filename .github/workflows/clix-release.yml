@@ -1,0 +1,123 @@
+name: Clix patched release
+
+# Builds the latest official G-Helper release with the Matrix Clix (GK6X) patch from clix/ and
+# publishes it here under the same tag. The patched G-Helper's updater checks this fork's releases.
+# If the patch, the tests or the build fail, the run fails (GitHub sends a failure email) and
+# nothing is published, so the patched updater never offers a broken build.
+
+on:
+  schedule:
+    - cron: '17 10 * * *'   # daily, 02:17 Pacific (standard time)
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Upstream tag to build (empty = latest official release)'
+        required: false
+      force:
+        description: 'Rebuild even if this tag is already released here'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: clix-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: windows-2022
+    steps:
+      - name: Find upstream release
+        id: up
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag = "${{ inputs.tag }}"
+          if (-not $tag) { $tag = gh api repos/seerge/g-helper/releases/latest --jq .tag_name }
+          if (-not $tag) { throw "Could not read the latest seerge/g-helper release" }
+          gh release view $tag --repo "${{ github.repository }}" *> $null
+          $exists = ($LASTEXITCODE -eq 0)
+          $global:LASTEXITCODE = 0
+          $build = (-not $exists) -or ("${{ inputs.force }}" -eq "true")
+          "tag=$tag" >> $env:GITHUB_OUTPUT
+          "build=$build" >> $env:GITHUB_OUTPUT
+          Write-Output "Upstream $tag; already released here: $exists; building: $build"
+
+      - name: Checkout this fork (patch files)
+        if: steps.up.outputs.build == 'True'
+        uses: actions/checkout@v7
+        with:
+          path: fork
+
+      - name: Checkout upstream release
+        if: steps.up.outputs.build == 'True'
+        uses: actions/checkout@v7
+        with:
+          repository: seerge/g-helper
+          ref: ${{ steps.up.outputs.tag }}
+          path: upstream
+
+      - name: Setup dotnet
+        if: steps.up.outputs.build == 'True'
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Unit and mock-transport tests
+        if: steps.up.outputs.build == 'True'
+        run: dotnet run -c Release --project fork/clix/tests/Gk6x.Tests.csproj
+
+      - name: Apply patch
+        if: steps.up.outputs.build == 'True'
+        run: python fork/clix/apply_patch.py upstream "${{ github.repository }}"
+
+      - name: Check tag matches version
+        if: steps.up.outputs.build == 'True'
+        shell: pwsh
+        run: |
+          $version = ([xml](Get-Content upstream/app/GHelper.csproj)).Project.PropertyGroup.AssemblyVersion
+          if ("${{ steps.up.outputs.tag }}" -ne "v$version") { throw "Tag ${{ steps.up.outputs.tag }} does not match AssemblyVersion $version" }
+
+      - name: Build
+        if: steps.up.outputs.build == 'True'
+        run: dotnet publish upstream/app/GHelper.sln --configuration Release --runtime win-x64 -p:PublishSingleFile=true --no-self-contained
+
+      - name: Package
+        if: steps.up.outputs.build == 'True'
+        id: pkg
+        shell: pwsh
+        run: |
+          $exe = "upstream/app/bin/x64/Release/net10.0-windows/win-x64/publish/GHelper.exe"
+          if (-not (Test-Path $exe)) { throw "Build output not found: $exe" }
+          New-Item -ItemType Directory out | Out-Null
+          Copy-Item $exe out/GHelper.exe
+          Compress-Archive out/GHelper.exe out/GHelper.zip
+          $sha = (Get-FileHash out/GHelper.exe -Algorithm SHA256).Hash
+          "sha=$sha" >> $env:GITHUB_OUTPUT
+
+      - name: Publish release
+        if: steps.up.outputs.build == 'True'
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag = "${{ steps.up.outputs.tag }}"
+          $notes = @"
+          Official G-Helper $tag (https://github.com/seerge/g-helper/releases/tag/$tag) plus the Matrix Clix static-lighting patch from clix/.
+
+          - Upstream source: seerge/g-helper @ $tag
+          - Patch source: ${{ github.repository }} @ ${{ github.sha }}
+          - GHelper.exe SHA-256: ${{ steps.pkg.outputs.sha }}
+          - Unsigned build (official releases are signed by seerge; this one is not).
+          "@
+          gh release view $tag --repo "${{ github.repository }}" *> $null
+          if ($LASTEXITCODE -eq 0) {
+            $global:LASTEXITCODE = 0
+            gh release upload $tag out/GHelper.exe out/GHelper.zip --clobber --repo "${{ github.repository }}"
+          } else {
+            $global:LASTEXITCODE = 0
+            gh release create $tag out/GHelper.exe out/GHelper.zip --repo "${{ github.repository }}" --target "${{ github.sha }}" --title "G-Helper $tag + Matrix Clix" --notes $notes
+          }
