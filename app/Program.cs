@@ -468,6 +468,8 @@ namespace GHelper
 
         static void OnExit(object sender, EventArgs e)
         {
+            AppConfig.Flush();
+
             if (trayIcon is not null)
             {
                 trayIcon.Visible = false;
