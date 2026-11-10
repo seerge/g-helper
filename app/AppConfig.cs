@@ -422,7 +422,7 @@ public static class AppConfig
 
     public static bool IsFNNumpad()
     {
-        return IsTUF() && !ContainsModel("FA401");
+        return IsTUF() && !ContainsModel("FA401W");
     }
 
     public static bool IsProArt()
