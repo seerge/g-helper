@@ -1124,4 +1124,34 @@
   <data name="AmbientBacklight" xml:space="preserve">
     <value>环境光传感器</value>
   </data>
+  <data name="FanCurveCPU" xml:space="preserve">
+    <value>CPU 风扇曲线</value>
+  </data>
+  <data name="FanCurveGPU" xml:space="preserve">
+    <value>GPU 风扇曲线</value>
+  </data>
+  <data name="FanCurveMid" xml:space="preserve">
+    <value>中置风扇曲线</value>
+  </data>
+  <data name="FanCurveXGM" xml:space="preserve">
+    <value>XG Mobile 风扇曲线</value>
+  </data>
+  <data name="PlatformCPUGPU" xml:space="preserve">
+    <value>平台 (CPU + GPU)</value>
+  </data>
+  <data name="SPLSustained" xml:space="preserve">
+    <value>SPL (CPU 持续功率)</value>
+  </data>
+  <data name="sPPTLongBoost" xml:space="preserve">
+    <value>sPPT (CPU 长时睿频)</value>
+  </data>
+  <data name="fPPTShortBoost" xml:space="preserve">
+    <value>fPPT (CPU 短时睿频)</value>
+  </data>
+  <data name="PL1Sustained" xml:space="preserve">
+    <value>PL1 (CPU 持续功率)</value>
+  </data>
+  <data name="PL2LongBoost" xml:space="preserve">
+    <value>PL2 (CPU 长时睿频)</value>
+  </data>
 </root>

@@ -3058,5 +3058,95 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("Background", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to CPU fan curve.
+        /// </summary>
+        internal static string FanCurveCPU {
+            get {
+                return ResourceManager.GetString("FanCurveCPU", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to GPU fan curve.
+        /// </summary>
+        internal static string FanCurveGPU {
+            get {
+                return ResourceManager.GetString("FanCurveGPU", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Mid fan curve.
+        /// </summary>
+        internal static string FanCurveMid {
+            get {
+                return ResourceManager.GetString("FanCurveMid", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to XG Mobile fan curve.
+        /// </summary>
+        internal static string FanCurveXGM {
+            get {
+                return ResourceManager.GetString("FanCurveXGM", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Platform (CPU + GPU).
+        /// </summary>
+        internal static string PlatformCPUGPU {
+            get {
+                return ResourceManager.GetString("PlatformCPUGPU", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to SPL (CPU sustained).
+        /// </summary>
+        internal static string SPLSustained {
+            get {
+                return ResourceManager.GetString("SPLSustained", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to sPPT (CPU long boost).
+        /// </summary>
+        internal static string sPPTLongBoost {
+            get {
+                return ResourceManager.GetString("sPPTLongBoost", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to fPPT (CPU short boost).
+        /// </summary>
+        internal static string fPPTShortBoost {
+            get {
+                return ResourceManager.GetString("fPPTShortBoost", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to PL1 (CPU sustained).
+        /// </summary>
+        internal static string PL1Sustained {
+            get {
+                return ResourceManager.GetString("PL1Sustained", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to PL2 (CPU long boost).
+        /// </summary>
+        internal static string PL2LongBoost {
+            get {
+                return ResourceManager.GetString("PL2LongBoost", resourceCulture);
+            }
+        }
     }
 }
