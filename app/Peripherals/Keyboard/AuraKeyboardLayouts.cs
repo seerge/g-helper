@@ -383,7 +383,8 @@ namespace GHelper.Peripherals.Keyboard
 
             var byName = all.Where(i => IsKey(i) && UsageName(lamps[i].Usage) != "").GroupBy(i => UsageName(lamps[i].Usage)).ToDictionary(g => g.Key, g => g.First());
             if (byName.TryGetValue("\\", out int backslash)) byName.TryAdd("#", backslash);
-            if (byName.Count == 0) return null;
+            var kbd = all.Where(IsKey).OrderBy(i => lamps[i].X).ToList();
+            if (kbd.Count == 0) return null;
 
             var keyRows = new List<List<int>>();
             foreach (int i in all.Where(IsKey).OrderBy(i => lamps[i].Y))
@@ -397,7 +398,7 @@ namespace GHelper.Peripherals.Keyboard
             double mid = (lamps.Min(l => l.X) + lamps.Max(l => l.X)) / 2.0;
             var bars = all.Where(i => !IsKey(i) && !IsLogo(i)).ToList();
             var front = bars.Where(i => lamps[i].Y >= keyTop).OrderBy(i => lamps[i].X).ThenBy(i => lamps[i].X < mid ? lamps[i].Y : -lamps[i].Y).ToList();
-            var rear = bars.Where(i => lamps[i].Y < keyTop).OrderBy(i => lamps[i].X).ToList();
+            var rear = bars.Where(i => lamps[i].Y < keyTop).OrderBy(i => lamps[i].X).ThenBy(i => lamps[i].X < mid ? -lamps[i].Y : lamps[i].Y).ToList();
             var logo = all.Where(IsLogo).ToList();
 
             float width = layout.Rows.Max(r => r.Sum(d => d.Gap + d.Width));
@@ -412,14 +413,17 @@ namespace GHelper.Peripherals.Keyboard
                 .Concat(logo.Select((_, k) => new KeyDef("Logo", 1, k == 0 ? width - firstWidth - logo.Count : 0, 0.5f, 0.15f))).ToArray();
             var logos = new Queue<int>(logo);
 
-            int row = 0, bar = 0, barCount = table.Sum(r => r.Count(d => d.Name == "Lightbar"));
+            var zones = Zones(table);
+            int row = 0, bar = 0, cell = 0, barCount = table.Sum(r => r.Count(d => d.Name == "Lightbar"));
             foreach (var defs in table)
             {
                 var queue = defs.All(d => d.Name == "Lightbar") ? null : blanks.ElementAtOrDefault(row++);
                 foreach (var def in defs)
                 {
+                    int zone = zones[cell++];
                     if (def.Name == "Lightbar") targets.Add(front.Count > 0 ? front[bar++ * front.Count / barCount] : int.MaxValue);
                     else if (def.Name == "Logo") targets.Add(logos.Dequeue());
+                    else if (byName.Count == 0) targets.Add(kbd[zone * kbd.Count / 4]);
                     else if (byName.TryGetValue(def.Name, out int i)) targets.Add(i);
                     else targets.Add(queue?.Count > 0 ? queue.Dequeue() : int.MaxValue);
                 }
