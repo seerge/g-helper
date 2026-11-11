@@ -2005,7 +2005,8 @@ namespace GHelper
             {
                 labelTipGPU.Visible = false;
                 labelTipScreen.Visible = false;
-                Top = 5;
+                PerformLayout();
+                if (Top < 0) Top = 5;
             }
 
         }
