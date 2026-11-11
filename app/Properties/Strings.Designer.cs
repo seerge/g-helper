@@ -2745,6 +2745,15 @@ namespace GHelper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tray icon by performance mode.
+        /// </summary>
+        internal static string TrayIconMode {
+            get {
+                return ResourceManager.GetString("TrayIconMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Turbo.
         /// </summary>
         internal static string Turbo {

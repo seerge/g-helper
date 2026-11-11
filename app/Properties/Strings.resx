@@ -869,6 +869,9 @@ Do you still want to continue?</value>
   <data name="Touchscreen" xml:space="preserve">
     <value>Touchscreen</value>
   </data>
+  <data name="TrayIconMode" xml:space="preserve">
+    <value>Tray icon by performance mode</value>
+  </data>
   <data name="Turbo" xml:space="preserve">
     <value>Turbo</value>
   </data>

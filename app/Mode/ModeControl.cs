@@ -125,9 +125,9 @@ namespace GHelper.Mode
 
             if (!Modes.Exists(mode)) mode = 0;
 
-            settings.ShowMode(mode);
-
             Modes.SetCurrent(mode);
+
+            settings.ShowMode(mode);
 
 
             _modeCts.Cancel();
