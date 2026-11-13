@@ -137,12 +137,12 @@ namespace GHelper.Helpers
 
                 nint dpiContext = User32.SetThreadDpiAwarenessContext(User32.DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
 
-                Screen screen1 = Screen.FromHandle(Handle);
+                Screen screen1 = Screen.PrimaryScreen;
 
                 Width = Math.Max(300, 100 + toastText.Length * 22);
                 Height = 100;
-                X = (screen1.Bounds.Width - Width) / 2;
-                Y = screen1.Bounds.Height - 300 - Height;
+                X = screen1.Bounds.X + (screen1.Bounds.Width - Width) / 2;
+                Y = screen1.Bounds.Y + screen1.Bounds.Height - 300 - Height;
 
                 Show();
                 User32.SetThreadDpiAwarenessContext(dpiContext);
