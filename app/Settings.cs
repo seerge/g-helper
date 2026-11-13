@@ -786,6 +786,7 @@ namespace GHelper
                         case 1:
                             Logger.WriteLine("Lid Open");
                             InputDispatcher.InitFNLock();
+                            InputDispatcher.ReapplyFnLock();
                             InputDispatcher.lidClose = AniMatrixControl.lidClose = false;
                             Aura.ApplyBrightness(InputDispatcher.GetBacklight(), "Lid");
                             matrixControl.SetLidMode();
@@ -810,6 +811,7 @@ namespace GHelper
                             break;
                         case 1:
                             Logger.WriteLine("Monitor Power On");
+                            InputDispatcher.ReapplyFnLock();
                             GPUModeControl.suspended = false;
                             Thread.Sleep(1000);
                             if (!Program.SetAutoModes(wakeup: true)) BatteryControl.AutoBattery();
