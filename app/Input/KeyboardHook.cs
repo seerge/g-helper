@@ -1,4 +1,4 @@
-﻿using System.Runtime.InteropServices;
+using System.Runtime.InteropServices;
 
 public sealed class KeyboardHook : IDisposable
 {
@@ -92,6 +92,162 @@ public sealed class KeyboardHook : IDisposable
         keybd_event((byte)key3, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, IntPtr.Zero);
         keybd_event((byte)key2, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, IntPtr.Zero);
         keybd_event((byte)key, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, IntPtr.Zero);
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct INPUT
+    {
+        public uint type;
+        public InputUnion u;
+    }
+
+    [StructLayout(LayoutKind.Explicit)]
+    private struct InputUnion
+    {
+        [FieldOffset(0)]
+        public MOUSEINPUT mi;
+        [FieldOffset(0)]
+        public KEYBDINPUT ki;
+        [FieldOffset(0)]
+        public HARDWAREINPUT hi;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct KEYBDINPUT
+    {
+        public ushort wVk;
+        public ushort wScan;
+        public uint dwFlags;
+        public uint time;
+        public IntPtr dwExtraInfo;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct MOUSEINPUT
+    {
+        public int dx;
+        public int dy;
+        public uint mouseData;
+        public uint dwFlags;
+        public uint time;
+        public IntPtr dwExtraInfo;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct HARDWAREINPUT
+    {
+        public uint uMsg;
+        public ushort wParamL;
+        public ushort wParamH;
+    }
+
+    private const uint INPUT_KEYBOARD = 1;
+    private const uint KEYEVENTF_UNICODE = 0x0004;
+
+    [DllImport("user32.dll", SetLastError = true)]
+    private static extern uint SendInput(uint nInputs, INPUT[] pInputs, int cbSize);
+
+    [DllImport("user32.dll")]
+    private static extern short GetAsyncKeyState(int vKey);
+
+    private static readonly object typeLock = new object();
+    private static long lastTypeTick = 0;
+
+    public static void TypeText(string text)
+    {
+        if (string.IsNullOrEmpty(text)) return;
+
+        lock (typeLock)
+        {
+            long now = Environment.TickCount64;
+            if (now - lastTypeTick < 250) return;
+            lastTypeTick = now;
+
+            int wait = 0;
+            while (wait < 20 && (
+                (GetAsyncKeyState(0x10) & 0x8000) != 0 || // Shift
+                (GetAsyncKeyState(0x11) & 0x8000) != 0 || // Control
+                (GetAsyncKeyState(0x12) & 0x8000) != 0))   // Alt
+            {
+                Thread.Sleep(10);
+                wait++;
+            }
+            Thread.Sleep(10);
+
+            var list = new List<INPUT>();
+
+            ushort[] checkMods = { 0x10, 0x11, 0x12, 0xA0, 0xA1, 0xA2, 0xA3, 0xA4, 0xA5 };
+            foreach (ushort vk in checkMods)
+            {
+                if ((GetAsyncKeyState(vk) & 0x8000) != 0)
+                {
+                    INPUT input = new INPUT { type = INPUT_KEYBOARD };
+                    input.u.ki.wVk = vk;
+                    input.u.ki.dwFlags = KEYEVENTF_KEYUP;
+                    if (vk == 0xA3 || vk == 0xA5) input.u.ki.dwFlags |= KEYEVENTF_EXTENDEDKEY;
+                    list.Add(input);
+                }
+            }
+
+            for (int i = 0; i < text.Length; i++)
+            {
+                char c = text[i];
+
+                if (c == '\r')
+                {
+                    if (i + 1 < text.Length && text[i + 1] == '\n') i++;
+                    INPUT down = new INPUT { type = INPUT_KEYBOARD };
+                    down.u.ki.wVk = 0x0D; // VK_RETURN
+                    list.Add(down);
+
+                    INPUT up = new INPUT { type = INPUT_KEYBOARD };
+                    up.u.ki.wVk = 0x0D;
+                    up.u.ki.dwFlags = KEYEVENTF_KEYUP;
+                    list.Add(up);
+                }
+                else if (c == '\n')
+                {
+                    INPUT down = new INPUT { type = INPUT_KEYBOARD };
+                    down.u.ki.wVk = 0x0D;
+                    list.Add(down);
+
+                    INPUT up = new INPUT { type = INPUT_KEYBOARD };
+                    up.u.ki.wVk = 0x0D;
+                    up.u.ki.dwFlags = KEYEVENTF_KEYUP;
+                    list.Add(up);
+                }
+                else if (c == '\t')
+                {
+                    INPUT down = new INPUT { type = INPUT_KEYBOARD };
+                    down.u.ki.wVk = 0x09; // VK_TAB
+                    list.Add(down);
+
+                    INPUT up = new INPUT { type = INPUT_KEYBOARD };
+                    up.u.ki.wVk = 0x09;
+                    up.u.ki.dwFlags = KEYEVENTF_KEYUP;
+                    list.Add(up);
+                }
+                else
+                {
+                    INPUT down = new INPUT { type = INPUT_KEYBOARD };
+                    down.u.ki.wScan = (ushort)c;
+                    down.u.ki.dwFlags = KEYEVENTF_UNICODE;
+                    list.Add(down);
+
+                    INPUT up = new INPUT { type = INPUT_KEYBOARD };
+                    up.u.ki.wScan = (ushort)c;
+                    up.u.ki.dwFlags = KEYEVENTF_UNICODE | KEYEVENTF_KEYUP;
+                    list.Add(up);
+                }
+            }
+
+            if (list.Count > 0)
+            {
+                SendInput((uint)list.Count, list.ToArray(), Marshal.SizeOf(typeof(INPUT)));
+            }
+
+            lastTypeTick = Environment.TickCount64;
+        }
     }
 
     /// <summary>

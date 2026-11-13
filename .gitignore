@@ -369,3 +369,9 @@ FodyWeavers.xsd
 
 tools/
 app/*.lscache
+
+# Pure Toolbox
+.agents
+skills
+antislop.md
+AGENTS.md
