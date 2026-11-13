@@ -167,6 +167,8 @@ namespace GHelper.Overlay
         private string _cpuFanNum = "";
         private string _gpuPow = "";
         private string _cpuPow = "";
+        private string _cpuVidStr = "";
+        private Color _cpuVidColor = Color.FromArgb(255, 120, 255, 120);
         private int? _gpuUsage;
         private int? _cpuUsage;
         private int? _vramUsage;
@@ -456,6 +458,24 @@ namespace GHelper.Overlay
             _gpuPow = HardwareControl.gpuPower is null ? "" : Math.Round(HardwareControl.gpuPower.Value, 1).ToString("F1") + "W";
             _cpuPow = FmtPow(D(HardwareControl.cpuPower));
 
+            // Intel Raptor Lake VID telemetry (shown after CPU power in Complete/Full modes)
+            float? vid = HardwareControl.cpuVid;
+            if (vid.HasValue && _showPower)
+            {
+                _cpuVidStr = vid.Value.ToString("F2") + "V";
+                // Color-code: green = safe, amber = elevated, red = dangerous
+                _cpuVidColor = vid.Value switch
+                {
+                    > 1.50f => Color.FromArgb(255, 255, 60, 60),   // Red — dangerous
+                    > 1.35f => Color.FromArgb(255, 255, 200, 50),  // Amber — elevated
+                    _ => Color.FromArgb(255, 120, 255, 120),       // Green — safe
+                };
+            }
+            else
+            {
+                _cpuVidStr = "";
+            }
+
             _cpuHistory[_historyHead] = (float)Math.Max(0, D(HardwareControl.cpuPower));
             _gpuHistory[_historyHead] = gpuActive ? (float)Math.Max(0, D(HardwareControl.gpuPower)) : 0f;
             _historyHead = (_historyHead + 1) % HistoryLength;
@@ -694,6 +714,17 @@ namespace GHelper.Overlay
             {
                 DrawMhz(g, font, clockX, clockColW, textY, _gpuClock, _gpuBrush);
                 DrawMhz(g, font, clockX + row2X, clockColW, textY + row2Y, _cpuClock, _cpuBrush);
+            }
+
+            // Intel VID — drawn right-aligned in the power column below CPU power text,
+            // using a smaller RPM-size font so it fits without widening the column.
+            if (showPower && _cpuVidStr.Length > 0)
+            {
+                using var vidBrush = new SolidBrush(_cpuVidColor);
+                float vidW = g.MeasureString(_cpuVidStr, rpmFont).Width;
+                // Position at the bottom of the CPU power line
+                g.DrawString(_cpuVidStr, rpmFont, vidBrush,
+                    new PointF(powX + powColW - vidW, textY + lineH + lineGap + lineH * 0.6f));
             }
 
             if (showUsage)
