@@ -161,6 +161,7 @@ public class AsusACPI
 
     public const int BootSound = 0x00130022;
     public const int HibernateHelper = 0x0012007E;
+    public const int HibernateHelperOld = 0x0012008E;
 
     public const int Tablet_Notebook = 0;
     public const int Tablet_Tablet = 1;

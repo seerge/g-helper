@@ -4,9 +4,11 @@ namespace GHelper.Helpers
 {
     internal static class HibernateHelper
     {
+        static readonly uint endpoint = Program.acpi.DeviceGet(AsusACPI.HibernateHelper) >= 0 ? (uint)AsusACPI.HibernateHelper : AsusACPI.HibernateHelperOld;
+
         public static int GetState()
         {
-            return Program.acpi.DeviceGet(AsusACPI.HibernateHelper);
+            return Program.acpi.DeviceGet(endpoint);
         }
 
         public static void Init()
@@ -27,7 +29,7 @@ namespace GHelper.Helpers
             Logger.WriteLine($"HibernateHelper: lid={lid}, power={power}, idle={idle}, sleep={sleep}, monitor={monitor}");
 
             byte[] args = { lid, power, (byte)idle, (byte)(idle >> 8), (byte)(enabled ? 1 : 0) };
-            Program.acpi.DeviceSet(AsusACPI.HibernateHelper, args, "HibernateHelper");
+            Program.acpi.DeviceSet(endpoint, args, "HibernateHelper");
         }
 
         static byte ActionCode(int action) => action switch { 0 => 1, 1 => 2, 2 => 3, 3 => 6, _ => 0xFF };
