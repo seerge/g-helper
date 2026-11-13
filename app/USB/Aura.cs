@@ -727,6 +727,7 @@ namespace GHelper.USB
                     AsusHid.SetFeatureAura(buffer);
                     Thread.Sleep(1);
                 }
+                if (keys && AppConfig.ContainsModel("G835")) AsusHid.SetFeatureAura(new byte[] { AsusHid.AURA_ID, 0xBC, 0x02, 0x01, 0, 0, 0, 0, 0 }.Concat(new byte[] { 176, 176, 174, 173, 173, 172, 171, 171, 170, 169, 169, 177 }.SelectMany(id => keyBuf.Skip(3 * id).Take(3))).ToArray());
             }
 
             buffer[4] = 0x04;
