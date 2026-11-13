@@ -1,4 +1,5 @@
 ﻿using GHelper.Display;
+using GHelper.Gpu;
 using GHelper.Gpu.AMD;
 using GHelper.Helpers;
 using GHelper.Input;
@@ -45,6 +46,7 @@ namespace GHelper
               {"brightness_down", Properties.Strings.BrightnessDown},
               {"brightness_up", Properties.Strings.BrightnessUp},
               {"visual", Properties.Strings.VisualMode},
+              {"touchpad", Properties.Strings.ToggleTouchpad},
               {"touchscreen", Properties.Strings.ToggleTouchscreen },
               {"micmute", Properties.Strings.MuteMic},
               {"ghelper", Properties.Strings.OpenGHelper},
@@ -68,10 +70,12 @@ namespace GHelper
                 case "m1":
                     customActions[""] = Properties.Strings.VolumeDown;
                     customActions.Remove("volume_down");
+                    customActions.Remove("volume_up");
                     break;
                 case "m2":
                     customActions[""] = Properties.Strings.VolumeUp;
                     customActions.Remove("volume_up");
+                    customActions.Remove("volume_down");
                     break;
                 case "m3":
                     customActions[""] = Properties.Strings.MuteMic;
@@ -160,6 +164,7 @@ namespace GHelper
 
             labelBacklightTimeout.Text = Properties.Strings.BacklightTimeout;
             //labelBacklightTimeoutPlugged.Text = Properties.Strings.BacklightTimeoutPlugged;
+            checkAmbient.Text = Properties.Strings.AmbientBacklight;
 
             checkNoOverdrive.Text = Properties.Strings.DisableOverdrive;
             checkELMB.Text = Properties.Strings.ExtremeLowMotionBlur;
@@ -250,12 +255,18 @@ namespace GHelper
                 labelM4.Text = "FN+F12";
             }
 
+            if (AppConfig.IsProArt())
+            {
+                labelFNC.Visible = comboFNC.Visible = textFNC.Visible = false;
+                labelFNV.Text = "FN+C";
+            }
+
             if (AppConfig.MediaKeys())
             {
                 labelFNF4.Visible = comboFNF4.Visible = textFNF4.Visible = false;
             }
 
-            if (!AppConfig.IsTUF())
+            if (!AppConfig.IsFNNumpad())
             {
                 labelFNE.Visible = comboFNE.Visible = textFNE.Visible = false;
             }
@@ -449,6 +460,10 @@ namespace GHelper
             numericBacklightTime.ValueChanged += NumericBacklightTime_ValueChanged;
             numericBacklightPluggedTime.ValueChanged += NumericBacklightTime_ValueChanged;
 
+            checkAmbient.Visible = AmbientLight.IsSupported();
+            checkAmbient.Checked = AppConfig.Is("backlight_ambient");
+            checkAmbient.CheckedChanged += CheckAmbient_CheckedChanged;
+
             checkGpuApps.Checked = AppConfig.Is("kill_gpu_apps");
             checkGpuApps.CheckedChanged += CheckGpuApps_CheckedChanged;
 
@@ -504,7 +519,6 @@ namespace GHelper
             toolTip.SetToolTip(checkStandbyNetworking, Properties.Strings.DisableStandbyNetworkingTooltip);
 
             InitCores();
-            InitServices();
             InitHibernate();
             InitVramMem();
 
@@ -658,6 +672,14 @@ namespace GHelper
 
                 comboAPU.SelectedIndex = Math.Max(0, Array.IndexOf(vramOptions, current));
             }
+            else if (IntelVram.Init())
+            {
+                comboAPU.Items.Clear();
+                comboAPU.Items.Add(Properties.Strings.AutoMode);
+                foreach (int size in IntelVram.Sizes) comboAPU.Items.Add(size + "G");
+
+                comboAPU.SelectedIndex = IntelVram.Index;
+            }
             else
             {
                 if (!AppConfig.IsAlly()) return;
@@ -677,7 +699,14 @@ namespace GHelper
         {
             int mem = comboAPU.SelectedIndex;
 
-            if (vramOptions.Length == 0) Program.acpi.SetAPUMem(mem);
+            if (IntelVram.Supported && !ProcessHelper.IsUserAdministrator())
+            {
+                ProcessHelper.RunAsAdmin();
+                return;
+            }
+
+            if (IntelVram.Supported) IntelVram.SetIndex(mem);
+            else if (vramOptions.Length == 0) Program.acpi.SetAPUMem(mem);
             else
             {
                 Program.acpi.SetVramMem(vramOptions[mem]);
@@ -762,9 +791,16 @@ namespace GHelper
 
         private void InitServices()
         {
+            buttonServices.Enabled = false;
+            Task.Run(() =>
+            {
+                int servicesCount = AsusService.GetRunningCount();
+                if (!IsDisposed) Invoke(() => VisualiseServices(servicesCount));
+            });
+        }
 
-            int servicesCount = AsusService.GetRunningCount();
-
+        private void VisualiseServices(int servicesCount)
+        {
             if (servicesCount > 0)
             {
                 buttonServices.Text = Properties.Strings.Stop;
@@ -830,6 +866,13 @@ namespace GHelper
             AppConfig.Set("keyboard_timeout", (int)numericBacklightTime.Value);
             AppConfig.Set("keyboard_ac_timeout", (int)numericBacklightPluggedTime.Value);
             Program.inputDispatcher.InitBacklightTimer();
+        }
+
+        private void CheckAmbient_CheckedChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("backlight_ambient", checkAmbient.Checked ? 1 : 0);
+            AmbientLight.Init();
+            if (!checkAmbient.Checked) InputDispatcher.SetBacklightAuto();
         }
 
         private void CheckXGM_CheckedChanged(object? sender, EventArgs e)
@@ -946,6 +989,7 @@ namespace GHelper
             }
 
             Left = Program.settingsForm.Left - Width - 5;
+            InitServices();
         }
 
 

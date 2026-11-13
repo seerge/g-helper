@@ -109,13 +109,7 @@ namespace GHelper.AutoUpdate
 
                         if (AppConfig.GetString("skip_version") != tag)
                         {
-                            DialogResult dialogResult = DialogResult.No;
-
-                            settings.Invoke((System.Windows.Forms.MethodInvoker)delegate
-                            {
-                                dialogResult = MessageBox.Show(settings, Properties.Strings.DownloadUpdate + ": G-Helper " + tag + "?", "Update", MessageBoxButtons.YesNo);
-                            });
-                            
+                            DialogResult dialogResult = settings.ShowMessage(Properties.Strings.DownloadUpdate + ": G-Helper " + tag + "?", "Update", MessageBoxButtons.YesNo);
                             if (dialogResult == DialogResult.Yes)
                                 AutoUpdate(url);
                             else

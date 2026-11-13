@@ -125,4 +125,46 @@
         }
     }
 
+    public class HarpeMiniCore : HarpeAceMiniWired
+    {
+        public HarpeMiniCore() : base(0x1C8F, false, "mi_00", 0x00)
+        {
+        }
+
+        public override string GetDisplayName()
+        {
+            return "ROG Harpe Mini Core";
+        }
+
+        public override int MaxDPI()
+        {
+            return 12_000;
+        }
+
+        public override bool HasXYDPI()
+        {
+            return false;
+        }
+
+        public override bool HasBattery()
+        {
+            return false;
+        }
+
+        public override bool HasAutoPowerOff()
+        {
+            return false;
+        }
+
+        public override bool HasLowBatteryWarning()
+        {
+            return false;
+        }
+
+        public override bool IsLightingModeSupported(LightingMode lightingMode)
+        {
+            return lightingMode != LightingMode.BatteryState && base.IsLightingModeSupported(lightingMode);
+        }
+    }
+
 }

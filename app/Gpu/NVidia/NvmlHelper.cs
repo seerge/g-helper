@@ -27,7 +27,7 @@ public static class NvmlHelper
         {
             int rc = nvmlInit_v2();
             _init = rc == NVML_SUCCESS;
-            Logger.WriteLine($"NVML Init: {rc}");
+            if (!_init) Logger.WriteLine($"NVML Init: {rc}");
         }
         catch (Exception e)
         {
@@ -65,6 +65,7 @@ public static class NvmlHelper
                 return mW / 1000f;
             }
             catch { return null; }
+            finally { Shutdown(); }
         }
     }
 
@@ -83,6 +84,7 @@ public static class NvmlHelper
                 return ((long)(mem.used / MB), (long)(mem.total / MB));
             }
             catch { return null; }
+            finally { Shutdown(); }
         }
     }
 
@@ -94,7 +96,7 @@ public static class NvmlHelper
             try
             {
                 int rc = nvmlShutdown();
-                Logger.WriteLine($"NVML Shutdown: {rc}");
+                if (rc != NVML_SUCCESS) Logger.WriteLine($"NVML Shutdown: {rc}");
             }
             catch { }
             _init = false;

@@ -24,26 +24,12 @@ namespace GHelper
             { KeyboardLightingMode.Direct, "Custom" },
         };
 
-        private static readonly Color[] paletteColors =
-        {
-            Color.FromArgb(0, 0, 0), Color.FromArgb(255, 255, 255),
-            Color.FromArgb(255, 0, 0), Color.FromArgb(255, 128, 0), Color.FromArgb(255, 255, 0),
-            Color.FromArgb(128, 255, 0), Color.FromArgb(0, 255, 0), Color.FromArgb(0, 255, 255),
-            Color.FromArgb(0, 128, 255), Color.FromArgb(0, 0, 255), Color.FromArgb(128, 0, 255),
-            Color.FromArgb(255, 0, 255), Color.FromArgb(255, 0, 128), Color.FromArgb(128, 128, 128),
-        };
-
         private readonly AsusKeyboard keyboard;
         private Azoth? oled => keyboard as Azoth;
         private readonly List<KeyboardLightingMode> supportedModes;
 
-        private Color[] keyColors = Array.Empty<Color>();
-        private readonly List<Button> keyButtons = new();
-        private readonly Dictionary<Button, int> keyLedSpan = new();
+        private readonly KeyGrid keyGrid = new();
         private readonly Dictionary<Button, ushort> keyUsage = new();
-        private int keyBorderSize = 2;
-
-        private Color paintColor;
 
         private Button? selectedKey;
         private bool updatingBindings;
@@ -80,11 +66,14 @@ namespace GHelper
             checkBoxSyncAura.Text = Properties.Strings.MouseSyncWithAura;
             buttonLightingColor.Text = Properties.Strings.Color;
             buttonLightingColor2.Text = Properties.Strings.Color + " 2";
-            buttonLightingColor3.Text = "Back";
+            buttonLightingColor3.Text = Properties.Strings.Background;
             buttonPaintColor.Text = Properties.Strings.Color;
             labelKeyBinding.Text = Properties.Strings.KeyBindings;
             labelProfile.Text = Properties.Strings.Profile;
             buttonResetBindings.Text = "  " + Properties.Strings.Reset;
+            buttonFillAll.Text = "  " + Properties.Strings.FillAll;
+            labelKeys.Text = Properties.Strings.Keys;
+            labelTestLayout.Text = Properties.Strings.TestLayout;
 
             foreach (var mode in supportedModes)
                 comboBoxLightingMode.Items.Add(lightingModeNames.TryGetValue(mode, out var name) ? name : mode.ToString());
@@ -94,13 +83,7 @@ namespace GHelper
 
             sliderBrightness.Max = keyboard.MaxBrightness();
 
-            paintColor = keyboard.StoredColor;
-
-            if (keyboard.HasPerKeyRGB())
-            {
-                BuildPalette();
-                BuildKeyGrid();
-            }
+            if (keyboard.HasPerKeyRGB()) BuildKeyGrid();
 
             SetupEnergy();
             SetupOled();
@@ -112,6 +95,8 @@ namespace GHelper
             VisualizeBatteryState();
             keyboard.BatteryUpdated += Keyboard_BatteryUpdated;
             keyboard.Disconnect += Keyboard_Disconnect;
+            keyboard.ProfileChanged += Keyboard_ProfileChanged;
+            keyboard.StartEventListener();
 
             LoadSettings();
             loadingSettings = false;
@@ -124,8 +109,6 @@ namespace GHelper
             buttonLightingColor.Click += (_, _) => PickColor(buttonLightingColor);
             buttonLightingColor2.Click += (_, _) => PickColor(buttonLightingColor2);
             buttonLightingColor3.Click += (_, _) => PickColor(buttonLightingColor3);
-            buttonPaintColor.Click += ButtonPaintColor_Click;
-            buttonFillAll.Click += ButtonFillAll_Click;
             buttonResetBindings.Click += ButtonResetBindings_Click;
 
             comboBoxKeyBinding.UseCustomTextPadding = false;
@@ -193,14 +176,9 @@ namespace GHelper
             };
         }
 
-        private static void SetKeyBorder(Button key, Color c)
-        {
-            if (key.FlatAppearance.BorderColor != c) key.FlatAppearance.BorderColor = c;
-        }
-
         private void PreviewTimer_Tick(object? sender, EventArgs e)
         {
-            if (keyButtons.Count == 0) return;
+            if (keyGrid.Keys.Count == 0) return;
 
             previewPhase = (previewPhase + PreviewStep() + 1f) % 1f;
             KeyboardLightingMode mode = SelectedMode();
@@ -235,9 +213,9 @@ namespace GHelper
                 }
             }
 
-            for (int i = 0; i < keyButtons.Count; i++)
+            for (int i = 0; i < keyGrid.Keys.Count; i++)
             {
-                Button key = keyButtons[i];
+                Button key = keyGrid.Keys[i];
                 float kx = (key.Left + key.Width / 2f) / w;
                 float ky = (key.Top + key.Height / 2f) / h;
 
@@ -252,7 +230,7 @@ namespace GHelper
                         => Lerp(bg, keyGlowColor[i], keyGlow[i]),
                     _ => c1,
                 };
-                SetKeyBorder(key, c);
+                KeyGrid.SetBorder(key, c);
             }
         }
 
@@ -289,6 +267,7 @@ namespace GHelper
         {
             if (oled is null) return;
 
+            labelOledMode.Text = Properties.Strings.Animation;
             comboBoxOledMode.Items.Add(Properties.Strings.Off);
             for (int i = 1; i <= oled.OledAnimationCount(); i++)
                 comboBoxOledMode.Items.Add("Animation " + i);
@@ -490,18 +469,19 @@ namespace GHelper
             // persist pending edits while the old profile is still active on the device
             if (settingsChanged)
             {
-                if (keyColors.Length > 0) keyboard.StoreKeyColors(keyColors);
+                if (keyGrid.Colors.Length > 0) keyboard.StoreKeyColors(keyGrid.Colors);
                 keyboard.SaveLighting();
             }
 
             settingsChanged = false;
+            bool wasDirect = keyboard.HasTransientLighting;
             keyboard.SetProfile(comboBoxProfile.SelectedIndex);
 
             loadingSettings = true;
             LoadSettings();
             loadingSettings = false;
 
-            Task.Run(() => { try { if (keyboard.HasTransientLighting) keyboard.ApplyStoredLighting(); keyboard.ReadBattery(); BeginInvoke(VisualizeEnergy); } catch { } });
+            Task.Run(() => { try { if (wasDirect || keyboard.HasTransientLighting) keyboard.ApplyStoredLighting(); keyboard.ReadBattery(); BeginInvoke(VisualizeEnergy); } catch { } });
         }
 
         private object[] BuildBindingComboItems()
@@ -596,9 +576,9 @@ namespace GHelper
 
         private void SelectKey(Button key)
         {
-            if (selectedKey is not null) selectedKey.FlatAppearance.BorderSize = keyBorderSize;
+            if (selectedKey is not null) selectedKey.FlatAppearance.BorderSize = keyGrid.BorderSize;
             selectedKey = key;
-            key.FlatAppearance.BorderSize = keyBorderSize * 2;
+            key.FlatAppearance.BorderSize = keyGrid.BorderSize * 2;
 
             bool known = keyUsage.TryGetValue(key, out ushort sourceCode);
             labelKeyBinding.Text = Properties.Strings.KeyBindings + ": " + key.Text;
@@ -619,112 +599,35 @@ namespace GHelper
             updatingBindings = false;
         }
 
-        private void BuildPalette()
-        {
-            float s = DeviceDpi / 192f;
-            int size = (int)(40 * s);
-            int gap = (int)(4 * s);
-
-            for (int i = 0; i < paletteColors.Length; i++)
-            {
-                var swatch = new Button();
-                swatch.SetBounds(i * (size + gap), (panelPalette.Height - size) / 2, size, size);
-                swatch.FlatStyle = FlatStyle.Flat;
-                swatch.FlatAppearance.BorderSize = 1;
-                swatch.BackColor = paletteColors[i];
-                swatch.Tag = paletteColors[i];
-                swatch.Click += Swatch_Click;
-                panelPalette.Controls.Add(swatch);
-            }
-        }
-
-        private void Swatch_Click(object? sender, EventArgs e)
-        {
-            if (sender is not Button swatch || swatch.Tag is not Color color) return;
-            paintColor = color;
-            buttonPaintColor.SwatchColor = color;
-        }
-
-        private void ButtonPaintColor_Click(object? sender, EventArgs e)
-        {
-            RColorPicker colorDlg = new RColorPicker(paintColor);
-            colorDlg.ColorChanged += c =>
-            {
-                paintColor = c;
-                buttonPaintColor.SwatchColor = c;
-            };
-            colorDlg.ShowDialog(this);
-        }
-
-        private void ButtonFillAll_Click(object? sender, EventArgs e)
-        {
-            if (checkBoxSyncAura.Checked || SelectedMode() != KeyboardLightingMode.Direct) return;
-
-            Array.Fill(keyColors, paintColor);
-            settingsChanged = true;
-            RefreshKeyGrid();
-            Task.Run(() => { try { keyboard.SetLedColors(keyColors); } catch { } });
-        }
-
         private void BuildKeyGrid()
         {
-            float s = DeviceDpi / 192f;
-            int unit = (int)(84 * s);
-            int keyGap = (int)(4 * s);
-            keyBorderSize = Math.Max(2, (int)(2 * s));
-
             var rows = new List<KeyDef[]>(keyboard.KeyLayout());
 
             if (keyboard.MediaKeyCount() > 0)
                 rows.Add(Enumerable.Range(1, keyboard.MediaKeyCount()).Select(i => new KeyDef("M" + i)).ToArray());
 
-            keyColors = keyboard.StoredKeyColors();
-
-            int led = 0;
-            float width = 0;
-            for (int row = 0; row < rows.Count; row++)
+            keyGrid.Colors = keyboard.StoredKeyColors();
+            keyGrid.PaintColor = keyboard.StoredColor;
+            keyGrid.BindPaint(buttonPaintColor, panelPalette, buttonFillAll);
+            keyGrid.Build(panelKeys, rows, keyboard.MultiLayout, null, (key, def, led) =>
             {
-                float x = 0;
-                Button? prev = null;
-                foreach (var def in rows[row])
-                {
-                    x += def.Gap * unit;
+                keyToolTip.SetToolTip(key, $"{def.Name} (LED {led})");
 
-                    if (prev is not null && def.Gap == 0 && AuraKeyboardLayouts.Legend(def.Name, keyboard.MultiLayout) == prev.Text)
-                    {
-                        prev.Width = (int)(x + def.Width * unit) - prev.Left - keyGap;
-                        keyLedSpan[prev] = keyLedSpan.GetValueOrDefault(prev, 1) + 1;
-                        x += def.Width * unit;
-                        led++;
-                        continue;
-                    }
+                ushort code = AuraKeyboardLayouts.Keys.GetValueOrDefault(def.Name);
+                if (code == 0) code = AuraKeyboardLayouts.MediaKeys.GetValueOrDefault(def.Name);
+                if (code != 0) keyUsage[key] = code;
+            });
+            keyGrid.KeyClick += SelectKey;
+            keyGrid.Painted += KeyGrid_Painted;
 
-                    var key = new Button();
-                    key.SetBounds((int)x, row * unit, (int)(def.Width * unit) - keyGap, (int)(def.Height * unit) - keyGap);
-                    key.FlatStyle = FlatStyle.Flat;
-                    key.FlatAppearance.BorderSize = keyBorderSize;
-                    key.Font = new Font("Segoe UI", unit * 0.245f, GraphicsUnit.Pixel);
-                    key.Text = AuraKeyboardLayouts.Legend(def.Name, keyboard.MultiLayout);
-                    key.Tag = led;
-                    key.Click += KeyTile_Click;
-                    keyToolTip.SetToolTip(key, $"{def.Name} (LED {led})");
-                    panelKeys.Controls.Add(key);
-                    keyButtons.Add(key);
+            keyGlow = new float[keyGrid.Keys.Count];
+            keyGlowColor = new Color[keyGrid.Keys.Count];
+        }
 
-                    ushort code = AuraKeyboardLayouts.Keys.GetValueOrDefault(def.Name);
-                    if (code == 0) code = AuraKeyboardLayouts.MediaKeys.GetValueOrDefault(def.Name);
-                    if (code != 0) keyUsage[key] = code;
-
-                    x += def.Width * unit;
-                    led++;
-                    prev = key;
-                }
-                width = Math.Max(width, x);
-            }
-
-            panelKeys.Size = new Size((int)width, rows.Count * unit);
-            keyGlow = new float[keyButtons.Count];
-            keyGlowColor = new Color[keyButtons.Count];
+        private void KeyGrid_Painted()
+        {
+            settingsChanged = true;
+            Task.Run(() => { try { keyboard.SetLedColors(keyGrid.Colors); } catch { } });
         }
 
         private void BuildTopRow()
@@ -754,6 +657,22 @@ namespace GHelper
             try { BeginInvoke(Close); } catch { }
         }
 
+        private void Keyboard_ProfileChanged(object? sender, EventArgs e)
+        {
+            if (Disposing || IsDisposed) return;
+            try { BeginInvoke(ReloadProfile); } catch { }
+        }
+
+        private void ReloadProfile()
+        {
+            if (!keyboard.HasProfiles() || comboBoxProfile.SelectedIndex == keyboard.Profile) return;
+
+            loadingSettings = true;
+            comboBoxProfile.SelectedIndex = Math.Clamp(keyboard.Profile, 0, comboBoxProfile.Items.Count - 1);
+            LoadSettings();
+            loadingSettings = false;
+        }
+
         private void BuildTestLayoutSelector()
         {
             testLayoutSelector = true;
@@ -778,14 +697,14 @@ namespace GHelper
         private Color DisplayColorForKey(int led)
         {
             KeyboardLightingMode mode = SelectedMode();
-            if (mode == KeyboardLightingMode.Direct) return led < keyColors.Length ? keyColors[led] : Color.Gray;
+            if (mode == KeyboardLightingMode.Direct) return keyGrid.KeyColor(led);
             if (keyboard.SupportsColorSetting(mode)) return buttonLightingColor.SwatchColor ?? Color.Red;
             return Color.Gray;
         }
 
         private void RefreshKeyGrid()
         {
-            foreach (var key in keyButtons)
+            foreach (var key in keyGrid.Keys)
                 if (key.Tag is int led)
                     key.FlatAppearance.BorderColor = DisplayColorForKey(led);
         }
@@ -808,33 +727,16 @@ namespace GHelper
 
         private void RefreshBindingUnderlines()
         {
-            foreach (var key in keyButtons)
+            foreach (var key in keyGrid.Keys)
                 if (keyUsage.TryGetValue(key, out ushort u))
                     ApplyKeyUnderline(key, u);
-        }
-
-        private void KeyTile_Click(object? sender, EventArgs e)
-        {
-            if (sender is not Button key || key.Tag is not int led) return;
-
-            SelectKey(key);
-
-            if (checkBoxSyncAura.Checked) return;
-            if (SelectedMode() != KeyboardLightingMode.Direct) return;
-
-            int span = keyLedSpan.GetValueOrDefault(key, 1);
-            for (int i = 0; i < span; i++)
-                if (led + i < keyColors.Length) keyColors[led + i] = paintColor;
-            key.FlatAppearance.BorderColor = paintColor;
-            settingsChanged = true;
-            Task.Run(() => { try { for (int i = 0; i < span; i++) keyboard.SetLedColor(led + i, paintColor); } catch { } });
         }
 
         private void LoadSettings()
         {
             checkBoxSyncAura.Checked = PeripheralsProvider.IsKeyboardAuraSync;
 
-            if (keyColors.Length > 0) keyColors = keyboard.StoredKeyColors();
+            if (keyGrid.Colors.Length > 0) keyGrid.Colors = keyboard.StoredKeyColors();
 
             int modeIndex = supportedModes.IndexOf(keyboard.StoredMode);
             comboBoxLightingMode.SelectedIndex = modeIndex >= 0 ? modeIndex : 0;
@@ -843,7 +745,6 @@ namespace GHelper
             buttonLightingColor.SwatchColor = keyboard.StoredColor;
             buttonLightingColor2.SwatchColor = keyboard.StoredColor2;
             buttonLightingColor3.SwatchColor = keyboard.StoredColor3;
-            buttonPaintColor.SwatchColor = paintColor;
 
             RefreshBindingUnderlines();
             VisualizeControls();
@@ -877,6 +778,7 @@ namespace GHelper
             buttonPaintColor.Enabled = paint;
             panelPalette.Enabled = paint;
             buttonFillAll.Enabled = paint;
+            keyGrid.Paintable = paint;
 
             comboBoxKeyBinding.Enabled = selectedKey is not null
                 && keyUsage.ContainsKey(selectedKey);
@@ -917,7 +819,7 @@ namespace GHelper
                 buttonLightingColor3.SwatchColor ?? Color.Black,
                 (AuraSpeed)Math.Max(0, comboBoxAnimationSpeed.SelectedIndex),
                 sliderBrightness.Value);
-            if (keyColors.Length > 0) keyboard.StoreKeyColors(keyColors);
+            if (keyGrid.Colors.Length > 0) keyboard.StoreKeyColors(keyGrid.Colors);
             settingsChanged = true;
         }
 
@@ -943,6 +845,8 @@ namespace GHelper
 
         private void AsusKeyboardSettings_FormClosing(object? sender, FormClosingEventArgs e)
         {
+            keyboard.StopEventListener();
+            keyboard.ProfileChanged -= Keyboard_ProfileChanged;
             keyboard.BatteryUpdated -= Keyboard_BatteryUpdated;
             keyboard.Disconnect -= Keyboard_Disconnect;
             previewTimer.Stop();
@@ -951,7 +855,7 @@ namespace GHelper
 
             if (!settingsChanged) return;
             // key colors are painted live over HID, persisted to config once here
-            if (keyColors.Length > 0) keyboard.StoreKeyColors(keyColors);
+            if (keyGrid.Colors.Length > 0) keyboard.StoreKeyColors(keyGrid.Colors);
             Task.Run(() => { try { keyboard.SaveLighting(); } catch { } });
         }
     }

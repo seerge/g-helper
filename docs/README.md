@@ -112,6 +112,8 @@ A built-in in-game overlay (OSD) that shows live **FPS, CPU / GPU temperatures, 
 - ``Ctrl + Shift + Alt + Wheel`` - Resize overlay
 - ``Ctrl + Shift + Alt + Wheel Click`` - Reset overlay size
 
+All detailed settings can be configured directly via the `Overlay` button
+
 <img width="1690" alt="Metrics Overlay" src="https://github.com/user-attachments/assets/0752a704-e9a7-4e27-8587-39967f625fae" />
 <img width="3840" alt="Metrics Overlay in a game" src="https://github.com/user-attachments/assets/8b063f80-d508-41e0-9978-154bc936d451" />
 
@@ -168,8 +170,10 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 <details>
 <summary><a href="https://github.com/seerge/g-helper/discussions/5710">Currently supported models</a> (click to expand)</summary>
 
+- ASUS TX 98
 - ROG Azoth
 - ROG Azoth Extreme
+- ROG Azoth Extreme SE
 - ROG Azoth X
 - ROG Claymore II
 - ROG Falchion
@@ -178,21 +182,44 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 - ROG Falchion RX
 - ROG Falchion RX Low Profile
 - ROG Strix Flare
+- ROG Strix Flare COD
 - ROG Strix Flare II
 - ROG Strix Flare II Animate
+- ROG Strix Flare PNK LTD
 - ROG Strix Scope II
 - ROG Strix Scope II RX
 - ROG Strix Scope II 96
 - ROG Strix Scope II 96 RX
 - ROG Strix Scope RX
+- ROG Strix Scope RX EVA Edition
+- ROG Strix Scope RX EVA-02 Edition
 - ROG Strix Scope RX TKL
 - TUF Gaming K1
 - TUF Gaming K3
 - TUF Gaming K3 Gen II
+- TUF Gaming K3 Gen II Miku Edition
 
 </details>
 
 <img width="2254" alt="Keyboards" src="https://github.com/user-attachments/assets/9da4116f-7fb1-4dae-ac3e-25f0f1266a74" />
+
+### :headphones: Asus Headsets support
+
+<details>
+<summary><a href="https://github.com/seerge/g-helper/discussions/5964">Currently supported models</a> (click to expand)</summary>
+
+- ROG Cetra RGB
+- ROG Cetra True Wireless SpeedNova
+- ROG Clavis
+- ROG Delta II
+- ROG Delta II KJP
+- ROG Pelta
+
+</details>
+
+Battery level, lighting, equalizer presets, sidetone, microphone and AI noise cancellation, ANC and power settings - depending on the model.
+
+<img width="1786" alt="Headsets" src="https://github.com/user-attachments/assets/42ddd286-ed4f-4573-953c-e41b7fc3602f" />
 
 ### ⌨️ Keybindings
 
@@ -215,6 +242,7 @@ Huge thanks to [@IceStormNG](https://github.com/IceStormNG) 👑 for contributio
 - ``Ctrl + Shift + Alt + F18`` - Turbo
 - ``Ctrl + Shift + Alt + F19`` - Custom 1 (if exists)
 - ``Ctrl + Shift + Alt + F20`` - Custom 2 (if exists)
+- ``Ctrl + Shift + Alt + F21`` - Toggle XG Mobile
 - [Custom keybindings / hotkeys](https://github.com/seerge/g-helper/wiki/Power-user-settings#custom-hotkey-actions)
 
 ### 🎮ROG Ally Bindings

@@ -8,6 +8,7 @@ public  interface IGpuControl : IDisposable {
     int? GetGpuUse();
     (long usedMb, long totalMb)? GetVramInfo();
     float? GetGpuPower();
+    int? GetGpuClock();
     void KillGPUApps();
 
 }

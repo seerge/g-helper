@@ -1,0 +1,26 @@
+name: Test build
+
+on:
+  push:
+    branches: [ 'test/**' ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-2022
+    steps:
+    - uses: actions/checkout@v7
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v5
+      with:
+        dotnet-version: '10.0.x'
+    - name: Publish
+      run: |
+        dotnet publish app/GHelper.sln --configuration Release --runtime win-x64 -p:PublishSingleFile=true --no-self-contained
+    - uses: actions/upload-artifact@v7
+      with:
+        name: GHelper
+        path: app/bin/x64/Release/net10.0-windows/win-x64/publish/GHelper.exe

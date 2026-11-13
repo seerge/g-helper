@@ -231,6 +231,8 @@ namespace GHelper
 
         private void AsusMouseSettings_FormClosing(object? sender, FormClosingEventArgs e)
         {
+            mouse.StopEventListener();
+            mouse.ProfileChanged -= Mouse_ProfileChanged;
             mouse.BatteryUpdated -= Mouse_BatteryUpdated;
             mouse.Disconnect -= Mouse_Disconnect;
             mouse.MouseReadyChanged -= Mouse_MouseReadyChanged;
@@ -249,6 +251,12 @@ namespace GHelper
                     Close();
                 });
             }
+        }
+
+        private void Mouse_ProfileChanged(object? sender, EventArgs e)
+        {
+            if (Disposing || IsDisposed) return;
+            try { BeginInvoke(VisualizeMouseSettings); } catch { }
         }
 
         private void Mouse_BatteryUpdated(object? sender, EventArgs e)
@@ -786,9 +794,20 @@ namespace GHelper
                 }
             }
 
+            if (mouse.DPIProfileCount() == 0)
+            {
+                panelPerformance.Visible = false;
+            }
+
             if (!mouse.HasBattery())
             {
                 panelBatteryState.Visible = false;
+            }
+
+            if (!mouse.HasProfiles())
+            {
+                panelProfiles.Visible = false;
+                panelBottomButtons.Visible = false;
             }
 
             if (mouse.HasAutoPowerOff())
@@ -1372,6 +1391,8 @@ namespace GHelper
             mouse.Disconnect += Mouse_Disconnect;
             mouse.BatteryUpdated += Mouse_BatteryUpdated;
             mouse.MouseReadyChanged += Mouse_MouseReadyChanged;
+            mouse.ProfileChanged += Mouse_ProfileChanged;
+            mouse.StartEventListener();
         }
 
         private void ButtonSync_Click(object sender, EventArgs e)

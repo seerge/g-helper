@@ -59,6 +59,11 @@ public class NvidiaGpuControl : IGpuControl
     private long _lastStateTime = -StateCacheMs;
     private const int StateCacheMs = 500; 
 
+    private static readonly int NvmlIntervalMs = AppConfig.Get("nv_interval", 0) * 1000;
+    private long _powerTime, _vramTime;
+    private float? _power;
+    private (long usedMb, long totalMb)? _vram;
+
     private GpuState GetGpuState()
     {
         if (!IsValid) return GpuState.Off;
@@ -194,6 +199,8 @@ public class NvidiaGpuControl : IGpuControl
     }
 
 
+    public bool IsClockOffsetSupported { get; private set; } = true;
+
     public bool GetClocks(out int core, out int memory)
     {
         PhysicalGPU internalGpu = _internalGpu!;
@@ -208,6 +215,8 @@ public class NvidiaGpuControl : IGpuControl
             IPerformanceStates20Info states = GPUApi.GetPerformanceStates20(internalGpu.Handle);
             core = states.Clocks[PerformanceStateId.P0_3DPerformance][0].FrequencyDeltaInkHz.DeltaValue / 1000;
             memory = states.Clocks[PerformanceStateId.P0_3DPerformance][1].FrequencyDeltaInkHz.DeltaValue / 1000;
+            var range = states.Clocks[PerformanceStateId.P0_3DPerformance][0].FrequencyDeltaInkHz.DeltaRange;
+            IsClockOffsetSupported = range.Maximum > range.Minimum;
             Logger.WriteLine($"GET GPU CLOCKS: {core}, {memory}");
 
             foreach (var delta in states.Voltages[PerformanceStateId.P0_3DPerformance])
@@ -364,6 +373,15 @@ public class NvidiaGpuControl : IGpuControl
 
     }
 
+    public int? GetGpuClock()
+    {
+        if (!IsValid) return null;
+        if (GetGpuState() != GpuState.Active) return null;
+
+        var clock = GPUApi.GetAllClockFrequencies(_internalGpu!.Handle, new ClockFrequenciesV2(ClockType.CurrentClock)).GraphicsClock;
+        return clock.IsPresent ? (int)(clock.Frequency / 1000) : null;
+    }
+
 
     public float? GetGpuPower()
     {
@@ -375,14 +393,18 @@ public class NvidiaGpuControl : IGpuControl
             return null;
         }
         if (state != GpuState.Active) return 0f;
-        return NvmlHelper.GetGpuPower() ?? 0f;
+        if (Environment.TickCount64 - _powerTime < NvmlIntervalMs) return _power;
+        _powerTime = Environment.TickCount64;
+        return _power = NvmlHelper.GetGpuPower() ?? 0f;
     }
 
     public (long usedMb, long totalMb)? GetVramInfo()
     {
         if (!IsValid) return null;
         if (GetGpuState() != GpuState.Active) return null;
-        return NvmlHelper.GetMemoryInfo();
+        if (Environment.TickCount64 - _vramTime < NvmlIntervalMs) return _vram;
+        _vramTime = Environment.TickCount64;
+        return _vram = NvmlHelper.GetMemoryInfo();
     }
 
 }
