@@ -1127,4 +1127,10 @@ from heating up the sleeping laptop and draining the battery.</value>
   <data name="Background" xml:space="preserve">
     <value>Back</value>
   </data>
+  <data name="MoveProfileUp" xml:space="preserve">
+    <value>Move profile up</value>
+  </data>
+  <data name="MoveProfileDown" xml:space="preserve">
+    <value>Move profile down</value>
+  </data>
 </root>
