@@ -1,5 +1,6 @@
 ﻿using GHelper;
 using GHelper.USB;
+using GHelper.Helpers;
 using System.Collections.Concurrent;
 using System.Management;
 using System.Runtime.InteropServices;
@@ -548,13 +549,19 @@ public class AsusACPI
         int ecoFlag = DeviceGet(ecoEndpoint);
         if (ecoFlag < 0) return -1;
 
-        if (ecoFlag == 1 && eco == 0)
-            return DeviceSet(ecoEndpoint, eco, "GPUEco");
+        if (!((ecoFlag == 1 && eco == 0) || (ecoFlag == 0 && eco == 1))) return -1;
 
-        if (ecoFlag == 0 && eco == 1)
-            return DeviceSet(ecoEndpoint, eco, "GPUEco");
+        int status = DeviceSet(ecoEndpoint, eco, "GPUEco");
+        if (status == 1) return status;
 
-        return -1;
+        // Retry after dGPU PCIe bridge reset if firmware rejected the switch
+        Logger.WriteLine($"GPUEco failed ({status}), trying dGPU PCIe bridge reset");
+        if (!DeviceHelper.RestartdGpuPciBridge()) return status;
+
+        status = DeviceSet(ecoEndpoint, eco, "GPUEco");
+        if (!(eco == 1 && status == 1)) HardwareControl.RecreateGpuControl();
+
+        return status;
     }
 
     public int GetFan(AsusFan device)
