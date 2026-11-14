@@ -577,6 +577,7 @@ namespace GHelper.Peripherals
             DetectKeyboard(new FalchionWireless());
             DetectKeyboard(new FalchionRX());
             DetectKeyboard(new FalchionAceHFX());
+            DetectKeyboard(new FalchionAce75HE());
             DetectKeyboard(new FalchionAce());
             DetectKeyboard(new TUFK1());
             DetectKeyboard(new TUFK3());

@@ -95,6 +95,28 @@
         }
     }
 
+    public class FalchionAce75HE : FalchionRX
+    {
+        public FalchionAce75HE() : base(0x1C7D)
+        {
+        }
+
+        public override string GetDisplayName()
+        {
+            return "ROG Falchion Ace 75 HE";
+        }
+
+        public override bool HasBattery()
+        {
+            return false;
+        }
+
+        protected override string? LayoutName()
+        {
+            return IsIsoLayout ? "FalchionAce75ISO" : "FalchionAce75";
+        }
+    }
+
     public class FalchionAce : Falchion
     {
         public FalchionAce() : base(0x1A64)
