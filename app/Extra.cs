@@ -51,6 +51,8 @@ namespace GHelper
               {"micmute", Properties.Strings.MuteMic},
               {"ghelper", Properties.Strings.OpenGHelper},
               {"overlay", Properties.Strings.Overlay},
+              {"ctrl_insert", "Ctrl+Insert"},
+              {"shift_insert", "Shift+Insert"},
               {"custom", Properties.Strings.Custom}
             };
 

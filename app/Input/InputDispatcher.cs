@@ -706,6 +706,12 @@ namespace GHelper.Input
                 case "screenpad_down":
                     SetScreenpad(-10);
                     break;
+                case "ctrl_insert":
+                    KeyboardHook.KeyKeyPress(Keys.LControlKey, Keys.Insert);
+                    break;
+                case "shift_insert":
+                    KeyboardHook.KeyKeyPress(Keys.LShiftKey, Keys.Insert);
+                    break;
                 case "custom":
                     CustomKey(name);
                     break;
