@@ -71,6 +71,7 @@ public class AsusACPI
 
     public const uint PerformanceMode = 0x00120075; // Performance modes
     public const uint VivoBookMode = 0x00110019; // Vivobook performance modes
+    public const uint FanBoostMode = 0x00110018; // Fan boost modes on older (2018) ROG models, e.g. GM501 / GX501
 
     public const uint GPUEcoROG = 0x00090020;
     public const uint GPUEcoVivo = 0x00090120;
@@ -531,10 +532,19 @@ public class AsusACPI
         return Program.acpi.DeviceSet(VivoBookMode, mode, "VivoMode");
     }
 
+    public int SetFanBoostMode(int mode)
+    {
+        // Fan boost only knows 0 = normal, 1 = overboost, 2 = silent
+        if (mode == PerformanceFullSpeed) mode = PerformanceTurbo;
+        else if (mode > PerformanceSilent) mode = PerformanceBalanced;
+        return Program.acpi.DeviceSet(FanBoostMode, mode, "FanBoost");
+    }
+
     public int SetPerformanceMode(int mode, string log = "Mode")
     {
         if (IsSupported(PerformanceMode)) return DeviceSet(PerformanceMode, mode, log);
         if (IsSupported(VivoBookMode)) return SetVivoMode(mode);
+        if (IsSupported(FanBoostMode)) return SetFanBoostMode(mode);
 
         int status = DeviceSet(PerformanceMode, mode, log);
         if (status != 1) status = SetVivoMode(mode);
