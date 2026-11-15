@@ -122,6 +122,7 @@ namespace GHelper.USB
         public static bool HasLogo { get; private set; }
         public static bool HasLightbar { get; private set; }
         public static bool HasRearglow { get; private set; }
+        public static bool HasWheel { get; private set; }
         static bool hasRearStrip = false;
         public static bool IsOldStrix { get; private set; }
 
@@ -381,6 +382,7 @@ namespace GHelper.USB
             HasLightbar = (feat1 & (FEAT1_LIGHTBAR | FEAT1_LOGO)) != 0;
             HasRearglow = (feat1 & (FEAT1_REARGLOW | FEAT1_VCUT)) != 0;
             hasRearStrip = (feat1 & FEAT1_REARGLOW) != 0;
+            HasWheel = (feat2 & FEAT2_RGB_WHEEL) != 0;
 
             isStrix4Zone = BacklightType == AuraBacklightType.MultiZone;
             isIso = layout == 0x02;
@@ -408,6 +410,11 @@ namespace GHelper.USB
             InputDispatcher.InitFNLock();
         }
 
+
+        public static void ApplyWheel()
+        {
+            if (HasWheel) AsusHid.Write([AsusHid.AURA_ID, 0xBA, 0xC6, 0x64], "Wheel");
+        }
 
         public static void SleepBrightness()
         {
