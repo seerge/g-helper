@@ -1096,6 +1096,7 @@ namespace GHelper.Overlay
             _active = true;
             _lastFgPid = 0;
             _gameOnly = AppConfig.IsOverlayGameOnly();
+            DesktopApps.UnionWith(AppConfig.GetString("overlay_exclude")?.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries) ?? []);
             _hidden = false;
             _shownPid = 0;
             _fgDesktop = false;
