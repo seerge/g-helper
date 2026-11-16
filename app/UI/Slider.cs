@@ -274,7 +274,14 @@ namespace GHelper.UI
                     Invalidate();
                 }
 
-                Value = (int)Math.Round(Min + (1 - (thumbY - _barPos.Y) / _barSize.Height) * (Max - Min));
+                // vertical sliders grow upwards: the top of the bar is Max.
+                // Use the same Exponential mapping as the horizontal branch and
+                // as the rendering side (ValueToY). Otherwise the thumb position
+                // and the resulting value disagree on exponential vertical sliders.
+                float tv = 1 - (thumbY - _barPos.Y) / _barSize.Height;
+                Value = (int)Math.Round(Exponential
+                    ? Min * MathF.Pow((float)Max / Min, tv)
+                    : Min + tv * (Max - Min));
                 return;
             }
 
