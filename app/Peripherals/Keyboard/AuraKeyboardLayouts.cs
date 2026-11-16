@@ -351,7 +351,7 @@ namespace GHelper.Peripherals.Keyboard
 
         public static IEnumerable<string> LaptopNames => LaptopLayouts.Select(l => l.Layout).Append("Strix15").Distinct().OrderBy(n => n);
 
-        private static readonly string[] IsoLaptops = { "Strix16", "Zephyrus" };
+        private static readonly string[] IsoLaptops = { "Strix16", "Strix18", "Zephyrus" };
 
         public static LayoutData Laptop(string? name = null, bool iso = false)
         {
