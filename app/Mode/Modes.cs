@@ -36,30 +36,28 @@
         };
 
         const int maxModes = 20;
+        const string orderKey = "custom_mode_order";
 
         public static Dictionary<int, string> GetDictonary()
         {
-            Dictionary<int, string> modes = new Dictionary<int, string>
-            {
-              {2, Properties.Strings.Silent},
-              {0, Properties.Strings.Balanced},
-              {1, Properties.Strings.Turbo}
-            };
-
-            for (int i = 3; i < maxModes; i++)
-            {
-                if (Exists(i)) modes.Add(i, GetName(i));
-            }
-
-            return modes;
+            return GetList().ToDictionary(mode => mode, GetName);
         }
 
         public static List<int> GetList()
         {
             List<int> modes = new() { 2, 0, 1 };
+            string order = AppConfig.GetString(orderKey) ?? "";
+            // GetString also returns JSON text for unexpected arrays or objects.
+            if (order.IndexOfAny(['[', ']', '{', '}']) >= 0) order = "";
+            foreach (string value in order.Split(','))
+            {
+                if (int.TryParse(value, out int mode) && mode > 2 && mode < maxModes
+                    && Exists(mode) && !modes.Contains(mode)) modes.Add(mode);
+            }
+
             for (int i = 3; i < maxModes; i++)
             {
-                if (Exists(i)) modes.Add(i);
+                if (Exists(i) && !modes.Contains(i)) modes.Add(i);
             }
 
             return modes;
@@ -71,11 +69,38 @@
             {
                 AppConfig.Remove(clean + "_" + mode);
             }
+            SaveOrder(GetList());
+        }
+
+        private static void SaveOrder(List<int> modes)
+        {
+            AppConfig.Set(orderKey, string.Join(",", modes.Where(mode => mode > 2)));
+        }
+
+        public static bool CanMove(int mode, int direction)
+        {
+            if (mode <= 2 || (direction != -1 && direction != 1)) return false;
+            var modes = GetList();
+            int index = modes.IndexOf(mode);
+            int target = index + direction;
+            return index >= 3 && target >= 3 && target < modes.Count;
+        }
+
+        public static bool Move(int mode, int direction)
+        {
+            if (!CanMove(mode, direction)) return false;
+            var modes = GetList();
+            int index = modes.IndexOf(mode);
+            int target = index + direction;
+            (modes[index], modes[target]) = (modes[target], modes[index]);
+            SaveOrder(modes);
+            return true;
         }
 
         public static int Add()
         {
             int currentMode = GetCurrent();
+            var modes = GetList();
 
             for (int i = 3; i < maxModes; i++)
             {
@@ -102,6 +127,8 @@
                     }
                 }
 
+                modes.Add(i);
+                SaveOrder(modes);
                 return i;
             }
             return -1;
@@ -113,6 +140,7 @@
             if (vivoMode < 0) return;
             Logger.WriteLine($"VivoBookMode: {vivoMode} (0x{vivoMode:X})");
             if ((vivoMode & 0x40000) == 0) return;
+            var modes = GetList();
 
             for (int i = 3; i < maxModes; i++)
                 if (GetBase(i) == AsusACPI.PerformanceFullSpeed) return;
@@ -122,6 +150,8 @@
                 if (Exists(i)) continue;
                 AppConfig.Set("mode_base_" + i, AsusACPI.PerformanceFullSpeed);
                 AppConfig.Set("mode_name_" + i, "Full Speed");
+                modes.Add(i);
+                SaveOrder(modes);
                 return;
             }
         }

@@ -24,6 +24,24 @@ namespace GHelper.Properties {
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Strings {
         
+        /// <summary>
+        ///   Looks up a localized string similar to Move profile up.
+        /// </summary>
+        internal static string MoveProfileUp {
+            get {
+                return ResourceManager.GetString("MoveProfileUp", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Move profile down.
+        /// </summary>
+        internal static string MoveProfileDown {
+            get {
+                return ResourceManager.GetString("MoveProfileDown", resourceCulture);
+            }
+        }
+
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
