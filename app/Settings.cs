@@ -781,12 +781,14 @@ namespace GHelper
                             BatteryControl.AutoBattery();
                             InputDispatcher.lidClose = AniMatrixControl.lidClose = true;
                             Aura.ApplyBrightness(0, "Lid");
+                            if (AppConfig.Is("lid_power_off")) Aura.LidPowerOff();
                             matrixControl.SetLidMode();
                             break;
                         case 1:
                             Logger.WriteLine("Lid Open");
                             InputDispatcher.InitFNLock();
                             InputDispatcher.lidClose = AniMatrixControl.lidClose = false;
+                            if (AppConfig.Is("lid_power_off")) Aura.ApplyPower();
                             Aura.ApplyBrightness(InputDispatcher.GetBacklight(), "Lid");
                             matrixControl.SetLidMode();
                             break;
