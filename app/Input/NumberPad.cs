@@ -11,7 +11,7 @@ namespace GHelper.Input
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool DeviceIoControl(SafeFileHandle hDevice, uint dwIoControlCode, byte[] lpInBuffer, uint nInBufferSize, byte[] lpOutBuffer, uint nOutBufferSize, ref uint lpBytesReturned, IntPtr lpOverlapped);
 
-        private static bool Ioctl(uint code, int function, ref int value)
+        internal static bool Ioctl(uint code, int function, ref int value)
         {
             using SafeFileHandle device = CreateFile("\\\\.\\AsusTPPC", 0xC0000000, 3, IntPtr.Zero, 3, 0, IntPtr.Zero);
             if (device.IsInvalid) return false;
