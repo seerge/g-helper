@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Security.Principal;
 
@@ -17,6 +19,64 @@ namespace GHelper.Helpers
         }, LazyThreadSafetyMode.ExecutionAndPublication);
 
         public static bool IsRunningAsSystem() => _isSystem.Value;
+
+        private static readonly Lazy<(SecurityIdentifier Sid, string Name)> _sessionUser =
+            new Lazy<(SecurityIdentifier, string)>(LoadSessionUser, LazyThreadSafetyMode.ExecutionAndPublication);
+
+        // Signed-in user of this session. Differs from the process user when UAC elevated with another (admin) account
+        public static (SecurityIdentifier Sid, string Name) GetSessionUser() => _sessionUser.Value;
+
+        private static (SecurityIdentifier, string) LoadSessionUser()
+        {
+            using var current = WindowsIdentity.GetCurrent();
+            try
+            {
+                string? user = QuerySessionString(WTSUserName);
+                string? domain = QuerySessionString(WTSDomainName);
+                if (!string.IsNullOrEmpty(user))
+                {
+                    var account = string.IsNullOrEmpty(domain) ? new NTAccount(user) : new NTAccount(domain, user);
+                    var sid = (SecurityIdentifier)account.Translate(typeof(SecurityIdentifier));
+                    if (!sid.Equals(current.User)) return (sid, account.Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine("Can't read session user: " + ex.Message);
+            }
+            return (current.User!, current.Name);
+        }
+
+        private static string? QuerySessionString(int infoClass)
+        {
+            if (!WTSQuerySessionInformation(IntPtr.Zero, WTS_CURRENT_SESSION, infoClass, out IntPtr buffer, out _)) return null;
+            try
+            {
+                return Marshal.PtrToStringUni(buffer);
+            }
+            finally
+            {
+                WTSFreeMemory(buffer);
+            }
+        }
+
+        public static bool IsElevatedAsOtherUser()
+        {
+            if (!IsUserAdministrator() || IsRunningAsSystem()) return false;
+            using var current = WindowsIdentity.GetCurrent();
+            return !GetSessionUser().Sid.Equals(current.User);
+        }
+
+        private static readonly Lazy<bool> _isStandardUser = new Lazy<bool>(() =>
+        {
+            if (IsUserAdministrator()) return false;
+            using var identity = WindowsIdentity.GetCurrent();
+            // Admins running unelevated have a split (limited) token, standard accounts don't
+            return GetTokenInformation(identity.Token, TokenElevationType, out int type, sizeof(int), out _) && type == TokenElevationTypeDefault;
+        }, LazyThreadSafetyMode.ExecutionAndPublication);
+
+        // Account that can't elevate without another account's credentials
+        public static bool IsStandardUser() => _isStandardUser.Value;
 
         public static void CheckAlreadyRunning()
         {
@@ -59,7 +119,8 @@ namespace GHelper.Helpers
                 {
                     var failed = new List<Process>();
                     foreach (Process process in processes)
-                        if (process.Id != currentProcess.Id)
+                        // Session 0 holds the SYSTEM agent and charge limit tasks, not another UI
+                        if (process.Id != currentProcess.Id && process.SessionId != 0)
                         {
                             try
                             {
@@ -131,6 +192,35 @@ namespace GHelper.Helpers
                 {
                     Logger.WriteLine(ex.Message);
                 }
+            }
+        }
+
+        // Runs a one-off elevated action and waits for it, without restarting the app
+        public static bool RunElevatedAndWait(string param)
+        {
+            try
+            {
+                using Process? process = Process.Start(new ProcessStartInfo
+                {
+                    UseShellExecute = true,
+                    WorkingDirectory = Environment.CurrentDirectory,
+                    FileName = Application.ExecutablePath,
+                    Arguments = param,
+                    Verb = "runas"
+                });
+                if (process is null) return false;
+                process.WaitForExit();
+                return process.ExitCode == 0;
+            }
+            catch (Win32Exception ex)
+            {
+                Logger.WriteLine($"Elevated {param} cancelled: {ex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine($"Elevated {param} failed: {ex.Message}");
+                return false;
             }
         }
 
@@ -259,6 +349,20 @@ namespace GHelper.Helpers
             }
         }
 
+        const int WTS_CURRENT_SESSION = -1;
+        const int WTSUserName = 5;
+        const int WTSDomainName = 7;
+        const int TokenElevationType = 18;
+        const int TokenElevationTypeDefault = 1;
+
+        [DllImport("wtsapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        private static extern bool WTSQuerySessionInformation(IntPtr hServer, int sessionId, int wtsInfoClass, out IntPtr ppBuffer, out int pBytesReturned);
+
+        [DllImport("wtsapi32.dll")]
+        private static extern void WTSFreeMemory(IntPtr pMemory);
+
+        [DllImport("advapi32.dll", SetLastError = true)]
+        private static extern bool GetTokenInformation(IntPtr TokenHandle, int TokenInformationClass, out int TokenInformation, uint TokenInformationLength, out uint ReturnLength);
 
     }
 }

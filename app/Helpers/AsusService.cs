@@ -86,31 +86,44 @@ namespace GHelper.Helpers
         }
 
 
-        public static void StopAsusServices()
+        public static void StopRunningServices()
         {
             foreach (string service in GetRunningServices())
             {
                 ProcessHelper.StopDisableService(service, servicesAC.Contains(service) ? "Manual" : "Disabled");
             }
+        }
+
+        public static void StopAsusServices()
+        {
+            if (ProcessHelper.IsUserAdministrator()) StopRunningServices();
+            else PrivilegedAgent.Send(AgentCommand.StopServices);
 
             if (GetRunningCount() == 0) AppConfig.Set("services_disabled", 1);
 
             if (AppConfig.IsAlly()) AllyControl.ApplyMode((ControllerMode)AppConfig.Get("controller_mode", (int)ControllerMode.Auto), true);
         }
 
-        public static void StartAsusServices()
+        public static void StartStoppedServices()
         {
-            AppConfig.Set("services_disabled", 0);
             foreach (string service in GetServiceStates().Keys)
             {
                 ProcessHelper.StartEnableService(service);
             }
         }
 
+        public static void StartAsusServices()
+        {
+            AppConfig.Set("services_disabled", 0);
+            if (ProcessHelper.IsUserAdministrator()) StartStoppedServices();
+            else PrivilegedAgent.Send(AgentCommand.StartServices);
+        }
+
         public static void StopOnStartup()
         {
             if (AppConfig.Is("services_skip")) return;
-            if (!AppConfig.Is("services_disabled") || !ProcessHelper.IsUserAdministrator()) return;
+            if (!AppConfig.Is("services_disabled")) return;
+            if (!ProcessHelper.IsUserAdministrator() && !PrivilegedAgent.IsAvailable) return;
             if (GetRunningCount() == 0) return;
 
             Logger.WriteLine("ASUS services revived, re-stopping on startup");
