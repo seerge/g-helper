@@ -321,10 +321,10 @@ namespace GHelper
             trackHysteresisUp.AccessibleName = labelHysteresisUp.Text;
             trackHysteresisDown.AccessibleName = labelHysteresisDown.Text;
 
-            chartCPU.AccessibleName = "CPU fan curve";
-            chartGPU.AccessibleName = "GPU fan curve";
-            chartMid.AccessibleName = "Mid fan curve";
-            chartXGM.AccessibleName = "XG Mobile fan curve";
+            chartCPU.AccessibleName = Properties.Strings.FanCurveCPU;
+            chartGPU.AccessibleName = Properties.Strings.FanCurveGPU;
+            chartMid.AccessibleName = Properties.Strings.FanCurveMid;
+            chartXGM.AccessibleName = Properties.Strings.FanCurveXGM;
         }
 
         private void CheckFanClamp_Click(object? sender, EventArgs e)
@@ -1062,7 +1062,7 @@ namespace GHelper
             // All AMD version has B0 but doesn't have C0 (Nvidia GPU) settings
             if (modeB0)
             {
-                labelLeftTotal.Text = "Platform (CPU + GPU)";
+                labelLeftTotal.Text = Properties.Strings.PlatformCPUGPU;
                 labelLeftCPU.Text = "CPU";
                 panelFast.Visible = false;
                 panelSlow.Visible = false;
@@ -1073,16 +1073,16 @@ namespace GHelper
 
                 if (CpuInfo.IsAMD)
                 {
-                    labelLeftTotal.Text = "SPL (CPU sustained)";
-                    labelLeftSlow.Text = "sPPT (CPU long boost)";
-                    labelLeftFast.Text = "fPPT (CPU short boost)";
+                    labelLeftTotal.Text = Properties.Strings.SPLSustained;
+                    labelLeftSlow.Text = Properties.Strings.sPPTLongBoost;
+                    labelLeftFast.Text = Properties.Strings.fPPTShortBoost;
                     panelFast.Visible = modeC1;
 
                 }
                 else
                 {
-                    labelLeftTotal.Text = "PL1 (CPU sustained)";
-                    labelLeftSlow.Text = "PL2 (CPU long boost)";
+                    labelLeftTotal.Text = Properties.Strings.PL1Sustained;
+                    labelLeftSlow.Text = Properties.Strings.PL2LongBoost;
                     panelFast.Visible = false;
                 }
 

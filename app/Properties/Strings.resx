@@ -1127,4 +1127,34 @@ from heating up the sleeping laptop and draining the battery.</value>
   <data name="Background" xml:space="preserve">
     <value>Back</value>
   </data>
+  <data name="FanCurveCPU" xml:space="preserve">
+    <value>CPU fan curve</value>
+  </data>
+  <data name="FanCurveGPU" xml:space="preserve">
+    <value>GPU fan curve</value>
+  </data>
+  <data name="FanCurveMid" xml:space="preserve">
+    <value>Mid fan curve</value>
+  </data>
+  <data name="FanCurveXGM" xml:space="preserve">
+    <value>XG Mobile fan curve</value>
+  </data>
+  <data name="PlatformCPUGPU" xml:space="preserve">
+    <value>Platform (CPU + GPU)</value>
+  </data>
+  <data name="SPLSustained" xml:space="preserve">
+    <value>SPL (CPU sustained)</value>
+  </data>
+  <data name="sPPTLongBoost" xml:space="preserve">
+    <value>sPPT (CPU long boost)</value>
+  </data>
+  <data name="fPPTShortBoost" xml:space="preserve">
+    <value>fPPT (CPU short boost)</value>
+  </data>
+  <data name="PL1Sustained" xml:space="preserve">
+    <value>PL1 (CPU sustained)</value>
+  </data>
+  <data name="PL2LongBoost" xml:space="preserve">
+    <value>PL2 (CPU long boost)</value>
+  </data>
 </root>
