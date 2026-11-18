@@ -811,7 +811,7 @@ public static class AppConfig
 
     public static bool IsForceMiniled()
     {
-        return ContainsModel("G834JYR") || ContainsModel("G834JZR") || ContainsModel("G634JZR") || ContainsModel("G835L") || ContainsModel("G635L") || Is("force_miniled");
+        return ContainsModel("G834JYR") || ContainsModel("G834JZR") || ContainsModel("G634JZR") || ContainsModel("G634JYR") || ContainsModel("G835L") || ContainsModel("G635L") || Is("force_miniled");
     }
 
     public static bool IsKeystone()
