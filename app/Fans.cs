@@ -1245,7 +1245,10 @@ namespace GHelper
             bool autoFans = AppConfig.IsApplyPower() && AppConfig.IsFanRequired();
             bool applyFans = AppConfig.IsApplyFans();
 
-            checkApplyFans.Checked = applyFans;
+            checkApplyFans.Checked = applyFans || autoFans;
+            checkApplyFans.Enabled = !autoFans;
+            labelFansResult.Text = autoFans ? "Fan curve is required for power limits to work" : "";
+            labelFansResult.Visible = autoFans;
 
             if (autoFans || applyFans)
             {
@@ -1332,6 +1335,7 @@ namespace GHelper
                 LoadProfile(seriesXGM, AsusFan.XGM, true);
 
             checkApplyFans.Checked = false;
+            checkApplyFans.Enabled = true;
             checkApplyPower.Checked = false;
             seriesCPU.Color = Color.Gray;
             seriesGPU.Color = Color.Gray;

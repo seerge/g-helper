@@ -264,7 +264,7 @@ namespace GHelper.Mode
                 }
                 else
                 {
-                    settings.LabelFansResult("");
+                    if (!force) settings.LabelFansResult("");
                     customFans = true;
                 }
 
