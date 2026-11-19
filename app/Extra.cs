@@ -23,6 +23,29 @@ namespace GHelper
         const string EMPTY = "--------------";
 
 
+        // Replaces the "FN+C:" label with a selector of the key that triggers this binding
+        private void InitFnLockHotkey()
+        {
+            string hotkey = InputDispatcher.FnLockHotkeyName();
+            if (hotkey.Length == 0) return;
+
+            var comboKey = new RComboBox
+            {
+                Name = "comboFNCKey",
+                Dock = DockStyle.Top,
+                Margin = comboFNC.Margin,
+                DropDownStyle = ComboBoxStyle.DropDownList,
+                NativeHeight = true,
+                TabStop = false
+            };
+            comboKey.Items.AddRange(["FN+C", hotkey]);
+            comboKey.SelectedIndex = InputDispatcher.IsFnLockHotkey() ? 1 : 0;
+            comboKey.SelectedIndexChanged += (s, e) => InputDispatcher.SetFnLockHotkey(comboKey.SelectedIndex == 1);
+
+            tableBindings.Controls.Remove(labelFNC);
+            tableBindings.Controls.Add(comboKey, 0, 6);
+        }
+
         private void SetKeyCombo(ComboBox combo, TextBox txbox, string name)
         {
             if (combo is RComboBox rcombo) rcombo.NativeHeight = true;
@@ -322,6 +345,7 @@ namespace GHelper
                 SetKeyCombo(comboFNF4, textFNF4, "fnf4");
 
                 SetKeyCombo(comboFNC, textFNC, "fnc");
+                InitFnLockHotkey();
                 SetKeyCombo(comboFNV, textFNV, "fnv");
                 SetKeyCombo(comboFNE, textFNE, "fne");
             }
