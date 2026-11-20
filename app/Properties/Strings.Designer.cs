@@ -2123,6 +2123,56 @@ namespace GHelper.Properties {
             }
         }
         
+        internal static string PerformanceModeUp => ResourceManager.GetString("PerformanceModeUp", resourceCulture);
+
+        internal static string PerformanceModeDown => ResourceManager.GetString("PerformanceModeDown", resourceCulture);
+
+        internal static string Lever => ResourceManager.GetString("Lever", resourceCulture);
+
+        internal static string LeverCycleModes => ResourceManager.GetString("LeverCycleModes", resourceCulture);
+
+        internal static string LeverVolume => ResourceManager.GetString("LeverVolume", resourceCulture);
+
+        internal static string LeverMedia => ResourceManager.GetString("LeverMedia", resourceCulture);
+
+        internal static string LeverKeyBrightness => ResourceManager.GetString("LeverKeyBrightness", resourceCulture);
+
+        internal static string LeverOledBrightness => ResourceManager.GetString("LeverOledBrightness", resourceCulture);
+
+        internal static string LeverLightingEffect => ResourceManager.GetString("LeverLightingEffect", resourceCulture);
+
+        internal static string LeverCustom => ResourceManager.GetString("LeverCustom", resourceCulture);
+
+        internal static string LeverModesInitial => ResourceManager.GetString("LeverModesInitial", resourceCulture);
+
+        internal static string LeverModesPending => ResourceManager.GetString("LeverModesPending", resourceCulture);
+
+        internal static string LeverModesApplied => ResourceManager.GetString("LeverModesApplied", resourceCulture);
+
+        internal static string LeverModesSaving => ResourceManager.GetString("LeverModesSaving", resourceCulture);
+
+        internal static string LeverKeepOneMode => ResourceManager.GetString("LeverKeepOneMode", resourceCulture);
+
+        internal static string LeverCustomDisabled => ResourceManager.GetString("LeverCustomDisabled", resourceCulture);
+
+        internal static string LeverBindings => ResourceManager.GetString("LeverBindings", resourceCulture);
+
+        internal static string LeverBindingsHint => ResourceManager.GetString("LeverBindingsHint", resourceCulture);
+
+        internal static string LeverBindingsError => ResourceManager.GetString("LeverBindingsError", resourceCulture);
+
+        internal static string LeverUp => ResourceManager.GetString("LeverUp", resourceCulture);
+
+        internal static string LeverPress => ResourceManager.GetString("LeverPress", resourceCulture);
+
+        internal static string LeverDown => ResourceManager.GetString("LeverDown", resourceCulture);
+
+        internal static string LeverScrollUp => ResourceManager.GetString("LeverScrollUp", resourceCulture);
+
+        internal static string LeverMiddleClick => ResourceManager.GetString("LeverMiddleClick", resourceCulture);
+
+        internal static string LeverScrollDown => ResourceManager.GetString("LeverScrollDown", resourceCulture);
+
         /// <summary>
         ///   Looks up a localized string similar to Peripherals.
         /// </summary>
@@ -2131,7 +2181,7 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("Peripherals", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Picture / Gif.
         /// </summary>

@@ -218,7 +218,7 @@ namespace GHelper.Peripherals.Keyboard
         public override void Dispose()
         {
             Logger.WriteLine(GetDisplayName() + ": Disposing");
-            StopEventListener();
+            StopEventListener(true);
             DeviceList.Local.Changed -= Device_Changed;
             base.Dispose();
         }
@@ -234,12 +234,15 @@ namespace GHelper.Peripherals.Keyboard
             events.Start(path);
         }
 
-        public void StopEventListener()
+        protected virtual bool KeepEventListener => false;
+
+        public void StopEventListener(bool force = false)
         {
+            if (!force && KeepEventListener) return;
             events?.Stop();
         }
 
-        private void OnEventReport(byte[] buffer, int count)
+        protected virtual void OnEventReport(byte[] buffer, int count)
         {
             if (count < 5 || buffer[1] != EventReportId) return;
 
