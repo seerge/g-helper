@@ -181,6 +181,17 @@
         }
 
 
+        // Step only through the three built-in levels, without wrapping at either end.
+        public static int GetStep(bool down = false)
+        {
+            int[] levels = { AsusACPI.PerformanceSilent, AsusACPI.PerformanceBalanced, AsusACPI.PerformanceTurbo };
+            int index = Array.IndexOf(levels, GetCurrentBase());
+            if (index < 0) return AsusACPI.PerformanceBalanced;
+
+            int next = Math.Clamp(index + (down ? -1 : 1), 0, levels.Length - 1);
+            return next == index ? GetCurrent() : levels[next];
+        }
+
         public static int GetNext(bool back = false)
         {
             var modes = GetList();

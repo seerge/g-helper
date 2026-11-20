@@ -214,6 +214,22 @@ namespace GHelper.Mode
 
         public void CyclePerformanceMode(bool back = false)
         {
+            QueuePerformanceMode(Modes.GetNext(back));
+        }
+
+        public void StepPerformanceMode(bool down = false)
+        {
+            int mode = Modes.GetStep(down);
+            if (mode == Modes.GetCurrent())
+            {
+                Toast();
+                return;
+            }
+            QueuePerformanceMode(mode);
+        }
+
+        private void QueuePerformanceMode(int mode)
+        {
             int delay = AppConfig.Get("mode_delay", 1000);
 
             if (modeToggleTimer is null)
@@ -224,7 +240,7 @@ namespace GHelper.Mode
 
             modeToggleTimer.Stop();
             modeToggleTimer.Start();
-            Modes.SetCurrent(Modes.GetNext(back));
+            Modes.SetCurrent(mode);
             Toast();
         }
 

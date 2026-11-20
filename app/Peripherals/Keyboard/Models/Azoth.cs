@@ -1,6 +1,6 @@
 ﻿namespace GHelper.Peripherals.Keyboard.Models
 {
-    public class Azoth : AsusKeyboard
+    public partial class Azoth : AsusKeyboard
     {
         public Azoth() : base(0x0B05, 0x1A83, "mi_01", 0x00)
         {
@@ -148,6 +148,12 @@
         public override void Connect()
         {
             base.Connect();
+            if (SupportsLeverBindings)
+            {
+                ReadProfile();
+                RefreshLeverMode();
+                StartEventListener();
+            }
             if (OledClock) SetOledClock(true);
         }
 
