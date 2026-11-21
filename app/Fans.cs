@@ -1420,7 +1420,7 @@ namespace GHelper
             if (AppConfig.Is("xgm_fan"))
                 SaveProfile(seriesXGM, AsusFan.XGM);
 
-            modeControl.AutoFans();
+            modeControl.AutoFans(AppConfig.IsApplyPower() && AppConfig.IsFanRequired());
         }
 
         private void ChartCPU_MouseUp(object? sender, MouseEventArgs e)
