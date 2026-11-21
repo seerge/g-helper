@@ -89,6 +89,7 @@ namespace GHelper
 
             ProcessHelper.CheckAlreadyRunning();
             ProcessHelper.SetPriority();
+            RuntimeWatchdog.Start();
 
             CleanupLegacyFiles();
 
