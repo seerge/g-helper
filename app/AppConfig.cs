@@ -487,6 +487,11 @@ public static class AppConfig
         return ContainsModel("FA617") || ContainsModel("FX507") || ContainsModel("FA507") || ContainsModel("FA401");
     }
 
+    public static bool IsNoBacklightSave()
+    {
+        return ContainsModel("FA401K");
+    }
+
     public static bool IsAnimeMatrix()
     {
         return ContainsModel("GA401") || ContainsModel("GA402") || ContainsModel("GU604V") || ContainsModel("GU604V") || ContainsModel("G835") || ContainsModel("G815") || ContainsModel("G635") || ContainsModel("G615");

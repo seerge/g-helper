@@ -972,9 +972,9 @@ public class AsusACPI
         if (sleep) state = state | ASUS_WMI_KEYBOARD_POWER_SLEEP;
         if (shutdown) state = state | ASUS_WMI_KEYBOARD_POWER_SHUTDOWN;
 
-        state = state | 0x01 << 8;
+        if (!AppConfig.IsNoBacklightSave()) state = state | 0x01 << 8;
 
-        DeviceSet(TUF_KB_STATE, state, "TUF_KB");
+        if (DeviceSet(TUF_KB_STATE, state, "TUF_KB") == 0) DeviceSet(TUF_KB_STATE, state & ~(0x01 << 8), "TUF_KB");
         if (AppConfig.IsVivoZenPro() && IsSupported(KBD_BACKLIGHT_OOBE)) DeviceSet(KBD_BACKLIGHT_OOBE, 1, "VIVO OOBE");
     }
 
