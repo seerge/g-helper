@@ -387,7 +387,7 @@ namespace GHelper.Peripherals.Keyboard
             return zones.ToArray();
         }
 
-        private const int LAMP_ROW_SPREAD_UM = 6000;
+        private const int LAMP_ROW_SPREAD_UM = 10000;
         private const int LAMP_PITCH_UM = 19000;
         private static readonly HashSet<int> WideKeys = new() { 0x28, 0x2A, 0x2B, 0x2C, 0x31, 0x39, 0xE0, 0xE1, 0xE5 };
 
@@ -397,8 +397,8 @@ namespace GHelper.Peripherals.Keyboard
             bool IsKey(int i) => (lamps[i].Purpose & 0x01) != 0;
             bool IsLogo(int i) => !IsKey(i) && (lamps[i].Purpose & 0x04) != 0;
 
-            var byName = all.Where(i => IsKey(i) && UsageName(lamps[i].Usage) != "").GroupBy(i => UsageName(lamps[i].Usage)).ToDictionary(g => g.Key, g => g.First());
-            if (byName.TryGetValue("\\", out int backslash)) byName.TryAdd("#", backslash);
+            var byName = all.Where(i => IsKey(i) && UsageName(lamps[i].Usage) != "").GroupBy(i => UsageName(lamps[i].Usage)).ToDictionary(g => g.Key, g => new Queue<int>(g));
+            if (byName.TryGetValue("\\", out var backslash)) byName.TryAdd("#", backslash);
             var kbd = all.Where(IsKey).OrderBy(i => lamps[i].X).ToList();
             if (kbd.Count == 0) return null;
 
@@ -440,7 +440,7 @@ namespace GHelper.Peripherals.Keyboard
                     if (def.Name == "Lightbar") targets.Add(front.Count > 0 ? front[bar++ * front.Count / barCount] : int.MaxValue);
                     else if (def.Name == "Logo") targets.Add(logos.Dequeue());
                     else if (byName.Count == 0) targets.Add(kbd[zone * kbd.Count / 4]);
-                    else if (byName.TryGetValue(def.Name, out int i)) targets.Add(i);
+                    else if (byName.TryGetValue(def.Name, out var lamp)) targets.Add(lamp.Count > 1 ? lamp.Dequeue() : lamp.Peek());
                     else targets.Add(queue?.Count > 0 ? queue.Dequeue() : int.MaxValue);
                 }
                 rows.Add(defs);
