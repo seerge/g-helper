@@ -113,7 +113,10 @@ namespace GHelper.UI
             set
             {
 
-                value = (int)Math.Round(value / (float)_step) * _step;
+                // Math.Round can overshoot Max, e.g. Min = 0, Max = 100, Step = 15 and
+                // value = 99 rounds to 105. Keep the snapped value inside the range
+                // so callers never receive a value their own Max does not allow.
+                value = Math.Clamp((int)Math.Round(value / (float)_step) * _step, Min, Max);
 
                 if (_value != value)
                 {
