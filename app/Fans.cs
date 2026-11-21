@@ -1003,6 +1003,12 @@ namespace GHelper
             if (sender is null) return;
             CheckBox chk = (CheckBox)sender;
 
+            if (AppConfig.IsApplyPower() && AppConfig.IsFanRequired())
+            {
+                chk.Checked = true;
+                return;
+            }
+
             AppConfig.SetMode("auto_apply", chk.Checked ? 1 : 0);
             modeControl.SetPerformanceMode();
 
@@ -1246,9 +1252,9 @@ namespace GHelper
             bool applyFans = AppConfig.IsApplyFans();
 
             checkApplyFans.Checked = applyFans || autoFans;
-            checkApplyFans.Enabled = !autoFans;
             labelFansResult.Text = autoFans ? "Fan curve is required for power limits to work" : "";
             labelFansResult.Visible = autoFans;
+            labelFansResult.ForeColor = autoFans ? colorGray : colorTurbo;
 
             if (autoFans || applyFans)
             {
@@ -1335,7 +1341,6 @@ namespace GHelper
                 LoadProfile(seriesXGM, AsusFan.XGM, true);
 
             checkApplyFans.Checked = false;
-            checkApplyFans.Enabled = true;
             checkApplyPower.Checked = false;
             seriesCPU.Color = Color.Gray;
             seriesGPU.Color = Color.Gray;
