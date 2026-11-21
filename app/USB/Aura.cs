@@ -1298,7 +1298,7 @@ namespace GHelper.USB
                     AmbientData.Colors[7].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(3, 1)); // right bck
 
                     for (int i = 0; i < 4; i++) // keyboard
-                        AmbientData.Colors[i].RGB = ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(i, 0));
+                        AmbientData.Colors[i].RGB = ColorDim(ColorUtils.HSV.UpSaturation(screeb_pxl.GetPixel(i, 0)));
                 }
                 else
                 {
