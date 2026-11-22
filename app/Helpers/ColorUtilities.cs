@@ -26,36 +26,69 @@ namespace GHelper.Helpers
                 (color1.B + color2.B) / 2);
         }
 
-        public static Color GetDominantColor(Bitmap bmp)
+        public static Color GetDominantColor(Bitmap bmp, bool vibrant = true)
         {
+            if (!vibrant)
+            {
+                int r = 0;
+                int g = 0;
+                int b = 0;
+                int total = 0;
 
-            //Used for tally
-            int r = 0;
-            int g = 0;
-            int b = 0;
+                for (int x = 0; x < bmp.Width; x++)
+                {
+                    for (int y = 0; y < bmp.Height; y++)
+                    {
+                        Color clr = bmp.GetPixel(x, y);
+                        r += clr.R;
+                        g += clr.G;
+                        b += clr.B;
+                        total++;
+                    }
+                }
 
-            int total = 0;
+                if (total == 0) return Color.Black;
+                return Color.FromArgb(r / total, g / total, b / total);
+            }
+
+            // Weighted circular dominant color calculation (filters out dark shadows & neutral noise)
+            double sumX = 0, sumY = 0, totalWeight = 0;
+            double totalVal = 0;
+            int pixelCount = 0;
 
             for (int x = 0; x < bmp.Width; x++)
             {
                 for (int y = 0; y < bmp.Height; y++)
                 {
                     Color clr = bmp.GetPixel(x, y);
+                    HSV hsv = HSV.ToHSV(clr);
 
-                    r += clr.R;
-                    g += clr.G;
-                    b += clr.B;
+                    pixelCount++;
+                    totalVal += hsv.Value;
 
-                    total++;
+                    if (hsv.Saturation >= 0.15 && hsv.Value >= 0.12)
+                    {
+                        double weight = Math.Pow(hsv.Saturation, 2.0);
+                        double rad = hsv.Hue * 2.0 * Math.PI;
+
+                        sumX += weight * Math.Cos(rad);
+                        sumY += weight * Math.Sin(rad);
+                        totalWeight += weight;
+                    }
                 }
             }
 
-            //Calculate average
-            r /= total;
-            g /= total;
-            b /= total;
+            if (totalWeight > 0)
+            {
+                double meanHue = (Math.Atan2(sumY, sumX) / (2.0 * Math.PI)) % 1.0;
+                if (meanHue < 0) meanHue += 1.0;
 
-            return Color.FromArgb(r, g, b);
+                return new HSV { Hue = meanHue, Saturation = 1.0, Value = 1.0 }.ToRGB();
+            }
+
+            double avg = pixelCount > 0 ? (totalVal / pixelCount) : 0;
+            byte mono = (byte)Math.Min(255, avg * 255);
+            return Color.FromArgb(mono, mono, mono);
         }
 
         public class HSV
@@ -127,12 +160,18 @@ namespace GHelper.Helpers
                 return new HSV { Hue = hue, Saturation = saturation, Value = value };
             }
 
-            public static Color UpSaturation(Color rgb, float increse = 0.2f) //make color more colored
+            public static Color UpSaturation(Color rgb, float increse = 0.2f, bool boostValue = false) //make color more colored
             {
                 if (rgb.R == rgb.G && rgb.G == rgb.B)
+                {
+                    if (boostValue && rgb.R > 25)
+                        return Color.FromArgb(255, 255, 255);
                     return rgb;
+                }
                 var hsv_color = ToHSV(rgb);
                 hsv_color.Saturation = Math.Min(hsv_color.Saturation + increse, 1.00f);
+                if (boostValue && hsv_color.Value > 0.08)
+                    hsv_color.Value = 1.0;
                 return hsv_color.ToRGB();
             }
 
