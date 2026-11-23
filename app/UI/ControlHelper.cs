@@ -63,6 +63,9 @@ public static class ControlHelper
 
             AdjustControls(control.Controls);
 
+            if (RForm.glassTheme && GlassFontFamily is not null && control.Font.Name == "Segoe UI")
+                control.Font = new Font(GlassFontFamily, control.Font.Size, control.Font.Style);
+
             var button = control as RButton;
             if (button != null)
             {
@@ -70,15 +73,31 @@ public static class ControlHelper
                 button.ForeColor = RForm.foreMain;
 
                 button.FlatStyle = FlatStyle.Flat;
-                if (!button.Borderless)
+                if (RForm.glassTheme)
+                {
+                    // Liquid glass: soft pill-ish shapes, no resting outline (only the active state gets a rim)
+                    button.BorderRadius = Math.Max(button.BorderRadius, 18);
+                    button.FlatAppearance.BorderColor = button.BackColor;
+                }
+                else if (!button.Borderless)
                     button.FlatAppearance.BorderColor = button.Secondary ? RForm.borderSecond : RForm.borderMain;
 
                 if (button.Image is not null && _invert)
                     button.Image = AdjustImage(button.Image);
             }
 
+            if (button != null && RForm.glassTheme && button.Image is not null)
+                button.Image = GlassIcon(button.Image);
+
             var pictureBox = control as PictureBox;
-            if (pictureBox != null && pictureBox.BackgroundImage is not null && _invert)
+            if (pictureBox != null && RForm.glassTheme)
+            {
+                pictureBox.BackgroundImageChanged -= GlassPicture_Changed;
+                pictureBox.BackgroundImageChanged += GlassPicture_Changed;
+                if (pictureBox.BackgroundImage is not null)
+                    pictureBox.BackgroundImage = GlassIcon(pictureBox.BackgroundImage);
+            }
+            else if (pictureBox != null && pictureBox.BackgroundImage is not null && _invert)
                 pictureBox.BackgroundImage = AdjustImage(pictureBox.BackgroundImage);
 
 
@@ -129,7 +148,8 @@ public static class ControlHelper
             var chk = control as CheckBox;
             if (chk != null)
             {
-                if (chk.BackColor != RForm.formBack)
+                bool inheritsCard = RForm.glassTheme && chk.Parent is not null && chk.BackColor == chk.Parent.BackColor;
+                if (chk.BackColor != RForm.formBack && !inheritsCard)
                 {
                     chk.BackColor = RForm.buttonSecond;
                     if (chk is RCheckBox)
@@ -237,6 +257,86 @@ public static class ControlHelper
         }
     }
 
+    // Windows 11's modern UI font, when available
+    private static readonly Lazy<FontFamily?> _glassFont = new(() =>
+        FontFamily.Families.FirstOrDefault(f => f.Name == "Segoe UI Variable Text"));
+    public static FontFamily? GlassFontFamily => _glassFont.Value;
+
+    // Glass card tokens (logical pixels, scaled by DPI)
+    private const int CardRadius = 16;
+    private const int CardGap = 3;
+    private const int CardBottomPad = 6;
+
+    /// <summary>
+    /// Turns a docked section panel into a frosted glass card: rounded, with a soft top sheen
+    /// and a light-catching rim. Outside the card is painted pure black, which reads as clear glass.
+    /// </summary>
+    public static void MakeGlassCard(Panel panel)
+    {
+        if (!RForm.glassTheme || panel.Tag as string == "glass-card") return;
+        panel.Tag = "glass-card";
+
+        float s = panel.DeviceDpi / 96f;
+        var p = panel.Padding;
+        int minTop = (int)Math.Round((CardGap + 6) * s);
+        int minBottom = (int)Math.Round(CardBottomPad * s);
+        panel.Padding = new Padding(p.Left, Math.Max(p.Top, minTop), p.Right, Math.Max(p.Bottom, minBottom));
+
+        panel.BackColor = RForm.glassCard;
+        panel.Resize += (_, _) => panel.Invalidate();
+        panel.Paint += GlassCard_Paint;
+    }
+
+    private static void GlassCard_Paint(object? sender, PaintEventArgs e)
+    {
+        if (sender is not Panel panel || panel.Width < 4 || panel.Height < 4) return;
+
+        float s = panel.DeviceDpi / 96f;
+        int gap = (int)Math.Round(CardGap * s);
+        int radius = (int)Math.Round(CardRadius * s);
+
+        var g = e.Graphics;
+        g.SmoothingMode = SmoothingMode.AntiAlias;
+
+        var card = new Rectangle(0, gap, panel.Width - 1, panel.Height - 1 - gap * 2);
+        if (card.Height < radius * 2) return;
+
+        using var cardPath = RComboBox.RoundedRect(card, radius, radius);
+
+        // Clear everything outside the rounded card back to glass
+        using (var outside = new GraphicsPath(FillMode.Alternate))
+        {
+            outside.AddRectangle(new Rectangle(-1, -1, panel.Width + 2, panel.Height + 2));
+            outside.AddPath(cardPath, false);
+            using var clear = new SolidBrush(RForm.formBack);
+            g.FillPath(clear, outside);
+        }
+
+        // Liquid sheen: a soft light pool along the top edge
+        var sheenRect = new Rectangle(card.X, card.Y, card.Width, Math.Max(1, (int)(card.Height * 0.45f)));
+        using (var sheen = new LinearGradientBrush(sheenRect,
+            Color.FromArgb(22, RForm.glassHighlight), Color.FromArgb(0, RForm.glassHighlight), LinearGradientMode.Vertical))
+        {
+            var state = g.Save();
+            g.SetClip(cardPath);
+            g.FillRectangle(sheen, sheenRect);
+            g.Restore(state);
+        }
+
+        // Rim: bright where light hits the top, fading down the sides
+        using (var rim = new LinearGradientBrush(new Rectangle(card.X, card.Y - 1, card.Width, card.Height + 2),
+            Color.FromArgb(255, 92, 92, 106), Color.FromArgb(255, 38, 38, 46), LinearGradientMode.Vertical))
+        {
+            rim.InterpolationColors = new ColorBlend
+            {
+                Colors = new[] { Color.FromArgb(255, 120, 124, 142), Color.FromArgb(255, 56, 58, 70), Color.FromArgb(255, 40, 41, 52) },
+                Positions = new[] { 0f, 0.25f, 1f }
+            };
+            using var pen = new Pen(rim, Math.Max(1f, s)) { Alignment = PenAlignment.Inset };
+            g.DrawPath(pen, cardPath);
+        }
+    }
+
     private static readonly ImageAttributes _invertAttributes = CreateInvertAttributes();
 
     private static ImageAttributes CreateInvertAttributes()
@@ -254,8 +354,40 @@ public static class ControlHelper
         return attr;
     }
 
+    // Icon accent for the glass theme (#00C8FF)
+    public static readonly Color GlassIconColor = Color.FromArgb(255, 0x00, 0xC8, 0xFF);
+
+    private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<Image, Image> _glassIcons = new();
+
+    /// <summary>
+    /// Recolors an icon to the glass accent, keeping its alpha shape. Cached, and safe to call repeatedly.
+    /// </summary>
+    public static Image? GlassIcon(Image? image)
+    {
+        if (image is null || !RForm.glassTheme) return image;
+        lock (_glassIcons)
+        {
+            if (_glassIcons.TryGetValue(image, out var tinted)) return tinted;
+            tinted = TintImage(image, GlassIconColor);
+            _glassIcons.AddOrUpdate(image, tinted);
+            _glassIcons.AddOrUpdate(tinted, tinted);
+            return tinted;
+        }
+    }
+
+    private static void GlassPicture_Changed(object? sender, EventArgs e)
+    {
+        if (sender is PictureBox pb && pb.BackgroundImage is not null)
+        {
+            var tinted = GlassIcon(pb.BackgroundImage);
+            if (!ReferenceEquals(tinted, pb.BackgroundImage)) pb.BackgroundImage = tinted;
+        }
+    }
+
     private static Image AdjustImage(Image image)
     {
+        if (RForm.glassTheme) return GlassIcon(image)!;
+
         var pic = new Bitmap(image.Width, image.Height);
         using (var g = Graphics.FromImage(pic))
         {

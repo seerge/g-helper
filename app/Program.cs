@@ -1,4 +1,4 @@
-using GHelper.Ally;
+﻿using GHelper.Ally;
 using GHelper.Battery;
 using GHelper.Display;
 using GHelper.Gpu;
@@ -119,8 +119,8 @@ namespace GHelper
 
             trayIcon = new NotifyIcon
             {
-                Text = "G-Helper",
-                Icon = Properties.Resources.standard,
+                Text = "C-Helper",
+                Icon = GHelper.UI.RForm.IsGlassTheme() ? GHelper.UI.AppIcon.Tray() : Properties.Resources.standard,
                 Visible = true
             };
 
@@ -176,7 +176,8 @@ namespace GHelper
 
             if (Environment.CurrentDirectory.Trim('\\') == Application.StartupPath.Trim('\\') || action.Length > 0)
             {
-                SettingsToggle(false);
+                if (UseGlassFlyout && action.Length == 0) GetGlassFlyout().ShowFlyout();
+                else SettingsToggle(false);
             }
 
             switch (action)
@@ -414,6 +415,24 @@ namespace GHelper
             SchedulePowerCheck();
         }
 
+        // Liquid glass quick panel on tray click. "flyout": 0 in config.json goes back to the classic window.
+        static GHelper.UI.GlassFlyout? glassFlyout;
+        static bool UseGlassFlyout => GHelper.UI.RForm.IsGlassTheme() && AppConfig.IsNotFalse("flyout");
+
+        /// <summary>ROG / app key: open the quick panel (or the classic window when the panel is off)</summary>
+        public static void QuickToggle()
+        {
+            if (!UseGlassFlyout) { SettingsToggle(); return; }
+            if (settingsForm.InvokeRequired) { settingsForm.BeginInvoke(new Action(QuickToggle)); return; }
+            GetGlassFlyout().Toggle(trayClick: false);
+        }
+
+        static GHelper.UI.GlassFlyout GetGlassFlyout()
+        {
+            if (glassFlyout is null || glassFlyout.IsDisposed) glassFlyout = new GHelper.UI.GlassFlyout();
+            return glassFlyout;
+        }
+
         public static bool IsTaskbarTop()
         {
             var rect = new Helpers.RECT();
@@ -437,6 +456,10 @@ namespace GHelper
             }
             else
             {
+                // Flyout just closed itself because this very tray click took focus away - keep it closed
+                if (trayClick && Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - SettingsForm.lastAutoHide) < 500)
+                    return;
+
                 var screen = Screen.PrimaryScreen;
                 if (screen is null) screen = Screen.FromControl(settingsForm);
 
@@ -456,6 +479,7 @@ namespace GHelper
                 else
                     settingsForm.Top = IsTaskbarTop() ? screen.WorkingArea.Top + 10 : screen.WorkingArea.Bottom - 10 - settingsForm.Height;
 
+                settingsForm.AnimateIn();
                 settingsForm.VisualiseGPUMode();
             }
         }
@@ -463,7 +487,10 @@ namespace GHelper
         static void TrayIcon_MouseClick(object? sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
-                SettingsToggle(trayClick: true);
+            {
+                if (UseGlassFlyout) GetGlassFlyout().Toggle(trayClick: true);
+                else SettingsToggle(trayClick: true);
+            }
 
         }
 

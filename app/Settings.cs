@@ -16,6 +16,7 @@ using GHelper.Properties;
 using GHelper.UI;
 using GHelper.USB;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Timers;
 
 namespace GHelper
@@ -65,6 +66,10 @@ namespace GHelper
         {
 
             InitializeComponent();
+            InitFlyout();
+            InitStats();
+            RemoveFooterExtras();
+            InitBacklightToggle();
             InitTheme(true);
 
             gpuControl = new GPUModeControl(this);
@@ -269,7 +274,7 @@ namespace GHelper
             buttonBatteryFull.Click += ButtonBatteryFull_Click;
 
             buttonControllerMode.Click += ButtonControllerMode_Click;
-            buttonBacklight.Click += ButtonBacklight_Click;
+            buttonKbdLight.Click += ButtonBacklight_Click;
 
             buttonFPS.Click += ButtonFPS_Click;
             buttonOverlay.Click += ButtonOverlay_Click;
@@ -286,7 +291,7 @@ namespace GHelper
             buttonAutoTDP.Click += ButtonAutoTDP_Click;
             buttonAutoTDP.BorderColor = colorTurbo;
 
-            Text = "G-Helper " + (ProcessHelper.IsUserAdministrator() ? "—" : "-") + " " + AppConfig.GetModelShort();
+            Text = "C-Helper " + (ProcessHelper.IsUserAdministrator() ? "—" : "-") + " " + AppConfig.GetModelShort();
             TopMost = AppConfig.Is("topmost");
 
             //This will auto position the window again when it resizes. Might mess with position if people drag the window somewhere else.
@@ -634,7 +639,7 @@ namespace GHelper
         public void VisualiseBacklight(int backlight)
         {
             if (InvokeRequired) { Invoke(() => VisualiseBacklight(backlight)); return; }
-            buttonBacklight.Text = Math.Round((double)backlight * 33.33).ToString() + "%";
+            buttonKbdLight.Text = Math.Round((double)backlight * 33.33).ToString() + "%";
         }
 
         public void VisualiseFPSLimit(int limit)
@@ -1594,6 +1599,189 @@ namespace GHelper
             MemoryHelper.TrimAfter();
         }
 
+        // ---- Taskbar flyout (glass theme) ----
+
+        public bool IsFlyout { get; private set; }
+        public static long lastAutoHide;
+        private System.Windows.Forms.Timer? flyoutAnimation;
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetForegroundWindow();
+
+        [DllImport("user32.dll")]
+        private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
+
+        /// <summary>
+        /// Docks the window to the taskbar like a Windows quick settings flyout:
+        /// borderless, no taskbar button, hides when you click away. Set "flyout": 0 in config.json to turn off.
+        /// </summary>
+        private void InitFlyout()
+        {
+            // The glass quick panel (GlassFlyout) is the tray flyout now; this full window stays a normal window
+            IsFlyout = IsGlassTheme() && AppConfig.Is("legacy_flyout");
+            Load += (_, _) => InitGlassCards();
+            if (!IsFlyout) return;
+
+            FormBorderStyle = FormBorderStyle.None;
+            ShowInTaskbar = false;
+            KeyPreview = true;
+
+            KeyDown += (_, e) =>
+            {
+                if (e.KeyCode == Keys.Escape) HideAll();
+            };
+
+            Deactivate += Flyout_Deactivate;
+        }
+
+        private void InitGlassCards()
+        {
+            if (!glassTheme) return;
+
+            Panel[] cards = { panelStats, panelPerformance, panelGPU, panelScreen, panelGamma, panelMatrix,
+                              panelKeyboard, panelRearLight, panelAlly, panelBattery, panelFooter };
+
+            SuspendLayout();
+            foreach (var card in cards) ControlHelper.MakeGlassCard(card);
+            ResumeLayout(true);
+        }
+
+        // ---- Minimal usage & temperature strip ----
+
+        private Panel panelStats = null!;
+        private GlassStats glassStats = null!;
+
+        private void InitStats()
+        {
+            float s = DeviceDpi / 96f;
+            glassStats = new GlassStats
+            {
+                Dock = DockStyle.Fill,
+                Name = "glassStats",
+            };
+            panelStats = new Panel
+            {
+                Name = "panelStats",
+                Dock = DockStyle.Top,
+                Height = (int)Math.Round(66 * s),
+                Padding = new Padding((int)Math.Round(10 * s), (int)Math.Round(12 * s), (int)Math.Round(10 * s), (int)Math.Round(10 * s)),
+                Margin = new Padding(0),
+            };
+            panelStats.Controls.Add(glassStats);
+
+            // Added last, so it docks above every other section
+            Controls.Add(panelStats);
+        }
+
+        private async Task UpdateStats()
+        {
+            int? cpuUse = null, gpuUse = null;
+            (int percent, int usedMb)? ram = null;
+
+            await Task.Run(() =>
+            {
+                try { cpuUse = HardwareControl.GetCPUUsage(); } catch { }
+                try { gpuUse = HardwareControl.GpuControl?.GetGpuUse(); } catch { }
+                try { ram = HardwareControl.GetRAMInfo(); } catch { }
+            });
+
+            static string Temp(float? t) => t is float v && v > 0 ? TempHelper.FormatTemp(v) : "--";
+            static string Pct(int? p) => p is int v && v >= 0 ? v + "%" : "";
+            static float? Lvl(int? p) => p is int v && v >= 0 ? v / 100f : null;
+
+            var power = SystemInformation.PowerStatus;
+            float batLevel = power.BatteryLifePercent;
+            string batValue = batLevel is >= 0 and <= 1 ? Math.Round(batLevel * 100) + "%" : "--";
+            string batDetail = "";
+            if (HardwareControl.batteryRate is decimal rate && rate != 0)
+                batDetail = (rate > 0 ? "+" : "") + Math.Round(rate, 1) + "W";
+            else if (power.PowerLineStatus == PowerLineStatus.Online)
+                batDetail = "AC";
+
+            var tiles = new[]
+            {
+                new GlassStats.Tile("CPU", Temp(HardwareControl.cpuTemp), Pct(cpuUse), Lvl(cpuUse)),
+                new GlassStats.Tile("GPU", Temp(HardwareControl.gpuTemp), Pct(gpuUse), Lvl(gpuUse)),
+                new GlassStats.Tile("RAM", ram is { } r ? r.percent + "%" : "--",
+                    ram is { } r2 ? Math.Round(r2.usedMb / 1024.0, 1) + "G" : "", ram is { } r3 ? r3.percent / 100f : null),
+                new GlassStats.Tile("BAT", batValue, batDetail, batLevel is >= 0 and <= 1 ? batLevel : null),
+            };
+
+            if (IsHandleCreated) BeginInvoke(new Action(() => glassStats.SetTiles(tiles)));
+        }
+
+        /// <summary>
+        /// Footer keeps only Quit: Donate and Updates are removed
+        /// </summary>
+        private void RemoveFooterExtras()
+        {
+            tableButtons.SuspendLayout();
+            tableButtons.Controls.Remove(buttonDonate);
+            tableButtons.Controls.Remove(buttonUpdates);
+            buttonDonate.Visible = false;
+            buttonUpdates.Visible = false;
+
+            tableButtons.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 66.6f);
+            tableButtons.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 0);
+            tableButtons.ColumnStyles[2] = new ColumnStyle(SizeType.Percent, 33.3f);
+            tableButtons.ResumeLayout(true);
+        }
+
+        private void Flyout_Deactivate(object? sender, EventArgs e)
+        {
+            if (!IsFlyout || TopMost) return;
+
+            BeginInvoke(new Action(async () =>
+            {
+                // Let focus settle: our own popups (fans, extra, message boxes) shouldn't dismiss the flyout
+                await Task.Delay(120);
+                if (!Visible || ContainsFocus) return;
+
+                foreach (Form form in Application.OpenForms)
+                    if (form != this && form.Visible) return;
+
+                GetWindowThreadProcessId(GetForegroundWindow(), out uint pid);
+                if (pid == Environment.ProcessId) return;
+
+                lastAutoHide = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                HideAll();
+            }));
+        }
+
+        /// <summary>
+        /// Slides the flyout up from the taskbar (or down, if the taskbar is on top) with an ease-out curve
+        /// </summary>
+        public void AnimateIn()
+        {
+            if (!IsFlyout) return;
+
+            flyoutAnimation?.Stop();
+            flyoutAnimation?.Dispose();
+
+            int target = Top;
+            int offset = (int)Math.Round(28 * DeviceDpi / 96f) * (Program.IsTaskbarTop() ? -1 : 1);
+            const double duration = 190;
+
+            var clock = Stopwatch.StartNew();
+            Top = target + offset;
+
+            var timer = new System.Windows.Forms.Timer { Interval = 8 };
+            timer.Tick += (_, _) =>
+            {
+                double t = Math.Min(1, clock.ElapsedMilliseconds / duration);
+                double ease = 1 - Math.Pow(1 - t, 3);
+                Top = target + (int)Math.Round(offset * (1 - ease));
+                if (t >= 1)
+                {
+                    timer.Stop();
+                    timer.Dispose();
+                    if (flyoutAnimation == timer) flyoutAnimation = null;
+                }
+            };
+            flyoutAnimation = timer;
+            timer.Start();
+        }
+
         /// <summary>
         /// Brings all visible windows to the top, with settings being the focus
         /// </summary>
@@ -1687,6 +1875,7 @@ namespace GHelper
 
             await Task.Run(() => HardwareControl.ReadSensors());
             if (Visible) _ = Task.Run((Action)PeripheralsProvider.RefreshBatteryForAllDevices);
+            if (Visible) _ = UpdateStats();
 
             if (HardwareControl.cpuTemp > 0)
                 cpuTemp = ": " + TempHelper.FormatTemp((double)HardwareControl.cpuTemp);
@@ -2044,7 +2233,7 @@ namespace GHelper
             if (lastIcon == (GPUMode, isDark, bw)) return;
             lastIcon = (GPUMode, isDark, bw);
 
-            Icon newIcon = GPUMode switch
+            Icon newIcon = glassTheme ? GHelper.UI.AppIcon.Tray() : GPUMode switch
             {
                 AsusACPI.GPUModeEco => bw ? (isDark ? Properties.Resources.light_eco : Properties.Resources.dark_eco) : Properties.Resources.eco,
                 AsusACPI.GPUModeUltimate => bw ? (isDark ? Properties.Resources.light_standard : Properties.Resources.dark_standard) : Properties.Resources.ultimate,
@@ -2373,6 +2562,76 @@ namespace GHelper
         {
             buttonFnLock.Width = buttonOverlay.Width = (buttonKeyboard.Width - 8) / 2;
             buttonOverlay.Left = buttonFnLock.Left - 8 - buttonOverlay.Width;
+
+            if (buttonKbdLight is not null)
+            {
+                buttonKbdLight.Width = buttonOverlay.Width;
+                buttonKbdLight.Height = buttonFnLock.Height;
+                buttonKbdLight.Top = buttonFnLock.Top;
+                buttonKbdLight.Left = buttonOverlay.Left - 8 - buttonKbdLight.Width;
+            }
+        }
+
+        // ---- Keyboard backlight on/off ----
+
+        private RButton? buttonKbdLight;
+
+        private void InitBacklightToggle()
+        {
+            buttonKbdLight = new RButton
+            {
+                Name = "buttonKbdLight",
+                Borderless = true,
+                Secondary = true,
+                BorderRadius = 2,
+                FlatStyle = FlatStyle.Flat,
+                Font = buttonFnLock.Font,
+                Margin = new Padding(0),
+                Anchor = AnchorStyles.Top | AnchorStyles.Right,
+                Size = buttonFnLock.Size,
+                Text = "Light",
+                UseVisualStyleBackColor = false,
+                TabIndex = buttonFnLock.TabIndex,
+            };
+            buttonKbdLight.FlatAppearance.BorderSize = 0;
+            buttonKbdLight.Click += (_, _) => ToggleBacklight();
+            panelKeyboardTitle.Controls.Add(buttonKbdLight);
+
+            VisibleChanged += (_, _) => { if (Visible) VisualiseBacklight(); };
+        }
+
+        private void ToggleBacklight()
+        {
+            int current = InputDispatcher.GetBacklight();
+            int target;
+
+            if (current > 0)
+            {
+                AppConfig.Set("keyboard_brightness_last", current);
+                target = 0;
+            }
+            else
+            {
+                int max = AppConfig.Get("max_brightness", 3);
+                target = Math.Clamp(AppConfig.Get("keyboard_brightness_last", max), 1, max);
+            }
+
+            InputDispatcher.SetBacklight(target - current, true);
+            VisualiseBacklight();
+        }
+
+        public void VisualiseBacklight()
+        {
+            if (buttonKbdLight is null) return;
+            if (InvokeRequired) { BeginInvoke(new Action(VisualiseBacklight)); return; }
+
+            bool on = InputDispatcher.GetBacklight() > 0;
+            Color accent = glassTheme ? ControlHelper.GlassIconColor : colorStandard;
+
+            buttonKbdLight.Text = on ? "Light On" : "Light Off";
+            buttonKbdLight.BackColor = on ? accent : buttonSecond;
+            buttonKbdLight.ForeColor = on ? (glassTheme ? Color.FromArgb(255, 8, 20, 28) : SystemColors.ControlLightLight) : SystemColors.ControlDark;
+            buttonKbdLight.AccessibleName = on ? "Keyboard backlight on" : "Keyboard backlight off";
         }
 
         public void VisualiseOverlay()

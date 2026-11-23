@@ -1,4 +1,4 @@
-using GHelper.Display;
+﻿using GHelper.Display;
 using GHelper.Helpers;
 using GHelper.Mode;
 using GHelper.Peripherals;
@@ -502,7 +502,7 @@ namespace GHelper.Input
             if (e.Modifier == keyModifier)
             {
                 if (e.Key == keyProfile) modeControl.CyclePerformanceMode();
-                if (e.Key == keyApp) Program.SettingsToggle();
+                if (e.Key == keyApp) Program.QuickToggle();
                 if (e.Key == Keys.F20) ToggleMic();
             }
 
@@ -677,7 +677,7 @@ namespace GHelper.Input
                     {
                         Program.settingsForm.BeginInvoke(delegate
                         {
-                            Program.SettingsToggle();
+                            Program.QuickToggle();
                         });
                     }
                     catch (Exception ex)
@@ -1181,6 +1181,7 @@ namespace GHelper.Input
 
             var extraForm = Program.settingsForm.extraForm;
             if (extraForm != null && extraForm.Text != "") extraForm.VisualiseBacklight(backlight);
+            if (Program.settingsForm.IsHandleCreated) Program.settingsForm.VisualiseBacklight();
 
             if (force || !AsusService.IsAsusOptimizationRunning())
             {

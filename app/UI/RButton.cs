@@ -61,6 +61,15 @@ namespace GHelper.UI
 
         public bool Borderless { get; set; } = false;
 
+        /// <summary>
+        /// Icons set at runtime (mode switches, GPU state, etc.) pick up the glass accent automatically
+        /// </summary>
+        public new Image? Image
+        {
+            get => base.Image;
+            set => base.Image = ControlHelper.GlassIcon(value);
+        }
+
         protected override bool ShowFocusCues => false;
 
         public RButton()
@@ -109,7 +118,7 @@ namespace GHelper.UI
             base.OnPaint(pevent);
 
             float ratio = pevent.Graphics.DpiX / 192.0f;
-            int border = (int)Math.Round((ratio * borderSize - 1) / 2) * 2 + 1;
+            int border = (int)Math.Round((ratio * (RForm.glassTheme ? 3 : borderSize) - 1) / 2) * 2 + 1;
             int radius = (int)Math.Round(ratio * borderRadius, MidpointRounding.AwayFromZero);
 
             Rectangle rectSurface = ClientRectangle;
@@ -122,15 +131,15 @@ namespace GHelper.UI
                 pevent.Graphics.DrawPath(penSurface, pathSurface);
 
                 bool drawActive = Enabled && !Borderless && activated && borderColor.A > 0;
-                bool drawRest = Enabled && !Borderless && !activated && FlatAppearance.BorderColor.A > 0 && !RForm.flatTheme;
+                bool drawRest = Enabled && !Borderless && !activated && FlatAppearance.BorderColor.A > 0 && !RForm.flatTheme && !RForm.glassTheme;
 
                 if (drawActive)
                 {
                     Rectangle borderRect = new Rectangle(border, border, rectSurface.Width - 2 * border, rectSurface.Height - 2 * border);
 
-                    Color bgTop = Color.FromArgb(ActiveBgTopAlpha, borderColor);
-                    Color bgTransparent = Color.FromArgb(0, borderColor);
-                    float bgEndPos = ActiveBgEndFraction;
+                    Color bgTop = Color.FromArgb(RForm.glassTheme ? 70 : ActiveBgTopAlpha, borderColor);
+                    Color bgTransparent = Color.FromArgb(RForm.glassTheme ? 22 : 0, borderColor);
+                    float bgEndPos = RForm.glassTheme ? 0.6f : ActiveBgEndFraction;
 
                     using (GraphicsPath bgPath = GetFigurePath(borderRect, radius))
                     using (LinearGradientBrush bgBrush = new LinearGradientBrush(
