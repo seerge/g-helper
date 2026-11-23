@@ -96,11 +96,12 @@ namespace GHelper
             checkVibra.Visible = AppConfig.IsXboxAlly();
             checkVibra.Checked = AppConfig.Is("vibra_enhanced");
             checkVibra.CheckedChanged += CheckVibra_CheckedChanged;
-            if (checkVibra.Visible)
-            {
-                panelVibra.MaximumSize = new Size(0, panelVibra.Height + checkVibra.Bottom - checkController.Bottom);
-                panelVibra.MinimumSize = panelVibra.MaximumSize;
-            }
+
+            checkXbox.Checked = AppConfig.Is("xbox_experience");
+            checkXbox.CheckedChanged += CheckXbox_CheckedChanged;
+
+            panelVibra.MaximumSize = new Size(0, panelVibra.Height + checkXbox.Bottom - checkController.Bottom);
+            panelVibra.MinimumSize = panelVibra.MaximumSize;
 
         }
 
@@ -114,6 +115,12 @@ namespace GHelper
         {
             AppConfig.Set("vibra_enhanced", checkVibra.Checked ? 1 : 0);
             AllyControl.SetVibrationMode();
+        }
+
+        private void CheckXbox_CheckedChanged(object? sender, EventArgs e)
+        {
+            AppConfig.Set("xbox_experience", checkXbox.Checked ? 1 : 0);
+            AllyControl.SetXboxExperience();
         }
 
         private static object[] BuildBindingComboItems()

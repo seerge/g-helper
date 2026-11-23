@@ -89,6 +89,7 @@ namespace GHelper
             panelVibra = new Panel();
             checkController = new GHelper.UI.RCheckBox();
             checkVibra = new GHelper.UI.RCheckBox();
+            checkXbox = new GHelper.UI.RCheckBox();
             pictureBox5 = new PictureBox();
             labelVibra = new Label();
             labelVibraTitle = new Label();
@@ -999,6 +1000,7 @@ namespace GHelper
             // 
             panelVibra.AutoSize = true;
             panelVibra.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panelVibra.Controls.Add(checkXbox);
             panelVibra.Controls.Add(checkVibra);
             panelVibra.Controls.Add(checkController);
             panelVibra.Controls.Add(buttonReset);
@@ -1032,7 +1034,7 @@ namespace GHelper
             // 
             checkVibra.AutoSize = true;
             checkVibra.BackColor = SystemColors.ControlLight;
-            checkVibra.Location = new Point(13, 130);
+            checkVibra.Location = new Point(282, 130);
             checkVibra.Margin = new Padding(0);
             checkVibra.Name = "checkVibra";
             checkVibra.Padding = new Padding(16, 6, 16, 6);
@@ -1041,6 +1043,19 @@ namespace GHelper
             checkVibra.Text = "Enhanced Vibration";
             checkVibra.UseVisualStyleBackColor = false;
             checkVibra.Visible = false;
+            // 
+            // checkXbox
+            // 
+            checkXbox.AutoSize = true;
+            checkXbox.BackColor = SystemColors.ControlLight;
+            checkXbox.Location = new Point(13, 130);
+            checkXbox.Margin = new Padding(0);
+            checkXbox.Name = "checkXbox";
+            checkXbox.Padding = new Padding(16, 6, 16, 6);
+            checkXbox.Size = new Size(240, 48);
+            checkXbox.TabIndex = 58;
+            checkXbox.Text = "Xbox Experience";
+            checkXbox.UseVisualStyleBackColor = false;
             // 
             // pictureBox5
             // 
@@ -1205,6 +1220,7 @@ namespace GHelper
         private RTrackBar trackVibra;
         private UI.RCheckBox checkController;
         private UI.RCheckBox checkVibra;
+        private UI.RCheckBox checkXbox;
         private Label labelTurbo;
         private UI.RComboBox comboTurboPrimary;
         private UI.RComboBox comboTurboSecondary;
