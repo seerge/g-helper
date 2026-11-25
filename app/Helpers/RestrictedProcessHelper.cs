@@ -51,6 +51,13 @@ public static class RestrictedProcessHelper
             }
         }
 
+        // Elevated with another account's credentials: a restricted copy of this token is still that account
+        if (ProcessHelper.IsElevatedAsOtherUser())
+        {
+            Logger.WriteLine("No shell token for the signed-in user, command not run");
+            return;
+        }
+
         if (!GetRestrictedSessionUserToken(out hToken)) return;
 
         try
