@@ -13,8 +13,29 @@ namespace GHelper.UI
         static readonly Color Top = Color.FromArgb(255, 110, 228, 255);
         static readonly Color Bottom = Color.FromArgb(255, 0, 150, 214);
 
+        static readonly Lazy<Bitmap?> logo = new(() =>
+        {
+            try
+            {
+                using var stream = typeof(AppIcon).Assembly.GetManifestResourceStream("GHelper.chelper-logo.png");
+                return stream is null ? null : new Bitmap(stream);
+            }
+            catch { return null; }
+        });
+
+        /// <summary>The C-Helper logo at the given size (falls back to a plain white C).</summary>
         public static Bitmap Render(int size)
         {
+            if (logo.Value is Bitmap art)
+            {
+                var scaled = new Bitmap(size, size);
+                using var sg = Graphics.FromImage(scaled);
+                sg.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                sg.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                sg.DrawImage(art, 0, 0, size, size);
+                return scaled;
+            }
+
             var bmp = new Bitmap(size, size);
             using var g = Graphics.FromImage(bmp);
             g.SmoothingMode = SmoothingMode.AntiAlias;

@@ -376,6 +376,8 @@ namespace GHelper.UI
         }
 
         /// <summary>Lays out (and when g is given, paints) the panel. Returns the total height.</summary>
+        Bitmap? headerLogo;
+
         // ---------- Settings page ----------
 
         bool settingsPage;
@@ -724,8 +726,13 @@ namespace GHelper.UI
                 using var title = new Font(numFont, 11.5f, FontStyle.Bold, GraphicsUnit.Point);
                 using var sub = new Font(uiFont, 8.5f, FontStyle.Regular, GraphicsUnit.Point);
                 int tw = (int)g.MeasureString(AppName, title).Width;
-                Str(g, AppName, title, Ink, new Rectangle(pad + P(4), y, tw + P(4), headH));
-                Str(g, Modes.GetCurrentName(), sub, InkDim, new Rectangle(pad + P(6) + tw, y + P(2), P(120), headH));
+                int logoSize = P(22);
+                headerLogo ??= AppIcon.Render(logoSize * 2);
+                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                g.DrawImage(headerLogo, pad + P(2), y + (headH - logoSize) / 2, logoSize, logoSize);
+                int tx = pad + P(2) + logoSize + P(6);
+                Str(g, AppName, title, Ink, new Rectangle(tx, y, tw + P(4), headH));
+                Str(g, Modes.GetCurrentName(), sub, InkDim, new Rectangle(tx + P(2) + tw, y + P(2), P(110), headH));
 
                 int b = P(26);
                 var quit = new Rectangle(w - pad - b, y + (headH - b) / 2, b, b);
