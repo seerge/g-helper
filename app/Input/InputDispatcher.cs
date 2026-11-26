@@ -226,6 +226,10 @@ namespace GHelper.Input
                 if (AsusKeyboard.LaunchCommand(slot).Length > 0)
                     hook.RegisterHotKey(ModifierKeys.Control | ModifierKeys.Shift | ModifierKeys.Alt, Keys.F1 + slot);
 
+            for (int slot = 0; slot < AsusKeyboard.TextSlots; slot++)
+                if (AsusKeyboard.TextCommand(slot).Length > 0)
+                    hook.RegisterHotKey(ModifierKeys.Shift | ModifierKeys.Alt | ModifierKeys.NoRepeat, Keys.F1 + slot);
+
         }
 
         private static IEnumerable<ushort> GetActiveMouseComboCarriers()
@@ -332,19 +336,40 @@ namespace GHelper.Input
                 Program.toast.RunToast(brightness + "%", (delta < 0) ? ToastIcon.BrightnessDown : ToastIcon.BrightnessUp);
         }
 
+        private static long lastTextMacroTick = 0;
+
         public void KeyPressed(object sender, KeyPressedEventArgs e)
         {
 
             Logger.WriteLine(e.Key.ToString() + " " + e.Modifier.ToString());
 
-            if (e.Modifier == (ModifierKeys.Control | ModifierKeys.Shift | ModifierKeys.Alt)
-                && e.Key >= Keys.F1 && e.Key < Keys.F1 + AsusKeyboard.LaunchSlots)
+            if (e.Modifier == (ModifierKeys.Control | ModifierKeys.Shift | ModifierKeys.Alt))
             {
-                string command = AsusKeyboard.LaunchCommand(e.Key - Keys.F1);
-                if (command.Length > 0)
+                if (e.Key >= Keys.F1 && e.Key < Keys.F1 + AsusKeyboard.LaunchSlots)
                 {
-                    LaunchProcess(command);
-                    return;
+                    string command = AsusKeyboard.LaunchCommand(e.Key - Keys.F1);
+                    if (command.Length > 0)
+                    {
+                        LaunchProcess(command);
+                        return;
+                    }
+                }
+            }
+
+            if (e.Modifier == (ModifierKeys.Shift | ModifierKeys.Alt))
+            {
+                if (e.Key >= Keys.F1 && e.Key < Keys.F1 + AsusKeyboard.TextSlots)
+                {
+                    long now = Environment.TickCount64;
+                    if (now - lastTextMacroTick < 250) return;
+                    lastTextMacroTick = now;
+
+                    string text = AsusKeyboard.TextCommand(e.Key - Keys.F1);
+                    if (text.Length > 0)
+                    {
+                        Task.Run(() => KeyboardHook.TypeText(text));
+                        return;
+                    }
                 }
             }
 
