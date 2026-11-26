@@ -1,5 +1,7 @@
+using GHelper.Battery;
 using GHelper.Input;
 using GHelper.Mode;
+using GHelper.USB;
 using GHelper.Display;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
@@ -183,7 +185,13 @@ namespace GHelper.UI
             ShowFlyout();
         }
 
-        public void ShowFlyout()
+        public void ShowFlyout() => ShowFlyout(animate: true);
+
+        /// <summary>
+        /// animate: false shows the panel instantly. Used at startup, where the UI thread is busy
+        /// initialising hardware and an animation timer wouldn't tick (leaving the panel invisible).
+        /// </summary>
+        public void ShowFlyout(bool animate)
         {
             s = DeviceDpi / 96f;
             if (!IsHandleCreated) CreateHandle();
@@ -207,7 +215,14 @@ namespace GHelper.UI
             Activate();
             _ = RefreshData();
             refreshTimer.Start();
-            SlideIn(Top);
+            if (animate) SlideIn(Top);
+            else
+            {
+                slide?.Stop();
+                fade = 255;
+                Render();
+                ApplyBackdrop();
+            }
         }
 
         // Window-wide opacity used for the fade in / fade out (applied in Push)
@@ -501,7 +516,11 @@ namespace GHelper.UI
                     SlimSlider(g, new Rectangle(r.X + ip, r.Y + P(30), r.Width - ip * 2, P(16)), "battery",
                         battery!.Min, battery.Max, Math.Max(1, battery.Step), value, v => battery.Value = v);
                 }
-                y += modH + gap;
+                y += modH + P(6);
+                y = SwitchList(g, pad, y, inner, new()
+                {
+                    ("sw-full", "Charge to 100% once", BatteryControl.chargeFull, BatteryControl.ToggleBatteryLimitFull),
+                });
             }
 
             // Keyboard lighting
@@ -523,10 +542,39 @@ namespace GHelper.UI
                     using (var sb = new SolidBrush(Color.FromArgb(255, swatch)))
                         g.FillEllipse(sb, cRect.X + (cRect.Width - dot) / 2, cRect.Y + (cRect.Height - dot) / 2, dot, dot);
                 }
-                y += rowH + gap;
+                y += rowH + P(6);
+
+                // When the keyboard is lit (same settings as the classic Extra window)
+                static void Power(string key, bool on, params string[] more)
+                {
+                    AppConfig.Set(key, on ? 1 : 0);
+                    foreach (var k in more) AppConfig.Set(k, on ? 1 : 0);
+                    Aura.ApplyPower();
+                }
+                bool awake = AppConfig.IsNotFalse("keyboard_awake");
+                bool boot = AppConfig.IsNotFalse("keyboard_boot");
+                bool sleep = AppConfig.IsNotFalse("keyboard_sleep");
+                y = SwitchList(g, pad, y, inner, new()
+                {
+                    ("sw-kb-awake", "Lit while awake", awake, () => Power("keyboard_awake", !awake)),
+                    ("sw-kb-boot", "Lit at boot and shutdown", boot, () => Power("keyboard_boot", !boot, "keyboard_shutdown")),
+                    ("sw-kb-sleep", "Lit while asleep", sleep, () => Power("keyboard_sleep", !sleep)),
+                });
             }
 
-            // Switches
+            // Display & graphics
+            var display = new List<(string Key, string Label, bool On, Action Click)>();
+            if (Supported(Ctl<RButton>("buttonScreenAuto")))
+            {
+                bool noOd = AppConfig.Is("no_overdrive");
+                display.Add(("sw-overdrive", "Disable panel overdrive", noOd, () => { AppConfig.Set("no_overdrive", noOd ? 0 : 1); ScreenControl.AutoScreen(true); }));
+            }
+            bool killApps = AppConfig.Is("kill_gpu_apps");
+            display.Add(("sw-gpuapps", "Close GPU apps when switching to Eco", killApps, () => AppConfig.Set("kill_gpu_apps", killApps ? 0 : 1)));
+            y = Heading(g, "Display and graphics", pad, y, inner);
+            y = SwitchList(g, pad, y, inner, display);
+
+            // General
             var startup = Ctl<CheckBox>("checkStartup");
             var fnLock = Ctl<RButton>("buttonFnLock");
             var overlay = Ctl<RButton>("buttonOverlay");
@@ -534,27 +582,14 @@ namespace GHelper.UI
             if (startup is not null) rows.Add(("sw-startup", "Run on startup", startup.Checked, () => startup.Checked = !startup.Checked));
             if (Supported(fnLock)) rows.Add(("sw-fn", "Fn Lock", AppConfig.Is("fn_lock"), () => Press(fnLock)));
             if (Supported(overlay)) rows.Add(("sw-overlay", "Performance overlay", AppConfig.IsOverlay(), () => Press(overlay)));
-            if (rows.Count > 0)
+            bool blockNag = !AppConfig.Is("keep_armoury_key");
+            rows.Add(("sw-acnag", "Block Armoury Crate popup", blockNag, () =>
             {
-                y = Heading(g, "General", pad, y, inner);
-                int rowH = P(34);
-                int modH = rows.Count * rowH;
-                if (g is not null)
-                {
-                    var r = new Rectangle(pad, y, inner, modH);
-                    Module(g, r);
-                    using var lf = new Font(uiFont, 8.5f, FontStyle.Regular, GraphicsUnit.Point);
-                    for (int i = 0; i < rows.Count; i++)
-                    {
-                        var row = new Rectangle(r.X, r.Y + i * rowH, r.Width, rowH);
-                        if (i > 0)
-                            using (var sep = new Pen(Color.FromArgb(22, 255, 255, 255), Math.Max(1f, s)))
-                                g.DrawLine(sep, row.X + P(12), row.Y, row.Right - P(12), row.Y);
-                        Switch(g, row, rows[i].Key, rows[i].Label, rows[i].On, rows[i].Click, lf);
-                    }
-                }
-                y += modH + gap;
-            }
+                AppConfig.Set("keep_armoury_key", blockNag ? 1 : 0);
+                if (!blockNag) Program.SuppressArmouryNag();
+            }));
+            y = Heading(g, "General", pad, y, inner);
+            y = SwitchList(g, pad, y, inner, rows);
 
             // Links to the deeper tools
             int chipH = P(28);
@@ -567,6 +602,29 @@ namespace GHelper.UI
             }
             y += chipH + pad;
             return y;
+        }
+
+        /// <summary>A glass module holding a stack of switch rows with hairline separators. Returns the next y.</summary>
+        int SwitchList(Graphics? g, int pad, int y, int inner, List<(string Key, string Label, bool On, Action Click)> rows)
+        {
+            if (rows.Count == 0) return y;
+            int rowH = P(32);
+            int modH = rows.Count * rowH;
+            if (g is not null)
+            {
+                var r = new Rectangle(pad, y, inner, modH);
+                Module(g, r);
+                using var lf = new Font(uiFont, 8.5f, FontStyle.Regular, GraphicsUnit.Point);
+                for (int i = 0; i < rows.Count; i++)
+                {
+                    var row = new Rectangle(r.X, r.Y + i * rowH, r.Width, rowH);
+                    if (i > 0)
+                        using (var sep = new Pen(Color.FromArgb(22, 255, 255, 255), Math.Max(1f, s)))
+                            g.DrawLine(sep, row.X + P(12), row.Y, row.Right - P(12), row.Y);
+                    Switch(g, row, rows[i].Key, rows[i].Label, rows[i].On, rows[i].Click, lf);
+                }
+            }
+            return y + modH + P(Gap);
         }
 
         // iOS-style switch row: label on the left, capsule switch on the right

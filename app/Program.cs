@@ -181,7 +181,7 @@ namespace GHelper
 
             if (Environment.CurrentDirectory.Trim('\\') == Application.StartupPath.Trim('\\') || action.Length > 0)
             {
-                if (UseGlassFlyout && action.Length == 0) GetGlassFlyout().ShowFlyout();
+                if (UseGlassFlyout && action.Length == 0) GetGlassFlyout().ShowFlyout(animate: false);
                 else SettingsToggle(false);
             }
 
@@ -456,15 +456,17 @@ namespace GHelper
         /// service) also reacts and pops an "install Armoury Crate" dialog. When Armoury Crate isn't installed,
         /// that helper has no other purpose, so keep it closed. Opt out with "keep_armoury_key": 1.
         /// </summary>
-        static void SuppressArmouryNag()
+        public static void SuppressArmouryNag()
         {
             if (AppConfig.Is("keep_armoury_key") || AsusService.IsArmouryRunning()) return;
 
             if (ProcessHelper.IsArmouryKeyControlRunning()) ProcessHelper.KillArmouryKeyControl();
+            if (armouryNagTimer is not null) return;
 
             armouryNagTimer = new System.Windows.Forms.Timer { Interval = 3000 };
             armouryNagTimer.Tick += (_, _) =>
             {
+                if (AppConfig.Is("keep_armoury_key")) return; // switched off in Settings
                 if (ProcessHelper.IsArmouryKeyControlRunning()) ProcessHelper.KillArmouryKeyControl();
             };
             armouryNagTimer.Start();
