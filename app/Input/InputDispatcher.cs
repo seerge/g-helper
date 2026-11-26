@@ -185,6 +185,9 @@ namespace GHelper.Input
                 hook.RegisterHotKey(ModifierKeys.Shift, Keys.VolumeDown);
                 hook.RegisterHotKey(ModifierKeys.Shift, Keys.VolumeUp);
                 hook.RegisterHotKey(keyModifier, Keys.F20);
+
+                foreach (ushort action in PerformanceActions.Codes)
+                    hook.RegisterHotKey(PerformanceActions.Modifiers, PerformanceActions.Hotkey(action));
             }
 
             if (keyOverlay != Keys.None) hook.RegisterHotKey(keyModifierAlt, keyOverlay);
@@ -336,6 +339,13 @@ namespace GHelper.Input
         {
 
             Logger.WriteLine(e.Key.ToString() + " " + e.Modifier.ToString());
+
+            ushort performanceAction = PerformanceActions.FromHotkey(e.Modifier, e.Key);
+            if (performanceAction != 0)
+            {
+                PerformanceActions.Run(performanceAction);
+                return;
+            }
 
             if (e.Modifier == (ModifierKeys.Control | ModifierKeys.Shift | ModifierKeys.Alt)
                 && e.Key >= Keys.F1 && e.Key < Keys.F1 + AsusKeyboard.LaunchSlots)
@@ -670,7 +680,13 @@ namespace GHelper.Input
                     Program.settingsForm.BeginInvoke(Program.settingsForm.CycleVisualMode, Control.ModifierKeys == Keys.Shift ? -1 : 1);
                     break;
                 case "performance":
-                    modeControl.CyclePerformanceMode(Control.ModifierKeys == Keys.Shift);
+                    PerformanceActions.Run(PerformanceActions.Cycle, Control.ModifierKeys == Keys.Shift);
+                    break;
+                case "performance_up":
+                    PerformanceActions.Run(PerformanceActions.Up);
+                    break;
+                case "performance_down":
+                    PerformanceActions.Run(PerformanceActions.Down);
                     break;
                 case "ghelper":
                     try

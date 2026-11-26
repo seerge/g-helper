@@ -749,6 +749,81 @@
   <data name="PerformanceMode" xml:space="preserve">
     <value>性能模式</value>
   </data>
+  <data name="PerformanceModeUp" xml:space="preserve">
+    <value>性能模式升一档</value>
+  </data>
+  <data name="PerformanceModeDown" xml:space="preserve">
+    <value>性能模式降一档</value>
+  </data>
+  <data name="Lever" xml:space="preserve">
+    <value>拨杆</value>
+  </data>
+  <data name="LeverCycleModes" xml:space="preserve">
+    <value>侧键循环模式</value>
+  </data>
+  <data name="LeverVolume" xml:space="preserve">
+    <value>音量</value>
+  </data>
+  <data name="LeverMedia" xml:space="preserve">
+    <value>媒体播放</value>
+  </data>
+  <data name="LeverKeyBrightness" xml:space="preserve">
+    <value>键盘亮度</value>
+  </data>
+  <data name="LeverOledBrightness" xml:space="preserve">
+    <value>OLED 亮度</value>
+  </data>
+  <data name="LeverLightingEffect" xml:space="preserve">
+    <value>灯效切换</value>
+  </data>
+  <data name="LeverCustom" xml:space="preserve">
+    <value>自定义</value>
+  </data>
+  <data name="LeverModesInitial" xml:space="preserve">
+    <value>首次显示建议模式，请确认后应用。</value>
+  </data>
+  <data name="LeverModesPending" xml:space="preserve">
+    <value>点击应用，更新侧键循环。</value>
+  </data>
+  <data name="LeverModesApplied" xml:space="preserve">
+    <value>已保存到 G-Helper。</value>
+  </data>
+  <data name="LeverModesSaving" xml:space="preserve">
+    <value>正在保存…</value>
+  </data>
+  <data name="LeverKeepOneMode" xml:space="preserve">
+    <value>请至少保留一种模式。</value>
+  </data>
+  <data name="LeverCustomDisabled" xml:space="preserve">
+    <value>自定义未加入侧键循环；已保存的动作会保留。</value>
+  </data>
+  <data name="LeverBindings" xml:space="preserve">
+    <value>自定义动作</value>
+  </data>
+  <data name="LeverBindingsHint" xml:space="preserve">
+    <value>侧键切到“自定义”后使用；性能动作需要 G-Helper 运行。</value>
+  </data>
+  <data name="LeverBindingsError" xml:space="preserve">
+    <value>无法保存拨杆设置。请唤醒或重新连接键盘后重试。</value>
+  </data>
+  <data name="LeverUp" xml:space="preserve">
+    <value>上拨</value>
+  </data>
+  <data name="LeverPress" xml:space="preserve">
+    <value>按下</value>
+  </data>
+  <data name="LeverDown" xml:space="preserve">
+    <value>下拨</value>
+  </data>
+  <data name="LeverScrollUp" xml:space="preserve">
+    <value>滚轮向上（默认）</value>
+  </data>
+  <data name="LeverMiddleClick" xml:space="preserve">
+    <value>鼠标中键（默认）</value>
+  </data>
+  <data name="LeverScrollDown" xml:space="preserve">
+    <value>滚轮向下（默认）</value>
+  </data>
   <data name="Peripherals" xml:space="preserve">
     <value>外设</value>
   </data>

@@ -749,6 +749,81 @@ Do you still want to continue?</value>
   <data name="PerformanceMode" xml:space="preserve">
     <value>Mode</value>
   </data>
+  <data name="PerformanceModeUp" xml:space="preserve">
+    <value>Performance mode up</value>
+  </data>
+  <data name="PerformanceModeDown" xml:space="preserve">
+    <value>Performance mode down</value>
+  </data>
+  <data name="Lever" xml:space="preserve">
+    <value>Lever</value>
+  </data>
+  <data name="LeverCycleModes" xml:space="preserve">
+    <value>Side-button cycle</value>
+  </data>
+  <data name="LeverVolume" xml:space="preserve">
+    <value>Volume</value>
+  </data>
+  <data name="LeverMedia" xml:space="preserve">
+    <value>Media</value>
+  </data>
+  <data name="LeverKeyBrightness" xml:space="preserve">
+    <value>Key brightness</value>
+  </data>
+  <data name="LeverOledBrightness" xml:space="preserve">
+    <value>OLED brightness</value>
+  </data>
+  <data name="LeverLightingEffect" xml:space="preserve">
+    <value>Lighting effect</value>
+  </data>
+  <data name="LeverCustom" xml:space="preserve">
+    <value>Custom</value>
+  </data>
+  <data name="LeverModesInitial" xml:space="preserve">
+    <value>Review the suggested modes, then apply.</value>
+  </data>
+  <data name="LeverModesPending" xml:space="preserve">
+    <value>Apply to update the side-button cycle.</value>
+  </data>
+  <data name="LeverModesApplied" xml:space="preserve">
+    <value>Saved in G-Helper.</value>
+  </data>
+  <data name="LeverModesSaving" xml:space="preserve">
+    <value>Saving…</value>
+  </data>
+  <data name="LeverKeepOneMode" xml:space="preserve">
+    <value>Keep at least one mode enabled.</value>
+  </data>
+  <data name="LeverCustomDisabled" xml:space="preserve">
+    <value>Custom is excluded from the cycle. Your bindings are kept.</value>
+  </data>
+  <data name="LeverBindings" xml:space="preserve">
+    <value>Custom bindings</value>
+  </data>
+  <data name="LeverBindingsHint" xml:space="preserve">
+    <value>Select Custom with the side button. Performance actions need G-Helper.</value>
+  </data>
+  <data name="LeverBindingsError" xml:space="preserve">
+    <value>Could not save the lever binding. Wake or reconnect the keyboard and try again.</value>
+  </data>
+  <data name="LeverUp" xml:space="preserve">
+    <value>Up</value>
+  </data>
+  <data name="LeverPress" xml:space="preserve">
+    <value>Press</value>
+  </data>
+  <data name="LeverDown" xml:space="preserve">
+    <value>Down</value>
+  </data>
+  <data name="LeverScrollUp" xml:space="preserve">
+    <value>Scroll up (default)</value>
+  </data>
+  <data name="LeverMiddleClick" xml:space="preserve">
+    <value>Middle click (default)</value>
+  </data>
+  <data name="LeverScrollDown" xml:space="preserve">
+    <value>Scroll down (default)</value>
+  </data>
   <data name="Peripherals" xml:space="preserve">
     <value>Peripherals</value>
   </data>

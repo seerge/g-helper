@@ -1,3 +1,4 @@
+using GHelper.Input;
 using GHelper.Peripherals;
 using GHelper.Peripherals.Keyboard;
 using GHelper.Peripherals.Keyboard.Models;
@@ -49,6 +50,8 @@ namespace GHelper
 
         private bool loadingSettings = true;
         private bool settingsChanged = false;
+        private readonly List<CheckBox> leverModeChecks = new();
+        private bool updatingLeverModes;
 
         public AsusKeyboardSettings(AsusKeyboard keyboard)
         {
@@ -87,6 +90,7 @@ namespace GHelper
 
             SetupEnergy();
             SetupOled();
+            SetupLeverBindings();
             if (keyboard.TestMode && keyboard.HasPerKeyRGB()) BuildTestLayoutSelector();
             BuildTopRow();
             LayoutSections();
@@ -341,6 +345,9 @@ namespace GHelper
             bool warn = keyboard.HasLowBatteryWarning();
 
             int gap = comboBoxLightingMode.Height / 2;
+            int margin = panelLightingHeader.Left;
+            int width = grid ? Math.Max(ClientSize.Width, panelKeys.Right + panelKeys.Left) : ClientSize.Width;
+            LayoutLever(width - 2 * margin, gap);
             int bottom = comboBoxAnimationSpeed.Bottom + gap;
 
             if (testLayoutSelector)
@@ -377,6 +384,13 @@ namespace GHelper
                 }
             }
 
+            panelLever.Visible = oled?.SupportsLeverBindings == true;
+            if (oled?.SupportsLeverBindings == true)
+            {
+                panelLever.Top = bottom;
+                bottom = panelLever.Bottom + gap;
+            }
+
             panelEnergyHeader.Visible = sleep || warn;
             labelAutoPowerOff.Visible = comboBoxAutoPowerOff.Visible = sleep;
             labelLowBatteryWarning.Visible = sliderLowBatteryWarning.Visible = labelLowBatteryWarningValue.Visible = warn;
@@ -407,17 +421,186 @@ namespace GHelper
                 bottom = panelOled.Bottom + gap;
             }
 
-            int margin = panelLightingHeader.Left;
-            int width = grid ? Math.Max(ClientSize.Width, panelKeys.Right + panelKeys.Left) : ClientSize.Width;
             ClientSize = new Size(width, bottom + gap);
 
-            panelLightingHeader.Width = panelKeysHeader.Width = panelEnergyHeader.Width = panelOled.Width = ClientSize.Width - 2 * margin;
+            panelLightingHeader.Width = panelKeysHeader.Width = panelEnergyHeader.Width = panelOled.Width = panelLever.Width = ClientSize.Width - 2 * margin;
 
             if (grid && bindings)
             {
                 buttonResetBindings.Left = ClientSize.Width - margin - buttonResetBindings.Width;
                 textBoxKeyPath.Width = Math.Max(0, buttonResetBindings.Left - gap - textBoxKeyPath.Left);
             }
+        }
+
+        private void SetupLeverBindings()
+        {
+            labelLever.Text = Properties.Strings.Lever;
+            labelLeverModes.Text = Properties.Strings.LeverCycleModes;
+            labelLeverBindings.Text = Properties.Strings.LeverBindings;
+            labelLeverHint.Text = Properties.Strings.LeverBindingsHint;
+            labelLeverUp.Text = Properties.Strings.LeverUp;
+            labelLeverPress.Text = Properties.Strings.LeverPress;
+            labelLeverDown.Text = Properties.Strings.LeverDown;
+            string[] modeNames = [Properties.Strings.LeverVolume, Properties.Strings.LeverMedia,
+                Properties.Strings.LeverKeyBrightness, Properties.Strings.LeverOledBrightness,
+                Properties.Strings.LeverLightingEffect, Properties.Strings.LeverCustom];
+            for (int i = 0; i < Azoth.LeverModes.Length; i++)
+            {
+                var check = new CheckBox
+                {
+                    Name = "checkLeverMode" + Azoth.LeverModes[i], Text = modeNames[i],
+                    AccessibleName = modeNames[i], Tag = Azoth.LeverModes[i], TabIndex = i
+                };
+                check.CheckedChanged += (_, _) =>
+                {
+                    if (!loadingSettings && !updatingLeverModes) UpdateLeverModesStatus();
+                };
+                leverModeChecks.Add(check);
+                panelLeverModes.Controls.Add(check);
+            }
+            buttonApplyLeverModes.Text = Properties.Strings.Apply;
+            buttonApplyLeverModes.Click += ApplyLeverModes_Click;
+            foreach (var (combo, source, nativeName) in new[]
+            {
+                (comboBoxLeverUp, Azoth.LeverUp, Properties.Strings.LeverScrollUp),
+                (comboBoxLeverPress, Azoth.LeverPress, Properties.Strings.LeverMiddleClick),
+                (comboBoxLeverDown, Azoth.LeverDown, Properties.Strings.LeverScrollDown)
+            })
+            {
+                combo.Tag = source;
+                combo.AccessibleName = source == Azoth.LeverUp ? labelLeverUp.Text
+                    : source == Azoth.LeverPress ? labelLeverPress.Text : labelLeverDown.Text;
+                combo.UseCustomTextPadding = false;
+                combo.DrawMode = DrawMode.OwnerDrawFixed;
+                combo.ItemHeight = comboBoxProfile.ItemHeight;
+                combo.DrawItem += RComboBox.DrawBindingItem;
+                combo.Items.Add(new BindingItem(Azoth.DefaultLeverBinding(source), nativeName));
+                combo.Items.Add(new BindingItem(0, Properties.Strings.Off));
+                combo.Items.AddRange(BuildBindingComboItems(lever: true));
+                combo.SelectionChangeCommitted += LeverBinding_Changed;
+            }
+        }
+
+        private void LayoutLever(int width, int gap)
+        {
+            panelLever.Width = panelLeverHeader.Width = width;
+            int inset = labelLever.Left;
+            int leftWidth = (width - 2 * inset - 2 * gap) * 45 / 100;
+            panelLeverModes.SetBounds(inset, panelLeverHeader.Bottom + gap, leftWidth, 0);
+            panelLeverBindings.SetBounds(panelLeverModes.Right + 2 * gap, panelLeverModes.Top,
+                width - panelLeverModes.Right - 2 * gap - inset, 0);
+            int rowTop = Math.Max(labelLeverModes.Height, labelLeverBindings.Height) + gap;
+            int rowHeight = comboBoxLeverUp.Height;
+            int pitch = rowHeight + gap;
+            int checkWidth = (leftWidth - gap) / 2;
+            for (int i = 0; i < leverModeChecks.Count; i++)
+                leverModeChecks[i].SetBounds((i % 2) * (checkWidth + gap), rowTop + (i / 2) * pitch, checkWidth, rowHeight);
+
+            var combos = new[] { comboBoxLeverUp, comboBoxLeverPress, comboBoxLeverDown };
+            var labels = new[] { labelLeverUp, labelLeverPress, labelLeverDown };
+            int labelWidth = labels.Max(l => l.PreferredWidth) + gap;
+            for (int i = 0; i < combos.Length; i++)
+            {
+                labels[i].Location = new Point(0, rowTop + i * pitch + (rowHeight - labels[i].Height) / 2);
+                combos[i].SetBounds(labelWidth, rowTop + i * pitch, panelLeverBindings.Width - labelWidth, rowHeight);
+                combos[i].DropDownWidth = Math.Max(combos[i].Width, (int)(380 * DeviceDpi / 192f));
+            }
+
+            int footerTop = rowTop + 3 * pitch;
+            buttonApplyLeverModes.SetBounds(0, footerTop,
+                Math.Max(rowHeight * 3, TextRenderer.MeasureText(buttonApplyLeverModes.Text, Font).Width + 2 * gap), rowHeight);
+            labelLeverModesStatus.SetBounds(buttonApplyLeverModes.Right + gap, footerTop,
+                leftWidth - buttonApplyLeverModes.Right - gap, 0);
+            labelLeverHint.SetBounds(0, footerTop, panelLeverBindings.Width, 0);
+            foreach (var label in new[] { labelLeverModesStatus, labelLeverHint })
+                label.Height = Math.Max(Math.Max(rowHeight, 2 * label.Font.Height), TextRenderer.MeasureText(label.Text, label.Font,
+                    new Size(label.Width, int.MaxValue), TextFormatFlags.WordBreak).Height);
+            int bodyHeight = Math.Max(labelLeverModesStatus.Bottom, labelLeverHint.Bottom);
+            panelLeverModes.Height = panelLeverBindings.Height = bodyHeight;
+            panelLever.Height = panelLeverModes.Bottom + gap;
+        }
+
+        private int SelectedLeverModes => leverModeChecks.Where(c => c.Checked).Sum(c => 1 << (byte)c.Tag!);
+
+        private void VisualizeLeverModes()
+        {
+            if (oled?.SupportsLeverBindings != true) return;
+            updatingLeverModes = true;
+            foreach (var check in leverModeChecks)
+                check.Checked = (oled.EnabledLeverModes & (1 << (byte)check.Tag!)) != 0;
+            updatingLeverModes = false;
+            UpdateLeverModesStatus();
+        }
+
+        private void UpdateLeverModesStatus()
+        {
+            if (oled?.SupportsLeverBindings != true) return;
+            int selected = SelectedLeverModes;
+            bool pending = selected != oled.EnabledLeverModes;
+            // Allow reapplying a saved cycle after a device reset or edits in another program.
+            buttonApplyLeverModes.Enabled = selected != 0;
+            labelLeverModesStatus.Text = selected == 0 ? Properties.Strings.LeverKeepOneMode
+                : pending ? Properties.Strings.LeverModesPending
+                : !oled.HasSavedLeverModes ? Properties.Strings.LeverModesInitial
+                : Properties.Strings.LeverModesApplied;
+            labelLeverHint.Text = (oled.EnabledLeverModes & Azoth.CustomLeverMode) != 0
+                ? Properties.Strings.LeverBindingsHint : Properties.Strings.LeverCustomDisabled;
+            LayoutSections();
+        }
+
+        private async void ApplyLeverModes_Click(object? sender, EventArgs e)
+        {
+            if (oled?.SupportsLeverBindings != true || SelectedLeverModes == 0) return;
+            int selected = SelectedLeverModes;
+            panelLever.Enabled = comboBoxProfile.Enabled = false;
+            labelLeverModesStatus.Text = Properties.Strings.LeverModesSaving;
+            bool success = false;
+            try { success = await Task.Run(() => oled.SetLeverModes(selected)); }
+            catch (Exception ex) { Logger.WriteLine("Lever modes: " + ex.Message); }
+            if (IsDisposed || Disposing) return;
+            panelLever.Enabled = comboBoxProfile.Enabled = true;
+            // Retain the user's choices on failure so they can retry.
+            UpdateLeverModesStatus();
+            if (!success)
+                MessageBox.Show(this, Properties.Strings.LeverBindingsError, Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        private void VisualizeLeverBindings()
+        {
+            if (oled?.SupportsLeverBindings != true) return;
+            foreach (var combo in new[] { comboBoxLeverUp, comboBoxLeverPress, comboBoxLeverDown })
+            {
+                ushort binding = oled.GetLeverBinding((byte)combo.Tag!);
+                combo.SelectedIndex = -1;
+                for (int i = 0; i < combo.Items.Count; i++)
+                    if (combo.Items[i] is BindingItem item && item.Code == binding)
+                    { combo.SelectedIndex = i; break; }
+            }
+        }
+
+        private async void LeverBinding_Changed(object? sender, EventArgs e)
+        {
+            if (loadingSettings || oled?.SupportsLeverBindings != true || sender is not ComboBox combo) return;
+            if (combo.SelectedItem is not BindingItem item)
+            {
+                VisualizeLeverBindings();
+                return;
+            }
+            byte source = (byte)combo.Tag!;
+            bool pendingModes = SelectedLeverModes != oled.EnabledLeverModes;
+            // Selecting the native default also writes it when the device was configured elsewhere.
+            panelLever.Enabled = comboBoxProfile.Enabled = false;
+            bool success = false;
+            try { success = await Task.Run(() => oled.SetLeverBinding(source, item.Code)); }
+            catch (Exception ex) { Logger.WriteLine("Lever settings: " + ex.Message); }
+            if (IsDisposed || Disposing) return;
+
+            VisualizeLeverBindings();
+            if (!pendingModes) VisualizeLeverModes();
+            else UpdateLeverModesStatus();
+            panelLever.Enabled = comboBoxProfile.Enabled = true;
+            if (!success)
+                MessageBox.Show(this, Properties.Strings.LeverBindingsError, Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         private void ComboBoxAutoPowerOff_DropDownClosed(object? sender, EventArgs e)
@@ -476,6 +659,7 @@ namespace GHelper
             settingsChanged = false;
             bool wasDirect = keyboard.HasTransientLighting;
             keyboard.SetProfile(comboBoxProfile.SelectedIndex);
+            oled?.RefreshLeverMode();
 
             loadingSettings = true;
             LoadSettings();
@@ -484,9 +668,12 @@ namespace GHelper
             Task.Run(() => { try { if (wasDirect || keyboard.HasTransientLighting) keyboard.ApplyStoredLighting(); keyboard.ReadBattery(); BeginInvoke(VisualizeEnergy); } catch { } });
         }
 
-        private object[] BuildBindingComboItems()
+        private object[] BuildBindingComboItems(bool lever = false)
         {
             var list = new List<object>();
+            list.Add(new BindingSeparator("G-Helper"));
+            foreach (ushort action in PerformanceActions.Codes)
+                list.Add(new BindingItem(action, PerformanceActions.Name(action), lever ? null : PerformanceActions.ComboKeys(action)));
             var region = AuraKeyboardLayouts.RegionalLegends.GetValueOrDefault(keyboard.MultiLayout);
             list.Add(new BindingSeparator("Keyboard"));
             foreach (var (name, code) in AuraKeyboardLayouts.Keys)
@@ -497,6 +684,7 @@ namespace GHelper
             list.Add(new BindingSeparator("Mouse"));
             foreach (var (name, code) in AuraKeyboardLayouts.MouseTargets)
                 list.Add(new BindingItem(code, name));
+            if (lever) return list.ToArray();
             list.Add(new BindingSeparator("Combos"));
             foreach (var combo in KeyCombos)
                 list.Add(new BindingItem(combo.Code, combo.Name, combo.Keys));
@@ -735,6 +923,8 @@ namespace GHelper
         private void LoadSettings()
         {
             checkBoxSyncAura.Checked = PeripheralsProvider.IsKeyboardAuraSync;
+            VisualizeLeverBindings();
+            VisualizeLeverModes();
 
             if (keyGrid.Colors.Length > 0) keyGrid.Colors = keyboard.StoredKeyColors();
 

@@ -39,6 +39,8 @@ namespace GHelper
               {"play", Properties.Strings.PlayPause},
               {"aura", Properties.Strings.ToggleAura},
               {"performance", Properties.Strings.PerformanceMode},
+              {"performance_up", Properties.Strings.PerformanceModeUp},
+              {"performance_down", Properties.Strings.PerformanceModeDown},
               {"screen", Properties.Strings.ToggleScreen},
               {"lock", Properties.Strings.LockScreen},
               {"miniled", Properties.Strings.ToggleMiniled},

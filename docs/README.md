@@ -225,6 +225,7 @@ Battery level, lighting, equalizer presets, sidetone, microphone and AI noise ca
 
 - ``Fn + F5 / Fn + Shift + F5`` - Toggle Performance Modes forwards / backwards
 - ``Ctrl + Shift + F5 / Ctrl + Shift + Alt + F5`` - Toggle Performance Modes forwards / backwards
+- Original ROG Azoth: independently bind **Up / Press / Down** in **Lever → Custom bindings**. Select the modes to keep in the **Side-button cycle** and click **Apply**, then use the side button to select **Custom**. Choose keyboard, media, mouse or G-Helper performance actions. Performance up/down steps through Silent / Balanced / Turbo without wrapping; the same actions are available for ordinary remappable keys. G-Helper must remain running for performance actions. Existing lever-switch settings are recognized automatically. [Setup and verification](AZOTH-LEVER.md)
 - ``Ctrl + Shift + F12`` - Open G-Helper window
 - ``Ctrl + M1 / M2`` - Screen brightness Down / Up
 - ``Shift + M1 / M2`` - Backlight brightness Down / Up
