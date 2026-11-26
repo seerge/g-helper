@@ -93,6 +93,7 @@ namespace GHelper
             ProcessHelper.CheckAlreadyRunning();
             ProcessHelper.SetPriority();
             ListenForShowPanel();
+            SuppressArmouryNag();
 
             CleanupLegacyFiles();
 
@@ -444,6 +445,29 @@ namespace GHelper
                 return true;
             }
             catch { return false; }
+        }
+
+        // ---- Suppress ASUS's "install Armoury Crate" nag on the ROG key ----
+
+        static System.Windows.Forms.Timer? armouryNagTimer;
+
+        /// <summary>
+        /// C-Helper owns the ROG key, but ASUS's ArmouryCrateKeyControl (started by the ASUS Control Interface
+        /// service) also reacts and pops an "install Armoury Crate" dialog. When Armoury Crate isn't installed,
+        /// that helper has no other purpose, so keep it closed. Opt out with "keep_armoury_key": 1.
+        /// </summary>
+        static void SuppressArmouryNag()
+        {
+            if (AppConfig.Is("keep_armoury_key") || AsusService.IsArmouryRunning()) return;
+
+            if (ProcessHelper.IsArmouryKeyControlRunning()) ProcessHelper.KillArmouryKeyControl();
+
+            armouryNagTimer = new System.Windows.Forms.Timer { Interval = 3000 };
+            armouryNagTimer.Tick += (_, _) =>
+            {
+                if (ProcessHelper.IsArmouryKeyControlRunning()) ProcessHelper.KillArmouryKeyControl();
+            };
+            armouryNagTimer.Start();
         }
 
         static void ListenForShowPanel()
