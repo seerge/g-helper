@@ -59,6 +59,9 @@ namespace GHelper
                 return;
             }
 
+            // Already running? Then this launch (taskbar / shortcut click) just toggles that copy's panel.
+            if (action.Length == 0 && SignalRunningPanel()) return;
+
             string language = AppConfig.GetString("language");
             try
             {
@@ -89,6 +92,7 @@ namespace GHelper
 
             ProcessHelper.CheckAlreadyRunning();
             ProcessHelper.SetPriority();
+            ListenForShowPanel();
 
             CleanupLegacyFiles();
 
@@ -418,6 +422,49 @@ namespace GHelper
         // Liquid glass quick panel on tray click. "flyout": 0 in config.json goes back to the classic window.
         static GHelper.UI.GlassFlyout? glassFlyout;
         static bool UseGlassFlyout => GHelper.UI.RForm.IsGlassTheme() && AppConfig.IsNotFalse("flyout");
+
+        // ---- Single instance: a second launch toggles the running copy's panel instead of replacing it ----
+
+        const string ShowPanelEventName = "CHelper.ShowPanel";
+        static EventWaitHandle? showPanelEvent;
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        static extern bool AllowSetForegroundWindow(int processId);
+
+        static bool SignalRunningPanel()
+        {
+            try
+            {
+                if (!EventWaitHandle.TryOpenExisting(ShowPanelEventName, out var existing)) return false;
+                using (existing)
+                {
+                    AllowSetForegroundWindow(-1); // let the running copy bring its panel to the front
+                    existing.Set();
+                }
+                return true;
+            }
+            catch { return false; }
+        }
+
+        static void ListenForShowPanel()
+        {
+            if (!UseGlassFlyout) return;
+            try
+            {
+                showPanelEvent = new EventWaitHandle(false, EventResetMode.AutoReset, ShowPanelEventName);
+                var listener = new Thread(() =>
+                {
+                    while (showPanelEvent.WaitOne())
+                    {
+                        if (settingsForm is null || !settingsForm.IsHandleCreated) continue;
+                        // Taskbar click closes the panel by focus loss first; the guard keeps that click a "close"
+                        settingsForm.BeginInvoke(new Action(() => GetGlassFlyout().Toggle(trayClick: true, guardMs: 1500)));
+                    }
+                }) { IsBackground = true, Name = "C-Helper show panel" };
+                listener.Start();
+            }
+            catch (Exception ex) { Logger.WriteLine("Show panel listener: " + ex.Message); }
+        }
 
         /// <summary>ROG / app key: open the quick panel (or the classic window when the panel is off)</summary>
         public static void QuickToggle()

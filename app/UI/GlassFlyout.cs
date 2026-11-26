@@ -72,6 +72,44 @@ namespace GHelper.UI
         int dragValue;
 
         int? cpuUse, gpuUse, ramPct;
+        string gpuLabel = "GPU";
+
+        // CPU usage sampled between our own refreshes, whatever the gap (the shared reader drops
+        // any sample taken more than 2 s after the last one, which blanked every other refresh)
+        [DllImport("kernel32.dll")] static extern bool GetSystemTimes(out long idle, out long kernel, out long user);
+        long cpuIdle, cpuKernel, cpuUser;
+        bool cpuPrimed;
+
+        int? SampleCpu()
+        {
+            if (!GetSystemTimes(out long idle, out long kernel, out long user)) return cpuUse;
+            if (!cpuPrimed) { cpuIdle = idle; cpuKernel = kernel; cpuUser = user; cpuPrimed = true; return cpuUse; }
+            long dIdle = idle - cpuIdle, dTotal = (kernel - cpuKernel) + (user - cpuUser);
+            cpuIdle = idle; cpuKernel = kernel; cpuUser = user;
+            if (dTotal <= 0) return cpuUse;
+            return Math.Clamp((int)Math.Round((1.0 - (double)dIdle / dTotal) * 100), 0, 100);
+        }
+
+        // Discrete GPU usage, or the integrated GPU's when the dGPU is powered down
+        bool iGpuUnavailable;
+        void SampleGpu()
+        {
+            int? d = null;
+            try { d = HardwareControl.GpuControl?.GetGpuUse(); } catch { }
+            if (d is int dv && dv >= 0) { gpuUse = dv; gpuLabel = "GPU"; return; }
+
+            if (!iGpuUnavailable)
+            {
+                try
+                {
+                    int? i = HardwareControl.AmdApu().GetiGpuSensors().use;
+                    if (i is int iv && iv >= 0) { gpuUse = iv; gpuLabel = "iGPU"; return; }
+                }
+                catch { iGpuUnavailable = true; }
+            }
+            gpuUse = null;
+            gpuLabel = "GPU";
+        }
         string fan = "--";
 
         readonly System.Windows.Forms.Timer refreshTimer = new() { Interval = 2000 };
@@ -137,10 +175,11 @@ namespace GHelper.UI
 
         // ---------- Show / hide ----------
 
-        public void Toggle(bool trayClick = true)
+        public void Toggle(bool trayClick = true, int guardMs = 500)
         {
-            if (Visible) { HideFlyout(); return; }
-            if (trayClick && Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAutoHide) < 500) return;
+            if (closing) { slide?.Stop(); FinishHide(); }
+            else if (Visible) { HideFlyout(); return; }
+            if (trayClick && Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - lastAutoHide) < guardMs) return;
             ShowFlyout();
         }
 
@@ -148,7 +187,7 @@ namespace GHelper.UI
         {
             s = DeviceDpi / 96f;
             if (!IsHandleCreated) CreateHandle();
-            ApplyBackdrop();
+            ApplyBackdrop(false); // switched on once the fade-in lands
 
             // CHELPER_PAGE=settings opens straight on the settings page (used for previews)
             settingsPage = Environment.GetEnvironmentVariable("CHELPER_PAGE") == "settings";
@@ -171,10 +210,45 @@ namespace GHelper.UI
             SlideIn(Top);
         }
 
+        // Window-wide opacity used for the fade in / fade out (applied in Push)
+        byte fade = 255;
+        bool closing;
+        int closeFrom;
+
+        /// <summary>Closes the panel the way it opened: it eases back down toward the taskbar while fading out.</summary>
         public void HideFlyout()
         {
             refreshTimer.Stop();
+            if (!Visible || closing) return;
+
+            closing = true;
+            dragSlider = null; dragPoint = -1; pressed = null; hover = null;
+            slide?.Stop();
+
+            ApplyBackdrop(false);
+            closeFrom = Top;
+            int offset = (int)(18 * s) * (anchorTop ? -1 : 1);
+            var clock = Stopwatch.StartNew();
+            var t = new System.Windows.Forms.Timer { Interval = 8 };
+            t.Tick += (_, _) =>
+            {
+                double p = Math.Min(1, clock.ElapsedMilliseconds / 160.0);
+                double ease = p * p; // ease-in: starts gently, finishes quickly
+                Top = closeFrom + (int)Math.Round(offset * ease);
+                fade = (byte)Math.Round(255 * (1 - ease));
+                Render();
+                if (p >= 1) { t.Stop(); t.Dispose(); FinishHide(); }
+            };
+            slide = t;
+            t.Start();
+        }
+
+        void FinishHide()
+        {
             Hide();
+            closing = false;
+            fade = 255;
+            if (closeFrom != 0) Top = closeFrom;
         }
 
         void OnDeactivated(object? sender, EventArgs e)
@@ -197,6 +271,7 @@ namespace GHelper.UI
             int offset = (int)(24 * s) * (Program.IsTaskbarTop() ? -1 : 1);
             var clock = Stopwatch.StartNew();
             Top = target + offset;
+            fade = 0;
             Render();
             var t = new System.Windows.Forms.Timer { Interval = 8 };
             t.Tick += (_, _) =>
@@ -204,16 +279,17 @@ namespace GHelper.UI
                 double p = Math.Min(1, clock.ElapsedMilliseconds / 220.0);
                 double ease = 1 - Math.Pow(1 - p, 3);
                 Top = target + (int)Math.Round(offset * (1 - ease));
+                fade = (byte)Math.Round(255 * Math.Min(1, p * 1.6));
                 Render();
-                if (p >= 1) { t.Stop(); t.Dispose(); }
+                if (p >= 1) { t.Stop(); t.Dispose(); ApplyBackdrop(); }
             };
             slide = t;
             t.Start();
         }
 
-        void ApplyBackdrop()
+        void ApplyBackdrop(bool on = true)
         {
-            var accent = new AccentPolicy { AccentState = 4, AccentFlags = 2, GradientColor = BackdropTint };
+            var accent = new AccentPolicy { AccentState = on ? 4 : 0, AccentFlags = 2, GradientColor = BackdropTint };
             int size = Marshal.SizeOf(accent);
             IntPtr ptr = Marshal.AllocHGlobal(size);
             try
@@ -232,8 +308,8 @@ namespace GHelper.UI
             await Task.Run(() =>
             {
                 try { HardwareControl.ReadSensors(); } catch { }
-                try { cpuUse = HardwareControl.GetCPUUsage(); } catch { }
-                try { gpuUse = HardwareControl.GpuControl?.GetGpuUse(); } catch { }
+                try { cpuUse = SampleCpu(); } catch { }
+                SampleGpu();
                 try { ramPct = HardwareControl.GetRAMInfo()?.percent; } catch { }
                 fan = HardwareControl.cpuFan ?? "--";
             });
@@ -363,7 +439,7 @@ namespace GHelper.UI
                 var size = new SIZE(bmp.Width, bmp.Height);
                 var src = new POINT(0, 0);
                 var dst = new POINT(Left, Top);
-                var blend = new BLENDFUNCTION { BlendOp = 0, SourceConstantAlpha = 255, AlphaFormat = 1 };
+                var blend = new BLENDFUNCTION { BlendOp = 0, SourceConstantAlpha = fade, AlphaFormat = 1 };
                 UpdateLayeredWindow(Handle, screenDc, ref dst, ref size, memDc, ref src, 0, ref blend, 2);
             }
             finally
@@ -854,7 +930,7 @@ namespace GHelper.UI
             var items = new (string Label, string Usage, string Sub, float? Level)[]
             {
                 ("CPU", Pct(cpuUse), Temp(HardwareControl.cpuTemp), cpuUse / 100f),
-                ("GPU", Pct(gpuUse), Temp(HardwareControl.gpuTemp), gpuUse >= 0 ? gpuUse / 100f : null),
+                (gpuLabel, gpuUse is null ? "Idle" : Pct(gpuUse), Temp(HardwareControl.gpuTemp), gpuUse >= 0 ? gpuUse / 100f : null),
                 ("Memory", Pct(ramPct), "in use", ramPct / 100f),
                 ("Fan", fanValue.Length > 0 ? fanValue : "--", fan.Contains("RPM") ? "rpm" : "speed", null),
             };
