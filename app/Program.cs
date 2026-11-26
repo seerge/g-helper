@@ -1,4 +1,4 @@
-using GHelper.Ally;
+﻿using GHelper.Ally;
 using GHelper.Battery;
 using GHelper.Display;
 using GHelper.Gpu;
@@ -59,6 +59,9 @@ namespace GHelper
                 return;
             }
 
+            // Already running? Then this launch (taskbar / shortcut click) just toggles that copy's panel.
+            if (action.Length == 0 && SignalRunningPanel()) return;
+
             string language = AppConfig.GetString("language");
             try
             {
@@ -89,6 +92,8 @@ namespace GHelper
 
             ProcessHelper.CheckAlreadyRunning();
             ProcessHelper.SetPriority();
+            ListenForShowPanel();
+            SuppressArmouryNag();
 
             CleanupLegacyFiles();
 
@@ -119,8 +124,8 @@ namespace GHelper
 
             trayIcon = new NotifyIcon
             {
-                Text = "G-Helper",
-                Icon = Properties.Resources.standard,
+                Text = "C-Helper",
+                Icon = GHelper.UI.RForm.IsGlassTheme() ? GHelper.UI.AppIcon.Tray() : Properties.Resources.standard,
                 Visible = true
             };
 
@@ -176,7 +181,8 @@ namespace GHelper
 
             if (Environment.CurrentDirectory.Trim('\\') == Application.StartupPath.Trim('\\') || action.Length > 0)
             {
-                SettingsToggle(false);
+                if (UseGlassFlyout && action.Length == 0) GetGlassFlyout().ShowFlyout(animate: false);
+                else SettingsToggle(false);
             }
 
             switch (action)
@@ -414,6 +420,92 @@ namespace GHelper
             SchedulePowerCheck();
         }
 
+        // Liquid glass quick panel on tray click. "flyout": 0 in config.json goes back to the classic window.
+        static GHelper.UI.GlassFlyout? glassFlyout;
+        static bool UseGlassFlyout => GHelper.UI.RForm.IsGlassTheme() && AppConfig.IsNotFalse("flyout");
+
+        // ---- Single instance: a second launch toggles the running copy's panel instead of replacing it ----
+
+        const string ShowPanelEventName = "CHelper.ShowPanel";
+        static EventWaitHandle? showPanelEvent;
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        static extern bool AllowSetForegroundWindow(int processId);
+
+        static bool SignalRunningPanel()
+        {
+            try
+            {
+                if (!EventWaitHandle.TryOpenExisting(ShowPanelEventName, out var existing)) return false;
+                using (existing)
+                {
+                    AllowSetForegroundWindow(-1); // let the running copy bring its panel to the front
+                    existing.Set();
+                }
+                return true;
+            }
+            catch { return false; }
+        }
+
+        // ---- Suppress ASUS's "install Armoury Crate" nag on the ROG key ----
+
+        static System.Windows.Forms.Timer? armouryNagTimer;
+
+        /// <summary>
+        /// C-Helper owns the ROG key, but ASUS's ArmouryCrateKeyControl (started by the ASUS Control Interface
+        /// service) also reacts and pops an "install Armoury Crate" dialog. When Armoury Crate isn't installed,
+        /// that helper has no other purpose, so keep it closed. Opt out with "keep_armoury_key": 1.
+        /// </summary>
+        public static void SuppressArmouryNag()
+        {
+            if (AppConfig.Is("keep_armoury_key") || AsusService.IsArmouryRunning()) return;
+
+            if (ProcessHelper.IsArmouryKeyControlRunning()) ProcessHelper.KillArmouryKeyControl();
+            if (armouryNagTimer is not null) return;
+
+            armouryNagTimer = new System.Windows.Forms.Timer { Interval = 3000 };
+            armouryNagTimer.Tick += (_, _) =>
+            {
+                if (AppConfig.Is("keep_armoury_key")) return; // switched off in Settings
+                if (ProcessHelper.IsArmouryKeyControlRunning()) ProcessHelper.KillArmouryKeyControl();
+            };
+            armouryNagTimer.Start();
+        }
+
+        static void ListenForShowPanel()
+        {
+            if (!UseGlassFlyout) return;
+            try
+            {
+                showPanelEvent = new EventWaitHandle(false, EventResetMode.AutoReset, ShowPanelEventName);
+                var listener = new Thread(() =>
+                {
+                    while (showPanelEvent.WaitOne())
+                    {
+                        if (settingsForm is null || !settingsForm.IsHandleCreated) continue;
+                        // Taskbar click closes the panel by focus loss first; the guard keeps that click a "close"
+                        settingsForm.BeginInvoke(new Action(() => GetGlassFlyout().Toggle(trayClick: true, guardMs: 1500)));
+                    }
+                }) { IsBackground = true, Name = "C-Helper show panel" };
+                listener.Start();
+            }
+            catch (Exception ex) { Logger.WriteLine("Show panel listener: " + ex.Message); }
+        }
+
+        /// <summary>ROG / app key: open the quick panel (or the classic window when the panel is off)</summary>
+        public static void QuickToggle()
+        {
+            if (!UseGlassFlyout) { SettingsToggle(); return; }
+            if (settingsForm.InvokeRequired) { settingsForm.BeginInvoke(new Action(QuickToggle)); return; }
+            GetGlassFlyout().Toggle(trayClick: false);
+        }
+
+        static GHelper.UI.GlassFlyout GetGlassFlyout()
+        {
+            if (glassFlyout is null || glassFlyout.IsDisposed) glassFlyout = new GHelper.UI.GlassFlyout();
+            return glassFlyout;
+        }
+
         public static bool IsTaskbarTop()
         {
             var rect = new Helpers.RECT();
@@ -437,6 +529,10 @@ namespace GHelper
             }
             else
             {
+                // Flyout just closed itself because this very tray click took focus away - keep it closed
+                if (trayClick && Math.Abs(DateTimeOffset.Now.ToUnixTimeMilliseconds() - SettingsForm.lastAutoHide) < 500)
+                    return;
+
                 var screen = Screen.PrimaryScreen;
                 if (screen is null) screen = Screen.FromControl(settingsForm);
 
@@ -456,6 +552,7 @@ namespace GHelper
                 else
                     settingsForm.Top = IsTaskbarTop() ? screen.WorkingArea.Top + 10 : screen.WorkingArea.Bottom - 10 - settingsForm.Height;
 
+                settingsForm.AnimateIn();
                 settingsForm.VisualiseGPUMode();
             }
         }
@@ -463,7 +560,10 @@ namespace GHelper
         static void TrayIcon_MouseClick(object? sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
-                SettingsToggle(trayClick: true);
+            {
+                if (UseGlassFlyout) GetGlassFlyout().Toggle(trayClick: true);
+                else SettingsToggle(trayClick: true);
+            }
 
         }
 

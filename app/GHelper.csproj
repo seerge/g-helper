@@ -78,6 +78,9 @@
     <EmbeddedResource Include="Pawn\IntelMSR.bin">
       <LogicalName>GHelper.IntelMSR.bin</LogicalName>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\chelper-logo.png">
+      <LogicalName>GHelper.chelper-logo.png</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
 
 	<Target Name="KillRunningGHelper" BeforeTargets="Build" Condition="'$(GITHUB_ACTIONS)'!='true'">

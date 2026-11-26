@@ -164,6 +164,23 @@ namespace GHelper.Helpers
             KillByName("ASUSSmartDisplayControl");
         }
 
+        /// <summary>
+        /// ASUS's ROG-key helper. Without Armoury Crate installed its only job is the
+        /// "Armoury Crate is a new software center..." install nag on every ROG key press.
+        /// </summary>
+        public static bool IsArmouryKeyControlRunning()
+        {
+            var found = Process.GetProcessesByName("ArmouryCrateKeyControl");
+            bool any = found.Length > 0;
+            foreach (var p in found) p.Dispose();
+            return any;
+        }
+
+        public static void KillArmouryKeyControl()
+        {
+            KillByName("ArmouryCrateKeyControl");
+        }
+
         public static void KillByProcess(Process process)
         {
             try
