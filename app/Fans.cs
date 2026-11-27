@@ -273,6 +273,8 @@ namespace GHelper
             buttonAdd.Click += ButtonAdd_Click;
             buttonRemove.Click += ButtonRemove_Click;
             buttonRename.Click += ButtonRename_Click;
+            buttonMoveUp.Click += (sender, e) => MoveMode(-1);
+            buttonMoveDown.Click += (sender, e) => MoveMode(1);
 
 
             trackUV.Scroll += TrackUV_Scroll;
@@ -566,7 +568,13 @@ namespace GHelper
             comboModes.DataSource = new BindingSource(Modes.GetDictonary(), null);
             comboModes.DisplayMember = "Value";
             comboModes.ValueMember = "Key";
+            InitMode();
             if (contextMenu) Program.settingsForm.SetContextMenu();
+        }
+
+        private void MoveMode(int direction)
+        {
+            if (Modes.Move(Modes.GetCurrent(), direction)) FillModes();
         }
 
         private void ButtonAdd_Click(object? sender, EventArgs e)
@@ -581,6 +589,9 @@ namespace GHelper
             int mode = Modes.GetCurrent();
             comboModes.SelectedValue = mode;
             buttonRename.Visible = buttonRemove.Visible = Modes.IsCurrentCustom();
+            buttonMoveUp.Visible = buttonMoveDown.Visible = Modes.IsCurrentCustom();
+            buttonMoveUp.Enabled = Modes.CanMove(mode, -1);
+            buttonMoveDown.Enabled = Modes.CanMove(mode, 1);
         }
 
         private void ComboModes_SelectedValueChanged(object? sender, EventArgs e)

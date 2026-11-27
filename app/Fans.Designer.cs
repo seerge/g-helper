@@ -53,6 +53,8 @@ namespace GHelper
             buttonRemove = new RButton();
             buttonAdd = new RButton();
             buttonRename = new RButton();
+            buttonMoveUp = new RButton();
+            buttonMoveDown = new RButton();
             comboModes = new RComboBox();
             picturePerf = new PictureBox();
             labelFans = new Label();
@@ -388,15 +390,19 @@ namespace GHelper
             // 
             // tableLayoutModes
             // 
-            tableLayoutModes.ColumnCount = 4;
+            tableLayoutModes.ColumnCount = 6;
             tableLayoutModes.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 60F));
             tableLayoutModes.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 60F));
+            tableLayoutModes.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 36F));
+            tableLayoutModes.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 36F));
             tableLayoutModes.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutModes.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 60F));
             tableLayoutModes.Controls.Add(buttonRemove, 0, 0);
-            tableLayoutModes.Controls.Add(buttonAdd, 3, 0);
+            tableLayoutModes.Controls.Add(buttonAdd, 5, 0);
             tableLayoutModes.Controls.Add(buttonRename, 1, 0);
-            tableLayoutModes.Controls.Add(comboModes, 2, 0);
+            tableLayoutModes.Controls.Add(buttonMoveUp, 2, 0);
+            tableLayoutModes.Controls.Add(buttonMoveDown, 3, 0);
+            tableLayoutModes.Controls.Add(comboModes, 4, 0);
             tableLayoutModes.Dock = DockStyle.Right;
             tableLayoutModes.Location = new Point(330, 0);
             tableLayoutModes.Margin = new Padding(0);
@@ -438,7 +444,7 @@ namespace GHelper
             buttonAdd.Name = "buttonAdd";
             buttonAdd.Secondary = true;
             buttonAdd.Size = new Size(54, 46);
-            buttonAdd.TabIndex = 3;
+            buttonAdd.TabIndex = 5;
             buttonAdd.UseVisualStyleBackColor = false;
             // 
             // buttonRename
@@ -458,6 +464,36 @@ namespace GHelper
             buttonRename.TabIndex = 1;
             buttonRename.UseVisualStyleBackColor = false;
             // 
+            // buttonMoveUp
+            //
+            buttonMoveUp.AccessibleName = Properties.Strings.MoveProfileUp;
+            buttonMoveUp.BackColor = SystemColors.ControlLight;
+            buttonMoveUp.BorderColor = Color.Transparent;
+            buttonMoveUp.BorderRadius = 2;
+            buttonMoveUp.Dock = DockStyle.Fill;
+            buttonMoveUp.FlatStyle = FlatStyle.Flat;
+            buttonMoveUp.Margin = new Padding(0, 0, 6, 0);
+            buttonMoveUp.Name = "buttonMoveUp";
+            buttonMoveUp.Secondary = true;
+            buttonMoveUp.TabIndex = 2;
+            buttonMoveUp.Text = "▲";
+            buttonMoveUp.UseVisualStyleBackColor = false;
+            //
+            // buttonMoveDown
+            //
+            buttonMoveDown.AccessibleName = Properties.Strings.MoveProfileDown;
+            buttonMoveDown.BackColor = SystemColors.ControlLight;
+            buttonMoveDown.BorderColor = Color.Transparent;
+            buttonMoveDown.BorderRadius = 2;
+            buttonMoveDown.Dock = DockStyle.Fill;
+            buttonMoveDown.FlatStyle = FlatStyle.Flat;
+            buttonMoveDown.Margin = new Padding(0, 0, 6, 0);
+            buttonMoveDown.Name = "buttonMoveDown";
+            buttonMoveDown.Secondary = true;
+            buttonMoveDown.TabIndex = 3;
+            buttonMoveDown.Text = "▼";
+            buttonMoveDown.UseVisualStyleBackColor = false;
+            //
             // comboModes
             // 
             comboModes.BorderColor = Color.White;
@@ -469,7 +505,7 @@ namespace GHelper
             comboModes.Margin = new Padding(0, 3, 6, 4);
             comboModes.Name = "comboModes";
             comboModes.Size = new Size(290, 40);
-            comboModes.TabIndex = 2;
+            comboModes.TabIndex = 4;
             // 
             // picturePerf
             // 
@@ -2231,6 +2267,8 @@ namespace GHelper
         private RButton buttonAdd;
         private RButton buttonRemove;
         private RButton buttonRename;
+        private RButton buttonMoveUp;
+        private RButton buttonMoveDown;
         private Panel panelUV;
         private Label labelUV;
         private Label labelLeftUV;
