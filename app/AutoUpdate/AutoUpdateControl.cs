@@ -1,4 +1,4 @@
-﻿using GHelper.Helpers;
+using GHelper.Helpers;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Reflection;
@@ -94,7 +94,11 @@ namespace GHelper.AutoUpdate
                     var appVersion = new Version(Assembly.GetExecutingAssembly().GetName().Version.ToString());
                     //appVersion = new Version("0.50.0.0"); 
 
+#if DEBUG
+                    if (Debugger.IsAttached || gitVersion.CompareTo(appVersion) > 0)
+#else
                     if (gitVersion.CompareTo(appVersion) > 0)
+#endif
                     {
                         versionUrl = url;
                         update = true;
@@ -133,7 +137,7 @@ namespace GHelper.AutoUpdate
 
         public static string EscapeString(string input)
         {
-            return Regex.Replace(Regex.Replace(input, @"\[|\]", "`$0"), @"\'", "''");
+            return Regex.Replace(input, @"([\[\]\*\?])", "`$1");
         }
 
         async void AutoUpdate(string requestUri)
@@ -177,26 +181,25 @@ namespace GHelper.AutoUpdate
                     return;
                 }
 
-                string command = $"$ErrorActionPreference = \"Stop\"; Set-Location -Path '{EscapeString(exeDir)}'; Wait-Process -Name \"GHelper\"; Expand-Archive \"{zipName}\" -DestinationPath . -Force; Remove-Item \"{zipName}\" -Force; \".\\{exeName}\"; ";
+                var processName = Process.GetCurrentProcess().ProcessName;
+
+                var command = $"$ErrorActionPreference = 'Stop'; Set-Location -Path '{EscapeString(exeDir)}'; Get-Process -Name '{processName}' | Stop-Process -Force; Expand-Archive '{zipName}' -OutputPath . -Force; Remove-Item '{zipName}' -Force; .\\{exeName};";
                 Logger.WriteLine(command);
 
                 try
                 {
                     var cmd = new Process();
-                    cmd.StartInfo.WorkingDirectory = exeDir;
                     cmd.StartInfo.UseShellExecute = false;
                     cmd.StartInfo.CreateNoWindow = true;
                     cmd.StartInfo.FileName = "powershell";
                     cmd.StartInfo.Arguments = command;
-                    if (ProcessHelper.IsUserAdministrator()) cmd.StartInfo.Verb = "runas";
+                    if (!ProcessHelper.IsUserAdministrator()) cmd.StartInfo.Verb = "runas";
                     cmd.Start();
                 }
                 catch (Exception ex)
                 {
                     Logger.WriteLine(ex.Message);
                 }
-
-                Application.Exit();
             }
 
         }
