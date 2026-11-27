@@ -123,6 +123,7 @@ namespace GHelper
             checkNVPlatform = new CheckBox();
             checkStatusLed = new CheckBox();
             checkNumberPad = new CheckBox();
+            checkSmartGestures = new CheckBox();
             checkAspm = new CheckBox();
             checkStandbyNetworking = new CheckBox();
             panelPower = new Panel();
@@ -1226,6 +1227,7 @@ namespace GHelper
             panelSettings.Controls.Add(checkUSBC);
             panelSettings.Controls.Add(checkGpuApps);
             panelSettings.Controls.Add(checkNVPlatform);
+            panelSettings.Controls.Add(checkSmartGestures);
             panelSettings.Controls.Add(checkNumberPad);
             panelSettings.Controls.Add(checkStatusLed);
             panelSettings.Controls.Add(checkStandbyNetworking);
@@ -1381,6 +1383,20 @@ namespace GHelper
             checkNumberPad.Text = "Touchpad NumberPad";
             checkNumberPad.UseVisualStyleBackColor = true;
             checkNumberPad.Visible = false;
+            //
+            // checkSmartGestures
+            //
+            checkSmartGestures.AutoSize = true;
+            checkSmartGestures.Dock = DockStyle.Top;
+            checkSmartGestures.Location = new Point(21, 131);
+            checkSmartGestures.Margin = new Padding(5, 3, 5, 3);
+            checkSmartGestures.Name = "checkSmartGestures";
+            checkSmartGestures.Padding = new Padding(3);
+            checkSmartGestures.Size = new Size(917, 42);
+            checkSmartGestures.TabIndex = 11;
+            checkSmartGestures.Text = "Touchpad Smart Gestures";
+            checkSmartGestures.UseVisualStyleBackColor = true;
+            checkSmartGestures.Visible = false;
             //
             // checkAspm
             //
@@ -1899,6 +1915,7 @@ namespace GHelper
         private Label labelACPITitle;
         private CheckBox checkStatusLed;
         private CheckBox checkNumberPad;
+        private CheckBox checkSmartGestures;
         private CheckBox checkAspm;
         private CheckBox checkStandbyNetworking;
         private CheckBox checkBatteryLogo;
