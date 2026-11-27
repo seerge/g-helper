@@ -136,6 +136,7 @@ namespace GHelper.Fan
 
         public void StartCalibration()
         {
+            FanMaxTempControl.Stop(); // don't let sync overwrite the 100% calibration curves
 
             measuredMax = new int[] { 0, 0, 0 };
             timer.Enabled = true;
