@@ -756,7 +756,17 @@ namespace GHelper.Input
 
         static void ToggleMic()
         {
-            bool muteStatus = Audio.ToggleMicMute();
+            bool muteStatus;
+            try
+            {
+                muteStatus = Audio.ToggleMicMute();
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine("Mic mute toggle failed: " + ex.Message);
+                return;
+            }
+
             Program.toast.RunToast(muteStatus ? Properties.Strings.Muted : Properties.Strings.Unmuted, muteStatus ? ToastIcon.MicrophoneMute : ToastIcon.Microphone);
             if (AppConfig.IsVivoZenbook()) Program.acpi.DeviceSet(AsusACPI.MicMuteLed, muteStatus ? 1 : 0, "MicmuteLed");
             MicMuteLED(muteStatus);
