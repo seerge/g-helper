@@ -2277,7 +2277,7 @@ namespace GHelper
             panelKeyboardStyle.Visible = kb is not null;
             if (kb is null) return;
 
-            buttonKeyboardStyle.Text = "Klavye efekti: " + AccentSync.StyleName(AccentSync.Style);
+            buttonKeyboardStyle.Text = Properties.Strings.KeyboardEffect + ": " + AccentSync.StyleName(AccentSync.Style);
             buttonKeyboardSpeed.Text = Properties.Strings.AnimationSpeed + ": " + Aura.GetSpeeds().GetValueOrDefault(kb.StoredSpeed, Properties.Strings.AuraNormal);
             sliderKeyboardBrightness.Max = kb.MaxBrightness();
             sliderKeyboardBrightness.Value = Math.Clamp(kb.StoredBrightness, sliderKeyboardBrightness.Min, sliderKeyboardBrightness.Max);

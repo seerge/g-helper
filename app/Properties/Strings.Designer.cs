@@ -1384,6 +1384,33 @@ namespace GHelper.Properties {
                 return ResourceManager.GetString("Keyboard", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keyboard Effect.
+        /// </summary>
+        internal static string KeyboardEffect {
+            get {
+                return ResourceManager.GetString("KeyboardEffect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Functional.
+        /// </summary>
+        internal static string KeyboardFunctional {
+            get {
+                return ResourceManager.GetString("KeyboardFunctional", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theme Gradient.
+        /// </summary>
+        internal static string KeyboardThemeGradient {
+            get {
+                return ResourceManager.GetString("KeyboardThemeGradient", resourceCulture);
+            }
+        }
 
         /// <summary>
         ///   Looks up a localized string similar to Keystone Sound.

@@ -90,8 +90,8 @@ namespace GHelper.USB
 
         public static string StyleName(int style) => style switch
         {
-            StyleGradient => "Tema Geçişi",
-            StyleFunctional => "Fonksiyonel",
+            StyleGradient => Properties.Strings.KeyboardThemeGradient,
+            StyleFunctional => Properties.Strings.KeyboardFunctional,
             _ => AsusKeyboardSettings.LightingModeName((KeyboardLightingMode)style),
         };
 
