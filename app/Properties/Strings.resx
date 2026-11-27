@@ -1127,4 +1127,13 @@ from heating up the sleeping laptop and draining the battery.</value>
   <data name="Background" xml:space="preserve">
     <value>Back</value>
   </data>
+  <data name="KeyboardEffect" xml:space="preserve">
+    <value>Keyboard Effect</value>
+  </data>
+  <data name="KeyboardFunctional" xml:space="preserve">
+    <value>Functional</value>
+  </data>
+  <data name="KeyboardThemeGradient" xml:space="preserve">
+    <value>Theme Gradient</value>
+  </data>
 </root>

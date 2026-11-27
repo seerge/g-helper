@@ -168,7 +168,7 @@ namespace GHelper.Peripherals
         public static void RestoreKeyboardLighting()
         {
             if (IsKeyboardAuraSync) return;
-            ForEachAsync(ConnectedKeyboards, kb => { if (kb.GetType() == typeof(StrixScopeII) && kb.HasTransientLighting) kb.ApplyStoredLighting(); }, "Failed to restore lighting");
+            ForEachAsync(ConnectedKeyboards, kb => { if (AccentSync.ApplyKeyboard(kb)) return; if (kb.GetType() == typeof(StrixScopeII) && kb.HasTransientLighting) kb.ApplyStoredLighting(); }, "Failed to restore lighting");
         }
 
         public static void RefreshBatteryForAllDevices(bool force)
@@ -247,6 +247,8 @@ namespace GHelper.Peripherals
             }
             Logger.WriteLine(am.GetDisplayName() + " added to the list: " + ConnectedMice.Count + " device are conneted.");
 
+            // the accent colour may have been applied before this mouse connected
+            if (AccentSync.Enabled && IsAuraSync) am.SyncFromKeyboardAura();
 
             am.Disconnect += Mouse_Disconnect;
             am.MouseReadyChanged += PeripheralReadyChanged;
@@ -316,7 +318,7 @@ namespace GHelper.Peripherals
                     kb.ReadMultiLayout();
                     kb.ReadProfile();
                     if (IsKeyboardAuraSync) kb.SyncFromLaptopAura();
-                    else if (kb.HasTransientLighting) kb.ApplyStoredLighting();
+                    else if (!AccentSync.ApplyKeyboard(kb) && kb.HasTransientLighting) kb.ApplyStoredLighting();
                 }
                 catch { }
             });
@@ -418,10 +420,10 @@ namespace GHelper.Peripherals
         {
             UpdateSettingsView();
 
-            if (sender is AsusKeyboard kb && kb.IsDeviceReady && kb.HasTransientLighting
+            if (sender is AsusKeyboard kb && kb.IsDeviceReady && (kb.HasTransientLighting || AccentSync.Enabled)
                 && !IsKeyboardAuraSync)
             {
-                Task.Run(() => { try { kb.ApplyStoredLighting(); } catch { } });
+                Task.Run(() => { try { if (!AccentSync.ApplyKeyboard(kb)) kb.ApplyStoredLighting(); } catch { } });
             }
         }
 

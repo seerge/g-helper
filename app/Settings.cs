@@ -65,6 +65,7 @@ namespace GHelper
         {
 
             InitializeComponent();
+            AddKeyboardStyleButton();
             InitTheme(true);
 
             gpuControl = new GPUModeControl(this);
@@ -2204,7 +2205,82 @@ namespace GHelper
                 buttons[i].Visible = false;
             }
 
+            VisualiseKeyboardStyle();
             panelPeripherals.Visible = true;
+        }
+
+        // External keyboard controls for the accent-driven effects (see AccentSync):
+        // effect and animation speed buttons, brightness slider below them
+        private Panel panelKeyboardStyle = null!;
+        private RButton buttonKeyboardStyle = null!;
+        private RButton buttonKeyboardSpeed = null!;
+        private Slider sliderKeyboardBrightness = null!;
+
+        private RButton NewKeyboardStyleButton()
+        {
+            var button = new RButton
+            {
+                BorderRadius = 2,
+                Dock = DockStyle.Fill,
+                FlatStyle = FlatStyle.Flat,
+                Font = buttonPeripheral1.Font,
+                Margin = new Padding(4),
+                Secondary = true,
+                UseVisualStyleBackColor = false,
+            };
+            button.FlatAppearance.BorderSize = 0;
+            return button;
+        }
+
+        private void AddKeyboardStyleButton()
+        {
+            // left click: next, right click: previous
+            buttonKeyboardStyle = NewKeyboardStyleButton();
+            buttonKeyboardStyle.MouseUp += (_, e) =>
+            {
+                if (e.Button is not (MouseButtons.Left or MouseButtons.Right)) return;
+                AccentSync.NextStyle(e.Button == MouseButtons.Right ? -1 : 1);
+                VisualiseKeyboardStyle();
+            };
+
+            buttonKeyboardSpeed = NewKeyboardStyleButton();
+            buttonKeyboardSpeed.MouseUp += (_, e) =>
+            {
+                if (e.Button is not (MouseButtons.Left or MouseButtons.Right)) return;
+                if (AccentSync.MainKeyboard is not AsusKeyboard kb) return;
+                int step = e.Button == MouseButtons.Right ? -1 : 1;
+                AccentSync.SetTuning(speed: (AuraSpeed)(((int)kb.StoredSpeed + step + 3) % 3));
+                VisualiseKeyboardStyle();
+            };
+
+            var buttons = new TableLayoutPanel { ColumnCount = 2, RowCount = 1, Dock = DockStyle.Top, Size = new Size(787, 56), Margin = new Padding(0) };
+            buttons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 65F));
+            buttons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 35F));
+            buttons.Controls.Add(buttonKeyboardStyle, 0, 0);
+            buttons.Controls.Add(buttonKeyboardSpeed, 1, 0);
+
+            sliderKeyboardBrightness = new Slider { Dock = DockStyle.Top, Size = new Size(787, 40), Min = 0, Max = 100, Step = 5, Margin = new Padding(4) };
+            sliderKeyboardBrightness.MouseUp += (_, _) => AccentSync.SetTuning(brightness: sliderKeyboardBrightness.Value);
+            sliderKeyboardBrightness.KeyUp += (_, _) => AccentSync.SetTuning(brightness: sliderKeyboardBrightness.Value);
+
+            panelKeyboardStyle = new Panel { Dock = DockStyle.Top, AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink, Visible = false };
+            panelKeyboardStyle.Controls.Add(sliderKeyboardBrightness);
+            panelKeyboardStyle.Controls.Add(buttons); // added last = docked first, so the buttons sit above the slider
+
+            panelPeripherals.Controls.Add(panelKeyboardStyle);
+            panelKeyboardStyle.BringToFront(); // docks below the device buttons
+        }
+
+        public void VisualiseKeyboardStyle()
+        {
+            AsusKeyboard? kb = AccentSync.Enabled && !PeripheralsProvider.IsKeyboardAuraSync ? AccentSync.MainKeyboard : null;
+            panelKeyboardStyle.Visible = kb is not null;
+            if (kb is null) return;
+
+            buttonKeyboardStyle.Text = Properties.Strings.KeyboardEffect + ": " + AccentSync.StyleName(AccentSync.Style);
+            buttonKeyboardSpeed.Text = Properties.Strings.AnimationSpeed + ": " + Aura.GetSpeeds().GetValueOrDefault(kb.StoredSpeed, Properties.Strings.AuraNormal);
+            sliderKeyboardBrightness.Max = kb.MaxBrightness();
+            sliderKeyboardBrightness.Value = Math.Clamp(kb.StoredBrightness, sliderKeyboardBrightness.Min, sliderKeyboardBrightness.Max);
         }
 
         private void ButtonPeripheral_MouseEnter(object? sender, EventArgs e)

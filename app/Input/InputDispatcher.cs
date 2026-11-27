@@ -1139,7 +1139,8 @@ namespace GHelper.Input
                 Aura.ApplyPower();
                 SetBacklightAuto();
                 Aura.ApplyWheel();
-                Aura.ApplyAura();
+                if (!AccentSync.Apply()) Aura.ApplyAura();
+                AccentSync.Watch();
             } else
             {
                 Logger.WriteLine("Skipping Aura");

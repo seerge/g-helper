@@ -1124,4 +1124,13 @@ dizüstünü ısıtmasını ve pili tüketmesini engeller.</value>
   <data name="AmbientBacklight" xml:space="preserve">
     <value>Ortam ışığı sensörü</value>
   </data>
+  <data name="KeyboardEffect" xml:space="preserve">
+    <value>Klavye Efekti</value>
+  </data>
+  <data name="KeyboardFunctional" xml:space="preserve">
+    <value>Fonksiyonel</value>
+  </data>
+  <data name="KeyboardThemeGradient" xml:space="preserve">
+    <value>Tema Geçişi</value>
+  </data>
 </root>
