@@ -96,15 +96,9 @@ namespace GHelper.Helpers
             params1.Caption = "FloatingNativeWindow";
             int nX = _location.X;
             int nY = _location.Y;
-            Screen screen1 = Screen.FromHandle(Handle);
-            if (nX + _size.Width > screen1.Bounds.Width)
-            {
-                nX = screen1.Bounds.Width - _size.Width;
-            }
-            if (nY + _size.Height > screen1.Bounds.Height)
-            {
-                nY = screen1.Bounds.Height - _size.Height;
-            }
+            Screen screen1 = Screen.FromPoint(new Point(nX, nY));
+            nX = Math.Max(screen1.Bounds.Left, Math.Min(nX, screen1.Bounds.Right - _size.Width));
+            nY = Math.Max(screen1.Bounds.Top, Math.Min(nY, screen1.Bounds.Bottom - _size.Height));
             _location = new Point(nX, nY);
             Size size1 = _size;
             Point point1 = _location;
