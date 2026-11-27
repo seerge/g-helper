@@ -22,6 +22,7 @@ namespace GHelper
     {
         public static NotifyIcon trayIcon;
         public static AsusACPI acpi;
+        public static bool IsPeripheralMode => AppConfig.Is("peripheral_only") || (AppConfig.IsDesktop() && (acpi is null || !acpi.IsConnected()));
 
         public static SettingsForm settingsForm;
 
@@ -78,7 +79,22 @@ namespace GHelper
             Logger.WriteLine("----------------------");
             Logger.WriteLine("App launched: " + AppConfig.GetModel() + " :" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + CultureInfo.CurrentUICulture + (ProcessHelper.IsUserAdministrator() ? "." : ""));
 
+            acpi = new AsusACPI();
+
+            if (!acpi.IsConnected() && AppConfig.IsASUS() && !AppConfig.IsDesktop())
+            {
+                DialogResult dialogResult = MessageBox.Show(Properties.Strings.ACPIError, Properties.Strings.StartupError, MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    Process.Start(new ProcessStartInfo("https://www.asus.com/support/FAQ/1047338/") { UseShellExecute = true });
+                }
+
+                Application.Exit();
+                return;
+            }
+
             settingsForm = new SettingsForm();
+            settingsForm.InitPeripheralMode();
             modeControl = new ModeControl();
             gpuControl = new GPUModeControl(settingsForm);
             allyControl = new AllyControl(settingsForm);
@@ -95,20 +111,6 @@ namespace GHelper
             var startCount = AppConfig.Get("start_count") + 1;
             AppConfig.Set("start_count", startCount);
             Logger.WriteLine("Start Count: " + startCount);
-
-            acpi = new AsusACPI();
-
-            if (!acpi.IsConnected() && AppConfig.IsASUS() && !AppConfig.IsDesktop())
-            {
-                DialogResult dialogResult = MessageBox.Show(Properties.Strings.ACPIError, Properties.Strings.StartupError, MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.Yes)
-                {
-                    Process.Start(new ProcessStartInfo("https://www.asus.com/support/FAQ/1047338/") { UseShellExecute = true });
-                }
-
-                Application.Exit();
-                return;
-            }
 
             ProcessHelper.KillSmartDisplayControl();
             AsusService.StopOnStartup();
