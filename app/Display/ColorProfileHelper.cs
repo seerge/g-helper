@@ -1,4 +1,4 @@
-﻿using GHelper.Helpers;
+using GHelper.Helpers;
 using System.IO.Compression;
 
 namespace GHelper.Display
@@ -704,7 +704,7 @@ namespace GHelper.Display
 
         static async Task DownloadAndExtractZip(string zipUrl, string extractPath)
         {
-            using (HttpClient client = new HttpClient())
+            using (HttpClient client = ProxyHelper.CreateHttpClient())
             {
                 try
                 {
