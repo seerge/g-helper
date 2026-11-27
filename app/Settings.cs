@@ -2385,6 +2385,9 @@ namespace GHelper
 
         public void VisualiseFnLock()
         {
+            string fnc = AppConfig.GetString("fnc", "");
+            bool hotkey = InputDispatcher.IsFnLockHotkey() && (fnc.Length <= 1 || fnc == "fnlock");
+            toolTip.SetToolTip(buttonFnLock, hotkey ? InputDispatcher.FnLockHotkeyName() : null);
 
             if (AppConfig.Is("fn_lock"))
             {

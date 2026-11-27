@@ -445,6 +445,12 @@ public static class AppConfig
         return IsStrix() || IsVivoZenPro() || IsDUO();
     }
 
+    // Fn+C / Fn+Esc send plain C / Esc without a WMI event, so FnLock needs a software hotkey
+    public static bool IsSoftFnLockHotkey()
+    {
+        return ContainsModel("FX607J");
+    }
+
     public static bool IsHardwareFnLock()
     {
         return IsVivoZenPro() || ContainsModel("GZ302EA");
