@@ -142,6 +142,8 @@ namespace GHelper
             };
         }
 
+        Routines? routinesForm;
+
         public Extra()
         {
             InitializeComponent();
@@ -150,6 +152,7 @@ namespace GHelper
             buttonResetBindings.Text = Properties.Strings.Reset;
             labelBacklightTitle.Text = Properties.Strings.LaptopBacklight;
             labelSettings.Text = Properties.Strings.Other;
+            labelRoutines.Text = buttonRoutines.Text = Properties.Strings.Routines;
 
             checkAwake.Text = Properties.Strings.Awake;
             checkSleep.Text = Properties.Strings.Sleep;
@@ -489,6 +492,7 @@ namespace GHelper
             pictureHelp.Click += PictureHelp_Click;
             buttonResetBindings.Click += ButtonResetBindings_Click;
             buttonServices.Click += ButtonServices_Click;
+            buttonRoutines.Click += ButtonRoutines_Click;
 
             pictureLog.Click += PictureLog_Click;
 
@@ -833,6 +837,30 @@ namespace GHelper
                         InitServices();
                     });
                 });
+            }
+        }
+
+        private void ButtonRoutines_Click(object? sender, EventArgs e)
+        {
+            RoutinesToggle();
+        }
+
+        public void RoutinesToggle()
+        {
+            if (routinesForm == null || routinesForm.Text == "")
+            {
+                routinesForm = new Routines();
+                AddOwnedForm(routinesForm);
+            }
+
+            if (routinesForm.Visible)
+            {
+                routinesForm.Close();
+            }
+            else
+            {
+                routinesForm.FormPosition();
+                routinesForm.Show();
             }
         }
 

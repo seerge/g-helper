@@ -327,6 +327,9 @@
   <data name="BrightnessUp" xml:space="preserve">
     <value>Brightness Up</value>
   </data>
+  <data name="Browse" xml:space="preserve">
+    <value>Browse...</value>
+  </data>
   <data name="BWTrayIcon" xml:space="preserve">
     <value>Black and white tray icon</value>
   </data>
@@ -457,6 +460,27 @@ Do you still want to continue?</value>
   </data>
   <data name="FnLockOn" xml:space="preserve">
     <value>FN-Lock On</value>
+  </data>
+  <data name="RoutineApps" xml:space="preserve">
+    <value>Apps and Games</value>
+  </data>
+  <data name="RoutineHint" xml:space="preserve">
+    <value>Switch mode while app is running or PC is locked. Previous mode is restored after.</value>
+  </data>
+  <data name="RoutineLock" xml:space="preserve">
+    <value>When Locked</value>
+  </data>
+  <data name="RoutineLocked" xml:space="preserve">
+    <value>Locked</value>
+  </data>
+  <data name="RoutineNoApps" xml:space="preserve">
+    <value>No app windows open</value>
+  </data>
+  <data name="Routines" xml:space="preserve">
+    <value>Routines</value>
+  </data>
+  <data name="RoutineTitle" xml:space="preserve">
+    <value>Window Title</value>
   </data>
   <data name="WinLockToggle" xml:space="preserve">
     <value>Win-Lock Toggle</value>
