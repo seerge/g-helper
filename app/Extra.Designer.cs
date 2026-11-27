@@ -116,6 +116,7 @@ namespace GHelper
             checkTopmost = new CheckBox();
             checkNoOverdrive = new CheckBox();
             checkELMB = new CheckBox();
+            checkTouchscreen = new CheckBox();
             checkBootSound = new CheckBox();
             checkKeystoneSound = new CheckBox();
             checkUSBC = new CheckBox();
@@ -1218,6 +1219,7 @@ namespace GHelper
             panelSettings.AutoSize = true;
             panelSettings.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             panelSettings.Controls.Add(checkELMB);
+            panelSettings.Controls.Add(checkTouchscreen);
             panelSettings.Controls.Add(checkAutoToggleClamshellMode);
             panelSettings.Controls.Add(checkTopmost);
             panelSettings.Controls.Add(checkNoOverdrive);
@@ -1261,6 +1263,17 @@ namespace GHelper
             checkAutoToggleClamshellMode.TabIndex = 9;
             checkAutoToggleClamshellMode.Text = "Auto Toggle Clamshell Mode";
             checkAutoToggleClamshellMode.UseVisualStyleBackColor = true;
+            //
+            // checkTouchscreen
+            //
+            checkTouchscreen.AutoSize = true;
+            checkTouchscreen.Dock = DockStyle.Top;
+            checkTouchscreen.Name = "checkTouchscreen";
+            checkTouchscreen.Padding = new Padding(3);
+            checkTouchscreen.TabIndex = 9;
+            checkTouchscreen.Text = Strings.ShowTouchscreenToggle;
+            checkTouchscreen.UseVisualStyleBackColor = true;
+            checkTouchscreen.Visible = false;
             //
             // checkTopmost
             // 
@@ -1862,6 +1875,7 @@ namespace GHelper
         private CheckBox checkTopmost;
         private CheckBox checkNoOverdrive;
         private CheckBox checkELMB;
+        private CheckBox checkTouchscreen;
         private CheckBox checkUSBC;
         private CheckBox checkGpuApps;
         private PictureBox pictureBacklight;
