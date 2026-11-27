@@ -24,9 +24,15 @@ namespace GHelper
             { KeyboardLightingMode.Direct, "Custom" },
         };
 
+        public static string LightingModeName(KeyboardLightingMode mode) => lightingModeNames.TryGetValue(mode, out var name) ? name : mode.ToString();
+
         private readonly AsusKeyboard keyboard;
         private Azoth? oled => keyboard as Azoth;
         private readonly List<KeyboardLightingMode> supportedModes;
+
+        // with accent sync on, the mode list holds the theme effects and their colours come from the accent
+        private readonly bool accent = AccentSync.Enabled;
+        private readonly List<int> accentStyles = new();
 
         private readonly KeyGrid keyGrid = new();
         private readonly Dictionary<Button, ushort> keyUsage = new();
@@ -75,8 +81,15 @@ namespace GHelper
             labelKeys.Text = Properties.Strings.Keys;
             labelTestLayout.Text = Properties.Strings.TestLayout;
 
-            foreach (var mode in supportedModes)
-                comboBoxLightingMode.Items.Add(lightingModeNames.TryGetValue(mode, out var name) ? name : mode.ToString());
+            if (accent)
+            {
+                accentStyles.AddRange(AccentSync.Styles(keyboard));
+                foreach (var style in accentStyles)
+                    comboBoxLightingMode.Items.Add(AccentSync.StyleName(style));
+            }
+            else
+                foreach (var mode in supportedModes)
+                    comboBoxLightingMode.Items.Add(LightingModeName(mode));
 
             foreach (var speed in Aura.GetSpeeds().Values)
                 comboBoxAnimationSpeed.Items.Add(speed);
@@ -481,7 +494,7 @@ namespace GHelper
             LoadSettings();
             loadingSettings = false;
 
-            Task.Run(() => { try { if (wasDirect || keyboard.HasTransientLighting) keyboard.ApplyStoredLighting(); keyboard.ReadBattery(); BeginInvoke(VisualizeEnergy); } catch { } });
+            Task.Run(() => { try { if (!AccentSync.ApplyKeyboard(keyboard) && (wasDirect || keyboard.HasTransientLighting)) keyboard.ApplyStoredLighting(); keyboard.ReadBattery(); BeginInvoke(VisualizeEnergy); } catch { } });
         }
 
         private object[] BuildBindingComboItems()
@@ -694,9 +707,10 @@ namespace GHelper
             BeginInvoke(new Action(() => { Close(); reopen?.Invoke(keyboard); }));
         }
 
-        private Color DisplayColorForKey(int led)
+        private Color DisplayColorForKey(int led, Color[]? themed)
         {
             KeyboardLightingMode mode = SelectedMode();
+            if (themed is not null && led < themed.Length) return themed[led];
             if (mode == KeyboardLightingMode.Direct) return keyGrid.KeyColor(led);
             if (keyboard.SupportsColorSetting(mode)) return buttonLightingColor.SwatchColor ?? Color.Red;
             return Color.Gray;
@@ -704,9 +718,10 @@ namespace GHelper
 
         private void RefreshKeyGrid()
         {
+            Color[]? themed = accent ? AccentSync.KeyColors(keyboard) : null;
             foreach (var key in keyGrid.Keys)
                 if (key.Tag is int led)
-                    key.FlatAppearance.BorderColor = DisplayColorForKey(led);
+                    key.FlatAppearance.BorderColor = DisplayColorForKey(led, themed);
         }
 
         private void ApplyKeyUnderline(Button key, ushort usage)
@@ -738,12 +753,12 @@ namespace GHelper
 
             if (keyGrid.Colors.Length > 0) keyGrid.Colors = keyboard.StoredKeyColors();
 
-            int modeIndex = supportedModes.IndexOf(keyboard.StoredMode);
+            int modeIndex = accent ? accentStyles.IndexOf(AccentSync.Style) : supportedModes.IndexOf(keyboard.StoredMode);
             comboBoxLightingMode.SelectedIndex = modeIndex >= 0 ? modeIndex : 0;
             comboBoxAnimationSpeed.SelectedIndex = Math.Clamp((int)keyboard.StoredSpeed, 0, comboBoxAnimationSpeed.Items.Count - 1);
             sliderBrightness.Value = Math.Clamp(keyboard.StoredBrightness, sliderBrightness.Min, sliderBrightness.Max);
-            buttonLightingColor.SwatchColor = keyboard.StoredColor;
-            buttonLightingColor2.SwatchColor = keyboard.StoredColor2;
+            buttonLightingColor.SwatchColor = accent ? Color.FromArgb(AppConfig.Get("aura_color")) : keyboard.StoredColor;
+            buttonLightingColor2.SwatchColor = accent ? Color.FromArgb(AppConfig.Get("aura_color2")) : keyboard.StoredColor2;
             buttonLightingColor3.SwatchColor = keyboard.StoredColor3;
 
             RefreshBindingUnderlines();
@@ -755,6 +770,8 @@ namespace GHelper
         private KeyboardLightingMode SelectedMode()
         {
             int index = comboBoxLightingMode.SelectedIndex;
+            if (accent) // per-key theme layouts preview like a static fill
+                return (index >= 0 && index < accentStyles.Count && accentStyles[index] >= 0) ? (KeyboardLightingMode)accentStyles[index] : KeyboardLightingMode.Static;
             return (index >= 0 && index < supportedModes.Count) ? supportedModes[index] : KeyboardLightingMode.Static;
         }
 
@@ -765,16 +782,16 @@ namespace GHelper
 
             comboBoxLightingMode.Enabled = manual;
 
-            buttonLightingColor.Visible = keyboard.SupportsColorSetting(mode);
+            buttonLightingColor.Visible = !accent && keyboard.SupportsColorSetting(mode);
             buttonLightingColor.Enabled = manual;
-            buttonLightingColor2.Visible = keyboard.SupportsColor2Setting(mode);
+            buttonLightingColor2.Visible = !accent && keyboard.SupportsColor2Setting(mode);
             buttonLightingColor2.Enabled = manual;
             buttonLightingColor3.Visible = keyboard.SupportsColor3Setting(mode);
             buttonLightingColor3.Enabled = manual;
 
             comboBoxAnimationSpeed.Enabled = manual;
 
-            bool paint = manual && mode == KeyboardLightingMode.Direct;
+            bool paint = manual && !accent && mode == KeyboardLightingMode.Direct;
             buttonPaintColor.Enabled = paint;
             panelPalette.Enabled = paint;
             buttonFillAll.Enabled = paint;
@@ -812,6 +829,16 @@ namespace GHelper
 
         private void StoreSettings()
         {
+            if (accent)
+            {
+                // keep the profile's own mode and colours, only speed / brightness / background come from the form
+                keyboard.StoreLighting(keyboard.StoredMode, keyboard.StoredColor, keyboard.StoredColor2,
+                    buttonLightingColor3.SwatchColor ?? Color.Black,
+                    (AuraSpeed)Math.Max(0, comboBoxAnimationSpeed.SelectedIndex), sliderBrightness.Value);
+                settingsChanged = true;
+                return;
+            }
+
             keyboard.StoreLighting(
                 SelectedMode(),
                 buttonLightingColor.SwatchColor ?? Color.Red,
@@ -827,6 +854,16 @@ namespace GHelper
         {
             if (loadingSettings || checkBoxSyncAura.Checked) return;
 
+            if (accent)
+            {
+                StoreSettings();
+                int index = comboBoxLightingMode.SelectedIndex;
+                if (index >= 0 && index < accentStyles.Count) AccentSync.SetStyle(accentStyles[index]);
+                VisualizeControls();
+                Program.settingsForm.VisualiseKeyboardStyle();
+                return;
+            }
+
             VisualizeControls();
             StoreSettings();
 
@@ -840,6 +877,7 @@ namespace GHelper
             StoreSettings();
 
             if (checkBoxSyncAura.Checked) Task.Run(() => { try { keyboard.SyncFromLaptopAura(); } catch { } });
+            else if (accent) Task.Run(() => { try { AccentSync.ApplyKeyboard(keyboard); } catch { } });
             else Task.Run(() => { try { keyboard.ApplyStoredLighting(); keyboard.SaveLighting(); } catch { } });
         }
 
