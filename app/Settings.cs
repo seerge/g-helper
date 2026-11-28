@@ -763,9 +763,19 @@ namespace GHelper
 
             if (m.Msg == NativeMethods.WM_POWERBROADCAST && m.WParam == (IntPtr)NativeMethods.PBT_APMRESUMEAUTOMATIC)
             {
-                Logger.WriteLine("System Resume");
                 GPUModeControl.suspended = false;
-                BatteryControl.AutoBattery();
+                // On Modern Standby, short maintenance wakes with the lid closed also send PBT_APMRESUMEAUTOMATIC.
+                // Re-writing the charge limit over ACPI on each of these wakes keeps triggering new wakes, so the
+                // system never stays in standby. The limit is re-applied on "Monitor Power On" when the lid opens.
+                if (InputDispatcher.lidClose)
+                {
+                    Logger.WriteLine("System Resume (lid closed, skipping battery limit)");
+                }
+                else
+                {
+                    Logger.WriteLine("System Resume");
+                    BatteryControl.AutoBattery();
+                }
                 m.Result = (IntPtr)1;
             }
 
